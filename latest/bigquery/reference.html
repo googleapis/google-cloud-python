@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 62972c4 documentation</title>
+    <title>API Reference &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -543,14 +543,17 @@ or <a class="reference internal" href="#google.cloud.bigquery.job.QueryJob" titl
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>include_all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – True if results include hidden datasets.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an expression for filtering the results by label.
-For syntax, see
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) an expression for filtering the results by
+label. For syntax, see
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter</a>.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of datasets to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – opaque marker for the next “page” of datasets. If
-not passed, the API will return the first page of
-datasets.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) maximum number of datasets to return,
+if not passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Token representing a cursor into the datasets. If
+not passed, the API will return the first page of datasets.
+The token marks the beginning of the iterator to be returned
+and the value of the <code class="docutils literal"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal"><span class="pre">HTTPIterator</span></code></a>.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 </ul>
 </td>
@@ -580,9 +583,12 @@ associated with the client’s project.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of jobs to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – opaque marker for the next “page” of jobs. If
-not passed, the API will return the first page of
-jobs.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of jobs. If not
+passed, the API will return the first page of jobs. The token
+marks the beginning of the iterator to be returned and the
+value of the <code class="docutils literal"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal"><span class="pre">next_page_token</span></code> of
+<a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal"><span class="pre">HTTPIterator</span></code></a>.</li>
 <li><strong>all_users</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if true, include jobs owned by all users in the
 project.</li>
 <li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>if passed, include only jobs matching the given
@@ -644,11 +650,14 @@ state.  One of</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of projects to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – opaque marker for the next “page” of projects. If
-not passed, the API will return the first page of
-projects.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) maximum number of projects to return,
+If not passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Token representing a cursor into the projects. If
+not passed, the API will return the first page of projects.
+The token marks the beginning of the iterator to be returned
+and the value of the <code class="docutils literal"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal"><span class="pre">HTTPIterator</span></code></a>.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 </ul>
 </td>
@@ -687,10 +696,15 @@ local copy of the schema is up-to-date, call <code class="docutils literal"><spa
 <a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>) – the table to list, or a reference to it.</li>
 <li><strong>selected_fields</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>) – The fields to return. Required if <code class="docutils literal"><span class="pre">table</span></code> is a
 <a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of rows to return.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) maximum number of rows to return.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Token representing a cursor into the
-table’s rows.</li>
-<li><strong>page_token</strong> – (Optional) The zero-based index of the starting
+table’s rows. If not passed, the API will return
+the first page of the rows. The token marks the
+beginning of the iterator to be returned and the
+value of the <code class="docutils literal"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="#google.cloud.bigquery.table.RowIterator" title="google.cloud.bigquery.table.RowIterator"><code class="xref py py-class docutils literal"><span class="pre">RowIterator</span></code></a>.</li>
+<li><strong>start_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) The zero-based index of the starting
 row to read.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 </ul>
@@ -727,9 +741,12 @@ current page: <code class="docutils literal"><span class="pre">iterator.page.num
 <a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">DatasetReference</span></code></a>) – the dataset whose tables to list, or a reference to it.</li>
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of tables to return.
 If not passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of
-datasets. If not passed, the API will return the
-first page of datasets.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Token representing a cursor into the tables. If not
+passed, the API will return the first page of tables. The
+token marks the beginning of the iterator to be returned and
+the value of the <code class="docutils literal"><span class="pre">page_token</span></code> can be accessed at
+<code class="docutils literal"><span class="pre">next_page_token</span></code> of the
+<a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal"><span class="pre">HTTPIterator</span></code></a>.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 </ul>
 </td>
@@ -1799,7 +1816,7 @@ configuration for the dataset.</li>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.job.QueryJob.num_dml_affected_rows">
 <code class="descname">num_dml_affected_rows</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.num_dml_affected_rows" title="Permalink to this definition">#</a></dt>
-<dd><p>Return total bytes billed from job statistics, if present.</p>
+<dd><p>Return the number of DML rows affected by the job.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1808,7 +1825,7 @@ configuration for the dataset.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)">None</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of DML rows affectd by the job, or None if job is not
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">number of DML rows affected by the job, or None if job is not
 yet complete.</td>
 </tr>
 </tbody>
@@ -2346,7 +2363,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'view', 'groupByEmail', 'specialGroup', 'domain'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'groupByEmail', 'domain', 'specialGroup', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -4809,6 +4826,7 @@ returned from the API.</td>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
@@ -4851,7 +4869,7 @@ returned from the API.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

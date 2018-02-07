@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.speech_v1.helpers &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.speech_v1.helpers &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,6 +56,8 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+
 
 <span class="k">class</span> <span class="nc">SpeechHelpers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A set of convenience methods to make the Speech client easier to use.</span>
@@ -64,7 +66,10 @@
 <span class="sd">    in a multiple-inheritance construction alongside the applicable GAPIC.</span>
 <span class="sd">    See the :class:`~google.cloud.speech_v1.SpeechClient`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">streaming_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">streaming_recognize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform bi-directional speech recognition.</span>
 
 <span class="sd">        This method allows you to receive results while sending audio;</span>
@@ -92,12 +97,16 @@
 <span class="sd">          ...     pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">          config (:class:`~.types.StreamingRecognitionConfig`): The</span>
-<span class="sd">            configuration to use for the stream.</span>
-<span class="sd">          requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):</span>
-<span class="sd">            The input objects.</span>
-<span class="sd">          options (:class:`google.gax.CallOptions`): Overrides the default</span>
-<span class="sd">            settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            config (:class:`~.types.StreamingRecognitionConfig`): The</span>
+<span class="sd">                configuration to use for the stream.</span>
+<span class="sd">            requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):</span>
+<span class="sd">                The input objects.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          Iterable[:class:`~.types.StreamingRecognizeResponse`]</span>
@@ -108,7 +117,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_recognize</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_request_iterable</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">),</span>
-            <span class="n">options</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_streaming_request_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">):</span>
@@ -167,6 +176,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
@@ -209,7 +219,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

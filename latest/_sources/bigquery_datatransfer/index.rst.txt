@@ -10,7 +10,7 @@ scheduled, managed basis.
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/docs/transfer-service-overview
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery_datatransfer/index.html
-.. _Product Documentation:  https://cloud.google.com/bigquerydatatransfer
+.. _Product Documentation:  https://cloud.google.com/bigquery/transfer
 
 Quick Start
 -----------

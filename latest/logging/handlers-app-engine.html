@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Google App Engine flexible Log Handler &#8212; google-cloud 62972c4 documentation</title>
+    <title>Google App Engine flexible Log Handler &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,8 +48,8 @@
 and labels for App Engine logs.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.app_engine.AppEngineHandler">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.app_engine.</code><code class="descname">AppEngineHandler</code><span class="sig-paren">(</span><em>client</em>, <em>transport=&lt;class 'google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/app_engine.html#AppEngineHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.app_engine.AppEngineHandler" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.handlers.CloudLoggingHandler</span></code></a></p>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.app_engine.</code><code class="descname">AppEngineHandler</code><span class="sig-paren">(</span><em>client</em>, <em>name='app'</em>, <em>transport=&lt;class 'google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/app_engine.html#AppEngineHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.app_engine.AppEngineHandler" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/logging.handlers.html#logging.StreamHandler" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">logging.StreamHandler</span></code></a></p>
 <p>A logging handler that sends App Engine-formatted logs to Stackdriver.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -66,6 +66,22 @@ of <a class="reference internal" href="transports-base.html#google.cloud.logging
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.logging.handlers.app_engine.AppEngineHandler.emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/app_engine.html#AppEngineHandler.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.app_engine.AppEngineHandler.emit" title="Permalink to this definition">#</a></dt>
+<dd><p>Actually log the specified logging record.</p>
+<p>Overrides the default emit behavior of <code class="docutils literal"><span class="pre">StreamHandler</span></code>.</p>
+<p>See <a class="reference external" href="https://docs.python.org/2/library/logging.html#handler-objects">https://docs.python.org/2/library/logging.html#handler-objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">logging.LogRecord</span></code></a>) – The record to be logged.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.logging.handlers.app_engine.AppEngineHandler.get_gae_labels">
 <code class="descname">get_gae_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/app_engine.html#AppEngineHandler.get_gae_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.app_engine.AppEngineHandler.get_gae_labels" title="Permalink to this definition">#</a></dt>
@@ -142,6 +158,7 @@ Currently, no other labels are included.</p>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
@@ -206,7 +223,7 @@ Currently, no other labels are included.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

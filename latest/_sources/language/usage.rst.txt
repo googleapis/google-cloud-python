@@ -218,7 +218,7 @@ This method returns a
     ...     content='Mona said that jogging is very fun.',
     ...     type='PLAIN_TEXT',
     ... )
-    >>> response = client.analyze_sentiment(
+    >>> response = client.analyze_entity_sentiment(
     ...     document=document,
     ...     encoding_type='UTF32',
     ... )

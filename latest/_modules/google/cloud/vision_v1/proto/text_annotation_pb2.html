@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1.proto.text_annotation_pb2 &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.vision_v1.proto.text_annotation_pb2 &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -63,7 +63,7 @@
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/vision_v1/proto/text_annotation.proto&#39;</span><span class="p">,</span>
   <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1&#39;</span><span class="p">,</span>
   <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">2google/cloud/vision_v1/proto/text_annotation.proto</span><span class="se">\x12\x16</span><span class="s1">google.cloud.vision.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/vision_v1/proto/geometry.proto</span><span class="se">\&quot;\x96\x04\n\x0e</span><span class="s1">TextAnnotation</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">pages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Page</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a</span><span class="s1">=</span><span class="se">\n\x10\x44\x65</span><span class="s1">tectedLanguage</span><span class="se">\x12\x15\n\r</span><span class="s1">language_code</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x1a\xd5\x01\n\r</span><span class="s1">DetectedBreak</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&gt;.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType</span><span class="se">\x12\x11\n\t</span><span class="s1">is_prefix</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\&quot;</span><span class="s1">c</span><span class="se">\n\t</span><span class="s1">BreakType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\t\n\x05</span><span class="s1">SPACE</span><span class="se">\x10\x01\x12\x0e\n\n</span><span class="s1">SURE_SPACE</span><span class="se">\x10\x02\x12\x12\n\x0e\x45</span><span class="s1">OL_SURE_SPACE</span><span class="se">\x10\x03\x12\n\n\x06</span><span class="s1">HYPHEN</span><span class="se">\x10\x04\x12\x0e\n\n</span><span class="s1">LINE_BREAK</span><span class="se">\x10\x05\x1a\xb1\x01\n\x0c</span><span class="s1">TextProperty</span><span class="se">\x12</span><span class="s1">S</span><span class="se">\n\x12\x64\x65</span><span class="s1">tected_languages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedLanguage</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x0e\x64\x65</span><span class="s1">tected_break</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedBreak</span><span class="se">\&quot;\x9b\x01\n\x04</span><span class="s1">Page</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12\r\n\x05</span><span class="s1">width</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0e\n\x06</span><span class="s1">height</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">-</span><span class="se">\n\x06\x62</span><span class="s1">locks</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1d</span><span class="s1">.google.cloud.vision.v1.Block</span><span class="se">\&quot;\xd2\x02\n\x05\x42</span><span class="s1">lock</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x35\n\n</span><span class="s1">paragraphs</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.vision.v1.Paragraph</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">block_type</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\&#39;</span><span class="s1">.google.cloud.vision.v1.Block.BlockType</span><span class="se">\&quot;</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">BlockType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">TEXT</span><span class="se">\x10\x01\x12\t\n\x05</span><span class="s1">TABLE</span><span class="se">\x10\x02\x12\x0b\n\x07</span><span class="s1">PICTURE</span><span class="se">\x10\x03\x12\t\n\x05</span><span class="s1">RULER</span><span class="se">\x10\x04\x12\x0b\n\x07\x42\x41</span><span class="s1">RCODE</span><span class="se">\x10\x05\&quot;\xbb\x01\n\t</span><span class="s1">Paragraph</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">words</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Word</span><span class="se">\&quot;\xba\x01\n\x04</span><span class="s1">Word</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x07</span><span class="s1">symbols</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.vision.v1.Symbol</span><span class="se">\&quot;\x99\x01\n\x06</span><span class="s1">Symbol</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">Bt</span><span class="se">\n\x1a\x63</span><span class="s1">om.google.cloud.vision.v1B</span><span class="se">\x13</span><span class="s1">TextAnnotationProtoP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
+  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">2google/cloud/vision_v1/proto/text_annotation.proto</span><span class="se">\x12\x16</span><span class="s1">google.cloud.vision.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/vision_v1/proto/geometry.proto</span><span class="se">\&quot;\x96\x04\n\x0e</span><span class="s1">TextAnnotation</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">pages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Page</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a</span><span class="s1">=</span><span class="se">\n\x10\x44\x65</span><span class="s1">tectedLanguage</span><span class="se">\x12\x15\n\r</span><span class="s1">language_code</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x1a\xd5\x01\n\r</span><span class="s1">DetectedBreak</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&gt;.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType</span><span class="se">\x12\x11\n\t</span><span class="s1">is_prefix</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\&quot;</span><span class="s1">c</span><span class="se">\n\t</span><span class="s1">BreakType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\t\n\x05</span><span class="s1">SPACE</span><span class="se">\x10\x01\x12\x0e\n\n</span><span class="s1">SURE_SPACE</span><span class="se">\x10\x02\x12\x12\n\x0e\x45</span><span class="s1">OL_SURE_SPACE</span><span class="se">\x10\x03\x12\n\n\x06</span><span class="s1">HYPHEN</span><span class="se">\x10\x04\x12\x0e\n\n</span><span class="s1">LINE_BREAK</span><span class="se">\x10\x05\x1a\xb1\x01\n\x0c</span><span class="s1">TextProperty</span><span class="se">\x12</span><span class="s1">S</span><span class="se">\n\x12\x64\x65</span><span class="s1">tected_languages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedLanguage</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x0e\x64\x65</span><span class="s1">tected_break</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedBreak</span><span class="se">\&quot;\xaf\x01\n\x04</span><span class="s1">Page</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12\r\n\x05</span><span class="s1">width</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0e\n\x06</span><span class="s1">height</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">-</span><span class="se">\n\x06\x62</span><span class="s1">locks</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1d</span><span class="s1">.google.cloud.vision.v1.Block</span><span class="se">\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\&quot;\xe6\x02\n\x05\x42</span><span class="s1">lock</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x35\n\n</span><span class="s1">paragraphs</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.vision.v1.Paragraph</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">block_type</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\&#39;</span><span class="s1">.google.cloud.vision.v1.Block.BlockType</span><span class="se">\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\&quot;</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">BlockType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">TEXT</span><span class="se">\x10\x01\x12\t\n\x05</span><span class="s1">TABLE</span><span class="se">\x10\x02\x12\x0b\n\x07</span><span class="s1">PICTURE</span><span class="se">\x10\x03\x12\t\n\x05</span><span class="s1">RULER</span><span class="se">\x10\x04\x12\x0b\n\x07\x42\x41</span><span class="s1">RCODE</span><span class="se">\x10\x05\&quot;\xcf\x01\n\t</span><span class="s1">Paragraph</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">words</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Word</span><span class="se">\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\&quot;\xce\x01\n\x04</span><span class="s1">Word</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x07</span><span class="s1">symbols</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.vision.v1.Symbol</span><span class="se">\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\&quot;\xad\x01\n\x06</span><span class="s1">Symbol</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x42</span><span class="s1">t</span><span class="se">\n\x1a\x63</span><span class="s1">om.google.cloud.vision.v1B</span><span class="se">\x13</span><span class="s1">TextAnnotationProtoP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
   <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
@@ -141,8 +141,8 @@
   <span class="p">],</span>
   <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1105</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1187</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1145</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1227</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_BLOCK_BLOCKTYPE</span><span class="p">)</span>
 
@@ -332,6 +332,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1.Page.confidence&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -345,7 +352,7 @@
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
   <span class="n">serialized_start</span><span class="o">=</span><span class="mi">691</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">846</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">866</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -384,6 +391,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1.Block.confidence&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -397,8 +411,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">849</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1187</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">869</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1227</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -430,6 +444,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1.Paragraph.confidence&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -442,8 +463,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1190</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1377</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1230</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1437</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -475,6 +496,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1.Word.confidence&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -487,8 +515,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1380</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1566</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1440</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1646</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -520,6 +548,13 @@
       <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;google.cloud.vision.v1.Symbol.confidence&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+      <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cpp_type</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+      <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+      <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
   <span class="p">],</span>
   <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
@@ -532,8 +567,8 @@
   <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
   <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
   <span class="p">],</span>
-  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1569</span><span class="p">,</span>
-  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1722</span><span class="p">,</span>
+  <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1649</span><span class="p">,</span>
+  <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1822</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_TEXTANNOTATION_DETECTEDLANGUAGE</span><span class="o">.</span><span class="n">containing_type</span> <span class="o">=</span> <span class="n">_TEXTANNOTATION</span>
@@ -595,6 +630,8 @@
 <span class="s2">    </span>
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
+<span class="s2">        type:</span>
+<span class="s2">            Detected break type.</span>
 <span class="s2">        is_prefix:</span>
 <span class="s2">            True if break prepends the element.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
@@ -627,7 +664,7 @@
 <span class="s2">  structural component, starting from Page, may further have their own</span>
 <span class="s2">  properties. Properties describe detected languages, breaks etc.. Please</span>
 <span class="s2">  refer to the</span>
-<span class="s2">  [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]</span>
+<span class="s2">  [TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]</span>
 <span class="s2">  message definition below for more detail.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
@@ -660,6 +697,8 @@
 <span class="s2">          Page height in pixels.</span>
 <span class="s2">      blocks:</span>
 <span class="s2">          List of blocks of text, images etc on this page.</span>
+<span class="s2">      confidence:</span>
+<span class="s2">          Confidence of the OCR results on the page. Range [0, 1].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Page)</span>
   <span class="p">))</span>
@@ -680,16 +719,19 @@
 <span class="s2">          of top-left, top-right, bottom-right, bottom-left. When a</span>
 <span class="s2">          rotation of the bounding box is detected the rotation is</span>
 <span class="s2">          represented as around the top-left corner as defined when the</span>
-<span class="s2">          text is read in the &#39;natural&#39; orientation. For example: \*</span>
-<span class="s2">          when the text is horizontal it might look like: 0----1 \| \| 3</span>
-<span class="s2">          ----2 \* when it&#39;s rotated 180 degrees around the top-left</span>
-<span class="s2">          corner it becomes: 2----3 \| \| 1----0 and the vertice order</span>
-<span class="s2">          will still be (0, 1, 2, 3).</span>
+<span class="s2">          text is read in the &#39;natural&#39; orientation. For example:  -</span>
+<span class="s2">          when the text is horizontal it might look like:     ::</span>
+<span class="s2">          0----1        |    |        3----2  -  when it&#39;s rotated 180</span>
+<span class="s2">          degrees around the top-left corner it becomes:     ::</span>
+<span class="s2">          2----3        |    |        1----0  and the vertice order will</span>
+<span class="s2">          still be (0, 1, 2, 3).</span>
 <span class="s2">      paragraphs:</span>
 <span class="s2">          List of paragraphs in this block (if this blocks is of type</span>
 <span class="s2">          text).</span>
 <span class="s2">      block_type:</span>
 <span class="s2">          Detected block type (text, image etc) for this block.</span>
+<span class="s2">      confidence:</span>
+<span class="s2">          Confidence of the OCR results on the block. Range [0, 1].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Block)</span>
   <span class="p">))</span>
@@ -717,6 +759,8 @@
 <span class="s2">          will still be (0, 1, 2, 3).</span>
 <span class="s2">      words:</span>
 <span class="s2">          List of words in this paragraph.</span>
+<span class="s2">      confidence:</span>
+<span class="s2">          Confidence of the OCR results for the paragraph. Range [0, 1].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Paragraph)</span>
   <span class="p">))</span>
@@ -745,6 +789,8 @@
 <span class="s2">      symbols:</span>
 <span class="s2">          List of symbols in the word. The order of the symbols follows</span>
 <span class="s2">          the natural reading order.</span>
+<span class="s2">      confidence:</span>
+<span class="s2">          Confidence of the OCR results for the word. Range [0, 1].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Word)</span>
   <span class="p">))</span>
@@ -772,6 +818,8 @@
 <span class="s2">          will still be (0, 1, 2, 3).</span>
 <span class="s2">      text:</span>
 <span class="s2">          The actual UTF-8 representation of the symbol.</span>
+<span class="s2">      confidence:</span>
+<span class="s2">          Confidence of the OCR results for the symbol. Range [0, 1].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Symbol)</span>
   <span class="p">))</span>
@@ -830,6 +878,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
@@ -872,7 +921,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Vision Client API &#8212; google-cloud 62972c4 documentation</title>
+    <title>Vision Client API &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,16 +56,15 @@ ImageAnnotator service returns detected entities from the images.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
-which to make calls. If specified, then the <code class="docutils literal"><span class="pre">credentials</span></code>
-argument is ignored.</li>
+which to make calls. This argument is mutually exclusive
+with <code class="docutils literal"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
 credentials from the environment.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of call options for each method. If not specified
-the default configuration is used. Generally, you only need
-to set this if you’re developing your own client library.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of call options for each
+method. If not specified, the default configuration is used.</li>
 <li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
@@ -110,7 +109,7 @@ settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images">
-<code class="descname">batch_annotate_images</code><span class="sig-paren">(</span><em>requests</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
+<code class="descname">batch_annotate_images</code><span class="sig-paren">(</span><em>requests</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Run image detection and annotation for a batch of images.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
@@ -136,6 +135,8 @@ be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
 </ul>
 </td>
 </tr>
@@ -472,6 +473,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
@@ -522,7 +524,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

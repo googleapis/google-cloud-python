@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_data &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.bigtable.row_data &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -70,16 +70,16 @@
 <span class="sd">    :type value: bytes</span>
 <span class="sd">    :param value: The value stored in the cell.</span>
 
-<span class="sd">    :type timestamp: :class:`datetime.datetime`</span>
-<span class="sd">    :param timestamp: The timestamp when the cell was stored.</span>
+<span class="sd">    :type timestamp_micros: int</span>
+<span class="sd">    :param timestamp_micros: The timestamp_micros when the cell was stored.</span>
 
 <span class="sd">    :type labels: list</span>
 <span class="sd">    :param labels: (Optional) List of strings. Labels applied to the cell.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp_micros</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">()):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="o">=</span> <span class="n">timestamp_micros</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Cell.from_pb"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.Cell.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
@@ -92,17 +92,21 @@
 <span class="sd">        :rtype: :class:`Cell`</span>
 <span class="sd">        :returns: The cell corresponding to the protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
+                       <span class="n">labels</span><span class="o">=</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">cell_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cell_pb</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_micros</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -229,27 +233,18 @@
 <span class="sd">    :param response_iterator: A streaming iterator returned from a</span>
 <span class="sd">                              ``ReadRows`` request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">START</span> <span class="o">=</span> <span class="s2">&quot;Start&quot;</span>                         <span class="c1"># No responses yet processed.</span>
-    <span class="n">NEW_ROW</span> <span class="o">=</span> <span class="s2">&quot;New row&quot;</span>                     <span class="c1"># No cells yet complete for row</span>
-    <span class="n">ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="s2">&quot;Row in progress&quot;</span>     <span class="c1"># Some cells complete for row</span>
-    <span class="n">CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="s2">&quot;Cell in progress&quot;</span>   <span class="c1"># Incomplete cell for row</span>
+
+    <span class="n">START</span> <span class="o">=</span> <span class="s1">&#39;Start&#39;</span>                         <span class="c1"># No responses yet processed.</span>
+    <span class="n">NEW_ROW</span> <span class="o">=</span> <span class="s1">&#39;New row&#39;</span>                     <span class="c1"># No cells yet complete for row</span>
+    <span class="n">ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Row in progress&#39;</span>     <span class="c1"># Some cells complete for row</span>
+    <span class="n">CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Cell in progress&#39;</span>   <span class="c1"># Incomplete cell for row</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_iterator</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span> <span class="o">=</span> <span class="n">response_iterator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span> <span class="o">=</span> <span class="n">YieldRowsData</span><span class="p">(</span><span class="n">response_iterator</span><span class="p">)</span>
+
         <span class="c1"># Fully-processed rows, keyed by `row_key`</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># Counter for responses pulled from iterator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="c1"># Maybe cached from previous response</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># In-progress row, unset until first response, after commit/reset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Last complete row, unset until first commit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># In-progress cell, unset until first response, after completion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Last complete cell, unset until first completion, after new row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -267,6 +262,56 @@
 <span class="sd">        :returns:  name of state corresponding to currrent row / chunk</span>
 <span class="sd">                   processing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span><span class="o">.</span><span class="n">state</span>
+
+<div class="viewcode-block" id="PartialRowsData.consume_all"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_loops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Consume the streamed responses until there are no more.</span>
+
+<span class="sd">        :type max_loops: int</span>
+<span class="sd">        :param max_loops: (Optional) Maximum number of times to try to consume</span>
+<span class="sd">                          an additional ``ReadRowsResponse``. You can use this</span>
+<span class="sd">                          to avoid long wait times.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span><span class="o">.</span><span class="n">read_rows</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">row_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span></div></div>
+
+
+<div class="viewcode-block" id="YieldRowsData"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.YieldRowsData">[docs]</a><span class="k">class</span> <span class="nc">YieldRowsData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convenience wrapper for consuming a ``ReadRows`` streaming response.</span>
+
+<span class="sd">    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`</span>
+<span class="sd">    :param response_iterator: A streaming iterator returned from a</span>
+<span class="sd">                              ``ReadRows`` request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">START</span> <span class="o">=</span> <span class="s1">&#39;Start&#39;</span>  <span class="c1"># No responses yet processed.</span>
+    <span class="n">NEW_ROW</span> <span class="o">=</span> <span class="s1">&#39;New row&#39;</span>  <span class="c1"># No cells yet complete for row</span>
+    <span class="n">ROW_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Row in progress&#39;</span>  <span class="c1"># Some cells complete for row</span>
+    <span class="n">CELL_IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;Cell in progress&#39;</span>  <span class="c1"># Incomplete cell for row</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_iterator</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span> <span class="o">=</span> <span class="n">response_iterator</span>
+        <span class="c1"># Counter for responses pulled from iterator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Maybe cached from previous response</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># In-progress row, unset until first response, after commit/reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Last complete row, unset until first commit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># In-progress cell, unset until first response, after completion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Last complete cell, unset until first completion, after new row</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;State machine state.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns:  name of state corresponding to current row / chunk</span>
+<span class="sd">                   processing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">START</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -279,96 +324,75 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROW_IN_PROGRESS</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_ROW</span>  <span class="c1"># row added, no chunk yet processed</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Property returning all rows accumulated from the stream.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: row_key -&gt; :class:`PartialRowData`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># NOTE: To avoid duplicating large objects, this is just the</span>
-        <span class="c1">#       mutable private data.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span>
-
-<div class="viewcode-block" id="PartialRowsData.cancel"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="YieldRowsData.cancel"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.YieldRowsData.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cancels the iterator, closing the stream.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PartialRowsData.consume_next"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_next">[docs]</a>    <span class="k">def</span> <span class="nf">consume_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Consume the next ``ReadRowsResponse`` from the stream.</span>
+<div class="viewcode-block" id="YieldRowsData.read_rows"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.YieldRowsData.read_rows">[docs]</a>    <span class="k">def</span> <span class="nf">read_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Consume the ``ReadRowsResponse&#39;s`` from the stream.</span>
+<span class="sd">        Read the rows and yield each to the reader</span>
 
 <span class="sd">        Parse the response and its chunks into a new/existing row in</span>
 <span class="sd">        :attr:`_rows`. Rows are returned in order by row key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first response</span>
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InvalidReadRowsResponse</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">last_scanned_row_key</span>
-
-        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span>
-
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_validate_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">reset_row</span><span class="p">:</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">continue</span>
-
-            <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="n">PartialRowData</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">qualifier</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;qualifier&#39;</span><span class="p">):</span>
-                    <span class="n">qualifier</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="o">.</span><span class="n">value</span>
-
-                <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="n">PartialCellData</span><span class="p">(</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                    <span class="n">qualifier</span><span class="p">,</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_copy_from_previous</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">cell</span><span class="o">.</span><span class="n">append_value</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_row</span><span class="p">()</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">continue</span>
-
-            <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="PartialRowsData.consume_all"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_loops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Consume the streamed responses until there are no more.</span>
-
-<span class="sd">        This simply calls :meth:`consume_next` until there are no</span>
-<span class="sd">        more to consume.</span>
-
-<span class="sd">        :type max_loops: int</span>
-<span class="sd">        :param max_loops: (Optional) Maximum number of times to try to consume</span>
-<span class="sd">                          an additional ``ReadRowsResponse``. You can use this</span>
-<span class="sd">                          to avoid long wait times.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">curr_loop</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">max_loops</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">max_loops</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-        <span class="k">while</span> <span class="n">curr_loop</span> <span class="o">&lt;</span> <span class="n">max_loops</span><span class="p">:</span>
-            <span class="n">curr_loop</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                <span class="k">break</span></div>
+                <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first response</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InvalidReadRowsResponse</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">last_scanned_row_key</span>
+
+            <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span>
+
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_validate_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">reset_row</span><span class="p">:</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="n">PartialRowData</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">qualifier</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;qualifier&#39;</span><span class="p">):</span>
+                        <span class="n">qualifier</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="o">.</span><span class="n">value</span>
+
+                    <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="n">PartialCellData</span><span class="p">(</span>
+                        <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span>
+                        <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">qualifier</span><span class="p">,</span>
+                        <span class="n">chunk</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
+                        <span class="n">chunk</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+                        <span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_copy_from_previous</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cell</span><span class="o">.</span><span class="n">append_value</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
+
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_validate_chunk_status</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
@@ -469,15 +493,7 @@
                 <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">family_name</span>
             <span class="c1"># NOTE: ``cell.qualifier`` **can** be empty string.</span>
             <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">qualifier</span>
-
-    <span class="k">def</span> <span class="nf">_save_current_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for :meth:`consume_next`.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="o">.</span><span class="n">row_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span></div>
+                <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">qualifier</span></div>
 
 
 <span class="k">def</span> <span class="nf">_raise_if</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -523,6 +539,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
@@ -563,7 +580,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

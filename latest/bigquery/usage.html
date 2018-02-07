@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 62972c4 documentation</title>
+    <title>BigQuery &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,8 +45,36 @@
 <h1>BigQuery<a class="headerlink" href="#bigquery" title="Permalink to this headline">#</a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#authentication-configuration" id="id3">Authentication / Configuration</a></li>
+<li><a class="reference internal" href="#projects" id="id4">Projects</a><ul>
+<li><a class="reference internal" href="#project-acls" id="id5">Project ACLs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#datasets" id="id6">Datasets</a><ul>
+<li><a class="reference internal" href="#dataset-operations" id="id7">Dataset operations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tables" id="id8">Tables</a><ul>
+<li><a class="reference internal" href="#table-operations" id="id9">Table operations</a><ul>
+<li><a class="reference internal" href="#load-table-data-from-google-cloud-storage" id="id10">Load table data from Google Cloud Storage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#queries" id="id11">Queries</a><ul>
+<li><a class="reference internal" href="#run-a-simple-query" id="id12">Run a simple query</a></li>
+<li><a class="reference internal" href="#querying-data" id="id13">Querying data</a></li>
+<li><a class="reference internal" href="#writing-query-results-to-a-destination-table" id="id14">Writing query results to a destination table</a></li>
+<li><a class="reference internal" href="#run-a-query-using-a-named-query-parameter" id="id15">Run a query using a named query parameter</a></li>
+<li><a class="reference internal" href="#list-jobs-for-a-project" id="id16">List jobs for a project</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="authentication-configuration">
-<h2>Authentication / Configuration<a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id3">Authentication / Configuration</a><a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p class="first">Use <a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
 your applications.</p>
@@ -71,7 +99,7 @@ and
 </ul>
 </div>
 <div class="section" id="projects">
-<h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id4">Projects</a><a class="headerlink" href="#projects" title="Permalink to this headline">#</a></h2>
 <p>A project is the top-level container in the <code class="docutils literal"><span class="pre">BigQuery</span></code> API:  it is tied
 closely to billing, and can provide default access control across all its
 datasets.  If no <code class="docutils literal"><span class="pre">project</span></code> is passed to the client container, the library
@@ -85,14 +113,14 @@ environment variables, GAE, and GCE).</p>
 </pre></div>
 </div>
 <div class="section" id="project-acls">
-<h3>Project ACLs<a class="headerlink" href="#project-acls" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id5">Project ACLs</a><a class="headerlink" href="#project-acls" title="Permalink to this headline">#</a></h3>
 <p>Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
 via the API; it must be managed using the Google Developer Console.</p>
 </div>
 </div>
 <div class="section" id="datasets">
-<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id6">Datasets</a><a class="headerlink" href="#datasets" title="Permalink to this headline">#</a></h2>
 <p>A dataset represents a collection of tables, and applies several default
 policies to tables as they are created:</p>
 <ul class="simple">
@@ -104,7 +132,7 @@ dataset will have the value as their expiration period.</li>
 <p>See BigQuery documentation for more information on
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/datasets">Datasets</a>.</p>
 <div class="section" id="dataset-operations">
-<h3>Dataset operations<a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id7">Dataset operations</a><a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
 <p>List datasets for the client’s project:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">():</span>  <span class="c1"># API request(s)</span>
         <span class="n">do_something_with</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
@@ -178,11 +206,11 @@ dataset will have the value as their expiration period.</li>
 </div>
 </div>
 <div class="section" id="tables">
-<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id8">Tables</a><a class="headerlink" href="#tables" title="Permalink to this headline">#</a></h2>
 <p>Tables exist within datasets. See BigQuery documentation for more information
 on <a class="reference external" href="https://cloud.google.com/bigquery/docs/tables">Tables</a>.</p>
 <div class="section" id="table-operations">
-<h3>Table operations<a class="headerlink" href="#table-operations" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id9">Table operations</a><a class="headerlink" href="#table-operations" title="Permalink to this headline">#</a></h3>
 <p>List tables for the dataset:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
@@ -268,43 +296,6 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="k">assert</span> <span class="n">errors</span> <span class="o">==</span> <span class="p">[]</span>
 </pre></div>
 </div>
-<p>Upload table data from a file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;full_name,age</span>
-<span class="s2">Phred Phlyntstone,32</span>
-<span class="s2">Wylma Phlyntstone,29</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
-    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
-        <span class="n">csv_file</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-    <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
-</pre></div>
-</div>
-<p>Load table data from Google Cloud Storage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
-    <span class="n">GS_URL</span> <span class="o">=</span> <span class="s1">&#39;gs://</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
-    <span class="n">job_id_prefix</span> <span class="o">=</span> <span class="s2">&quot;my_job&quot;</span>
-    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">create_disposition</span> <span class="o">=</span> <span class="s1">&#39;NEVER&#39;</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span>
-    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
-        <span class="n">GS_URL</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
-        <span class="n">job_id_prefix</span><span class="o">=</span><span class="n">job_id_prefix</span><span class="p">)</span>  <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
-    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
-
-    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
-
-    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">job_id_prefix</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Copy a table:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">source_dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span>
         <span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">,</span> <span class="s1">&#39;samples&#39;</span><span class="p">)</span>
@@ -350,12 +341,121 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
         <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
+<p>Upload table data from a file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;full_name,age</span>
+<span class="s2">Phred Phlyntstone,32</span>
+<span class="s2">Wylma Phlyntstone,29</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
+        <span class="n">csv_file</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+</pre></div>
+</div>
+<div class="section" id="load-table-data-from-google-cloud-storage">
+<h4><a class="toc-backref" href="#id10">Load table data from Google Cloud Storage</a><a class="headerlink" href="#load-table-data-from-google-cloud-storage" title="Permalink to this headline">#</a></h4>
+<p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json">Loading JSON data from Cloud Storage</a>.</p>
+<p>Load a JSON file from Cloud Storage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+
+    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+        <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
+        <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+
+    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Load a JSON file from Cloud Storage, using an autodetected schema:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+
+    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+        <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
+        <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+
+    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Append a JSON file from Cloud Storage to an existing table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+    <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_APPEND&#39;</span>
+
+    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+        <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
+        <span class="n">table_ref</span><span class="p">,</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+
+    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="n">previous_rows</span> <span class="o">+</span> <span class="mi">50</span>
+</pre></div>
+</div>
+<p>Overwrite / replace an existing table with a JSON file from Cloud Storage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+    <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
+    <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
+
+    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+        <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
+        <span class="n">table_ref</span><span class="p">,</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+
+    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="queries">
-<h2>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id11">Queries</a><a class="headerlink" href="#queries" title="Permalink to this headline">#</a></h2>
 <div class="section" id="run-a-simple-query">
-<h3>Run a simple query<a class="headerlink" href="#run-a-simple-query" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id12">Run a simple query</a><a class="headerlink" href="#run-a-simple-query" title="Permalink to this headline">#</a></h3>
 <p>Run a query and wait for it to finish:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
@@ -370,7 +470,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </div>
 </div>
 <div class="section" id="querying-data">
-<h3>Querying data<a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id13">Querying data</a><a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
         <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
@@ -398,7 +498,7 @@ run in the background even if it takes longer the timeout allowed.</li>
 </div>
 </div>
 <div class="section" id="writing-query-results-to-a-destination-table">
-<h3>Writing query results to a destination table<a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id14">Writing query results to a destination table</a><a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h3>
 <p>See BigQuery documentation for more information on
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/writing-results">writing query results</a>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
@@ -435,7 +535,7 @@ run in the background even if it takes longer the timeout allowed.</li>
 </div>
 </div>
 <div class="section" id="run-a-query-using-a-named-query-parameter">
-<h3>Run a query using a named query parameter<a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id15">Run a query using a named query parameter</a><a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h3>
 <p>See BigQuery documentation for more information on
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/parameterized-queries">parameterized queries</a>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY_W_PARAM</span> <span class="o">=</span> <span class="p">(</span>
@@ -464,7 +564,7 @@ run in the background even if it takes longer the timeout allowed.</li>
 </div>
 </div>
 <div class="section" id="list-jobs-for-a-project">
-<h3>List jobs for a project<a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id16">List jobs for a project</a><a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h3>
 <p>Jobs describe actions performed on data in BigQuery tables:</p>
 <ul class="simple">
 <li>Load data into a table</li>
@@ -529,6 +629,7 @@ run in the background even if it takes longer the timeout allowed.</li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
@@ -569,7 +670,7 @@ run in the background even if it takes longer the timeout allowed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

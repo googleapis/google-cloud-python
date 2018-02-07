@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud 62972c4 documentation</title>
+    <title>Table &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -369,6 +369,40 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.yield_rows">
+<code class="descname">yield_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.yield_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.yield_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Read rows from this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) The beginning of a range of row keys to
+read from. The range will include <code class="docutils literal"><span class="pre">start_key</span></code>. If
+left empty, will be interpreted as the empty string.</li>
+<li><strong>end_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) The end of a range of row keys to read from.
+The range will not include <code class="docutils literal"><span class="pre">end_key</span></code>. If left empty,
+will be interpreted as an infinite string.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) The read will terminate after committing to N
+rows’ worth of results. The default (zero) is to return
+all results.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
+specified row(s). If unset, reads every column in
+each row.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowData" title="google.cloud.bigtable.row_data.PartialRowData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowData</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowData" title="google.cloud.bigtable.row_data.PartialRowData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowData</span></code></a> for each row returned</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="exception">
@@ -440,6 +474,7 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
@@ -482,7 +517,7 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1.gapic.image_annotator_client &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.vision_v1.gapic.image_annotator_client &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -40,28 +40,19 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.vision_v1.gapic.image_annotator_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2018 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
 <span class="c1"># You may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-<span class="c1">#</span>
-<span class="c1"># EDITING INSTRUCTIONS</span>
-<span class="c1"># This file was generated from the file</span>
-<span class="c1"># https://github.com/google/googleapis/blob/master/google/cloud/vision/v1/image_annotator.proto,</span>
-<span class="c1"># and updates to that file get reflected here through a refresh process.</span>
-<span class="c1"># For the short term, the refresh process will only be runnable by Google engineers.</span>
-<span class="c1">#</span>
-<span class="c1"># The only allowed edits are to method and file documentation. A 3-way</span>
-<span class="c1"># merge preserves those additions if the generated source changes.</span>
 <span class="sd">&quot;&quot;&quot;Accesses the google.cloud.vision.v1 ImageAnnotator API.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
@@ -97,8 +88,8 @@
     <span class="p">)</span>
 
     <span class="c1"># The name of the interface for this client. This is the key used to find</span>
-    <span class="c1"># method configuration in the client_config dictionary</span>
-    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;google.cloud.vision.v1.ImageAnnotator&#39;</span><span class="p">)</span>
+    <span class="c1"># method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision.v1.ImageAnnotator&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -109,58 +100,69 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
-<span class="sd">                which to make calls. If specified, then the ``credentials``</span>
-<span class="sd">                argument is ignored.</span>
+<span class="sd">                which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
 <span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
 <span class="sd">                authorization credentials to attach to requests. These</span>
 <span class="sd">                credentials identify this application to the service. If none</span>
 <span class="sd">                are specified, the client will attempt to ascertain the</span>
 <span class="sd">                credentials from the environment.</span>
-<span class="sd">            client_config (dict):</span>
-<span class="sd">                A dictionary of call options for each method. If not specified</span>
-<span class="sd">                the default configuration is used. Generally, you only need</span>
-<span class="sd">                to set this if you&#39;re developing your own client library.</span>
+<span class="sd">            client_config (dict): A dictionary of call options for each</span>
+<span class="sd">                method. If not specified, the default configuration is used.</span>
 <span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
 <span class="sd">                The client info used to send a user-agent string along with</span>
 <span class="sd">                API requests. If ``None``, then default info will be used.</span>
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If both `channel` and `credentials` are specified, raise an</span>
+        <span class="c1"># exception (channels come with credentials baked in already).</span>
         <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;channel and credentials arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
-                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+                <span class="s1">&#39;The `channel` and `credentials` arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
+                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">)</span>
 
+        <span class="c1"># Create the channel.</span>
         <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">)</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
+            <span class="p">)</span>
 
+        <span class="c1"># Create the gRPC stubs.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_annotator_stub</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">ImageAnnotatorStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-
         <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
 
-        <span class="n">interface_config</span> <span class="o">=</span> <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">]</span>
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
         <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
-            <span class="n">interface_config</span><span class="p">)</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
+        <span class="c1"># Write the &quot;inner API call&quot; methods to the class.</span>
+        <span class="c1"># These are wrapped versions of the gRPC stub methods, with retry and</span>
+        <span class="c1"># timeout configuration applied, called by the public methods on</span>
+        <span class="c1"># this class.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_batch_annotate_images</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">image_annotator_stub</span><span class="o">.</span><span class="n">BatchAnnotateImages</span><span class="p">,</span>
             <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;BatchAnnotateImages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
             <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;BatchAnnotateImages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="ImageAnnotatorClient.batch_annotate_images"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images">[docs]</a>    <span class="k">def</span> <span class="nf">batch_annotate_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">requests</span><span class="p">,</span>
                               <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run image detection and annotation for a batch of images.</span>
 
@@ -183,6 +185,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.vision_v1.types.BatchAnnotateImagesResponse` instance.</span>
@@ -194,10 +198,13 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">BatchAnnotateImagesRequest</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">)</span>
+            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_annotate_images</span><span class="p">(</span>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -237,6 +244,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
@@ -279,7 +287,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

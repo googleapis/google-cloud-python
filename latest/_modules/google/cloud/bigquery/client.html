@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -176,13 +176,17 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list</span>
 
 <span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of projects to return, If not</span>
-<span class="sd">                            passed, defaults to a value set by the API.</span>
+<span class="sd">        :param max_results: (Optional) maximum number of projects to return,</span>
+<span class="sd">                            If not passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of projects. If</span>
-<span class="sd">                           not passed, the API will return the first page of</span>
-<span class="sd">                           projects.</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">            (Optional) Token representing a cursor into the projects. If</span>
+<span class="sd">            not passed, the API will return the first page of projects.</span>
+<span class="sd">            The token marks the beginning of the iterator to be returned</span>
+<span class="sd">            and the value of the ``page_token`` can be accessed at</span>
+<span class="sd">            ``next_page_token`` of the</span>
+<span class="sd">            :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
 
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
@@ -211,18 +215,22 @@
 <span class="sd">        :param include_all: True if results include hidden datasets.</span>
 
 <span class="sd">        :type filter: str</span>
-<span class="sd">        :param filter: an expression for filtering the results by label.</span>
-<span class="sd">                       For syntax, see</span>
+<span class="sd">        :param filter: (Optional) an expression for filtering the results by</span>
+<span class="sd">                       label. For syntax, see</span>
 <span class="sd">                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.</span>
 
 <span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of datasets to return, If not</span>
-<span class="sd">                            passed, defaults to a value set by the API.</span>
+<span class="sd">        :param max_results: (Optional) maximum number of datasets to return,</span>
+<span class="sd">                            if not passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of datasets. If</span>
-<span class="sd">                           not passed, the API will return the first page of</span>
-<span class="sd">                           datasets.</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">            (Optional) Token representing a cursor into the datasets. If</span>
+<span class="sd">            not passed, the API will return the first page of datasets.</span>
+<span class="sd">            The token marks the beginning of the iterator to be returned</span>
+<span class="sd">            and the value of the ``page_token`` can be accessed at</span>
+<span class="sd">            ``next_page_token`` of the</span>
+<span class="sd">            :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
 
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
@@ -452,9 +460,13 @@
 <span class="sd">                            If not passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: (Optional) Opaque marker for the next &quot;page&quot; of</span>
-<span class="sd">                           datasets. If not passed, the API will return the</span>
-<span class="sd">                           first page of datasets.</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">            (Optional) Token representing a cursor into the tables. If not</span>
+<span class="sd">            passed, the API will return the first page of tables. The</span>
+<span class="sd">            token marks the beginning of the iterator to be returned and</span>
+<span class="sd">            the value of the ``page_token`` can be accessed at</span>
+<span class="sd">            ``next_page_token`` of the</span>
+<span class="sd">            :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
 
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
@@ -686,9 +698,13 @@
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of jobs. If</span>
-<span class="sd">                           not passed, the API will return the first page of</span>
-<span class="sd">                           jobs.</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">             (Optional) Opaque marker for the next &quot;page&quot; of jobs. If not</span>
+<span class="sd">             passed, the API will return the first page of jobs. The token</span>
+<span class="sd">             marks the beginning of the iterator to be returned and the</span>
+<span class="sd">             value of the ``page_token`` can be accessed at</span>
+<span class="sd">             ``next_page_token`` of</span>
+<span class="sd">             :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
 
 <span class="sd">        :type all_users: bool</span>
 <span class="sd">        :param all_users: if true, include jobs owned by all users in the</span>
@@ -1267,14 +1283,19 @@
 <span class="sd">            :class:`~google.cloud.bigquery.table.TableReference`.</span>
 
 <span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of rows to return.</span>
+<span class="sd">        :param max_results: (Optional) maximum number of rows to return.</span>
 
 <span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: (Optional) Token representing a cursor into the</span>
-<span class="sd">                           table&#39;s rows.</span>
+<span class="sd">                           table&#39;s rows. If not passed, the API will return</span>
+<span class="sd">                           the first page of the rows. The token marks the</span>
+<span class="sd">                           beginning of the iterator to be returned and the</span>
+<span class="sd">                           value of the ``page_token`` can be accessed at</span>
+<span class="sd">                           ``next_page_token`` of the</span>
+<span class="sd">                           :class:`~google.cloud.bigquery.table.RowIterator`.</span>
 
 <span class="sd">        :type start_index: int</span>
-<span class="sd">        :param page_token: (Optional) The zero-based index of the starting</span>
+<span class="sd">        :param start_index: (Optional) The zero-based index of the starting</span>
 <span class="sd">                           row to read.</span>
 
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
@@ -1495,6 +1516,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
@@ -1535,7 +1557,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

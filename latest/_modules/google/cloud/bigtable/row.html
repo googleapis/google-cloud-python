@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.bigtable.row &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,10 +57,14 @@
 <span class="sd">&quot;&quot;&quot;User-friendly container for Google Cloud Bigtable Row.&quot;&quot;&quot;</span>
 
 
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 
+<span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">retry</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
@@ -278,6 +282,12 @@
             <span class="n">mutations_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">to_append</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_retry_commit_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">RpcError</span><span class="p">):</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_grpc_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="DirectRow"><a class="viewcode-back" href="../../../../bigtable/row.html#google.cloud.bigtable.row.DirectRow">[docs]</a><span class="k">class</span> <span class="nc">DirectRow</span><span class="p">(</span><span class="n">_SetDeleteRow</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Google Cloud Bigtable Row for sending &quot;direct&quot; mutations.</span>
 
@@ -454,9 +464,15 @@
             <span class="n">row_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span><span class="p">,</span>
             <span class="n">mutations</span><span class="o">=</span><span class="n">mutations_list</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># We expect a `google.protobuf.empty_pb2.Empty`</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">MutateRow</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+
+        <span class="n">commit</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">MutateRow</span><span class="p">,</span>
+            <span class="n">request_pb</span><span class="p">)</span>
+        <span class="n">retry_</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="n">_retry_commit_exception</span><span class="p">,</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">retry_</span><span class="p">(</span><span class="n">commit</span><span class="p">)()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DirectRow.clear"><a class="viewcode-back" href="../../../../bigtable/row.html#google.cloud.bigtable.row.DirectRow.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -984,6 +1000,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
@@ -1024,7 +1041,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

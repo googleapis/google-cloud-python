@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Vision Client Types &#8212; google-cloud 62972c4 documentation</title>
+    <title>Vision Client Types &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -99,8 +99,7 @@ user-provided image, with user-requested features.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.AnnotateImageResponse.text_annotations">
 <code class="descname">text_annotations</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateImageResponse.text_annotations" title="Permalink to this definition">#</a></dt>
-<dd><p>If present, text (OCR) detection or document (OCR) text
-detection has completed successfully.</p>
+<dd><p>If present, text (OCR) detection has completed successfully.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -188,11 +187,12 @@ batch.</p>
 of top-left, top-right, bottom-right, bottom-left. When a
 rotation of the bounding box is detected the rotation is
 represented as around the top-left corner as defined when the
-text is read in the ‘natural’ orientation. For example: *
-when the text is horizontal it might look like: 0—-1 | | 3
-—-2 * when it’s rotated 180 degrees around the top-left
-corner it becomes: 2—-3 | | 1—-0 and the vertice order
-will still be (0, 1, 2, 3).</p>
+text is read in the ‘natural’ orientation. For example:  -
+when the text is horizontal it might look like:     ::
+0—-1        |    |        3—-2  -  when it’s rotated 180
+degrees around the top-left corner it becomes:     ::
+2—-3        |    |        1—-0  and the vertice order will
+still be (0, 1, 2, 3).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -206,6 +206,12 @@ text).</p>
 <dt id="google.cloud.vision_v1.types.Block.block_type">
 <code class="descname">block_type</code><a class="headerlink" href="#google.cloud.vision_v1.types.Block.block_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected block type (text, image etc) for this block.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Block.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.Block.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of the OCR results on the block. Range [0, 1].</p>
 </dd></dl>
 
 </dd></dl>
@@ -281,6 +287,12 @@ the original image.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">CropHintsAnnotation</code><a class="headerlink" href="#google.cloud.vision_v1.types.CropHintsAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of crop hints that are used to generate new crops when serving
 images.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.CropHintsAnnotation.crop_hints">
+<code class="descname">crop_hints</code><a class="headerlink" href="#google.cloud.vision_v1.types.CropHintsAnnotation.crop_hints" title="Permalink to this definition">#</a></dt>
+<dd><p>Crop hint results.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -346,10 +358,11 @@ language.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.EntityAnnotation.confidence">
 <code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.EntityAnnotation.confidence" title="Permalink to this definition">#</a></dt>
-<dd><p>The accuracy of the entity detection in an image. For example,
-for an image in which the “Eiffel Tower” entity is detected,
-this field represents the confidence that there is a tower in
-the query image. Range [0, 1].</p>
+<dd><p><strong>Deprecated. Use ``score`` instead.</strong> The accuracy of the
+entity detection in an image. For example, for an image in
+which the “Eiffel Tower” entity is detected, this field
+represents the confidence that there is a tower in the query
+image. Range [0, 1].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -366,11 +379,8 @@ may be the same. Range [0, 1].</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.EntityAnnotation.bounding_poly">
 <code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.EntityAnnotation.bounding_poly" title="Permalink to this definition">#</a></dt>
-<dd><p>Image region to which this entity belongs. Currently not
-produced for <code class="docutils literal"><span class="pre">LABEL_DETECTION</span></code> features. For
-<code class="docutils literal"><span class="pre">TEXT_DETECTION</span></code> (OCR), <code class="docutils literal"><span class="pre">boundingPoly</span></code>s are produced for
-the entire text detected in an image region, followed by
-<code class="docutils literal"><span class="pre">boundingPoly</span></code>s for each word within the detected text.</p>
+<dd><p>Image region to which this entity belongs. Not produced for
+<code class="docutils literal"><span class="pre">LABEL_DETECTION</span></code> features.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -509,10 +519,7 @@ Range [-180,180].</p>
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.FaceAnnotation.Landmark">
 <em class="property">class </em><code class="descname">Landmark</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.Landmark" title="Permalink to this definition">#</a></dt>
-<dd><p>A face-specific landmark (for example, a face feature). Landmark
-positions may fall outside the bounds of the image if the face is near
-one or more edges of the image. Therefore it is NOT guaranteed that
-<code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">width</span></code> or <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">height</span></code>.</p>
+<dd><p>A face-specific landmark (for example, a face feature).</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.FaceAnnotation.Landmark.type">
 <code class="descname">type</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.Landmark.type" title="Permalink to this definition">#</a></dt>
@@ -532,10 +539,9 @@ one or more edges of the image. Therefore it is NOT guaranteed that
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.Feature">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">Feature</code><a class="headerlink" href="#google.cloud.vision_v1.types.Feature" title="Permalink to this definition">#</a></dt>
-<dd><p>Users describe the type of Google Cloud Vision API tasks to perform over
-images by using <em>Feature</em>s. Each Feature indicates a type of image
-detection task to perform. Features encode the Cloud Vision API vertical
-to operate on and the number of top-scoring results to return.</p>
+<dd><p>The type of Google Cloud Vision API detection to perform, and the
+maximum number of results to return for that type. Multiple <code class="docutils literal"><span class="pre">Feature</span></code>
+objects can be specified in the <code class="docutils literal"><span class="pre">features</span></code> list.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.Feature.type">
 <code class="descname">type</code><a class="headerlink" href="#google.cloud.vision_v1.types.Feature.type" title="Permalink to this definition">#</a></dt>
@@ -545,7 +551,16 @@ to operate on and the number of top-scoring results to return.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.Feature.max_results">
 <code class="descname">max_results</code><a class="headerlink" href="#google.cloud.vision_v1.types.Feature.max_results" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum number of results of this type.</p>
+<dd><p>Maximum number of results of this type. Does not apply to
+<code class="docutils literal"><span class="pre">TEXT_DETECTION</span></code>, <code class="docutils literal"><span class="pre">DOCUMENT_TEXT_DETECTION</span></code>, or
+<code class="docutils literal"><span class="pre">CROP_HINTS</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Feature.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.vision_v1.types.Feature.model" title="Permalink to this definition">#</a></dt>
+<dd><p>Model to use for the feature. Supported values:
+“builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 </dd></dl>
@@ -557,7 +572,7 @@ to operate on and the number of top-scoring results to return.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.Image.content">
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.vision_v1.types.Image.content" title="Permalink to this definition">#</a></dt>
-<dd><p>Image content, represented as a stream of bytes. Note: as with
+<dd><p>Image content, represented as a stream of bytes. Note: As with
 all <code class="docutils literal"><span class="pre">bytes</span></code> fields, protobuffers use a pure binary
 representation, whereas JSON representations use base64.</p>
 </dd></dl>
@@ -565,10 +580,10 @@ representation, whereas JSON representations use base64.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.Image.source">
 <code class="descname">source</code><a class="headerlink" href="#google.cloud.vision_v1.types.Image.source" title="Permalink to this definition">#</a></dt>
-<dd><p>Google Cloud Storage image location. If both <code class="docutils literal"><span class="pre">content</span></code> and
-<code class="docutils literal"><span class="pre">source</span></code> are provided for an image, <code class="docutils literal"><span class="pre">content</span></code> takes
-precedence and is used to perform the image annotation
-request.</p>
+<dd><p>Google Cloud Storage image location, or publicly-accessible
+image URL. If both <code class="docutils literal"><span class="pre">content</span></code> and <code class="docutils literal"><span class="pre">source</span></code> are provided for
+an image, <code class="docutils literal"><span class="pre">content</span></code> takes precedence and is used to perform
+the image annotation request.</p>
 </dd></dl>
 
 </dd></dl>
@@ -603,6 +618,12 @@ languages is not one of the <a class="reference external" href="/vision/docs/lan
 <dd><p>Parameters for crop hints annotation request.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ImageContext.web_detection_params">
+<code class="descname">web_detection_params</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageContext.web_detection_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters for web detection.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -620,29 +641,33 @@ languages is not one of the <a class="reference external" href="/vision/docs/lan
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.ImageSource">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">ImageSource</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageSource" title="Permalink to this definition">#</a></dt>
-<dd><p>External image source (Google Cloud Storage image location).</p>
+<dd><p>External image source (Google Cloud Storage or web URL image location).</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.ImageSource.gcs_image_uri">
 <code class="descname">gcs_image_uri</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageSource.gcs_image_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>NOTE: For new code <code class="docutils literal"><span class="pre">image_uri</span></code> below is preferred. Google
-Cloud Storage image URI, which must be in the following form:
-<code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code> (for details, see <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Google
-Cloud Storage Request URIs</a>).
-NOTE: Cloud Storage object versioning is not supported.</p>
+<dd><p><strong>Use ``image_uri`` instead.</strong>  The Google Cloud Storage URI
+of the form <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>. Object
+versioning is not supported. See <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Google Cloud Storage Request
+URIs</a>
+for more info.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.ImageSource.image_uri">
 <code class="descname">image_uri</code><a class="headerlink" href="#google.cloud.vision_v1.types.ImageSource.image_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Image URI which supports: 1) Google Cloud Storage image URI,
-which must be in the following form:
-<code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code> (for details, see <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Google
-Cloud Storage Request URIs</a>).
-NOTE: Cloud Storage object versioning is not supported. 2)
-Publicly accessible image HTTP/HTTPS URL. This is preferred
-over the legacy <code class="docutils literal"><span class="pre">gcs_image_uri</span></code> above. When both
-<code class="docutils literal"><span class="pre">gcs_image_uri</span></code> and <code class="docutils literal"><span class="pre">image_uri</span></code> are specified,
-<code class="docutils literal"><span class="pre">image_uri</span></code> takes precedence.</p>
+<dd><p>The URI of the source image. Can be either:  1. A Google Cloud
+Storage URI of the form    <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.
+Object versioning is not supported.    See <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Google Cloud
+Storage Request    URIs</a> for
+more info.  2. A publicly-accessible image HTTP/HTTPS URL.
+When fetching images from    HTTP/HTTPS URLs, Google cannot
+guarantee that the request will be    completed. Your request
+may fail if the specified host denies the    request (e.g. due
+to request throttling or DOS prevention), or if    Google
+throttles requests to the site for abuse prevention. You
+should not depend on externally-hosted images for production
+applications.  When both <code class="docutils literal"><span class="pre">gcs_image_uri</span></code> and <code class="docutils literal"><span class="pre">image_uri</span></code>
+are specified, <code class="docutils literal"><span class="pre">image_uri</span></code> takes precedence.</p>
 </dd></dl>
 
 </dd></dl>
@@ -705,6 +730,12 @@ over the legacy <code class="docutils literal"><span class="pre">gcs_image_uri</
 <dd><p>List of blocks of text, images etc on this page.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Page.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.Page.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of the OCR results on the page. Range [0, 1].</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -735,6 +766,12 @@ will still be (0, 1, 2, 3).</p>
 <dt id="google.cloud.vision_v1.types.Paragraph.words">
 <code class="descname">words</code><a class="headerlink" href="#google.cloud.vision_v1.types.Paragraph.words" title="Permalink to this definition">#</a></dt>
 <dd><p>List of words in this paragraph.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Paragraph.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.Paragraph.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of the OCR results for the paragraph. Range [0, 1].</p>
 </dd></dl>
 
 </dd></dl>
@@ -781,6 +818,12 @@ coordinates are in the same scale as the original image.</p>
 <dd><p>Value of the property.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Property.uint64_value">
+<code class="descname">uint64_value</code><a class="headerlink" href="#google.cloud.vision_v1.types.Property.uint64_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Value of numeric properties.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -792,7 +835,9 @@ violence).</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.SafeSearchAnnotation.adult">
 <code class="descname">adult</code><a class="headerlink" href="#google.cloud.vision_v1.types.SafeSearchAnnotation.adult" title="Permalink to this definition">#</a></dt>
-<dd><p>Represents the adult content likelihood for the image.</p>
+<dd><p>Represents the adult content likelihood for the image. Adult
+content may contain elements such as nudity, pornographic
+images or cartoons, or sexual activities.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -812,7 +857,16 @@ offensive.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.SafeSearchAnnotation.violence">
 <code class="descname">violence</code><a class="headerlink" href="#google.cloud.vision_v1.types.SafeSearchAnnotation.violence" title="Permalink to this definition">#</a></dt>
-<dd><p>Violence likelihood.</p>
+<dd><p>Likelihood that this image contains violent content.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.SafeSearchAnnotation.racy">
+<code class="descname">racy</code><a class="headerlink" href="#google.cloud.vision_v1.types.SafeSearchAnnotation.racy" title="Permalink to this definition">#</a></dt>
+<dd><p>Likelihood that the request image contains racy content. Racy
+content may include (but is not limited to) skimpy or sheer
+clothing, strategically covered nudity, lewd or provocative
+poses, or close-ups of sensitive body areas.</p>
 </dd></dl>
 
 </dd></dl>
@@ -847,6 +901,12 @@ will still be (0, 1, 2, 3).</p>
 <dd><p>The actual UTF-8 representation of the symbol.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Symbol.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.Symbol.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of the OCR results for the symbol. Range [0, 1].</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -858,7 +918,7 @@ TextAnnotation -&gt; Page -&gt; Block -&gt; Paragraph -&gt; Word -&gt; Symbol Ea
 structural component, starting from Page, may further have their own
 properties. Properties describe detected languages, breaks etc.. Please
 refer to the
-[google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
+[TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
 message definition below for more detail.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.TextAnnotation.pages">
@@ -876,6 +936,12 @@ message definition below for more detail.</p>
 <dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedBreak">
 <em class="property">class </em><code class="descname">DetectedBreak</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedBreak" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected start or end of a structural component.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Detected break type.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.is_prefix">
 <code class="descname">is_prefix</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.is_prefix" title="Permalink to this definition">#</a></dt>
@@ -949,9 +1015,8 @@ code_locale_identifier.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.WebDetection.full_matching_images">
 <code class="descname">full_matching_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.full_matching_images" title="Permalink to this definition">#</a></dt>
-<dd><p>Fully matching images from the Internet. They’re definite
-neardups and most often a copy of the query image with merely
-a size change.</p>
+<dd><p>Fully matching images from the Internet. Can include resized
+copies of the query image.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -967,6 +1032,18 @@ crops.</p>
 <dt id="google.cloud.vision_v1.types.WebDetection.pages_with_matching_images">
 <code class="descname">pages_with_matching_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.pages_with_matching_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Web pages containing the matching images from the Internet.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.visually_similar_images">
+<code class="descname">visually_similar_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.visually_similar_images" title="Permalink to this definition">#</a></dt>
+<dd><p>The visually similar image results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.best_guess_labels">
+<code class="descname">best_guess_labels</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.best_guess_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Best guess text labels for the request image.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1007,8 +1084,27 @@ comparable across different image queries.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.WebDetection.WebImage.score">
 <code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebImage.score" title="Permalink to this definition">#</a></dt>
-<dd><p>Overall relevancy score for the image. Not normalized and not
-comparable across different image queries.</p>
+<dd><p>(Deprecated) Overall relevancy score for the image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebLabel">
+<em class="property">class </em><code class="descname">WebLabel</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebLabel" title="Permalink to this definition">#</a></dt>
+<dd><p>Label to provide extra metadata for the web detection.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebLabel.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebLabel.label" title="Permalink to this definition">#</a></dt>
+<dd><p>Label for extra metadata.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebLabel.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebLabel.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The BCP-47 language code for <code class="docutils literal"><span class="pre">label</span></code>, such as “en-US” or
+“sr-Latn”. For more information, see <a class="reference external" href="http://www.unicode.org/re">http://www.unicode.org/re</a>
+ports/tr35/#Unicode_locale_identifier.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1026,10 +1122,44 @@ comparable across different image queries.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.WebDetection.WebPage.score">
 <code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.score" title="Permalink to this definition">#</a></dt>
-<dd><p>Overall relevancy score for the web page. Not normalized and
-not comparable across different image queries.</p>
+<dd><p>(Deprecated) Overall relevancy score for the web page.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebPage.page_title">
+<code class="descname">page_title</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.page_title" title="Permalink to this definition">#</a></dt>
+<dd><p>Title for the web page, may contain HTML markups.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebPage.full_matching_images">
+<code class="descname">full_matching_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.full_matching_images" title="Permalink to this definition">#</a></dt>
+<dd><p>Fully matching images on the page. Can include resized copies
+of the query image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebPage.partial_matching_images">
+<code class="descname">partial_matching_images</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.partial_matching_images" title="Permalink to this definition">#</a></dt>
+<dd><p>Partial matching images on the page. Those images are similar
+enough to share some key-point features. For example an
+original image will likely have partial matching for its
+crops.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.WebDetectionParams">
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">WebDetectionParams</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetectionParams" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters for web detection request.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetectionParams.include_geo_results">
+<code class="descname">include_geo_results</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetectionParams.include_geo_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether to include results derived from the geo information in
+the image.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1063,6 +1193,12 @@ will still be (0, 1, 2, 3).</p>
 <code class="descname">symbols</code><a class="headerlink" href="#google.cloud.vision_v1.types.Word.symbols" title="Permalink to this definition">#</a></dt>
 <dd><p>List of symbols in the word. The order of the symbols follows
 the natural reading order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.Word.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.Word.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of the OCR results for the word. Range [0, 1].</p>
 </dd></dl>
 
 </dd></dl>
@@ -1107,6 +1243,7 @@ the natural reading order.</p>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
@@ -1157,7 +1294,7 @@ the natural reading order.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

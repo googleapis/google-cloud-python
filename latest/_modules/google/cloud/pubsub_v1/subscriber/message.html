@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 62972c4 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud f4371de documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '62972c4',
+        VERSION:     'f4371de',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -265,17 +265,14 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the deadline for acknowledgement to the given value.</span>
+        <span class="sd">&quot;&quot;&quot;Resets the deadline for acknowledgement.</span>
+<span class="sd">	</span>
+<span class="sd">	New deadline will be the given value of seconds from now.</span>
 
 <span class="sd">        The default implementation handles this for you; you should not need</span>
 <span class="sd">        to manually deal with setting ack deadlines. The exception case is</span>
 <span class="sd">        if you are implementing your own custom subclass of</span>
 <span class="sd">        :class:`~.pubsub_v1.subcriber._consumer.Consumer`.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            This is not an extension; it *sets* the deadline to the given</span>
-<span class="sd">            number of seconds from right now. It is even possible to use this</span>
-<span class="sd">            method to make a deadline shorter.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            seconds (int): The number of seconds to set the lease deadline</span>
@@ -345,6 +342,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
@@ -385,7 +383,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

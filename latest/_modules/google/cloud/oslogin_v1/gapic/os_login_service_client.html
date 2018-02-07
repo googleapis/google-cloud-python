@@ -1,0 +1,615 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.oslogin_v1.gapic.os_login_service_client &#8212; google-cloud f4371de documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     'f4371de',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.oslogin_v1.gapic.os_login_service_client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2018 Google LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Accesses the google.cloud.oslogin.v1 OsLoginService API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.oslogin_v1.gapic</span> <span class="k">import</span> <span class="n">os_login_service_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.oslogin_v1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.oslogin_v1.proto</span> <span class="k">import</span> <span class="n">oslogin_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+
+<span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
+    <span class="s1">&#39;google-cloud-os-login&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<span class="k">class</span> <span class="nc">OsLoginServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cloud OS Login API</span>
+
+<span class="sd">    The Cloud OS Login API allows you to manage users and their associated SSH</span>
+<span class="sd">    public keys for logging into virtual machines on Google Cloud Platform.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;oslogin.googleapis.com:443&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
+
+    <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
+    <span class="c1"># this service</span>
+    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform.read-only&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/compute&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/compute.readonly&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
+    <span class="c1"># method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.oslogin.v1.OsLoginService&#39;</span>
+
+<div class="viewcode-block" id="OsLoginServiceClient.user_path"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.user_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">user_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified user string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;users/</span><span class="si">{user}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.project_path"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;users/</span><span class="si">{user}</span><span class="s1">/projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.fingerprint_path"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.fingerprint_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">fingerprint_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified fingerprint string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;users/</span><span class="si">{user}</span><span class="s1">/sshPublicKeys/</span><span class="si">{fingerprint}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">fingerprint</span><span class="o">=</span><span class="n">fingerprint</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">client_config</span><span class="o">=</span><span class="n">os_login_service_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                 <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
+<span class="sd">                which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
+<span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
+<span class="sd">                authorization credentials to attach to requests. These</span>
+<span class="sd">                credentials identify this application to the service. If none</span>
+<span class="sd">                are specified, the client will attempt to ascertain the</span>
+<span class="sd">                credentials from the environment.</span>
+<span class="sd">            client_config (dict): A dictionary of call options for each</span>
+<span class="sd">                method. If not specified, the default configuration is used.</span>
+<span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">                The client info used to send a user-agent string along with</span>
+<span class="sd">                API requests. If ``None``, then default info will be used.</span>
+<span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
+<span class="sd">                your own client library.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If both `channel` and `credentials` are specified, raise an</span>
+        <span class="c1"># exception (channels come with credentials baked in already).</span>
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` and `credentials` arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
+                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">)</span>
+
+        <span class="c1"># Create the channel.</span>
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create the gRPC stubs.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">OsLoginServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
+        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
+
+        <span class="c1"># Write the &quot;inner API call&quot; methods to the class.</span>
+        <span class="c1"># These are wrapped versions of the gRPC stub methods, with retry and</span>
+        <span class="c1"># timeout configuration applied, called by the public methods on</span>
+        <span class="c1"># this class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_posix_account</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">DeletePosixAccount</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeletePosixAccount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeletePosixAccount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_ssh_public_key</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">DeleteSshPublicKey</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_login_profile</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">GetLoginProfile</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetLoginProfile&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetLoginProfile&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_ssh_public_key</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">GetSshPublicKey</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_import_ssh_public_key</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">ImportSshPublicKey</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ImportSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ImportSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_ssh_public_key</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">os_login_service_stub</span><span class="o">.</span><span class="n">UpdateSshPublicKey</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSshPublicKey&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Service calls</span>
+<div class="viewcode-block" id="OsLoginServiceClient.delete_posix_account"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.delete_posix_account">[docs]</a>    <span class="k">def</span> <span class="nf">delete_posix_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">name</span><span class="p">,</span>
+                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a POSIX account.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.project_path(&#39;[USER]&#39;, &#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_posix_account(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): A reference to the POSIX account to update. POSIX accounts are identified</span>
+<span class="sd">                by the project ID they are associated with. A reference to the POSIX</span>
+<span class="sd">                account is in format ``users/{user}/projects/{project}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">DeletePosixAccountRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_posix_account</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.delete_ssh_public_key"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.delete_ssh_public_key">[docs]</a>    <span class="k">def</span> <span class="nf">delete_ssh_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">name</span><span class="p">,</span>
+                              <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an SSH public key.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.fingerprint_path(&#39;[USER]&#39;, &#39;[FINGERPRINT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_ssh_public_key(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The fingerprint of the public key to update. Public keys are identified by</span>
+<span class="sd">                their SHA-256 fingerprint. The fingerprint of the public key is in format</span>
+<span class="sd">                ``users/{user}/sshPublicKeys/{fingerprint}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">DeleteSshPublicKeyRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_ssh_public_key</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.get_login_profile"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.get_login_profile">[docs]</a>    <span class="k">def</span> <span class="nf">get_login_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">name</span><span class="p">,</span>
+                          <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                          <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the profile information used for logging in to a virtual machine</span>
+<span class="sd">        on Google Compute Engine.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.user_path(&#39;[USER]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_login_profile(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The unique ID for the user in format ``users/{user}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.oslogin_v1.types.LoginProfile` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">GetLoginProfileRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_login_profile</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.get_ssh_public_key"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.get_ssh_public_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_ssh_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">name</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves an SSH public key.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.fingerprint_path(&#39;[USER]&#39;, &#39;[FINGERPRINT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_ssh_public_key(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The fingerprint of the public key to retrieve. Public keys are identified</span>
+<span class="sd">                by their SHA-256 fingerprint. The fingerprint of the public key is in</span>
+<span class="sd">                format ``users/{user}/sshPublicKeys/{fingerprint}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.oslogin_v1.types.SshPublicKey` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">GetSshPublicKeyRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ssh_public_key</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.import_ssh_public_key"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.import_ssh_public_key">[docs]</a>    <span class="k">def</span> <span class="nf">import_ssh_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">parent</span><span class="p">,</span>
+                              <span class="n">ssh_public_key</span><span class="p">,</span>
+                              <span class="n">project_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds an SSH public key and returns the profile information. Default POSIX</span>
+<span class="sd">        account information is set when no username and UID exist as part of the</span>
+<span class="sd">        login profile.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.user_path(&#39;[USER]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ssh_public_key = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.import_ssh_public_key(parent, ssh_public_key)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The unique ID for the user in format ``users/{user}``.</span>
+<span class="sd">            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): The SSH public key and expiration time.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.oslogin_v1.types.SshPublicKey`</span>
+<span class="sd">            project_id (str): The project ID of the Google Cloud Platform project.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.oslogin_v1.types.ImportSshPublicKeyResponse` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">ImportSshPublicKeyRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">ssh_public_key</span><span class="o">=</span><span class="n">ssh_public_key</span><span class="p">,</span>
+            <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_ssh_public_key</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OsLoginServiceClient.update_ssh_public_key"><a class="viewcode-back" href="../../../../../oslogin/gapic/v1/api.html#google.cloud.oslogin_v1.OsLoginServiceClient.update_ssh_public_key">[docs]</a>    <span class="k">def</span> <span class="nf">update_ssh_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">name</span><span class="p">,</span>
+                              <span class="n">ssh_public_key</span><span class="p">,</span>
+                              <span class="n">update_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an SSH public key and returns the profile information. This method</span>
+<span class="sd">        supports patch semantics.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import oslogin_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = oslogin_v1.OsLoginServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.fingerprint_path(&#39;[USER]&#39;, &#39;[FINGERPRINT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ssh_public_key = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_ssh_public_key(name, ssh_public_key)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The fingerprint of the public key to update. Public keys are identified by</span>
+<span class="sd">                their SHA-256 fingerprint. The fingerprint of the public key is in format</span>
+<span class="sd">                ``users/{user}/sshPublicKeys/{fingerprint}``.</span>
+<span class="sd">            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): The SSH public key and expiration time.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.oslogin_v1.types.SshPublicKey`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.oslogin_v1.types.FieldMask]): Mask to control which fields get updated. Updates all if not present.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.oslogin_v1.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.oslogin_v1.types.SshPublicKey` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">oslogin_pb2</span><span class="o">.</span><span class="n">UpdateSshPublicKeyRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">ssh_public_key</span><span class="o">=</span><span class="n">ssh_public_key</span><span class="p">,</span>
+            <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_ssh_public_key</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  <li><a href="../../oslogin_v1.html">google.cloud.oslogin_v1</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
