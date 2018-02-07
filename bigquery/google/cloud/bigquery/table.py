@@ -328,7 +328,7 @@ class Table(object):
         :param value: the resource ID of Cloud KMS key
         """
         if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("Pass a string, or None")
+            raise ValueError("kms_key_name should be a string, or None")
         self._kms_key_name = value
 
     @property
