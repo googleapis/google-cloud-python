@@ -249,6 +249,7 @@ class TestDocumentReference(unittest.TestCase):
         )
 
     def _set_helper(self, **option_kwargs):
+        from google.cloud.firestore_v1beta1._helpers import FieldPathHelper
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])
         commit_response = mock.Mock(
@@ -277,17 +278,16 @@ class TestDocumentReference(unittest.TestCase):
         self.assertIs(write_result, mock.sentinel.write_result)
         write_pb = self._write_pb_for_set(
             document._document_path, document_data)
+        update_values, field_paths = FieldPathHelper.to_field_paths(document_data)
+            
         if option is not None:
-            option.modify_write(write_pb)
+            option.modify_write(write_pb, field_paths=field_paths)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
             options=client._call_options)
 
     def test_set(self):
         self._set_helper()
-
-    def test_set_with_option(self):
-        self._set_helper(create_if_missing=False)
 
     @staticmethod
     def _write_pb_for_update(document_path, update_values, field_paths):
@@ -355,7 +355,7 @@ class TestDocumentReference(unittest.TestCase):
         self._update_helper()
 
     def test_update_with_option(self):
-        self._update_helper(create_if_missing=False)
+        self._update_helper(exists=False)
 
     def _delete_helper(self, **option_kwargs):
         from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -399,13 +399,6 @@ class TestDocumentReference(unittest.TestCase):
             nanos=100022244,
         )
         self._delete_helper(last_update_time=timestamp_pb)
-
-    def test_delete_with_bad_option(self):
-        from google.cloud.firestore_v1beta1._helpers import NO_CREATE_ON_DELETE
-
-        with self.assertRaises(ValueError) as exc_info:
-            self._delete_helper(create_if_missing=True)
-        self.assertEqual(exc_info.exception.args, (NO_CREATE_ON_DELETE,))
 
     def test_get_success(self):
         # Create a minimal fake client with a dummy response.

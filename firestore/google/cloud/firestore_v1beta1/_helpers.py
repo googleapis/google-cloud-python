@@ -28,10 +28,9 @@ from google.type import latlng_pb2
 import grpc
 import six
 
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud import exceptions
-
 from google.cloud.firestore_v1beta1 import constants
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -47,10 +46,6 @@ FIELD_PATH_WRONG_TYPE = (
     'The data at {!r} is not a dictionary, so it cannot contain the key {!r}')
 FIELD_PATH_DELIMITER = '.'
 DOCUMENT_PATH_DELIMITER = '/'
-_NO_CREATE_TEMPLATE = (
-    'The ``create_if_missing`` option cannot be used '
-    'on ``{}()`` requests.')
-NO_CREATE_ON_DELETE = _NO_CREATE_TEMPLATE.format('delete')
 INACTIVE_TXN = (
     'Transaction not in progress, cannot be used in API requests.')
 READ_AFTER_WRITE_ERROR = 'Attempted read after write in a transaction.'
@@ -817,7 +812,6 @@ def pbs_for_set(document_path, document_data, option):
         or two ``Write`` protobuf instances for ``set()``.
     """
     transform_paths, actual_data = remove_server_timestamp(document_data)
-
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
@@ -825,7 +819,7 @@ def pbs_for_set(document_path, document_data, option):
         ),
     )
     if option is not None:
-        option.modify_write(update_pb)
+        option.modify_write(update_pb, actual_data=actual_data, path=document_path)
 
     write_pbs = [update_pb]
     if transform_paths:
@@ -856,7 +850,7 @@ def pbs_for_update(client, document_path, field_updates, option):
     """
     if option is None:
         # Default uses ``exists=True``.
-        option = client.write_option(create_if_missing=False)
+        option = client.write_option(exists=True)
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
@@ -870,7 +864,7 @@ def pbs_for_update(client, document_path, field_updates, option):
         update_mask=common_pb2.DocumentMask(field_paths=sorted(field_paths)),
     )
     # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb)
+    option.modify_write(update_pb, field_paths=field_paths)
     write_pbs = [update_pb]
 
     if transform_paths:
@@ -897,7 +891,7 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        option.modify_write(write_pb, no_create_msg=NO_CREATE_ON_DELETE)
+        option.modify_write(write_pb)
 
     return write_pb
 

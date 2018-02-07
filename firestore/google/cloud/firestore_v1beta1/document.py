@@ -377,9 +377,7 @@ class DocumentReference(object):
         Args:
             option (Optional[~.firestore_v1beta1.client.WriteOption]): A
                write option to make assertions / preconditions on the server
-               state of the document before applying changes. Note that
-               ``create_if_missing`` can't be used here since it does not
-               apply (i.e. a "delete" cannot "create").
+               state of the document before applying changes.
 
         Returns:
             google.protobuf.timestamp_pb2.Timestamp: The time that the delete
@@ -387,9 +385,6 @@ class DocumentReference(object):
             when the delete was sent (i.e. nothing was deleted), this method
             will still succeed and will still return the time that the
             request was received by the server.
-
-        Raises:
-            ValueError: If the ``create_if_missing`` write option is used.
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
         with _helpers.remap_gax_error_on_commit():
