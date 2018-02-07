@@ -194,6 +194,47 @@ def test_document_set(client, cleanup):
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
 
+def test_document_set_merge(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet using an option.
+    option0 = client.write_option(exists=True)
+    with pytest.raises(NotFound) as exc_info:
+        document.set({'no': 'way'}, option=option0)
+
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
+    assert document_id in exc_info.value.message
+
+    # 1. Use ``set()`` to create the document (using an option).
+    data1 = {'name': 'Sam',
+             'address': {'city': 'SF',
+                         'state': 'CA'}
+    }
+    option1 = client.write_option(exists=False)
+    write_result1 = document.set(data1, option=option1)
+    snapshot1 = document.get()
+    assert snapshot1.to_dict() == data1
+    # Make sure the update is what created the document.
+    assert snapshot1.create_time == snapshot1.update_time
+    assert snapshot1.update_time == write_result1.update_time
+
+    # 2. Call ``set()`` again to overwrite (no option).
+    data2 = {'address.city': 'LA'}
+    option2 = client.write_option(merge=True)
+    write_result2 = document.set(data2, option=option2)
+    snapshot2 = document.get()
+    assert snapshot2.to_dict() == {'name': 'Sam',
+                                   'address': {'city': 'LA',
+                                               'state': 'CA'}
+                                  }
+    # Make sure the create time hasn't changed.
+    assert snapshot2.create_time == snapshot1.create_time
+    assert snapshot2.update_time == write_result2.update_time
+
+
 def test_update_document(client, cleanup):
     document_id = 'for-update' + unique_resource_id('-')
     document = client.document('made', document_id)
@@ -207,7 +248,6 @@ def test_update_document(client, cleanup):
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
-
     option1 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
         document.update({'still': 'not-there'}, option=option1)

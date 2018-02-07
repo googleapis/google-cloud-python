@@ -37,6 +37,9 @@ from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
 from google.cloud.firestore_v1beta1.transaction import Transaction
+from google.cloud.firestore_v1beta1.proto import common_pb2
+from google.cloud.firestore_v1beta1.proto import document_pb2
+from google.cloud.firestore_v1beta1.proto import write_pb2
 
 
 DEFAULT_DATABASE = '(default)'
@@ -283,6 +286,8 @@ class Client(ClientWithProject):
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
+        elif name == 'merge':
+            return MergeOption()
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -416,6 +421,39 @@ class LastUpdateOption(WriteOption):
         current_doc = types.Precondition(
             update_time=self._last_update_time)
         write_pb.current_document.CopyFrom(current_doc)
+
+
+class MergeOption(WriteOption):
+    """Option used to merge on a write operation.
+
+    This will typically be created by
+    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+    """
+    def modify_write(self, write_pb, actual_data=None, path=None, **unused_kwargs):
+        """Modify a ``Write`` protobuf based on the state of this write option.
+
+        Args:
+            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+                ``Write`` protobuf instance to be modified with a precondition
+                determined by the state of this option.
+            actual_data (dict): 
+                The actual field names and values to use for replacing a
+                document.
+            path (str): A fully-qualified document_path
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
+        """
+        actual_data, field_paths = _helpers.FieldPathHelper.to_field_paths(actual_data)
+        doc = document_pb2.Document(
+            name=path,
+            fields=_helpers.encode_dict(actual_data)
+        )
+        write = write_pb2.Write(
+            update=doc,
+        )
+        write_pb.CopyFrom(write)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        write_pb.update_mask.CopyFrom(mask)
 
 
 class ExistsOption(WriteOption):

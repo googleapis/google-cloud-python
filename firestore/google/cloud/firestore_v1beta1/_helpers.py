@@ -28,10 +28,9 @@ from google.type import latlng_pb2
 import grpc
 import six
 
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud import exceptions
-
 from google.cloud.firestore_v1beta1 import constants
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -813,7 +812,6 @@ def pbs_for_set(document_path, document_data, option):
         or two ``Write`` protobuf instances for ``set()``.
     """
     transform_paths, actual_data = remove_server_timestamp(document_data)
-
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
@@ -821,7 +819,7 @@ def pbs_for_set(document_path, document_data, option):
         ),
     )
     if option is not None:
-        option.modify_write(update_pb)
+        option.modify_write(update_pb, actual_data=actual_data, path=document_path)
 
     write_pbs = [update_pb]
     if transform_paths:
@@ -866,7 +864,7 @@ def pbs_for_update(client, document_path, field_updates, option):
         update_mask=common_pb2.DocumentMask(field_paths=sorted(field_paths)),
     )
     # Due to the default, we don't have to check if ``None``.
-    option.modify_write(update_pb)
+    option.modify_write(update_pb, field_paths=field_paths)
     write_pbs = [update_pb]
 
     if transform_paths:
