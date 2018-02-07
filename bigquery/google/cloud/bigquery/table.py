@@ -677,10 +677,11 @@ class Table(object):
 
         table = cls(dataset_ref.table(table_id))
         table._set_properties(resource)
-        if 'encryptionConfiguration' in resource:
-            key = resource['encryptionConfiguration']['kmsKeyName']
-            if key is not None:
-                table.kms_key_name = str(key)
+        if ('encryptionConfiguration' in resource and
+                'kmsKeyName' in resource['encryptionConfiguration']):
+            table.kms_key_name = str(
+                resource['encryptionConfiguration']['kmsKeyName'])
+
         return table
 
     def _set_properties(self, api_response):

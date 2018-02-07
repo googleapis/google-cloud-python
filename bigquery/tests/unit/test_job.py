@@ -244,6 +244,17 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config = self._get_target_class().from_api_repr(resource)
         self.assertEqual(config.to_api_repr(), resource)
 
+    def test_to_api_repr(self):
+        config = self._make_one()
+        config.kms_key_name = self.KMS_KEY_NAME
+        resource = config.to_api_repr()
+        self.assertIn('destinationEncryptionConfiguration', resource)
+        self.assertIn('kmsKeyName',
+                      resource['destinationEncryptionConfiguration'])
+        self.assertEqual(
+            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+            self.KMS_KEY_NAME)
+
 
 class TestLoadJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
@@ -475,6 +486,11 @@ class TestLoadJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
+
+    def test_kms_key_setter_wrong(self):
+        config = LoadJobConfig()
+        with self.assertRaises(ValueError):
+            config.kms_key_name = {self.KMS_KEY_NAME}
 
     def test_props_set_by_server(self):
         import datetime
@@ -978,6 +994,11 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.kms_key_name)
 
+    def test_kms_key_setter_wrong(self):
+        config = CopyJobConfig()
+        with self.assertRaises(ValueError):
+            config.kms_key_name = {self.KMS_KEY_NAME}
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         client = _make_client(project=self.PROJECT)
@@ -1122,6 +1143,17 @@ class TestCopyJob(unittest.TestCase, _Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_to_api_repr_with_encryption(self):
+        config = CopyJobConfig()
+        config.kms_key_name = self.KMS_KEY_NAME
+        resource = config.to_api_repr()
+        self.assertIn('destinationEncryptionConfiguration', resource)
+        self.assertIn('kmsKeyName',
+                      resource['destinationEncryptionConfiguration'])
+        self.assertEqual(
+            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+            self.KMS_KEY_NAME)
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1620,6 +1652,11 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         config = self._make_one()
         self.assertEqual(config._properties, {})
 
+    def test_kms_key_setter_wrong(self):
+        config = self._make_one()
+        with self.assertRaises(ValueError):
+            config.kms_key_name = {self.KMS_KEY_NAME}
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})
@@ -1668,6 +1705,17 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         # Make sure unknown properties propagate.
         self.assertEqual(
             config._properties['someNewProperty'], 'Woohoo, alpha stuff.')
+
+    def test_to_api_repr_with_encryption(self):
+        config = self._make_one()
+        config.kms_key_name = self.KMS_KEY_NAME
+        resource = config.to_api_repr()
+        self.assertIn('destinationEncryptionConfiguration', resource)
+        self.assertIn('kmsKeyName',
+                      resource['destinationEncryptionConfiguration'])
+        self.assertEqual(
+            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+            self.KMS_KEY_NAME)
 
     def test_from_api_repr_with_encryption(self):
         resource = {
@@ -1840,8 +1888,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertIsNone(job.write_disposition)
         if 'destinationEncryptionConfiguration' in query_config:
             self.assertEqual(job.kms_key_name,
-                             query_config['destinationEncryptionConfiguration'][
-                                 'kmsKeyName'])
+                             query_config['destinationEncryptionConfiguration']
+                             ['kmsKeyName'])
         else:
             self.assertIsNone(job.kms_key_name)
 
@@ -2969,6 +3017,10 @@ class TestQueryPlanEntryStep(unittest.TestCase, _Base):
         step = self._make_one(self.KIND, self.SUBSTEPS)
         other = self._make_one(self.KIND, self.SUBSTEPS)
         self.assertEqual(step, other)
+
+    def test___eq___wrong_type(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        self.assertFalse(step == 'hello')
 
 
 class TestQueryPlanEntry(unittest.TestCase, _Base):

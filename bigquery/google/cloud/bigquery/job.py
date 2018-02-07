@@ -693,10 +693,11 @@ class LoadJobConfig(object):
         config.skip_leading_rows = _int_or_none(slr)
         if config.skip_leading_rows is None:
             del config.skip_leading_rows
-        if 'destinationEncryptionConfiguration' in resource:
-            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
-            if key is not None:
-                config.kms_key_name = str(key)
+        if ('destinationEncryptionConfiguration' in resource
+            and 'kmsKeyName' in resource[
+                'destinationEncryptionConfiguration']):
+            config.kms_key_name = str(
+                resource['destinationEncryptionConfiguration']['kmsKeyName'])
         return config
 
 
@@ -999,10 +1000,11 @@ class CopyJobConfig(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-        if 'destinationEncryptionConfiguration' in resource:
-            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
-            if key is not None:
-                config.kms_key_name = str(key)
+        if ('destinationEncryptionConfiguration' in resource
+            and 'kmsKeyName' in resource[
+                'destinationEncryptionConfiguration']):
+            config.kms_key_name = str(
+                resource['destinationEncryptionConfiguration']['kmsKeyName'])
         return config
 
 
@@ -1443,10 +1445,11 @@ class QueryJobConfig(object):
             if nested_resource is not None:
                 config._properties[prop] = from_resource(nested_resource)
 
-        if 'destinationEncryptionConfiguration' in resource:
-            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
-            if key is not None:
-                config.kms_key_name = str(key)
+        if ('destinationEncryptionConfiguration' in resource
+            and 'kmsKeyName' in resource[
+                'destinationEncryptionConfiguration']):
+            config.kms_key_name = str(
+                resource['destinationEncryptionConfiguration']['kmsKeyName'])
 
         return config
 
