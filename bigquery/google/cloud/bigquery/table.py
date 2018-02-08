@@ -79,12 +79,14 @@ def _view_use_legacy_sql_getter(table):
 class EncryptionConfiguration(object):
     """Custom encryption configuration (e.g., Cloud KMS keys).
 
-    :type kms_key_name: str or ``None``
-    :param kms_key_name: resource ID of Cloud KMS key
+    Args:
+        kms_key_name (str): resource ID of Cloud KMS key used for encryption
     """
 
-    def __init__(self, kms_key_name=None):
-        self._kms_key_name = kms_key_name
+    def __init__(self, **kwargs):
+        self._properties = {}
+        if 'kms_key_name' in kwargs:
+            self._properties['kmsKeyName'] = kwargs['kms_key_name']
 
     @property
     def kms_key_name(self):
@@ -96,26 +98,28 @@ class EncryptionConfiguration(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct an encryption configuration from API representation
+        """Construct an encryption configuration from its API representation
 
-        :type resource: dict
-        :param resource: encryption configuration representation returned
-                         from the API
+        Args:
+            resource (dict):
+                An encryption configuration representation as returned from
+                the API.
 
-        :rtype: :class:`google.cloud.bigquery.table.EncryptionConfiguration`
-        :returns: Encryption configuration parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.table.EncryptionConfiguration:
+                An encryption configuration parsed from ``resource``.
         """
-        return cls(resource['kmsKeyName'])
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
 
     def to_api_repr(self):
-        """Construct the API resource representation of this encryption configuration.
+        """Construct the API resource representation of this
 
-        :rtype: dict
-        :returns: Encryption configuration as represented as an API resource
+        Returns:
+            dict: Encryption configuration as represented as an API resource
         """
-        return {
-            'kmsKeyName': self.kms_key_name
-        }
+        return copy.deepcopy(self._properties)
 
 
 class TableReference(object):
@@ -354,10 +358,15 @@ class Table(object):
 
     @property
     def encryption_configuration(self):
-        """Encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
         """
         prop = self._properties.get('encryptionConfiguration')
         if prop is not None:
