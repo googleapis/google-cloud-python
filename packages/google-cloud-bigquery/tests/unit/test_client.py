@@ -38,6 +38,7 @@ class TestClient(unittest.TestCase):
     DS_ID = 'DATASET_ID'
     TABLE_ID = 'TABLE_ID'
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
 
     @staticmethod
     def _get_target_class():
@@ -468,6 +469,45 @@ class TestClient(unittest.TestCase):
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_w_encryption_configuration(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        table = Table(self.TABLE_REF)
+        table.encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'labels': {},
+            'encryptionConfiguration': {'kmsKeyName': self.KMS_KEY_NAME},
+        }
+        self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_day_partition_and_expire(self):

@@ -33,6 +33,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
@@ -640,6 +641,29 @@ class LoadJobConfig(object):
             raise ValueError('Schema items must be fields')
         self._schema = tuple(value)
 
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
     def to_api_repr(self):
         """Build an API representation of the load job config.
 
@@ -813,11 +837,25 @@ class LoadJob(_AsyncJob):
         return self._configuration.schema
 
     @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys)
+        or ``None`` if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
+
+    @property
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
+        :raises: ValueError for invalid value types.
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
@@ -931,6 +969,29 @@ class CopyJobConfig(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
     """
 
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
     def to_api_repr(self):
         """Build an API representation of the copy job config.
 
@@ -1001,6 +1062,19 @@ class CopyJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
+
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -1322,6 +1396,29 @@ class QueryJobConfig(object):
     def __init__(self):
         self._properties = {}
 
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
     def to_api_repr(self):
         """Build an API representation of the copy job config.
 
@@ -1559,6 +1656,19 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.
         """
         return self._configuration.destination
+
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
 
     @property
     def dry_run(self):

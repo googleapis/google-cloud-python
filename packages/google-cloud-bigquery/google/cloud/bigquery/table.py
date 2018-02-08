@@ -76,6 +76,56 @@ def _view_use_legacy_sql_getter(table):
         return True
 
 
+class EncryptionConfiguration(object):
+    """Custom encryption configuration (e.g., Cloud KMS keys).
+
+    Args:
+        kms_key_name (str): resource ID of Cloud KMS key used for encryption
+    """
+
+    def __init__(self, kms_key_name=None):
+        self._properties = {}
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
+
+    @property
+    def kms_key_name(self):
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key or ``None`` if using default encryption.
+        """
+        return self._properties.get('kmsKeyName')
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        self._properties['kmsKeyName'] = value
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Construct an encryption configuration from its API representation
+
+        Args:
+            resource (dict):
+                An encryption configuration representation as returned from
+                the API.
+
+        Returns:
+            google.cloud.bigquery.table.EncryptionConfiguration:
+                An encryption configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this
+
+        Returns:
+            dict: Encryption configuration as represented as an API resource
+        """
+        return copy.deepcopy(self._properties)
+
+
 class TableReference(object):
     """TableReferences are pointers to tables.
 
@@ -207,7 +257,7 @@ class Table(object):
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels',
+        'external_data_configuration', 'labels', 'encryption_configuration'
     ]
 
     def __init__(self, table_ref, schema=()):
@@ -309,6 +359,30 @@ class Table(object):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties['labels'] = value
+
+    @property
+    def encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
+        """
+        prop = self._properties.get('encryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['encryptionConfiguration'] = api_repr
 
     @property
     def created(self):
@@ -656,6 +730,7 @@ class Table(object):
 
         table = cls(dataset_ref.table(table_id))
         table._set_properties(resource)
+
         return table
 
     def _set_properties(self, api_response):
@@ -715,6 +790,14 @@ class Table(object):
             resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
                 self.external_data_configuration)
 
+    def _populate_encryption_configuration(self, resource):
+        if not self.encryption_configuration:
+            resource['encryptionConfiguration'] = None
+        else:
+            encryptionConfig = EncryptionConfiguration.to_api_repr(
+                self.encryption_configuration)
+            resource['encryptionConfiguration'] = encryptionConfig
+
     custom_resource_fields = {
         'expires': _populate_expires_resource,
         'partitioning_type': _populate_partitioning_type_resource,
@@ -722,6 +805,7 @@ class Table(object):
         'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
         'schema': _populate_schema_resource,
         'external_data_configuration': _populate_external_config,
+        'encryption_configuration': _populate_encryption_configuration
     }
 
     def _build_resource(self, filter_fields):
