@@ -472,6 +472,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_encryption_configuration(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
         from google.cloud.bigquery.table import Table
 
         path = 'projects/%s/datasets/%s/tables' % (
@@ -488,7 +489,8 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _Connection(resource)
         table = Table(self.TABLE_REF)
-        table.kms_key_name = self.KMS_KEY_NAME
+        table.encryption_configuration = EncryptionConfiguration(
+            self.KMS_KEY_NAME)
 
         got = client.create_table(table)
 

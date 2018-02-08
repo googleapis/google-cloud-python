@@ -39,6 +39,44 @@ class _SchemaBase(object):
             self._verify_field(field, r_field)
 
 
+class TestEncryptionConfiguration(unittest.TestCase):
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        return EncryptionConfiguration
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        encryption_config = self._make_one()
+        self.assertIsNone(encryption_config.kms_key_name)
+
+    def test_ctor_with_key(self):
+        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
+    def test_from_api_repr(self):
+        RESOURCE = {
+            'kmsKeyName': self.KMS_KEY_NAME
+        }
+        klass = self._get_target_class()
+        encryption_config = klass.from_api_repr(RESOURCE)
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
+    def test_to_api_repr(self):
+        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        resource = encryption_config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'kmsKeyName': self.KMS_KEY_NAME
+            })
+
+
 class TestTableReference(unittest.TestCase):
 
     @staticmethod
@@ -292,10 +330,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.labels, {})
 
         if 'encryptionConfiguration' in resource:
-            self.assertEqual(table.kms_key_name,
+            self.assertIsNotNone(table.encryption_configuration)
+            self.assertEqual(table.encryption_configuration.kms_key_name,
                              resource['encryptionConfiguration']['kmsKeyName'])
         else:
-            self.assertIsNone(table.kms_key_name)
+            self.assertIsNone(table.encryption_configuration)
 
     def test_ctor(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -330,7 +369,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.view_use_legacy_sql)
         self.assertIsNone(table.external_data_configuration)
         self.assertEquals(table.labels, {})
-        self.assertIsNone(table.kms_key_name)
+        self.assertIsNone(table.encryption_configuration)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -721,26 +760,15 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
 
-    def test_kms_key_name_setter(self):
+    def test_encryption_configuration_setter(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        table.kms_key_name = self.KMS_KEY_NAME
-        self.assertEqual(table.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_kms_key_name_setter_none(self):
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref)
-        table.kms_key_name = None
-        self.assertIsNone(table.kms_key_name)
-
-    def test_kms_key_name_setter_invalid_type(self):
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref)
-        with self.assertRaises(ValueError):
-            table.kms_key_name = {self.KMS_KEY_NAME}
+        encryption_configuration = EncryptionConfiguration(self.KMS_KEY_NAME)
+        table.encryption_configuration = encryption_configuration
+        self.assertEqual(table.encryption_configuration.kms_key_name,
+                         self.KMS_KEY_NAME)
 
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):

@@ -24,6 +24,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.table import EncryptionConfiguration
 
 import mock
 
@@ -244,16 +245,13 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config = self._get_target_class().from_api_repr(resource)
         self.assertEqual(config.to_api_repr(), resource)
 
-    def test_to_api_repr(self):
+    def test_to_api_repr_with_encryption(self):
         config = self._make_one()
-        config.kms_key_name = self.KMS_KEY_NAME
-        resource = config.to_api_repr()
-        self.assertIn('destinationEncryptionConfiguration', resource)
-        self.assertIn('kmsKeyName',
-                      resource['destinationEncryptionConfiguration'])
-        self.assertEqual(
-            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+        config.destination_encryption_configuration = EncryptionConfiguration(
             self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
+            'kmsKeyName': self.KMS_KEY_NAME}})
 
 
 class TestLoadJob(unittest.TestCase, _Base):
@@ -378,11 +376,12 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.assertIsNone(job.skip_leading_rows)
 
         if 'destinationEncryptionConfiguration' in config:
-            self.assertEqual(job.kms_key_name,
-                             config['destinationEncryptionConfiguration'][
-                                 'kmsKeyName'])
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                config['destinationEncryptionConfiguration']['kmsKeyName'])
         else:
-            self.assertIsNone(job.kms_key_name)
+            self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
@@ -419,7 +418,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.skip_leading_rows)
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
-        self.assertIsNone(job.kms_key_name)
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -486,11 +485,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
-
-    def test_kms_key_setter_wrong(self):
-        config = LoadJobConfig()
-        with self.assertRaises(ValueError):
-            config.kms_key_name = {self.KMS_KEY_NAME}
 
     def test_props_set_by_server(self):
         import datetime
@@ -628,7 +622,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(job.kms_key_name, self.KMS_KEY_NAME)
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)
@@ -969,11 +962,12 @@ class TestCopyJob(unittest.TestCase, _Base):
             self.assertIsNone(job.write_disposition)
 
         if 'destinationEncryptionConfiguration' in config:
-            self.assertEqual(job.kms_key_name,
-                             config['destinationEncryptionConfiguration'][
-                                 'kmsKeyName'])
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                config['destinationEncryptionConfiguration']['kmsKeyName'])
         else:
-            self.assertIsNone(job.kms_key_name)
+            self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
@@ -993,12 +987,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         # set/read from resource['configuration']['copy']
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.write_disposition)
-        self.assertIsNone(job.kms_key_name)
-
-    def test_kms_key_setter_wrong(self):
-        config = CopyJobConfig()
-        with self.assertRaises(ValueError):
-            config.kms_key_name = {self.KMS_KEY_NAME}
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -1082,7 +1071,6 @@ class TestCopyJob(unittest.TestCase, _Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(job.kms_key_name, self.KMS_KEY_NAME)
 
     def test_from_api_repr_w_sourcetable(self):
         self._setUpConstants()
@@ -1148,14 +1136,11 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_to_api_repr_with_encryption(self):
         config = CopyJobConfig()
-        config.kms_key_name = self.KMS_KEY_NAME
-        resource = config.to_api_repr()
-        self.assertIn('destinationEncryptionConfiguration', resource)
-        self.assertIn('kmsKeyName',
-                      resource['destinationEncryptionConfiguration'])
-        self.assertEqual(
-            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+        config.destination_encryption_configuration = EncryptionConfiguration(
             self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
+            'kmsKeyName': self.KMS_KEY_NAME}})
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1654,18 +1639,13 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         config = self._make_one()
         self.assertEqual(config._properties, {})
 
-    def test_kms_key_setter_wrong(self):
-        config = self._make_one()
-        with self.assertRaises(ValueError):
-            config.kms_key_name = {self.KMS_KEY_NAME}
-
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})
         self.assertIsNone(config.dry_run)
         self.assertIsNone(config.use_legacy_sql)
         self.assertIsNone(config.default_dataset)
-        self.assertIsNone(config.kms_key_name)
+        self.assertIsNone(config.destination_encryption_configuration)
 
     def test_from_api_repr_normal(self):
         resource = {
@@ -1710,41 +1690,23 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
-        config.kms_key_name = self.KMS_KEY_NAME
-        resource = config.to_api_repr()
-        self.assertIn('destinationEncryptionConfiguration', resource)
-        self.assertIn('kmsKeyName',
-                      resource['destinationEncryptionConfiguration'])
-        self.assertEqual(
-            resource['destinationEncryptionConfiguration']['kmsKeyName'],
+        config.destination_encryption_configuration = EncryptionConfiguration(
             self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
+            'kmsKeyName': self.KMS_KEY_NAME}})
 
     def test_from_api_repr_with_encryption(self):
         resource = {
-            'useLegacySql': True,
-            'query': 'no property for me',
-            'defaultDataset': {
-                'projectId': 'someproject',
-                'datasetId': 'somedataset',
-            },
-            'someNewProperty': 'I should be saved, too.',
             'destinationEncryptionConfiguration': {
                 'kmsKeyName': self.KMS_KEY_NAME
             }
         }
         klass = self._get_target_class()
-
         config = klass.from_api_repr(resource)
-
-        self.assertTrue(config.use_legacy_sql)
         self.assertEqual(
-            config.default_dataset,
-            DatasetReference('someproject', 'somedataset'))
-        # Make sure unknown properties propagate.
-        self.assertEqual(config._properties['query'], 'no property for me')
-        self.assertEqual(
-            config._properties['someNewProperty'], 'I should be saved, too.')
-        self.assertEqual(config.kms_key_name, self.KMS_KEY_NAME)
+            config.destination_encryption_configuration.kms_key_name,
+            self.KMS_KEY_NAME)
 
 
 class TestQueryJob(unittest.TestCase, _Base):
@@ -1889,11 +1851,13 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.write_disposition)
         if 'destinationEncryptionConfiguration' in query_config:
-            self.assertEqual(job.kms_key_name,
-                             query_config['destinationEncryptionConfiguration']
-                             ['kmsKeyName'])
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                query_config['destinationEncryptionConfiguration'][
+                    'kmsKeyName'])
         else:
-            self.assertIsNone(job.kms_key_name)
+            self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_defaults(self):
         client = _make_client(project=self.PROJECT)
@@ -1922,7 +1886,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_billing_tier)
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
-        self.assertIsNone(job.kms_key_name)
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2011,7 +1975,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(job.kms_key_name, self.KMS_KEY_NAME)
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)

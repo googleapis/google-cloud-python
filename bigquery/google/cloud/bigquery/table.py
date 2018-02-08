@@ -76,6 +76,48 @@ def _view_use_legacy_sql_getter(table):
         return True
 
 
+class EncryptionConfiguration(object):
+    """Custom encryption configuration (e.g., Cloud KMS keys).
+
+    :type kms_key_name: str or ``None``
+    :param kms_key_name: resource ID of Cloud KMS key
+    """
+
+    def __init__(self, kms_key_name=None):
+        self._kms_key_name = kms_key_name
+
+    @property
+    def kms_key_name(self):
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key ``None`` if using default encryption.
+        """
+        return self._kms_key_name
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct an encryption configuration from API representation
+
+        :type resource: dict
+        :param resource: encryption configuration representation returned
+                         from the API
+
+        :rtype: :class:`google.cloud.bigquery.table.EncryptionConfiguration`
+        :returns: Encryption configuration parsed from ``resource``.
+        """
+        return cls(resource['kmsKeyName'])
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this encryption configuration.
+
+        :rtype: dict
+        :returns: Encryption configuration as represented as an API resource
+        """
+        return {
+            'kmsKeyName': self.kms_key_name
+        }
+
+
 class TableReference(object):
     """TableReferences are pointers to tables.
 
@@ -207,7 +249,7 @@ class Table(object):
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels', 'kms_key_name'
+        'external_data_configuration', 'labels', 'encryption_configuration'
     ]
 
     def __init__(self, table_ref, schema=()):
@@ -216,7 +258,6 @@ class Table(object):
         self._dataset_id = table_ref.dataset_id
         self._external_config = None
         self._properties = {'labels': {}}
-        self._kms_key_name = None
         # Let the @property do validation.
         self.schema = schema
 
@@ -312,19 +353,20 @@ class Table(object):
         self._properties['labels'] = value
 
     @property
-    def kms_key_name(self):
-        """str: Resource ID of Cloud KMS key
+    def encryption_configuration(self):
+        """Encryption configuration
 
-        Resource ID of Cloud KMS key to encrypt the table or ``None`` if
-        using default encryption.
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
         """
-        return self._kms_key_name
+        prop = self._properties.get('encryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
 
-    @kms_key_name.setter
-    def kms_key_name(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("kms_key_name should be a string, or None")
-        self._kms_key_name = value
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        self._properties['encryptionConfiguration'] = value.to_api_repr()
 
     @property
     def created(self):
@@ -729,17 +771,20 @@ class Table(object):
                 'fields': _build_schema_resource(self._schema),
             }
 
-    def _populate_encryption_configuration(self, resource):
-        if self.kms_key_name is not None:
-            resource['encryptionConfiguration'] = {
-                'kmsKeyName': self.kms_key_name}
-
     def _populate_external_config(self, resource):
         if not self.external_data_configuration:
             resource['externalDataConfiguration'] = None
         else:
             resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
                 self.external_data_configuration)
+
+    def _populate_encryption_configuration(self, resource):
+        if not self.encryption_configuration:
+            resource['encryptionConfiguration'] = None
+        else:
+            encryptionConfig = EncryptionConfiguration.to_api_repr(
+                self.encryption_configuration)
+            resource['encryptionConfiguration'] = encryptionConfig
 
     custom_resource_fields = {
         'expires': _populate_expires_resource,
@@ -748,7 +793,7 @@ class Table(object):
         'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
         'schema': _populate_schema_resource,
         'external_data_configuration': _populate_external_config,
-        'kms_key_name': _populate_encryption_configuration
+        'encryption_configuration': _populate_encryption_configuration
     }
 
     def _build_resource(self, filter_fields):
