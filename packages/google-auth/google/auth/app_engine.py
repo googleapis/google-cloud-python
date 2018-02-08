@@ -136,7 +136,7 @@ class Credentials(credentials.Scoped, credentials.Signing,
 
     @_helpers.copy_docstring(credentials.Scoped)
     def with_scopes(self, scopes):
-        return Credentials(
+        return self.__class__(
             scopes=scopes, service_account_id=self._service_account_id)
 
     @_helpers.copy_docstring(credentials.Signing)

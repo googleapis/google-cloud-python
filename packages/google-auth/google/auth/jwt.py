@@ -438,7 +438,7 @@ class Credentials(google.auth.credentials.Signing,
         new_additional_claims = copy.deepcopy(self._additional_claims)
         new_additional_claims.update(additional_claims or {})
 
-        return Credentials(
+        return self.__class__(
             self._signer,
             issuer=issuer if issuer is not None else self._issuer,
             subject=subject if subject is not None else self._subject,
@@ -643,7 +643,7 @@ class OnDemandCredentials(
         new_additional_claims = copy.deepcopy(self._additional_claims)
         new_additional_claims.update(additional_claims or {})
 
-        return OnDemandCredentials(
+        return self.__class__(
             self._signer,
             issuer=issuer if issuer is not None else self._issuer,
             subject=subject if subject is not None else self._subject,

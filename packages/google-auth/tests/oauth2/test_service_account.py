@@ -216,3 +216,126 @@ class TestCredentials(object):
 
         # Credentials should now be valid.
         assert credentials.valid
+
+
+class TestIDTokenCredentials(object):
+    SERVICE_ACCOUNT_EMAIL = 'service-account@example.com'
+    TOKEN_URI = 'https://example.com/oauth2/token'
+    TARGET_AUDIENCE = 'https://example.com'
+
+    @classmethod
+    def make_credentials(cls):
+        return service_account.IDTokenCredentials(
+            SIGNER, cls.SERVICE_ACCOUNT_EMAIL, cls.TOKEN_URI,
+            cls.TARGET_AUDIENCE)
+
+    def test_from_service_account_info(self):
+        credentials = (
+            service_account.IDTokenCredentials.from_service_account_info(
+                SERVICE_ACCOUNT_INFO,
+                target_audience=self.TARGET_AUDIENCE))
+
+        assert (credentials._signer.key_id ==
+                SERVICE_ACCOUNT_INFO['private_key_id'])
+        assert (credentials.service_account_email ==
+                SERVICE_ACCOUNT_INFO['client_email'])
+        assert credentials._token_uri == SERVICE_ACCOUNT_INFO['token_uri']
+        assert credentials._target_audience == self.TARGET_AUDIENCE
+
+    def test_from_service_account_file(self):
+        info = SERVICE_ACCOUNT_INFO.copy()
+
+        credentials = (
+                service_account.IDTokenCredentials.from_service_account_file(
+                    SERVICE_ACCOUNT_JSON_FILE,
+                    target_audience=self.TARGET_AUDIENCE))
+
+        assert credentials.service_account_email == info['client_email']
+        assert credentials._signer.key_id == info['private_key_id']
+        assert credentials._token_uri == info['token_uri']
+        assert credentials._target_audience == self.TARGET_AUDIENCE
+
+    def test_default_state(self):
+        credentials = self.make_credentials()
+        assert not credentials.valid
+        # Expiration hasn't been set yet
+        assert not credentials.expired
+
+    def test_sign_bytes(self):
+        credentials = self.make_credentials()
+        to_sign = b'123'
+        signature = credentials.sign_bytes(to_sign)
+        assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
+
+    def test_signer(self):
+        credentials = self.make_credentials()
+        assert isinstance(credentials.signer, crypt.Signer)
+
+    def test_signer_email(self):
+        credentials = self.make_credentials()
+        assert credentials.signer_email == self.SERVICE_ACCOUNT_EMAIL
+
+    def test_with_target_audience(self):
+        credentials = self.make_credentials()
+        new_credentials = credentials.with_target_audience(
+            'https://new.example.com')
+        assert new_credentials._target_audience == 'https://new.example.com'
+
+    def test__make_authorization_grant_assertion(self):
+        credentials = self.make_credentials()
+        token = credentials._make_authorization_grant_assertion()
+        payload = jwt.decode(token, PUBLIC_CERT_BYTES)
+        assert payload['iss'] == self.SERVICE_ACCOUNT_EMAIL
+        assert payload['aud'] == self.TOKEN_URI
+        assert payload['target_audience'] == self.TARGET_AUDIENCE
+
+    @mock.patch('google.oauth2._client.id_token_jwt_grant', autospec=True)
+    def test_refresh_success(self, id_token_jwt_grant):
+        credentials = self.make_credentials()
+        token = 'token'
+        id_token_jwt_grant.return_value = (
+            token,
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {})
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        # Refresh credentials
+        credentials.refresh(request)
+
+        # Check jwt grant call.
+        assert id_token_jwt_grant.called
+
+        called_request, token_uri, assertion = id_token_jwt_grant.call_args[0]
+        assert called_request == request
+        assert token_uri == credentials._token_uri
+        assert jwt.decode(assertion, PUBLIC_CERT_BYTES)
+        # No further assertion done on the token, as there are separate tests
+        # for checking the authorization grant assertion.
+
+        # Check that the credentials have the token.
+        assert credentials.token == token
+
+        # Check that the credentials are valid (have a token and are not
+        # expired)
+        assert credentials.valid
+
+    @mock.patch('google.oauth2._client.id_token_jwt_grant', autospec=True)
+    def test_before_request_refreshes(self, id_token_jwt_grant):
+        credentials = self.make_credentials()
+        token = 'token'
+        id_token_jwt_grant.return_value = (
+            token, _helpers.utcnow() + datetime.timedelta(seconds=500), None)
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        # Credentials should start as invalid
+        assert not credentials.valid
+
+        # before_request should cause a refresh
+        credentials.before_request(
+            request, 'GET', 'http://example.com?a=1#3', {})
+
+        # The refresh endpoint should've been called.
+        assert id_token_jwt_grant.called
+
+        # Credentials should now be valid.
+        assert credentials.valid

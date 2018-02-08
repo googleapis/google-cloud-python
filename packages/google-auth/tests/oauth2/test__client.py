@@ -14,6 +14,7 @@
 
 import datetime
 import json
+import os
 
 import mock
 import pytest
@@ -21,9 +22,20 @@ import six
 from six.moves import http_client
 from six.moves import urllib
 
+from google.auth import _helpers
+from google.auth import crypt
 from google.auth import exceptions
+from google.auth import jwt
 from google.auth import transport
 from google.oauth2 import _client
+
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+
+with open(os.path.join(DATA_DIR, 'privatekey.pem'), 'rb') as fh:
+    PRIVATE_KEY_BYTES = fh.read()
+
+SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
 
 
 def test__handle_error_response():
@@ -127,6 +139,42 @@ def test_jwt_grant_no_access_token():
 
     with pytest.raises(exceptions.RefreshError):
         _client.jwt_grant(request, 'http://example.com', 'assertion_value')
+
+
+def test_id_token_jwt_grant():
+    now = _helpers.utcnow()
+    id_token_expiry = _helpers.datetime_to_secs(now)
+    id_token = jwt.encode(SIGNER, {'exp': id_token_expiry}).decode('utf-8')
+    request = make_request({
+        'id_token': id_token,
+        'extra': 'data'})
+
+    token, expiry, extra_data = _client.id_token_jwt_grant(
+        request, 'http://example.com', 'assertion_value')
+
+    # Check request call
+    verify_request_params(request, {
+        'grant_type': _client._JWT_GRANT_TYPE,
+        'assertion': 'assertion_value'
+    })
+
+    # Check result
+    assert token == id_token
+    # JWT does not store microseconds
+    now = now.replace(microsecond=0)
+    assert expiry == now
+    assert extra_data['extra'] == 'data'
+
+
+def test_id_token_jwt_grant_no_access_token():
+    request = make_request({
+        # No access token.
+        'expires_in': 500,
+        'extra': 'data'})
+
+    with pytest.raises(exceptions.RefreshError):
+        _client.id_token_jwt_grant(
+            request, 'http://example.com', 'assertion_value')
 
 
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
