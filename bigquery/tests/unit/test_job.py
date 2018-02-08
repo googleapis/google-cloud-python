@@ -918,11 +918,11 @@ class TestLoadJob(unittest.TestCase, _Base):
 
 
 class TestCopyJobConfig(unittest.TestCase, _Base):
-    JOB_TYPE = 'load'
+    JOB_TYPE = 'copy'
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.job import LoadJobConfig
+        from google.cloud.bigquery.job import CopyJobConfig
         return CopyJobConfig
 
     def test_to_api_repr_with_encryption(self):
