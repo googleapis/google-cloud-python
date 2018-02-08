@@ -59,6 +59,12 @@ class TestEncryptionConfiguration(unittest.TestCase):
         encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
 
+    def test_kms_key_name_setter(self):
+        encryption_config = self._make_one()
+        self.assertIsNone(encryption_config.kms_key_name)
+        encryption_config.kms_key_name = self.KMS_KEY_NAME
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
     def test_from_api_repr(self):
         RESOURCE = {
             'kmsKeyName': self.KMS_KEY_NAME,
