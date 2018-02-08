@@ -94,7 +94,7 @@ class EncryptionConfiguration(object):
 
         Resource ID of Cloud KMS key ``None`` if using default encryption.
         """
-        return self._kms_key_name
+        return self._properties['kmsKeyName']
 
     @classmethod
     def from_api_repr(cls, resource):
