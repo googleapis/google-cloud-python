@@ -643,7 +643,8 @@ class LoadJobConfig(object):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.
@@ -835,7 +836,8 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys)
         or ``None`` if using default encryption.
@@ -967,7 +969,8 @@ class CopyJobConfig(object):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.
@@ -1058,7 +1061,8 @@ class CopyJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.
@@ -1390,7 +1394,8 @@ class QueryJobConfig(object):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.
@@ -1648,7 +1653,8 @@ class QueryJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """Destination encryption configuration
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
         if using default encryption.

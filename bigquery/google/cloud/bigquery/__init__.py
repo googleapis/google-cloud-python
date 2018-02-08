@@ -49,7 +49,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfigurations
+from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
