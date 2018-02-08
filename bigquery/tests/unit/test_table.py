@@ -64,6 +64,8 @@ class TestEncryptionConfiguration(unittest.TestCase):
         self.assertIsNone(encryption_config.kms_key_name)
         encryption_config.kms_key_name = self.KMS_KEY_NAME
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+        encryption_config.kms_key_name = None
+        self.assertIsNone(encryption_config.kms_key_name)
 
     def test_from_api_repr(self):
         RESOURCE = {
@@ -776,6 +778,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.encryption_configuration = encryption_configuration
         self.assertEqual(table.encryption_configuration.kms_key_name,
                          self.KMS_KEY_NAME)
+        table.encryption_configuration = None
+        self.assertIsNone(table.encryption_configuration)
 
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):

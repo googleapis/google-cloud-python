@@ -258,6 +258,16 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
                 },
             })
 
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
+            })
+
 
 class TestLoadJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
@@ -907,6 +917,38 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestCopyJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'load'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import LoadJobConfig
+        return CopyJobConfig
+
+    def test_to_api_repr_with_encryption(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                }
+            })
+
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
+            })
+
+
 class TestCopyJob(unittest.TestCase, _Base):
     JOB_TYPE = 'copy'
     SOURCE_TABLE = 'source_table'
@@ -1138,19 +1180,6 @@ class TestCopyJob(unittest.TestCase, _Base):
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
-
-    def test_to_api_repr_with_encryption(self):
-        config = CopyJobConfig()
-        config.destination_encryption_configuration = EncryptionConfiguration(
-            kms_key_name=self.KMS_KEY_NAME)
-        resource = config.to_api_repr()
-        self.assertEqual(
-            resource,
-            {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
-                }
-            })
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1708,6 +1737,16 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
                 'destinationEncryptionConfiguration': {
                     'kmsKeyName': self.KMS_KEY_NAME,
                 },
+            })
+
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
             })
 
     def test_from_api_repr_with_encryption(self):

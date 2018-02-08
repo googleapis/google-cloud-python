@@ -659,8 +659,10 @@ class LoadJobConfig(object):
 
     @destination_encryption_configuration.setter
     def destination_encryption_configuration(self, value):
-        self._properties[
-            'destinationEncryptionConfiguration'] = value.to_api_repr()
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
 
     def to_api_repr(self):
         """Build an API representation of the load job config.
@@ -985,8 +987,10 @@ class CopyJobConfig(object):
 
     @destination_encryption_configuration.setter
     def destination_encryption_configuration(self, value):
-        self._properties[
-            'destinationEncryptionConfiguration'] = value.to_api_repr()
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
 
     def to_api_repr(self):
         """Build an API representation of the copy job config.
@@ -1410,8 +1414,10 @@ class QueryJobConfig(object):
 
     @destination_encryption_configuration.setter
     def destination_encryption_configuration(self, value):
-        self._properties[
-            'destinationEncryptionConfiguration'] = value.to_api_repr()
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
 
     def to_api_repr(self):
         """Build an API representation of the copy job config.

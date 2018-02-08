@@ -83,10 +83,10 @@ class EncryptionConfiguration(object):
         kms_key_name (str): resource ID of Cloud KMS key used for encryption
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, kms_key_name=None):
         self._properties = {}
-        if 'kms_key_name' in kwargs:
-            self._properties['kmsKeyName'] = kwargs['kms_key_name']
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
 
     @property
     def kms_key_name(self):
@@ -379,7 +379,10 @@ class Table(object):
 
     @encryption_configuration.setter
     def encryption_configuration(self, value):
-        self._properties['encryptionConfiguration'] = value.to_api_repr()
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['encryptionConfiguration'] = api_repr
 
     @property
     def created(self):
