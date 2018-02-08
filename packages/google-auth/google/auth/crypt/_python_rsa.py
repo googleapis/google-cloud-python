@@ -21,9 +21,6 @@ certificates. There is no support for p12 files.
 
 from __future__ import absolute_import
 
-import io
-import json
-
 from pyasn1.codec.der import decoder
 from pyasn1_modules import pem
 from pyasn1_modules.rfc2459 import Certificate
@@ -41,8 +38,6 @@ _PKCS1_MARKER = ('-----BEGIN RSA PRIVATE KEY-----',
 _PKCS8_MARKER = ('-----BEGIN PRIVATE KEY-----',
                  '-----END PRIVATE KEY-----')
 _PKCS8_SPEC = PrivateKeyInfo()
-_JSON_FILE_PRIVATE_KEY = 'private_key'
-_JSON_FILE_PRIVATE_KEY_ID = 'private_key_id'
 
 
 def _bit_list_to_bytes(bit_list):
@@ -119,7 +114,7 @@ class RSAVerifier(base.Verifier):
         return cls(pubkey)
 
 
-class RSASigner(base.Signer):
+class RSASigner(base.Signer, base.FromServiceAccountMixin):
     """Signs messages with an RSA private key.
 
     Args:
@@ -179,43 +174,3 @@ class RSASigner(base.Signer):
             raise ValueError('No key could be detected.')
 
         return cls(private_key, key_id=key_id)
-
-    @classmethod
-    def from_service_account_info(cls, info):
-        """Creates a Signer instance instance from a dictionary containing
-        service account info in Google format.
-
-        Args:
-            info (Mapping[str, str]): The service account info in Google
-                format.
-
-        Returns:
-            google.auth.crypt.Signer: The constructed signer.
-
-        Raises:
-            ValueError: If the info is not in the expected format.
-        """
-        if _JSON_FILE_PRIVATE_KEY not in info:
-            raise ValueError(
-                'The private_key field was not found in the service account '
-                'info.')
-
-        return cls.from_string(
-            info[_JSON_FILE_PRIVATE_KEY],
-            info.get(_JSON_FILE_PRIVATE_KEY_ID))
-
-    @classmethod
-    def from_service_account_file(cls, filename):
-        """Creates a Signer instance from a service account .json file
-        in Google format.
-
-        Args:
-            filename (str): The path to the service account .json file.
-
-        Returns:
-            google.auth.crypt.Signer: The constructed signer.
-        """
-        with io.open(filename, 'r', encoding='utf-8') as json_file:
-            data = json.load(json_file)
-
-        return cls.from_service_account_info(data)

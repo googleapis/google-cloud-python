@@ -14,7 +14,17 @@
 
 """RSA cryptography signer and verifier."""
 
-from google.auth.crypt import _python_rsa
 
-RSASigner = _python_rsa.RSASigner
-RSAVerifier = _python_rsa.RSAVerifier
+try:
+    # Prefer cryptograph-based RSA implementation.
+    from google.auth.crypt import _cryptography_rsa
+
+    RSASigner = _cryptography_rsa.RSASigner
+    RSAVerifier = _cryptography_rsa.RSAVerifier
+except ImportError:  # pragma: NO COVER
+    # Fallback to pure-python RSA implementation if cryptography is
+    # unavailable.
+    from google.auth.crypt import _python_rsa
+
+    RSASigner = _python_rsa.RSASigner
+    RSAVerifier = _python_rsa.RSAVerifier

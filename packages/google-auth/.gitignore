@@ -12,6 +12,7 @@ docs/_build
 .nox/
 .tox/
 .cache/
+.pytest_cache/
 
 # Django test database
 db.sqlite3
