@@ -24,6 +24,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.table import EncryptionConfiguration
 
 import mock
 
@@ -97,6 +98,7 @@ class _Base(object):
     TABLE_ID = 'table_id'
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_ID = 'JOB_ID'
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -220,6 +222,8 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             'datasetId': self.DS_ID,
             'tableId': self.TABLE_ID,
         }
+        config['destinationEncryptionConfiguration'] = {
+            'kmsKeyName': self.KMS_KEY_NAME}
 
         return resource
 
@@ -240,6 +244,29 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
         self.assertEqual(config.to_api_repr(), resource)
+
+    def test_to_api_repr_with_encryption(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            })
+
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
+            })
 
 
 class TestLoadJob(unittest.TestCase, _Base):
@@ -363,6 +390,14 @@ class TestLoadJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.skip_leading_rows)
 
+        if 'destinationEncryptionConfiguration' in config:
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                config['destinationEncryptionConfiguration']['kmsKeyName'])
+        else:
+            self.assertIsNone(job.destination_encryption_configuration)
+
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
@@ -398,6 +433,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.skip_leading_rows)
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -566,6 +602,34 @@ class TestLoadJob(unittest.TestCase, _Base):
                         'datasetId': self.DS_ID,
                         'tableId': self.TABLE_ID,
                     },
+                }
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_with_encryption(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = {
+            'id': self.FULL_JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [self.SOURCE1],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.TABLE_ID,
+                    },
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME
+                    }
                 }
             },
         }
@@ -853,6 +917,38 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestCopyJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'copy'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import CopyJobConfig
+        return CopyJobConfig
+
+    def test_to_api_repr_with_encryption(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                }
+            })
+
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
+            })
+
+
 class TestCopyJob(unittest.TestCase, _Base):
     JOB_TYPE = 'copy'
     SOURCE_TABLE = 'source_table'
@@ -912,6 +1008,14 @@ class TestCopyJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.write_disposition)
 
+        if 'destinationEncryptionConfiguration' in config:
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                config['destinationEncryptionConfiguration']['kmsKeyName'])
+        else:
+            self.assertIsNone(job.destination_encryption_configuration)
+
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
         source = self._table_ref(self.SOURCE_TABLE)
@@ -930,6 +1034,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         # set/read from resource['configuration']['copy']
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.write_disposition)
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -974,6 +1079,38 @@ class TestCopyJob(unittest.TestCase, _Base):
                         'datasetId': self.DS_ID,
                         'tableId': self.DESTINATION_TABLE,
                     },
+                }
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_with_encryption(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [{
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.SOURCE_TABLE,
+                    }],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME
+                    }
                 }
             },
         }
@@ -1547,6 +1684,7 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.dry_run)
         self.assertIsNone(config.use_legacy_sql)
         self.assertIsNone(config.default_dataset)
+        self.assertIsNone(config.destination_encryption_configuration)
 
     def test_from_api_repr_normal(self):
         resource = {
@@ -1588,6 +1726,40 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         # Make sure unknown properties propagate.
         self.assertEqual(
             config._properties['someNewProperty'], 'Woohoo, alpha stuff.')
+
+    def test_to_api_repr_with_encryption(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource, {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            })
+
+    def test_to_api_repr_with_encryption_none(self):
+        config = self._make_one()
+        config.destination_encryption_configuration = None
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': None,
+            })
+
+    def test_from_api_repr_with_encryption(self):
+        resource = {
+            'destinationEncryptionConfiguration': {
+                'kmsKeyName': self.KMS_KEY_NAME
+            }
+        }
+        klass = self._get_target_class()
+        config = klass.from_api_repr(resource)
+        self.assertEqual(
+            config.destination_encryption_configuration.kms_key_name,
+            self.KMS_KEY_NAME)
 
 
 class TestQueryJob(unittest.TestCase, _Base):
@@ -1731,6 +1903,14 @@ class TestQueryJob(unittest.TestCase, _Base):
                              query_config['writeDisposition'])
         else:
             self.assertIsNone(job.write_disposition)
+        if 'destinationEncryptionConfiguration' in query_config:
+            self.assertIsNotNone(job.destination_encryption_configuration)
+            self.assertEqual(
+                job.destination_encryption_configuration.kms_key_name,
+                query_config['destinationEncryptionConfiguration'][
+                    'kmsKeyName'])
+        else:
+            self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_defaults(self):
         client = _make_client(project=self.PROJECT)
@@ -1759,6 +1939,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_billing_tier)
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
+        self.assertIsNone(job.destination_encryption_configuration)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -1818,6 +1999,29 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
             'configuration': {
                 'query': {'query': self.QUERY},
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_with_encryption(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME
+                    }
+                },
             },
         }
         klass = self._get_target_class()
@@ -2832,6 +3036,10 @@ class TestQueryPlanEntryStep(unittest.TestCase, _Base):
         step = self._make_one(self.KIND, self.SUBSTEPS)
         other = self._make_one(self.KIND, self.SUBSTEPS)
         self.assertEqual(step, other)
+
+    def test___eq___wrong_type(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        self.assertFalse(step == 'hello')
 
 
 class TestQueryPlanEntry(unittest.TestCase, _Base):
