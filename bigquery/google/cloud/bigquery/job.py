@@ -843,7 +843,7 @@ class LoadJob(_AsyncJob):
         or ``None`` if using default encryption.
 
         See
-        :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
 
@@ -1068,7 +1068,7 @@ class CopyJob(_AsyncJob):
         if using default encryption.
 
         See
-        :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration`.
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
 
@@ -1660,7 +1660,7 @@ class QueryJob(_AsyncJob):
         if using default encryption.
 
         See
-        :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
 

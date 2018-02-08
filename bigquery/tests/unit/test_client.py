@@ -490,7 +490,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(resource)
         table = Table(self.TABLE_REF)
         table.encryption_configuration = EncryptionConfiguration(
-            self.KMS_KEY_NAME)
+            kms_key_name=self.KMS_KEY_NAME)
 
         got = client.create_table(table)
 

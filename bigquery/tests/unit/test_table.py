@@ -56,24 +56,24 @@ class TestEncryptionConfiguration(unittest.TestCase):
         self.assertIsNone(encryption_config.kms_key_name)
 
     def test_ctor_with_key(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
 
     def test_from_api_repr(self):
         RESOURCE = {
-            'kmsKeyName': self.KMS_KEY_NAME
+            'kmsKeyName': self.KMS_KEY_NAME,
         }
         klass = self._get_target_class()
         encryption_config = klass.from_api_repr(RESOURCE)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
 
     def test_to_api_repr(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
+        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         resource = encryption_config.to_api_repr()
         self.assertEqual(
             resource,
             {
-                'kmsKeyName': self.KMS_KEY_NAME
+                'kmsKeyName': self.KMS_KEY_NAME,
             })
 
 
@@ -765,7 +765,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        encryption_configuration = EncryptionConfiguration(self.KMS_KEY_NAME)
+        encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
         table.encryption_configuration = encryption_configuration
         self.assertEqual(table.encryption_configuration.kms_key_name,
                          self.KMS_KEY_NAME)

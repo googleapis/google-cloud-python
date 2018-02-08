@@ -248,10 +248,15 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
-            self.KMS_KEY_NAME)
+            kms_key_name=self.KMS_KEY_NAME)
         resource = config.to_api_repr()
-        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
-            'kmsKeyName': self.KMS_KEY_NAME}})
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            })
 
 
 class TestLoadJob(unittest.TestCase, _Base):
@@ -1137,10 +1142,15 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_to_api_repr_with_encryption(self):
         config = CopyJobConfig()
         config.destination_encryption_configuration = EncryptionConfiguration(
-            self.KMS_KEY_NAME)
+            kms_key_name=self.KMS_KEY_NAME)
         resource = config.to_api_repr()
-        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
-            'kmsKeyName': self.KMS_KEY_NAME}})
+        self.assertEqual(
+            resource,
+            {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                }
+            })
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1691,10 +1701,14 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
-            self.KMS_KEY_NAME)
+            kms_key_name=self.KMS_KEY_NAME)
         resource = config.to_api_repr()
-        self.assertEqual(resource, {'destinationEncryptionConfiguration': {
-            'kmsKeyName': self.KMS_KEY_NAME}})
+        self.assertEqual(
+            resource, {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            })
 
     def test_from_api_repr_with_encryption(self):
         resource = {
