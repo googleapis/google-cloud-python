@@ -780,3 +780,18 @@ def _doc_get_info(ref_string, values):
     )
 
     return document_pb, read_time
+
+
+class TestMergeOption(unittest.TestCase):
+    
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1 import client
+
+        return client.MergeOption()
+    
+    def test__convert_simple_field_paths_with_leading_digits(self):
+        klass = self._get_target_class()
+        field_paths = ["0abc", "abc", "321"]
+        convert = klass._convert_simple_fields_with_leading_digits(field_paths)
+        self.assertListEqual(convert, ["`0abc`", "abc", "`321`"])

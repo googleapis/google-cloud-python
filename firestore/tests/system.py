@@ -194,6 +194,23 @@ def test_document_set(client, cleanup):
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
 
+def test_document_integer_field(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    data1 = {'1a': 'SF'}
+    option1 = client.write_option(exists=False)
+    write_result1 = document.set(data1, option=option1)
+    
+    data2 = {'1a': 'LA'}
+    option2 = client.write_option(merge=True)
+    write_result2 = document.set(data2, option=option2)
+    snapshot = document.get()
+    assert snapshot.to_dict() == {'1a': 'LA'}
+
+
 def test_update_document(client, cleanup):
     document_id = 'for-update' + unique_resource_id('-')
     document = client.document('made', document_id)
