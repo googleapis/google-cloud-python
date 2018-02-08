@@ -1186,6 +1186,16 @@ class Test_pbs_for_set(unittest.TestCase):
         self._helper(do_transform=True)
 
 
+class Test___convert_simple_field_paths_with_leading_digits(unittest.TestCase):
+
+    def test_convert_simple_field_paths_with_leading_digits(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+        field_paths = ["0abc", "abc", "321"]
+        convert = _helpers._convert_simple_field_paths_with_leading_digits(
+            field_paths)
+        self.assertListEqual(convert, ["`0abc`", "abc", "`321`"])
+
+
 class Test_pbs_for_update(unittest.TestCase):
 
     @staticmethod

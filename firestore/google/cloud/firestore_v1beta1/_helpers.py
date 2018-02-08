@@ -837,6 +837,16 @@ def pbs_for_set(document_path, document_data, option):
     return write_pbs
 
 
+def _convert_simple_field_paths_with_leading_digits(field_paths):
+    new_field_paths = []
+    for field_path in field_paths:
+        if field_path[0] in '0123456789':
+            new_field_paths.append("`{}`".format(field_path))
+        else:
+            new_field_paths.append(field_path)
+    return new_field_paths
+
+
 def pbs_for_update(client, document_path, field_updates, option):
     """Make ``Write`` protobufs for ``update()`` methods.
 
@@ -860,6 +870,7 @@ def pbs_for_update(client, document_path, field_updates, option):
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
+    field_paths = _convert_simple_field_paths_with_leading_digits(field_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(

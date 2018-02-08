@@ -434,7 +434,6 @@ class CreateIfMissingOption(WriteOption):
         create_if_missing (bool): Indicates if the document should be created
             if it doesn't already exist.
     """
-
     def __init__(self, create_if_missing):
         self._create_if_missing = create_if_missing
 
