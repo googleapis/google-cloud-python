@@ -4,9 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
-## 0.29.1 (unreleased)
+## 0.30.0
 
-- TBD
+This is the release candidate for v1.0.0.
+
+### Interface changes / additions
+
+- Add `delete_contents` to `delete_dataset`. (#4724)
+
+### Bugfixes
+
+- Add handling of missing properties in `SchemaField.from_api_repr()`. (#4754)
+- Fix missing return value in `LoadJobConfig.from_api_repr`. (#4727)
+
+### Documentation
+
+- Minor documentation and typo fixes. (#4782, #4718, #4784, #4835, #4836)
 
 ## 0.29.0
 
