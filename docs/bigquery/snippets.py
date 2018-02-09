@@ -460,9 +460,9 @@ def test_update_table_cmek(client, to_delete):
 
     # Set a new encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
-    format_string = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'
-    updated_kms_key_name = format_string.format(
-        'cloud-samples-tests', 'us-central1', 'test', 'otherkey')
+    updated_kms_key_name = (
+        'projects/cloud-samples-tests/locations/us-central1/'
+        'keyRings/test/cryptoKeys/otherkey')
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=updated_kms_key_name)
 
