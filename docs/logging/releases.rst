@@ -13,3 +13,4 @@
 * ``1.2.0`` (`PyPI <https://pypi.org/project/google-cloud-logging/1.2.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/logging-1.2.0>`__)
 * ``1.3.0`` (`PyPI <https://pypi.org/project/google-cloud-logging/1.3.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/logging-1.3.0>`__)
 * ``1.4.0`` (`PyPI <https://pypi.org/project/google-cloud-logging/1.4.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/logging-1.4.0>`__)
+* ``1.5.0`` (`PyPI <https://pypi.org/project/google-cloud-logging/1.5.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/logging-1.5.0>`__)
