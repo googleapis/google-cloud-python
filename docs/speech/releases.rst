@@ -14,3 +14,6 @@
 * ``0.28.0`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.28.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.28.0>`__)
 * ``0.29.0`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.29.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.29.0>`__)
 * ``0.30.0`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.30.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.30.0>`__)
+* ``0.31.0`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.31.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.31.0>`__)
+* ``0.31.1`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.31.1/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.31.1>`__)
+* ``0.32.0`` (`PyPI <https://pypi.org/project/google-cloud-speech/0.32.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/speech-0.32.0>`__)
