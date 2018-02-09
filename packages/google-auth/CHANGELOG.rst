@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.4.0
+------
+
+- Added `cryptography`-based RSA signer and verifier. (#185)
+- Added `google.oauth2.service_account.IDTokenCredentials`. (#234)
+- Improved documentation around ID Tokens (#224)
+
 v1.3.0
 ------
 
