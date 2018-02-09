@@ -32,7 +32,7 @@ def test_init():
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.batch_settings.max_bytes == 5 * (2 ** 20)
+    assert client.batch_settings.max_bytes == 10 * (2 ** 20)
     assert client.batch_settings.max_latency == 0.05
     assert client.batch_settings.max_messages == 1000
 
