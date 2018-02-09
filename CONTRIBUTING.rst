@@ -62,55 +62,6 @@ but you can also use a ``virtualenv`` of your own creation.
 
 .. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
 
-Use ``nox``, not ``virtualenv``
-===========================
-
-- To install dependencies into a virtual environment, run the unit test via
-  `nox <https://https://nox.readthedocs.io/en/latest/>`__.
-  For example, to work on the storage library do:
-
-    $ cd storage
-    $ nox -s "unit_tests(python_version='2.7')"
-
-  nox will create a virtual environment for you, inside .nox/unit-2-7
-  You can then run the python interpreter from there:
-  
-    $ .nox/unit-2-7/bin/python
-
-- If you need to work on other libraries on which this library depends (e.g.,
-  google-resumable-media-python), use pip install from within this virtual
-  environment, e.g.,
-
-    $ .nox/unit-2-7/bin/pip install ../../hack-on-google-resumable-media-python --ignore-installed
-
-- To create a virtualenv in which to install ``google-cloud-python``::
-
-    $ cd ${HOME}/hack-on-google-cloud-python
-    $ virtualenv --python python3.6 ${ENV_NAME}
-
-  You can choose which Python version you want to use by passing a ``--python``
-  flag to ``virtualenv``.  For example, ``virtualenv --python python3.6``
-
-  .. note::
-      We recommend developing in Python 3, and using the test suite to
-      ensure compatibility with Python 2.
-
-- From here on in within these instructions, the virtual environment created
-  above will be referred to as ``${VENV}``. To use the instructions in the steps
-  that follow literally, use::
-
-    $ export VENV=${HOME}/hack-on-google-cloud-python/storage/.nox/${ENV_NAME}
-
-- To install ``google-cloud-python`` from your source checkout into
-  ``${VENV}``, run::
-
-    $ # Make sure you are in the same directory as setup.py
-    $ cd ${HOME}/hack-on-google-cloud-python
-    $ ${VENV}/bin/python setup.py install
-
-  Unfortunately using ``setup.py develop`` is not possible with this
-  project, because it uses `namespace packages`_.
-
 Using ``nox``
 =============
 
