@@ -189,7 +189,7 @@ class BigQueryDialect(DefaultDialect):
         for d in datasets:
             if schema is not None and d.dataset_id != schema:
                 continue
-            tables = connection.connection._client.list_dataset_tables(d)
+            tables = connection.connection._client.list_dataset_tables(d.reference)
             for t in tables:
                 result.append(d.dataset_id + '.' + t.table_id)
         return result
