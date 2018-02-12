@@ -88,7 +88,9 @@ class _Worker(object):
     :type max_latency: float
     :param max_latency: The amount of time to wait for new logs before
         sending a new batch. It is strongly recommended to keep this smaller
-        than the grace_period.
+        than the grace_period. This means this is effectively the longest
+        amount of time the background thread will hold onto log entries
+        before sending them to the server.
     """
 
     def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
@@ -272,7 +274,9 @@ class BackgroundThreadTransport(Transport):
     :type max_latency: float
     :param max_latency: The amount of time to wait for new logs before
         sending a new batch. It is strongly recommended to keep this smaller
-        than the grace_period.
+        than the grace_period. This means this is effectively the longest
+        amount of time the background thread will hold onto log entries
+        before sending them to the server.
     """
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
