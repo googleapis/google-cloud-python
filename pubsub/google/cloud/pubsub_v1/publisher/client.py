@@ -180,8 +180,10 @@ class Client(object):
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
-            raise TypeError('Data being published to Pub/Sub must be sent '
-                            'as a bytestring.')
+            raise TypeError(
+                'Data being published to Pub/Sub must be sent '
+                'as a bytestring.'
+            )
 
         # Coerce all attributes to text strings.
         for k, v in copy.copy(attrs).items():
@@ -190,15 +192,19 @@ class Client(object):
             if isinstance(v, six.binary_type):
                 attrs[k] = v.decode('utf-8')
                 continue
-            raise TypeError('All attributes being published to Pub/Sub must '
-                            'be sent as text strings.')
+            raise TypeError(
+                'All attributes being published to Pub/Sub must '
+                'be sent as text strings.'
+            )
 
         # Create the Pub/Sub message object.
         message = types.PubsubMessage(data=data, attributes=attrs)
         if message.ByteSize() > self.batch_settings.max_bytes:
-            raise ValueError('Message being published is too large for the '
-                             'batch settings with max bytes {}.'.
-                             format(self.batch_settings.max_bytes))
+            raise ValueError(
+                'Message being published is too large for the '
+                'batch settings with max bytes {}.'.
+                format(self.batch_settings.max_bytes)
+            )
 
         # Delegate the publishing to the batch.
         batch = self.batch(topic)

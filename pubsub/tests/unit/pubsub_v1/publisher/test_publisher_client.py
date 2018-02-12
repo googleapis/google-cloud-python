@@ -136,7 +136,11 @@ def test_publish_data_too_large():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
     topic = 'topic/path'
-    client.batch_settings = types.BatchSettings(0, 0.05, 1)
+    client.batch_settings = types.BatchSettings(
+        0,
+        client.batch_settings.max_latency,
+        client.batch_settings.max_messages
+    )
     with pytest.raises(ValueError):
         client.publish(topic, b'This is a text string.')
 
