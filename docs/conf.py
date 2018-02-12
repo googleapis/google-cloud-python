@@ -253,7 +253,14 @@ latex_documents = [
 # -- Options for warnings ------------------------------------------------------
 
 
-suppress_warnings = []
+suppress_warnings = [
+    # Temporarily suppress ths to avoid "more than one target found for
+    # cross-reference" warning, which are intractable for us to avoid while in
+    # a mono-repo.
+    # See https://github.com/sphinx-doc/sphinx/blob
+    # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
+    'ref.python'
+]
 
 
 # -- Options for manual page output --------------------------------------------
