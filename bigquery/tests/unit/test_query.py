@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import decimal
 import unittest
 
 import mock
@@ -170,6 +171,20 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         }
         klass = self._get_target_class()
         param = klass.positional(type_='FLOAT64', value=12.345)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_numeric(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'NUMERIC',
+            },
+            'parameterValue': {
+                'value': '123456789.123456789',
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='NUMERIC',
+                                 value='123456789.123456789')
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_bool(self):
