@@ -293,6 +293,7 @@ def test_create_table(client, to_delete):
 
     to_delete.insert(0, table)
 
+
 def test_create_table_cmek(client, to_delete):
     DATASET_ID = 'create_table_cmek_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
@@ -314,6 +315,7 @@ def test_create_table_cmek(client, to_delete):
 
     assert table.encryption_configuration.kms_key_name == kms_key_name
     # [END bigquery_create_table_cmek]
+
 
 def test_get_table(client, to_delete):
     """Reload a table's metadata."""
@@ -458,12 +460,14 @@ def test_update_table_cmek(client, to_delete):
 
     # Set a new encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
-    updated_kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
-        'cloud-samples-tests', 'us-central1', 'test', 'otherkey')
+    updated_kms_key_name = (
+        'projects/cloud-samples-tests/locations/us-central1/'
+        'keyRings/test/cryptoKeys/otherkey')
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=updated_kms_key_name)
 
-    table = client.update_table(table, ['encryption_configuration'])  # API request
+    table = client.update_table(
+        table, ['encryption_configuration'])  # API request
 
     assert table.encryption_configuration.kms_key_name == updated_kms_key_name
     assert original_kms_key_name != updated_kms_key_name
