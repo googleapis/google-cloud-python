@@ -1218,6 +1218,29 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         tm.assert_numpy_array_equal(expected.values, result.values)
 
+    def test_upload_mixed_float_and_int(self):
+        """Test that we can upload a dataframe containing an int64 and float64 column.
+        See: https://github.com/pydata/pandas-gbq/issues/116
+        """
+        test_id = "mixed_float_and_int"
+        test_size = 2
+        df = DataFrame(
+            [[1, 1.1], [2, 2.2]],
+            index=['row 1', 'row 2'],
+            columns=['intColumn', 'floatColumn'])
+
+        gbq.to_gbq(
+            df, self.destination_table + test_id,
+            _get_project_id(),
+            private_key=_get_private_key_path())
+
+        result_df = gbq.read_gbq("SELECT * FROM {0}".format(
+            self.destination_table + test_id),
+            project_id=_get_project_id(),
+            private_key=_get_private_key_path())
+
+        assert len(result_df) == test_size
+
     def test_generate_schema(self):
         df = tm.makeMixedDataFrame()
         schema = gbq._generate_bq_schema(df)

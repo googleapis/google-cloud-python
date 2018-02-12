@@ -556,45 +556,22 @@ class GbqConnector(object):
 
         return schema, result_rows
 
-    def load_data(self, dataframe, dataset_id, table_id, chunksize):
-        from google.cloud.bigquery import LoadJobConfig
-        from six import BytesIO
+    def load_data(
+            self, dataframe, dataset_id, table_id, chunksize=None,
+            schema=None):
+        from pandas_gbq import _load
 
-        destination_table = self.client.dataset(dataset_id).table(table_id)
-        job_config = LoadJobConfig()
-        job_config.write_disposition = 'WRITE_APPEND'
-        job_config.source_format = 'NEWLINE_DELIMITED_JSON'
-        rows = []
-        remaining_rows = len(dataframe)
-
-        total_rows = remaining_rows
+        total_rows = len(dataframe)
         self._print("\n\n")
 
-        for index, row in dataframe.reset_index(drop=True).iterrows():
-            row_json = row.to_json(
-                force_ascii=False, date_unit='s', date_format='iso')
-            rows.append(row_json)
-            remaining_rows -= 1
-
-            if (len(rows) % chunksize == 0) or (remaining_rows == 0):
+        try:
+            for remaining_rows in _load.load_chunks(
+                    self.client, dataframe, dataset_id, table_id,
+                    chunksize=chunksize):
                 self._print("\rLoad is {0}% Complete".format(
                     ((total_rows - remaining_rows) * 100) / total_rows))
-
-                body = '{}\n'.format('\n'.join(rows))
-                if isinstance(body, bytes):
-                    body = body.decode('utf-8')
-                body = body.encode('utf-8')
-                body = BytesIO(body)
-
-                try:
-                    self.client.load_table_from_file(
-                        body,
-                        destination_table,
-                        job_config=job_config).result()
-                except self.http_error as ex:
-                    self.process_http_error(ex)
-
-                rows = []
+        except self.http_error as ex:
+            self.process_http_error(ex)
 
         self._print("\n")
 
@@ -888,7 +865,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     return final_df
 
 
-def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
+def to_gbq(dataframe, destination_table, project_id, chunksize=None,
            verbose=True, reauth=False, if_exists='fail', private_key=None,
            auth_local_webserver=False, table_schema=None):
     """Write a DataFrame to a Google BigQuery table.
@@ -922,8 +899,9 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
         Name of table to be written, in the form 'dataset.tablename'
     project_id : str
         Google BigQuery Account project ID.
-    chunksize : int (default 10000)
-        Number of rows to be inserted in each chunk from the dataframe.
+    chunksize : int (default None)
+        Number of rows to be inserted in each chunk from the dataframe. Use
+        ``None`` to load the dataframe in a single chunk.
     verbose : boolean (default True)
         Show percentage complete
     reauth : boolean (default False)
@@ -985,7 +963,7 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
             raise TableCreationError("Could not create the table because it "
                                      "already exists. "
                                      "Change the if_exists parameter to "
-                                     "append or replace data.")
+                                     "'append' or 'replace' data.")
         elif if_exists == 'replace':
             connector.delete_and_recreate_table(
                 dataset_id, table_id, table_schema)
@@ -999,19 +977,14 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
     else:
         table.create(table_id, table_schema)
 
-    connector.load_data(dataframe, dataset_id, table_id, chunksize)
+    connector.load_data(
+        dataframe, dataset_id, table_id, chunksize=chunksize,
+        schema=table_schema)
 
 
 def generate_bq_schema(df, default_type='STRING'):
-    # deprecation TimeSeries, #11121
-    warnings.warn("generate_bq_schema is deprecated and will be removed in "
-                  "a future version", FutureWarning, stacklevel=2)
-
-    return _generate_bq_schema(df, default_type=default_type)
-
-
-def _generate_bq_schema(df, default_type='STRING'):
-    """ Given a passed df, generate the associated Google BigQuery schema.
+    """DEPRECATED: Given a passed df, generate the associated Google BigQuery
+    schema.
 
     Parameters
     ----------
@@ -1020,23 +993,16 @@ def _generate_bq_schema(df, default_type='STRING'):
         The default big query type in case the type of the column
         does not exist in the schema.
     """
+    # deprecation TimeSeries, #11121
+    warnings.warn("generate_bq_schema is deprecated and will be removed in "
+                  "a future version", FutureWarning, stacklevel=2)
 
-    type_mapping = {
-        'i': 'INTEGER',
-        'b': 'BOOLEAN',
-        'f': 'FLOAT',
-        'O': 'STRING',
-        'S': 'STRING',
-        'U': 'STRING',
-        'M': 'TIMESTAMP'
-    }
+    return _generate_bq_schema(df, default_type=default_type)
 
-    fields = []
-    for column_name, dtype in df.dtypes.iteritems():
-        fields.append({'name': column_name,
-                       'type': type_mapping.get(dtype.kind, default_type)})
 
-    return {'fields': fields}
+def _generate_bq_schema(df, default_type='STRING'):
+    from pandas_gbq import _schema
+    return _schema.generate_bq_schema(df, default_type=default_type)
 
 
 class _Table(GbqConnector):
@@ -1096,6 +1062,9 @@ class _Table(GbqConnector):
         table_ref = self.client.dataset(self.dataset_id).table(table_id)
         table = Table(table_ref)
 
+        # Manually create the schema objects, adding NULLABLE mode
+        # as a workaround for
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
         for field in schema['fields']:
             if 'mode' not in field:
                 field['mode'] = 'NULLABLE'

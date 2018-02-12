@@ -7,7 +7,8 @@ Changelog
 
 - Fix an issue where Unicode couldn't be uploaded in Python 2 (:issue:`93`)
 - Add support for a passed schema in :func:``to_gbq`` instead inferring the schema from the passed ``DataFrame`` with ``DataFrame.dtypes`` (:issue:`46`)
-
+- Fix an issue where a dataframe containing both integer and floating point columns could not be uploaded with ``to_gbq`` (:issue:`116`)
+- ``to_gbq`` now uses ``to_csv`` to avoid manually looping over rows in a dataframe (should result in faster table uploads) (:issue:`96`)
 
 0.3.0 / 2018-01-03
 ------------------
