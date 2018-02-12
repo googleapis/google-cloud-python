@@ -80,10 +80,38 @@ def test_publish_messages(publisher, topic_path, cleanup):
                 num=str(index),
             ),
         )
-
     for future in futures:
         result = future.result()
         assert isinstance(result, six.string_types)
+
+
+def test_publish_max_bytes(publisher, topic_path, cleanup):
+    from google.cloud.pubsub_v1 import types
+    futures = []
+    # Make sure the topic gets deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+
+    publisher.create_topic(topic_path)
+
+    temp_max_bytes = 0
+    max_bytes = publisher.batch_settings.max_bytes
+    max_latency = publisher.batch_settings.max_latency
+    max_messages = publisher.batch_settings.max_messages
+    try:
+        # set temporary settings
+        publisher.batch_settings = types.BatchSettings(temp_max_bytes,
+                                                       max_latency,
+                                                       max_messages)
+        with pytest.raises(ValueError):
+            publisher.publish(
+                topic_path,
+                b'a'
+            ),
+    finally:
+        # reset settings
+        publisher.batch_settings = types.BatchSettings(max_bytes,
+                                                       max_latency,
+                                                       max_messages)
 
 
 def test_subscribe_to_messages(
