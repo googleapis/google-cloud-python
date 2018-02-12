@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.4.1
+------
+
+- Added a check for the cryptography version before attempting to use it. (#243)
+
 v1.4.0
 ------
 
