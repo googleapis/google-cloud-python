@@ -466,8 +466,8 @@ def test_update_table_cmek(client, to_delete):
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=updated_kms_key_name)
 
-    table = client.update_table(table,
-                                ['encryption_configuration'])  # API request
+    table = client.update_table(
+        table, ['encryption_configuration'])  # API request
 
     assert table.encryption_configuration.kms_key_name == updated_kms_key_name
     assert original_kms_key_name != updated_kms_key_name
