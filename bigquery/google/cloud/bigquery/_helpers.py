@@ -239,7 +239,7 @@ def _float_to_json(value):
 def _decimal_to_json(value):
     """Coerce 'value' to a JSON-compatible representation."""
     if isinstance(value, decimal.Decimal):
-      value = str(value)
+        value = str(value)
     return value
 
 

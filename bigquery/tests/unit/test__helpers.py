@@ -610,7 +610,7 @@ class Test_float_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(1.23), 1.23)
 
 
-class Test_float_to_json(unittest.TestCase):
+class Test_decimal_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _decimal_to_json
