@@ -239,6 +239,33 @@ class Test_Bucket(unittest.TestCase):
         with self.assertRaises(ValueError):
             bucket.create()
 
+    def test_create_w_missing_client_project(self):
+        BUCKET_NAME = 'bucket-name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection, project=None)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        with self.assertRaises(ValueError):
+            bucket.create()
+
+    def test_create_w_explicit_project(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        OTHER_PROJECT = 'other-project-123'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        bucket.create(project=OTHER_PROJECT)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': OTHER_PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
     def test_create_hit(self):
         PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'
@@ -700,6 +727,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
         self.assertEqual(kw['query_params'], {})
+
+    def test_copy_blobs_source_generation(self):
+        SOURCE = 'source'
+        DEST = 'dest'
+        BLOB_NAME = 'blob-name'
+        GENERATION = 1512565576797178
+
+        class _Blob(object):
+            name = BLOB_NAME
+            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
+
+        connection = _Connection({})
+        client = _Client(connection)
+        source = self._make_one(client=client, name=SOURCE)
+        dest = self._make_one(client=client, name=DEST)
+        blob = _Blob()
+        new_blob = source.copy_blob(blob, dest, source_generation=GENERATION)
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, BLOB_NAME)
+        kw, = connection._requested
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
+                                                     DEST, BLOB_NAME)
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {'sourceGeneration' : GENERATION})
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL

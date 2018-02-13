@@ -30,6 +30,11 @@ class SpannerStub(object):
         request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.GetSessionRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.Session.FromString,
         )
+    self.ListSessions = channel.unary_unary(
+        '/google.spanner.v1.Spanner/ListSessions',
+        request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ListSessionsRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ListSessionsResponse.FromString,
+        )
     self.DeleteSession = channel.unary_unary(
         '/google.spanner.v1.Spanner/DeleteSession',
         request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.DeleteSessionRequest.SerializeToString,
@@ -108,6 +113,13 @@ class SpannerServicer(object):
     """Gets a session. Returns `NOT_FOUND` if the session does not exist.
     This is mainly useful for determining whether a session is still
     alive.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ListSessions(self, request, context):
+    """Lists all sessions in a given database.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -228,6 +240,11 @@ def add_SpannerServicer_to_server(servicer, server):
           servicer.GetSession,
           request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.GetSessionRequest.FromString,
           response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.Session.SerializeToString,
+      ),
+      'ListSessions': grpc.unary_unary_rpc_method_handler(
+          servicer.ListSessions,
+          request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ListSessionsRequest.FromString,
+          response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.ListSessionsResponse.SerializeToString,
       ),
       'DeleteSession': grpc.unary_unary_rpc_method_handler(
           servicer.DeleteSession,

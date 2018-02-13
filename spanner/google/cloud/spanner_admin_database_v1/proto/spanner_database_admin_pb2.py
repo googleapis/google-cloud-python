@@ -14,7 +14,6 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import auth_pb2 as google_dot_api_dot_auth__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
@@ -26,9 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto',
   package='google.spanner.admin.database.v1',
   syntax='proto3',
-  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x15google/api/auth.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t\"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\"\"\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation\"8\x82\xd3\xe4\x93\x02\x32\"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation\"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse\"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"O\x82\xd3\xe4\x93\x02I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xb6\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1b\x06proto3')
+  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/database_v1/proto/spanner_database_admin.proto\x12 google.spanner.admin.database.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n\x08\x44\x61tabase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x05state\x18\x02 \x01(\x0e\x32\x30.google.spanner.admin.database.v1.Database.State\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\"M\n\x14ListDatabasesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"o\n\x15ListDatabasesResponse\x12=\n\tdatabases\x18\x01 \x03(\x0b\x32*.google.spanner.admin.database.v1.Database\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"[\n\x15\x43reateDatabaseRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x18\n\x10\x63reate_statement\x18\x02 \x01(\t\x12\x18\n\x10\x65xtra_statements\x18\x03 \x03(\t\"*\n\x16\x43reateDatabaseMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\"\"\n\x12GetDatabaseRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"V\n\x18UpdateDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x14\n\x0coperation_id\x18\x03 \x01(\t\"x\n\x19UpdateDatabaseDdlMetadata\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x12\n\nstatements\x18\x02 \x03(\t\x12\x35\n\x11\x63ommit_timestamps\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x13\x44ropDatabaseRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\")\n\x15GetDatabaseDdlRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\",\n\x16GetDatabaseDdlResponse\x12\x12\n\nstatements\x18\x01 \x03(\t2\x95\x0c\n\rDatabaseAdmin\x12\xb7\x01\n\rListDatabases\x12\x36.google.spanner.admin.database.v1.ListDatabasesRequest\x1a\x37.google.spanner.admin.database.v1.ListDatabasesResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/instances/*}/databases\x12\xa2\x01\n\x0e\x43reateDatabase\x12\x37.google.spanner.admin.database.v1.CreateDatabaseRequest\x1a\x1d.google.longrunning.Operation\"8\x82\xd3\xe4\x93\x02\x32\"-/v1/{parent=projects/*/instances/*}/databases:\x01*\x12\xa6\x01\n\x0bGetDatabase\x12\x34.google.spanner.admin.database.v1.GetDatabaseRequest\x1a*.google.spanner.admin.database.v1.Database\"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/instances/*/databases/*}\x12\xb0\x01\n\x11UpdateDatabaseDdl\x12:.google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\x1a\x1d.google.longrunning.Operation\"@\x82\xd3\xe4\x93\x02:25/v1/{database=projects/*/instances/*/databases/*}/ddl:\x01*\x12\x98\x01\n\x0c\x44ropDatabase\x12\x35.google.spanner.admin.database.v1.DropDatabaseRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v1/{database=projects/*/instances/*/databases/*}\x12\xc2\x01\n\x0eGetDatabaseDdl\x12\x37.google.spanner.admin.database.v1.GetDatabaseDdlRequest\x1a\x38.google.spanner.admin.database.v1.GetDatabaseDdlResponse\"=\x82\xd3\xe4\x93\x02\x37\x12\x35/v1/{database=projects/*/instances/*/databases/*}/ddl\x12\x94\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:setIamPolicy:\x01*\x12\x94\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"I\x82\xd3\xe4\x93\x02\x43\">/v1/{resource=projects/*/instances/*/databases/*}:getIamPolicy:\x01*\x12\xba\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"O\x82\xd3\xe4\x93\x02I\"D/v1/{resource=projects/*/instances/*/databases/*}:testIamPermissions:\x01*B\xdf\x01\n$com.google.spanner.admin.database.v1B\x19SpannerDatabaseAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_auth__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -54,8 +53,8 @@ _DATABASE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=415,
-  serialized_end=470,
+  serialized_start=392,
+  serialized_end=447,
 )
 _sym_db.RegisterEnumDescriptor(_DATABASE_STATE)
 
@@ -94,8 +93,8 @@ _DATABASE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=324,
-  serialized_end=470,
+  serialized_start=301,
+  serialized_end=447,
 )
 
 
@@ -139,8 +138,8 @@ _LISTDATABASESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=472,
-  serialized_end=549,
+  serialized_start=449,
+  serialized_end=526,
 )
 
 
@@ -177,8 +176,8 @@ _LISTDATABASESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=551,
-  serialized_end=662,
+  serialized_start=528,
+  serialized_end=639,
 )
 
 
@@ -222,8 +221,8 @@ _CREATEDATABASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=664,
-  serialized_end=755,
+  serialized_start=641,
+  serialized_end=732,
 )
 
 
@@ -253,8 +252,8 @@ _CREATEDATABASEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=757,
-  serialized_end=799,
+  serialized_start=734,
+  serialized_end=776,
 )
 
 
@@ -284,8 +283,8 @@ _GETDATABASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=801,
-  serialized_end=835,
+  serialized_start=778,
+  serialized_end=812,
 )
 
 
@@ -329,8 +328,8 @@ _UPDATEDATABASEDDLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=837,
-  serialized_end=923,
+  serialized_start=814,
+  serialized_end=900,
 )
 
 
@@ -374,8 +373,8 @@ _UPDATEDATABASEDDLMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=925,
-  serialized_end=1045,
+  serialized_start=902,
+  serialized_end=1022,
 )
 
 
@@ -405,8 +404,8 @@ _DROPDATABASEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1047,
-  serialized_end=1086,
+  serialized_start=1024,
+  serialized_end=1063,
 )
 
 
@@ -436,8 +435,8 @@ _GETDATABASEDDLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1088,
-  serialized_end=1129,
+  serialized_start=1065,
+  serialized_end=1106,
 )
 
 
@@ -467,8 +466,8 @@ _GETDATABASEDDLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1131,
-  serialized_end=1175,
+  serialized_start=1108,
+  serialized_end=1152,
 )
 
 _DATABASE.fields_by_name['state'].enum_type = _DATABASE_STATE
@@ -571,7 +570,9 @@ CreateDatabaseRequest = _reflection.GeneratedProtocolMessageType('CreateDatabase
           Required. A ``CREATE DATABASE`` statement, which specifies the
           ID of the new database. The database ID must conform to the
           regular expression ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be
-          between 2 and 30 characters in length.
+          between 2 and 30 characters in length. If the database ID is a
+          reserved word or if it contains a hyphen, the database ID must
+          be enclosed in backticks (`````).
       extra_statements:
           An optional list of DDL statements to run inside the newly
           created database. Statements can create tables, indexes, etc.
@@ -744,7 +745,7 @@ _sym_db.RegisterMessage(GetDatabaseDdlResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n$com.google.spanner.admin.database.v1B\031SpannerDatabaseAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.

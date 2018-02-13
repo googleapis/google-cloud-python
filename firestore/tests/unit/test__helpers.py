@@ -600,7 +600,8 @@ class Test_reference_value_to_document(unittest.TestCase):
 
     @staticmethod
     def _call_fut(reference_value, client):
-        from google.cloud.firestore_v1beta1._helpers import reference_value_to_document
+        from google.cloud.firestore_v1beta1._helpers import (
+            reference_value_to_document)
 
         return reference_value_to_document(reference_value, client)
 
@@ -925,7 +926,8 @@ class Test_get_nested_value(unittest.TestCase):
             self.DATA['top1']['middle2']['bottom3'])
 
     def test_missing_top_level(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_MISSING_TOP
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_MISSING_TOP)
 
         field_path = 'top8'
         with self.assertRaises(KeyError) as exc_info:
@@ -935,7 +937,8 @@ class Test_get_nested_value(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_missing_key(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_MISSING_KEY
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_MISSING_KEY)
 
         with self.assertRaises(KeyError) as exc_info:
             self._call_fut('top1.middle2.nope', self.DATA)
@@ -944,7 +947,8 @@ class Test_get_nested_value(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_bad_type(self):
-        from google.cloud.firestore_v1beta1._helpers import FIELD_PATH_WRONG_TYPE
+        from google.cloud.firestore_v1beta1._helpers import (
+            FIELD_PATH_WRONG_TYPE)
 
         with self.assertRaises(KeyError) as exc_info:
             self._call_fut('top6.middle7', self.DATA)
@@ -1001,7 +1005,8 @@ class Test_remove_server_timestamp(unittest.TestCase):
 
     @staticmethod
     def _call_fut(document_data):
-        from google.cloud.firestore_v1beta1._helpers import remove_server_timestamp
+        from google.cloud.firestore_v1beta1._helpers import (
+            remove_server_timestamp)
 
         return remove_server_timestamp(document_data)
 
@@ -1081,15 +1086,15 @@ class Test_get_transform_pb(unittest.TestCase):
 
         server_val = enums.DocumentTransform.FieldTransform.ServerValue
         transform1 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='man.bear',
+            field_path='apple.x.y',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform2 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='pig',
+            field_path='man.bear',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform3 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='apple.x.y',
+            field_path='pig',
             set_to_server_value=server_val.REQUEST_TIME,
         )
 
@@ -1363,7 +1368,8 @@ class Test_remap_gax_error_on_commit(unittest.TestCase):
 
     @staticmethod
     def _call_fut():
-        from google.cloud.firestore_v1beta1._helpers import remap_gax_error_on_commit
+        from google.cloud.firestore_v1beta1._helpers import (
+            remap_gax_error_on_commit)
 
         return remap_gax_error_on_commit()
 

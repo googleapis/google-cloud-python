@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Base class for concurrency policy."""
+
 from __future__ import absolute_import, division
 
 import abc
@@ -19,13 +21,15 @@ import logging
 import random
 import time
 
+from google.api_core import exceptions
 import six
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
 from google.cloud.pubsub_v1.subscriber import _histogram
 
-logger = logging.getLogger(__name__)
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -40,33 +44,38 @@ class BasePolicy(object):
     This class defines the interface for the policy implementation;
     subclasses may be passed as the ``policy_class`` argument to
     :class:`~.pubsub_v1.client.SubscriberClient`.
+
+    Args:
+        client (google.cloud.pubsub_v1.subscriber.client.Client): The
+            subscriber client used to create this instance.
+        subscription (str): The name of the subscription. The canonical
+            format for this is
+            ``projects/{project}/subscriptions/{subscription}``.
+        flow_control (google.cloud.pubsub_v1.types.FlowControl): The flow
+            control settings.
+        histogram_data (dict): Optional: A structure to store the histogram
+            data for predicting appropriate ack times. If set, this should
+            be a dictionary-like object.
+
+            .. note::
+                Additionally, the histogram relies on the assumption
+                that the dictionary will properly sort keys provided
+                that all keys are positive integers. If you are sending
+                your own dictionary class, ensure this assumption holds
+                or you will get strange behavior.
     """
+
+    _managed_ack_ids = None
+    _RETRYABLE_STREAM_ERRORS = (
+        exceptions.DeadlineExceeded,
+        exceptions.ServiceUnavailable,
+    )
+
     def __init__(self, client, subscription,
                  flow_control=types.FlowControl(), histogram_data=None):
-        """Instantiate the policy.
-
-        Args:
-            client (~.pubsub_v1.subscriber.client): The subscriber client used
-                to create this instance.
-            subscription (str): The name of the subscription. The canonical
-                format for this is
-                ``projects/{project}/subscriptions/{subscription}``.
-            flow_control (~.pubsub_v1.types.FlowControl): The flow control
-                settings.
-            histogram_data (dict): Optional: A structure to store the histogram
-                data for predicting appropriate ack times. If set, this should
-                be a dictionary-like object.
-
-                .. note::
-                    Additionally, the histogram relies on the assumption
-                    that the dictionary will properly sort keys provided
-                    that all keys are positive integers. If you are sending
-                    your own dictionary class, ensure this assumption holds
-                    or you will get strange behavior.
-        """
         self._client = client
         self._subscription = subscription
-        self._consumer = _consumer.Consumer(self)
+        self._consumer = _consumer.Consumer()
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self._future = None
@@ -77,7 +86,6 @@ class BasePolicy(object):
         # They should not need to be used by subclasses.
         self._bytes = 0
         self._ack_on_resume = set()
-        self._paused = False
 
     @property
     def ack_deadline(self):
@@ -103,8 +111,8 @@ class BasePolicy(object):
         """Return the Future in use, if any.
 
         Returns:
-            ~.pubsub_v1.subscriber.future.Future: A Future conforming to the
-                ``~concurrent.futures.Future`` interface.
+            google.cloud.pubsub_v1.subscriber.futures.Future: A Future
+            conforming to the :class:`~concurrent.futures.Future` interface.
         """
         return self._future
 
@@ -115,7 +123,7 @@ class BasePolicy(object):
         Returns:
             set: The set of ack IDs being managed.
         """
-        if not hasattr(self, '_managed_ack_ids'):
+        if self._managed_ack_ids is None:
             self._managed_ack_ids = set()
         return self._managed_ack_ids
 
@@ -164,14 +172,14 @@ class BasePolicy(object):
         if time_to_ack is not None:
             self.histogram.add(int(time_to_ack))
 
-        # Send the request to ack the message.
-        # However, if the consumer is inactive, then queue the ack_id here
-        # instead; it will be acked as part of the initial request when the
-        # consumer is started again.
         if self._consumer.active:
+            # Send the request to ack the message.
             request = types.StreamingPullRequest(ack_ids=[ack_id])
             self._consumer.send_request(request)
         else:
+            # If the consumer is inactive, then queue the ack_id here; it
+            # will be acked as part of the initial request when the consumer
+            # is started again.
             self._ack_on_resume.add(ack_id)
 
         # Remove the message from lease management.
@@ -184,6 +192,10 @@ class BasePolicy(object):
             request_generator (Generator): A generator that yields requests,
                 and blocks if there are no outstanding requests (until such
                 time as there are).
+
+        Returns:
+            Iterable[~google.cloud.pubsub_v1.types.StreamingPullResponse]: An
+            iterable of pull responses.
         """
         return self._client.api.streaming_pull(request_generator)
 
@@ -199,7 +211,10 @@ class BasePolicy(object):
         if ack_id in self.managed_ack_ids:
             self.managed_ack_ids.remove(ack_id)
             self._bytes -= byte_size
-            self._bytes = min([self._bytes, 0])
+            if self._bytes < 0:
+                _LOGGER.debug(
+                    'Bytes was unexpectedly negative: %d', self._bytes)
+                self._bytes = 0
 
         # If we have been paused by flow control, check and see if we are
         # back within our limits.
@@ -207,9 +222,9 @@ class BasePolicy(object):
         # In order to not thrash too much, require us to have passed below
         # the resume threshold (80% by default) of each flow control setting
         # before restarting.
-        if self._paused and self._load < self.flow_control.resume_threshold:
-            self._paused = False
-            self.open(self._callback)
+        if (self._consumer.paused and
+                self._load < self.flow_control.resume_threshold):
+            self._consumer.resume()
 
     def get_initial_request(self, ack_queue=False):
         """Return the initial request.
@@ -222,9 +237,9 @@ class BasePolicy(object):
                 while the connection was paused.
 
         Returns:
-            ~.pubsub_v1.types.StreamingPullRequest: A request suitable
-                for being the first request on the stream (and not suitable
-                for any other purpose).
+            google.cloud.pubsub_v1.types.StreamingPullRequest: A request
+            suitable for being the first request on the stream (and not
+            suitable for any other purpose).
 
         .. note::
             If ``ack_queue`` is set to True, this includes the ack_ids, but
@@ -274,8 +289,7 @@ class BasePolicy(object):
         # Sanity check: Do we have too many things in our inventory?
         # If we do, we need to stop the stream.
         if self._load >= 1.0:
-            self._paused = True
-            self.close()
+            self._consumer.pause()
 
     def maintain_leases(self):
         """Maintain all of the leases being managed by the policy.
@@ -294,26 +308,32 @@ class BasePolicy(object):
             in an appropriate form of subprocess.
         """
         while True:
-            # Sanity check: Should this infinitely loop quit?
+            # Sanity check: Should this infinite loop quit?
             if not self._consumer.active:
+                _LOGGER.debug('Consumer inactive, ending lease maintenance.')
                 return
 
             # Determine the appropriate duration for the lease. This is
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.
             p99 = self.histogram.percentile(99)
-            logger.debug('The current p99 value is %d seconds.' % p99)
+            _LOGGER.debug('The current p99 value is %d seconds.', p99)
 
             # Create a streaming pull request.
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
             ack_ids = list(self.managed_ack_ids)
-            logger.debug('Renewing lease for %d ack IDs.' % len(ack_ids))
-            if len(ack_ids) > 0 and self._consumer.active:
+            _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
+            if ack_ids:
                 request = types.StreamingPullRequest(
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),
                 )
+                # NOTE: This may not work as expected if ``consumer.active``
+                #       has changed since we checked it. An implementation
+                #       without any sort of race condition would require a
+                #       way for ``send_request`` to fail when the consumer
+                #       is inactive.
                 self._consumer.send_request(request)
 
             # Now wait an appropriate period of time and do this again.
@@ -323,7 +343,7 @@ class BasePolicy(object):
             # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
             # where there are many clients.
             snooze = random.uniform(0.0, p99 * 0.9)
-            logger.debug('Snoozing lease management for %f seconds.' % snooze)
+            _LOGGER.debug('Snoozing lease management for %f seconds.', snooze)
             time.sleep(snooze)
 
     def modify_ack_deadline(self, ack_id, seconds):
@@ -351,7 +371,11 @@ class BasePolicy(object):
 
     @abc.abstractmethod
     def close(self):
-        """Close the existing connection."""
+        """Close the existing connection.
+
+        Raises:
+            NotImplementedError: Always
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -359,11 +383,17 @@ class BasePolicy(object):
         """Called when a gRPC exception occurs.
 
         If this method does nothing, then the stream is re-started. If this
-        raises an exception, it will stop the consumer thread.
-        This is executed on the response consumer helper thread.
+        raises an exception, it will stop the consumer thread. This is
+        executed on the response consumer helper thread.
+
+        Implementations should return :data:`True` if they want the consumer
+        thread to remain active, otherwise they should return :data:`False`.
 
         Args:
             exception (Exception): The exception raised by the RPC.
+
+        Raises:
+            NotImplementedError: Always
         """
         raise NotImplementedError
 
@@ -385,6 +415,9 @@ class BasePolicy(object):
 
         Args:
             response (Any): The protobuf response from the RPC.
+
+        Raises:
+            NotImplementedError: Always
         """
         raise NotImplementedError
 
@@ -396,13 +429,15 @@ class BasePolicy(object):
         a :class:`~.pubsub_v1.subscriber.message.Message` as its only
         argument.
 
+        This method is virtual, but concrete implementations should return
+        a :class:`~google.api_core.future.Future` that provides an interface
+        to block on the subscription if desired, and handle errors.
+
         Args:
             callback (Callable[Message]): A callable that receives a
                 Pub/Sub Message.
 
-        Returns:
-            ~google.api_core.future.Future: A future that provides
-                an interface to block on the subscription if desired, and
-                handle errors.
+        Raises:
+            NotImplementedError: Always
         """
         raise NotImplementedError

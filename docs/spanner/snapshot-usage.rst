@@ -15,7 +15,7 @@ transactions are visible:
 
 .. code:: python
 
-    snapshot = session.snapshot()
+    snapshot = database.snapshot()
 
 You can also specify a weaker bound, which can either be to perform all
 reads as of a given timestamp:
@@ -25,7 +25,7 @@ reads as of a given timestamp:
     import datetime
     from pytz import UTC
     TIMESTAMP = datetime.utcnow().replace(tzinfo=UTC)
-    snapshot = session.snapshot(read_timestamp=TIMESTAMP)
+    snapshot = database.snapshot(read_timestamp=TIMESTAMP)
 
 or as of a given duration in the past:
 
@@ -33,13 +33,31 @@ or as of a given duration in the past:
 
     import datetime
     DURATION = datetime.timedelta(seconds=5)
-    snapshot = session.snapshot(exact_staleness=DURATION)
+    snapshot = database.snapshot(exact_staleness=DURATION)
 
+Single Use and Multiple Use Snapshots
+-------------------------------------
+
+In the context of read only transactions, ``read`` and ``execute_sql``
+methods can be used multiple times if you specify ``multi_use=True``
+in the constructor of the snapshot.  However, ``multi_use=True`` is
+incompatible with either ``max_staleness`` and/or ``min_read_timestamp``.
+
+Otherwise ``multi_use`` defaults to ``False`` and the snapshot cannot be
+reused.
+
+.. code:: python
+
+    snapshot = database.snapshot(multi_use=True)
+
+:meth:`~.spanner_v1.snapshot.Snapshot.begin` can only be used on a
+snapshot with ``multi_use=True``.  In which case it is also necessary
+to call if you need to have multiple pending operations.
 
 Read Table Data
 ---------------
 
-Read data for selected rows from a table in the session's database.  Calls
+Read data for selected rows from a table in the database.  Calls
 the ``Read`` API, which returns all rows specified in ``key_set``, or else
 fails if the result set is too large,
 
@@ -55,39 +73,14 @@ fails if the result set is too large,
 
 .. note::
 
-   The result set returned by
-   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
-   iterated after the snapshot's session has been returned to the database's
-   session pool.  Therefore, unless your application creates sessions
-   manually, perform all iteration within the context of  the
-   ``with database.snapshot()`` block.
-
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the ``read``, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.read(table, columns, keys)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.read(
-                  table, columns, keys, resume_token=result.resume_token)
-               continue
-          else:
-              break
-
+   Perform all iteration within the context of the ``with database.snapshot()``
+   block.
 
 
 Execute a SQL Select Statement
 ------------------------------
 
-Read data from a query against tables in the session's database.  Calls
+Read data from a query against tables in the database.  Calls
 the ``ExecuteSql`` API, which returns all rows matching the query, or else
 fails if the result set is too large,
 
@@ -100,37 +93,13 @@ fails if the result set is too large,
             'WHERE p.employee_id == e.employee_id')
         result = snapshot.execute_sql(QUERY)
 
-        for row in result.rows:
+        for row in list(result):
             print(row)
 
 .. note::
 
-   The result set returned by
-   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
-   iterated after the snapshot's session has been returned to the database's
-   session pool.  Therefore, unless your application creates sessions
-   manually, perform all iteration within the context of  the
-   ``with database.snapshot()`` block.
-
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the query, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.execute_sql(QUERY)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.execute_sql(
-                  QUERY, resume_token=result.resume_token)
-               continue
-          else:
-              break
+   Perform all iteration within the context of the ``with database.snapshot()``
+   block.
 
 
 Next Step

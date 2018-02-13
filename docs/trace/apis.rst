@@ -8,7 +8,7 @@ APIs
 
 .. :toctree::
 
-   google.cloud.gapic.trace.v1.trace_service_client
+   google.cloud.trace_v1.gapic.trace_service_client
 
 
 API types
@@ -17,4 +17,4 @@ API types
 .. autosummary::
 .. :toctree::
 
-   google.cloud.gapic.trace.v1.enums
+   google.cloud.trace_v1.gapic.enums

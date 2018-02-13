@@ -46,7 +46,6 @@ class TestAppEngineHandler(unittest.TestCase):
         self.assertEqual(handler.resource.labels['project_id'], 'test_project')
         self.assertEqual(handler.resource.labels['module_id'], 'test_service')
         self.assertEqual(handler.resource.labels['version_id'], 'test_version')
-        self.assertEqual(handler.labels, {})
 
     def test_emit(self):
         client = mock.Mock(project=self.PROJECT, spec=['project'])
@@ -74,11 +73,10 @@ class TestAppEngineHandler(unittest.TestCase):
         # The handler actually calls ``get_gae_labels()``.
         with get_trace_patch as mock_get_trace:
             handler = self._make_one(client, transport=_Transport)
-            mock_get_trace.assert_called_once_with()
 
             gae_labels = handler.get_gae_labels()
             self.assertEqual(mock_get_trace.mock_calls,
-                             [mock.call(), mock.call()])
+                             [mock.call()])
 
         return gae_labels
 

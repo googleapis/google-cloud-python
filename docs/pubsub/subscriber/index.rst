@@ -40,7 +40,7 @@ to subscribe to, and it must already exist. Once you have that, it is easy:
     # values for your application.
     topic_name = 'projects/{project}/topics/{topic}'
     sub_name = 'projects/{project}/subscriptions/{subscription}'
-    subscriber.create_subscription(topic_name, sub_name)
+    subscriber.create_subscription(sub_name, topic_name)
 
 
 Pulling a Subscription

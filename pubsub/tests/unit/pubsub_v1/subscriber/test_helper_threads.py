@@ -12,114 +12,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
-import threading
-
 import mock
+from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 
 
-def test_start():
-    registry = _helper_threads.HelperThreadRegistry()
-    queue_ = queue.Queue()
-    target = mock.Mock(spec=())
-    with mock.patch.object(threading.Thread, 'start', autospec=True) as start:
-        registry.start('foo', queue_, target)
-        assert start.called
-
-
-def test_stop_noop():
-    registry = _helper_threads.HelperThreadRegistry()
-    assert len(registry._helper_threads) == 0
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-
-def test_stop_dead_thread():
-    registry = _helper_threads.HelperThreadRegistry()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue=None,
-        thread=threading.Thread(target=lambda: None),
-    )
-    assert len(registry._helper_threads) == 1
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-
-@mock.patch.object(queue.Queue, 'put')
-@mock.patch.object(threading.Thread, 'is_alive')
-@mock.patch.object(threading.Thread, 'join')
-def test_stop_alive_thread(join, is_alive, put):
-    is_alive.return_value = True
-
-    # Set up a registry with a helper thread in it.
-    registry = _helper_threads.HelperThreadRegistry()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue=queue.Queue(),
-        thread=threading.Thread(target=lambda: None),
-    )
-
-    # Assert that the helper thread is present, and removed correctly
-    # on stop.
-    assert len(registry._helper_threads) == 1
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-    # Assert that all of our mocks were called in the expected manner.
-    is_alive.assert_called_once_with()
-    join.assert_called_once_with()
-    put.assert_called_once_with(_helper_threads.STOP)
-
-
-def test_stop_all():
-    registry = _helper_threads.HelperThreadRegistry()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue=None,
-        thread=threading.Thread(target=lambda: None),
-    )
-    assert len(registry._helper_threads) == 1
-    registry.stop_all()
-    assert len(registry._helper_threads) == 0
-
-
-def test_stop_all_noop():
-    registry = _helper_threads.HelperThreadRegistry()
-    assert len(registry._helper_threads) == 0
-    registry.stop_all()
-    assert len(registry._helper_threads) == 0
-
-
-def test_queue_callback_thread():
+def test_queue_callback_worker():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (mock.sentinel.A, _helper_threads.STOP)
+        item1 = ('action', mock.sentinel.A)
+        get.side_effect = (item1, _helper_threads.STOP)
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 2
-        callback.assert_called_once_with(mock.sentinel.A)
+        callback.assert_called_once_with('action', mock.sentinel.A)
 
 
-def test_queue_callback_thread_exception():
+def test_queue_callback_worker_exception():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=(), side_effect=(Exception,))
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (mock.sentinel.A, _helper_threads.STOP)
+        item1 = ('action', mock.sentinel.A)
+        get.side_effect = (item1, _helper_threads.STOP)
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 2
-        callback.assert_called_once_with(mock.sentinel.A)
+        callback.assert_called_once_with('action', mock.sentinel.A)

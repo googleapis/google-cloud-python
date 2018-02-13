@@ -22,6 +22,7 @@ from __future__ import print_function
 import atexit
 import logging
 import threading
+import time
 
 from six.moves import range
 from six.moves import queue
@@ -30,12 +31,13 @@ from google.cloud.logging.handlers.transports.base import Transport
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
 _DEFAULT_MAX_BATCH_SIZE = 10
+_DEFAULT_MAX_LATENCY = 0  # Seconds
 _WORKER_THREAD_NAME = 'google.cloud.logging.Worker'
 _WORKER_TERMINATOR = object()
 _LOGGER = logging.getLogger(__name__)
 
 
-def _get_many(queue_, max_items=None):
+def _get_many(queue_, max_items=None, max_latency=0):
     """Get multiple items from a Queue.
 
     Gets at least one (blocking) and at most ``max_items`` items
@@ -48,14 +50,22 @@ def _get_many(queue_, max_items=None):
     :param max_items: The maximum number of items to get. If ``None``, then all
         available items in the queue are returned.
 
+    :type max_latency: float
+    :param max_latency: The maximum number of seconds to wait for more than one
+        item from a queue. This number includes the time required to retrieve
+        the first item.
+
     :rtype: Sequence
     :returns: A sequence of items retrieved from the queue.
     """
+    start = time.time()
     # Always return at least one item.
     items = [queue_.get()]
     while max_items is None or len(items) < max_items:
         try:
-            items.append(queue_.get_nowait())
+            elapsed = time.time() - start
+            timeout = max(0, max_latency - elapsed)
+            items.append(queue_.get(timeout=timeout))
         except queue.Empty:
             break
     return items
@@ -74,13 +84,22 @@ class _Worker(object):
     :type max_batch_size: int
     :param max_batch_size: The maximum number of items to send at a time
         in the background thread.
+
+    :type max_latency: float
+    :param max_latency: The amount of time to wait for new logs before
+        sending a new batch. It is strongly recommended to keep this smaller
+        than the grace_period. This means this is effectively the longest
+        amount of time the background thread will hold onto log entries
+        before sending them to the server.
     """
 
     def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
-                 max_batch_size=_DEFAULT_MAX_BATCH_SIZE):
+                 max_batch_size=_DEFAULT_MAX_BATCH_SIZE,
+                 max_latency=_DEFAULT_MAX_LATENCY):
         self._cloud_logger = cloud_logger
         self._grace_period = grace_period
         self._max_batch_size = max_batch_size
+        self._max_latency = max_latency
         self._queue = queue.Queue(0)
         self._operational_lock = threading.Lock()
         self._thread = None
@@ -112,7 +131,9 @@ class _Worker(object):
         quit_ = False
         while True:
             batch = self._cloud_logger.batch()
-            items = _get_many(self._queue, max_items=self._max_batch_size)
+            items = _get_many(
+                self._queue, max_items=self._max_batch_size,
+                max_latency=self._max_latency)
 
             for item in items:
                 if item is _WORKER_TERMINATOR:
@@ -249,15 +270,24 @@ class BackgroundThreadTransport(Transport):
     :type batch_size: int
     :param batch_size: The maximum number of items to send at a time in the
         background thread.
+
+    :type max_latency: float
+    :param max_latency: The amount of time to wait for new logs before
+        sending a new batch. It is strongly recommended to keep this smaller
+        than the grace_period. This means this is effectively the longest
+        amount of time the background thread will hold onto log entries
+        before sending them to the server.
     """
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
-                 batch_size=_DEFAULT_MAX_BATCH_SIZE):
+                 batch_size=_DEFAULT_MAX_BATCH_SIZE,
+                 max_latency=_DEFAULT_MAX_LATENCY):
         self.client = client
         logger = self.client.logger(name)
         self.worker = _Worker(logger,
                               grace_period=grace_period,
-                              max_batch_size=batch_size)
+                              max_batch_size=batch_size,
+                              max_latency=max_latency)
         self.worker.start()
 
     def send(self, record, message, resource=None, labels=None):

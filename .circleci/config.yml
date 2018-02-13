@@ -59,16 +59,34 @@ jobs:
               nox -f bigquery/nox.py
             fi
       - run:
+          name: Run tests - google.cloud.bigquery_datatransfer
+          command: |
+            if [[ -n $(grep bigquery_datatransfer ~/target_packages) ]]; then
+              nox -f bigquery_datatransfer/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.bigtable
           command: |
             if [[ -n $(grep bigtable ~/target_packages) ]]; then
               nox -f bigtable/nox.py
             fi
       - run:
+          name: Run tests - google.cloud.container
+          command: |
+            if [[ -n $(grep container ~/target_packages) ]]; then
+              nox -f container/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.datastore
           command: |
             if [[ -n $(grep datastore ~/target_packages) ]]; then
               nox -f datastore/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.dataproc
+          command: |
+            if [[ -n $(grep dataproc ~/target_packages) ]]; then
+              nox -f dataproc/nox.py
             fi
       - run:
           name: Run tests - google.cloud.dlp

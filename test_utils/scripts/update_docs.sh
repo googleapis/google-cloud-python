@@ -64,20 +64,8 @@ CURRENT_VERSION=$(python ${DIR}/get_version.py)
 
 # Update gh-pages with the created docs.
 cd ${GH_PAGES_DIR}
-if [[ -n "${CIRCLE_TAG}" ]]; then
-    if [[ -d ${CURRENT_VERSION} ]]; then
-        echo "The directory ${CURRENT_VERSION} already exists."
-        exit 1
-    fi
-    git rm -fr stable/
-
-    # Put the new release in stable and with the actual version.
-    cp -R ../docs/_build/html/ stable/
-    cp -R ../docs/_build/html/ "${CURRENT_VERSION}/"
-else
-    git rm -fr latest/
-    cp -R ../docs/_build/html/ latest/
-fi
+git rm -fr latest/
+cp -R ../docs/_build/html/ latest/
 
 # Update the files push to gh-pages.
 git add .

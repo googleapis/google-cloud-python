@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import concurrent.futures
 import copy
 import email
 import io
@@ -39,6 +38,7 @@ class TestClient(unittest.TestCase):
     DS_ID = 'DATASET_ID'
     TABLE_ID = 'TABLE_ID'
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
 
     @staticmethod
     def _get_target_class():
@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_datasets_defaults(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import DatasetListItem
 
         DATASET_1 = 'dataset_one'
         DATASET_2 = 'dataset_two'
@@ -216,7 +216,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
-            self.assertIsInstance(found, Dataset)
+            self.assertIsInstance(found, DatasetListItem)
             self.assertEqual(found.full_dataset_id, expected['id'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
@@ -469,6 +469,45 @@ class TestClient(unittest.TestCase):
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_w_encryption_configuration(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        table = Table(self.TABLE_REF)
+        table.encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'labels': {},
+            'encryptionConfiguration': {'kmsKeyName': self.KMS_KEY_NAME},
+        }
+        self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_day_partition_and_expire(self):
@@ -1002,7 +1041,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_defaults(self):
-        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -1039,7 +1078,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
+            self.assertIsInstance(found, TableListItem)
             self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
@@ -1050,7 +1089,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_explicit(self):
-        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -1087,7 +1126,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
+            self.assertIsInstance(found, TableListItem)
             self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertIsNone(token)
@@ -1118,6 +1157,22 @@ class TestClient(unittest.TestCase):
             req = conn._requested[0]
             self.assertEqual(req['method'], 'DELETE')
             self.assertEqual(req['path'], '/%s' % PATH)
+            self.assertEqual(req['query_params'], {})
+
+    def test_delete_dataset_delete_contents(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _Connection({}, {})
+        ds_ref = client.dataset(self.DS_ID)
+        for arg in (ds_ref, Dataset(ds_ref)):
+            client.delete_dataset(arg, delete_contents=True)
+            req = conn._requested[0]
+            self.assertEqual(req['method'], 'DELETE')
+            self.assertEqual(req['path'], '/%s' % PATH)
+            self.assertEqual(req['query_params'], {'deleteContents': 'true'})
 
     def test_delete_dataset_wrong_type(self):
         creds = _make_credentials()
@@ -2463,260 +2518,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
-
-    def test_query_rows_defaults(self):
-        from google.api_core.page_iterator import HTTPIterator
-        from google.cloud.bigquery.table import Row
-
-        JOB = 'job-id'
-        QUERY = 'SELECT COUNT(*) FROM persons'
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': JOB,
-            },
-            'configuration': {
-                'query': {
-                    'query': QUERY,
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': '_temp_dataset',
-                        'tableId': '_temp_table',
-                    },
-                },
-            },
-            'status': {
-                'state': 'DONE',
-            },
-        }
-        RESULTS_RESOURCE = {
-            'jobReference': RESOURCE['jobReference'],
-            'jobComplete': True,
-            'schema': {
-                'fields': [
-                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
-                ]
-            },
-            'totalRows': '3',
-            'pageToken': 'next-page',
-        }
-        FIRST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
-        FIRST_PAGE['rows'] = [
-            {'f': [{'v': '1'}]},
-            {'f': [{'v': '2'}]},
-        ]
-        LAST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
-        LAST_PAGE['rows'] = [
-            {'f': [{'v': '3'}]},
-        ]
-        del LAST_PAGE['pageToken']
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
-        conn = client._connection = _Connection(
-            RESOURCE, RESULTS_RESOURCE, FIRST_PAGE, LAST_PAGE)
-
-        rows_iter = client.query_rows(QUERY)
-        rows = list(rows_iter)
-
-        self.assertEqual(rows, [Row((i,), {'field0': 0}) for i in (1, 2, 3)])
-        self.assertIs(rows_iter.client, client)
-        self.assertIsInstance(rows_iter, HTTPIterator)
-        self.assertEqual(len(conn._requested), 4)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
-        self.assertIsInstance(
-            req['data']['jobReference']['jobId'], six.string_types)
-
-    def test_query_rows_w_job_id(self):
-        from google.api_core.page_iterator import HTTPIterator
-
-        JOB = 'job-id'
-        QUERY = 'SELECT COUNT(*) FROM persons'
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': JOB,
-            },
-            'configuration': {
-                'query': {
-                    'query': QUERY,
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': '_temp_dataset',
-                        'tableId': '_temp_table',
-                    },
-                },
-            },
-            'status': {
-                'state': 'DONE',
-            },
-        }
-        RESULTS_RESOURCE = {
-            'jobReference': RESOURCE['jobReference'],
-            'jobComplete': True,
-            'schema': {
-                'fields': [
-                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
-                ]
-            },
-            'totalRows': '0',
-        }
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
-        conn = client._connection = _Connection(
-            RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
-
-        rows_iter = client.query_rows(QUERY, job_id=JOB)
-        rows = list(rows_iter)
-
-        self.assertEqual(rows, [])
-        self.assertIs(rows_iter.client, client)
-        self.assertIsInstance(rows_iter, HTTPIterator)
-        self.assertEqual(len(conn._requested), 3)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
-        self.assertEqual(req['data']['jobReference']['jobId'], JOB)
-
-    def test_query_rows_w_job_config(self):
-        from google.cloud.bigquery.job import QueryJobConfig
-        from google.api_core.page_iterator import HTTPIterator
-
-        JOB = 'job-id'
-        QUERY = 'SELECT COUNT(*) FROM persons'
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': JOB,
-            },
-            'configuration': {
-                'query': {
-                    'query': QUERY,
-                    'useLegacySql': True,
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': '_temp_dataset',
-                        'tableId': '_temp_table',
-                    },
-                },
-                'dryRun': True,
-            },
-            'status': {
-                'state': 'DONE',
-            },
-        }
-        RESULTS_RESOURCE = {
-            'jobReference': RESOURCE['jobReference'],
-            'jobComplete': True,
-            'schema': {
-                'fields': [
-                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
-                ]
-            },
-            'totalRows': '0',
-        }
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
-        conn = client._connection = _Connection(
-            RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
-
-        job_config = QueryJobConfig()
-        job_config.use_legacy_sql = True
-        job_config.dry_run = True
-        rows_iter = client.query_rows(QUERY, job_id=JOB, job_config=job_config)
-
-        self.assertIsInstance(rows_iter, HTTPIterator)
-        self.assertEqual(len(conn._requested), 2)
-        req = conn._requested[0]
-        configuration = req['data']['configuration']
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
-        self.assertEqual(req['data']['jobReference']['jobId'], JOB)
-        self.assertEqual(configuration['query']['useLegacySql'], True)
-        self.assertEqual(configuration['dryRun'], True)
-
-    def test_query_rows_w_timeout_error(self):
-        JOB = 'job-id'
-        QUERY = 'SELECT COUNT(*) FROM persons'
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': JOB,
-            },
-            'configuration': {
-                'query': {
-                    'query': QUERY,
-                },
-            },
-            'status': {
-                'state': 'RUNNING',
-            },
-        }
-        CANCEL_RESOURCE = {'job': RESOURCE}
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(
-            project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _Connection(RESOURCE, CANCEL_RESOURCE)
-
-        with mock.patch(
-                'google.cloud.bigquery.job.QueryJob.result') as mock_result:
-            mock_result.side_effect = concurrent.futures.TimeoutError(
-                'time is up')
-
-            with self.assertRaises(concurrent.futures.TimeoutError):
-                client.query_rows(
-                    QUERY,
-                    job_id_prefix='test_query_rows_w_timeout_',
-                    timeout=1)
-
-        # Should attempt to create and cancel the job.
-        self.assertEqual(len(conn._requested), 2)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
-        cancelreq = conn._requested[1]
-        self.assertEqual(cancelreq['method'], 'POST')
-        self.assertIn(
-            '/projects/PROJECT/jobs/test_query_rows_w_timeout_',
-            cancelreq['path'])
-        self.assertIn('/cancel', cancelreq['path'])
-
-    def test_query_rows_w_api_error(self):
-        from google.api_core.exceptions import NotFound
-
-        QUERY = 'SELECT COUNT(*) FROM persons'
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(
-            project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _Connection()
-
-        # Expect a 404 error since we didn't supply a job resource.
-        with self.assertRaises(NotFound):
-            client.query_rows(
-                QUERY,
-                job_id_prefix='test_query_rows_w_error_',
-                timeout=1)
-
-        # Should attempt to create and cancel the job.
-        self.assertEqual(len(conn._requested), 2)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
-        cancelreq = conn._requested[1]
-        self.assertEqual(cancelreq['method'], 'POST')
-        self.assertIn(
-            '/projects/PROJECT/jobs/test_query_rows_w_error_',
-            cancelreq['path'])
-        self.assertIn('/cancel', cancelreq['path'])
 
     def test_list_rows(self):
         import datetime

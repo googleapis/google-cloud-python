@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
 import time
 
 import mock
+from six.moves import queue
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
@@ -100,3 +100,19 @@ def test_nack():
             'ack_id': 'bogus_id',
             'byte_size': 25,
         }))
+
+
+def test_repr():
+    data = b'foo'
+    msg = create_message(data, snow='cones', orange='juice')
+    data_line = '  data: {!r}'.format(data)
+    expected_repr = '\n'.join((
+        'Message {',
+        data_line,
+        '  attributes: {',
+        '    "orange": "juice",',
+        '    "snow": "cones"',
+        '  }',
+        '}',
+    ))
+    assert repr(msg) == expected_repr

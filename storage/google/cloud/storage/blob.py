@@ -472,7 +472,7 @@ class Blob(_PropertyMixin):
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
 
-        For more fine-grained over the download process, check out
+        For more fine-grained control over the download process, check out
         `google-resumable-media`_. For example, this library allows
         downloading **parts** of a blob rather than the whole thing.
 

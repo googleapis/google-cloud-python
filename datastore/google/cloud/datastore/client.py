@@ -133,9 +133,9 @@ def _extended_lookup(datastore_api, project, key_pbs,
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
-            project_id=project,
+            project,
+            key_pbs,
             read_options=read_options,
-            keys=key_pbs,
         )
 
         # Accumulate the new results.
@@ -511,9 +511,13 @@ class Client(ClientWithProject):
         """Proxy to :class:`google.cloud.datastore.batch.Batch`."""
         return Batch(self)
 
-    def transaction(self):
-        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`."""
-        return Transaction(self)
+    def transaction(self, **kwargs):
+        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to be passed in.
+        """
+        return Transaction(self, **kwargs)
 
     def query(self, **kwargs):
         """Proxy to :class:`google.cloud.datastore.query.Query`.
@@ -580,8 +584,8 @@ class Client(ClientWithProject):
             >>>
             >>> first_page = next(pages)
             >>> first_page_entities = list(first_page)
-            >>> query_iter.next_page_token
-            b'...'
+            >>> query_iter.next_page_token is None
+            True
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of

@@ -12,25 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import logging
-import threading
 import uuid
 
-import six
 
 __all__ = (
-    'HelperThreadRegistry',
-    'QueueCallbackThread',
+    'QueueCallbackWorker',
     'STOP',
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-_HelperThread = collections.namedtuple(
-    'HelperThreads',
-    ['name', 'thread', 'queue'],
-)
 
 
 # Helper thread stop indicator. This could be a sentinel object or None,
@@ -40,74 +31,23 @@ _HelperThread = collections.namedtuple(
 STOP = uuid.uuid4()
 
 
-class HelperThreadRegistry(object):
-    def __init__(self):
-        self._helper_threads = {}
+class QueueCallbackWorker(object):
+    """A helper that executes a callback for every item in the queue.
 
-    def __contains__(self, needle):
-        return needle in self._helper_threads
+    Calls a blocking ``get()`` on the ``queue`` until it encounters
+    :attr:`STOP`.
 
-    def start(self, name, queue, target, *args, **kwargs):
-        """Create and start a helper thread.
-
-        Args:
-            name (str): The name of the helper thread.
-            queue (Queue): A concurrency-safe queue.
-            target (Callable): The target of the thread.
-            args: Additional args passed to the thread constructor.
-            kwargs: Additional kwargs passed to the thread constructor.
-
-        Returns:
-            threading.Thread: The created thread.
-        """
-        # Create and start the helper thread.
-        thread = threading.Thread(
-            name='Consumer helper: {}'.format(name),
-            target=target,
-            *args, **kwargs
-        )
-        thread.daemon = True
-        thread.start()
-
-        # Keep track of the helper thread, so we are able to stop it.
-        self._helper_threads[name] = _HelperThread(name, thread, queue)
-        _LOGGER.debug('Started helper thread {}'.format(name))
-        return thread
-
-    def stop(self, name):
-        """Stops a helper thread.
-
-        Sends the stop message and blocks until the thread joins.
-
-        Args:
-            name (str): The name of the thread.
-        """
-        # Attempt to retrieve the thread; if it is gone already, no-op.
-        helper_thread = self._helper_threads.get(name)
-        if helper_thread is None:
-            return
-
-        # Join the thread if it is still alive.
-        if helper_thread.thread.is_alive():
-            _LOGGER.debug('Stopping helper thread {}'.format(name))
-            helper_thread.queue.put(STOP)
-            helper_thread.thread.join()
-
-        # Remove the thread from our tracking.
-        self._helper_threads.pop(name, None)
-
-    def stop_all(self):
-        """Stop all helper threads."""
-        # This could be more efficient by sending the stop signal to all
-        # threads before joining any of them.
-        for name in list(six.iterkeys(self._helper_threads)):
-            self.stop(name)
-
-
-class QueueCallbackThread(object):
-    """A helper thread that executes a callback for every item in
-    the queue.
+    Args:
+        queue (~queue.Queue): A Queue instance, appropriate for crossing the
+            concurrency boundary implemented by ``executor``. Items will
+            be popped off (with a blocking ``get()``) until :attr:`STOP`
+            is encountered.
+        callback (Callable[[str, Dict], Any]): A callback that can process
+            items pulled off of the queue. Items are assumed to be a pair
+            of a method name to be invoked and a dictionary of keyword
+            arguments for that method.
     """
+
     def __init__(self, queue, callback):
         self.queue = queue
         self._callback = callback
@@ -116,14 +56,13 @@ class QueueCallbackThread(object):
         while True:
             item = self.queue.get()
             if item == STOP:
-                break
+                _LOGGER.debug('Exiting the QueueCallbackWorker.')
+                return
 
             # Run the callback. If any exceptions occur, log them and
             # continue.
             try:
-                self._callback(item)
+                action, kwargs = item
+                self._callback(action, kwargs)
             except Exception as exc:
-                _LOGGER.error('{class_}: {message}'.format(
-                    class_=exc.__class__.__name__,
-                    message=str(exc),
-                ))
+                _LOGGER.error('%s: %s', exc.__class__.__name__, exc)

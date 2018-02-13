@@ -15,16 +15,14 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-import queue
 import threading
 
-import grpc
-
-import mock
-
-import pytest
-
+from google.api_core import exceptions
 from google.auth import credentials
+import mock
+import pytest
+from six.moves import queue
+
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
@@ -51,58 +49,146 @@ def test_init_with_executor():
 
 
 def test_close():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
     policy = create_policy()
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
+    future = mock.Mock(spec=('done',))
+    future.done.return_value = True
+    policy._future = future
+
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
-        policy.close()
+        closed_fut = policy.close()
         stop_consuming.assert_called_once_with()
-    assert 'callback request worker' not in policy._consumer.helper_threads
+
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
+    assert closed_fut is future
+    assert policy._future is None
+    future.done.assert_called_once_with()
 
 
-def test_close_with_future():
+def test_close_without_future():
     policy = create_policy()
+    assert policy._future is None
+
+    with pytest.raises(ValueError) as exc_info:
+        policy.close()
+
+    assert exc_info.value.args == ('This policy has not been opened yet.',)
+
+
+def test_close_with_unfinished_future():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
+    policy = create_policy()
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
     policy._future = Future(policy=policy)
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         future = policy.future
-        policy.close()
+        closed_fut = policy.close()
         stop_consuming.assert_called_once_with()
-    assert policy.future != future
+
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
+    assert policy._future is None
+    assert closed_fut is future
     assert future.result() is None
 
 
-@mock.patch.object(_helper_threads.HelperThreadRegistry, 'start')
-@mock.patch.object(threading.Thread, 'start')
-def test_open(thread_start, htr_start):
+def test_open():
     policy = create_policy()
-    with mock.patch.object(policy._consumer, 'start_consuming') as consuming:
+    consumer = policy._consumer
+    threads = (
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+    )
+    with mock.patch.object(threading, 'Thread', side_effect=threads):
         policy.open(mock.sentinel.CALLBACK)
-        assert policy._callback is mock.sentinel.CALLBACK
-        consuming.assert_called_once_with()
-        htr_start.assert_called()
-        thread_start.assert_called()
+
+    assert policy._callback is mock.sentinel.CALLBACK
+
+    assert policy._dispatch_thread is threads[0]
+    threads[0].start.assert_called_once_with()
+
+    assert consumer._consumer_thread is threads[1]
+    threads[1].start.assert_called_once_with()
+
+    assert policy._leases_thread is threads[2]
+    threads[2].start.assert_called_once_with()
 
 
-def test_on_callback_request():
+def test_open_already_open():
     policy = create_policy()
-    with mock.patch.object(policy, 'call_rpc') as call_rpc:
-        policy.on_callback_request(('call_rpc', {'something': 42}))
-        call_rpc.assert_called_once_with(something=42)
+    policy._future = mock.sentinel.future
+
+    with pytest.raises(ValueError) as exc_info:
+        policy.open(None)
+
+    assert exc_info.value.args == ('This policy has already been opened.',)
+
+
+def test_dispatch_callback_valid_actions():
+    policy = create_policy()
+    kwargs = {'foo': 10, 'bar': 13.37}
+    actions = (
+        'ack',
+        'drop',
+        'lease',
+        'modify_ack_deadline',
+        'nack',
+    )
+    for action in actions:
+        with mock.patch.object(policy, action) as mocked:
+            policy.dispatch_callback(action, kwargs)
+            mocked.assert_called_once_with(**kwargs)
+
+
+def test_dispatch_callback_invalid_action():
+    policy = create_policy()
+    with pytest.raises(ValueError) as exc_info:
+        policy.dispatch_callback('gecko', {})
+
+    assert len(exc_info.value.args) == 3
+    assert exc_info.value.args[0] == 'Unexpected action'
+    assert exc_info.value.args[1] == 'gecko'
 
 
 def test_on_exception_deadline_exceeded():
     policy = create_policy()
-    exc = mock.Mock(spec=('code',))
-    exc.code.return_value = grpc.StatusCode.DEADLINE_EXCEEDED
-    assert policy.on_exception(exc) is None
+
+    details = 'Bad thing happened. Time out, go sit in the corner.'
+    exc = exceptions.DeadlineExceeded(details)
+
+    assert policy.on_exception(exc) is True
+
+
+def test_on_exception_unavailable():
+    policy = create_policy()
+
+    details = 'UNAVAILABLE. Service taking nap.'
+    exc = exceptions.ServiceUnavailable(details)
+
+    assert policy.on_exception(exc) is True
 
 
 def test_on_exception_other():
     policy = create_policy()
     policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
+    assert policy.on_exception(exc) is False
     with pytest.raises(TypeError):
-        policy.on_exception(exc)
         policy.future.result()
 
 

@@ -17,10 +17,10 @@
 from __future__ import absolute_import
 
 import collections
-import concurrent.futures
 import functools
 import os
 import uuid
+import warnings
 
 import six
 
@@ -29,28 +29,27 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import NotFound
-
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
+
+from google.cloud.bigquery._helpers import DEFAULT_RETRY
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
-from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import _row_from_mapping
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob, QueryJobConfig
-from google.cloud.bigquery.query import QueryResults
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
-from google.cloud.bigquery._helpers import _field_to_index_mapping
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
-from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery.query import _QueryResults
+from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableListItem
+from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import RowIterator
+from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+from google.cloud.bigquery.table import _row_from_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -94,25 +93,28 @@ class Project(object):
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    :type project: str
-    :param project: the project which the client acts on behalf of. Will be
-                    passed when creating a dataset / job.  If not passed,
-                    falls back to the default inferred from the environment.
+    Args:
+        project (str):
+            Project ID for the project which the client acts on behalf of.
+            Will be passed when creating a dataset / job. If not passed,
+            falls back to the default inferred from the environment.
+        credentials (google.auth.credentials.Credentials):
+            (Optional) The OAuth2 Credentials to use for this client. If not
+            passed (and if no ``_http`` object is passed), falls back to the
+            default inferred from the environment.
+        _http (requests.Session):
+            (Optional) HTTP object to make requests. Can be any object that
+            defines ``request()`` with the same interface as
+            :meth:`requests.Session.request`. If not passed, an ``_http``
+            object is created that is bound to the ``credentials`` for the
+            current object.
+            This parameter should be considered private, and could change in
+            the future.
 
-    :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``_http`` object is
-                        passed), falls back to the default inferred from the
-                        environment.
-
-    :type _http: :class:`~requests.Session`
-    :param _http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`requests.Session.request`. If not passed, an
-                  ``_http`` object is created that is bound to the
-                  ``credentials`` for the current object.
-                  This parameter should be considered private, and could
-                  change in the future.
+    Raises:
+        google.auth.exceptions.DefaultCredentialsError:
+            Raised if ``credentials`` is not specified and the library fails
+            to acquire default credentials.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',
@@ -132,13 +134,17 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list
 
         :type max_results: int
-        :param max_results: maximum number of projects to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: (Optional) maximum number of projects to return,
+                            If not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of projects. If
-                           not passed, the API will return the first page of
-                           projects.
+        :param page_token:
+            (Optional) Token representing a cursor into the projects. If
+            not passed, the API will return the first page of projects.
+            The token marks the beginning of the iterator to be returned
+            and the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -167,25 +173,31 @@ class Client(ClientWithProject):
         :param include_all: True if results include hidden datasets.
 
         :type filter: str
-        :param filter: an expression for filtering the results by label.
-                       For syntax, see
+        :param filter: (Optional) an expression for filtering the results by
+                       label. For syntax, see
                        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
 
         :type max_results: int
-        :param max_results: maximum number of datasets to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: (Optional) maximum number of datasets to return,
+                            if not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of datasets. If
-                           not passed, the API will return the first page of
-                           datasets.
+        :param page_token:
+            (Optional) Token representing a cursor into the datasets. If
+            not passed, the API will return the first page of datasets.
+            The token marks the beginning of the iterator to be returned
+            and the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
-                  accessible to the current client.
+        :returns:
+            Iterator of
+            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
+            associated with the client's project.
         """
         extra_params = {}
         if include_all:
@@ -314,7 +326,7 @@ class Client(ClientWithProject):
         If ``dataset.etag`` is not ``None``, the update will only
         succeed if the dataset on the server has the same ETag. Thus
         reading a dataset with ``get_dataset``, changing its fields,
-        and then passing it ``update_dataset`` will ensure that the changes
+        and then passing it to ``update_dataset`` will ensure that the changes
         will only be saved if no modifications to the dataset occurred
         since the read.
 
@@ -354,23 +366,32 @@ class Client(ClientWithProject):
             retry, method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
-    def update_table(self, table, properties, retry=DEFAULT_RETRY):
-        """API call:  update table properties via a PUT request
+    def update_table(self, table, fields, retry=DEFAULT_RETRY):
+        """Change some fields of a table.
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``table``, it will be deleted.
 
-        :type table:
-            :class:`google.cloud.bigquery.table.Table`
-        :param table_ref: the table to update.
+        If ``table.etag`` is not ``None``, the update will only succeed if
+        the table on the server has the same ETag. Thus reading a table with
+        ``get_table``, changing its fields, and then passing it to
+        ``update_table`` will ensure that the changes will only be saved if
+        no modifications to the table occurred since the read.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        Args:
+            table (google.cloud.bigquery.table.Table): The table to update.
+            fields (Sequence[str]):
+                The fields of ``table`` to change, spelled as the Table
+                properties (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a ``Table`` instance
+        Returns:
+            google.cloud.bigquery.table.Table:
+                The table resource returned from the API call.
         """
-        partial = table._build_resource(properties)
+        partial = table._build_resource(fields)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
@@ -380,8 +401,8 @@ class Client(ClientWithProject):
             method='PATCH', path=table.path, data=partial, headers=headers)
         return Table.from_api_repr(api_response)
 
-    def list_dataset_tables(self, dataset, max_results=None, page_token=None,
-                            retry=DEFAULT_RETRY):
+    def list_tables(self, dataset, max_results=None, page_token=None,
+                    retry=DEFAULT_RETRY):
         """List tables in the dataset.
 
         See
@@ -397,16 +418,21 @@ class Client(ClientWithProject):
                             If not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Opaque marker for the next "page" of
-                           datasets. If not passed, the API will return the
-                           first page of datasets.
+        :param page_token:
+            (Optional) Token representing a cursor into the tables. If not
+            passed, the API will return the first page of tables. The
+            token marks the beginning of the iterator to be returned and
+            the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
-                  contained within the current dataset.
+        :returns:
+            Iterator of :class:`~google.cloud.bigquery.table.TableListItem`
+            contained within the current dataset.
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
@@ -422,7 +448,18 @@ class Client(ClientWithProject):
         result.dataset = dataset
         return result
 
-    def delete_dataset(self, dataset, retry=DEFAULT_RETRY):
+    def list_dataset_tables(self, *args, **kwargs):
+        """DEPRECATED: List tables in the dataset.
+
+        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.
+        """
+        warnings.warn(
+            'list_dataset_tables is deprecated, use list_tables instead.',
+            DeprecationWarning)
+        return self.list_tables(*args, **kwargs)
+
+    def delete_dataset(self, dataset, delete_contents=False,
+                       retry=DEFAULT_RETRY):
         """Delete a dataset.
 
         See
@@ -431,15 +468,27 @@ class Client(ClientWithProject):
         :type dataset: One of:
                        :class:`~google.cloud.bigquery.dataset.Dataset`
                        :class:`~google.cloud.bigquery.dataset.DatasetReference`
+        :param dataset: the dataset to delete, or a reference to it.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :param dataset: the dataset to delete, or a reference to it.
+        :type delete_contents: boolean
+        :param delete_contents: (Optional) If True, delete all the tables
+             in the dataset. If False and the dataset contains tables, the
+             request will fail. Default is False
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
-        self._call_api(retry, method='DELETE', path=dataset.path)
+
+        params = {}
+        if delete_contents:
+            params['deleteContents'] = 'true'
+
+        self._call_api(retry,
+                       method='DELETE',
+                       path=dataset.path,
+                       query_params=params)
 
     def delete_table(self, table, retry=DEFAULT_RETRY):
         """Delete a table
@@ -478,8 +527,8 @@ class Client(ClientWithProject):
             (Optional) number of milliseconds the the API call should wait for
             the query to complete before the request times out.
 
-        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
-        :returns: a new ``QueryResults`` instance
+        :rtype: :class:`google.cloud.bigquery.query._QueryResults`
+        :returns: a new ``_QueryResults`` instance
         """
 
         extra_params = {'maxResults': 0}
@@ -497,7 +546,7 @@ class Client(ClientWithProject):
         # QueryJob.result()). So we don't need to poll here.
         resource = self._call_api(
             retry, method='GET', path=path, query_params=extra_params)
-        return QueryResults.from_api_repr(resource)
+        return _QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
@@ -607,9 +656,13 @@ class Client(ClientWithProject):
                             passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of jobs. If
-                           not passed, the API will return the first page of
-                           jobs.
+        :param page_token:
+             (Optional) Opaque marker for the next "page" of jobs. If not
+             passed, the API will return the first page of jobs. The token
+             marks the beginning of the iterator to be returned and the
+             value of the ``page_token`` can be accessed at
+             ``next_page_token`` of
+             :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type all_users: bool
         :param all_users: if true, include jobs owned by all users in the
@@ -986,8 +1039,8 @@ class Client(ClientWithProject):
         job._begin(retry=retry)
         return job
 
-    def create_rows(self, table, rows, selected_fields=None, **kwargs):
-        """API call:  insert table data via a POST request
+    def insert_rows(self, table, rows, selected_fields=None, **kwargs):
+        """Insert rows into a table via the streaming API.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1052,12 +1105,12 @@ class Client(ClientWithProject):
 
             json_rows.append(json_row)
 
-        return self.create_rows_json(table, json_rows, **kwargs)
+        return self.insert_rows_json(table, json_rows, **kwargs)
 
-    def create_rows_json(self, table, json_rows, row_ids=None,
+    def insert_rows_json(self, table, json_rows, row_ids=None,
                          skip_invalid_rows=None, ignore_unknown_values=None,
                          template_suffix=None, retry=DEFAULT_RETRY):
-        """API call:  insert table data via a POST request
+        """Insert rows into a table without applying local type conversions.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1141,66 +1194,26 @@ class Client(ClientWithProject):
 
         return errors
 
-    def query_rows(
-            self, query, job_config=None, job_id=None, job_id_prefix=None,
-            timeout=None, retry=DEFAULT_RETRY):
-        """Start a query job and wait for the results.
+    def create_rows(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table via the streaming API.
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
-
-        :type query: str
-        :param query:
-            SQL query to be executed. Defaults to the standard SQL dialect.
-            Use the ``job_config`` parameter to change dialects.
-
-        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
-        :param job_config: (Optional) Extra configuration options for the job.
-
-        :type job_id: str
-        :param job_id: (Optional) ID to use for the query job.
-
-        :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided prefix for a
-                              randomly generated job ID. This parameter will be
-                              ignored if a ``job_id`` is also given.
-
-        :type timeout: float
-        :param timeout:
-            (Optional) How long (in seconds) to wait for job to complete
-            before raising a :class:`concurrent.futures.TimeoutError`.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
-            During each page, the iterator will have the ``total_rows``
-            attribute set, which counts the total number of rows **in the
-            result set** (this is distinct from the total number of rows in
-            the current page: ``iterator.page.num_items``).
-
-        :raises:
-            :class:`~google.api_core.exceptions.GoogleAPICallError` if the
-            job failed or :class:`concurrent.futures.TimeoutError` if the job
-            did not complete in the given timeout.
-
-            When an exception happens, the query job will be cancelled on a
-            best-effort basis.
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.
         """
-        job_id = _make_job_id(job_id, job_id_prefix)
+        warnings.warn(
+            'create_rows is deprecated, use insert_rows instead.',
+            DeprecationWarning)
+        return self.insert_rows(*args, **kwargs)
 
-        try:
-            job = self.query(
-                query, job_config=job_config, job_id=job_id, retry=retry)
-            rows_iterator = job.result(timeout=timeout)
-        except (GoogleAPICallError, concurrent.futures.TimeoutError):
-            try:
-                self.cancel_job(job_id)
-            except NotFound:
-                # It's OK if couldn't cancel because job never got created.
-                pass
-            raise
+    def create_rows_json(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table without type conversions.
 
-        return rows_iterator
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`
+        instead.
+        """
+        warnings.warn(
+            'create_rows_json is deprecated, use insert_rows_json instead.',
+            DeprecationWarning)
+        return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, retry=DEFAULT_RETRY):
@@ -1228,20 +1241,25 @@ class Client(ClientWithProject):
             :class:`~google.cloud.bigquery.table.TableReference`.
 
         :type max_results: int
-        :param max_results: maximum number of rows to return.
+        :param max_results: (Optional) maximum number of rows to return.
 
         :type page_token: str
         :param page_token: (Optional) Token representing a cursor into the
-                           table's rows.
+                           table's rows. If not passed, the API will return
+                           the first page of the rows. The token marks the
+                           beginning of the iterator to be returned and the
+                           value of the ``page_token`` can be accessed at
+                           ``next_page_token`` of the
+                           :class:`~google.cloud.bigquery.table.RowIterator`.
 
         :type start_index: int
-        :param page_token: (Optional) The zero-based index of the starting
+        :param start_index: (Optional) The zero-based index of the starting
                            row to read.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
         :returns: Iterator of row data
                   :class:`~google.cloud.bigquery.table.Row`-s. During each
                   page, the iterator will have the ``total_rows`` attribute
@@ -1269,20 +1287,15 @@ class Client(ClientWithProject):
         if start_index is not None:
             params['startIndex'] = start_index
 
-        iterator = page_iterator.HTTPIterator(
+        row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path='%s/data' % (table.path,),
-            item_to_value=_item_to_row,
-            items_key='rows',
+            schema=schema,
             page_token=page_token,
-            next_token='pageToken',
             max_results=max_results,
-            page_start=_rows_page_start,
             extra_params=params)
-        iterator.schema = schema
-        iterator._field_to_index = _field_to_index_mapping(schema)
-        return iterator
+        return row_iterator
 
     def list_partitions(self, table, retry=DEFAULT_RETRY):
         """List the partitions in a table.
@@ -1300,12 +1313,12 @@ class Client(ClientWithProject):
         """
         config = QueryJobConfig()
         config.use_legacy_sql = True  # required for '$' syntax
-        rows = self.query_rows(
+        query_job = self.query(
             'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
             (table.project, table.dataset_id, table.table_id),
             job_config=config,
             retry=retry)
-        return [row[0] for row in rows]
+        return [row[0] for row in query_job]
 
 
 # pylint: disable=unused-argument
@@ -1334,10 +1347,10 @@ def _item_to_dataset(iterator, resource):
     :type resource: dict
     :param resource: An item to be converted to a dataset.
 
-    :rtype: :class:`.Dataset`
+    :rtype: :class:`.DatasetListItem`
     :returns: The next dataset in the page.
     """
-    return Dataset.from_api_repr(resource)
+    return DatasetListItem(resource)
 
 
 def _item_to_job(iterator, resource):
@@ -1367,7 +1380,7 @@ def _item_to_table(iterator, resource):
     :rtype: :class:`~google.cloud.bigquery.table.Table`
     :returns: The next table in the page.
     """
-    return Table.from_api_repr(resource)
+    return TableListItem(resource)
 
 
 def _make_job_id(job_id, prefix=None):

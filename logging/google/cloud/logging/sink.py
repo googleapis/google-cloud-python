@@ -27,9 +27,8 @@ class Sink(object):
     :param name: the name of the sink
 
     :type filter_: str
-    :param filter_: the advanced logs filter expression defining the entries
-                    exported by the sink.  If not passed, the instance should
-                    already exist, to be refreshed via :meth:`reload`.
+    :param filter_: (optional) the advanced logs filter expression defining
+                    the entries exported by the sink.
 
     :type destination: str
     :param destination: destination URI for the entries exported by the sink.
@@ -45,10 +44,11 @@ class Sink(object):
         self.filter_ = filter_
         self.destination = destination
         self._client = client
+        self._writer_identity = None
 
     @property
     def client(self):
-        """Clent bound to the sink."""
+        """Client bound to the sink."""
         return self._client
 
     @property
@@ -65,6 +65,17 @@ class Sink(object):
     def path(self):
         """URL path for the sink's APIs"""
         return '/%s' % (self.full_name)
+
+    @property
+    def writer_identity(self):
+        """Identity used for exports via the sink"""
+        return self._writer_identity
+
+    def _update_from_api_repr(self, resource):
+        """Helper for API methods returning sink resources."""
+        self.destination = resource['destination']
+        self.filter_ = resource.get('filter')
+        self._writer_identity = resource.get('writerIdentity')
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -84,9 +95,9 @@ class Sink(object):
                  from the client.
         """
         sink_name = resource['name']
-        filter_ = resource['filter']
-        destination = resource['destination']
-        return cls(sink_name, filter_, destination, client=client)
+        instance = cls(sink_name, client=client)
+        instance._update_from_api_repr(resource)
+        return instance
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -103,7 +114,7 @@ class Sink(object):
             client = self._client
         return client
 
-    def create(self, client=None):
+    def create(self, client=None, unique_writer_identity=False):
         """API call:  create the sink via a PUT request
 
         See
@@ -113,10 +124,18 @@ class Sink(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                    IAM identity returned as
+                                    writer_identity in the new sink.
         """
         client = self._require_client(client)
-        client.sinks_api.sink_create(
-            self.project, self.name, self.filter_, self.destination)
+        resource = client.sinks_api.sink_create(
+            self.project, self.name, self.filter_, self.destination,
+            unique_writer_identity=unique_writer_identity,
+        )
+        self._update_from_api_repr(resource)
 
     def exists(self, client=None):
         """API call:  test for the existence of the sink via a GET request
@@ -153,11 +172,10 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        data = client.sinks_api.sink_get(self.project, self.name)
-        self.filter_ = data['filter']
-        self.destination = data['destination']
+        resource = client.sinks_api.sink_get(self.project, self.name)
+        self._update_from_api_repr(resource)
 
-    def update(self, client=None):
+    def update(self, client=None, unique_writer_identity=False):
         """API call:  update sink configuration via a PUT request
 
         See
@@ -167,10 +185,18 @@ class Sink(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                    IAM identity returned as
+                                    writer_identity in the new sink.
         """
         client = self._require_client(client)
-        client.sinks_api.sink_update(
-            self.project, self.name, self.filter_, self.destination)
+        resource = client.sinks_api.sink_update(
+            self.project, self.name, self.filter_, self.destination,
+            unique_writer_identity=unique_writer_identity,
+        )
+        self._update_from_api_repr(resource)
 
     def delete(self, client=None):
         """API call:  delete a sink via a DELETE request

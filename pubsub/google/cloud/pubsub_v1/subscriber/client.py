@@ -20,14 +20,14 @@ import os
 import grpc
 
 from google.api_core import grpc_helpers
-from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
-__VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
+__version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,
@@ -66,9 +66,9 @@ class Client(object):
         # keepalive options.
         if 'channel' not in kwargs:
             kwargs['channel'] = grpc_helpers.create_channel(
-                credentials=kwargs.get('credentials', None),
+                credentials=kwargs.pop('credentials', None),
                 target=self.target,
-                scopes=subscriber_client.SubscriberClient._ALL_SCOPES,
+                scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
                 options={
                     'grpc.max_send_message_length': -1,
                     'grpc.max_receive_message_length': -1,
@@ -78,8 +78,6 @@ class Client(object):
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
-        kwargs['lib_name'] = 'gccl'
-        kwargs['lib_version'] = __VERSION__
         self.api = subscriber_client.SubscriberClient(**kwargs)
 
         # The subcription class is responsible to retrieving and dispatching
@@ -93,16 +91,13 @@ class Client(object):
         Returns:
             str: The location of the API.
         """
-        return '{host}:{port}'.format(
-            host=subscriber_client.SubscriberClient.SERVICE_ADDRESS,
-            port=subscriber_client.SubscriberClient.DEFAULT_SERVICE_PORT,
-        )
+        return subscriber_client.SubscriberClient.SERVICE_ADDRESS
 
     def subscribe(self, subscription, callback=None, flow_control=()):
         """Return a representation of an individual subscription.
 
         This method creates and returns a ``Consumer`` object (that is, a
-        :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer`)
+        :class:`~.pubsub_v1.subscriber._consumer.Consumer`)
         subclass) bound to the topic. It does `not` create the subcription
         on the backend (or do any API call at all); it simply returns an
         object capable of doing these things.
@@ -127,11 +122,17 @@ class Client(object):
                 inundated with too many messages at once.
 
         Returns:
-            ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
+            ~.pubsub_v1.subscriber._consumer.Consumer: An instance
                 of the defined ``consumer_class`` on the client.
+
+        Raises:
+            TypeError: If ``callback`` is not callable.
         """
         flow_control = types.FlowControl(*flow_control)
         subscr = self._policy_class(self, subscription, flow_control)
         if callable(callback):
             subscr.open(callback)
+        elif callback is not None:
+            error = '{!r} is not callable, please check input'.format(callback)
+            raise TypeError(error)
         return subscr

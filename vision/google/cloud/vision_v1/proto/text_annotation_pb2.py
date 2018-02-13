@@ -21,9 +21,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1/proto/text_annotation.proto',
   package='google.cloud.vision.v1',
   syntax='proto3',
-  serialized_pb=_b('\n2google/cloud/vision_v1/proto/text_annotation.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\"\x96\x04\n\x0eTextAnnotation\x12+\n\x05pages\x18\x01 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Page\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a=\n\x10\x44\x65tectedLanguage\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x1a\xd5\x01\n\rDetectedBreak\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType\x12\x11\n\tis_prefix\x18\x02 \x01(\x08\"c\n\tBreakType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\t\n\x05SPACE\x10\x01\x12\x0e\n\nSURE_SPACE\x10\x02\x12\x12\n\x0e\x45OL_SURE_SPACE\x10\x03\x12\n\n\x06HYPHEN\x10\x04\x12\x0e\n\nLINE_BREAK\x10\x05\x1a\xb1\x01\n\x0cTextProperty\x12S\n\x12\x64\x65tected_languages\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1.TextAnnotation.DetectedLanguage\x12L\n\x0e\x64\x65tected_break\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.TextAnnotation.DetectedBreak\"\x9b\x01\n\x04Page\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12-\n\x06\x62locks\x18\x04 \x03(\x0b\x32\x1d.google.cloud.vision.v1.Block\"\xd2\x02\n\x05\x42lock\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x35\n\nparagraphs\x18\x03 \x03(\x0b\x32!.google.cloud.vision.v1.Paragraph\x12;\n\nblock_type\x18\x04 \x01(\x0e\x32\'.google.cloud.vision.v1.Block.BlockType\"R\n\tBlockType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04TEXT\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\x0b\n\x07PICTURE\x10\x03\x12\t\n\x05RULER\x10\x04\x12\x0b\n\x07\x42\x41RCODE\x10\x05\"\xbb\x01\n\tParagraph\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12+\n\x05words\x18\x03 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Word\"\xba\x01\n\x04Word\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12/\n\x07symbols\x18\x03 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Symbol\"\x99\x01\n\x06Symbol\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x0c\n\x04text\x18\x03 \x01(\tBt\n\x1a\x63om.google.cloud.vision.v1B\x13TextAnnotationProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n2google/cloud/vision_v1/proto/text_annotation.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\"\x96\x04\n\x0eTextAnnotation\x12+\n\x05pages\x18\x01 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Page\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a=\n\x10\x44\x65tectedLanguage\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x1a\xd5\x01\n\rDetectedBreak\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType\x12\x11\n\tis_prefix\x18\x02 \x01(\x08\"c\n\tBreakType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\t\n\x05SPACE\x10\x01\x12\x0e\n\nSURE_SPACE\x10\x02\x12\x12\n\x0e\x45OL_SURE_SPACE\x10\x03\x12\n\n\x06HYPHEN\x10\x04\x12\x0e\n\nLINE_BREAK\x10\x05\x1a\xb1\x01\n\x0cTextProperty\x12S\n\x12\x64\x65tected_languages\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1.TextAnnotation.DetectedLanguage\x12L\n\x0e\x64\x65tected_break\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.TextAnnotation.DetectedBreak\"\xaf\x01\n\x04Page\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12-\n\x06\x62locks\x18\x04 \x03(\x0b\x32\x1d.google.cloud.vision.v1.Block\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"\xe6\x02\n\x05\x42lock\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x35\n\nparagraphs\x18\x03 \x03(\x0b\x32!.google.cloud.vision.v1.Paragraph\x12;\n\nblock_type\x18\x04 \x01(\x0e\x32\'.google.cloud.vision.v1.Block.BlockType\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"R\n\tBlockType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04TEXT\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\x0b\n\x07PICTURE\x10\x03\x12\t\n\x05RULER\x10\x04\x12\x0b\n\x07\x42\x41RCODE\x10\x05\"\xcf\x01\n\tParagraph\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12+\n\x05words\x18\x03 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Word\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xce\x01\n\x04Word\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12/\n\x07symbols\x18\x03 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Symbol\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xad\x01\n\x06Symbol\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x0c\n\x04text\x18\x03 \x01(\t\x12\x12\n\nconfidence\x18\x04 \x01(\x02\x42t\n\x1a\x63om.google.cloud.vision.v1B\x13TextAnnotationProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,])
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -98,8 +99,8 @@ _BLOCK_BLOCKTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1105,
-  serialized_end=1187,
+  serialized_start=1145,
+  serialized_end=1227,
 )
 _sym_db.RegisterEnumDescriptor(_BLOCK_BLOCKTYPE)
 
@@ -289,6 +290,13 @@ _PAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.vision.v1.Page.confidence', index=4,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -302,7 +310,7 @@ _PAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=691,
-  serialized_end=846,
+  serialized_end=866,
 )
 
 
@@ -341,6 +349,13 @@ _BLOCK = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.vision.v1.Block.confidence', index=4,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -354,8 +369,8 @@ _BLOCK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=849,
-  serialized_end=1187,
+  serialized_start=869,
+  serialized_end=1227,
 )
 
 
@@ -387,6 +402,13 @@ _PARAGRAPH = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.vision.v1.Paragraph.confidence', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -399,8 +421,8 @@ _PARAGRAPH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1190,
-  serialized_end=1377,
+  serialized_start=1230,
+  serialized_end=1437,
 )
 
 
@@ -432,6 +454,13 @@ _WORD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.vision.v1.Word.confidence', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -444,8 +473,8 @@ _WORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1380,
-  serialized_end=1566,
+  serialized_start=1440,
+  serialized_end=1646,
 )
 
 
@@ -477,6 +506,13 @@ _SYMBOL = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.vision.v1.Symbol.confidence', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -489,8 +525,8 @@ _SYMBOL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1569,
-  serialized_end=1722,
+  serialized_start=1649,
+  serialized_end=1822,
 )
 
 _TEXTANNOTATION_DETECTEDLANGUAGE.containing_type = _TEXTANNOTATION
@@ -522,7 +558,6 @@ DESCRIPTOR.message_types_by_name['Block'] = _BLOCK
 DESCRIPTOR.message_types_by_name['Paragraph'] = _PARAGRAPH
 DESCRIPTOR.message_types_by_name['Word'] = _WORD
 DESCRIPTOR.message_types_by_name['Symbol'] = _SYMBOL
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_message.Message,), dict(
 
@@ -531,6 +566,15 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Detected language for a structural component.
+    
+    
+    Attributes:
+        language_code:
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see http://www.unicode.org/reports/tr35/#Uni
+            code\_locale\_identifier.
+        confidence:
+            Confidence of detected language. Range [0, 1].
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)
     ))
@@ -541,6 +585,13 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Detected start or end of a structural component.
+    
+    
+    Attributes:
+        type:
+            Detected break type.
+        is_prefix:
+            True if break prepends the element.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)
     ))
@@ -551,6 +602,13 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Additional information detected on the structural component.
+    
+    
+    Attributes:
+        detected_languages:
+            A list of detected languages together with confidence.
+        detected_break:
+            Detected start or end of a text segment.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)
     ))
@@ -564,23 +622,11 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   structural component, starting from Page, may further have their own
   properties. Properties describe detected languages, breaks etc.. Please
   refer to the
-  [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
+  [TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
   message definition below for more detail.
   
   
   Attributes:
-      language_code:
-          The BCP-47 language code, such as "en-US" or "sr-Latn". For
-          more information, see http://www.unicode.org/reports/tr35/#Uni
-          code\_locale\_identifier.
-      confidence:
-          Confidence of detected language. Range [0, 1].
-      is_prefix:
-          True if break prepends the element.
-      detected_languages:
-          A list of detected languages together with confidence.
-      detected_break:
-          Detected start or end of a text segment.
       pages:
           List of pages detected by OCR.
       text:
@@ -609,6 +655,8 @@ Page = _reflection.GeneratedProtocolMessageType('Page', (_message.Message,), dic
           Page height in pixels.
       blocks:
           List of blocks of text, images etc on this page.
+      confidence:
+          Confidence of the OCR results on the page. Range [0, 1].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Page)
   ))
@@ -629,16 +677,19 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), d
           of top-left, top-right, bottom-right, bottom-left. When a
           rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is read in the 'natural' orientation. For example: \*
-          when the text is horizontal it might look like: 0----1 \| \| 3
-          ----2 \* when it's rotated 180 degrees around the top-left
-          corner it becomes: 2----3 \| \| 1----0 and the vertice order
-          will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example:  -
+          when the text is horizontal it might look like:     ::
+          0----1        |    |        3----2  -  when it's rotated 180
+          degrees around the top-left corner it becomes:     ::
+          2----3        |    |        1----0  and the vertice order will
+          still be (0, 1, 2, 3).
       paragraphs:
           List of paragraphs in this block (if this blocks is of type
           text).
       block_type:
           Detected block type (text, image etc) for this block.
+      confidence:
+          Confidence of the OCR results on the block. Range [0, 1].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Block)
   ))
@@ -666,6 +717,8 @@ Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Mess
           will still be (0, 1, 2, 3).
       words:
           List of words in this paragraph.
+      confidence:
+          Confidence of the OCR results for the paragraph. Range [0, 1].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Paragraph)
   ))
@@ -694,6 +747,8 @@ Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dic
       symbols:
           List of symbols in the word. The order of the symbols follows
           the natural reading order.
+      confidence:
+          Confidence of the OCR results for the word. Range [0, 1].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Word)
   ))
@@ -721,6 +776,8 @@ Symbol = _reflection.GeneratedProtocolMessageType('Symbol', (_message.Message,),
           will still be (0, 1, 2, 3).
       text:
           The actual UTF-8 representation of the symbol.
+      confidence:
+          Confidence of the OCR results for the symbol. Range [0, 1].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Symbol)
   ))

@@ -74,6 +74,13 @@ class TestBucketNotification(unittest.TestCase):
          bucket.user_project = user_project
          return bucket
 
+    def test_ctor_w_missing_project(self):
+        client = self._make_client(project=None)
+        bucket = self._make_bucket(client)
+
+        with self.assertRaises(ValueError):
+            self._make_one(bucket, self.TOPIC_NAME)
+
     def test_ctor_defaults(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
@@ -480,3 +487,67 @@ class TestBucketNotification(unittest.TestCase):
             path=self.NOTIFICATION_PATH,
             query_params={'userProject': USER_PROJECT},
         )
+
+
+class Test__parse_topic_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage import notification
+
+        return notification._parse_topic_path(*args, **kwargs)
+
+    @staticmethod
+    def _make_topic_path(project, topic_name):
+        from google.cloud.storage import notification
+
+        return notification._TOPIC_REF_FMT.format(project, topic_name)
+
+    def test_project_name_too_long(self):
+        project = 'a' * 31
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_project_name_uppercase(self):
+        project = 'aaaAaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_leading_digit(self):
+        project = '1aaaaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_leading_hyphen(self):
+        project = '-aaaaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_trailing_hyphen(self):
+        project = 'aaaaa-'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_invalid_format(self):
+        topic_path = '@#$%'
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_success(self):
+        topic_name = 'tah-pic-nehm'
+        project_choices = (
+            'a' * 30,  # Max length.
+            'a-b--c---d',  # Valid hyphen usage.
+            'abcdefghijklmnopqrstuvwxyz',  # Valid letters.
+            'z0123456789',  # Valid digits (non-leading).
+            'a-bcdefghijklmn12opqrstuv0wxyz',
+        )
+        for project in project_choices:
+            topic_path = self._make_topic_path(project, topic_name)
+            result = self._call_fut(topic_path)
+            self.assertEqual(result, (topic_name, project))

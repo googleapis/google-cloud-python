@@ -31,4 +31,5 @@ class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
 __all__ = (
     'enums',
     'types',
-    'ImageAnnotatorClient', )
+    'ImageAnnotatorClient',
+)

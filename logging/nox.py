@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import os
+import sys
 
 import nox
 
@@ -22,6 +23,14 @@ import nox
 LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
     os.path.join('..', 'core'),
+)
+UNIT_TEST_DEPS = (
+    'mock',
+    'pytest',
+    'pytest-cov',
+    'flask',
+    'webapp2',
+    'webob',
 )
 
 
@@ -35,9 +44,16 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install(
-        'mock', 'pytest', 'pytest-cov',
-        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
+    deps = UNIT_TEST_DEPS
+    if session.interpreter == 'python2.7':
+        deps += ('django >= 1.11.0, < 2.0.0dev',)
+    elif session.interpreter is None and sys.version_info[:2] == (2, 7):
+        deps += ('django >= 1.11.0, < 2.0.0dev',)
+    else:
+        deps += ('django',)
+
+    deps += LOCAL_DEPS
+    session.install(*deps)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -96,10 +112,8 @@ def system(session, py):
         'py.test',
         '-vvv',
         '-s',
-        'tests/system.py',
-        *session.posargs,
-        success_codes=range(0, 100)
-    )
+        'tests/system',
+        *session.posargs)
 
 
 @nox.session

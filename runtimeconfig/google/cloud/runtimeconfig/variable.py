@@ -139,10 +139,10 @@ class Variable(object):
 
         :rtype: str
         :returns:
-            If set, one of "UPDATED", "DELETED", or
-            "VARIABLE_STATE_UNSPECIFIED", else ``None``.
+            If set, one of "UPDATED", "DELETED", or defaults to
+            "VARIABLE_STATE_UNSPECIFIED".
         """
-        return self._properties.get('state')
+        return self._properties.get('state', STATE_UNSPECIFIED)
 
     @property
     def update_time(self):

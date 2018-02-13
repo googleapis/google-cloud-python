@@ -16,14 +16,24 @@
 
 from __future__ import absolute_import
 
+import copy
 import datetime
 import operator
 
 import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+
+from google.api_core.page_iterator import HTTPIterator
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -32,6 +42,88 @@ from google.cloud.bigquery.external_config import ExternalConfig
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
+
+
+def _reference_getter(table):
+    """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+    this table.
+
+    Returns:
+        google.cloud.bigquery.table.TableReference: pointer to this table.
+    """
+    from google.cloud.bigquery import dataset
+
+    dataset_ref = dataset.DatasetReference(table.project, table.dataset_id)
+    return TableReference(dataset_ref, table.table_id)
+
+
+def _view_use_legacy_sql_getter(table):
+    """Specifies whether to execute the view with Legacy or Standard SQL.
+
+    If this table is not a view, None is returned.
+
+    Returns:
+        bool: True if the view is using legacy SQL, or None if not a view
+    """
+    view = table._properties.get('view')
+    if view is not None:
+        # The server-side default for useLegacySql is True.
+        return view.get('useLegacySql', True)
+    # In some cases, such as in a table list no view object is present, but the
+    # resource still represents a view. Use the type as a fallback.
+    if table.table_type == 'VIEW':
+        # The server-side default for useLegacySql is True.
+        return True
+
+
+class EncryptionConfiguration(object):
+    """Custom encryption configuration (e.g., Cloud KMS keys).
+
+    Args:
+        kms_key_name (str): resource ID of Cloud KMS key used for encryption
+    """
+
+    def __init__(self, kms_key_name=None):
+        self._properties = {}
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
+
+    @property
+    def kms_key_name(self):
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key or ``None`` if using default encryption.
+        """
+        return self._properties.get('kmsKeyName')
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        self._properties['kmsKeyName'] = value
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Construct an encryption configuration from its API representation
+
+        Args:
+            resource (dict):
+                An encryption configuration representation as returned from
+                the API.
+
+        Returns:
+            google.cloud.bigquery.table.EncryptionConfiguration:
+                An encryption configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this
+
+        Returns:
+            dict: Encryption configuration as represented as an API resource
+        """
+        return copy.deepcopy(self._properties)
 
 
 class TableReference(object):
@@ -165,7 +257,7 @@ class Table(object):
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels',
+        'external_data_configuration', 'labels', 'encryption_configuration'
     ]
 
     def __init__(self, table_ref, schema=()):
@@ -203,6 +295,8 @@ class Table(object):
         :returns: the table ID.
         """
         return self._table_id
+
+    reference = property(_reference_getter)
 
     @property
     def path(self):
@@ -251,7 +345,7 @@ class Table(object):
         :rtype: dict, {str -> str}
         :returns: A dict of the the table's labels.
         """
-        return self._properties['labels']
+        return self._properties.get('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -265,6 +359,30 @@ class Table(object):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties['labels'] = value
+
+    @property
+    def encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
+        """
+        prop = self._properties.get('encryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['encryptionConfiguration'] = api_repr
 
     @property
     def created(self):
@@ -531,23 +649,7 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
-    @property
-    def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with Legacy or Standard SQL.
-
-        The default is False for views (use Standard SQL).
-        If this table is not a view, None is returned.
-
-        :rtype: bool or ``NoneType``
-        :returns: The boolean for view.useLegacySql, or None if not a view.
-        """
-        view = self._properties.get('view')
-        if view is not None:
-            # useLegacySql is never missing from the view dict if this table
-            # was created client-side, because the view_query setter populates
-            # it. So a missing or None can only come from the server, whose
-            # default is True.
-            return view.get('useLegacySql', True)
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
@@ -628,6 +730,7 @@ class Table(object):
 
         table = cls(dataset_ref.table(table_id))
         table._set_properties(resource)
+
         return table
 
     def _set_properties(self, api_response):
@@ -687,6 +790,14 @@ class Table(object):
             resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
                 self.external_data_configuration)
 
+    def _populate_encryption_configuration(self, resource):
+        if not self.encryption_configuration:
+            resource['encryptionConfiguration'] = None
+        else:
+            encryptionConfig = EncryptionConfiguration.to_api_repr(
+                self.encryption_configuration)
+            resource['encryptionConfiguration'] = encryptionConfig
+
     custom_resource_fields = {
         'expires': _populate_expires_resource,
         'partitioning_type': _populate_partitioning_type_resource,
@@ -694,6 +805,7 @@ class Table(object):
         'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
         'schema': _populate_schema_resource,
         'external_data_configuration': _populate_external_config,
+        'encryption_configuration': _populate_encryption_configuration
     }
 
     def _build_resource(self, filter_fields):
@@ -711,6 +823,142 @@ class Table(object):
                 api_field = _snake_to_camel_case(f)
                 resource[api_field] = getattr(self, f)
         return resource
+
+
+class TableListItem(object):
+    """A read-only table resource from a list operation.
+
+    For performance reasons, the BigQuery API only includes some of the table
+    properties when listing tables. Notably,
+    :attr:`~google.cloud.bigquery.table.Table.schema` and
+    :attr:`~google.cloud.bigquery.table.Table.num_rows` are missing.
+
+    For a full list of the properties that the BigQuery API returns, see the
+    `REST documentation for tables.list
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`_.
+
+
+    Args:
+        resource (dict):
+            A table-like resource object from a table list response. A
+            ``tableReference`` property is required.
+
+    Raises:
+        ValueError:
+            If ``tableReference`` or one of its required members is missing
+            from ``resource``.
+    """
+
+    def __init__(self, resource):
+        if 'tableReference' not in resource:
+            raise ValueError('resource must contain a tableReference value')
+        if 'projectId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a projectId value")
+        if 'datasetId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a datasetId value")
+        if 'tableId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a tableId value")
+
+        self._properties = resource
+
+    @property
+    def project(self):
+        """The project ID of the project this table belongs to.
+
+        Returns:
+            str: the project ID of the table.
+        """
+        return self._properties['tableReference']['projectId']
+
+    @property
+    def dataset_id(self):
+        """The dataset ID of the dataset this table belongs to.
+
+        Returns:
+            str: the dataset ID of the table.
+        """
+        return self._properties['tableReference']['datasetId']
+
+    @property
+    def table_id(self):
+        """The table ID.
+
+        Returns:
+            str: the table ID.
+        """
+        return self._properties['tableReference']['tableId']
+
+    reference = property(_reference_getter)
+
+    @property
+    def labels(self):
+        """Labels for the table.
+
+        This method always returns a dict. To change a table's labels,
+        modify the dict, then call ``Client.update_table``. To delete a
+        label, set its value to ``None`` before updating.
+
+        Returns:
+            Map[str, str]: A dictionary of the the table's labels
+        """
+        return self._properties.get('labels', {})
+
+    @property
+    def full_table_id(self):
+        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+
+        Returns:
+            str: The fully-qualified ID of the table
+        """
+        return self._properties.get('id')
+
+    @property
+    def table_type(self):
+        """The type of the table.
+
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
+
+        Returns:
+            str: The kind of table
+        """
+        return self._properties.get('type')
+
+    @property
+    def partitioning_type(self):
+        """Time partitioning of the table.
+
+        Returns:
+            str:
+                Type of partitioning if the table is partitioned, None
+                otherwise.
+        """
+        return self._properties.get('timePartitioning', {}).get('type')
+
+    @property
+    def partition_expiration(self):
+        """Expiration time in ms for a partition
+
+        Returns:
+            int: The time in ms for partition expiration
+        """
+        expiration = self._properties.get(
+            'timePartitioning', {}).get('expirationMs')
+        if expiration is not None:
+            return int(expiration)
+
+    @property
+    def friendly_name(self):
+        """Title of the table.
+
+        Returns:
+            str: The name as set by the user, or None (the default)
+        """
+        return self._properties.get('friendlyName')
+
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
 
 def _row_from_mapping(mapping, schema):
@@ -783,7 +1031,77 @@ class Row(object):
         self._xxx_field_to_index = field_to_index
 
     def values(self):
-        return self._xxx_values
+        """Return the values included in this row.
+
+        Returns:
+            Sequence[object]: A sequence of length ``len(row)``.
+        """
+        return copy.deepcopy(self._xxx_values)
+
+    def keys(self):
+        """Return the keys for using a row as a dict.
+
+        Returns:
+            Sequence[str]: The keys corresponding to the columns of a row
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).keys())
+            ['x', 'y']
+        """
+        return six.iterkeys(self._xxx_field_to_index)
+
+    def items(self):
+        """Return items as ``(key, value)`` pairs.
+
+        Returns:
+            Sequence[Tuple[str, object]]:
+                The ``(key, value)`` pairs representing this row.
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).items())
+            [('x', 'a'), ('y', 'b')]
+        """
+        for key, index in six.iteritems(self._xxx_field_to_index):
+            yield (key, copy.deepcopy(self._xxx_values[index]))
+
+    def get(self, key, default=None):
+        """Return a value for key, with a default value if it does not exist.
+
+        Args:
+            key (str): The key of the column to access
+            default (object):
+                The default value to use if the key does not exist. (Defaults
+                to :data:`None`.)
+
+        Returns:
+            object:
+                The value associated with the provided key, or a default value.
+
+        Examples:
+            When the key exists, the value associated with it is returned.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+            'a'
+
+            The default value is ``None`` when the key does not exist.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+            None
+
+            The default value can be overrided with the ``default`` parameter.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+            ''
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+            ''
+        """
+        index = self._xxx_field_to_index.get(key)
+        if index is None:
+            return default
+        return self._xxx_values[index]
 
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
@@ -818,3 +1136,72 @@ class Row(object):
                        key=operator.itemgetter(1))
         f2i = '{' + ', '.join('%r: %d' % item for item in items) + '}'
         return 'Row({}, {})'.format(self._xxx_values, f2i)
+
+
+class RowIterator(HTTPIterator):
+    """A class for iterating through HTTP/JSON API row list responses.
+
+    Args:
+        client (google.cloud.bigquery.Client): The API client.
+        api_request (Callable[google.cloud._http.JSONConnection.api_request]):
+            The function to use to make API requests.
+        path (str): The method path to query for the list of items.
+        page_token (str): A token identifying a page in a result set to start
+            fetching results from.
+        max_results (int): The maximum number of results to fetch.
+        extra_params (dict): Extra query string parameters for the API call.
+
+    .. autoattribute:: pages
+    """
+
+    def __init__(self, client, api_request, path, schema, page_token=None,
+                 max_results=None, extra_params=None):
+        super(RowIterator, self).__init__(
+            client, api_request, path, item_to_value=_item_to_row,
+            items_key='rows', page_token=page_token, max_results=max_results,
+            extra_params=extra_params, page_start=_rows_page_start,
+            next_token='pageToken')
+        self._schema = schema
+        self._field_to_index = _field_to_index_mapping(schema)
+        self._total_rows = None
+
+    @property
+    def schema(self):
+        """Schema for the table containing the rows
+
+        Returns:
+            list of :class:`~google.cloud.bigquery.schema.SchemaField`:
+                fields describing the schema
+        """
+        return list(self._schema)
+
+    @property
+    def total_rows(self):
+        """The total number of rows in the table.
+
+        Returns:
+            int: the row count.
+        """
+        return self._total_rows
+
+    def to_dataframe(self):
+        """Create a pandas DataFrame from the query results.
+
+        Returns:
+            A :class:`~pandas.DataFrame` populated with row data and column
+            headers from the query results. The column headers are derived
+            from the destination table's schema.
+
+        Raises:
+            ValueError: If the `pandas` library cannot be imported.
+
+        """
+        if pandas is None:
+            raise ValueError('The pandas library is not installed, please '
+                             'install pandas to use the to_dataframe() '
+                             'function.')
+
+        column_headers = [field.name for field in self.schema]
+        rows = [row.values() for row in iter(self)]
+
+        return pandas.DataFrame(rows, columns=column_headers)

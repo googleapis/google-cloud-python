@@ -5,7 +5,10 @@ api_core/
 core/
 storage/
 bigquery/
+bigquery_datatransfer/
 bigtable/
+container/
+dataproc/
 datastore/
 dlp/
 dns/
@@ -15,6 +18,7 @@ logging/
 error_reporting/
 monitoring/
 pubsub/
+oslogin/
 resource_manager/
 runtimeconfig/
 spanner/

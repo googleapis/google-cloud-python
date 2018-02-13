@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import time
 
+from google.api_core import exceptions
+from google.auth import credentials
+import grpc
 import mock
 
-from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client_config
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -26,6 +31,23 @@ def create_policy(flow_control=types.FlowControl()):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_d', flow_control=flow_control)
+
+
+def test_idempotent_retry_codes():
+    # Make sure the config matches our hard-coded tuple of exceptions.
+    interfaces = subscriber_client_config.config['interfaces']
+    retry_codes = interfaces['google.pubsub.v1.Subscriber']['retry_codes']
+    idempotent = retry_codes['idempotent']
+
+    status_codes = tuple(
+        getattr(grpc.StatusCode, name, None)
+        for name in idempotent
+    )
+    expected = tuple(
+        exceptions.exception_class_for_grpc_status(status_code)
+        for status_code in status_codes
+    )
+    assert base.BasePolicy._RETRYABLE_STREAM_ERRORS == expected
 
 
 def test_ack_deadline():
@@ -63,7 +85,7 @@ def test_subscription():
 
 def test_ack():
     policy = create_policy()
-    policy._consumer.active = True
+    policy._consumer._stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
         policy.ack('ack_id_string', 20)
         send_request.assert_called_once_with(types.StreamingPullRequest(
@@ -75,7 +97,7 @@ def test_ack():
 
 def test_ack_no_time():
     policy = create_policy()
-    policy._consumer.active = True
+    policy._consumer._stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
         policy.ack('ack_id_string')
         send_request.assert_called_once_with(types.StreamingPullRequest(
@@ -86,11 +108,13 @@ def test_ack_no_time():
 
 def test_ack_paused():
     policy = create_policy()
-    policy._paused = True
-    policy._consumer.active = False
-    with mock.patch.object(policy, 'open') as open_:
-        policy.ack('ack_id_string')
-        open_.assert_called()
+    consumer = policy._consumer
+    consumer._stopped.set()
+    assert consumer.paused is True
+
+    policy.ack('ack_id_string')
+
+    assert consumer.paused is False
     assert 'ack_id_string' in policy._ack_on_resume
 
 
@@ -115,6 +139,18 @@ def test_drop():
     assert policy._bytes == 0
 
 
+@mock.patch.object(base, '_LOGGER', spec=logging.Logger)
+def test_drop_unexpected_negative(_LOGGER):
+    policy = create_policy()
+    policy.managed_ack_ids.add('ack_id_string')
+    policy._bytes = 0
+    policy.drop('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 0
+    assert policy._bytes == 0
+    _LOGGER.debug.assert_called_once_with(
+        'Bytes was unexpectedly negative: %d', -20)
+
+
 def test_drop_below_threshold():
     """Establish that we resume a paused subscription.
 
@@ -123,31 +159,36 @@ def test_drop_below_threshold():
     """
     policy = create_policy()
     policy.managed_ack_ids.add('ack_id_string')
-    policy._bytes = 20
-    policy._paused = True
-    with mock.patch.object(policy, 'open') as open_:
-        policy.drop(ack_id='ack_id_string', byte_size=20)
-        open_.assert_called_once_with(policy._callback)
-    assert policy._paused is False
+    num_bytes = 20
+    policy._bytes = num_bytes
+    consumer = policy._consumer
+    assert consumer.paused is True
+
+    policy.drop(ack_id='ack_id_string', byte_size=num_bytes)
+
+    assert consumer.paused is False
 
 
 def test_load():
     flow_control = types.FlowControl(max_messages=10, max_bytes=1000)
     policy = create_policy(flow_control=flow_control)
+    consumer = policy._consumer
 
-    # This should mean that our messages count is at 10%, and our bytes
-    # are at 15%; the ._load property should return the higher (0.15).
-    policy.lease(ack_id='one', byte_size=150)
-    assert policy._load == 0.15
-
-    # After this message is added, the messages should be higher at 20%
-    # (versus 16% for bytes).
-    policy.lease(ack_id='two', byte_size=10)
-    assert policy._load == 0.2
-
-    # Returning a number above 100% is fine.
-    policy.lease(ack_id='three', byte_size=1000)
-    assert policy._load == 1.16
+    with mock.patch.object(consumer, 'pause') as pause:
+        # This should mean that our messages count is at 10%, and our bytes
+        # are at 15%; the ._load property should return the higher (0.15).
+        policy.lease(ack_id='one', byte_size=150)
+        assert policy._load == 0.15
+        pause.assert_not_called()
+        # After this message is added, the messages should be higher at 20%
+        # (versus 16% for bytes).
+        policy.lease(ack_id='two', byte_size=10)
+        assert policy._load == 0.2
+        pause.assert_not_called()
+        # Returning a number above 100% is fine.
+        policy.lease(ack_id='three', byte_size=1000)
+        assert policy._load == 1.16
+        pause.assert_called_once_with()
 
 
 def test_modify_ack_deadline():
@@ -162,20 +203,21 @@ def test_modify_ack_deadline():
 
 def test_maintain_leases_inactive_consumer():
     policy = create_policy()
-    policy._consumer.active = False
+    policy._consumer._stopped.set()
     assert policy.maintain_leases() is None
 
 
 def test_maintain_leases_ack_ids():
     policy = create_policy()
-    policy._consumer.active = True
+    policy._consumer._stopped.clear()
     policy.lease('my ack id', 50)
 
     # Mock the sleep object.
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
         def trigger_inactive(seconds):
             assert 0 < seconds < 10
-            policy._consumer.active = False
+            policy._consumer._stopped.set()
+
         sleep.side_effect = trigger_inactive
 
         # Also mock the consumer, which sends the request.
@@ -190,11 +232,12 @@ def test_maintain_leases_ack_ids():
 
 def test_maintain_leases_no_ack_ids():
     policy = create_policy()
-    policy._consumer.active = True
+    policy._consumer._stopped.clear()
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
         def trigger_inactive(seconds):
             assert 0 < seconds < 10
-            policy._consumer.active = False
+            policy._consumer._stopped.set()
+
         sleep.side_effect = trigger_inactive
         policy.maintain_leases()
         sleep.assert_called()
@@ -215,11 +258,13 @@ def test_lease():
 def test_lease_above_threshold():
     flow_control = types.FlowControl(max_messages=2)
     policy = create_policy(flow_control=flow_control)
-    with mock.patch.object(policy, 'close') as close:
+    consumer = policy._consumer
+
+    with mock.patch.object(consumer, 'pause') as pause:
         policy.lease(ack_id='first_ack_id', byte_size=20)
-        assert close.call_count == 0
+        pause.assert_not_called()
         policy.lease(ack_id='second_ack_id', byte_size=25)
-        close.assert_called_once_with()
+        pause.assert_called_once_with()
 
 
 def test_nack():

@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.trace_v1 import enums
-from google.cloud.trace_v1 import TraceServiceClient
-from google.cloud.trace_v1 import types
+from __future__ import absolute_import
 
+from google.cloud.trace_v2 import TraceServiceClient
+from google.cloud.trace_v2 import enums
+from google.cloud.trace_v2 import types
 
 __all__ = (
     'enums',
-    'TraceServiceClient',
     'types',
-)
+    'TraceServiceClient', )

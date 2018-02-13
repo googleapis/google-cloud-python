@@ -245,7 +245,10 @@ class TestDataset(unittest.TestCase):
 
     def _verify_readonly_resource_properties(self, dataset, resource):
 
+        self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.reference.project, self.PROJECT)
+        self.assertEqual(dataset.reference.dataset_id, self.DS_ID)
 
         if 'creationTime' in resource:
             self.assertEqual(dataset.created, self.WHEN)
@@ -401,6 +404,10 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset.labels = None
 
+    def test_labels_getter_missing_value(self):
+        dataset = self._make_one(self.DS_REF)
+        self.assertEqual(dataset.labels, {})
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         RESOURCE = {}
@@ -457,3 +464,96 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(table.table_id, 'table_id')
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
+
+
+class TestDatasetListItem(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.dataset import DatasetListItem
+
+        return DatasetListItem
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        resource = {
+            'kind': 'bigquery#dataset',
+            'id': '{}:{}'.format(project, dataset_id),
+            'datasetReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+            },
+            'friendlyName': 'Data of the Test',
+            'labels': {
+                'some-stuff': 'this-is-a-label',
+            },
+        }
+
+        dataset = self._make_one(resource)
+        self.assertEqual(dataset.project, project)
+        self.assertEqual(dataset.dataset_id, dataset_id)
+        self.assertEqual(
+            dataset.full_dataset_id,
+            '{}:{}'.format(project, dataset_id))
+        self.assertEqual(dataset.reference.project, project)
+        self.assertEqual(dataset.reference.dataset_id, dataset_id)
+        self.assertEqual(dataset.friendly_name, 'Data of the Test')
+        self.assertEqual(dataset.labels['some-stuff'], 'this-is-a-label')
+
+    def test_ctor_missing_properties(self):
+        resource = {
+            'datasetReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+            },
+        }
+        dataset = self._make_one(resource)
+        self.assertEqual(dataset.project, 'testproject')
+        self.assertEqual(dataset.dataset_id, 'testdataset')
+        self.assertIsNone(dataset.full_dataset_id)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertEqual(dataset.labels, {})
+
+    def test_ctor_wo_project(self):
+        resource = {
+            'datasetReference': {
+                'datasetId': 'testdataset',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_dataset(self):
+        resource = {
+            'datasetReference': {
+                'projectId': 'testproject',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_reference(self):
+        with self.assertRaises(ValueError):
+            self._make_one({})
+
+    def test_table(self):
+        from google.cloud.bigquery.table import TableReference
+
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        resource = {
+            'datasetReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+            },
+        }
+        dataset = self._make_one(resource)
+        table = dataset.table('table_id')
+        self.assertIsInstance(table, TableReference)
+        self.assertEqual(table.table_id, 'table_id')
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, project)

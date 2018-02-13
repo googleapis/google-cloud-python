@@ -15,7 +15,15 @@
 
 import unittest
 
-from google.cloud._testing import _GAXBaseAPI
+import mock
+
+
+def _make_rpc_error(error_cls, trailing_metadata=None):
+    import grpc
+
+    grpc_error = mock.create_autospec(grpc.Call, instance=True)
+    grpc_error.trailing_metadata.return_value = trailing_metadata
+    raise error_cls('error', errors=(grpc_error,))
 
 
 class TestSession(unittest.TestCase):
@@ -80,26 +88,21 @@ class TestSession(unittest.TestCase):
 
         self.assertEqual(session.session_id, self.SESSION_ID)
 
-        database_name, options = gax_api._create_session_called_with
+        database_name, metadata = gax_api._create_session_called_with
         self.assertEqual(database_name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_create_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_random_gax_error=True)
+        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             session.create()
-
-        database_name, options = gax_api._create_session_called_with
-        self.assertEqual(database_name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
@@ -116,10 +119,10 @@ class TestSession(unittest.TestCase):
 
         self.assertTrue(session.exists())
 
-        session_name, options = gax_api._get_session_called_with
+        session_name, metadata = gax_api._get_session_called_with
         self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_miss(self):
         gax_api = _SpannerApi()
@@ -130,27 +133,22 @@ class TestSession(unittest.TestCase):
 
         self.assertFalse(session.exists())
 
-        session_name, options = gax_api._get_session_called_with
+        session_name, metadata = gax_api._get_session_called_with
         self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_random_gax_error=True)
+        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             session.exists()
-
-        session_name, options = gax_api._get_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_delete_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
@@ -167,10 +165,10 @@ class TestSession(unittest.TestCase):
 
         session.delete()
 
-        session_name, options = gax_api._delete_session_called_with
+        session_name, metadata = gax_api._delete_session_called_with
         self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
@@ -184,27 +182,22 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(NotFound):
             session.delete()
 
-        session_name, options = gax_api._delete_session_called_with
+        session_name, metadata = gax_api._delete_session_called_with
         self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_delete_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
-        gax_api = _SpannerApi(_random_gax_error=True)
+        gax_api = _SpannerApi(_rpc_error=Unknown('error'))
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             session.delete()
-
-        session_name, options = gax_api._delete_session_called_with
-        self.assertEqual(session_name, self.SESSION_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_snapshot_not_created(self):
         database = _Database(self.DATABASE_NAME)
@@ -439,8 +432,8 @@ class TestSession(unittest.TestCase):
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 
-    def test_run_in_transaction_callback_raises_gax_error_non_abort(self):
-        from google.gax.errors import GaxError
+    def test_run_in_transaction_callback_raises_non_abort_rpc_error(self):
+        from google.api_core.exceptions import Cancelled
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud.spanner_v1.transaction import Transaction
@@ -464,15 +457,12 @@ class TestSession(unittest.TestCase):
 
         called_with = []
 
-        class Testing(GaxError):
-            pass
-
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
-            raise Testing('testing')
+            raise Cancelled('error')
 
-        with self.assertRaises(Testing):
+        with self.assertRaises(Cancelled):
             session.run_in_transaction(unit_of_work)
 
         self.assertIsNone(session._transaction)
@@ -532,7 +522,7 @@ class TestSession(unittest.TestCase):
         self.assertEqual(kw, {'some_arg': 'def'})
 
     def test_run_in_transaction_w_commit_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
         from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
@@ -542,8 +532,7 @@ class TestSession(unittest.TestCase):
             ['bharney@example.com', 'Bharney', 'Rhubble', 31],
         ]
         gax_api = _SpannerApi(
-            _commit_error=True,
-        )
+            _commit_error=True)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
         session = self._make_one(database)
@@ -551,13 +540,15 @@ class TestSession(unittest.TestCase):
         begun_txn = session._transaction = Transaction(session)
         begun_txn._transaction_id = b'FACEDACE'
 
+        assert session._transaction._transaction_id
+
         called_with = []
 
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             session.run_in_transaction(unit_of_work)
 
         self.assertIsNone(session._transaction)
@@ -676,8 +667,7 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_callback_raises_abort_wo_metadata(self):
         import datetime
-        from google.gax.errors import GaxError
-        from grpc import StatusCode
+        from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
@@ -716,10 +706,8 @@ class TestSession(unittest.TestCase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             if len(called_with) < 2:
-                grpc_error = gax_api._make_grpc_error(
-                    StatusCode.ABORTED,
-                    trailing=gax_api._trailing_metadata())
-                raise GaxError('conflict', grpc_error)
+                raise _make_rpc_error(
+                    Aborted, gax_api._trailing_metadata())
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
         time_module = _FauxTimeModule()
@@ -741,15 +729,12 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_w_retry_metadata_deadline(self):
         import datetime
-        from google.gax.errors import GaxError
-        from google.gax.grpc import exc_to_code
-        from grpc import StatusCode
+        from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner_v1.transaction import Transaction
         from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
@@ -785,29 +770,22 @@ class TestSession(unittest.TestCase):
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
         time_module = _FauxTimeModule()
+        time_module._times = [1, 1.5]
 
         with _Monkey(MUT, time=time_module):
-            with self.assertRaises(GaxError) as exc:
+            with self.assertRaises(Aborted):
                 session.run_in_transaction(
-                    unit_of_work, 'abc', some_arg='def', timeout_secs=0.01)
+                    unit_of_work, 'abc', timeout_secs=1)
 
-        self.assertEqual(exc_to_code(exc.exception.cause), StatusCode.ABORTED)
         self.assertIsNone(time_module._slept)
         self.assertEqual(len(called_with), 1)
-        txn, args, kw = called_with[0]
-        self.assertIsInstance(txn, Transaction)
-        self.assertIsNone(txn.committed)
-        self.assertEqual(args, ('abc',))
-        self.assertEqual(kw, {'some_arg': 'def'})
 
     def test_run_in_transaction_w_timeout(self):
+        from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
-        from google.gax.errors import GaxError
-        from google.gax.grpc import exc_to_code
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from grpc import StatusCode
         from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
@@ -837,10 +815,8 @@ class TestSession(unittest.TestCase):
         time_module._times = [1, 1.5, 2.5]  # retry once w/ timeout_secs=1
 
         with _Monkey(MUT, time=time_module):
-            with self.assertRaises(GaxError) as exc:
+            with self.assertRaises(Aborted):
                 session.run_in_transaction(unit_of_work, timeout_secs=1)
-
-        self.assertEqual(exc_to_code(exc.exception.cause), StatusCode.ABORTED)
 
         self.assertEqual(time_module._slept, None)
         self.assertEqual(len(called_with), 2)
@@ -857,77 +833,81 @@ class _Database(object):
         self.name = name
 
 
-class _SpannerApi(_GAXBaseAPI):
+class _SpannerApi(object):
 
     _commit_abort_count = 0
     _commit_abort_retry_seconds = None
     _commit_abort_retry_nanos = None
-    _random_gax_error = _commit_error = False
+    _commit_error = False
+    _rpc_error = None
 
-    def create_session(self, database, options=None):
-        from google.gax.errors import GaxError
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
-        self._create_session_called_with = database, options
-        if self._random_gax_error:
-            raise GaxError('error')
+    def create_session(self, database, metadata=None):
+        if self._rpc_error is not None:
+            raise self._rpc_error
+
+        self._create_session_called_with = database, metadata
         return self._create_session_response
 
-    def get_session(self, name, options=None):
-        from google.gax.errors import GaxError
+    def get_session(self, name, metadata=None):
+        from google.api_core.exceptions import NotFound
 
-        self._get_session_called_with = name, options
-        if self._random_gax_error:
-            raise GaxError('error')
+        if self._rpc_error is not None:
+            raise self._rpc_error
+
+        self._get_session_called_with = name, metadata
         try:
             return self._get_session_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise NotFound('miss')
 
-    def delete_session(self, name, options=None):
-        from google.gax.errors import GaxError
+    def delete_session(self, name, metadata=None):
+        from google.api_core.exceptions import NotFound
 
-        self._delete_session_called_with = name, options
-        if self._random_gax_error:
-            raise GaxError('error')
+        if self._rpc_error is not None:
+            raise self._rpc_error
+
+        self._delete_session_called_with = name, metadata
         if not self._delete_session_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise NotFound('miss')
 
-    def begin_transaction(self, session, options_, options=None):
-        self._begun = (session, options_, options)
+    def begin_transaction(self, session, options_, metadata=None):
+        self._begun = (session, options_, metadata)
         return self._begin_transaction_response
 
     def _trailing_metadata(self):
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
-        from grpc._common import to_cygrpc_metadata
 
         if self._commit_abort_retry_nanos is None:
-            return to_cygrpc_metadata(())
+            return []
+
         retry_info = RetryInfo(
             retry_delay=Duration(
                 seconds=self._commit_abort_retry_seconds,
                 nanos=self._commit_abort_retry_nanos))
-        return to_cygrpc_metadata([
-            ('google.rpc.retryinfo-bin', retry_info.SerializeToString())])
+        return [
+            ('google.rpc.retryinfo-bin', retry_info.SerializeToString()),
+        ]
 
     def commit(self, session, mutations,
-               transaction_id='', single_use_transaction=None, options=None):
-        from grpc import StatusCode
-        from google.gax.errors import GaxError
+               transaction_id='', single_use_transaction=None, metadata=None):
+        from google.api_core.exceptions import Unknown, Aborted
 
         assert single_use_transaction is None
-        self._committed = (session, mutations, transaction_id, options)
+        self._committed = (session, mutations, transaction_id, metadata)
         if self._commit_error:
-            raise GaxError('error', self._make_grpc_error(StatusCode.UNKNOWN))
+            raise Unknown('error')
         if self._commit_abort_count > 0:
             self._commit_abort_count -= 1
-            grpc_error = self._make_grpc_error(
-                StatusCode.ABORTED, trailing=self._trailing_metadata())
-            raise GaxError('conflict', grpc_error)
+            raise _make_rpc_error(
+                Aborted, trailing_metadata=self._trailing_metadata())
         return self._commit_response
 
-    def rollback(self, session, transaction_id, options=None):
-        self._rolled_back = (session, transaction_id, options)
+    def rollback(self, session, transaction_id, metadata=None):
+        self._rolled_back = (session, transaction_id, metadata)
         return self._rollback_response
 
 

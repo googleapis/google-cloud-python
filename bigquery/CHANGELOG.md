@@ -4,6 +4,59 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.30.0
+
+This is the release candidate for v1.0.0.
+
+### Interface changes / additions
+
+- Add `delete_contents` to `delete_dataset`. (#4724)
+
+### Bugfixes
+
+- Add handling of missing properties in `SchemaField.from_api_repr()`. (#4754)
+- Fix missing return value in `LoadJobConfig.from_api_repr`. (#4727)
+
+### Documentation
+
+- Minor documentation and typo fixes. (#4782, #4718, #4784, #4835, #4836)
+
+## 0.29.0
+
+### Interface changes / additions
+
+-   Add `to_dataframe()` method to row iterators. When Pandas is installed this
+    method returns a `DataFrame` containing the query's or table's rows.
+    ([#4354](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4354))
+-   Iterate over a `QueryJob` to wait for and get the query results.
+    ([#4350](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4350))
+-   Add `Table.reference` and `Dataset.reference` properties to get the
+    `TableReference` or `DatasetReference` corresponding to that `Table` or
+    `Dataset`, respectively.
+    ([#4405](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4405))
+-   Add `Row.keys()`, `Row.items()`, and `Row.get()`. This makes `Row` act
+    more like a built-in dictionary.
+    ([#4393](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4393),
+    [#4413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4413))
+
+### Interface changes / breaking changes
+
+-   Add `Client.insert_rows()` and `Client.insert_rows_json()`, deprecate
+    `Client.create_rows()` and `Client.create_rows_json()`.
+    ([#4657](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4657))
+-   Add `Client.list_tables`, deprecate `Client.list_dataset_tables`.
+    ([#4653](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4653))
+-   `Client.list_tables` returns an iterators of `TableListItem`. The API
+    only returns a subset of properties of a table when listing.
+    ([#4427](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4427))
+-   Remove `QueryJob.query_results()`. Use `QueryJob.result()` instead.
+    ([#4652](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4652))
+-   Remove `Client.query_rows()`. Use `Client.query()` instead.
+    ([#4429](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4429))
+-   `Client.list_datasets` returns an iterator of `DatasetListItem`. The API
+    only returns a subset of properties of a dataset when listing.
+    ([#4439](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4439))
+
 ## 0.28.0
 
 **0.28.0 significantly changes the interface for this package.** For examples

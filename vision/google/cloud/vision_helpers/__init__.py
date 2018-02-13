@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import io
 
-from google.gax.utils import protobuf
+from google.api_core import protobuf_helpers as protobuf
 
 
 class VisionHelpers(object):
@@ -25,7 +25,7 @@ class VisionHelpers(object):
     in a multiple-inheritance construction alongside the applicable GAPIC.
     See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
     """
-    def annotate_image(self, request, options=None):
+    def annotate_image(self, request, retry=None, timeout=None):
         """Run image detection and annotation for an image.
 
         Example:
@@ -64,7 +64,7 @@ class VisionHelpers(object):
         # This method allows features not to be specified, and you get all
         # of them.
         protobuf.setdefault(request, 'features', self._get_all_features())
-        r = self.batch_annotate_images([request], options=options)
+        r = self.batch_annotate_images([request], retry=retry, timeout=timeout)
         return r.responses[0]
 
     def _get_all_features(self):

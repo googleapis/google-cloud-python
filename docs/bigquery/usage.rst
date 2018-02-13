@@ -9,6 +9,8 @@ BigQuery
   reference
   dbapi
 
+.. contents:: :local:
+
 Authentication / Configuration
 ------------------------------
 
@@ -110,6 +112,12 @@ Update multiple properties in a dataset's metadata:
    :start-after: [START update_dataset_multiple_properties]
    :end-before: [END update_dataset_multiple_properties]
 
+Modify user permissions on a dataset:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_update_dataset_access]
+   :end-before: [END bigquery_update_dataset_access]
+
 Delete a dataset:
 
 .. literalinclude:: snippets.py
@@ -128,8 +136,8 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START list_dataset_tables]
-   :end-before: [END list_dataset_tables]
+   :start-after: [START list_tables]
+   :end-before: [END list_tables]
 
 Create a table:
 
@@ -170,20 +178,8 @@ Utilize iterator properties returned with row data:
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
-   :start-after: [START table_create_rows]
-   :end-before: [END table_create_rows]
-
-Upload table data from a file:
-
-.. literalinclude:: snippets.py
-   :start-after: [START load_table_from_file]
-   :end-before: [END load_table_from_file]
-
-Load table data from Google Cloud Storage:
-
-.. literalinclude:: snippets.py
-   :start-after: [START load_table_from_uri]
-   :end-before: [END load_table_from_uri]
+   :start-after: [START table_insert_rows]
+   :end-before: [END table_insert_rows]
 
 Copy a table:
 
@@ -203,9 +199,98 @@ Delete a table:
    :start-after: [START delete_table]
    :end-before: [END delete_table]
 
+Upload table data from a file:
+
+.. literalinclude:: snippets.py
+   :start-after: [START load_table_from_file]
+   :end-before: [END load_table_from_file]
+
+Load table data from Google Cloud Storage
+*****************************************
+
+See also: `Loading JSON data from Cloud Storage
+<https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
+
+Load a JSON file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json]
+   :end-before: [END bigquery_load_table_gcs_json]
+
+Load a JSON file from Cloud Storage, using an autodetected schema:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_autodetect]
+   :end-before: [END bigquery_load_table_gcs_json_autodetect]
+
+Append a JSON file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_append]
+   :end-before: [END bigquery_load_table_gcs_json_append]
+
+Overwrite / replace an existing table with a JSON file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_truncate]
+   :end-before: [END bigquery_load_table_gcs_json_truncate]
+
+Customer Managed Encryption Keys
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Table data is always encrypted at rest, but BigQuery also provides a way for
+you to control what keys it uses to encrypt they data. See `Protecting data
+with Cloud KMS keys
+<https://cloud-dot-devsite.googleplex.com/bigquery/docs/customer-managed-encryption>`_
+in the BigQuery documentation for more details.
+
+Create a new table, using a customer-managed encryption key from
+Cloud KMS to encrypt it.
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_create_table_cmek]
+   :end-before: [END bigquery_create_table_cmek]
+
+Change the key used to encrypt a table.
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_update_table_cmek]
+   :end-before: [END bigquery_update_table_cmek]
+
+Load a file from Cloud Storage, using a customer-managed encryption key from
+Cloud KMS for the destination table.
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_cmek]
+   :end-before: [END bigquery_load_table_gcs_json_cmek]
+
+Copy a table, using a customer-managed encryption key from Cloud KMS for the
+destination table.
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_copy_table_cmek]
+   :end-before: [END bigquery_copy_table_cmek]
+
+Write query results to a table, using a customer-managed encryption key from
+Cloud KMS for the destination table.
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_destination_table_cmek]
+   :end-before: [END bigquery_query_destination_table_cmek]
 
 Queries
 -------
+
+
+Run a simple query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run a query and wait for it to finish:
+
+.. literalinclude:: snippets.py
+   :start-after: [START client_simple_query]
+   :end-before: [END client_simple_query]
+
 
 Querying data
 ~~~~~~~~~~~~~
@@ -220,6 +305,17 @@ Querying data
     run in the background even if it takes longer the timeout allowed.
 
 
+Writing query results to a destination table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See BigQuery documentation for more information on
+`writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
+
+.. literalinclude:: snippets.py
+  :start-after: [START bigquery_query_destination_table]
+  :end-before: [END bigquery_query_destination_table]
+
+
 Run a query using a named query parameter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -229,23 +325,6 @@ See BigQuery documentation for more information on
 .. literalinclude:: snippets.py
   :start-after: [START client_query_w_param]
   :end-before: [END client_query_w_param]
-
-
-Querying Table Rows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run a query and wait for it to finish:
-
-.. literalinclude:: snippets.py
-   :start-after: [START client_query_rows]
-   :end-before: [END client_query_rows]
-
-.. note::
-
-  - Use of the ``timeout`` parameter is optional. The query will continue to
-    run in the background even if it takes longer the timeout allowed. The job
-    may be retrieved using the job ID via
-    :meth:`~google.cloud.bigquery.client.Client.get_job`
 
 
 List jobs for a project

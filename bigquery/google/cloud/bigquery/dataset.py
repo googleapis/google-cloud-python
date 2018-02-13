@@ -280,6 +280,16 @@ class Dataset(object):
         return self._properties.get('id')
 
     @property
+    def reference(self):
+        """A reference to this dataset.
+
+        Returns:
+            google.cloud.bigquery.dataset.DatasetReference:
+                A pointer to this dataset
+        """
+        return DatasetReference(self.project, self.dataset_id)
+
+    @property
     def etag(self):
         """ETag for the dataset resource.
 
@@ -409,7 +419,7 @@ class Dataset(object):
         :rtype: dict, {str -> str}
         :returns: A dict of the the dataset's labels.
         """
-        return self._properties['labels']
+        return self._properties.get('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -535,4 +545,105 @@ class Dataset(object):
         :rtype: :class:`~google.cloud.bigquery.table.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
-        return TableReference(self, table_id)
+        return TableReference(self.reference, table_id)
+
+
+class DatasetListItem(object):
+    """A read-only dataset resource from a list operation.
+
+    For performance reasons, the BigQuery API only includes some of the
+    dataset properties when listing datasets. Notably,
+    :attr:`~google.cloud.bigquery.dataset.Dataset.access_entries` is missing.
+
+    For a full list of the properties that the BigQuery API returns, see the
+    `REST documentation for datasets.list
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list>`_.
+
+
+    Args:
+        resource (dict):
+            A dataset-like resource object from a dataset list response. A
+            ``datasetReference`` property is required.
+
+    Raises:
+        ValueError:
+            If ``datasetReference`` or one of its required members is missing
+            from ``resource``.
+    """
+
+    def __init__(self, resource):
+        if 'datasetReference' not in resource:
+            raise ValueError('resource must contain a datasetReference value')
+        if 'projectId' not in resource['datasetReference']:
+            raise ValueError(
+                "resource['datasetReference'] must contain a projectId value")
+        if 'datasetId' not in resource['datasetReference']:
+            raise ValueError(
+                "resource['datasetReference'] must contain a datasetId value")
+        self._properties = resource
+
+    @property
+    def project(self):
+        """Project bound to the dataset.
+
+        :rtype: str
+        :returns: the project.
+        """
+        return self._properties['datasetReference']['projectId']
+
+    @property
+    def dataset_id(self):
+        """Dataset ID.
+
+        :rtype: str
+        :returns: the dataset ID.
+        """
+        return self._properties['datasetReference']['datasetId']
+
+    @property
+    def full_dataset_id(self):
+        """ID for the dataset resource, in the form "project_id:dataset_id".
+
+        :rtype: str, or ``NoneType``
+        :returns: the ID (None until set from the server).
+        """
+        return self._properties.get('id')
+
+    @property
+    def friendly_name(self):
+        """Title of the dataset.
+
+        :rtype: str, or ``NoneType``
+        :returns: The name as set by the user, or None (the default).
+        """
+        return self._properties.get('friendlyName')
+
+    @property
+    def labels(self):
+        """Labels for the dataset.
+
+        :rtype: dict, {str -> str}
+        :returns: A dict of the the dataset's labels.
+        """
+        return self._properties.get('labels', {})
+
+    @property
+    def reference(self):
+        """A reference to this dataset.
+
+        Returns:
+            google.cloud.bigquery.dataset.DatasetReference:
+                A pointer to this dataset
+        """
+        return DatasetReference(self.project, self.dataset_id)
+
+    def table(self, table_id):
+        """Constructs a TableReference.
+
+        :type table_id: str
+        :param table_id: the ID of the table.
+
+        :rtype: :class:`~google.cloud.bigquery.table.TableReference`
+        :returns: a TableReference for a table in this dataset.
+        """
+        return TableReference(self.reference, table_id)

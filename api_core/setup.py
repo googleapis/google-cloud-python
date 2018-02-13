@@ -56,16 +56,19 @@ REQUIREMENTS = [
     'requests >= 2.18.0, < 3.0.0dev',
     'setuptools >= 34.0.0',
     'six >= 1.10.0',
+    # pytz does not adhere to semver and uses a year.month based scheme.
+    # Any valid version of pytz should work for us.
+    'pytz',
 ]
 
 EXTRAS_REQUIREMENTS = {
-    ':python_version<"3.2"': ['futures >= 3.0.0'],
-    'grpc': ['grpcio >= 1.7.0'],
+    ':python_version<"3.2"': ['futures >= 3.2.0'],
+    'grpc': ['grpcio >= 1.8.2'],
 }
 
 setup(
     name='google-api-core',
-    version='0.1.2.dev1',
+    version='0.1.5.dev1',
     description='Core Google API Client Library',
     long_description=README,
     namespace_packages=['google'],

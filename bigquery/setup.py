@@ -58,9 +58,13 @@ REQUIREMENTS = [
     'requests >= 2.18.0',
 ]
 
+EXTRAS_REQUIREMENTS = {
+    'pandas': ['pandas >= 0.17.1'],
+}
+
 setup(
     name='google-cloud-bigquery',
-    version='0.28.1.dev1',
+    version='0.30.0',
     description='Python Client for Google BigQuery',
     long_description=README,
     namespace_packages=[
@@ -69,5 +73,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )
