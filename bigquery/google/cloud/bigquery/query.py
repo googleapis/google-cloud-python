@@ -188,7 +188,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     :type array_type: str
     :param array_type:
         name of type of array elements.  One of `'STRING'`, `'INT64'`,
-        `'FLOAT64'`, ``NUMERIC``, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+        `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
     :type values: list of appropriate scalar type.
     :param values: the parameter array values.
@@ -205,7 +205,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :type array_type: str
         :param array_type:
             name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, ``NUMERIC``, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+            `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
         :type values: list of appropriate scalar type
         :param values: the parameter array values.

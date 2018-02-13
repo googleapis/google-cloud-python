@@ -82,7 +82,7 @@
       {
          "mode" : "NULLABLE",
          "name" : "FavoriteNumber",
-         "type" : "NUMERIC",
+         "type" : "NUMERIC"
       }
    ]
 }
