@@ -194,6 +194,7 @@ def test_on_response():
     # Set up the policy.
     policy = create_policy(executor=executor)
     policy._callback = callback
+    policy.modify_ack_deadline = mock.Mock()
 
     # Set up the messages to send.
     messages = (
@@ -209,9 +210,20 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that executor.submit and
-    # future.add_done_callback were called in the expected way.
+    # Actually run the method and prove that executor.submit
+    # was called in the expected way.
     policy.on_response(response)
+    assert policy.modify_ack_deadline.called_with(
+        [base.ModAckRequest('fack', 10),
+         base.ModAckRequest('back', 10)]
+    )
+    
+    requests = [{'modify_deadline_ack_ids':['fack'],
+                 'modify_deadline_seconds':[10]},
+                {'modify_deadline_ack_ids':['back'],
+                 'modify_deadline_seconds':[10]}]
+    calls = [mock.call(types.StreamingPullRequest(**requests[0])),
+             mock.call(types.StreamingPullRequest(**requests[1]))]
 
     submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
     assert len(submit_calls) == 2

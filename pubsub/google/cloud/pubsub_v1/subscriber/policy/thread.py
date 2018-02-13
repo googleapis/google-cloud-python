@@ -331,6 +331,11 @@ class Policy(base.BasePolicy):
 
         For each message, schedule a callback with the executor.
         """
+        items = [
+            base.ModAckRequest(message.ack_id, self.histogram.percentile(99))
+            for message in response.received_messages
+        ]
+        self.modify_ack_deadline(items)
         for msg in response.received_messages:
             _LOGGER.debug(
                 'Using %s to process message with ack_id %s.',
