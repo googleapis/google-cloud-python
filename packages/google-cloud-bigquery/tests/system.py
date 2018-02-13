@@ -746,6 +746,27 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
+    def test_get_failed_job(self):
+        # issue 4246
+        from google.api_core.exceptions import BadRequest
+
+        JOB_ID = 'invalid_{}'.format(str(uuid.uuid4()))
+        QUERY = 'SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);'
+        PARAM = bigquery.ScalarQueryParameter(
+            'ts_value', 'TIMESTAMP', 1.4810976E9)
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.query_parameters = [PARAM]
+
+        with self.assertRaises(BadRequest):
+            Config.CLIENT.query(
+                QUERY, job_id=JOB_ID, job_config=job_config).result()
+
+        job = Config.CLIENT.get_job(JOB_ID)
+
+        with self.assertRaises(ValueError):
+            job.query_parameters
+
     def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())

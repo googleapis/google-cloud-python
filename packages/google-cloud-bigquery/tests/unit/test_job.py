@@ -1684,6 +1684,7 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.dry_run)
         self.assertIsNone(config.use_legacy_sql)
         self.assertIsNone(config.default_dataset)
+        self.assertIsNone(config.destination)
         self.assertIsNone(config.destination_encryption_configuration)
 
     def test_from_api_repr_normal(self):
