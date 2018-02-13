@@ -272,33 +272,73 @@ class Test_Worker(unittest.TestCase):
         self.assertFalse(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._queue.qsize(), 0)
 
-    def test__thread_main_max_latency(self):
+    @mock.patch('time.time', autospec=True, return_value=1)
+    def test__thread_main_max_latency(self, time):
+        # Note: this test is a bit brittle as it assumes the operation of
+        # _get_many invokes queue.get() followed by queue._get(). It fails
+        # the "change detector" test in that way. However, this is still a
+        # useful test to verify the queue timeout is appropriately calculated.
+        from six.moves import queue
         from google.cloud.logging.handlers.transports import background_thread
-        import time
 
-        worker = self._make_one(_Logger(self.NAME), max_latency=0.1)
+        # Use monotonically increasing time.
+        time.side_effect = range(1, 6)
 
-        # enqueue some records, start main thread, check that they were consumed
-        # but the batch wasn't sent yet
-        self._enqueue_record(worker, '1')
-        worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
+        worker = self._make_one(
+            _Logger(self.NAME), max_latency=2, max_batch_size=10)
+        worker._queue = mock.create_autospec(queue.Queue, instance=True)
 
-        worker.start()
+        worker._queue.get.side_effect = [
+            {'info': {'message': '1'}},  # Single record.
+            queue.Empty(),  # Emulate a queue.get() timeout.
+            {'info': {'message': '1'}},  # Second record.
+            background_thread._WORKER_TERMINATOR,  # Stop the thread.
+            queue.Empty(),  # Emulate a queue.get() timeout.
+        ]
 
-        # wait a short amount to give thread time to start
-        time.sleep(0.05)
+        worker._thread_main()
 
-        try:
-            self.assertFalse(worker._cloud_logger._batch.commit_called)
-            self.assertEqual(worker._queue.qsize(), 0)
+        self.assertEqual(worker._cloud_logger._num_batches, 2)
+        self.assertTrue(worker._cloud_logger._batch.commit_called)
+        self.assertEqual(worker._cloud_logger._batch.commit_count, 1)
 
-            # wait until max_latency has passed, then check that batch was sent
-            time.sleep(0.06)
+        # Time should have been called five times.
+        #
+        #   For the first batch, it should have been called:
+        #       * Once to get the start time. (1)
+        #       * Once to get the elapsed time while grabbing the second item.
+        #         (2)
+        #
+        #   For the second batch, it should have been called:
+        #       * Once to get start time. (3)
+        #       * Once to get the elapsed time while grabbing the second item.
+        #         (3)
+        #       * Once to get the elapsed time while grabbing the final
+        #         item. (4)
+        #       * Once final time to get the elapsed time while receiving
+        #         the empty queue.
+        #
+        self.assertEqual(time.call_count, 5)
 
-            self.assertTrue(worker._cloud_logger._batch.commit_called)
-            self.assertEqual(worker._queue.qsize(), 0)
-        finally:
-            worker.stop()
+        # Queue.get should've been called 5 times as well, but with different
+        # timeouts due to the monotonically increasing time.
+        #
+        #   For the first batch, it will be called once without a timeout
+        #   (for the first item) and then with timeout=1, as start will be
+        #   1 and now will be 2.
+        #
+        #   For the second batch, it will be called once without a timeout
+        #   (for the first item) and then with timeout=1, as start will be
+        #   3 and now will be 4, and finally with timeout=0 as start will be 3
+        #   and now will be 5.
+        #
+        worker._queue.get.assert_has_calls([
+            mock.call(),
+            mock.call(timeout=1),
+            mock.call(),
+            mock.call(timeout=1),
+            mock.call(timeout=0)
+        ])
 
     def test_flush(self):
         worker = self._make_one(_Logger(self.NAME))
@@ -367,9 +407,11 @@ class _Logger(object):
         self.name = name
         self._batch_cls = _Batch
         self._batch = None
+        self._num_batches = 0
 
     def batch(self):
         self._batch = self._batch_cls()
+        self._num_batches += 1
         return self._batch
 
 
