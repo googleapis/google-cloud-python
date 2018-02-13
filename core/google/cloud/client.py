@@ -67,15 +67,40 @@ class _ClientFactoryMixin(object):
         :raises TypeError: if there is a conflict with the kwargs
                  and the credentials created by the factory.
         """
-        if 'credentials' in kwargs:
-            raise TypeError('credentials must not be in keyword arguments')
         with io.open(json_credentials_path, 'r', encoding='utf-8') as json_fi:
             credentials_info = json.load(json_fi)
+        return cls.from_dict(credentials_info, *args, **kwargs)
+
+    @classmethod
+    def from_dict(cls, service_account_dict, *args, **kwargs):
+        """Factory to retrieve credentials from a dictionary while creating a
+        client. Dictionary is assumed to be equivalent to a parsed service
+        account JSON.
+
+        :type service_account_dict: dict
+        :param service_account_dict: A dictionary equivalent to a private key
+                                     file. This dict must contain a private key
+                                     and other credentials information (see
+                                     from_service_account_json).
+
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to pass to constructor.
+
+        :rtype: :class:`_ClientFactoryMixin`
+        :returns: The client created with the retrieved JSON credentials.
+        :raises TypeError: if there is a conflict with the kwargs
+                 and the credentials created by the factory.
+                """
+        if 'credentials' in kwargs:
+            raise TypeError('credentials must not be in keyword arguments')
         credentials = service_account.Credentials.from_service_account_info(
-            credentials_info)
+            service_account_dict)
         if cls._SET_PROJECT:
             if 'project' not in kwargs:
-                kwargs['project'] = credentials_info.get('project_id')
+                kwargs['project'] = service_account_dict.get('project_id')
 
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
