@@ -838,6 +838,20 @@ def pbs_for_set(document_path, document_data, option):
 
 
 def _convert_simple_field_paths_with_leading_digits(field_paths):
+    """ Converts simple field path with integer beginnings to quoted field path
+
+    Args:
+        field_paths (List[str, ...]): A list of field paths
+
+    Returns:
+        new_field_paths (List[str, ...]):
+            The same list of field paths except field paths that start with
+            integers have been converted into quoted field paths. Simple field
+            paths cannot start with 0-9. See `Document`_ page for more
+            information.
+
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document
+    """
     new_field_paths = []
     for field_path in field_paths:
         if field_path[0] in '0123456789':
