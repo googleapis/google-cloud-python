@@ -23,6 +23,7 @@ import google.gax.grpc
 import grpc
 import six
 
+from google.api_core import retry
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import batch
 from google.cloud.firestore_v1beta1 import types
@@ -378,6 +379,9 @@ def _commit_with_retry(client, write_pbs, transaction_id):
             is encountered.
     """
     current_sleep = _INITIAL_SLEEP
+    sleep_generator = retry.exponential_sleep_generator(current_sleep,
+                                                        _MAX_SLEEP,
+                                                        _MULTIPLIER)
     while True:
         try:
             return client._firestore_api.commit(
@@ -390,30 +394,4 @@ def _commit_with_retry(client, write_pbs, transaction_id):
                 pass  # Retry
             else:
                 raise
-
-        current_sleep = _sleep(current_sleep)
-
-
-def _sleep(current_sleep, max_sleep=_MAX_SLEEP, multiplier=_MULTIPLIER):
-    """Sleep and produce a new sleep time.
-
-    .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
-                                        2015/03/backoff.html
-
-    Select a duration between zero and ``current_sleep``. It might seem
-    counterintuitive to have so much jitter, but
-    `Exponential Backoff And Jitter`_ argues that "full jitter" is
-    the best strategy.
-
-    Args:
-        current_sleep (float): The current "max" for sleep interval.
-        max_sleep (Optional[float]): Eventual "max" sleep time
-        multiplier (Optional[float]): Multiplier for exponential backoff.
-
-    Returns:
-        float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
-        is smaller)
-    """
-    actual_sleep = random.uniform(0.0, current_sleep)
-    time.sleep(actual_sleep)
-    return min(multiplier * current_sleep, max_sleep)
+        current_sleep = next(sleep_generator)

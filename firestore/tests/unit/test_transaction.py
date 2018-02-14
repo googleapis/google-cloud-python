@@ -718,8 +718,7 @@ class Test__commit_with_retry(unittest.TestCase):
 
         return _commit_with_retry(client, write_pbs, transaction_id)
 
-    @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep')
-    def test_success_first_attempt(self, _sleep):
+    def test_success_first_attempt(self):
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy result.
@@ -736,15 +735,12 @@ class Test__commit_with_retry(unittest.TestCase):
             client, mock.sentinel.write_pbs, txn_id)
         self.assertIs(commit_response, firestore_api.commit.return_value)
 
-        # Verify mocks used.
-        _sleep.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             client._database_string, mock.sentinel.write_pbs,
             transaction=txn_id, options=client._call_options)
 
-    @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep',
-                side_effect=[2.0, 4.0])
-    def test_success_third_attempt(self, _sleep):
+    def test_success_third_attempt(self):
+        from google.cloud.firestore_v1beta1 import transaction
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy result.
@@ -767,11 +763,6 @@ class Test__commit_with_retry(unittest.TestCase):
             client, mock.sentinel.write_pbs, txn_id)
         self.assertIs(commit_response, mock.sentinel.commit_response)
 
-        # Verify mocks used.
-        self.assertEqual(_sleep.call_count, 2)
-        _sleep.assert_any_call(1.0)
-        _sleep.assert_any_call(2.0)
-        # commit() called same way 3 times.
         commit_call = mock.call(
             client._database_string, mock.sentinel.write_pbs,
             transaction=txn_id, options=client._call_options)
@@ -779,8 +770,7 @@ class Test__commit_with_retry(unittest.TestCase):
             firestore_api.commit.mock_calls,
             [commit_call, commit_call, commit_call])
 
-    @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep')
-    def test_failure_first_attempt(self, _sleep):
+    def test_failure_first_attempt(self):
         from google.gax import errors
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
@@ -804,14 +794,11 @@ class Test__commit_with_retry(unittest.TestCase):
         self.assertIs(exc_info.exception, exc)
 
         # Verify mocks used.
-        _sleep.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             client._database_string, mock.sentinel.write_pbs,
             transaction=txn_id, options=client._call_options)
 
-    @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep',
-                return_value=2.0)
-    def test_failure_second_attempt(self, _sleep):
+    def test_failure_second_attempt(self):
         from google.gax import errors
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
@@ -836,63 +823,12 @@ class Test__commit_with_retry(unittest.TestCase):
 
         self.assertIs(exc_info.exception, exc2)
 
-        # Verify mocks used.
-        _sleep.assert_called_once_with(1.0)
         # commit() called same way 2 times.
         commit_call = mock.call(
             client._database_string, mock.sentinel.write_pbs,
             transaction=txn_id, options=client._call_options)
         self.assertEqual(
             firestore_api.commit.mock_calls, [commit_call, commit_call])
-
-
-class Test__sleep(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(current_sleep, **kwargs):
-        from google.cloud.firestore_v1beta1.transaction import _sleep
-
-        return _sleep(current_sleep, **kwargs)
-
-    @mock.patch('random.uniform', return_value=5.5)
-    @mock.patch('time.sleep', return_value=None)
-    def test_defaults(self, sleep, uniform):
-        curr_sleep = 10.0
-        self.assertLessEqual(uniform.return_value, curr_sleep)
-
-        new_sleep = self._call_fut(curr_sleep)
-        self.assertEqual(new_sleep, 2.0 * curr_sleep)
-
-        uniform.assert_called_once_with(0.0, curr_sleep)
-        sleep.assert_called_once_with(uniform.return_value)
-
-    @mock.patch('random.uniform', return_value=10.5)
-    @mock.patch('time.sleep', return_value=None)
-    def test_explicit(self, sleep, uniform):
-        curr_sleep = 12.25
-        self.assertLessEqual(uniform.return_value, curr_sleep)
-
-        multiplier = 1.5
-        new_sleep = self._call_fut(
-            curr_sleep, max_sleep=100.0, multiplier=multiplier)
-        self.assertEqual(new_sleep, multiplier * curr_sleep)
-
-        uniform.assert_called_once_with(0.0, curr_sleep)
-        sleep.assert_called_once_with(uniform.return_value)
-
-    @mock.patch('random.uniform', return_value=6.75)
-    @mock.patch('time.sleep', return_value=None)
-    def test_exceeds_max(self, sleep, uniform):
-        curr_sleep = 20.0
-        self.assertLessEqual(uniform.return_value, curr_sleep)
-
-        max_sleep = 38.5
-        new_sleep = self._call_fut(
-            curr_sleep, max_sleep=max_sleep, multiplier=2.0)
-        self.assertEqual(new_sleep, max_sleep)
-
-        uniform.assert_called_once_with(0.0, curr_sleep)
-        sleep.assert_called_once_with(uniform.return_value)
 
 
 def _make_credentials():
