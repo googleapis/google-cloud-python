@@ -346,7 +346,7 @@ class DlpServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2beta1.types.InspectConfig`
             items (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ContentItem]]): The list of items to inspect. Up to 100 are allowed per request.
-                All items will be treated as text/*.
+                All items will be treated as ``text/*``.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2beta1.types.ContentItem`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
