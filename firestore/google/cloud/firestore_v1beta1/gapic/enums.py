@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,79 +25,6 @@ class NullValue(object):
       NULL_VALUE (int): Null value.
     """
     NULL_VALUE = 0
-
-
-class IndexField(object):
-    class Mode(object):
-        """
-        The mode determines how a field is indexed.
-
-        Attributes:
-          MODE_UNSPECIFIED (int): The mode is unspecified.
-          ASCENDING (int): The field's values are indexed so as to support sequencing in
-          ascending order and also query by <, >, <=, >=, and =.
-          DESCENDING (int): The field's values are indexed so as to support sequencing in
-          descending order and also query by <, >, <=, >=, and =.
-        """
-        MODE_UNSPECIFIED = 0
-        ASCENDING = 2
-        DESCENDING = 3
-
-
-class Index(object):
-    class State(object):
-        """
-        The state of an index. During index creation, an index will be in the
-        ``CREATING`` state. If the index is created successfully, it will transition
-        to the ``READY`` state. If the index is not able to be created, it will
-        transition to the ``ERROR`` state.
-
-        Attributes:
-          STATE_UNSPECIFIED (int): The state is unspecified.
-          CREATING (int): The index is being created.
-          There is an active long-running operation for the index.
-          The index is updated when writing a document.
-          Some index data may exist.
-          READY (int): The index is ready to be used.
-          The index is updated when writing a document.
-          The index is fully populated from all stored documents it applies to.
-          ERROR (int): The index was being created, but something went wrong.
-          There is no active long-running operation for the index,
-          and the most recently finished long-running operation failed.
-          The index is not updated when writing a document.
-          Some index data may exist.
-        """
-        STATE_UNSPECIFIED = 0
-        CREATING = 3
-        READY = 2
-        ERROR = 5
-
-
-class IndexOperationMetadata(object):
-    class OperationType(object):
-        """
-        The type of index operation.
-
-        Attributes:
-          OPERATION_TYPE_UNSPECIFIED (int): Unspecified. Never set by server.
-          CREATING_INDEX (int): The operation is creating the index. Initiated by a ``CreateIndex`` call.
-        """
-        OPERATION_TYPE_UNSPECIFIED = 0
-        CREATING_INDEX = 1
-
-
-class DocumentTransform(object):
-    class FieldTransform(object):
-        class ServerValue(object):
-            """
-            A value that is calculated by the server.
-
-            Attributes:
-              SERVER_VALUE_UNSPECIFIED (int): Unspecified. This value must not be used.
-              REQUEST_TIME (int): The time at which the server processed the request.
-            """
-            SERVER_VALUE_UNSPECIFIED = 0
-            REQUEST_TIME = 1
 
 
 class StructuredQuery(object):
@@ -160,6 +87,21 @@ class StructuredQuery(object):
             OPERATOR_UNSPECIFIED = 0
             IS_NAN = 2
             IS_NULL = 3
+
+
+class DocumentTransform(object):
+    class FieldTransform(object):
+        class ServerValue(object):
+            """
+            A value that is calculated by the server.
+
+            Attributes:
+              SERVER_VALUE_UNSPECIFIED (int): Unspecified. This value must not be used.
+              REQUEST_TIME (int): The time at which the server processed the request, with millisecond
+              precision.
+            """
+            SERVER_VALUE_UNSPECIFIED = 0
+            REQUEST_TIME = 1
 
 
 class TargetChange(object):
