@@ -16,6 +16,7 @@ import base64
 import concurrent.futures
 import csv
 import datetime
+import decimal
 import json
 import operator
 import os
@@ -1006,6 +1007,10 @@ class TestBigQuery(unittest.TestCase):
                 'expected': naive.time(),
             },
             {
+                'sql': 'SELECT NUMERIC "123456789.123456789"',
+                'expected': decimal.Decimal('123456789.123456789'),
+            },
+            {
                 'sql': 'SELECT (1, 2)',
                 'expected': {'_field_1': 1, '_field_2': 2},
             },
@@ -1257,6 +1262,10 @@ class TestBigQuery(unittest.TestCase):
         pi = 3.1415926
         pi_param = ScalarQueryParameter(
             name='pi', type_='FLOAT64', value=pi)
+        pi_numeric = decimal.Decimal('3.141592654')
+        pi_numeric_param = ScalarQueryParameter(
+            name='pi_numeric_param', type_='NUMERIC',
+            value=pi_numeric)
         truthy = True
         truthy_param = ScalarQueryParameter(
             name='truthy', type_='BOOL', value=truthy)
@@ -1331,6 +1340,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @pi',
                 'expected': pi,
                 'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @pi_numeric_param',
+                'expected': pi_numeric,
+                'query_parameters': [pi_numeric_param],
             },
             {
                 'sql': 'SELECT @truthy',
@@ -1771,6 +1785,8 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
+            self.assertEqual(found[8],
+                             decimal.Decimal(expected['FavoriteNumber']))
 
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import copy
+import decimal
 import email
 import io
 import json
@@ -2824,6 +2825,39 @@ class TestClient(unittest.TestCase):
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
             client.insert_rows(1, ROWS)
+
+    def test_insert_rows_w_numeric(self):
+        from google.cloud.bigquery import table
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        schema = [
+            table.SchemaField('account', 'STRING'),
+            table.SchemaField('balance', 'NUMERIC'),
+        ]
+        insert_table = table.Table(self.TABLE_REF, schema=schema)
+        rows = [
+            ('Savings', decimal.Decimal('23.47')),
+            ('Checking', decimal.Decimal('1.98')),
+            ('Mortgage', decimal.Decimal('-12345678909.87654321')),
+        ]
+
+        errors = client.create_rows(insert_table, rows)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        sent_rows = req['data']['rows']
+        self.assertEqual(
+            sent_rows[0]['json'], {'account': 'Savings', 'balance': '23.47'})
+        self.assertEqual(
+            sent_rows[1]['json'], {'account': 'Checking', 'balance': '1.98'})
+        self.assertEqual(
+            sent_rows[2]['json'],
+            {'account': 'Mortgage', 'balance': '-12345678909.87654321'})
 
     def test_insert_rows_json(self):
         from google.cloud.bigquery.table import Table, SchemaField
