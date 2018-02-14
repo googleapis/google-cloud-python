@@ -15,6 +15,8 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
+import functools
+
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
@@ -317,7 +319,7 @@ class Table(object):
         return PartialRowsData(response_iterator)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None):
+                   filter_=None, retry=False):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -343,15 +345,26 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-        request_pb = _create_row_request(
-            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
-        generator = YieldRowsData(response_iterator)
-        for row in generator.read_rows():
-            yield row
+
+        if retry:
+            retryable_read_rows = _RetryableReadRows(
+                client, self.name, start_key, end_key, filter_, limit)
+
+            for row in retryable_read_rows().read_rows():
+                retryable_read_rows.last_scanned_key = row.row_key
+                yield row
+
+        else:
+            request_pb = _create_row_request(
+                self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+                limit=limit)
+            response_iterator = client._data_stub.ReadRows(request_pb)
+            # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
+            generator = YieldRowsData(response_iterator)
+
+            for row in generator.read_rows():
+                yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -530,6 +543,44 @@ class _RetryableMutateRowsWorker(object):
             raise _BigtableRetryableError
 
         return self.responses_statuses
+
+
+class _RetryableReadRows(object):
+    """A callable worker that can retry to read rows with transient errors.
+
+    This class is a callable that can retry reading rows that result in
+    transient errors.
+    """
+
+    def __init__(self, client, table_name, last_scanned_key, end_key, filter_, limit):
+        self.client = client
+        self.table_name = table_name
+        self.last_scanned_key = last_scanned_key
+        self.end_key = end_key
+        self.filter_ = filter_
+        self.limit = limit
+
+    def __call__(self):
+        from google.cloud.bigtable.row import _retry_commit_exception
+
+        read_rows = functools.partial(self._do_read_retryable_rows)
+        retry_ = Retry(
+            predicate=_retry_commit_exception,
+            deadline=30)
+        return retry_(read_rows)()
+
+    def _do_read_retryable_rows(self):
+        request_pb = _create_row_request(
+            self.table_name,
+            start_key=self.last_scanned_key,
+            end_key=self.end_key,
+            filter_=self.filter_,
+            limit=self.limit)
+        client = self.client
+        response_iterator = client._data_stub.ReadRows(request_pb)
+        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
+        generator = YieldRowsData(response_iterator)
+        return generator
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
