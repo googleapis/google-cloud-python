@@ -20,8 +20,8 @@ try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
-
-from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
+from google.cloud.bigquery.job import CopyJobConfig
+from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import EncryptionConfiguration
@@ -639,10 +639,12 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
+        from google.cloud.bigquery.job import CreateDisposition
+
         client = _make_client(project=self.PROJECT)
         RESOURCE = self._make_resource()
         load_config = RESOURCE['configuration']['load']
-        load_config['createDisposition'] = 'CREATE_IF_NEEDED'
+        load_config['createDisposition'] = CreateDisposition.CREATE_IF_NEEDED
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
@@ -739,6 +741,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import WriteDisposition
         from google.cloud.bigquery.schema import SchemaField
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -752,7 +756,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             },
             'allowJaggedRows': True,
             'allowQuotedNewlines': True,
-            'createDisposition': 'CREATE_NEVER',
+            'createDisposition': CreateDisposition.CREATE_NEVER,
             'encoding': 'ISO-8559-1',
             'fieldDelimiter': '|',
             'ignoreUnknownValues': True,
@@ -761,7 +765,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             'quote': "'",
             'skipLeadingRows': '1',
             'sourceFormat': 'CSV',
-            'writeDisposition': 'WRITE_TRUNCATE',
+            'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
@@ -780,7 +784,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                              client1, config)
         config.allow_jagged_rows = True
         config.allow_quoted_newlines = True
-        config.create_disposition = 'CREATE_NEVER'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
         config.encoding = 'ISO-8559-1'
         config.field_delimiter = '|'
         config.ignore_unknown_values = True
@@ -789,7 +793,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.quote_character = "'"
         config.skip_leading_rows = 1
         config.source_format = 'CSV'
-        config.write_disposition = 'WRITE_TRUNCATE'
+        config.write_disposition = WriteDisposition.WRITE_TRUNCATE
 
         job._begin(client=client2)
 
@@ -1172,10 +1176,11 @@ class TestCopyJob(unittest.TestCase, _Base):
             klass.from_api_repr(RESOURCE, client=client)
 
     def test_from_api_repr_w_properties(self):
+        from google.cloud.bigquery.job import CreateDisposition
         client = _make_client(project=self.PROJECT)
         RESOURCE = self._make_resource()
         copy_config = RESOURCE['configuration']['copy']
-        copy_config['createDisposition'] = 'CREATE_IF_NEEDED'
+        copy_config['createDisposition'] = CreateDisposition.CREATE_IF_NEEDED
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
@@ -1225,6 +1230,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import WriteDisposition
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource(ended=True)
         COPY_CONFIGURATION = {
@@ -1238,8 +1245,8 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'datasetId': self.DS_ID,
                 'tableId': self.DESTINATION_TABLE,
             },
-            'createDisposition': 'CREATE_NEVER',
-            'writeDisposition': 'WRITE_TRUNCATE',
+            'createDisposition': CreateDisposition.CREATE_NEVER,
+            'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
         }
         RESOURCE['configuration']['copy'] = COPY_CONFIGURATION
         conn1 = _Connection()
@@ -1249,8 +1256,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         config = CopyJobConfig()
-        config.create_disposition = 'CREATE_NEVER'
-        config.write_disposition = 'WRITE_TRUNCATE'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
+        config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         job = self._make_one(self.JOB_ID, [source], destination, client1,
                              config)
         job._begin(client=client2)
@@ -1491,10 +1498,11 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
+        from google.cloud.bigquery.job import Compression
         client = _make_client(project=self.PROJECT)
         RESOURCE = self._make_resource()
         extract_config = RESOURCE['configuration']['extract']
-        extract_config['compression'] = 'GZIP'
+        extract_config['compression'] = Compression.GZIP
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
@@ -1541,6 +1549,9 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
+        from google.cloud.bigquery.job import Compression
+        from google.cloud.bigquery.job import DestinationFormat
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource(ended=True)
         EXTRACT_CONFIGURATION = {
@@ -1550,8 +1561,8 @@ class TestExtractJob(unittest.TestCase, _Base):
                 'tableId': self.SOURCE_TABLE,
             },
             'destinationUris': [self.DESTINATION_URI],
-            'compression': 'GZIP',
-            'destinationFormat': 'NEWLINE_DELIMITED_JSON',
+            'compression': Compression.GZIP,
+            'destinationFormat': DestinationFormat.NEWLINE_DELIMITED_JSON,
             'fieldDelimiter': '|',
             'printHeader': False,
         }
@@ -1562,13 +1573,13 @@ class TestExtractJob(unittest.TestCase, _Base):
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
-        job_config = ExtractJobConfig()
-        job_config.compression = 'GZIP'
-        job_config.destination_format = 'NEWLINE_DELIMITED_JSON'
-        job_config.field_delimiter = '|'
-        job_config.print_header = False
+        config = ExtractJobConfig()
+        config.compression = Compression.GZIP
+        config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
+        config.field_delimiter = '|'
+        config.print_header = False
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client1, job_config)
+                             client1, config)
 
         job._begin(client=client2)
 
@@ -2031,11 +2042,14 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import WriteDisposition
+
         client = _make_client(project=self.PROJECT)
         RESOURCE = self._make_resource()
         query_config = RESOURCE['configuration']['query']
-        query_config['createDisposition'] = 'CREATE_IF_NEEDED'
-        query_config['writeDisposition'] = 'WRITE_TRUNCATE'
+        query_config['createDisposition'] = CreateDisposition.CREATE_IF_NEEDED
+        query_config['writeDisposition'] = WriteDisposition.WRITE_TRUNCATE
         query_config['destinationTable'] = {
             'projectId': self.PROJECT,
             'datasetId': self.DS_ID,
@@ -2482,7 +2496,10 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.job import QueryPriority
+        from google.cloud.bigquery.job import WriteDisposition
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
@@ -2491,7 +2508,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         QUERY_CONFIGURATION = {
             'query': self.QUERY,
             'allowLargeResults': True,
-            'createDisposition': 'CREATE_NEVER',
+            'createDisposition': CreateDisposition.CREATE_NEVER,
             'defaultDataset': {
                 'projectId': self.PROJECT,
                 'datasetId': DS_ID,
@@ -2502,10 +2519,10 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'tableId': TABLE,
             },
             'flattenResults': True,
-            'priority': 'INTERACTIVE',
+            'priority': QueryPriority.INTERACTIVE,
             'useQueryCache': True,
             'useLegacySql': True,
-            'writeDisposition': 'WRITE_TRUNCATE',
+            'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'maximumBillingTier': 4,
             'maximumBytesBilled': '123456'
         }
@@ -2520,16 +2537,16 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         config = QueryJobConfig()
         config.allow_large_results = True
-        config.create_disposition = 'CREATE_NEVER'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
         config.default_dataset = dataset_ref
         config.destination = table_ref
         config.dry_run = True
         config.flatten_results = True
         config.maximum_billing_tier = 4
-        config.priority = 'INTERACTIVE'
+        config.priority = QueryPriority.INTERACTIVE
         config.use_legacy_sql = True
         config.use_query_cache = True
-        config.write_disposition = 'WRITE_TRUNCATE'
+        config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.maximum_bytes_billed = 123456
         job = self._make_one(
             self.JOB_ID, self.QUERY, client1, job_config=config)

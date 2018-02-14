@@ -606,8 +606,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.view_query, query)
 
     def test_create_table_w_external(self):
-        from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.external_config import ExternalConfig
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.table import Table
 
         path = 'projects/%s/datasets/%s/tables' % (
             self.PROJECT, self.DS_ID)
@@ -621,7 +622,7 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID
             },
             'externalDataConfiguration': {
-                'sourceFormat': 'CSV',
+                'sourceFormat': SourceFormat.CSV,
                 'autodetect': True,
             },
         }
@@ -644,7 +645,7 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID,
             },
             'externalDataConfiguration': {
-                'sourceFormat': 'CSV',
+                'sourceFormat': SourceFormat.CSV,
                 'autodetect': True,
             },
             'labels': {},
@@ -653,7 +654,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
         self.assertEqual(got.dataset_id, self.DS_ID)
-        self.assertEqual(got.external_data_configuration.source_format, 'CSV')
+        self.assertEqual(got.external_data_configuration.source_format,
+                         SourceFormat.CSV)
         self.assertEqual(got.external_data_configuration.autodetect, True)
 
     def test_get_table(self):
@@ -1228,7 +1230,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_get_job_hit(self):
+        from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import WriteDisposition
 
         JOB_ID = 'query_job'
         QUERY_DESTINATION_TABLE = 'query_destination_table'
@@ -1248,8 +1252,8 @@ class TestClient(unittest.TestCase):
                         'datasetId': self.DS_ID,
                         'tableId': QUERY_DESTINATION_TABLE,
                     },
-                    'createDisposition': 'CREATE_IF_NEEDED',
-                    'writeDisposition': 'WRITE_TRUNCATE',
+                    'createDisposition': CreateDisposition.CREATE_IF_NEEDED,
+                    'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
                 }
             },
         }
@@ -1261,8 +1265,10 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.job_id, JOB_ID)
-        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
-        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
+        self.assertEqual(job.create_disposition,
+                         CreateDisposition.CREATE_IF_NEEDED)
+        self.assertEqual(job.write_disposition,
+                         WriteDisposition.WRITE_TRUNCATE)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -1328,10 +1334,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_defaults(self):
-        from google.cloud.bigquery.job import LoadJob
         from google.cloud.bigquery.job import CopyJob
+        from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import ExtractJob
+        from google.cloud.bigquery.job import LoadJob
         from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import WriteDisposition
 
         SOURCE_TABLE = 'source_table'
         DESTINATION_TABLE = 'destination_table'
@@ -1362,8 +1370,8 @@ class TestClient(unittest.TestCase):
                         'datasetId': self.DS_ID,
                         'tableId': QUERY_DESTINATION_TABLE,
                     },
-                    'createDisposition': 'CREATE_IF_NEEDED',
-                    'writeDisposition': 'WRITE_TRUNCATE',
+                    'createDisposition': CreateDisposition.CREATE_IF_NEEDED,
+                    'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
                 }
             },
         }
@@ -1608,7 +1616,9 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.client import _DEFAULT_CHUNKSIZE
         from google.cloud.bigquery.client import _GENERIC_CONTENT_TYPE
         from google.cloud.bigquery.client import _get_upload_headers
-        from google.cloud.bigquery.job import LoadJob, LoadJobConfig
+        from google.cloud.bigquery.job import LoadJob
+        from google.cloud.bigquery.job import LoadJobConfig
+        from google.cloud.bigquery.job import SourceFormat
 
         # Create mocks to be checked for doing transport.
         resumable_url = 'http://test.invalid?upload_id=hey-you'
@@ -1622,7 +1632,7 @@ class TestClient(unittest.TestCase):
         data = b'goodbye gudbi gootbee'
         stream = io.BytesIO(data)
         config = LoadJobConfig()
-        config.source_format = 'CSV'
+        config.source_format = SourceFormat.CSV
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job._build_resource()
         upload, transport = client._initiate_resumable_upload(
@@ -1675,7 +1685,9 @@ class TestClient(unittest.TestCase):
     def _do_multipart_upload_success_helper(
             self, get_boundary, num_retries=None):
         from google.cloud.bigquery.client import _get_upload_headers
-        from google.cloud.bigquery.job import LoadJob, LoadJobConfig
+        from google.cloud.bigquery.job import LoadJob
+        from google.cloud.bigquery.job import LoadJobConfig
+        from google.cloud.bigquery.job import SourceFormat
 
         fake_transport = self._mock_transport(http_client.OK, {})
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
@@ -1685,7 +1697,7 @@ class TestClient(unittest.TestCase):
         data = b'Bzzzz-zap \x00\x01\xf4'
         stream = io.BytesIO(data)
         config = LoadJobConfig()
-        config.source_format = 'CSV'
+        config.source_format = SourceFormat.CSV
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job._build_resource()
         size = len(data)
@@ -2838,7 +2850,7 @@ class TestClientUpload(object):
     # NOTE: This is a "partner" to `TestClient` meant to test some of the
     #       "load_table_from_file" portions of `Client`. It also uses
     #       `pytest`-style tests rather than `unittest`-style.
-
+    from google.cloud.bigquery.job import SourceFormat
     TABLE_REF = DatasetReference(
         'project_id', 'test_dataset').table('test_table')
 
@@ -2881,7 +2893,7 @@ class TestClientUpload(object):
         'jobReference': {'projectId': 'project_id', 'jobId': 'job_id'},
         'configuration': {
             'load': {
-                'sourceFormat': 'CSV',
+                'sourceFormat': SourceFormat.CSV,
                 'destinationTable': {
                     'projectId': 'project_id',
                     'datasetId': 'test_dataset',
@@ -2898,9 +2910,10 @@ class TestClientUpload(object):
     @staticmethod
     def _make_config():
         from google.cloud.bigquery.job import LoadJobConfig
+        from google.cloud.bigquery.job import SourceFormat
 
         config = LoadJobConfig()
-        config.source_format = 'CSV'
+        config.source_format = SourceFormat.CSV
         return config
 
     # High-level tests
@@ -2925,6 +2938,8 @@ class TestClientUpload(object):
 
     def test_load_table_from_file_resumable_metadata(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import WriteDisposition
 
         client = self._make_client()
         file_obj = self._make_file_obj()
@@ -2932,14 +2947,14 @@ class TestClientUpload(object):
         config = self._make_config()
         config.allow_jagged_rows = False
         config.allow_quoted_newlines = False
-        config.create_disposition = 'CREATE_IF_NEEDED'
+        config.create_disposition = CreateDisposition.CREATE_IF_NEEDED
         config.encoding = 'utf8'
         config.field_delimiter = ','
         config.ignore_unknown_values = False
         config.max_bad_records = 0
         config.quote_character = '"'
         config.skip_leading_rows = 1
-        config.write_disposition = 'WRITE_APPEND'
+        config.write_disposition = WriteDisposition.WRITE_APPEND
         config.null_marker = r'\N'
 
         expected_config = {
