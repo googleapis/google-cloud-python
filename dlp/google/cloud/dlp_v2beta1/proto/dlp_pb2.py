@@ -4360,7 +4360,9 @@ RedactContentRequest = _reflection.GeneratedProtocolMessageType('RedactContentRe
     DESCRIPTOR = _REDACTCONTENTREQUEST_REPLACECONFIG,
     __module__ = 'google.cloud.privacy.dlp_v2beta1.proto.dlp_pb2'
     ,
-    __doc__ = """Attributes:
+    __doc__ = """The replacement configuration.
+
+    Attributes:
         info_type:
             Type of information to replace. Only one ReplaceConfig per
             info\_type should be provided. If ReplaceConfig does not have
