@@ -357,10 +357,10 @@ class Table(object):
 
         else:
             request_pb = _create_row_request(
-                self.name, start_key=start_key,
-                end_key=end_key, filter_=filter_,
+                self.name, start_key=start_key, end_key=end_key, filter_=filter_,
                 limit=limit)
             response_iterator = client._data_stub.ReadRows(request_pb)
+            # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
             generator = YieldRowsData(response_iterator)
 
             for row in generator.read_rows():
@@ -552,8 +552,7 @@ class _RetryableReadRows(object):
     transient errors.
     """
 
-    def __init__(self, client, table_name,
-                 last_scanned_key, end_key, filter_, limit):
+    def __init__(self, client, table_name, last_scanned_key, end_key, filter_, limit):
         self.client = client
         self.table_name = table_name
         self.last_scanned_key = last_scanned_key
@@ -576,15 +575,18 @@ class _RetryableReadRows(object):
             start_key=self.last_scanned_key,
             end_key=self.end_key,
             filter_=self.filter_,
-            limit=self.limit)
+            limit=self.limit,
+            start_inclusive=False)
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
+        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         generator = YieldRowsData(response_iterator)
         return generator
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None, end_inclusive=False):
+                        filter_=None, limit=None,
+                        end_inclusive=False, start_inclusive=True):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -629,7 +631,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     range_kwargs = {}
     if start_key is not None or end_key is not None:
         if start_key is not None:
-            range_kwargs['start_key_closed'] = _to_bytes(start_key)
+            start_key_key = 'start_key_open'
+            if start_inclusive:
+                start_key_key = 'start_key_closed'
+            range_kwargs[start_key_key] = _to_bytes(start_key)
         if end_key is not None:
             end_key_key = 'end_key_open'
             if end_inclusive:
