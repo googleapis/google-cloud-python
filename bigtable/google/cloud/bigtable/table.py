@@ -357,10 +357,10 @@ class Table(object):
 
         else:
             request_pb = _create_row_request(
-                self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+                self.name, start_key=start_key,
+                end_key=end_key, filter_=filter_,
                 limit=limit)
             response_iterator = client._data_stub.ReadRows(request_pb)
-            # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
             generator = YieldRowsData(response_iterator)
 
             for row in generator.read_rows():
@@ -552,7 +552,8 @@ class _RetryableReadRows(object):
     transient errors.
     """
 
-    def __init__(self, client, table_name, last_scanned_key, end_key, filter_, limit):
+    def __init__(self, client, table_name,
+                 last_scanned_key, end_key, filter_, limit):
         self.client = client
         self.table_name = table_name
         self.last_scanned_key = last_scanned_key
@@ -578,7 +579,6 @@ class _RetryableReadRows(object):
             limit=self.limit)
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         generator = YieldRowsData(response_iterator)
         return generator
 
