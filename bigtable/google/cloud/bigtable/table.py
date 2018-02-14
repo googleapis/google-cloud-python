@@ -360,7 +360,6 @@ class Table(object):
                 self.name, start_key=start_key, end_key=end_key, filter_=filter_,
                 limit=limit)
             response_iterator = client._data_stub.ReadRows(request_pb)
-            # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
             generator = YieldRowsData(response_iterator)
 
             for row in generator.read_rows():
@@ -579,7 +578,6 @@ class _RetryableReadRows(object):
             start_inclusive=False)
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         generator = YieldRowsData(response_iterator)
         return generator
 

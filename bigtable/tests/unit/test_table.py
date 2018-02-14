@@ -589,7 +589,7 @@ class TestTable(unittest.TestCase):
         client._data_stub.ReadRows.side_effect = [ErrorUnavailable(), response_iterator]
 
         rows = []
-        for row in table.yield_rows(retry=True):
+        for row in table.yield_rows(start_key=self.ROW_KEY, retry=True):
             rows.append(row)
         result = rows[0]
 
