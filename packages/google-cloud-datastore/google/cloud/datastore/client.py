@@ -31,7 +31,7 @@ from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.environment_vars import GCD_HOST
 
 try:
-    from google.cloud.datastore._gax import make_datastore_api
+    from google.cloud.datastore._gapic import make_datastore_api
     _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
     make_datastore_api = None
@@ -86,7 +86,7 @@ def _extended_lookup(datastore_api, project, key_pbs,
 
     :type datastore_api:
         :class:`google.cloud.datastore._http.HTTPDatastoreAPI`
-        or :class:`google.cloud.datastore._gax.GAPICDatastoreAPI`
+        or :class:`google.cloud.datastore_v1.gapic.DatastoreClient`
     :param datastore_api: The datastore API object used to connect
                           to datastore.
 
