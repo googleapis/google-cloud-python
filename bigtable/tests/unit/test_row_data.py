@@ -302,11 +302,24 @@ class TestYieldRowsData(unittest.TestCase):
         self.assertEqual(chunk.timestamp_micros, TIMESTAMP_MICROS)
         self.assertEqual(chunk.labels, LABELS)
 
+    def test__copy_from_current_empty_chunk(self):
+        yrd = self._make_one([])
+        yrd._cell = _PartialCellData()
+        chunks = _generate_cell_chunks([''])
+        chunk = chunks[0]
+        yrd._copy_from_current(chunk)
+        self.assertEqual(chunk.row_key, b'')
+        self.assertEqual(chunk.family_name.value, '')
+        self.assertEqual(chunk.qualifier.value, b'')
+        self.assertEqual(chunk.timestamp_micros, 0)
+        self.assertEqual(chunk.labels, [])
+
     def test__copy_from_previous_unset(self):
         yrd = self._make_one([])
         cell = _PartialCellData()
+        cell.qualifier = None
         yrd._copy_from_previous(cell)
-        self.assertEqual(cell.row_key, '')
+        self.assertEqual(cell.row_key, b'')
         self.assertEqual(cell.family_name, u'')
         self.assertIsNone(cell.qualifier)
         self.assertEqual(cell.timestamp_micros, 0)
@@ -335,9 +348,9 @@ class TestYieldRowsData(unittest.TestCase):
         self.assertEqual(cell.labels, LABELS)
 
     def test__copy_from_previous_filled(self):
-        ROW_KEY = 'RK'
+        ROW_KEY = b'RK'
         FAMILY_NAME = u'A'
-        QUALIFIER = b'C'
+        QUALIFIER = b''
         TIMESTAMP_MICROS = 100
         LABELS = ['L1', 'L2']
         yrd = self._make_one([])
@@ -671,9 +684,9 @@ class _MockCancellableIterator(object):
 
 class _PartialCellData(object):
 
-    row_key = ''
+    row_key = b''
     family_name = u''
-    qualifier = None
+    qualifier = b''
     timestamp_micros = 0
 
     def __init__(self, **kw):
