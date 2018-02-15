@@ -127,20 +127,6 @@ class Client(ClientWithProject):
 
         return self._database_string_internal
 
-    @property
-    def _call_options(self):
-        """The call options for this client's associated database.
-
-        Returns:
-            ~google.gax.CallOptions: GAPIC call options with a resource prefix
-            for the database associated with this client.
-        """
-        if self._call_options_internal is None:
-            self._call_options_internal = _helpers.options_with_prefix(
-                self._database_string)
-
-        return self._call_options_internal
-
     def collection(self, *collection_path):
         """Get a reference to a collection.
 
@@ -332,8 +318,7 @@ class Client(ClientWithProject):
         mask = _get_doc_mask(field_paths)
         response_iterator = self._firestore_api.batch_get_documents(
             self._database_string, document_paths, mask,
-            transaction=_helpers.get_transaction_id(transaction),
-            options=self._call_options)
+            transaction=_helpers.get_transaction_id(transaction))
 
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
@@ -532,8 +517,7 @@ def _make_firestore_api(client):
     host = firestore_client.FirestoreClient.SERVICE_ADDRESS
     channel = make_secure_channel(
         client._credentials, DEFAULT_USER_AGENT, host)
-    return firestore_client.FirestoreClient(
-        channel=channel, lib_name='gccl', lib_version=__version__)
+    return firestore_client.FirestoreClient(channel=channel)
 
 
 def _reference_info(references):

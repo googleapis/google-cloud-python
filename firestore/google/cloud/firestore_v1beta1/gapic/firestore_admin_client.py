@@ -28,17 +28,11 @@ import os
 import pkg_resources
 import platform
 
-from google.gax import api_callable
-from google.gax import config
-from google.gax import path_template
-import google.gax
 
 from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.gapic import firestore_admin_client_config
 from google.cloud.firestore_v1beta1.proto.admin import firestore_admin_pb2
 from google.cloud.firestore_v1beta1.proto.admin import index_pb2
-
-_PageDesc = google.gax.PageDescriptor
 
 
 class FirestoreAdminClient(object):
@@ -94,25 +88,19 @@ class FirestoreAdminClient(object):
     DEFAULT_SERVICE_PORT = 443
     """The default port of the service."""
 
-    _PAGE_DESCRIPTORS = {
-        'list_indexes': _PageDesc('page_token', 'next_page_token', 'indexes')
-    }
-
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
     _ALL_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/datastore', )
 
-    _DATABASE_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/databases/{database}')
-    _INDEX_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/databases/{database}/indexes/{index}')
+    _DATABASE_PATH_TEMPLATE = 'projects/{project}/databases/{database}'
+    _INDEX_PATH_TEMPLATE = 'projects/{project}/databases/{database}/indexes/{index}'
 
     @classmethod
     def database_path(cls, project, database):
         """Returns a fully-qualified database resource name string."""
-        return cls._DATABASE_PATH_TEMPLATE.render({
+        return cls._DATABASE_PATH_TEMPLATE.format({
             'project': project,
             'database': database,
         })
@@ -120,7 +108,7 @@ class FirestoreAdminClient(object):
     @classmethod
     def index_path(cls, project, database, index):
         """Returns a fully-qualified index resource name string."""
-        return cls._INDEX_PATH_TEMPLATE.render({
+        return cls._INDEX_PATH_TEMPLATE.format({
             'project': project,
             'database': database,
             'index': index,
@@ -258,8 +246,7 @@ class FirestoreAdminClient(object):
             firestore_admin_client_config.config,
             client_config,
             config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers,
-            page_descriptors=self._PAGE_DESCRIPTORS, )
+            metrics_headers=metrics_headers)
         self.firestore_admin_stub = config.create_stub(
             firestore_admin_pb2.FirestoreAdminStub,
             channel=channel,

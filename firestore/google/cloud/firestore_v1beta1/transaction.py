@@ -18,11 +18,11 @@
 import random
 import time
 
-import google.gax.errors
-import google.gax.grpc
 import grpc
 import six
 
+from google.api_core import exceptions
+from google.api_core import retry
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import batch
 from google.cloud.firestore_v1beta1 import types
@@ -153,7 +153,6 @@ class Transaction(batch.WriteBatch):
         transaction_response = self._client._firestore_api.begin_transaction(
             self._client._database_string,
             options_=self._options_protobuf(retry_id),
-            options=self._client._call_options,
         )
         self._id = transaction_response.transaction
 
@@ -177,8 +176,7 @@ class Transaction(batch.WriteBatch):
         try:
             # NOTE: The response is just ``google.protobuf.Empty``.
             self._client._firestore_api.rollback(
-                self._client._database_string, self._id,
-                options=self._client._call_options)
+                self._client._database_string, self._id)
         finally:
             self._clean_up()
 
@@ -198,9 +196,8 @@ class Transaction(batch.WriteBatch):
         if not self.in_progress:
             raise ValueError(_CANT_COMMIT)
 
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = _commit_with_retry(
-                self._client, self._write_pbs, self._id)
+        commit_response = self._client._firestore_api.commit(self._client._database_string,
+            self._write_pbs, transaction=self._id)
 
         self._clean_up()
         return list(commit_response.write_results)
@@ -284,16 +281,14 @@ class _Transactional(object):
         try:
             transaction._commit()
             return True
-        except google.gax.errors.GaxError as exc:
+        except exceptions.GoogleAPICallError as exc:
             if transaction._read_only:
-                raise
-
-            status_code = google.gax.grpc.exc_to_code(exc.cause)
+                raise exc
             # If a read-write transaction returns ABORTED, retry.
-            if status_code == grpc.StatusCode.ABORTED:
+            if exc.grpc_status_code == grpc.StatusCode.ABORTED:
                 return False
             else:
-                raise
+                raise exc
 
     def __call__(self, transaction, *args, **kwargs):
         """Execute the wrapped callable within a transaction.
@@ -345,75 +340,3 @@ def transactional(to_wrap):
         wrapped callable.
     """
     return _Transactional(to_wrap)
-
-
-def _commit_with_retry(client, write_pbs, transaction_id):
-    """Call ``Commit`` on the GAPIC client with retry / sleep.
-
-    This function is **distinct** from
-    :func:`~.firestore_v1beta1._helpers.remap_gax_error_on_commit` in
-    that it does not seek to re-wrap exceptions, it just seeks to retry.
-
-    Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
-    retry is handled by the underlying GAPICd client, but in this case it
-    doesn't because ``Commit`` is not always idempotent. But here we know it
-    is "idempotent"-like because it has a transaction ID. We also need to do
-    our own retry to special-case the ``INVALID_ARGUMENT`` error.
-
-    Args:
-        client (~.firestore_v1beta1.client.Client): A client with
-            GAPIC client and configuration details.
-        write_pbs (List[google.cloud.proto.firestore.v1beta1.\
-            write_pb2.Write, ...]): A ``Write`` protobuf instance to
-            be committed.
-        transaction_id (bytes): ID of an existing transaction that
-            this commit will run in.
-
-    Returns:
-        google.cloud.firestore_v1beta1.types.CommitResponse:
-        The protobuf response from ``Commit``.
-
-    Raises:
-        ~google.gax.errors.GaxError: If a non-retryable exception
-            is encountered.
-    """
-    current_sleep = _INITIAL_SLEEP
-    while True:
-        try:
-            return client._firestore_api.commit(
-                client._database_string, write_pbs,
-                transaction=transaction_id,
-                options=client._call_options)
-        except google.gax.errors.GaxError as exc:
-            status_code = google.gax.grpc.exc_to_code(exc.cause)
-            if status_code == grpc.StatusCode.UNAVAILABLE:
-                pass  # Retry
-            else:
-                raise
-
-        current_sleep = _sleep(current_sleep)
-
-
-def _sleep(current_sleep, max_sleep=_MAX_SLEEP, multiplier=_MULTIPLIER):
-    """Sleep and produce a new sleep time.
-
-    .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
-                                        2015/03/backoff.html
-
-    Select a duration between zero and ``current_sleep``. It might seem
-    counterintuitive to have so much jitter, but
-    `Exponential Backoff And Jitter`_ argues that "full jitter" is
-    the best strategy.
-
-    Args:
-        current_sleep (float): The current "max" for sleep interval.
-        max_sleep (Optional[float]): Eventual "max" sleep time
-        multiplier (Optional[float]): Multiplier for exponential backoff.
-
-    Returns:
-        float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
-        is smaller)
-    """
-    actual_sleep = random.uniform(0.0, current_sleep)
-    time.sleep(actual_sleep)
-    return min(multiplier * current_sleep, max_sleep)

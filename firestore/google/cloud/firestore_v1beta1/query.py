@@ -581,8 +581,7 @@ class Query(object):
         parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
             parent_path, self._to_protobuf(),
-            transaction=_helpers.get_transaction_id(transaction),
-            options=self._client._call_options)
+            transaction=_helpers.get_transaction_id(transaction))
 
         empty_stream = False
         for index, response_pb in enumerate(response_iterator):

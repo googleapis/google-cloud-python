@@ -201,8 +201,7 @@ class TestCollectionReference(unittest.TestCase):
             fields=_helpers.encode_dict(document_data))
         firestore_api.create_document.assert_called_once_with(
             parent_path, collection_id=collection.id, document_id=None,
-            document=expected_document_pb, mask=None,
-            options=client._call_options)
+            document=expected_document_pb, mask=None)
 
     @staticmethod
     def _write_pb_for_create(document_path, document_data):
@@ -253,8 +252,7 @@ class TestCollectionReference(unittest.TestCase):
         write_pb = self._write_pb_for_create(
             document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            client._database_string, [write_pb], transaction=None)
 
     def test_select(self):
         from google.cloud.firestore_v1beta1.query import Query

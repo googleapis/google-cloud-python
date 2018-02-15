@@ -86,30 +86,6 @@ class TestClient(unittest.TestCase):
         client._database_string_internal = mock.sentinel.cached
         self.assertIs(client._database_string, mock.sentinel.cached)
 
-    def test___call_options_property(self):
-        import google.gax
-
-        credentials = _make_credentials()
-        database = 'quanta'
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database)
-        self.assertIsNone(client._call_options_internal)
-
-        call_options = client._call_options
-        self.assertIsInstance(call_options, google.gax.CallOptions)
-        expected_kwargs = {
-            'metadata': [
-                ('google-cloud-resource-prefix', client._database_string),
-            ],
-        }
-        self.assertEqual(call_options.kwargs, expected_kwargs)
-
-        self.assertIs(call_options, client._call_options_internal)
-
-        # Swap it out with a unique value to verify it is cached.
-        client._call_options_internal = mock.sentinel.cached
-        self.assertIs(client._call_options, mock.sentinel.cached)
-
     def test_collection_factory(self):
         from google.cloud.firestore_v1beta1.collection import CollectionReference
 
@@ -312,8 +288,7 @@ class TestClient(unittest.TestCase):
         doc_paths = [document1._document_path, document2._document_path]
         mask = common_pb2.DocumentMask(field_paths=field_paths)
         client._firestore_api.batch_get_documents.assert_called_once_with(
-            client._database_string, doc_paths, mask, transaction=None,
-            options=client._call_options)
+            client._database_string, doc_paths, mask, transaction=None)
 
     def test_get_all_with_transaction(self):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
@@ -338,8 +313,7 @@ class TestClient(unittest.TestCase):
         # Verify the call to the mock.
         doc_paths = [document._document_path]
         client._firestore_api.batch_get_documents.assert_called_once_with(
-            client._database_string, doc_paths, None, transaction=txn_id,
-            options=client._call_options)
+            client._database_string, doc_paths, None, transaction=txn_id)
 
     def test_get_all_unknown_result(self):
         from google.cloud.firestore_v1beta1.client import _BAD_DOC_TEMPLATE
@@ -358,8 +332,7 @@ class TestClient(unittest.TestCase):
         # Verify the call to the mock.
         doc_paths = [document._document_path]
         client._firestore_api.batch_get_documents.assert_called_once_with(
-            client._database_string, doc_paths, None, transaction=None,
-            options=client._call_options)
+            client._database_string, doc_paths, None, transaction=None)
 
     def test_get_all_wrong_order(self):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
@@ -397,8 +370,7 @@ class TestClient(unittest.TestCase):
             document3._document_path,
         ]
         client._firestore_api.batch_get_documents.assert_called_once_with(
-            client._database_string, doc_paths, None, transaction=None,
-            options=client._call_options)
+            client._database_string, doc_paths, None, transaction=None)
 
     def test_batch(self):
         from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -585,8 +557,7 @@ class Test__make_firestore_api(unittest.TestCase):
         make_chan.assert_called_once_with(
             mock.sentinel.credentials, DEFAULT_USER_AGENT, host)
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, lib_name='gccl',
-            lib_version=__version__)
+            channel=mock.sentinel.channel)
 
 
 class Test__reference_info(unittest.TestCase):
