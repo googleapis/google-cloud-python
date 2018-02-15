@@ -113,6 +113,25 @@ class TestClient(unittest.TestCase):
             mock.sentinel.filename, 'r', encoding='utf-8')
         constructor.assert_called_once_with(info)
 
+    def test_from_dict(self):
+        klass = self._get_target_class()
+
+        # Mock the credentials constructor.
+        info = {'dummy': 'value', 'valid': 'json'}
+        constructor_patch = mock.patch(
+            'google.oauth2.service_account.Credentials.'
+            'from_service_account_info',
+            return_value=_make_credentials()
+        )
+
+        with constructor_patch as constructor:
+            client_obj = klass.from_dict(info)
+
+        self.assertIs(client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http_internal)
+        # Check that mocks were called as expected.
+        constructor.assert_called_once_with(info)
+
     def test_from_service_account_json_bad_args(self):
         KLASS = self._get_target_class()
 
