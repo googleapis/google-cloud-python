@@ -848,7 +848,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
     # cast BOOLEAN and INTEGER columns from object to bool/int
     # if they dont have any nulls AND field mode is not repeated (i.e., array)
-    type_map = {'BOOLEAN': bool, 'INTEGER': int}
+    type_map = {'BOOLEAN': bool, 'INTEGER': np.int64}
     for field in schema['fields']:
         if field['type'].upper() in type_map and \
                 final_df[field['name']].notnull().all() and \
