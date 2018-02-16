@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Collections &#8212; google-cloud 9de1026 documentation</title>
+    <title>Collections &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,7 +38,7 @@
 <dl class="class">
 <dt id="google.cloud.firestore_v1beta1.collection.CollectionReference">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.collection.</code><code class="descname">CollectionReference</code><span class="sig-paren">(</span><em>*path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A reference to a collection in a Firestore database.</p>
 <p>The collection may already exist or this class can facilitate creation
 of documents within the collection.</p>
@@ -61,21 +52,21 @@ This is a series of strings representing each collection and
 sub-collection ID, as well as the document IDs for any documents
 that contain a sub-collection.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – The keyword arguments for the constructor. The only
-supported keyword is <code class="docutils literal"><span class="pre">client</span></code> and it must be a
-<a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client" title="google.cloud.firestore_v1beta1.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> if provided. It
+supported keyword is <code class="docutils literal notranslate"><span class="pre">client</span></code> and it must be a
+<a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client" title="google.cloud.firestore_v1beta1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> if provided. It
 represents the client that created this collection reference.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – if<ul>
-<li>the <code class="docutils literal"><span class="pre">path</span></code> is empty</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – if<ul>
+<li>the <code class="docutils literal notranslate"><span class="pre">path</span></code> is empty</li>
 <li>there are an even number of elements</li>
-<li>a collection ID in <code class="docutils literal"><span class="pre">path</span></code> is not a string</li>
-<li>a document ID in <code class="docutils literal"><span class="pre">path</span></code> is not a string</li>
+<li>a collection ID in <code class="docutils literal notranslate"><span class="pre">path</span></code> is not a string</li>
+<li>a document ID in <code class="docutils literal notranslate"><span class="pre">path</span></code> is not a string</li>
 </ul>
 </li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">TypeError</span></code></a> – If a keyword other than <code class="docutils literal"><span class="pre">client</span></code> is used.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – If a keyword other than <code class="docutils literal notranslate"><span class="pre">client</span></code> is used.</li>
 </ul>
 </td>
 </tr>
@@ -102,7 +93,7 @@ uppercase and lowercase letters).</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>Pair of</p>
 <ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">update_time</span></code> when the document was created (or
+<li>The <code class="docutils literal notranslate"><span class="pre">update_time</span></code> when the document was created (or
 overwritten).</li>
 <li>A document reference for the created document.</li>
 </ul>
@@ -112,7 +103,7 @@ overwritten).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Tuple[google.protobuf.timestamp_pb2.Timestamp,                 DocumentReference]</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">Conflict</span></code> – If <code class="docutils literal"><span class="pre">document_id</span></code> is provided
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Conflict</span></code> – If <code class="docutils literal notranslate"><span class="pre">document_id</span></code> is provided
 and the document already exists.</p>
 </td>
 </tr>
@@ -147,7 +138,7 @@ document.</td>
 <code class="descname">end_at</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.end_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.end_at" title="Permalink to this definition">#</a></dt>
 <dd><p>End query at a cursor with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.end_at" title="google.cloud.firestore_v1beta1.query.Query.end_at"><code class="xref py py-meth docutils literal"><span class="pre">end_at()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.end_at" title="google.cloud.firestore_v1beta1.query.Query.end_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_at()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -171,7 +162,7 @@ position in a query result set.</td>
 <code class="descname">end_before</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.end_before"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.end_before" title="Permalink to this definition">#</a></dt>
 <dd><p>End query before a cursor with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.end_before" title="google.cloud.firestore_v1beta1.query.Query.end_before"><code class="xref py py-meth docutils literal"><span class="pre">end_before()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.end_before" title="google.cloud.firestore_v1beta1.query.Query.end_before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_before()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -194,9 +185,9 @@ position in a query result set.</td>
 <dt id="google.cloud.firestore_v1beta1.collection.CollectionReference.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the documents in this collection.</p>
-<p>This sends a <code class="docutils literal"><span class="pre">RunQuery</span></code> RPC and then consumes each document
-returned in the stream of <code class="docutils literal"><span class="pre">RunQueryResponse</span></code> messages.</p>
-<p>If a <code class="docutils literal"><span class="pre">transaction</span></code> is used and it already has write operations
+<p>This sends a <code class="docutils literal notranslate"><span class="pre">RunQuery</span></code> RPC and then consumes each document
+returned in the stream of <code class="docutils literal notranslate"><span class="pre">RunQueryResponse</span></code> messages.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">transaction</span></code> is used and it already has write operations
 added, this method cannot be used (i.e. read-after-write is not
 allowed).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -234,7 +225,7 @@ document that fulfills the query.</td>
 <code class="descname">limit</code><span class="sig-paren">(</span><em>count</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.limit" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a limited query with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.limit" title="google.cloud.firestore_v1beta1.query.Query.limit"><code class="xref py py-meth docutils literal"><span class="pre">limit()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.limit" title="google.cloud.firestore_v1beta1.query.Query.limit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">limit()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -256,7 +247,7 @@ the query.</td>
 <code class="descname">offset</code><span class="sig-paren">(</span><em>num_to_skip</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Skip to an offset in a query with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.offset" title="google.cloud.firestore_v1beta1.query.Query.offset"><code class="xref py py-meth docutils literal"><span class="pre">offset()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.offset" title="google.cloud.firestore_v1beta1.query.Query.offset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -278,18 +269,18 @@ of query results. (Must be non-negative.)</td>
 <code class="descname">order_by</code><span class="sig-paren">(</span><em>field_path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.order_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.order_by" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an “order by” query with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of
+<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of
 field names) on which to order the query results.</li>
-<li><strong>kwargs</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – The keyword arguments to pass along
-to the query. The only supported keyword is <code class="docutils literal"><span class="pre">direction</span></code>,
-see <a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a> for
+<li><strong>kwargs</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – The keyword arguments to pass along
+to the query. The only supported keyword is <code class="docutils literal notranslate"><span class="pre">direction</span></code>,
+see <a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a> for
 more information.</li>
 </ul>
 </td>
@@ -327,14 +318,14 @@ top-level collection.</td>
 <code class="descname">select</code><span class="sig-paren">(</span><em>field_paths</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.select" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a “select” query with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.select" title="google.cloud.firestore_v1beta1.query.Query.select"><code class="xref py py-meth docutils literal"><span class="pre">select()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.select" title="google.cloud.firestore_v1beta1.query.Query.select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field_paths</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>..</em><em>]</em>) – An iterable of field paths
-(<code class="docutils literal"><span class="pre">.</span></code>-delimited list of field names) to use as a projection
+(<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of field names) to use as a projection
 of document fields in the query results.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A “projected” query.</td>
@@ -350,7 +341,7 @@ of document fields in the query results.</td>
 <code class="descname">start_after</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.start_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.start_after" title="Permalink to this definition">#</a></dt>
 <dd><p>Start query after a cursor with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.start_after" title="google.cloud.firestore_v1beta1.query.Query.start_after"><code class="xref py py-meth docutils literal"><span class="pre">start_after()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.start_after" title="google.cloud.firestore_v1beta1.query.Query.start_after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_after()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -374,7 +365,7 @@ position in a query result set.</td>
 <code class="descname">start_at</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.start_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.start_at" title="Permalink to this definition">#</a></dt>
 <dd><p>Start query at a cursor with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.start_at" title="google.cloud.firestore_v1beta1.query.Query.start_at"><code class="xref py py-meth docutils literal"><span class="pre">start_at()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.start_at" title="google.cloud.firestore_v1beta1.query.Query.start_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_at()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -398,20 +389,20 @@ position in a query result set.</td>
 <code class="descname">where</code><span class="sig-paren">(</span><em>field_path</em>, <em>op_string</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/collection.html#CollectionReference.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.collection.CollectionReference.where" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a “where” query with this collection as parent.</p>
 <p>See
-<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.where" title="google.cloud.firestore_v1beta1.query.Query.where"><code class="xref py py-meth docutils literal"><span class="pre">where()</span></code></a> for
+<a class="reference internal" href="query.html#google.cloud.firestore_v1beta1.query.Query.where" title="google.cloud.firestore_v1beta1.query.Query.where"><code class="xref py py-meth docutils literal notranslate"><span class="pre">where()</span></code></a> for
 more information on this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of
+<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of
 field names) for the field to filter on.</li>
 <li><strong>op_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A comparison operation in the form of a string.
-Acceptable values are <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>
-and <code class="docutils literal"><span class="pre">&gt;</span></code>.</li>
-<li><strong>value</strong> (<em>Any</em>) – The value to compare the field against in the filter.
-If <code class="docutils literal"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> or a NaN, then <code class="docutils literal"><span class="pre">==</span></code> is the only
+Acceptable values are <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>
+and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>.</li>
+<li><strong>value</strong> (<a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a>) – The value to compare the field against in the filter.
+If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> or a NaN, then <code class="docutils literal notranslate"><span class="pre">==</span></code> is the only
 allowed operation.</li>
 </ul>
 </td>
@@ -456,7 +447,7 @@ allowed operation.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -464,9 +455,10 @@ allowed operation.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Firestore</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Collections</a></li>
@@ -506,12 +498,14 @@ allowed operation.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -522,7 +516,7 @@ allowed operation.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

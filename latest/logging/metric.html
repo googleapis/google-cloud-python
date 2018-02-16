@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Metrics &#8212; google-cloud 9de1026 documentation</title>
+    <title>Metrics &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,7 +38,7 @@
 <dl class="class">
 <dt id="google.cloud.logging.metric.Metric">
 <em class="property">class </em><code class="descclassname">google.cloud.logging.metric.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>client=None</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/metric.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Metrics represent named filters for log entries.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics</a></p>
@@ -59,8 +50,8 @@
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the name of the metric</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the advanced logs filter expression defining the entries
 tracked by the metric.  If not passed, the instance should
-already exist, to be refreshed via <a class="reference internal" href="#google.cloud.logging.metric.Metric.reload" title="google.cloud.logging.metric.Metric.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
+already exist, to be refreshed via <a class="reference internal" href="#google.cloud.logging.metric.Metric.reload" title="google.cloud.logging.metric.Metric.reload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reload()</span></code></a>.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the metric (which requires a project).</li>
 <li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an optional description of the metric.</li>
 </ul>
@@ -84,9 +75,9 @@ for the metric (which requires a project).</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current metric.</td>
 </tr>
 </tbody>
 </table>
@@ -102,9 +93,9 @@ for the metric (which requires a project).</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current metric.</td>
 </tr>
 </tbody>
 </table>
@@ -120,9 +111,9 @@ for the metric (which requires a project).</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current metric.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
 </tr>
@@ -142,15 +133,15 @@ for the metric (which requires a project).</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – metric resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – Client which holds credentials and project
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – Client which holds credentials and project
 configuration for the metric.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.metric.Metric</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.metric.Metric</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Metric parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Metric parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -185,9 +176,9 @@ configuration for the metric.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current metric.</td>
 </tr>
 </tbody>
 </table>
@@ -203,9 +194,9 @@ configuration for the metric.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current metric.</td>
 </tr>
 </tbody>
 </table>
@@ -241,7 +232,7 @@ configuration for the metric.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -249,6 +240,7 @@ configuration for the metric.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -261,7 +253,7 @@ configuration for the metric.</li>
 <li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Stackdriver Logging</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Stackdriver Logging Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logger.html">Logger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entries.html">Entries</a></li>
@@ -302,12 +294,14 @@ configuration for the metric.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -318,7 +312,7 @@ configuration for the metric.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

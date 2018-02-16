@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud 9de1026 documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -57,13 +48,13 @@ get sensible defaults.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>policy_class</strong> (<em>class</em>) – A class that describes how to handle
 subscriptions. You may subclass the
-<code class="xref py py-class docutils literal"><span class="pre">pubsub_v1.subscriber.policy.base.BasePolicy</span></code>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pubsub_v1.subscriber.policy.base.BasePolicy</span></code>
 class in order to define your own consumer. This is primarily
 provided to allow use of different concurrency models; the default
-is based on <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a>.</li>
+is based on <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></a>.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Any additional arguments provided are sent as keyword
 keyword arguments to the underlying
-<code class="xref py py-class docutils literal"><span class="pre">SubscriberClient</span></code>.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SubscriberClient</span></code>.
 Generally, you should not need to set additional keyword
 arguments.</li>
 </ul>
@@ -74,14 +65,14 @@ arguments.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.acknowledge">
 <code class="descname">acknowledge</code><span class="sig-paren">(</span><em>subscription</em>, <em>ack_ids</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.acknowledge" title="Permalink to this definition">#</a></dt>
-<dd><p>Acknowledges the messages associated with the <code class="docutils literal"><span class="pre">ack_ids</span></code> in the
-<code class="docutils literal"><span class="pre">AcknowledgeRequest</span></code>. The Pub/Sub system can remove the relevant messages
+<dd><p>Acknowledges the messages associated with the <code class="docutils literal notranslate"><span class="pre">ack_ids</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">AcknowledgeRequest</span></code>. The Pub/Sub system can remove the relevant messages
 from the subscription.</p>
 <p>Acknowledging a message whose ack deadline has expired may succeed,
 but such a message may be redelivered later. Acknowledging a message more
 than once will not result in an error.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -97,24 +88,24 @@ than once will not result in an error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The subscription whose message is being acknowledged.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>ack_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The acknowledgment ID for the messages being acknowledged that was returned
-by the Pub/Sub system in the <code class="docutils literal"><span class="pre">Pull</span></code> response. Must not be empty.</li>
+by the Pub/Sub system in the <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response. Must not be empty.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -126,8 +117,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot">
 <code class="descname">create_snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a snapshot from the requested subscription.
-If the snapshot already exists, returns <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.
-If the requested subscription doesn’t exist, returns <code class="docutils literal"><span class="pre">NOT_FOUND</span></code>.</p>
+If the snapshot already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
+If the requested subscription doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
 <p>If the name is not provided in the request, the server will assign a random
 name for this snapshot on the same project as the subscription, conforming
 to the
@@ -135,7 +126,7 @@ to the
 The generated name is populated in the returned Snapshot object.
 Note that for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -154,7 +145,7 @@ Note that for REST API requests, you must specify a name in the request.</p>
 If the name is not provided in the request, the server will assign a random
 name for this snapshot on the same project as the subscription.
 Note that for REST API requests, you must specify a name.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>The subscription whose backlog the snapshot retains.
 Specifically, the created snapshot is guaranteed to retain:</p>
 <ul>
@@ -165,26 +156,26 @@ unacknowledged upon the successful completion of the
 <li>Any messages published to the subscription’s topic following the
 successful completion of the CreateSnapshot request.</li>
 </ul>
-<p>Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -196,8 +187,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription">
 <code class="descname">create_subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic</em>, <em>push_config=None</em>, <em>ack_deadline_seconds=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em>, <em>labels=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a subscription to a given topic.
-If the subscription already exists, returns <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.
-If the corresponding topic doesn’t exist, returns <code class="docutils literal"><span class="pre">NOT_FOUND</span></code>.</p>
+If the subscription already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>.
+If the corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
 <p>If the name is not provided in the request, the server will assign a random
 name for this subscription on the same project as the topic, conforming
 to the
@@ -205,7 +196,7 @@ to the
 The generated name is populated in the returned Subscription object.
 Note that for REST API requests, you must specify a name in the request.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -221,20 +212,20 @@ Note that for REST API requests, you must specify a name in the request.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the subscription. It must have the format
-<code class="docutils literal"><span class="pre">&quot;projects/{project}/subscriptions/{subscription}&quot;</span></code>. <code class="docutils literal"><span class="pre">{subscription}</span></code> must
-start with a letter, and contain only letters (<code class="docutils literal"><span class="pre">[A-Za-z]</span></code>), numbers
-(<code class="docutils literal"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal"><span class="pre">-</span></code>), underscores (<code class="docutils literal"><span class="pre">_</span></code>), periods (<code class="docutils literal"><span class="pre">.</span></code>), tildes (<code class="docutils literal"><span class="pre">~</span></code>),
-plus (<code class="docutils literal"><span class="pre">+</span></code>) or percent signs (<code class="docutils literal"><span class="pre">%</span></code>). It must be between 3 and 255 characters
-in length, and it must not start with <code class="docutils literal"><span class="pre">&quot;goog&quot;</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project}/subscriptions/{subscription}&quot;</span></code>. <code class="docutils literal notranslate"><span class="pre">{subscription}</span></code> must
+start with a letter, and contain only letters (<code class="docutils literal notranslate"><span class="pre">[A-Za-z]</span></code>), numbers
+(<code class="docutils literal notranslate"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal notranslate"><span class="pre">-</span></code>), underscores (<code class="docutils literal notranslate"><span class="pre">_</span></code>), periods (<code class="docutils literal notranslate"><span class="pre">.</span></code>), tildes (<code class="docutils literal notranslate"><span class="pre">~</span></code>),
+plus (<code class="docutils literal notranslate"><span class="pre">+</span></code>) or percent signs (<code class="docutils literal notranslate"><span class="pre">%</span></code>). It must be between 3 and 255 characters
+in length, and it must not start with <code class="docutils literal notranslate"><span class="pre">&quot;goog&quot;</span></code>.</li>
 <li><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the topic from which this subscription is receiving messages.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.
-The value of this field will be <code class="docutils literal"><span class="pre">_deleted-topic_</span></code> if the topic has been
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.
+The value of this field will be <code class="docutils literal notranslate"><span class="pre">_deleted-topic_</span></code> if the topic has been
 deleted.</li>
 <li><strong>push_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><em>PushConfig</em></a><em>]</em>) – If push delivery is used with this subscription, this field is
-used to configure it. An empty <code class="docutils literal"><span class="pre">pushConfig</span></code> signifies that the subscriber
+used to configure it. An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> signifies that the subscriber
 will pull and ack messages using API methods.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal"><span class="pre">PushConfig</span></code></a></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></li>
 <li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – <p>This value is the maximum time after a subscriber receives a message
 before the subscriber should acknowledge the message. After message
 delivery but before the ack deadline expires and before the message is
@@ -242,7 +233,7 @@ acknowledged, it is an outstanding message and will not be delivered
 again during that time (on a best-effort basis).</p>
 <p>For pull subscriptions, this value is used as the initial value for the ack
 deadline. To override this value for a given message, call
-<code class="docutils literal"><span class="pre">ModifyAckDeadline</span></code> with the corresponding <code class="docutils literal"><span class="pre">ack_id</span></code> if using
+<code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> with the corresponding <code class="docutils literal notranslate"><span class="pre">ack_id</span></code> if using
 pull.
 The minimum custom deadline you can specify is 10 seconds.
 The maximum custom deadline you can specify is 600 seconds (10 minutes).
@@ -254,35 +245,35 @@ system will eventually redeliver the message.</p>
 </li>
 <li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Indicates whether to retain acknowledged messages. If true, then
 messages are not expunged from the subscription’s backlog, even if they are
-acknowledged, until they fall out of the <code class="docutils literal"><span class="pre">message_retention_duration</span></code>
+acknowledged, until they fall out of the <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code>
 window.</li>
-<li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>Duration</em><em>]</em>) – How long to retain unacknowledged messages in the subscription’s backlog,
+<li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – How long to retain unacknowledged messages in the subscription’s backlog,
 from the moment a message is published.
-If <code class="docutils literal"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the retention
-of acknowledged messages, and thus configures how far back in time a <code class="docutils literal"><span class="pre">Seek</span></code>
+If <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the retention
+of acknowledged messages, and thus configures how far back in time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code>
 can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10
 minutes.
 If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal"><span class="pre">Duration</span></code></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – User labels.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -298,7 +289,7 @@ are immediately dropped. After a snapshot is deleted, a new one may be
 created with the same name, but the new one has no association with the old
 snapshot or its subscription, unless the same subscription is specified.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -313,22 +304,22 @@ snapshot or its subscription, unless the same subscription is specified.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the snapshot to delete.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -340,12 +331,12 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription">
 <code class="descname">delete_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes an existing subscription. All messages retained in the subscription
-are immediately dropped. Calls to <code class="docutils literal"><span class="pre">Pull</span></code> after deletion will return
-<code class="docutils literal"><span class="pre">NOT_FOUND</span></code>. After a subscription is deleted, a new one may be created with
+are immediately dropped. Calls to <code class="docutils literal notranslate"><span class="pre">Pull</span></code> after deletion will return
+<code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. After a subscription is deleted, a new one may be created with
 the same name, but the new one has no association with the old
 subscription or its topic unless the same topic is specified.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -360,22 +351,22 @@ subscription or its topic unless the same topic is specified.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The subscription to delete.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -390,7 +381,7 @@ to a retryable error and retry attempts failed.</li>
 Returns an empty policy if the resource exists and does not have a policy
 set.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -405,26 +396,26 @@ set.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
-<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -437,7 +428,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">get_subscription</code><span class="sig-paren">(</span><em>subscription</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.get_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the configuration details of a subscription.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -452,25 +443,25 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the subscription to get.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -483,7 +474,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">list_snapshots</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the existing snapshots.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -508,33 +499,33 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cloud project that snapshots belong to.
-Format is <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> instances.
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a> instances.
 This object can also be configured to iterate over the pages
 of the response through the <cite>options</cite> parameter.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -547,7 +538,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.list_subscriptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists matching subscriptions.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -572,33 +563,33 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cloud project that subscriptions belong to.
-Format is <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a> instances.
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a> instances.
 This object can also be configured to iterate over the pages
 of the response through the <cite>options</cite> parameter.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -613,9 +604,9 @@ to a retryable error and retry attempts failed.</li>
 to indicate that more time is needed to process a message by the
 subscriber, or to make the message available for redelivery if the
 processing was interrupted. Note that this does not modify the
-subscription-level <code class="docutils literal"><span class="pre">ackDeadlineSeconds</span></code> used for subsequent messages.</p>
+subscription-level <code class="docutils literal notranslate"><span class="pre">ackDeadlineSeconds</span></code> used for subsequent messages.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -632,30 +623,30 @@ subscription-level <code class="docutils literal"><span class="pre">ackDeadlineS
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the subscription.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>ack_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – List of acknowledgment IDs.</li>
 <li><strong>ack_deadline_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The new ack deadline with respect to the time this request was sent to
 the Pub/Sub system. For example, if the value is 10, the new
-ack deadline will expire 10 seconds after the <code class="docutils literal"><span class="pre">ModifyAckDeadline</span></code> call
+ack deadline will expire 10 seconds after the <code class="docutils literal notranslate"><span class="pre">ModifyAckDeadline</span></code> call
 was made. Specifying zero may immediately make the message available for
 another pull request.
 The minimum deadline you can specify is 0 seconds.
 The maximum deadline you can specify is 600 seconds (10 minutes).</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -666,13 +657,13 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config">
 <code class="descname">modify_push_config</code><span class="sig-paren">(</span><em>subscription</em>, <em>push_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Modifies the <code class="docutils literal"><span class="pre">PushConfig</span></code> for a specified subscription.</p>
+<dd><p>Modifies the <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code> for a specified subscription.</p>
 <p>This may be used to change a push subscription to a pull one (signified by
-an empty <code class="docutils literal"><span class="pre">PushConfig</span></code>) or vice versa, or change the endpoint URL and other
+an empty <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>) or vice versa, or change the endpoint URL and other
 attributes of a push subscription. Messages will accumulate for delivery
-continuously through the call regardless of changes to the <code class="docutils literal"><span class="pre">PushConfig</span></code>.</p>
+continuously through the call regardless of changes to the <code class="docutils literal notranslate"><span class="pre">PushConfig</span></code>.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -688,30 +679,30 @@ continuously through the call regardless of changes to the <code class="docutils
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the subscription.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</li>
 <li><strong>push_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><em>PushConfig</em></a><em>]</em>) – <p>The push configuration for future deliveries.</p>
-<p>An empty <code class="docutils literal"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should
+<p>An empty <code class="docutils literal notranslate"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should
 stop pushing messages from the given subscription and allow
 messages to be pulled and acknowledged - effectively pausing
-the subscription if <code class="docutils literal"><span class="pre">Pull</span></code> is not called.
+the subscription if <code class="docutils literal notranslate"><span class="pre">Pull</span></code> is not called.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal"><span class="pre">PushConfig</span></code></a></p>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -721,7 +712,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.project_path">
-<code class="descname">project_path</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.project_path" title="Permalink to this definition">#</a></dt>
+<code class="descname">project_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.project_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a fully-qualified project resource name string.</p>
 </dd></dl>
 
@@ -731,7 +722,7 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Seeks an existing subscription to a point in time or to a given snapshot,
 whichever is provided in the request.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -746,40 +737,40 @@ whichever is provided in the request.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The subscription to affect.</li>
-<li><strong>time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>Timestamp</em><em>]</em>) – The time to seek to.
+<li><strong>time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – The time to seek to.
 Messages retained in the subscription that were published before this
 time are marked as acknowledged, and messages retained in the
 subscription that were published after this time are marked as
 unacknowledged. Note that this operation affects only those messages
 retained in the subscription (configured by the combination of
-<code class="docutils literal"><span class="pre">message_retention_duration</span></code> and <code class="docutils literal"><span class="pre">retain_acked_messages</span></code>). For example,
-if <code class="docutils literal"><span class="pre">time</span></code> corresponds to a point before the message retention
+<code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> and <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code>). For example,
+if <code class="docutils literal notranslate"><span class="pre">time</span></code> corresponds to a point before the message retention
 window (or to a point before the system’s notion of the subscription
 creation time), only retained messages will be marked as unacknowledged,
 and already-expunged messages will not be restored.
 If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal"><span class="pre">Timestamp</span></code></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Timestamp" title="google.cloud.pubsub_v1.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
 <li><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The snapshot to seek to. The snapshot’s topic must be the same as that of
 the provided subscription.
-Format is <code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
+Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal"><span class="pre">SeekResponse</span></code> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.SeekResponse" title="google.cloud.pubsub_v1.types.SeekResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SeekResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -793,7 +784,7 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Sets the access control policy on the specified resource. Replaces any
 existing policy.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -809,32 +800,32 @@ existing policy.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
-<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal"><span class="pre">resource</span></code>. The size of
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of
 the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
 might reject them.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -844,7 +835,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path">
-<code class="descname">snapshot_path</code><span class="sig-paren">(</span><em>project</em>, <em>snapshot</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path" title="Permalink to this definition">#</a></dt>
+<code class="descname">snapshot_path</code><span class="sig-paren">(</span><em>snapshot</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a fully-qualified snapshot resource name string.</p>
 </dd></dl>
 
@@ -852,17 +843,17 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.subscribe">
 <code class="descname">subscribe</code><span class="sig-paren">(</span><em>subscription</em>, <em>callback=None</em>, <em>flow_control=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/client.html#Client.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.subscribe" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a representation of an individual subscription.</p>
-<p>This method creates and returns a <code class="docutils literal"><span class="pre">Consumer</span></code> object (that is, a
-<code class="xref py py-class docutils literal"><span class="pre">Consumer</span></code>)
+<p>This method creates and returns a <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> object (that is, a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Consumer</span></code>)
 subclass) bound to the topic. It does <cite>not</cite> create the subcription
 on the backend (or do any API call at all); it simply returns an
 object capable of doing these things.</p>
-<p>If the <code class="docutils literal"><span class="pre">callback</span></code> argument is provided, then the <code class="xref py py-meth docutils literal"><span class="pre">open()</span></code> method
-is automatically called on the returned object. If <code class="docutils literal"><span class="pre">callback</span></code> is
+<p>If the <code class="docutils literal notranslate"><span class="pre">callback</span></code> argument is provided, then the <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method
+is automatically called on the returned object. If <code class="docutils literal notranslate"><span class="pre">callback</span></code> is
 not provided, the subscription is returned unopened.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It only makes sense to provide <code class="docutils literal"><span class="pre">callback</span></code> here if you have
+<p class="last">It only makes sense to provide <code class="docutils literal notranslate"><span class="pre">callback</span></code> here if you have
 already created the subscription manually in the API.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -872,9 +863,9 @@ already created the subscription manually in the API.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the subscription. The
 subscription should have already been created (for example,
-by using <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription"><code class="xref py py-meth docutils literal"><span class="pre">create_subscription()</span></code></a>).</li>
+by using <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_subscription()</span></code></a>).</li>
 <li><strong>callback</strong> (<em>function</em>) – The callback function. This function receives
-the <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PubsubMessage" title="google.cloud.pubsub_v1.types.PubsubMessage"><code class="xref py py-class docutils literal"><span class="pre">PubsubMessage</span></code></a> as its only
+the <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PubsubMessage" title="google.cloud.pubsub_v1.types.PubsubMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PubsubMessage</span></code></a> as its only
 argument.</li>
 <li><strong>flow_control</strong> (<em>FlowControl</em>) – The flow control
 settings. Use this to prevent situations where you are
@@ -884,7 +875,7 @@ inundated with too many messages at once.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
 <dt>An instance</dt>
-<dd><p class="first last">of the defined <code class="docutils literal"><span class="pre">consumer_class</span></code> on the client.</p>
+<dd><p class="first last">of the defined <code class="docutils literal notranslate"><span class="pre">consumer_class</span></code> on the client.</p>
 </dd>
 </dl>
 </p>
@@ -893,7 +884,7 @@ inundated with too many messages at once.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Consumer</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">TypeError</span></code></a> – If <code class="docutils literal"><span class="pre">callback</span></code> is not callable.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">callback</span></code> is not callable.</p>
 </td>
 </tr>
 </tbody>
@@ -902,7 +893,7 @@ inundated with too many messages at once.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.subscription_path">
-<code class="descname">subscription_path</code><span class="sig-paren">(</span><em>project</em>, <em>subscription</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.subscription_path" title="Permalink to this definition">#</a></dt>
+<code class="descname">subscription_path</code><span class="sig-paren">(</span><em>subscription</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.subscription_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a fully-qualified subscription resource name string.</p>
 </dd></dl>
 
@@ -929,7 +920,7 @@ inundated with too many messages at once.</li>
 If the resource does not exist, this will return an empty set of
 permissions, not a NOT_FOUND error.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -945,30 +936,30 @@ permissions, not a NOT_FOUND error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy detail is being requested.
-<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal"><span class="pre">resource</span></code>. Permissions with
+<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see
 <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.TestIamPermissionsResponse" title="google.cloud.pubsub_v1.types.TestIamPermissionsResponse"><code class="xref py py-class docutils literal"><span class="pre">TestIamPermissionsResponse</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.TestIamPermissionsResponse" title="google.cloud.pubsub_v1.types.TestIamPermissionsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestIamPermissionsResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -978,7 +969,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.topic_path">
-<code class="descname">topic_path</code><span class="sig-paren">(</span><em>project</em>, <em>topic</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.topic_path" title="Permalink to this definition">#</a></dt>
+<code class="descname">topic_path</code><span class="sig-paren">(</span><em>topic</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.topic_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a fully-qualified topic resource name string.</p>
 </dd></dl>
 
@@ -992,7 +983,7 @@ Keeping the latter for internal consistency in V1, however it should be
 corrected in V2.  See
 <a class="reference external" href="https://cloud.google.com/apis/design/standard_methods#update">https://cloud.google.com/apis/design/standard_methods#update</a> for details.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1009,29 +1000,29 @@ corrected in V2.  See
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>snapshot</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><em>Snapshot</em></a><em>]</em>) – The updated snpashot object.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>FieldMask</em><em>]</em>) – Indicates which fields in the provided snapshot to update.
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Indicates which fields in the provided snapshot to update.
 Must be specified and non-empty.
 If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal"><span class="pre">FieldMask</span></code></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Snapshot" title="google.cloud.pubsub_v1.types.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1049,7 +1040,7 @@ Keeping the latter for internal consistency in V1, however it should be
 corrected in V2.  See
 <a class="reference external" href="https://cloud.google.com/apis/design/standard_methods#update">https://cloud.google.com/apis/design/standard_methods#update</a> for details.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1066,29 +1057,29 @@ corrected in V2.  See
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>subscription</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><em>Subscription</em></a><em>]</em>) – The updated subscription object.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a></li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>FieldMask</em><em>]</em>) – Indicates which fields in the provided subscription to update.
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a></li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – Indicates which fields in the provided subscription to update.
 Must be specified and non-empty.
 If a dict is provided, it must be of the same form as the protobuf
-message <code class="xref py py-class docutils literal"><span class="pre">FieldMask</span></code></li>
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Subscription" title="google.cloud.pubsub_v1.types.Subscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscription</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1126,7 +1117,7 @@ to a retryable error and retry attempts failed.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1134,6 +1125,7 @@ to a retryable error and retry attempts failed.</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -1173,12 +1165,14 @@ to a retryable error and retry attempts failed.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1189,7 +1183,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

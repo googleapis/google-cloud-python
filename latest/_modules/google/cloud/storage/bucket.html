@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -235,8 +226,8 @@
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The blob object created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
-                    <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span></div>
+                    <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.notification"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.notification">[docs]</a>    <span class="k">def</span> <span class="nf">notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span>
                      <span class="n">topic_project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -256,8 +247,8 @@
             <span class="n">custom_attributes</span><span class="o">=</span><span class="n">custom_attributes</span><span class="p">,</span>
             <span class="n">event_types</span><span class="o">=</span><span class="n">event_types</span><span class="p">,</span>
             <span class="n">blob_name_prefix</span><span class="o">=</span><span class="n">blob_name_prefix</span><span class="p">,</span>
-            <span class="n">payload_format</span><span class="o">=</span><span class="n">payload_format</span><span class="p">,</span>
-        <span class="p">)</span></div>
+            <span class="n">payload_format</span><span class="o">=</span><span class="n">payload_format</span><span class="p">,</span></div>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
@@ -290,8 +281,8 @@
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span></div>
+            <span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
@@ -333,8 +324,8 @@
         <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+            <span class="n">data</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.patch"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.patch">[docs]</a>    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends all changed properties in a PATCH request.</span>
@@ -356,8 +347,8 @@
             <span class="k">for</span> <span class="n">removed_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_removals</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">removed_label</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Call the superclass method.</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="c1"># Call the superclass method.</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -378,8 +369,8 @@
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The relative URL path for ``bucket_name``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/b/&#39;</span> <span class="o">+</span> <span class="n">bucket_name</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;/b/&#39;</span> <span class="o">+</span> <span class="n">bucket_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -443,8 +434,8 @@
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
             <span class="k">return</span> <span class="n">blob</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span></div>
+            <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -521,8 +512,8 @@
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
             <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">iterator</span></div>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">iterator</span>
 
 <div class="viewcode-block" id="Bucket.list_notifications"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_notifications">[docs]</a>    <span class="k">def</span> <span class="nf">list_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List Pub / Sub notifications for this bucket.</span>
@@ -547,8 +538,8 @@
             <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_notification</span><span class="p">)</span>
-        <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="n">iterator</span></div>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span></div>
+        <span class="k">return</span> <span class="n">iterator</span>
 
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
@@ -609,8 +600,8 @@
         <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -656,8 +647,8 @@
         <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
@@ -692,8 +683,8 @@
             <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">on_error</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span></div>
+                <span class="k">else</span><span class="p">:</span></div>
+                    <span class="k">raise</span>
 
 <div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preserve_acl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">source_generation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -751,8 +742,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_acl</span><span class="p">:</span>
             <span class="n">new_blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">{},</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
-        <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">new_blob</span></div>
+        <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">new_blob</span>
 
 <div class="viewcode-block" id="Bucket.rename_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.rename_blob">[docs]</a>    <span class="k">def</span> <span class="nf">rename_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rename the given blob using copy and delete operations.</span>
@@ -783,8 +774,8 @@
 <span class="sd">        :returns: The newly-renamed blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">new_blob</span></div>
+        <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">new_blob</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -966,8 +957,8 @@
 <span class="sd">        :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``</span>
 <span class="sd">                  (if logging is enabled), or None (if not).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable access logging for this bucket.</span>
@@ -980,15 +971,15 @@
 <span class="sd">        :type object_prefix: str</span>
 <span class="sd">        :param object_prefix: prefix for access log filenames</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;logBucket&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;logObjectPrefix&#39;</span><span class="p">:</span> <span class="n">object_prefix</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span></div>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;logBucket&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;logObjectPrefix&#39;</span><span class="p">:</span> <span class="n">object_prefix</span><span class="p">}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.disable_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable access logging for this bucket.</span>
 
 <span class="sd">        See https://cloud.google.com/storage/docs/access-logs#disabling</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1182,16 +1173,16 @@
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;mainPageSuffix&#39;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span>
             <span class="s1">&#39;notFoundPage&#39;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="p">}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable the website configuration for this bucket.</span>
 
 <span class="sd">        This is really just a shortcut for setting the website-related</span>
 <span class="sd">        attributes to ``None``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.get_iam_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the IAM policy for the bucket.</span>
@@ -1220,8 +1211,8 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.set_iam_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the bucket.</span>
@@ -1256,8 +1247,8 @@
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.test_iam_permissions"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test permissions</span>
@@ -1289,8 +1280,8 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span>
 
 <div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
@@ -1337,8 +1328,8 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
-                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span></div>
+                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Bucket.generate_upload_policy"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.generate_upload_policy">[docs]</a>    <span class="k">def</span> <span class="nf">generate_upload_policy</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1402,8 +1393,8 @@
             <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">encoded_policy_document</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
             <span class="s1">&#39;signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
         <span class="p">}</span>
-
-        <span class="k">return</span> <span class="n">fields</span></div></div>
+</div></div>
+        <span class="k">return</span> <span class="n">fields</span>
 </pre></div>
 
           </div>
@@ -1431,7 +1422,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1439,6 +1430,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -1468,12 +1460,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1484,7 +1478,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

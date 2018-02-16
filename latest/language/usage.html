@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Natural Language &#8212; google-cloud 9de1026 documentation</title>
+    <title>Natural Language &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -55,26 +46,26 @@ with your document storage on Google Cloud Storage.</p>
 <div class="section" id="authentication-and-configuration">
 <h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>,
+<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>,
 see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
-like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
+like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
 variable is not present, the project ID from JSON file credentials is used.</p>
 <p>If you are using Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient" title="google.cloud.language_v1.LanguageServiceClient"><code class="xref py py-class docutils literal"><span class="pre">LanguageServiceClient</span></code></a>.</p>
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient" title="google.cloud.language_v1.LanguageServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">LanguageServiceClient</span></code></a>.</p>
 </li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">language</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">language</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> explicitly.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">language</span>
+<p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> explicitly.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">language</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">LanguageServiceClient</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -91,10 +82,10 @@ this will be detected automatically.</p>
 <li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText">annotateText</a></li>
 <li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText">classifyText</a></li>
 </ul>
-<p>and each method uses a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.Document" title="google.cloud.language_v1.types.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a> for representing
+<p>and each method uses a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.Document" title="google.cloud.language_v1.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a> for representing
 text.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Google, headquartered in Mountain View, unveiled the &#39;</span>
 <span class="gp">... </span>            <span class="s1">&#39;new Android phone at the Consumer Electronic Show.  &#39;</span>
 <span class="gp">... </span>            <span class="s1">&#39;Sundar Pichai said in his keynote that users love &#39;</span>
@@ -105,11 +96,11 @@ text.</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The document’s language defaults to <code class="docutils literal"><span class="pre">None</span></code>, which will cause the API to
+<p>The document’s language defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, which will cause the API to
 auto-detect the language.</p>
 <p>In addition, you can construct an HTML document:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">html_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">html_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="gp">... </span><span class="s2">&lt;html&gt;</span>
 <span class="gp">... </span><span class="s2">  &lt;head&gt;</span>
 <span class="gp">... </span><span class="s2">    &lt;title&gt;El Tiempo de las Historias&lt;/time&gt;</span>
@@ -127,12 +118,12 @@ auto-detect the language.</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The <code class="docutils literal"><span class="pre">language</span></code> argument can be either ISO-639-1 or BCP-47 language
+<p>The <code class="docutils literal notranslate"><span class="pre">language</span></code> argument can be either ISO-639-1 or BCP-47 language
 codes. The API reference page contains the full list of <a class="reference external" href="https://cloud.google.com/natural-language/docs/languages">supported languages</a>.</p>
 <p>In addition to supplying the text / HTML content, a document can refer
 to content stored in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">gcs_content_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-text-bucket/sentiment-me.txt&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="n">language</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">HTML</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -142,11 +133,11 @@ to content stored in <a class="reference external" href="https://cloud.google.co
 </div>
 <div class="section" id="analyze-entities">
 <h2>Analyze Entities<a class="headerlink" href="#analyze-entities" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entities" title="google.cloud.language_v1.LanguageServiceClient.analyze_entities"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entities()</span></code></a>
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entities" title="google.cloud.language_v1.LanguageServiceClient.analyze_entities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_entities()</span></code></a>
 method finds named entities (i.e. proper names) in the text. This method
-returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitiesResponse" title="google.cloud.language_v1.types.AnalyzeEntitiesResponse"><code class="xref py py-class docutils literal"><span class="pre">AnalyzeEntitiesResponse</span></code></a>.</p>
+returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitiesResponse" title="google.cloud.language_v1.types.AnalyzeEntitiesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyzeEntitiesResponse</span></code></a>.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Michelangelo Caravaggio, Italian painter, is &#39;</span>
 <span class="gp">... </span>            <span class="s1">&#39;known for &quot;The Calling of Saint Matthew&quot;.&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="n">language</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PLAIN_TEXT</span><span class="p">,</span>
@@ -181,19 +172,19 @@ returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.l
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
-want <code class="docutils literal"><span class="pre">UTF32</span></code>.</p>
+want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
 </div>
 </div>
 <div class="section" id="analyze-sentiment">
 <h2>Analyze Sentiment<a class="headerlink" href="#analyze-sentiment" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_sentiment()</span></code></a> method
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_sentiment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_sentiment()</span></code></a> method
 analyzes the sentiment of the provided text. This method returns a
-<a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeSentimentResponse" title="google.cloud.language_v1.types.AnalyzeSentimentResponse"><code class="xref py py-class docutils literal"><span class="pre">AnalyzeSentimentResponse</span></code></a>.</p>
+<a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeSentimentResponse" title="google.cloud.language_v1.types.AnalyzeSentimentResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyzeSentimentResponse</span></code></a>.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Jogging is not very fun.&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;PLAIN_TEXT&#39;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -211,21 +202,21 @@ analyzes the sentiment of the provided text. This method returns a
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
-want <code class="docutils literal"><span class="pre">UTF32</span></code>.</p>
+want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
 </div>
 </div>
 <div class="section" id="analyze-entity-sentiment">
 <h2>Analyze Entity Sentiment<a class="headerlink" href="#analyze-entity-sentiment" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entity_sentiment()</span></code></a>
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_entity_sentiment()</span></code></a>
 method is effectively the amalgamation of
-<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entities" title="google.cloud.language_v1.LanguageServiceClient.analyze_entities"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entities()</span></code></a> and
-<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_sentiment()</span></code></a>.
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entities" title="google.cloud.language_v1.LanguageServiceClient.analyze_entities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_entities()</span></code></a> and
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_sentiment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_sentiment()</span></code></a>.
 This method returns a
-<a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitySentimentResponse" title="google.cloud.language_v1.types.AnalyzeEntitySentimentResponse"><code class="xref py py-class docutils literal"><span class="pre">AnalyzeEntitySentimentResponse</span></code></a>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitySentimentResponse" title="google.cloud.language_v1.types.AnalyzeEntitySentimentResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalyzeEntitySentimentResponse</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Mona said that jogging is very fun.&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;PLAIN_TEXT&#39;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -246,23 +237,23 @@ This method returns a
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
-want <code class="docutils literal"><span class="pre">UTF32</span></code>.</p>
+want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
 </div>
 </div>
 <div class="section" id="annotate-text">
 <h2>Annotate Text<a class="headerlink" href="#annotate-text" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.annotate_text" title="google.cloud.language_v1.LanguageServiceClient.annotate_text"><code class="xref py py-meth docutils literal"><span class="pre">annotate_text()</span></code></a> method
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.annotate_text" title="google.cloud.language_v1.LanguageServiceClient.annotate_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">annotate_text()</span></code></a> method
 analyzes a document and is intended for users who are familiar with
 machine learning and need in-depth text features to build upon. This method
-returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnnotateTextResponse" title="google.cloud.language_v1.types.AnnotateTextResponse"><code class="xref py py-class docutils literal"><span class="pre">AnnotateTextResponse</span></code></a>.</p>
+returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnnotateTextResponse" title="google.cloud.language_v1.types.AnnotateTextResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateTextResponse</span></code></a>.</p>
 </div>
 <div class="section" id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
 <p>This package includes clients for multiple versions of the Natural Language
-API. By default, you will get <code class="docutils literal"><span class="pre">v1</span></code>, the latest GA version.</p>
+API. By default, you will get <code class="docutils literal notranslate"><span class="pre">v1</span></code>, the latest GA version.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1/api.html">Natural Language Client API</a></li>
@@ -270,9 +261,9 @@ API. By default, you will get <code class="docutils literal"><span class="pre">v
 </ul>
 </div>
 <p>If you are interested in beta features ahead of the latest GA, you may
-opt-in to the v1.1 beta, which is spelled <code class="docutils literal"><span class="pre">v1beta2</span></code>. In order to do this,
-you will want to import from <code class="docutils literal"><span class="pre">google.cloud.language_v1beta2</span></code> in lieu of
-<code class="docutils literal"><span class="pre">google.cloud.language</span></code>.</p>
+opt-in to the v1.1 beta, which is spelled <code class="docutils literal notranslate"><span class="pre">v1beta2</span></code>. In order to do this,
+you will want to import from <code class="docutils literal notranslate"><span class="pre">google.cloud.language_v1beta2</span></code> in lieu of
+<code class="docutils literal notranslate"><span class="pre">google.cloud.language</span></code>.</p>
 <p>An API and type reference is provided for the v1.1 beta also:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -286,11 +277,11 @@ you will want to import from <code class="docutils literal"><span class="pre">go
 surface is subject to change, and it is possible that this client will be
 deprecated or removed after its features become GA.</p>
 </div>
-<p>For a list of all <code class="docutils literal"><span class="pre">google-cloud-language</span></code> releases:</p>
+<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-language</span></code> releases:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-language</span></code> Releases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="releases.html#google-cloud-natural-language-releases"><code class="docutils literal"><span class="pre">google-cloud-natural-language</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-language</span></code> Releases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="releases.html#google-cloud-natural-language-releases"><code class="docutils literal notranslate"><span class="pre">google-cloud-natural-language</span></code> Releases</a></li>
 </ul>
 </li>
 </ul>
@@ -324,7 +315,7 @@ deprecated or removed after its features become GA.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -332,6 +323,7 @@ deprecated or removed after its features become GA.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Natural Language</a><ul>
@@ -370,12 +362,14 @@ deprecated or removed after its features become GA.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -386,7 +380,7 @@ deprecated or removed after its features become GA.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

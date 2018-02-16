@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transactions &#8212; google-cloud 9de1026 documentation</title>
+    <title>Transactions &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,27 +38,27 @@
 <dl class="class">
 <dt id="google.cloud.datastore.transaction.Transaction">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>client</em>, <em>read_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used to build up a bulk mutation and ensure all
 or none succeed (transactionally).</p>
-<p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
-operations (either <code class="docutils literal"><span class="pre">insert</span></code> or <code class="docutils literal"><span class="pre">upsert</span></code>) into the same
+<p>For example, the following snippet of code will put the two <code class="docutils literal notranslate"><span class="pre">save</span></code>
+operations (either <code class="docutils literal notranslate"><span class="pre">insert</span></code> or <code class="docutils literal notranslate"><span class="pre">upsert</span></code>) into the same
 mutation, and execute those within a transaction:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put_multi</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Because it derives from <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a>,
-<a class="reference internal" href="#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a> also provides <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.put" title="google.cloud.datastore.transaction.Transaction.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> and <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.delete" title="google.cloud.datastore.transaction.Transaction.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> methods:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<p>Because it derives from <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></a>,
+<a class="reference internal" href="#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code></a> also provides <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.put" title="google.cloud.datastore.transaction.Transaction.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a> and <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.delete" title="google.cloud.datastore.transaction.Transaction.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> methods:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">entity2</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, the transaction is rolled back if the transaction block
 exits with an error:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="k">raise</span> <span class="n">SomeException</span>  <span class="c1"># rolls back</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -83,30 +74,30 @@ by default.</p>
 <div><p>Inside a transaction, automatically assigned IDs for
 entities will not be available at save time!  That means, if you
 try:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p><code class="docutils literal"><span class="pre">entity</span></code> won’t have a complete key until the transaction is
+<p><code class="docutils literal notranslate"><span class="pre">entity</span></code> won’t have a complete key until the transaction is
 committed.</p>
-<p>Once you exit the transaction (or call <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.commit" title="google.cloud.datastore.transaction.Transaction.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>), the
+<p>Once you exit the transaction (or call <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.commit" title="google.cloud.datastore.transaction.Transaction.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>), the
 automatically generated ID will be assigned to the entity:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="last highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There is no ID on this key.</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There is no ID on this key.</span>
 <span class="gp">...</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There *is* an ID.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There *is* an ID.</span>
 <span class="go">False</span>
 </pre></div>
 </div>
 </div>
 <p>If you don’t want to use the context manager you can initialize a
 transaction manually:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
@@ -120,7 +111,7 @@ transaction manually:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – the client used to connect to datastore.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – the client used to connect to datastore.</li>
 <li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – indicates the transaction is read only.</li>
 </ul>
 </td>
@@ -138,7 +129,7 @@ to use a context manager.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the transaction has
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the transaction has
 already begun.</td>
 </tr>
 </tbody>
@@ -171,7 +162,7 @@ returns None.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a> or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a> or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current transaction (if any are active).</td>
 </tr>
@@ -182,16 +173,16 @@ returns None.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.transaction.Transaction.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.datastore.transaction.Transaction.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember a key to be deleted during <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.commit" title="google.cloud.datastore.transaction.Transaction.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<dd><p>Remember a key to be deleted during <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.commit" title="google.cloud.datastore.transaction.Transaction.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – the key to be deleted.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – the key to be deleted.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the batch is not in
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the batch is not in
 progress, if key is not complete, or if the key’s
-<code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
+<code class="docutils literal notranslate"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -218,8 +209,8 @@ progress, if key is not complete, or if the key’s
 <code class="descname">mutations</code><a class="headerlink" href="#google.cloud.datastore.transaction.Transaction.mutations" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the changes accumulated by this batch.</p>
 <p>Every batch is committed with a single commit request containing all
-the work to be done as mutations. Inside a batch, calling <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.put" title="google.cloud.datastore.transaction.Transaction.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a>
-with an entity, or <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.delete" title="google.cloud.datastore.transaction.Transaction.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> with a key, builds up the request by
+the work to be done as mutations. Inside a batch, calling <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.put" title="google.cloud.datastore.transaction.Transaction.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a>
+with an entity, or <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.delete" title="google.cloud.datastore.transaction.Transaction.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> with a key, builds up the request by
 adding a new mutation. This getter returns the protobuf that has been
 built-up so far.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -228,7 +219,7 @@ built-up so far.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">iterable</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of <code class="xref py py-class docutils literal"><span class="pre">datastore_pb2.Mutation</span></code>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of <code class="xref py py-class docutils literal notranslate"><span class="pre">datastore_pb2.Mutation</span></code>
 protobufs to be sent in the commit request.</td>
 </tr>
 </tbody>
@@ -243,7 +234,7 @@ protobufs to be sent in the commit request.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace in which the batch will run.</td>
 </tr>
@@ -259,7 +250,7 @@ protobufs to be sent in the commit request.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project in which the batch will run.</td>
 </tr>
@@ -273,14 +264,14 @@ protobufs to be sent in the commit request.</td>
 <dd><p>Adds an entity to be committed.</p>
 <p>Ensures the transaction is not marked readonly.
 Please see documentation at
-<a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch.put" title="google.cloud.datastore.batch.Batch.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a></p>
+<a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch.put" title="google.cloud.datastore.batch.Batch.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>) – the entity to be saved.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a>) – the entity to be saved.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">RuntimeError</span></code></a> if the transaction
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a> if the transaction
 is marked ReadOnly</td>
 </tr>
 </tbody>
@@ -327,7 +318,7 @@ is marked ReadOnly</td>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -335,7 +326,7 @@ is marked ReadOnly</td>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Datastore</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Datastore Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entities.html">Entities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keys.html">Keys</a></li>
@@ -346,6 +337,7 @@ is marked ReadOnly</td>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#module-google.cloud.datastore">Modules</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -377,12 +369,14 @@ is marked ReadOnly</td>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -393,7 +387,7 @@ is marked ReadOnly</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

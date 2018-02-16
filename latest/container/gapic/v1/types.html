@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Container Engine API Client &#8212; google-cloud 9de1026 documentation</title>
+    <title>Types for Google Container Engine API Client &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -143,7 +134,7 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.CancelOperationRequest.operation_id">
 <code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</p>
+<dd><p>The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</p>
 </dd></dl>
 
 </dd></dl>
@@ -197,7 +188,7 @@ node_pool at the same time.</p>
 <dt id="google.cloud.container_v1.types.Cluster.node_config">
 <code class="descname">node_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.node_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Parameters used in creating the cluster’s nodes. See
-<code class="docutils literal"><span class="pre">nodeConfig</span></code> for the description of its properties. For
+<code class="docutils literal notranslate"><span class="pre">nodeConfig</span></code> for the description of its properties. For
 requests, this field should only be used in lieu of a
 “node_pool” object, since this configuration (along with the
 “initial_node_count”) will be used to create a “NodePool”
@@ -218,9 +209,9 @@ endpoint.</p>
 <dt id="google.cloud.container_v1.types.Cluster.logging_service">
 <code class="descname">logging_service</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.logging_service" title="Permalink to this definition">#</a></dt>
 <dd><p>The logging service the cluster should use to write logs.
-Currently available options:  -  <code class="docutils literal"><span class="pre">logging.googleapis.com</span></code> -
-the Google Cloud Logging service. -  <code class="docutils literal"><span class="pre">none</span></code> - no logs will
-be exported from the cluster. -  if left as an empty string,          <code class="docutils literal"><span class="pre">logging.googleapis.com</span></code> will be used.</p>
+Currently available options:  -  <code class="docutils literal notranslate"><span class="pre">logging.googleapis.com</span></code> -
+the Google Cloud Logging service. -  <code class="docutils literal notranslate"><span class="pre">none</span></code> - no logs will
+be exported from the cluster. -  if left as an empty string,          <code class="docutils literal notranslate"><span class="pre">logging.googleapis.com</span></code> will be used.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -228,17 +219,17 @@ be exported from the cluster. -  if left as an empty string,          <code clas
 <code class="descname">monitoring_service</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.monitoring_service" title="Permalink to this definition">#</a></dt>
 <dd><p>The monitoring service the cluster should use to write
 metrics. Currently available options:  -
-<code class="docutils literal"><span class="pre">monitoring.googleapis.com</span></code> - the Google Cloud Monitoring
-service. -  <code class="docutils literal"><span class="pre">none</span></code> - no metrics will be exported from the
+<code class="docutils literal notranslate"><span class="pre">monitoring.googleapis.com</span></code> - the Google Cloud Monitoring
+service. -  <code class="docutils literal notranslate"><span class="pre">none</span></code> - no metrics will be exported from the
 cluster. -  if left as an empty string,
-<code class="docutils literal"><span class="pre">monitoring.googleapis.com</span></code> will be    used.</p>
+<code class="docutils literal notranslate"><span class="pre">monitoring.googleapis.com</span></code> will be    used.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.network">
 <code class="descname">network</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.network" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/networks-and-firewalls#networks">network</a> to which
-the cluster is connected. If left unspecified, the <code class="docutils literal"><span class="pre">default</span></code>
+the cluster is connected. If left unspecified, the <code class="docutils literal notranslate"><span class="pre">default</span></code>
 network will be used.</p>
 </dd></dl>
 
@@ -246,9 +237,9 @@ network will be used.</p>
 <dt id="google.cloud.container_v1.types.Cluster.cluster_ipv4_cidr">
 <code class="descname">cluster_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.cluster_ipv4_cidr" title="Permalink to this definition">#</a></dt>
 <dd><p>The IP address range of the container pods in this cluster, in
-<a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>). Leave
-blank to have one automatically chosen or specify a <code class="docutils literal"><span class="pre">/14</span></code>
-block in <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>.</p>
+<a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal notranslate"><span class="pre">10.96.0.0/14</span></code>). Leave
+blank to have one automatically chosen or specify a <code class="docutils literal notranslate"><span class="pre">/14</span></code>
+block in <code class="docutils literal notranslate"><span class="pre">10.0.0.0/8</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -353,8 +344,8 @@ resides.</p>
 <code class="descname">endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.endpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The IP address of this cluster’s master
 endpoint. The endpoint can be accessed from the internet at
-<code class="docutils literal"><span class="pre">https://username:password&#64;endpoint/</span></code>.  See the
-<code class="docutils literal"><span class="pre">masterAuth</span></code> property of this resource for username and
+<code class="docutils literal notranslate"><span class="pre">https://username:password&#64;endpoint/</span></code>.  See the
+<code class="docutils literal notranslate"><span class="pre">masterAuth</span></code> property of this resource for username and
 password information.</p>
 </dd></dl>
 
@@ -408,15 +399,15 @@ of this cluster, if available.</p>
 <code class="descname">node_ipv4_cidr_size</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.node_ipv4_cidr_size" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The size of the address space on each node for
 hosting containers. This is provisioned from within the
-<code class="docutils literal"><span class="pre">container_ipv4_cidr</span></code> range.</p>
+<code class="docutils literal notranslate"><span class="pre">container_ipv4_cidr</span></code> range.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.Cluster.services_ipv4_cidr">
 <code class="descname">services_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.services_ipv4_cidr" title="Permalink to this definition">#</a></dt>
 <dd><p>[Output only] The IP address range of the Kubernetes services
-in this cluster, in <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">1.2.3.4/29</span></code>). Service
-addresses are typically put in the last <code class="docutils literal"><span class="pre">/16</span></code> from the
+in this cluster, in <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal notranslate"><span class="pre">1.2.3.4/29</span></code>). Service
+addresses are typically put in the last <code class="docutils literal notranslate"><span class="pre">/16</span></code> from the
 container CIDR.</p>
 </dd></dl>
 
@@ -440,6 +431,11 @@ deleted in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.
 text format.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.container_v1.types.Cluster.ResourceLabelsEntry">
+<em class="property">class </em><code class="descname">ResourceLabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ResourceLabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -452,7 +448,7 @@ provided.</p>
 <dt id="google.cloud.container_v1.types.ClusterUpdate.desired_node_version">
 <code class="descname">desired_node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_node_version" title="Permalink to this definition">#</a></dt>
 <dd><p>The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal"><span class="pre">-</span></code> to upgrade to the latest version supported
+upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported
 by the server.</p>
 </dd></dl>
 
@@ -613,6 +609,11 @@ resides.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.container_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.DailyMaintenanceWindow">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">DailyMaintenanceWindow</code><a class="headerlink" href="#google.cloud.container_v1.types.DailyMaintenanceWindow" title="Permalink to this definition">#</a></dt>
 <dd><p>Time window specified for daily maintenance operations.</p>
@@ -694,6 +695,91 @@ resides.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.container_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.container_v1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.container_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.container_v1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.container_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.GetClusterRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetClusterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>GetClusterRequest gets the settings of a cluster.</p>
@@ -771,7 +857,7 @@ resides.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.GetOperationRequest.operation_id">
 <code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</p>
+<dd><p>The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</p>
 </dd></dl>
 
 </dd></dl>
@@ -812,6 +898,11 @@ Monitoring service.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.container_v1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.HttpLoadBalancing">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">HttpLoadBalancing</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpLoadBalancing" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration options for the HTTP (L7) load balancing controller addon,
@@ -828,6 +919,11 @@ manages the load balancers.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.IPAllocationPolicy">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">IPAllocationPolicy</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for controlling how IPs are allocated in the cluster.</p>
@@ -842,13 +938,13 @@ manages the load balancers.</p>
 <code class="descname">create_subnetwork</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.create_subnetwork" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether a new subnetwork will be created automatically for the
 cluster.  This field is only applicable when
-<code class="docutils literal"><span class="pre">use_ip_aliases</span></code> is true.</p>
+<code class="docutils literal notranslate"><span class="pre">use_ip_aliases</span></code> is true.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.IPAllocationPolicy.subnetwork_name">
 <code class="descname">subnetwork_name</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.subnetwork_name" title="Permalink to this definition">#</a></dt>
-<dd><p>A custom subnetwork name to be used if <code class="docutils literal"><span class="pre">create_subnetwork</span></code>
+<dd><p>A custom subnetwork name to be used if <code class="docutils literal notranslate"><span class="pre">create_subnetwork</span></code>
 is true. If this field is empty, then an automatic name will
 be chosen for the new subnetwork.</p>
 </dd></dl>
@@ -896,13 +992,13 @@ create_subnetwork is false.</p>
 <dt id="google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr_block">
 <code class="descname">cluster_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
 <dd><p>The IP address range for the cluster pod IPs. If this field is
-set, then <code class="docutils literal"><span class="pre">cluster.cluster_ipv4_cidr</span></code> must be left blank.
-This field is only applicable when <code class="docutils literal"><span class="pre">use_ip_aliases</span></code> is true.
+set, then <code class="docutils literal notranslate"><span class="pre">cluster.cluster_ipv4_cidr</span></code> must be left blank.
+This field is only applicable when <code class="docutils literal notranslate"><span class="pre">use_ip_aliases</span></code> is true.
 Set to blank to have a range chosen with the default size.
-Set to /netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen with a
-specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
-RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
-<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+Set to /netmask (e.g. <code class="docutils literal notranslate"><span class="pre">/14</span></code>) to have a range chosen with a
+specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal notranslate"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal notranslate"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal notranslate"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal notranslate"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
 range to use.</p>
 </dd></dl>
 
@@ -910,12 +1006,12 @@ range to use.</p>
 <dt id="google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr_block">
 <code class="descname">node_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
 <dd><p>The IP address range of the instance IPs in this cluster.
-This is applicable only if <code class="docutils literal"><span class="pre">create_subnetwork</span></code> is true.  Set
+This is applicable only if <code class="docutils literal notranslate"><span class="pre">create_subnetwork</span></code> is true.  Set
 to blank to have a range chosen with the default size.  Set to
-/netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen with a specific
-netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
-RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
-<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+/netmask (e.g. <code class="docutils literal notranslate"><span class="pre">/14</span></code>) to have a range chosen with a specific
+netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal notranslate"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal notranslate"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal notranslate"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal notranslate"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
 range to use.</p>
 </dd></dl>
 
@@ -924,12 +1020,12 @@ range to use.</p>
 <code class="descname">services_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.services_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
 <dd><p>The IP address range of the services IPs in this cluster. If
 blank, a range will be automatically chosen with the default
-size.  This field is only applicable when <code class="docutils literal"><span class="pre">use_ip_aliases</span></code>
+size.  This field is only applicable when <code class="docutils literal notranslate"><span class="pre">use_ip_aliases</span></code>
 is true.  Set to blank to have a range chosen with the default
-size.  Set to /netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen
-with a specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
-RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
-<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+size.  Set to /netmask (e.g. <code class="docutils literal notranslate"><span class="pre">/14</span></code>) to have a range chosen
+with a specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal notranslate"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal notranslate"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal notranslate"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal notranslate"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
 range to use.</p>
 </dd></dl>
 
@@ -1056,7 +1152,7 @@ resides.</p>
 <dt id="google.cloud.container_v1.types.ListOperationsRequest.zone">
 <code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.zone" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for,
-or <code class="docutils literal"><span class="pre">-</span></code> for all zones.</p>
+or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1205,6 +1301,21 @@ blocks.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.NetworkPolicy">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NetworkPolicy</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicy" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration options for the NetworkPolicy feature.
@@ -1244,8 +1355,8 @@ is enabled for the nodes.</p>
 <dl class="attribute">
 <dt id="google.cloud.container_v1.types.NodeConfig.machine_type">
 <code class="descname">machine_type</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.machine_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of a Google Compute Engine <a class="reference external" href="/compute/docs/machine-types">machine type</a> (e.g. <code class="docutils literal"><span class="pre">n1-standard-1</span></code>).  If
-unspecified, the default machine type is <code class="docutils literal"><span class="pre">n1-standard-1</span></code>.</p>
+<dd><p>The name of a Google Compute Engine <a class="reference external" href="/compute/docs/machine-types">machine type</a> (e.g. <code class="docutils literal notranslate"><span class="pre">n1-standard-1</span></code>).  If
+unspecified, the default machine type is <code class="docutils literal notranslate"><span class="pre">n1-standard-1</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1263,9 +1374,9 @@ default disk size is 100GB.</p>
 the node VMs under the “default” service account.  The
 following scopes are recommended, but not required, and by
 default are not included:  -
-<code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/compute</span></code> is required for
+<code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/compute</span></code> is required for
 mounting    persistent storage on your nodes. -
-<code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code> is
+<code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code> is
 required    for communicating with <strong>gcr.io</strong> (the <a class="reference external" href="/container-registry/">Google
 Container    Registry</a>).  If
 unspecified, no scopes are added, unless Cloud Logging or
@@ -1365,6 +1476,16 @@ such as minCpuPlatform: “Intel Haswell” or minCpuPlatform:
 “Intel Sandy Bridge”. For more information, read <a class="reference external" href="https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform">how to
 specify min CPU platform</a></p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodeConfig.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodeConfig.MetadataEntry">
+<em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.MetadataEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1505,6 +1626,16 @@ cluster.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation" title="Permalink to this definition">#</a></dt>
 <dd><p>This operation resource represents operations that may have happened or
@@ -1642,6 +1773,16 @@ resides.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.SetAddonsConfigRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetAddonsConfigRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>SetAddonsConfigRequest sets the addons associated with the cluster.</p>
@@ -1717,6 +1858,11 @@ provide an up-to-date fingerprint hash when updating or
 changing labels. Make a get() request to the resource to get
 the latest fingerprint.</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry">
+<em class="property">class </em><code class="descname">ResourceLabelsEntry</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.ResourceLabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -2073,6 +2219,16 @@ resides.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.container_v1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.container_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.container_v1.types.StartIPRotationRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">StartIPRotationRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>StartIPRotationRequest creates a new IP for the cluster and then
@@ -2097,6 +2253,16 @@ resides.</p>
 <code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.cluster_id" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the cluster.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.container_v1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.container_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -2197,7 +2363,7 @@ resides.</p>
 <dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.node_version">
 <code class="descname">node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.node_version" title="Permalink to this definition">#</a></dt>
 <dd><p>The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal"><span class="pre">-</span></code> to upgrade to the latest version supported
+upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported
 by the server.</p>
 </dd></dl>
 
@@ -2237,7 +2403,7 @@ by the server.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -2249,6 +2415,7 @@ by the server.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -2280,12 +2447,14 @@ by the server.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -2296,7 +2465,7 @@ by the server.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

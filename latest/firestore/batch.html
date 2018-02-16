@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Batches &#8212; google-cloud 9de1026 documentation</title>
+    <title>Batches &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,11 +38,11 @@
 <dl class="class">
 <dt id="google.cloud.firestore_v1beta1.batch.WriteBatch">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.batch.</code><code class="descname">WriteBatch</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/batch.html#WriteBatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.batch.WriteBatch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Accumulate write operations to be sent in a batch.</p>
 <p>This has the same set of methods for write operations that
-<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference" title="google.cloud.firestore_v1beta1.document.DocumentReference"><code class="xref py py-class docutils literal"><span class="pre">DocumentReference</span></code></a> does,
-e.g. <a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.create" title="google.cloud.firestore_v1beta1.document.DocumentReference.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>.</p>
+<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference" title="google.cloud.firestore_v1beta1.document.DocumentReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentReference</span></code></a> does,
+e.g. <a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.create" title="google.cloud.firestore_v1beta1.document.DocumentReference.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -72,7 +63,7 @@ created this batch.</td>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The write results corresponding
 to the changes committed, returned in the same order as the
 changes were applied to this batch. A write result contains an
-<code class="docutils literal"><span class="pre">update_time</span></code> field.</td>
+<code class="docutils literal notranslate"><span class="pre">update_time</span></code> field.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[google.cloud.proto.firestore.v1beta1.                write_pb2.WriteResult, ..]</td>
 </tr>
@@ -84,8 +75,8 @@ changes were applied to this batch. A write result contains an
 <dt id="google.cloud.firestore_v1beta1.batch.WriteBatch.create">
 <code class="descname">create</code><span class="sig-paren">(</span><em>reference</em>, <em>document_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/batch.html#WriteBatch.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a “change” to this batch to create a document.</p>
-<p>If the document given by <code class="docutils literal"><span class="pre">reference</span></code> already exists, then this
-batch will fail when <a class="reference internal" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.commit" title="google.cloud.firestore_v1beta1.batch.WriteBatch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>-ed.</p>
+<p>If the document given by <code class="docutils literal notranslate"><span class="pre">reference</span></code> already exists, then this
+batch will fail when <a class="reference internal" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.commit" title="google.cloud.firestore_v1beta1.batch.WriteBatch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>-ed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -107,8 +98,8 @@ creating a document.</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>reference</em>, <em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/batch.html#WriteBatch.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a “change” to delete a document.</p>
 <p>See
-<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.delete" title="google.cloud.firestore_v1beta1.document.DocumentReference.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> for
-more information on how <code class="docutils literal"><span class="pre">option</span></code> determines how the change is
+<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.delete" title="google.cloud.firestore_v1beta1.document.DocumentReference.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> for
+more information on how <code class="docutils literal notranslate"><span class="pre">option</span></code> determines how the change is
 applied.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -132,8 +123,8 @@ state of the document before applying changes.</li>
 <code class="descname">set</code><span class="sig-paren">(</span><em>reference</em>, <em>document_data</em>, <em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/batch.html#WriteBatch.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.set" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a “change” to replace a document.</p>
 <p>See
-<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.set" title="google.cloud.firestore_v1beta1.document.DocumentReference.set"><code class="xref py py-meth docutils literal"><span class="pre">set()</span></code></a> for
-more information on how <code class="docutils literal"><span class="pre">option</span></code> determines how the change is
+<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.set" title="google.cloud.firestore_v1beta1.document.DocumentReference.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code></a> for
+more information on how <code class="docutils literal notranslate"><span class="pre">option</span></code> determines how the change is
 applied.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -159,8 +150,8 @@ state of the document before applying changes.</li>
 <code class="descname">update</code><span class="sig-paren">(</span><em>reference</em>, <em>field_updates</em>, <em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/batch.html#WriteBatch.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.batch.WriteBatch.update" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a “change” to update a document.</p>
 <p>See
-<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.update" title="google.cloud.firestore_v1beta1.document.DocumentReference.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> for
-more information on <code class="docutils literal"><span class="pre">field_updates</span></code> and <code class="docutils literal"><span class="pre">option</span></code>.</p>
+<a class="reference internal" href="document.html#google.cloud.firestore_v1beta1.document.DocumentReference.update" title="google.cloud.firestore_v1beta1.document.DocumentReference.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> for
+more information on <code class="docutils literal notranslate"><span class="pre">field_updates</span></code> and <code class="docutils literal notranslate"><span class="pre">option</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -210,7 +201,7 @@ state of the document before applying changes.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -218,9 +209,10 @@ state of the document before applying changes.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Firestore</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collection.html">Collections</a></li>
@@ -260,12 +252,14 @@ state of the document before applying changes.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -276,7 +270,7 @@ state of the document before applying changes.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

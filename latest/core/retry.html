@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Retry &#8212; google-cloud 9de1026 documentation</title>
+    <title>Retry &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,15 +35,15 @@
   <div class="section" id="module-google.api_core.retry">
 <span id="retry"></span><h1>Retry<a class="headerlink" href="#module-google.api_core.retry" title="Permalink to this headline">#</a></h1>
 <p>Helpers for retrying functions with exponential back-off.</p>
-<p>The <a class="reference internal" href="#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">Retry</span></code></a> decorator can be used to retry functions that raise
+<p>The <a class="reference internal" href="#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Retry</span></code></a> decorator can be used to retry functions that raise
 exceptions using exponential backoff. Because a exponential sleep algorithm is
 used, the retry is limited by a <cite>deadline</cite>. The deadline is the maxmimum amount
 of time a method can block. This is used instead of total number of retries
 because it is difficult to ascertain the amount of time a function can block
 when using total number of retries and exponential backoff.</p>
 <p>By default, this decorator will retry transient
-API errors (see <a class="reference internal" href="#google.api_core.retry.if_transient_error" title="google.api_core.retry.if_transient_error"><code class="xref py py-func docutils literal"><span class="pre">if_transient_error()</span></code></a>). For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@retry.Retry</span><span class="p">()</span>
+API errors (see <a class="reference internal" href="#google.api_core.retry.if_transient_error" title="google.api_core.retry.if_transient_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">if_transient_error()</span></code></a>). For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@retry.Retry</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">call_flaky_rpc</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">flaky_rpc</span><span class="p">()</span>
 
@@ -62,7 +53,7 @@ API errors (see <a class="reference internal" href="#google.api_core.retry.if_tr
 </div>
 <p>You can pass a custom predicate to retry on different exceptions, such as
 waiting for an eventually consistent item to be available:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@retry.Retry</span><span class="p">(</span><span class="n">predicate</span><span class="o">=</span><span class="n">if_exception_type</span><span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@retry.Retry</span><span class="p">(</span><span class="n">predicate</span><span class="o">=</span><span class="n">if_exception_type</span><span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">))</span>
 <span class="k">def</span> <span class="nf">check_if_exists</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">does_thing_exist</span><span class="p">()</span>
 
@@ -70,15 +61,15 @@ waiting for an eventually consistent item to be available:</p>
 </pre></div>
 </div>
 <p>Some client library methods apply retry automatically. These methods can accept
-a <code class="docutils literal"><span class="pre">retry</span></code> parameter that allows you to configure the behavior:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">my_retry</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span><span class="n">deadline</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+a <code class="docutils literal notranslate"><span class="pre">retry</span></code> parameter that allows you to configure the behavior:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_retry</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span><span class="n">deadline</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">some_method</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">my_retry</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="class">
 <dt id="google.api_core.retry.Retry">
 <em class="property">class </em><code class="descclassname">google.api_core.retry.</code><code class="descname">Retry</code><span class="sig-paren">(</span><em>predicate=&lt;function if_exception_type.&lt;locals&gt;.if_exception_type_predicate&gt;</em>, <em>initial=1.0</em>, <em>maximum=60.0</em>, <em>multiplier=2.0</em>, <em>deadline=120.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/retry.html#Retry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.retry.Retry" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Exponential retry decorator.</p>
 <p>This class is a decorator used to add exponential back-off retry behavior
 to an RPC call.</p>
@@ -89,7 +80,7 @@ different predicate can be provided to retry other exceptions.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>predicate</strong> (<em>Callable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><em>Exception</em></a><em>]</em>) – A callable that should return <code class="docutils literal"><span class="pre">True</span></code>
+<li><strong>predicate</strong> (<em>Callable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><em>Exception</em></a><em>]</em>) – A callable that should return <code class="docutils literal notranslate"><span class="pre">True</span></code>
 if the given exception is retryable.</li>
 <li><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The minimum about of time to delay in seconds. This
 must be greater than 0.</li>
@@ -154,7 +145,7 @@ be greater than 0.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>predicate</strong> (<em>Callable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><em>Exception</em></a><em>]</em>) – A callable that should return
-<code class="docutils literal"><span class="pre">True</span></code> if the given exception is retryable.</td>
+<code class="docutils literal notranslate"><span class="pre">True</span></code> if the given exception is retryable.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new retry instance with the given predicate.</td>
 </tr>
@@ -198,7 +189,7 @@ be greater than 0.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exception_types</strong> (Sequence[<code class="xref py py-func docutils literal"><span class="pre">type()</span></code>]) – The exception types to check
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exception_types</strong> (Sequence[<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>]) – The exception types to check
 for.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
@@ -220,14 +211,14 @@ for.</td>
 <p>The following server errors are considered transient:</p>
 <ul class="simple">
 <li><dl class="first docutils">
-<dt><a class="reference internal" href="exceptions.html#google.api_core.exceptions.InternalServerError" title="google.api_core.exceptions.InternalServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.InternalServerError</span></code></a> - HTTP 500, gRPC</dt>
-<dd><code class="docutils literal"><span class="pre">INTERNAL(13)</span></code> and its subclasses.</dd>
+<dt><a class="reference internal" href="exceptions.html#google.api_core.exceptions.InternalServerError" title="google.api_core.exceptions.InternalServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.InternalServerError</span></code></a> - HTTP 500, gRPC</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">INTERNAL(13)</span></code> and its subclasses.</dd>
 </dl>
 </li>
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.TooManyRequests" title="google.api_core.exceptions.TooManyRequests"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.TooManyRequests</span></code></a> - HTTP 429</li>
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.TooManyRequests" title="google.api_core.exceptions.TooManyRequests"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.TooManyRequests</span></code></a> - HTTP 429</li>
 <li><dl class="first docutils">
-<dt><a class="reference internal" href="exceptions.html#google.api_core.exceptions.ResourceExhausted" title="google.api_core.exceptions.ResourceExhausted"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ResourceExhausted</span></code></a> - gRPC</dt>
-<dd><code class="docutils literal"><span class="pre">RESOURCE_EXHAUSTED(8)</span></code></dd>
+<dt><a class="reference internal" href="exceptions.html#google.api_core.exceptions.ResourceExhausted" title="google.api_core.exceptions.ResourceExhausted"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ResourceExhausted</span></code></a> - gRPC</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">RESOURCE_EXHAUSTED(8)</span></code></dd>
 </dl>
 </li>
 </ul>
@@ -238,7 +229,7 @@ for.</td>
 <code class="descclassname">google.api_core.retry.</code><code class="descname">retry_target</code><span class="sig-paren">(</span><em>target</em>, <em>predicate</em>, <em>sleep_generator</em>, <em>deadline</em>, <em>on_error=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/retry.html#retry_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.retry.retry_target" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a function and retry if it fails.</p>
 <p>This is the lowest-level retry helper. Generally, you’ll use the
-higher-level retry helper <a class="reference internal" href="#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">Retry</span></code></a>.</p>
+higher-level retry helper <a class="reference internal" href="#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Retry</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -261,13 +252,13 @@ caught.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the return value of the target function.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Any</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any">Any</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.RetryError</span></code> – If the deadline is exceeded while retrying.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the sleep generator stops yielding values.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code></a> – If the target raises a method that isn’t retryable.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.RetryError</span></code> – If the deadline is exceeded while retrying.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the sleep generator stops yielding values.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If the target raises a method that isn’t retryable.</li>
 </ul>
 </td>
 </tr>
@@ -303,7 +294,7 @@ caught.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Core Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -326,6 +317,7 @@ caught.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -357,12 +349,14 @@ caught.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -373,7 +367,7 @@ caught.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.exceptions &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.api_core.exceptions &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -78,8 +69,8 @@
 
 
 <div class="viewcode-block" id="GoogleAPIError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPIError">[docs]</a><span class="k">class</span> <span class="nc">GoogleAPIError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all exceptions raised by Google API Clients.&quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="sd">&quot;&quot;&quot;Base class for all exceptions raised by Google API Clients.&quot;&quot;&quot;</span></div>
+    <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="RetryError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">python_2_unicode_compatible</span>
@@ -101,8 +92,8 @@
         <span class="sd">&quot;&quot;&quot;The last exception raised when retrying the function.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cause</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, last exception: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, last exception: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_GoogleAPICallErrorMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
@@ -166,27 +157,27 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Optional[Union[requests.Request, grpc.Call]]: The response or</span>
-<span class="sd">        gRPC call metadata.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span></div>
+<span class="sd">        gRPC call metadata.&quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span>
 
 
-<div class="viewcode-block" id="Redirection"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Redirection">[docs]</a><span class="k">class</span> <span class="nc">Redirection</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for for all redirection (HTTP 3xx) responses.&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="Redirection"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Redirection">[docs]</a><span class="k">class</span> <span class="nc">Redirection</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span></div>
+    <span class="sd">&quot;&quot;&quot;Base class for for all redirection (HTTP 3xx) responses.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="MovedPermanently"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.MovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">MovedPermanently</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``301 Moved Permanently`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">MOVED_PERMANENTLY</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``301 Moved Permanently`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">MOVED_PERMANENTLY</span>
 
 
 <div class="viewcode-block" id="NotModified"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.NotModified">[docs]</a><span class="k">class</span> <span class="nc">NotModified</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``304 Not Modified`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_MODIFIED</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``304 Not Modified`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_MODIFIED</span>
 
 
 <div class="viewcode-block" id="TemporaryRedirect"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.TemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">TemporaryRedirect</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``307 Temporary Redirect`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">TEMPORARY_REDIRECT</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``307 Temporary Redirect`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">TEMPORARY_REDIRECT</span>
 
 
 <div class="viewcode-block" id="ResumeIncomplete"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ResumeIncomplete">[docs]</a><span class="k">class</span> <span class="nc">ResumeIncomplete</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
@@ -194,115 +185,115 @@
 
 <span class="sd">    .. note:: :attr:`http_client.PERMANENT_REDIRECT` is ``308``, but Google</span>
 <span class="sd">        APIs differ in their use of this status code.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">308</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">308</span>
 
 
-<div class="viewcode-block" id="ClientError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ClientError">[docs]</a><span class="k">class</span> <span class="nc">ClientError</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all client error (HTTP 4xx) responses.&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="ClientError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ClientError">[docs]</a><span class="k">class</span> <span class="nc">ClientError</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span></div>
+    <span class="sd">&quot;&quot;&quot;Base class for all client error (HTTP 4xx) responses.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="BadRequest"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.BadRequest">[docs]</a><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``400 Bad Request`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``400 Bad Request`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
 
 
 <div class="viewcode-block" id="InvalidArgument"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.InvalidArgument">[docs]</a><span class="k">class</span> <span class="nc">InvalidArgument</span><span class="p">(</span><span class="n">BadRequest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.INVALID_ARGUMENT` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="FailedPrecondition"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.FailedPrecondition">[docs]</a><span class="k">class</span> <span class="nc">FailedPrecondition</span><span class="p">(</span><span class="n">BadRequest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.FAILED_PRECONDITION`</span>
 <span class="sd">    error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">FAILED_PRECONDITION</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">FAILED_PRECONDITION</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="OutOfRange"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.OutOfRange">[docs]</a><span class="k">class</span> <span class="nc">OutOfRange</span><span class="p">(</span><span class="n">BadRequest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.OUT_OF_RANGE` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">OUT_OF_RANGE</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">OUT_OF_RANGE</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Unauthorized"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Unauthorized">[docs]</a><span class="k">class</span> <span class="nc">Unauthorized</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``401 Unauthorized`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">UNAUTHORIZED</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``401 Unauthorized`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">UNAUTHORIZED</span>
 
 
 <div class="viewcode-block" id="Unauthenticated"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Unauthenticated">[docs]</a><span class="k">class</span> <span class="nc">Unauthenticated</span><span class="p">(</span><span class="n">Unauthorized</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.UNAUTHENTICATED` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAUTHENTICATED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAUTHENTICATED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Forbidden"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Forbidden">[docs]</a><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``403 Forbidden`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``403 Forbidden`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span>
 
 
 <div class="viewcode-block" id="PermissionDenied"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.PermissionDenied">[docs]</a><span class="k">class</span> <span class="nc">PermissionDenied</span><span class="p">(</span><span class="n">Forbidden</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.PERMISSION_DENIED` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">PERMISSION_DENIED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">PERMISSION_DENIED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a ``404 Not Found`` response or a</span>
 <span class="sd">    :attr:`grpc.StatusCode.NOT_FOUND` error.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_FOUND</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="MethodNotAllowed"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.MethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">MethodNotAllowed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``405 Method Not Allowed`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">METHOD_NOT_ALLOWED</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``405 Method Not Allowed`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">METHOD_NOT_ALLOWED</span>
 
 
 <div class="viewcode-block" id="Conflict"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Conflict">[docs]</a><span class="k">class</span> <span class="nc">Conflict</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``409 Conflict`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">CONFLICT</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``409 Conflict`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">CONFLICT</span>
 
 
 <div class="viewcode-block" id="AlreadyExists"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.AlreadyExists">[docs]</a><span class="k">class</span> <span class="nc">AlreadyExists</span><span class="p">(</span><span class="n">Conflict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.ALREADY_EXISTS` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Aborted"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Aborted">[docs]</a><span class="k">class</span> <span class="nc">Aborted</span><span class="p">(</span><span class="n">Conflict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.ABORTED` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="LengthRequired"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.LengthRequired">[docs]</a><span class="k">class</span> <span class="nc">LengthRequired</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``411 Length Required`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">LENGTH_REQUIRED</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``411 Length Required`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">LENGTH_REQUIRED</span>
 
 
 <div class="viewcode-block" id="PreconditionFailed"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.PreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">PreconditionFailed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``412 Precondition Failed`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">PRECONDITION_FAILED</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``412 Precondition Failed`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">PRECONDITION_FAILED</span>
 
 
 <div class="viewcode-block" id="RequestRangeNotSatisfiable"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.RequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">RequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``416 Request Range Not Satisfiable`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">REQUESTED_RANGE_NOT_SATISFIABLE</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``416 Request Range Not Satisfiable`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">REQUESTED_RANGE_NOT_SATISFIABLE</span>
 
 
 <div class="viewcode-block" id="TooManyRequests"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.TooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">TooManyRequests</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a ``429 Too Many Requests`` response.&quot;&quot;&quot;</span>
-    <span class="c1"># http_client does not define a constant for this in Python 2.</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">429</span></div>
+    <span class="c1"># http_client does not define a constant for this in Python 2.</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">429</span>
 
 
 <div class="viewcode-block" id="ResourceExhausted"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ResourceExhausted">[docs]</a><span class="k">class</span> <span class="nc">ResourceExhausted</span><span class="p">(</span><span class="n">TooManyRequests</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.RESOURCE_EXHAUSTED` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">RESOURCE_EXHAUSTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">RESOURCE_EXHAUSTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Cancelled"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Cancelled">[docs]</a><span class="k">class</span> <span class="nc">Cancelled</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
@@ -310,61 +301,61 @@
     <span class="c1"># This maps to HTTP status code 499. See</span>
     <span class="c1"># https://github.com/googleapis/googleapis/blob/master/google/rpc\</span>
     <span class="c1"># /code.proto</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">499</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">CANCELLED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">499</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">CANCELLED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="ServerError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ServerError">[docs]</a><span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base for 5xx responses.&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="ServerError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ServerError">[docs]</a><span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">):</span></div>
+    <span class="sd">&quot;&quot;&quot;Base for 5xx responses.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="InternalServerError"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.InternalServerError">[docs]</a><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a ``500 Internal Server Error`` response. or a</span>
 <span class="sd">    :attr:`grpc.StatusCode.INTERNAL` error.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="Unknown"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.Unknown">[docs]</a><span class="k">class</span> <span class="nc">Unknown</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.UNKNOWN` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNKNOWN</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.UNKNOWN` error.&quot;&quot;&quot;</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNKNOWN</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="DataLoss"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.DataLoss">[docs]</a><span class="k">class</span> <span class="nc">DataLoss</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.DATA_LOSS` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">DATA_LOSS</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.DATA_LOSS` error.&quot;&quot;&quot;</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">DATA_LOSS</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="MethodNotImplemented"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.MethodNotImplemented">[docs]</a><span class="k">class</span> <span class="nc">MethodNotImplemented</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a ``501 Not Implemented`` response or a</span>
 <span class="sd">    :attr:`grpc.StatusCode.UNIMPLEMENTED` error.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_IMPLEMENTED</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNIMPLEMENTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNIMPLEMENTED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="BadGateway"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.BadGateway">[docs]</a><span class="k">class</span> <span class="nc">BadGateway</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``502 Bad Gateway`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_GATEWAY</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``502 Bad Gateway`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_GATEWAY</span>
 
 
 <div class="viewcode-block" id="ServiceUnavailable"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.ServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">ServiceUnavailable</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a ``503 Service Unavailable`` response or a</span>
 <span class="sd">    :attr:`grpc.StatusCode.UNAVAILABLE` error.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">SERVICE_UNAVAILABLE</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GatewayTimeout"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.GatewayTimeout">[docs]</a><span class="k">class</span> <span class="nc">GatewayTimeout</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception mapping a ``504 Gateway Timeout`` response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">GATEWAY_TIMEOUT</span></div>
+    <span class="sd">&quot;&quot;&quot;Exception mapping a ``504 Gateway Timeout`` response.&quot;&quot;&quot;</span></div>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">GATEWAY_TIMEOUT</span>
 
 
 <div class="viewcode-block" id="DeadlineExceeded"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.DeadlineExceeded">[docs]</a><span class="k">class</span> <span class="nc">DeadlineExceeded</span><span class="p">(</span><span class="n">GatewayTimeout</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a :attr:`grpc.StatusCode.DEADLINE_EXCEEDED` error.&quot;&quot;&quot;</span>
-    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">DEADLINE_EXCEEDED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">grpc_status_code</span> <span class="o">=</span> <span class="p">(</span></div>
+        <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">DEADLINE_EXCEEDED</span> <span class="k">if</span> <span class="n">grpc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="exception_class_for_http_status"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.exception_class_for_http_status">[docs]</a><span class="k">def</span> <span class="nf">exception_class_for_http_status</span><span class="p">(</span><span class="n">status_code</span><span class="p">):</span>
@@ -375,8 +366,8 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        :func:`type`: the appropriate subclass of :class:`GoogleAPICallError`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_HTTP_CODE_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">GoogleAPICallError</span><span class="p">)</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="n">_HTTP_CODE_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">GoogleAPICallError</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="from_http_status"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.from_http_status">[docs]</a><span class="k">def</span> <span class="nf">from_http_status</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -397,8 +388,8 @@
 
     <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">status_code</span>
-
-    <span class="k">return</span> <span class="n">error</span></div>
+</div>
+    <span class="k">return</span> <span class="n">error</span>
 
 
 <div class="viewcode-block" id="from_http_response"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.from_http_response">[docs]</a><span class="k">def</span> <span class="nf">from_http_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
@@ -426,8 +417,8 @@
         <span class="n">error</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
 
     <span class="n">exception</span> <span class="o">=</span> <span class="n">from_http_status</span><span class="p">(</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">exception</span></div>
+        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">exception</span>
 
 
 <div class="viewcode-block" id="exception_class_for_grpc_status"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.exception_class_for_grpc_status">[docs]</a><span class="k">def</span> <span class="nf">exception_class_for_grpc_status</span><span class="p">(</span><span class="n">status_code</span><span class="p">):</span>
@@ -438,8 +429,8 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        :func:`type`: the appropriate subclass of :class:`GoogleAPICallError`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_GRPC_CODE_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">GoogleAPICallError</span><span class="p">)</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="n">_GRPC_CODE_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">GoogleAPICallError</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="from_grpc_status"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.from_grpc_status">[docs]</a><span class="k">def</span> <span class="nf">from_grpc_status</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -460,8 +451,8 @@
 
     <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">grpc_status_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error</span><span class="o">.</span><span class="n">grpc_status_code</span> <span class="o">=</span> <span class="n">status_code</span>
-
-    <span class="k">return</span> <span class="n">error</span></div>
+</div>
+    <span class="k">return</span> <span class="n">error</span>
 
 
 <div class="viewcode-block" id="from_grpc_error"><a class="viewcode-back" href="../../../core/exceptions.html#google.api_core.exceptions.from_grpc_error">[docs]</a><span class="k">def</span> <span class="nf">from_grpc_error</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">):</span>
@@ -481,8 +472,8 @@
             <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">,),</span>
             <span class="n">response</span><span class="o">=</span><span class="n">rpc_exc</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">GoogleAPICallError</span><span class="p">(</span>
-            <span class="nb">str</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">,),</span> <span class="n">response</span><span class="o">=</span><span class="n">rpc_exc</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">GoogleAPICallError</span><span class="p">(</span></div>
+            <span class="nb">str</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="n">rpc_exc</span><span class="p">,),</span> <span class="n">response</span><span class="o">=</span><span class="n">rpc_exc</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -510,7 +501,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -518,6 +509,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -547,12 +539,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -563,7 +557,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

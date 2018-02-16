@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Stackdriver Logging Client &#8212; google-cloud 9de1026 documentation</title>
+    <title>Stackdriver Logging Client &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,7 +38,7 @@
 <dl class="class">
 <dt id="google.cloud.logging.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.logging.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>_use_grpc=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -57,20 +48,20 @@
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of.
 If not passed, falls back to the default inferred
 from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
-client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal notranslate"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
-that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
-<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
-<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal notranslate"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
+<code class="docutils literal notranslate"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal notranslate"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
 <li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport or HTTP. If unset,
-falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
+falls back to the <code class="docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable
 This parameter should be considered private, and could
 change in the future.</li>
@@ -93,7 +84,7 @@ change in the future.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Handler" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">logging.Handler</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Handler" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Handler</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The default log handler based on the environment</td>
 </tr>
@@ -116,8 +107,8 @@ change in the future.</li>
 defaults to the project bound to the client.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – a filter expression. See
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
-or <code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code>.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – One of <code class="xref py py-data docutils literal notranslate"><span class="pre">ASCENDING</span></code>
+or <code class="xref py py-data docutils literal notranslate"><span class="pre">DESCENDING</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – opaque marker for the next “page” of entries. If not
@@ -126,10 +117,10 @@ entries.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <code class="xref py py-class docutils literal"><span class="pre">_BaseEntry</span></code>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <code class="xref py py-class docutils literal notranslate"><span class="pre">_BaseEntry</span></code>
 accessible to the current client.</p>
 </td>
 </tr>
@@ -156,10 +147,10 @@ metrics.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="metric.html#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="metric.html#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a>
 accessible to the current client.</p>
 </td>
 </tr>
@@ -186,11 +177,11 @@ sinks.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of
-<a class="reference internal" href="sink.html#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal"><span class="pre">Sink</span></code></a>
+<a class="reference internal" href="sink.html#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>
 accessible to the current client.</p>
 </td>
 </tr>
@@ -208,7 +199,7 @@ accessible to the current client.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the name of the logger to be constructed.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.logger.Logger</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.logger.Logger</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Logger created with the current client.</td>
 </tr>
@@ -238,14 +229,14 @@ accessible to the current client.</p>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the advanced logs filter expression defining the
 entries tracked by the metric.  If not
 passed, the instance should already exist, to be
-refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
+refreshed via <code class="xref py py-meth docutils literal notranslate"><span class="pre">Metric.reload()</span></code>.</li>
 <li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the description of the metric to be constructed.
 If not passed, the instance should already exist,
-to be refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
+to be refreshed via <code class="xref py py-meth docutils literal notranslate"><span class="pre">Metric.reload()</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="metric.html#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.metric.Metric</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="metric.html#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.metric.Metric</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Metric created with the current client.</p>
@@ -268,8 +259,8 @@ to be refreshed via <code class="xref py py-meth docutils literal"><span class="
 <code class="descname">setup_logging</code><span class="sig-paren">(</span><em>log_level=20</em>, <em>excluded_loggers=('google.cloud'</em>, <em>'google.auth'</em>, <em>'google_auth_httplib2')</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/client.html#Client.setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client.setup_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach default Stackdriver logging handler to the root logger.</p>
 <p>This method uses the default log handler, obtained by
-<a class="reference internal" href="#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a>, and attaches it to the root Python
-logger, so that a call such as <code class="docutils literal"><span class="pre">logging.warn</span></code>, as well as all child
+<a class="reference internal" href="#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_default_handler()</span></code></a>, and attaches it to the root Python
+logger, so that a call such as <code class="docutils literal notranslate"><span class="pre">logging.warn</span></code>, as well as all child
 loggers, will report to Stackdriver logging.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -277,7 +268,7 @@ loggers, will report to Stackdriver logging.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>log_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Python logging log level. Defaults to
-<code class="xref py py-const docutils literal"><span class="pre">logging.INFO</span></code>.</li>
+<code class="xref py py-const docutils literal notranslate"><span class="pre">logging.INFO</span></code>.</li>
 <li><strong>excluded_loggers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – (Optional) The loggers to not attach the
 handler to. This will always include the
 loggers in the path of the logging client
@@ -302,15 +293,15 @@ itself.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (optional) the advanced logs filter expression
 defining the entries exported by the sink.  If not
 passed, the instance should already exist, to be
-refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
+refreshed via <code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.reload()</span></code>.</li>
 <li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – destination URI for the entries exported by
 the sink.  If not passed, the instance should
 already exist, to be refreshed via
-<code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.reload()</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="sink.html#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.sink.Sink</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="sink.html#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.sink.Sink</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Sink created with the current client.</p>
@@ -358,7 +349,7 @@ already exist, to be refreshed via
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -366,6 +357,7 @@ already exist, to be refreshed via
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -378,7 +370,7 @@ already exist, to be refreshed via
 <li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Stackdriver Logging</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Stackdriver Logging Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logger.html">Logger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entries.html">Entries</a></li>
@@ -411,7 +403,7 @@ already exist, to be refreshed via
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Stackdriver Logging</a><ul>
-      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
+      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span></code> Releases</a></li>
       <li>Next: <a href="logger.html" title="next chapter">Logger</a></li>
   </ul></li>
   </ul></li>
@@ -419,12 +411,14 @@ already exist, to be refreshed via
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -435,7 +429,7 @@ already exist, to be refreshed via
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

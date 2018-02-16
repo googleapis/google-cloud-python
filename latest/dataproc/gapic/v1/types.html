@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 9de1026 documentation</title>
+    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -55,10 +46,10 @@ Engine</a>).</p>
 <dd><p>Full URL, partial URI, or short name of the accelerator type
 resource to expose to this instance. See <a class="reference external" href="/compute/docs/reference/beta/acceleratorTypes">Google Compute
 Engine AcceleratorTypes</a>  Examples
-* <code class="docutils literal"><span class="pre">https://www.googleapis.com/compute/beta/projects/[project</span>
+* <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/beta/projects/[project</span>
 <span class="pre">_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> *
-<code class="docutils literal"><span class="pre">projects/[project_id]/zones/us-</span>
-<span class="pre">east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> * <code class="docutils literal"><span class="pre">nvidia-</span>
+<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/us-</span>
+<span class="pre">east1-a/acceleratorTypes/nvidia-tesla-k80</span></code> * <code class="docutils literal notranslate"><span class="pre">nvidia-</span>
 <span class="pre">tesla-k80</span></code></p>
 </dd></dl>
 
@@ -70,6 +61,11 @@ this instance.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.CancelJobRequest">
@@ -96,6 +92,11 @@ request.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.Cluster">
@@ -163,6 +164,11 @@ cluster.</p>
 purposes only. It may be changed before final release.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Cluster.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Cluster.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -220,9 +226,9 @@ additional worker instances in a cluster.</p>
 <code class="descname">initialization_actions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterConfig.initialization_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Commands to execute on each node after config is
 completed. By default, executables are run on master and all
-worker nodes. You can test a node’s <code class="docutils literal"><span class="pre">role</span></code> metadata to run
+worker nodes. You can test a node’s <code class="docutils literal notranslate"><span class="pre">role</span></code> metadata to run
 an executable on a master or worker node, as shown below using
-<code class="docutils literal"><span class="pre">curl</span></code> (you can also use <code class="docutils literal"><span class="pre">wget</span></code>):  ::      ROLE=$(curl -H
+<code class="docutils literal notranslate"><span class="pre">curl</span></code> (you can also use <code class="docutils literal notranslate"><span class="pre">wget</span></code>):  ::      ROLE=$(curl -H
 Metadata-Flavor:Google http://metadata/computeMetadata/v1/inst
 ance/attributes/dataproc-role)     if [[ “${ROLE}” == ‘Master’
 ]]; then       … master specific actions …     else
@@ -248,6 +254,16 @@ may be changed before final release.</p>
 <code class="descname">yarn_metrics</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.yarn_metrics" title="Permalink to this definition">#</a></dt>
 <dd><p>The YARN metrics.</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry">
+<em class="property">class </em><code class="descname">HdfsMetricsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry">
+<em class="property">class </em><code class="descname">YarnMetricsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -302,6 +318,11 @@ may be changed before final release.</p>
 <code class="descname">warnings</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.warnings" title="Permalink to this definition">#</a></dt>
 <dd><p>Output-only. Errors encountered during operation execution.</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -395,6 +416,11 @@ request.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.DeleteClusterRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DeleteClusterRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteClusterRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>A request to delete a cluster.</p>
@@ -443,6 +469,26 @@ request.</p>
 <code class="descname">job_id</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteJobRequest.job_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The job ID.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.dataproc_v1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -510,6 +556,76 @@ binaries.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.GceClusterConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GceClusterConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Common config settings for resources of Google Compute Engine cluster
@@ -523,9 +639,9 @@ will be located. On a create request, it is required in the
 region, the service will pick a zone in the corresponding
 Compute Engine region. On a get request, zone will always be
 present.  A full URL, partial URI, or short name are valid.
-Examples:  -  <code class="docutils literal"><span class="pre">https://www.googleapis.com/compute/v1/projects</span>
+Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/projects</span>
 <span class="pre">/[project_id]/zones/[zone]</span></code> -
-<code class="docutils literal"><span class="pre">projects/[project_id]/zones/[zone]</span></code> -  <code class="docutils literal"><span class="pre">us-central1-f</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/[zone]</span></code> -  <code class="docutils literal notranslate"><span class="pre">us-central1-f</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -533,15 +649,15 @@ Examples:  -  <code class="docutils literal"><span class="pre">https://www.googl
 <code class="descname">network_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.network_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The Google Compute Engine network to be used for
 machine communications. Cannot be specified with
-subnetwork_uri. If neither <code class="docutils literal"><span class="pre">network_uri</span></code> nor
-<code class="docutils literal"><span class="pre">subnetwork_uri</span></code> is specified, the “default” network of the
+subnetwork_uri. If neither <code class="docutils literal notranslate"><span class="pre">network_uri</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">subnetwork_uri</span></code> is specified, the “default” network of the
 project is used, if it exists. Cannot be a “Custom Subnet
 Network” (see <a class="reference external" href="/compute/docs/subnetworks">Using Subnetworks</a> for more information).  A full
-URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal"><span class="pre">htt</span>
+URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">htt</span>
 <span class="pre">ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
 <span class="pre">ns/global/default</span></code> -
-<code class="docutils literal"><span class="pre">projects/[project_id]/regions/global/default</span></code> -
-<code class="docutils literal"><span class="pre">default</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/global/default</span></code> -
+<code class="docutils literal notranslate"><span class="pre">default</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -550,9 +666,9 @@ URL, partial URI, or short name are valid. Examples:  -  <code class="docutils l
 <dd><p>Optional. The Google Compute Engine subnetwork to be used for
 machine communications. Cannot be specified with network_uri.
 A full URL, partial URI, or short name are valid. Examples:  -
-<code class="docutils literal"><span class="pre">https://www.googleapis.com/compute/v1/projects/[project_id]/</span>
-<span class="pre">regions/us-east1/sub0</span></code> -  <code class="docutils literal"><span class="pre">projects/[project_id]/regions/us-</span>
-<span class="pre">east1/sub0</span></code> -  <code class="docutils literal"><span class="pre">sub0</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/projects/[project_id]/</span>
+<span class="pre">regions/us-east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/us-</span>
+<span class="pre">east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">sub0</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -561,7 +677,7 @@ A full URL, partial URI, or short name are valid. Examples:  -
 <dd><p>Optional. If true, all instances in the cluster will only have
 internal IP addresses. By default, clusters are not restricted
 to internal IP addresses, and will have ephemeral external IP
-addresses assigned to each instance. This <code class="docutils literal"><span class="pre">internal_ip_only</span></code>
+addresses assigned to each instance. This <code class="docutils literal notranslate"><span class="pre">internal_ip_only</span></code>
 restriction can only be enabled for subnetwork enabled
 networks, and all off-cluster dependencies must be configured
 to be accessible without external IP addresses.</p>
@@ -577,7 +693,7 @@ IAM roles:  -  roles/logging.logWriter -
 roles/storage.objectAdmin  (see
 <a class="reference external" href="https://cloud.google.com/compute/docs/access/service">https://cloud.google.com/compute/docs/access/service</a>-
 accounts#custom_service_accounts for more information).
-Example: <code class="docutils literal"><span class="pre">[account_id]&#64;[project_id].iam.gserviceaccount.com</span></code></p>
+Example: <code class="docutils literal notranslate"><span class="pre">[account_id]&#64;[project_id].iam.gserviceaccount.com</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -609,6 +725,21 @@ are specified, the following defaults are also provided:  -
 <dd><p>The Google Compute Engine metadata entries to add to all
 instances (see <a class="reference external" href="https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata">Project and instance metadata</a>).</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry">
+<em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.dataproc_v1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -665,6 +796,11 @@ request.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.HadoopJob">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">HadoopJob</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob" title="Permalink to this definition">#</a></dt>
 <dd><p>A Cloud Dataproc job for running <a class="reference external" href="https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html">Apache Hadoop
@@ -677,7 +813,7 @@ YARN</a>.</p>
 <dd><p>Required. Indicates the location of the driver’s main class.
 Specify either the jar file that contains the main class or
 the main class name. To specify both, add the jar file to
-<code class="docutils literal"><span class="pre">jar_file_uris</span></code>, and then specify the main class name in
+<code class="docutils literal notranslate"><span class="pre">jar_file_uris</span></code>, and then specify the main class name in
 this property.</p>
 </dd></dl>
 
@@ -696,14 +832,14 @@ examples.jar’</p>
 <code class="descname">main_class</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.main_class" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the driver’s main class. The jar file containing
 the class must be in the default CLASSPATH or specified in
-<code class="docutils literal"><span class="pre">jar_file_uris</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">jar_file_uris</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.HadoopJob.args">
 <code class="descname">args</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.args" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The arguments to pass to the driver. Do not include
-arguments, such as <code class="docutils literal"><span class="pre">-libjars</span></code> or <code class="docutils literal"><span class="pre">-Dfoo=bar</span></code>, that can be
+arguments, such as <code class="docutils literal notranslate"><span class="pre">-libjars</span></code> or <code class="docutils literal notranslate"><span class="pre">-Dfoo=bar</span></code>, that can be
 set as job properties, since a collision may occur that causes
 an incorrect job submission.</p>
 </dd></dl>
@@ -747,6 +883,11 @@ code.</p>
 <dd><p>Optional. The runtime log config for job execution.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -777,7 +918,7 @@ as either an HCFS file URI or a list of queries.</p>
 <dt id="google.cloud.dataproc_v1.types.HiveJob.continue_on_failure">
 <code class="descname">continue_on_failure</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.continue_on_failure" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Whether to continue executing queries if a query
-fails. The default value is <code class="docutils literal"><span class="pre">false</span></code>. Setting to <code class="docutils literal"><span class="pre">true</span></code> can
+fails. The default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>. Setting to <code class="docutils literal notranslate"><span class="pre">true</span></code> can
 be useful when executing independent parallel queries.</p>
 </dd></dl>
 
@@ -785,7 +926,7 @@ be useful when executing independent parallel queries.</p>
 <dt id="google.cloud.dataproc_v1.types.HiveJob.script_variables">
 <code class="descname">script_variables</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.script_variables" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Mapping of query variable names to values
-(equivalent to the Hive command: <code class="docutils literal"><span class="pre">SET</span> <span class="pre">name=&quot;value&quot;;</span></code>).</p>
+(equivalent to the Hive command: <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">name=&quot;value&quot;;</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -806,7 +947,27 @@ the Hive server and Hadoop MapReduce (MR) tasks. Can contain
 Hive SerDes and UDFs.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry">
+<em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig">
@@ -824,7 +985,7 @@ For master instance groups, must be set to 1.</p>
 <dt id="google.cloud.dataproc_v1.types.InstanceGroupConfig.instance_names">
 <code class="descname">instance_names</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.instance_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The list of instance names. Cloud Dataproc derives
-the names from <code class="docutils literal"><span class="pre">cluster_name</span></code>, <code class="docutils literal"><span class="pre">num_instances</span></code>, and the
+the names from <code class="docutils literal notranslate"><span class="pre">cluster_name</span></code>, <code class="docutils literal notranslate"><span class="pre">num_instances</span></code>, and the
 instance group if not set by user (recommended practice is to
 let Cloud Dataproc derive the name).</p>
 </dd></dl>
@@ -834,7 +995,7 @@ let Cloud Dataproc derive the name).</p>
 <code class="descname">image_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.image_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Output-only. The Google Compute Engine image resource used for
 cluster instances. Inferred from
-<code class="docutils literal"><span class="pre">SoftwareConfig.image_version</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">SoftwareConfig.image_version</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -842,11 +1003,11 @@ cluster instances. Inferred from
 <code class="descname">machine_type_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.InstanceGroupConfig.machine_type_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The Google Compute Engine machine type used for
 cluster instances.  A full URL, partial URI, or short name are
-valid. Examples:  -  <code class="docutils literal"><span class="pre">https://www.googleapis.com/compute/v1/p</span>
+valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/p</span>
 <span class="pre">rojects/[project_id]/zones/us-</span>
 <span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -
-<code class="docutils literal"><span class="pre">projects/[project_id]/zones/us-</span>
-<span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -  <code class="docutils literal"><span class="pre">n1-standard-2</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/zones/us-</span>
+<span class="pre">east1-a/machineTypes/n1-standard-2</span></code> -  <code class="docutils literal notranslate"><span class="pre">n1-standard-2</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -978,7 +1139,7 @@ the job’s driver program.</p>
 <dd><p>Output-only. If present, the location of miscellaneous control
 files which may be used as part of job setup and handling. If
 not present, control files may be placed in the same location
-as <code class="docutils literal"><span class="pre">driver_output_uri</span></code>.</p>
+as <code class="docutils literal notranslate"><span class="pre">driver_output_uri</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -997,6 +1158,11 @@ labels can be associated with a job.</p>
 <code class="descname">scheduling</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.scheduling" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Job scheduling configuration.</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Job.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Job.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1118,17 +1284,17 @@ request.</p>
 <dd><p>Optional. A filter constraining the clusters to list. Filters
 are case-sensitive and have the following syntax:  field =
 value [AND [field = value]] …  where <strong>field</strong> is one of
-<code class="docutils literal"><span class="pre">status.state</span></code>, <code class="docutils literal"><span class="pre">clusterName</span></code>, or <code class="docutils literal"><span class="pre">labels.[KEY]</span></code>, and
-<code class="docutils literal"><span class="pre">[KEY]</span></code> is a label key. <strong>value</strong> can be <code class="docutils literal"><span class="pre">*</span></code> to match all
-values. <code class="docutils literal"><span class="pre">status.state</span></code> can be one of the following:
-<code class="docutils literal"><span class="pre">ACTIVE</span></code>, <code class="docutils literal"><span class="pre">INACTIVE</span></code>, <code class="docutils literal"><span class="pre">CREATING</span></code>, <code class="docutils literal"><span class="pre">RUNNING</span></code>,
-<code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">DELETING</span></code>, or <code class="docutils literal"><span class="pre">UPDATING</span></code>. <code class="docutils literal"><span class="pre">ACTIVE</span></code> contains
-the <code class="docutils literal"><span class="pre">CREATING</span></code>, <code class="docutils literal"><span class="pre">UPDATING</span></code>, and <code class="docutils literal"><span class="pre">RUNNING</span></code> states.
-<code class="docutils literal"><span class="pre">INACTIVE</span></code> contains the <code class="docutils literal"><span class="pre">DELETING</span></code> and <code class="docutils literal"><span class="pre">ERROR</span></code> states.
-<code class="docutils literal"><span class="pre">clusterName</span></code> is the name of the cluster provided at
-creation time. Only the logical <code class="docutils literal"><span class="pre">AND</span></code> operator is supported;
+<code class="docutils literal notranslate"><span class="pre">status.state</span></code>, <code class="docutils literal notranslate"><span class="pre">clusterName</span></code>, or <code class="docutils literal notranslate"><span class="pre">labels.[KEY]</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">[KEY]</span></code> is a label key. <strong>value</strong> can be <code class="docutils literal notranslate"><span class="pre">*</span></code> to match all
+values. <code class="docutils literal notranslate"><span class="pre">status.state</span></code> can be one of the following:
+<code class="docutils literal notranslate"><span class="pre">ACTIVE</span></code>, <code class="docutils literal notranslate"><span class="pre">INACTIVE</span></code>, <code class="docutils literal notranslate"><span class="pre">CREATING</span></code>, <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETING</span></code>, or <code class="docutils literal notranslate"><span class="pre">UPDATING</span></code>. <code class="docutils literal notranslate"><span class="pre">ACTIVE</span></code> contains
+the <code class="docutils literal notranslate"><span class="pre">CREATING</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATING</span></code>, and <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> states.
+<code class="docutils literal notranslate"><span class="pre">INACTIVE</span></code> contains the <code class="docutils literal notranslate"><span class="pre">DELETING</span></code> and <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> states.
+<code class="docutils literal notranslate"><span class="pre">clusterName</span></code> is the name of the cluster provided at
+creation time. Only the logical <code class="docutils literal notranslate"><span class="pre">AND</span></code> operator is supported;
 space-separated items are treated as having an implicit
-<code class="docutils literal"><span class="pre">AND</span></code> operator.  Example filter:  status.state = ACTIVE AND
+<code class="docutils literal notranslate"><span class="pre">AND</span></code> operator.  Example filter:  status.state = ACTIVE AND
 clusterName = mycluster AND labels.env = staging AND
 labels.starred = *</p>
 </dd></dl>
@@ -1162,8 +1328,8 @@ labels.starred = *</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListClustersResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Output-only. This token is included in the response if there
 are more results to fetch. To fetch additional results,
-provide this value as the <code class="docutils literal"><span class="pre">page_token</span></code> in a subsequent
-<code class="docutils literal"><span class="pre">ListClustersRequest</span></code>.</p>
+provide this value as the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> in a subsequent
+<code class="docutils literal notranslate"><span class="pre">ListClustersRequest</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1210,8 +1376,8 @@ that were submitted to the named cluster.</p>
 <dt id="google.cloud.dataproc_v1.types.ListJobsRequest.job_state_matcher">
 <code class="descname">job_state_matcher</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListJobsRequest.job_state_matcher" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Specifies enumerated categories of jobs to list.
-(default = match ALL jobs).  If <code class="docutils literal"><span class="pre">filter</span></code> is provided,
-<code class="docutils literal"><span class="pre">jobStateMatcher</span></code> will be ignored.</p>
+(default = match ALL jobs).  If <code class="docutils literal notranslate"><span class="pre">filter</span></code> is provided,
+<code class="docutils literal notranslate"><span class="pre">jobStateMatcher</span></code> will be ignored.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1219,12 +1385,12 @@ that were submitted to the named cluster.</p>
 <code class="descname">filter</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListJobsRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. A filter constraining the jobs to list. Filters are
 case-sensitive and have the following syntax:  [field = value]
-AND [field [= value]] …  where <strong>field</strong> is <code class="docutils literal"><span class="pre">status.state</span></code>
-or <code class="docutils literal"><span class="pre">labels.[KEY]</span></code>, and <code class="docutils literal"><span class="pre">[KEY]</span></code> is a label key. <strong>value</strong>
-can be <code class="docutils literal"><span class="pre">*</span></code> to match all values. <code class="docutils literal"><span class="pre">status.state</span></code> can be
-either <code class="docutils literal"><span class="pre">ACTIVE</span></code> or <code class="docutils literal"><span class="pre">NON_ACTIVE</span></code>. Only the logical <code class="docutils literal"><span class="pre">AND</span></code>
+AND [field [= value]] …  where <strong>field</strong> is <code class="docutils literal notranslate"><span class="pre">status.state</span></code>
+or <code class="docutils literal notranslate"><span class="pre">labels.[KEY]</span></code>, and <code class="docutils literal notranslate"><span class="pre">[KEY]</span></code> is a label key. <strong>value</strong>
+can be <code class="docutils literal notranslate"><span class="pre">*</span></code> to match all values. <code class="docutils literal notranslate"><span class="pre">status.state</span></code> can be
+either <code class="docutils literal notranslate"><span class="pre">ACTIVE</span></code> or <code class="docutils literal notranslate"><span class="pre">NON_ACTIVE</span></code>. Only the logical <code class="docutils literal notranslate"><span class="pre">AND</span></code>
 operator is supported; space-separated items are treated as
-having an implicit <code class="docutils literal"><span class="pre">AND</span></code> operator.  Example filter:
+having an implicit <code class="docutils literal notranslate"><span class="pre">AND</span></code> operator.  Example filter:
 status.state = ACTIVE AND labels.env = staging AND
 labels.starred = *</p>
 </dd></dl>
@@ -1246,11 +1412,21 @@ labels.starred = *</p>
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. This token is included in the response if there are
 more results to fetch. To fetch additional results, provide
-this value as the <code class="docutils literal"><span class="pre">page_token</span></code> in a subsequent
+this value as the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> in a subsequent
 ListJobsRequest.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.LoggingConfig">
@@ -1263,6 +1439,11 @@ ListJobsRequest.</p>
 “root” package name to configure rootLogger. Examples:
 ‘com.google = FATAL’, ‘root = INFO’, ‘org.apache = DEBUG’</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry">
+<em class="property">class </em><code class="descname">DriverLogLevelsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1287,6 +1468,21 @@ group.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.NodeInitializationAction">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">NodeInitializationAction</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.NodeInitializationAction" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies an executable to run on a fully configured node and a timeout
@@ -1308,6 +1504,21 @@ not completed at end of the timeout period.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.PigJob">
@@ -1337,7 +1548,7 @@ an HCFS file URI or a list of queries.</p>
 <dt id="google.cloud.dataproc_v1.types.PigJob.continue_on_failure">
 <code class="descname">continue_on_failure</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.continue_on_failure" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Whether to continue executing queries if a query
-fails. The default value is <code class="docutils literal"><span class="pre">false</span></code>. Setting to <code class="docutils literal"><span class="pre">true</span></code> can
+fails. The default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>. Setting to <code class="docutils literal notranslate"><span class="pre">true</span></code> can
 be useful when executing independent parallel queries.</p>
 </dd></dl>
 
@@ -1345,7 +1556,7 @@ be useful when executing independent parallel queries.</p>
 <dt id="google.cloud.dataproc_v1.types.PigJob.script_variables">
 <code class="descname">script_variables</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.script_variables" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Mapping of query variable names to values
-(equivalent to the Pig command: <code class="docutils literal"><span class="pre">name=[value]</span></code>).</p>
+(equivalent to the Pig command: <code class="docutils literal notranslate"><span class="pre">name=[value]</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1372,6 +1583,16 @@ Pig UDFs.</p>
 <dd><p>Optional. The runtime log config for job execution.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.PigJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry">
+<em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1391,7 +1612,7 @@ driver. Must be a .py file.</p>
 <dt id="google.cloud.dataproc_v1.types.PySparkJob.args">
 <code class="descname">args</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PySparkJob.args" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The arguments to pass to the driver. Do not include
-arguments, such as <code class="docutils literal"><span class="pre">--conf</span></code>, that can be set as job
+arguments, such as <code class="docutils literal notranslate"><span class="pre">--conf</span></code>, that can be set as job
 properties, since a collision may occur that causes an
 incorrect job submission.</p>
 </dd></dl>
@@ -1441,6 +1662,11 @@ classes in user code.</p>
 <dd><p>Optional. The runtime log config for job execution.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1462,6 +1688,16 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SoftwareConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">SoftwareConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the selection and config of software inside the cluster.</p>
@@ -1469,7 +1705,7 @@ to specify a HiveJob:  ::      “hiveJob”: {       “queryList”:
 <dt id="google.cloud.dataproc_v1.types.SoftwareConfig.image_version">
 <code class="descname">image_version</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.image_version" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The version of software inside the cluster. It must
-match the regular expression <code class="docutils literal"><span class="pre">[0-9]+\.[0-9]+</span></code>. If
+match the regular expression <code class="docutils literal notranslate"><span class="pre">[0-9]+\.[0-9]+</span></code>. If
 unspecified, it defaults to the latest version (see <a class="reference external" href="/dataproc/versioning">Cloud
 Dataproc Versioning</a>).</p>
 </dd></dl>
@@ -1478,16 +1714,31 @@ Dataproc Versioning</a>).</p>
 <dt id="google.cloud.dataproc_v1.types.SoftwareConfig.properties">
 <code class="descname">properties</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The properties to set on daemon config files.
-Property keys are specified in <code class="docutils literal"><span class="pre">prefix:property</span></code> format,
-such as <code class="docutils literal"><span class="pre">core:fs.defaultFS</span></code>. The following are supported
+Property keys are specified in <code class="docutils literal notranslate"><span class="pre">prefix:property</span></code> format,
+such as <code class="docutils literal notranslate"><span class="pre">core:fs.defaultFS</span></code>. The following are supported
 prefixes and their mappings:  -  capacity-scheduler:
-<code class="docutils literal"><span class="pre">capacity-scheduler.xml</span></code> -  core: <code class="docutils literal"><span class="pre">core-site.xml</span></code> -
-distcp: <code class="docutils literal"><span class="pre">distcp-default.xml</span></code> -  hdfs: <code class="docutils literal"><span class="pre">hdfs-site.xml</span></code> -
-hive: <code class="docutils literal"><span class="pre">hive-site.xml</span></code> -  mapred: <code class="docutils literal"><span class="pre">mapred-site.xml</span></code> -  pig:
-<code class="docutils literal"><span class="pre">pig.properties</span></code> -  spark: <code class="docutils literal"><span class="pre">spark-defaults.conf</span></code> -  yarn:
-<code class="docutils literal"><span class="pre">yarn-site.xml</span></code>  For more information, see <a class="reference external" href="/dataproc/docs/concepts/cluster-properties">Cluster
+<code class="docutils literal notranslate"><span class="pre">capacity-scheduler.xml</span></code> -  core: <code class="docutils literal notranslate"><span class="pre">core-site.xml</span></code> -
+distcp: <code class="docutils literal notranslate"><span class="pre">distcp-default.xml</span></code> -  hdfs: <code class="docutils literal notranslate"><span class="pre">hdfs-site.xml</span></code> -
+hive: <code class="docutils literal notranslate"><span class="pre">hive-site.xml</span></code> -  mapred: <code class="docutils literal notranslate"><span class="pre">mapred-site.xml</span></code> -  pig:
+<code class="docutils literal notranslate"><span class="pre">pig.properties</span></code> -  spark: <code class="docutils literal notranslate"><span class="pre">spark-defaults.conf</span></code> -  yarn:
+<code class="docutils literal notranslate"><span class="pre">yarn-site.xml</span></code>  For more information, see <a class="reference external" href="/dataproc/docs/concepts/cluster-properties">Cluster
 properties</a>.</p>
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1503,8 +1754,8 @@ Spark</a> applications on YARN.</p>
 drive the job. Specify either the jar file that contains the
 main class or the main class name. To pass both a main jar and
 a main class in that jar, add the jar to
-<code class="docutils literal"><span class="pre">CommonJob.jar_file_uris</span></code>, and then specify the main class
-name in <code class="docutils literal"><span class="pre">main_class</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">CommonJob.jar_file_uris</span></code>, and then specify the main class
+name in <code class="docutils literal notranslate"><span class="pre">main_class</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1518,14 +1769,14 @@ name in <code class="docutils literal"><span class="pre">main_class</span></code
 <code class="descname">main_class</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.main_class" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the driver’s main class. The jar file that
 contains the class must be in the default CLASSPATH or
-specified in <code class="docutils literal"><span class="pre">jar_file_uris</span></code>.</p>
+specified in <code class="docutils literal notranslate"><span class="pre">jar_file_uris</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.SparkJob.args">
 <code class="descname">args</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.args" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The arguments to pass to the driver. Do not include
-arguments, such as <code class="docutils literal"><span class="pre">--conf</span></code>, that can be set as job
+arguments, such as <code class="docutils literal notranslate"><span class="pre">--conf</span></code>, that can be set as job
 properties, since a collision may occur that causes an
 incorrect job submission.</p>
 </dd></dl>
@@ -1569,6 +1820,11 @@ classes in user code.</p>
 <dd><p>Optional. The runtime log config for job execution.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1599,7 +1855,7 @@ specified as either an HCFS file URI or as a list of queries.</p>
 <dt id="google.cloud.dataproc_v1.types.SparkSqlJob.script_variables">
 <code class="descname">script_variables</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.script_variables" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Mapping of query variable names to values
-(equivalent to the Spark SQL command: SET <code class="docutils literal"><span class="pre">name=&quot;value&quot;;</span></code>).</p>
+(equivalent to the Spark SQL command: SET <code class="docutils literal notranslate"><span class="pre">name=&quot;value&quot;;</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1623,7 +1879,22 @@ CLASSPATH.</p>
 <dd><p>Optional. The runtime log config for job execution.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry">
+<em class="property">class </em><code class="descname">ScriptVariablesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dataproc_v1.types.SubmitJobRequest">
@@ -1648,6 +1919,21 @@ request.</p>
 <code class="descname">job</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.SubmitJobRequest.job" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The job resource.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.dataproc_v1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1684,17 +1970,17 @@ request.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1.types.UpdateClusterRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.dataproc_v1.types.UpdateClusterRequest.update_mask" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. Specifies the path, relative to <code class="docutils literal"><span class="pre">Cluster</span></code>, of the
+<dd><p>Required. Specifies the path, relative to <code class="docutils literal notranslate"><span class="pre">Cluster</span></code>, of the
 field to update. For example, to change the number of workers
-in a cluster to 5, the <code class="docutils literal"><span class="pre">update_mask</span></code> parameter would be
-specified as <code class="docutils literal"><span class="pre">config.worker_config.num_instances</span></code>, and the
-<code class="docutils literal"><span class="pre">PATCH</span></code> request body would specify the new value, as
+in a cluster to 5, the <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> parameter would be
+specified as <code class="docutils literal notranslate"><span class="pre">config.worker_config.num_instances</span></code>, and the
+<code class="docutils literal notranslate"><span class="pre">PATCH</span></code> request body would specify the new value, as
 follows:  ::      {       “config”:{         “workerConfig”:{
 “numInstances”:”5”         }       }     }  Similarly, to
 change the number of preemptible workers in a cluster to 5,
-the <code class="docutils literal"><span class="pre">update_mask</span></code> parameter would be
-<code class="docutils literal"><span class="pre">config.secondary_worker_config.num_instances</span></code>, and the
-<code class="docutils literal"><span class="pre">PATCH</span></code> request body would be set as follows:  ::      {
+the <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> parameter would be
+<code class="docutils literal notranslate"><span class="pre">config.secondary_worker_config.num_instances</span></code>, and the
+<code class="docutils literal notranslate"><span class="pre">PATCH</span></code> request body would be set as follows:  ::      {
 “config”:{         “secondaryWorkerConfig”:{
 “numInstances”:”5”         }       }     }  Note: Currently,
 only the following fields can be updated:  .. raw:: html
@@ -1753,7 +2039,7 @@ request.</p>
 <dd><p>Required. Specifies the path, relative to Job, of the field to
 update. For example, to update the labels of a Job the
 update_mask parameter would be specified as labels, and the
-<code class="docutils literal"><span class="pre">PATCH</span></code> request body would specify the new value. Note:
+<code class="docutils literal notranslate"><span class="pre">PATCH</span></code> request body would specify the new value. Note:
 Currently, labels is the only field that can be updated.</p>
 </dd></dl>
 
@@ -1824,7 +2110,7 @@ requires a proxy server for resolution and, possibly, access.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1836,6 +2122,7 @@ requires a proxy server for resolution and, possibly, access.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -1867,12 +2154,14 @@ requires a proxy server for resolution and, possibly, access.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1883,7 +2172,7 @@ requires a proxy server for resolution and, possibly, access.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

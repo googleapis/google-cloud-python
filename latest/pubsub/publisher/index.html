@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publishing Messages &#8212; google-cloud 9de1026 documentation</title>
+    <title>Publishing Messages &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,43 +35,43 @@
   <div class="section" id="publishing-messages">
 <h1>Publishing Messages<a class="headerlink" href="#publishing-messages" title="Permalink to this headline">#</a></h1>
 <p>Publishing messages is handled through the
-<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> class (aliased as
-<code class="docutils literal"><span class="pre">google.cloud.pubsub.PublisherClient</span></code>). This class provides methods to
+<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> class (aliased as
+<code class="docutils literal notranslate"><span class="pre">google.cloud.pubsub.PublisherClient</span></code>). This class provides methods to
 create topics, and (most importantly) a
-<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal"><span class="pre">publish()</span></code></a> method that publishes
+<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish()</span></code></a> method that publishes
 messages to Pub/Sub.</p>
 <p>Instantiating a publishing client is straightforward:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="n">publish_client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section" id="publish-a-message">
 <h2>Publish a Message<a class="headerlink" href="#publish-a-message" title="Permalink to this headline">#</a></h2>
 <p>To publish a message, use the
-<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal"><span class="pre">publish()</span></code></a> method. This method accepts
+<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish()</span></code></a> method. This method accepts
 two positional arguments: the topic to publish to, and the body of the message.
 It also accepts arbitrary keyword arguments, which are passed along as
 attributes of the message.</p>
 <p>The topic is passed along as a string; all topics have the canonical form of
-<code class="docutils literal"><span class="pre">projects/{project_name}/topics/{topic_name}</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">projects/{project_name}/topics/{topic_name}</span></code>.</p>
 <p>Therefore, a very basic publishing call looks like:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">topic</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/topics/{topic}&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">topic</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/topics/{topic}&#39;</span>
 <span class="n">publish_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;This is my message.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The message data in Pub/Sub is an opaque blob of bytes, and as such, you
-<em>must</em> send a <code class="docutils literal"><span class="pre">bytes</span></code> object in Python 3 (<code class="docutils literal"><span class="pre">str</span></code> object in Python 2).
-If you send a text string (<code class="docutils literal"><span class="pre">str</span></code> in Python 3, <code class="docutils literal"><span class="pre">unicode</span></code> in Python 2),
-the method will raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">TypeError</span></code></a>.</p>
+<em>must</em> send a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object in Python 3 (<code class="docutils literal notranslate"><span class="pre">str</span></code> object in Python 2).
+If you send a text string (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3, <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2),
+the method will raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a>.</p>
 <p class="last">The reason it works this way is because there is no reasonable guarantee
 that the same language or environment is being used by the subscriber,
 and so it is the responsibility of the publisher to properly encode
 the payload.</p>
 </div>
 <p>If you want to include attributes, simply add keyword arguments:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">topic</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/topics/{topic}&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">topic</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/topics/{topic}&#39;</span>
 <span class="n">publish_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;This is my message.&#39;</span><span class="p">,</span> <span class="n">foo</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -88,19 +79,25 @@ the payload.</p>
 <div class="section" id="batching">
 <h2>Batching<a class="headerlink" href="#batching" title="Permalink to this headline">#</a></h2>
 <p>Whenever you publish a message, a
-<a class="reference internal" href="api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch" title="google.cloud.pubsub_v1.publisher.batch.thread.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> is automatically created.
+<a class="reference internal" href="api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch" title="google.cloud.pubsub_v1.publisher.batch.thread.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></a> is automatically created.
 This way, if you publish a large volume of messages, it reduces the number of
 requests made to the server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, this uses <code class="docutils literal notranslate"><span class="pre">threading</span></code>, and you will need to be in an
+environment with threading enabled. It is possible to provide an
+alternative batch class that uses another concurrency strategy.</p>
+</div>
 <p>The way that this works is that on the first message that you send, a new
-<a class="reference internal" href="api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch" title="google.cloud.pubsub_v1.publisher.batch.thread.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> is created automatically.
+<a class="reference internal" href="api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch" title="google.cloud.pubsub_v1.publisher.batch.thread.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></a> is created automatically.
 For every subsequent message, if there is already a valid batch that is still
 accepting messages, then that batch is used. When the batch is created, it
 begins a countdown that publishes the batch once sufficient time has
 elapsed (by default, this is 0.05 seconds).</p>
 <p>If you need different batching settings, simply provide a
-<a class="reference internal" href="../types.html#google.cloud.pubsub_v1.types.BatchSettings" title="google.cloud.pubsub_v1.types.BatchSettings"><code class="xref py py-class docutils literal"><span class="pre">BatchSettings</span></code></a> object when you instantiate the
-<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<a class="reference internal" href="../types.html#google.cloud.pubsub_v1.types.BatchSettings" title="google.cloud.pubsub_v1.types.BatchSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchSettings</span></code></a> object when you instantiate the
+<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub</span> <span class="kn">import</span> <span class="n">types</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">(</span>
@@ -113,17 +110,17 @@ batch can not exceed 10 megabytes.</p>
 </div>
 <div class="section" id="futures">
 <h2>Futures<a class="headerlink" href="#futures" title="Permalink to this headline">#</a></h2>
-<p>Every call to <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal"><span class="pre">publish()</span></code></a> will return
-a class that conforms to the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Future</span></code></a> interface.
+<p>Every call to <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish()</span></code></a> will return
+a class that conforms to the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></a> interface.
 You can use this to ensure that the publish succeeded:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The .result() method will block until the future is complete.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The .result() method will block until the future is complete.</span>
 <span class="c1"># If there is an error, it will raise an exception.</span>
 <span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;My awesome message.&#39;</span><span class="p">)</span>
 <span class="n">message_id</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also attach a callback to the future:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Callbacks receive the future as their only argument, as defined in</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Callbacks receive the future as their only argument, as defined in</span>
 <span class="c1"># the Future interface.</span>
 <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
     <span class="n">message_id</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
@@ -172,7 +169,7 @@ You can use this to ensure that the publish succeeded:</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -180,6 +177,7 @@ You can use this to ensure that the publish succeeded:</p>
 <li class="toctree-l1"><a class="reference internal" href="../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../language/usage.html">Natural Language</a></li>
@@ -217,12 +215,14 @@ You can use this to ensure that the publish succeeded:</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -233,7 +233,7 @@ You can use this to ensure that the publish succeeded:</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

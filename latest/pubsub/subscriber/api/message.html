@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messages &#8212; google-cloud 9de1026 documentation</title>
+    <title>Messages &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,11 +39,11 @@
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.subscriber.message.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>message</em>, <em>ack_id</em>, <em>request_queue</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="Permalink to this definition">#</a></dt>
 <dd><p>A representation of a single Pub/Sub message.</p>
 <p>The common way to interact with
-<a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal"><span class="pre">Message</span></code></a> objects is to receive
+<a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> objects is to receive
 them in callbacks on subscriptions; most users should never have a need
 to instantiate them by hand. (The exception to this is if you are
 implementing a custom subclass to
-<code class="xref py py-class docutils literal"><span class="pre">Consumer</span></code>.)</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Consumer</span></code>.)</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.message_id">
 <code class="descname">message_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.message_id" title="Permalink to this definition">#</a></dt>
@@ -64,14 +55,14 @@ to use this directly.</p>
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.data">
 <code class="descname">data</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.data" title="Permalink to this definition">#</a></dt>
 <dd><p><em>bytes</em> – The data in the message. Note that this will be a
-<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bytes</span></code></a>, not a text string.</p>
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, not a text string.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.attributes">
 <code class="descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="Permalink to this definition">#</a></dt>
 <dd><p><em>.ScalarMapContainer</em> – The attributes sent along with the
-message. See <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="google.cloud.pubsub_v1.subscriber.message.Message.attributes"><code class="xref py py-attr docutils literal"><span class="pre">attributes</span></code></a> for more information on this type.</p>
+message. See <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="google.cloud.pubsub_v1.subscriber.message.Message.attributes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">attributes</span></code></a> for more information on this type.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -85,7 +76,7 @@ published.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This class should not be constructed directly; it is the
-responsibility of <code class="xref py py-class docutils literal"><span class="pre">BasePolicy</span></code> subclasses to do so.</p>
+responsibility of <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePolicy</span></code> subclasses to do so.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -126,19 +117,19 @@ receive any given message more than once.</p>
 <dd><p>Return the attributes of the underlying Pub/Sub Message.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">A <code class="docutils literal"><span class="pre">ScalarMapContainer</span></code> behaves slightly differently than a
-<code class="docutils literal"><span class="pre">dict</span></code>. For a Pub / Sub message this is a <code class="docutils literal"><span class="pre">string-&gt;string</span></code> map.
-When trying to access a value via <code class="docutils literal"><span class="pre">map['key']</span></code>, if the key is
+<p class="last">A <code class="docutils literal notranslate"><span class="pre">ScalarMapContainer</span></code> behaves slightly differently than a
+<code class="docutils literal notranslate"><span class="pre">dict</span></code>. For a Pub / Sub message this is a <code class="docutils literal notranslate"><span class="pre">string-&gt;string</span></code> map.
+When trying to access a value via <code class="docutils literal notranslate"><span class="pre">map['key']</span></code>, if the key is
 not in the map, then the default value for the string type will
 be returned, which is an empty string. It may be more intuitive
-to just cast the map to a <code class="docutils literal"><span class="pre">dict</span></code> or to one use <code class="docutils literal"><span class="pre">map.get</span></code>.</p>
+to just cast the map to a <code class="docutils literal notranslate"><span class="pre">dict</span></code> or to one use <code class="docutils literal notranslate"><span class="pre">map.get</span></code>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The message’s attributes. This is a
-<code class="docutils literal"><span class="pre">dict</span></code>-like object provided by <code class="docutils literal"><span class="pre">google.protobuf</span></code>.</td>
+<code class="docutils literal notranslate"><span class="pre">dict</span></code>-like object provided by <code class="docutils literal notranslate"><span class="pre">google.protobuf</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ScalarMapContainer</td>
 </tr>
@@ -156,7 +147,7 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>The message data. This is always a bytestring; if you</dt>
-<dd>want a text string, call <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes.decode" title="(in Python v3.6)"><code class="xref py py-meth docutils literal"><span class="pre">bytes.decode()</span></code></a>.</dd>
+<dd>want a text string, call <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes.decode" title="(in Python v3.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bytes.decode()</span></code></a>.</dd>
 </dl>
 </td>
 </tr>
@@ -183,7 +174,7 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The date and time that the message was published.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#module-datetime" title="(in Python v3.6)">datetime</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">datetime</td>
 </tr>
 </tbody>
 </table>
@@ -219,7 +210,7 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -227,6 +218,7 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -266,12 +258,14 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -282,7 +276,7 @@ to just cast the map to a <code class="docutils literal"><span class="pre">dict<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

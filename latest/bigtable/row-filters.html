@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Bigtable Row Filters &#8212; google-cloud 9de1026 documentation</title>
+    <title>Bigtable Row Filters &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,40 +35,40 @@
   <div class="section" id="bigtable-row-filters">
 <h1>Bigtable Row Filters<a class="headerlink" href="#bigtable-row-filters" title="Permalink to this headline">#</a></h1>
 <p>It is possible to use a
-<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>
+<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>
 when adding mutations to a
-<a class="reference internal" href="row.html#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> and when
-reading row data with <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_row" title="google.cloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal"><span class="pre">read_row()</span></code></a>
-or <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_rows" title="google.cloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">read_rows()</span></code></a>.</p>
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRow</span></code></a> and when
+reading row data with <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_row" title="google.cloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read_row()</span></code></a>
+or <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_rows" title="google.cloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read_rows()</span></code></a>.</p>
 <p>As laid out in the <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/1ff247c2e3b7cd0a2dd49071b2d95beaf6563092/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_data.proto#L195">RowFilter definition</a>, the following basic filters
 are provided:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.SinkFilter" title="google.cloud.bigtable.row_filters.SinkFilter"><code class="xref py py-class docutils literal"><span class="pre">SinkFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.PassAllFilter" title="google.cloud.bigtable.row_filters.PassAllFilter"><code class="xref py py-class docutils literal"><span class="pre">PassAllFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.BlockAllFilter" title="google.cloud.bigtable.row_filters.BlockAllFilter"><code class="xref py py-class docutils literal"><span class="pre">BlockAllFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowKeyRegexFilter" title="google.cloud.bigtable.row_filters.RowKeyRegexFilter"><code class="xref py py-class docutils literal"><span class="pre">RowKeyRegexFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowSampleFilter" title="google.cloud.bigtable.row_filters.RowSampleFilter"><code class="xref py py-class docutils literal"><span class="pre">RowSampleFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.FamilyNameRegexFilter" title="google.cloud.bigtable.row_filters.FamilyNameRegexFilter"><code class="xref py py-class docutils literal"><span class="pre">FamilyNameRegexFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter" title="google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter"><code class="xref py py-class docutils literal"><span class="pre">ColumnQualifierRegexFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRangeFilter" title="google.cloud.bigtable.row_filters.TimestampRangeFilter"><code class="xref py py-class docutils literal"><span class="pre">TimestampRangeFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ColumnRangeFilter" title="google.cloud.bigtable.row_filters.ColumnRangeFilter"><code class="xref py py-class docutils literal"><span class="pre">ColumnRangeFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ValueRegexFilter" title="google.cloud.bigtable.row_filters.ValueRegexFilter"><code class="xref py py-class docutils literal"><span class="pre">ValueRegexFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ValueRangeFilter" title="google.cloud.bigtable.row_filters.ValueRangeFilter"><code class="xref py py-class docutils literal"><span class="pre">ValueRangeFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsRowOffsetFilter" title="google.cloud.bigtable.row_filters.CellsRowOffsetFilter"><code class="xref py py-class docutils literal"><span class="pre">CellsRowOffsetFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsRowLimitFilter" title="google.cloud.bigtable.row_filters.CellsRowLimitFilter"><code class="xref py py-class docutils literal"><span class="pre">CellsRowLimitFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsColumnLimitFilter" title="google.cloud.bigtable.row_filters.CellsColumnLimitFilter"><code class="xref py py-class docutils literal"><span class="pre">CellsColumnLimitFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.StripValueTransformerFilter" title="google.cloud.bigtable.row_filters.StripValueTransformerFilter"><code class="xref py py-class docutils literal"><span class="pre">StripValueTransformerFilter</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ApplyLabelFilter" title="google.cloud.bigtable.row_filters.ApplyLabelFilter"><code class="xref py py-class docutils literal"><span class="pre">ApplyLabelFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.SinkFilter" title="google.cloud.bigtable.row_filters.SinkFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">SinkFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.PassAllFilter" title="google.cloud.bigtable.row_filters.PassAllFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">PassAllFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.BlockAllFilter" title="google.cloud.bigtable.row_filters.BlockAllFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockAllFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowKeyRegexFilter" title="google.cloud.bigtable.row_filters.RowKeyRegexFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowKeyRegexFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowSampleFilter" title="google.cloud.bigtable.row_filters.RowSampleFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowSampleFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.FamilyNameRegexFilter" title="google.cloud.bigtable.row_filters.FamilyNameRegexFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FamilyNameRegexFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter" title="google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnQualifierRegexFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRangeFilter" title="google.cloud.bigtable.row_filters.TimestampRangeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRangeFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ColumnRangeFilter" title="google.cloud.bigtable.row_filters.ColumnRangeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnRangeFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ValueRegexFilter" title="google.cloud.bigtable.row_filters.ValueRegexFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueRegexFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ValueRangeFilter" title="google.cloud.bigtable.row_filters.ValueRangeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueRangeFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsRowOffsetFilter" title="google.cloud.bigtable.row_filters.CellsRowOffsetFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellsRowOffsetFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsRowLimitFilter" title="google.cloud.bigtable.row_filters.CellsRowLimitFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellsRowLimitFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.CellsColumnLimitFilter" title="google.cloud.bigtable.row_filters.CellsColumnLimitFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellsColumnLimitFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.StripValueTransformerFilter" title="google.cloud.bigtable.row_filters.StripValueTransformerFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">StripValueTransformerFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ApplyLabelFilter" title="google.cloud.bigtable.row_filters.ApplyLabelFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplyLabelFilter</span></code></a></li>
 </ul>
 <p>In addition, these filters can be combined into composite filters with</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterChain" title="google.cloud.bigtable.row_filters.RowFilterChain"><code class="xref py py-class docutils literal"><span class="pre">RowFilterChain</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterUnion" title="google.cloud.bigtable.row_filters.RowFilterUnion"><code class="xref py py-class docutils literal"><span class="pre">RowFilterUnion</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRowFilter</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterChain" title="google.cloud.bigtable.row_filters.RowFilterChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilterChain</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterUnion" title="google.cloud.bigtable.row_filters.RowFilterUnion"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilterUnion</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRowFilter</span></code></a></li>
 </ul>
 <p>These rules can be nested arbitrarily, with a basic filter at the lowest
 level. For example:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Filter in a specified column (matching any column family).</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter in a specified column (matching any column family).</span>
 <span class="n">col1_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;columnbia&#39;</span><span class="p">)</span>
 
 <span class="c1"># Create a filter to label results.</span>
@@ -102,7 +93,7 @@ level. For example:</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ApplyLabelFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ApplyLabelFilter</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ApplyLabelFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ApplyLabelFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>Filter to apply labels to cells.</p>
 <p>Intended to be used as an intermediate filter on a pre-existing filtered
 result set. This way if two sets are combined, the label can tell where
@@ -119,7 +110,7 @@ possible to apply multiple labels to a cell.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Label to apply to cells in the output row. Values must be
 at most 15 characters long, and match the pattern
-<code class="docutils literal"><span class="pre">[a-z0-9\-]+</span></code>.</td>
+<code class="docutils literal notranslate"><span class="pre">[a-z0-9\-]+</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -131,7 +122,7 @@ at most 15 characters long, and match the pattern
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -144,7 +135,7 @@ at most 15 characters long, and match the pattern
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.BlockAllFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">BlockAllFilter</code><span class="sig-paren">(</span><em>flag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#BlockAllFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.BlockAllFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
 <p>Row filter that doesn’t match any cells.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -163,7 +154,7 @@ temporarily disabling just part of a filter.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -176,7 +167,7 @@ temporarily disabling just part of a filter.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.CellsColumnLimitFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">CellsColumnLimitFilter</code><span class="sig-paren">(</span><em>num_cells</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#CellsColumnLimitFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.CellsColumnLimitFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
 <p>Row filter to limit cells in a column.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -196,7 +187,7 @@ timestamps of each cell.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -209,7 +200,7 @@ timestamps of each cell.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.CellsRowLimitFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">CellsRowLimitFilter</code><span class="sig-paren">(</span><em>num_cells</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#CellsRowLimitFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.CellsRowLimitFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
 <p>Row filter to limit cells in a row.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -227,7 +218,7 @@ timestamps of each cell.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -240,7 +231,7 @@ timestamps of each cell.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.CellsRowOffsetFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">CellsRowOffsetFilter</code><span class="sig-paren">(</span><em>num_cells</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#CellsRowOffsetFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.CellsRowOffsetFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._CellCountFilter</span></code></p>
 <p>Row filter to skip cells in a row.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -258,7 +249,7 @@ timestamps of each cell.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -271,16 +262,16 @@ timestamps of each cell.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ColumnQualifierRegexFilter</code><span class="sig-paren">(</span><em>regex</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ColumnQualifierRegexFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ColumnQualifierRegexFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
 <p>Row filter for a column qualifier regular expression.</p>
-<p>The <code class="docutils literal"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
+<p>The <code class="docutils literal notranslate"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">RE2 reference</a> for the accepted syntax.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Special care need be used with the expression used. Since
-each of these properties can contain arbitrary bytes, the <code class="docutils literal"><span class="pre">\C</span></code>
-escape sequence must be used if a true wildcard is desired. The <code class="docutils literal"><span class="pre">.</span></code>
-character will not match the new line character <code class="docutils literal"><span class="pre">\n</span></code>, which may be
+each of these properties can contain arbitrary bytes, the <code class="docutils literal notranslate"><span class="pre">\C</span></code>
+escape sequence must be used if a true wildcard is desired. The <code class="docutils literal notranslate"><span class="pre">.</span></code>
+character will not match the new line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>, which may be
 present in a binary value.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -300,7 +291,7 @@ match this regex (irrespective of column family).</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -313,7 +304,7 @@ match this regex (irrespective of column family).</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ColumnRangeFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ColumnRangeFilter</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>start_column=None</em>, <em>end_column=None</em>, <em>inclusive_start=None</em>, <em>inclusive_end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ColumnRangeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ColumnRangeFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>A row filter to restrict to a range of columns.</p>
 <p>Both the start and end column can be included or excluded in the range.
 By default, we include them both, but this can be changed with optional
@@ -324,7 +315,7 @@ flags.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the columns. Must
-be of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+be of the form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>start_column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The start of the range of columns. If no value is
 used, the backend applies no upper bound to the
 values.</li>
@@ -332,18 +323,18 @@ values.</li>
 the backend applies no upper bound to the values.</li>
 <li><strong>inclusive_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Boolean indicating if the start column should be
 included in the range (or excluded). Defaults
-to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> if <code class="docutils literal"><span class="pre">start_column</span></code> is passed and
-no <code class="docutils literal"><span class="pre">inclusive_start</span></code> was given.</li>
+to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if <code class="docutils literal notranslate"><span class="pre">start_column</span></code> is passed and
+no <code class="docutils literal notranslate"><span class="pre">inclusive_start</span></code> was given.</li>
 <li><strong>inclusive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Boolean indicating if the end column should be
 included in the range (or excluded). Defaults
-to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> if <code class="docutils literal"><span class="pre">end_column</span></code> is passed and
-no <code class="docutils literal"><span class="pre">inclusive_end</span></code> was given.</li>
+to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if <code class="docutils literal notranslate"><span class="pre">end_column</span></code> is passed and
+no <code class="docutils literal notranslate"><span class="pre">inclusive_end</span></code> was given.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">inclusive_start</span></code>
-is set but no <code class="docutils literal"><span class="pre">start_column</span></code> is given or if <code class="docutils literal"><span class="pre">inclusive_end</span></code>
-is set but no <code class="docutils literal"><span class="pre">end_column</span></code> is given</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if <code class="docutils literal notranslate"><span class="pre">inclusive_start</span></code>
+is set but no <code class="docutils literal notranslate"><span class="pre">start_column</span></code> is given or if <code class="docutils literal notranslate"><span class="pre">inclusive_end</span></code>
+is set but no <code class="docutils literal notranslate"><span class="pre">end_column</span></code> is given</p>
 </td>
 </tr>
 </tbody>
@@ -352,13 +343,13 @@ is set but no <code class="docutils literal"><span class="pre">end_column</span>
 <dt id="google.cloud.bigtable.row_filters.ColumnRangeFilter.to_pb">
 <code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ColumnRangeFilter.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ColumnRangeFilter.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the row filter to a protobuf.</p>
-<p>First converts to a <code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.ColumnRange</span></code> and then uses it
-in the <code class="docutils literal"><span class="pre">column_range_filter</span></code> field.</p>
+<p>First converts to a <code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.ColumnRange</span></code> and then uses it
+in the <code class="docutils literal notranslate"><span class="pre">column_range_filter</span></code> field.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -371,30 +362,30 @@ in the <code class="docutils literal"><span class="pre">column_range_filter</spa
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ConditionalRowFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ConditionalRowFilter</code><span class="sig-paren">(</span><em>base_filter</em>, <em>true_filter=None</em>, <em>false_filter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ConditionalRowFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>Conditional row filter which exhibits ternary behavior.</p>
-<p>Executes one of two filters based on another filter. If the <code class="docutils literal"><span class="pre">base_filter</span></code>
-returns any cells in the row, then <code class="docutils literal"><span class="pre">true_filter</span></code> is executed. If not,
-then <code class="docutils literal"><span class="pre">false_filter</span></code> is executed.</p>
+<p>Executes one of two filters based on another filter. If the <code class="docutils literal notranslate"><span class="pre">base_filter</span></code>
+returns any cells in the row, then <code class="docutils literal notranslate"><span class="pre">true_filter</span></code> is executed. If not,
+then <code class="docutils literal notranslate"><span class="pre">false_filter</span></code> is executed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <code class="docutils literal"><span class="pre">base_filter</span></code> does not execute atomically with the true and false
+<p>The <code class="docutils literal notranslate"><span class="pre">base_filter</span></code> does not execute atomically with the true and false
 filters, which may lead to inconsistent or unexpected results.</p>
-<p class="last">Additionally, executing a <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRowFilter</span></code></a> has poor
-performance on the server, especially when <code class="docutils literal"><span class="pre">false_filter</span></code> is set.</p>
+<p class="last">Additionally, executing a <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRowFilter</span></code></a> has poor
+performance on the server, especially when <code class="docutils literal notranslate"><span class="pre">false_filter</span></code> is set.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>base_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – The filter to condition on before executing the
+<li><strong>base_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>) – The filter to condition on before executing the
 true/false filters.</li>
-<li><strong>true_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to execute if there are any cells
-matching <code class="docutils literal"><span class="pre">base_filter</span></code>. If not provided, no results
+<li><strong>true_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to execute if there are any cells
+matching <code class="docutils literal notranslate"><span class="pre">base_filter</span></code>. If not provided, no results
 will be returned in the true case.</li>
-<li><strong>false_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to execute if there are no cells
-matching <code class="docutils literal"><span class="pre">base_filter</span></code>. If not provided, no results
+<li><strong>false_filter</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to execute if there are no cells
+matching <code class="docutils literal notranslate"><span class="pre">base_filter</span></code>. If not provided, no results
 will be returned in the false case.</li>
 </ul>
 </td>
@@ -409,7 +400,7 @@ will be returned in the false case.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -422,9 +413,9 @@ will be returned in the false case.</li>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.FamilyNameRegexFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">FamilyNameRegexFilter</code><span class="sig-paren">(</span><em>regex</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#FamilyNameRegexFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.FamilyNameRegexFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
 <p>Row filter for a family name regular expression.</p>
-<p>The <code class="docutils literal"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
+<p>The <code class="docutils literal notranslate"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">RE2 reference</a> for the accepted syntax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -432,7 +423,7 @@ will be returned in the false case.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>regex</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A regular expression (RE2) to match cells from columns in a
 given column family. For technical reasons, the regex must
-not contain the <code class="docutils literal"><span class="pre">':'</span></code> character, even if it is not being
+not contain the <code class="docutils literal notranslate"><span class="pre">':'</span></code> character, even if it is not being
 used as a literal.</td>
 </tr>
 </tbody>
@@ -445,7 +436,7 @@ used as a literal.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -458,14 +449,14 @@ used as a literal.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.PassAllFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">PassAllFilter</code><span class="sig-paren">(</span><em>flag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#PassAllFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.PassAllFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
 <p>Row filter equivalent to not filtering at all.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Matches all cells, regardless of input. Functionally
-equivalent to leaving <code class="docutils literal"><span class="pre">filter</span></code> unset, but included for
+equivalent to leaving <code class="docutils literal notranslate"><span class="pre">filter</span></code> unset, but included for
 completeness.</td>
 </tr>
 </tbody>
@@ -478,7 +469,7 @@ completeness.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -491,10 +482,10 @@ completeness.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.RowFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">RowFilter</code><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#RowFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.RowFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Basic filter to apply to cells in a row.</p>
-<p>These values can be combined via <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterChain" title="google.cloud.bigtable.row_filters.RowFilterChain"><code class="xref py py-class docutils literal"><span class="pre">RowFilterChain</span></code></a>,
-<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterUnion" title="google.cloud.bigtable.row_filters.RowFilterUnion"><code class="xref py py-class docutils literal"><span class="pre">RowFilterUnion</span></code></a> and <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRowFilter</span></code></a>.</p>
+<p>These values can be combined via <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterChain" title="google.cloud.bigtable.row_filters.RowFilterChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilterChain</span></code></a>,
+<a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilterUnion" title="google.cloud.bigtable.row_filters.RowFilterUnion"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilterUnion</span></code></a> and <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRowFilter</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This class is a do-nothing base class for all row filters.</p>
@@ -504,7 +495,7 @@ completeness.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.RowFilterChain">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">RowFilterChain</code><span class="sig-paren">(</span><em>filters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#RowFilterChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.RowFilterChain" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._FilterCombination</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._FilterCombination</span></code></p>
 <p>Chain of row filters.</p>
 <p>Sends rows through several filters in sequence. The filters are “chained”
 together to process a row. After the first filter is applied, the second
@@ -513,7 +504,7 @@ is applied to the filtered output and so on for subsequent filters.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -525,7 +516,7 @@ is applied to the filtered output and so on for subsequent filters.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -538,7 +529,7 @@ is applied to the filtered output and so on for subsequent filters.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.RowFilterUnion">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">RowFilterUnion</code><span class="sig-paren">(</span><em>filters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#RowFilterUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.RowFilterUnion" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._FilterCombination</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._FilterCombination</span></code></p>
 <p>Union of row filters.</p>
 <p>Sends rows through several filters simultaneously, then
 merges / interleaves all the filtered results together.</p>
@@ -548,7 +539,7 @@ they will all appear in the output row in an unspecified mutual order.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -560,7 +551,7 @@ they will all appear in the output row in an unspecified mutual order.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -573,16 +564,16 @@ they will all appear in the output row in an unspecified mutual order.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.RowKeyRegexFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">RowKeyRegexFilter</code><span class="sig-paren">(</span><em>regex</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#RowKeyRegexFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.RowKeyRegexFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
 <p>Row filter for a row key regular expression.</p>
-<p>The <code class="docutils literal"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
+<p>The <code class="docutils literal notranslate"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">RE2 reference</a> for the accepted syntax.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Special care need be used with the expression used. Since
-each of these properties can contain arbitrary bytes, the <code class="docutils literal"><span class="pre">\C</span></code>
-escape sequence must be used if a true wildcard is desired. The <code class="docutils literal"><span class="pre">.</span></code>
-character will not match the new line character <code class="docutils literal"><span class="pre">\n</span></code>, which may be
+each of these properties can contain arbitrary bytes, the <code class="docutils literal notranslate"><span class="pre">\C</span></code>
+escape sequence must be used if a true wildcard is desired. The <code class="docutils literal notranslate"><span class="pre">.</span></code>
+character will not match the new line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>, which may be
 present in a binary value.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -591,7 +582,7 @@ present in a binary value.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>regex</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – A regular expression (RE2) to match cells from rows with row
 keys that satisfy this regex. For a
-<code class="docutils literal"><span class="pre">CheckAndMutateRowRequest</span></code>, this filter is unnecessary
+<code class="docutils literal notranslate"><span class="pre">CheckAndMutateRowRequest</span></code>, this filter is unnecessary
 since the row key is already specified.</td>
 </tr>
 </tbody>
@@ -604,7 +595,7 @@ since the row key is already specified.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -617,14 +608,14 @@ since the row key is already specified.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.RowSampleFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">RowSampleFilter</code><span class="sig-paren">(</span><em>sample</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#RowSampleFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.RowSampleFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>Matches all cells from a row with probability p.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sample</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The probability of matching a cell (must be in the
-interval <code class="docutils literal"><span class="pre">(0,</span> <span class="pre">1)</span></code>  The end points are excluded).</td>
+interval <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1)</span></code>  The end points are excluded).</td>
 </tr>
 </tbody>
 </table>
@@ -636,7 +627,7 @@ interval <code class="docutils literal"><span class="pre">(0,</span> <span class
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -649,7 +640,7 @@ interval <code class="docutils literal"><span class="pre">(0,</span> <span class
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.SinkFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">SinkFilter</code><span class="sig-paren">(</span><em>flag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#SinkFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.SinkFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
 <p>Advanced row filter to skip parent filters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -658,8 +649,8 @@ interval <code class="docutils literal"><span class="pre">(0,</span> <span class
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – ADVANCED USE ONLY. Hook for introspection into the row filter.
 Outputs all cells directly to the output of the read rather
 than to any parent filter. Cannot be used within the
-<code class="docutils literal"><span class="pre">predicate_filter</span></code>, <code class="docutils literal"><span class="pre">true_filter</span></code>, or <code class="docutils literal"><span class="pre">false_filter</span></code>
-of a <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRowFilter</span></code></a>.</td>
+<code class="docutils literal notranslate"><span class="pre">predicate_filter</span></code>, <code class="docutils literal notranslate"><span class="pre">true_filter</span></code>, or <code class="docutils literal notranslate"><span class="pre">false_filter</span></code>
+of a <a class="reference internal" href="#google.cloud.bigtable.row_filters.ConditionalRowFilter" title="google.cloud.bigtable.row_filters.ConditionalRowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRowFilter</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -671,7 +662,7 @@ of a <a class="reference internal" href="#google.cloud.bigtable.row_filters.Cond
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -684,13 +675,13 @@ of a <a class="reference internal" href="#google.cloud.bigtable.row_filters.Cond
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.StripValueTransformerFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">StripValueTransformerFilter</code><span class="sig-paren">(</span><em>flag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#StripValueTransformerFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.StripValueTransformerFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._BoolFilter</span></code></p>
 <p>Row filter that transforms cells into empty string (0 bytes).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, replaces each cell’s value with the empty
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>, replaces each cell’s value with the empty
 string. As the name indicates, this is more useful as a
 transformer than a generic query / filter.</td>
 </tr>
@@ -704,7 +695,7 @@ transformer than a generic query / filter.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -717,16 +708,16 @@ transformer than a generic query / filter.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.TimestampRange">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">TimestampRange</code><span class="sig-paren">(</span><em>start=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#TimestampRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.TimestampRange" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Range of time with inclusive lower and exclusive upper bounds.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The (inclusive) lower bound of the timestamp
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The (inclusive) lower bound of the timestamp
 range. If omitted, defaults to Unix epoch.</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The (exclusive) upper bound of the timestamp
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The (exclusive) upper bound of the timestamp
 range. If omitted, no upper bound is used.</li>
 </ul>
 </td>
@@ -736,12 +727,12 @@ range. If omitted, no upper bound is used.</li>
 <dl class="method">
 <dt id="google.cloud.bigtable.row_filters.TimestampRange.to_pb">
 <code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#TimestampRange.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.TimestampRange.to_pb" title="Permalink to this definition">#</a></dt>
-<dd><p>Converts the <a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRange" title="google.cloud.bigtable.row_filters.TimestampRange"><code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code></a> to a protobuf.</p>
+<dd><p>Converts the <a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRange" title="google.cloud.bigtable.row_filters.TimestampRange"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code></a> to a protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.TimestampRange</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.TimestampRange</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -754,13 +745,13 @@ range. If omitted, no upper bound is used.</li>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.TimestampRangeFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">TimestampRangeFilter</code><span class="sig-paren">(</span><em>range_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#TimestampRangeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.TimestampRangeFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>Row filter that limits cells to a range of time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>range</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRange" title="google.cloud.bigtable.row_filters.TimestampRange"><code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code></a>) – Range of time that cells should match against.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>range</strong> (<a class="reference internal" href="#google.cloud.bigtable.row_filters.TimestampRange" title="google.cloud.bigtable.row_filters.TimestampRange"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code></a>) – Range of time that cells should match against.</td>
 </tr>
 </tbody>
 </table>
@@ -768,13 +759,13 @@ range. If omitted, no upper bound is used.</li>
 <dt id="google.cloud.bigtable.row_filters.TimestampRangeFilter.to_pb">
 <code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#TimestampRangeFilter.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.TimestampRangeFilter.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the row filter to a protobuf.</p>
-<p>First converts the <code class="docutils literal"><span class="pre">range_</span></code> on the current object to a protobuf and
-then uses it in the <code class="docutils literal"><span class="pre">timestamp_range_filter</span></code> field.</p>
+<p>First converts the <code class="docutils literal notranslate"><span class="pre">range_</span></code> on the current object to a protobuf and
+then uses it in the <code class="docutils literal notranslate"><span class="pre">timestamp_range_filter</span></code> field.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -787,7 +778,7 @@ then uses it in the <code class="docutils literal"><span class="pre">timestamp_r
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ValueRangeFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ValueRangeFilter</code><span class="sig-paren">(</span><em>start_value=None</em>, <em>end_value=None</em>, <em>inclusive_start=None</em>, <em>inclusive_end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ValueRangeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ValueRangeFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters.RowFilter</span></code></a></p>
 <p>A range of values to restrict to in a row filter.</p>
 <p>Will only match cells that have values in this range.</p>
 <p>Both the start and end value can be included or excluded in the range.
@@ -804,18 +795,18 @@ the backend applies no lower bound to the values.</li>
 the backend applies no upper bound to the values.</li>
 <li><strong>inclusive_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Boolean indicating if the start value should be
 included in the range (or excluded). Defaults
-to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> if <code class="docutils literal"><span class="pre">start_value</span></code> is passed and
-no <code class="docutils literal"><span class="pre">inclusive_start</span></code> was given.</li>
+to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if <code class="docutils literal notranslate"><span class="pre">start_value</span></code> is passed and
+no <code class="docutils literal notranslate"><span class="pre">inclusive_start</span></code> was given.</li>
 <li><strong>inclusive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Boolean indicating if the end value should be
 included in the range (or excluded). Defaults
-to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> if <code class="docutils literal"><span class="pre">end_value</span></code> is passed and
-no <code class="docutils literal"><span class="pre">inclusive_end</span></code> was given.</li>
+to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if <code class="docutils literal notranslate"><span class="pre">end_value</span></code> is passed and
+no <code class="docutils literal notranslate"><span class="pre">inclusive_end</span></code> was given.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">inclusive_start</span></code>
-is set but no <code class="docutils literal"><span class="pre">start_value</span></code> is given or if <code class="docutils literal"><span class="pre">inclusive_end</span></code>
-is set but no <code class="docutils literal"><span class="pre">end_value</span></code> is given</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if <code class="docutils literal notranslate"><span class="pre">inclusive_start</span></code>
+is set but no <code class="docutils literal notranslate"><span class="pre">start_value</span></code> is given or if <code class="docutils literal notranslate"><span class="pre">inclusive_end</span></code>
+is set but no <code class="docutils literal notranslate"><span class="pre">end_value</span></code> is given</p>
 </td>
 </tr>
 </tbody>
@@ -824,13 +815,13 @@ is set but no <code class="docutils literal"><span class="pre">end_value</span><
 <dt id="google.cloud.bigtable.row_filters.ValueRangeFilter.to_pb">
 <code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ValueRangeFilter.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ValueRangeFilter.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the row filter to a protobuf.</p>
-<p>First converts to a <code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.ValueRange</span></code> and then uses
+<p>First converts to a <code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.ValueRange</span></code> and then uses
 it to create a row filter protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -843,16 +834,16 @@ it to create a row filter protobuf.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_filters.ValueRegexFilter">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_filters.</code><code class="descname">ValueRegexFilter</code><span class="sig-paren">(</span><em>regex</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_filters.html#ValueRegexFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_filters.ValueRegexFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row_filters._RegexFilter</span></code></p>
 <p>Row filter for a value regular expression.</p>
-<p>The <code class="docutils literal"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
+<p>The <code class="docutils literal notranslate"><span class="pre">regex</span></code> must be valid RE2 patterns. See Google’s
 <a class="reference external" href="https://github.com/google/re2/wiki/Syntax">RE2 reference</a> for the accepted syntax.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Special care need be used with the expression used. Since
-each of these properties can contain arbitrary bytes, the <code class="docutils literal"><span class="pre">\C</span></code>
-escape sequence must be used if a true wildcard is desired. The <code class="docutils literal"><span class="pre">.</span></code>
-character will not match the new line character <code class="docutils literal"><span class="pre">\n</span></code>, which may be
+each of these properties can contain arbitrary bytes, the <code class="docutils literal notranslate"><span class="pre">\C</span></code>
+escape sequence must be used if a true wildcard is desired. The <code class="docutils literal notranslate"><span class="pre">.</span></code>
+character will not match the new line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>, which may be
 present in a binary value.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -872,7 +863,7 @@ match this regex.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">data_v2_pb2.RowFilter</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
 </tr>
@@ -910,12 +901,12 @@ match this regex.</td>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
@@ -933,6 +924,7 @@ match this regex.</td>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -964,12 +956,14 @@ match this regex.</td>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -980,7 +974,7 @@ match this regex.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

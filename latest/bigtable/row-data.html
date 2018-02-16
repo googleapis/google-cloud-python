@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Row Data &#8212; google-cloud 9de1026 documentation</title>
+    <title>Row Data &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,7 +38,7 @@
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.Cell">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">Cell</code><span class="sig-paren">(</span><em>value</em>, <em>timestamp_micros</em>, <em>labels=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#Cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.Cell" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google Cloud Bigtable Cell.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -70,9 +61,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cell_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.data_pb2.Cell</span></code>) – The protobuf to convert.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cell_pb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">_generated.data_pb2.Cell</span></code>) – The protobuf to convert.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal"><span class="pre">Cell</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The cell corresponding to the protobuf.</td>
 </tr>
@@ -85,24 +76,24 @@
 <dl class="exception">
 <dt id="google.cloud.bigtable.row_data.InvalidChunk">
 <em class="property">exception </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">InvalidChunk</code><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#InvalidChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.InvalidChunk" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">RuntimeError</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
 <p>Exception raised to to invalid chunk data from back-end.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.cloud.bigtable.row_data.InvalidReadRowsResponse">
 <em class="property">exception </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">InvalidReadRowsResponse</code><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#InvalidReadRowsResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.InvalidReadRowsResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">RuntimeError</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></p>
 <p>Exception raised to to invalid response data from back-end.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialCellData">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialCellData</code><span class="sig-paren">(</span><em>row_key</em>, <em>family_name</em>, <em>qualifier</em>, <em>timestamp_micros</em>, <em>labels=()</em>, <em>value=b''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialCellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialCellData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of partial cell in a Google Cloud Bigtable Table.</p>
 <p>These are expected to be updated directly from a
-<code class="xref py py-class docutils literal"><span class="pre">_generated.bigtable_service_messages_pb2.ReadRowsResponse</span></code></p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_generated.bigtable_service_messages_pb2.ReadRowsResponse</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -139,10 +130,10 @@
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialRowData">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowData</code><span class="sig-paren">(</span><em>row_key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of partial row in a Google Cloud Bigtable Table.</p>
 <p>These are expected to be updated directly from a
-<code class="xref py py-class docutils literal"><span class="pre">_generated.bigtable_service_messages_pb2.ReadRowsResponse</span></code></p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_generated.bigtable_service_messages_pb2.ReadRowsResponse</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -161,10 +152,10 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of the <a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal"><span class="pre">Cell</span></code></a> objects accumulated. This
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of the <a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a> objects accumulated. This
 dictionary has two-levels of keys (first for column families
 and second for column names/qualifiers within a family). For
-a given column, a list of <a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal"><span class="pre">Cell</span></code></a> objects is stored.</td>
+a given column, a list of <a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a> objects is stored.</td>
 </tr>
 </tbody>
 </table>
@@ -191,7 +182,7 @@ a given column, a list of <a class="reference internal" href="#google.cloud.bigt
 <code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowData.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.to_dict" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert the cells to a dictionary.</p>
 <p>This is intended to be used with HappyBase, so the column family and
-column qualiers are combined (with <code class="docutils literal"><span class="pre">:</span></code>).</p>
+column qualiers are combined (with <code class="docutils literal notranslate"><span class="pre">:</span></code>).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -209,14 +200,14 @@ column qualiers are combined (with <code class="docutils literal"><span class="p
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialRowsData">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowsData</code><span class="sig-paren">(</span><em>response_iterator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowsData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Convenience wrapper for consuming a <code class="docutils literal"><span class="pre">ReadRows</span></code> streaming response.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Convenience wrapper for consuming a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> streaming response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
-<code class="docutils literal"><span class="pre">ReadRows</span></code> request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
+<code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> request.</td>
 </tr>
 </tbody>
 </table>
@@ -229,7 +220,7 @@ column qualiers are combined (with <code class="docutils literal"><span class="p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_loops</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of times to try to consume
-an additional <code class="docutils literal"><span class="pre">ReadRowsResponse</span></code>. You can use this
+an additional <code class="docutils literal notranslate"><span class="pre">ReadRowsResponse</span></code>. You can use this
 to avoid long wait times.</td>
 </tr>
 </tbody>
@@ -258,14 +249,14 @@ processing.</td>
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.YieldRowsData">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">YieldRowsData</code><span class="sig-paren">(</span><em>response_iterator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#YieldRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.YieldRowsData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Convenience wrapper for consuming a <code class="docutils literal"><span class="pre">ReadRows</span></code> streaming response.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Convenience wrapper for consuming a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> streaming response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
-<code class="docutils literal"><span class="pre">ReadRows</span></code> request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
+<code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> request.</td>
 </tr>
 </tbody>
 </table>
@@ -278,10 +269,10 @@ processing.</td>
 <dl class="method">
 <dt id="google.cloud.bigtable.row_data.YieldRowsData.read_rows">
 <code class="descname">read_rows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#YieldRowsData.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.YieldRowsData.read_rows" title="Permalink to this definition">#</a></dt>
-<dd><p>Consume the <code class="docutils literal"><span class="pre">ReadRowsResponse's</span></code> from the stream.
+<dd><p>Consume the <code class="docutils literal notranslate"><span class="pre">ReadRowsResponse's</span></code> from the stream.
 Read the rows and yield each to the reader</p>
 <p>Parse the response and its chunks into a new/existing row in
-<code class="xref py py-attr docutils literal"><span class="pre">_rows</span></code>. Rows are returned in order by row key.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">_rows</span></code>. Rows are returned in order by row key.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -331,12 +322,12 @@ processing.</td>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
@@ -354,6 +345,7 @@ processing.</td>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -385,12 +377,14 @@ processing.</td>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -401,7 +395,7 @@ processing.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -61,7 +52,6 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span> <span class="k">as</span> <span class="n">queue_mod</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
@@ -73,19 +63,6 @@
 
 <span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_CALLBACK_WORKER_NAME</span> <span class="o">=</span> <span class="s1">&#39;Thread-Consumer-CallbackRequestsWorker&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">_callback_completed</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Simple callback that just logs a future&#39;s result.</span>
-
-<span class="sd">    Used on completion of processing a message received by a</span>
-<span class="sd">    subscriber.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        future (concurrent.futures.Future): A future returned</span>
-<span class="sd">            from :meth:`~concurrent.futures.Executor.submit`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 
 
 <span class="k">def</span> <span class="nf">_do_nothing_callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
@@ -223,8 +200,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">future</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="n">future</span>
 
     <span class="k">def</span> <span class="nf">_start_dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start a thread to dispatch requests queued up by callbacks.</span>
@@ -314,8 +291,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">start_consuming</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_lease_worker</span><span class="p">()</span>
 
-        <span class="c1"># Return the future.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span></div>
+        <span class="c1"># Return the future.</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span>
 
     <span class="k">def</span> <span class="nf">dispatch_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate gRPC request.</span>
@@ -374,11 +351,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">received_messages</span><span class="p">:</span>
             <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="s1">&#39;Using </span><span class="si">%s</span><span class="s1"> to process new message received:</span><span class="se">\n</span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">)</span>
-            <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-            <span class="n">future</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">_callback_completed</span><span class="p">)</span></div>
+                <span class="s1">&#39;Using </span><span class="si">%s</span><span class="s1"> to process message with ack_id </span><span class="si">%s</span><span class="s1">.&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -406,7 +382,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -414,6 +390,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../language/usage.html">Natural Language</a></li>
@@ -443,12 +420,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -459,7 +438,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance Admin &#8212; google-cloud 9de1026 documentation</title>
+    <title>Instance Admin &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -43,7 +34,7 @@
             
   <div class="section" id="instance-admin">
 <h1>Instance Admin<a class="headerlink" href="#instance-admin" title="Permalink to this headline">#</a></h1>
-<p>After creating a <code class="xref py py-class docutils literal"><span class="pre">Client</span></code>, you can
+<p>After creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code>, you can
 interact with individual instances for a project.</p>
 <div class="section" id="instance-configurations">
 <h2>Instance Configurations<a class="headerlink" href="#instance-configurations" title="Permalink to this headline">#</a></h2>
@@ -51,37 +42,37 @@ interact with individual instances for a project.</p>
 specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.</p>
 <p>To iterate over all instance configurations available to your project, use the
-<code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">list_instance_configs()</span></code>
 method of the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">():</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">():</span>
     <span class="c1"># `config` is an instance of `InstanceConfig`</span>
 </pre></div>
 </div>
 <p>To fetch a single instance configuration, use the
-<code class="xref py py-meth docutils literal"><span class="pre">get_instance_configuration()</span></code>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instance_configuration()</span></code>
 method of the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_configuration</span><span class="p">(</span><span class="s1">&#39;config-name&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_configuration</span><span class="p">(</span><span class="s1">&#39;config-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each of these methods provide
-<a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a> objects.</p>
+<a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstanceConfig</span></code></a> objects.</p>
 </div>
 <div class="section" id="list-instances">
 <h2>List Instances<a class="headerlink" href="#list-instances" title="Permalink to this headline">#</a></h2>
 <p>If you want a comprehensive list of all existing instances, iterate over the
-<code class="xref py py-meth docutils literal"><span class="pre">list_instances()</span></code> method of
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">list_instances()</span></code> method of
 the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">():</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">():</span>
     <span class="c1"># `instance` is an instance of `Instance`</span>
 </pre></div>
 </div>
-<p>This iterator yields <a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>
+<p>This iterator yields <a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>
 objects.</p>
 </div>
 <div class="section" id="instance-factory">
 <h2>Instance Factory<a class="headerlink" href="#instance-factory" title="Permalink to this headline">#</a></h2>
-<p>To create a <code class="xref py py-class docutils literal"><span class="pre">Instance</span></code> object:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<p>To create a <code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code> object:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span>
                            <span class="n">configuration_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                            <span class="n">node_count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -89,19 +80,19 @@ objects.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">configuration_name</span></code> is the name of the instance configuration to which the
+<li><code class="docutils literal notranslate"><span class="pre">configuration_name</span></code> is the name of the instance configuration to which the
 instance will be bound.  It must be one of the names configured for your
 project, discoverable via
-<code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">node_count</span></code> is a postitive integral count of the number of nodes used
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">list_instance_configs()</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">node_count</span></code> is a postitive integral count of the number of nodes used
 by the instance.  More nodes allows for higher performance, but at a higher
 billing cost.</li>
-<li><code class="docutils literal"><span class="pre">display_name</span></code> is optional. When not provided, <code class="docutils literal"><span class="pre">display_name</span></code> defaults
-to the <code class="docutils literal"><span class="pre">instance_id</span></code> value.</li>
+<li><code class="docutils literal notranslate"><span class="pre">display_name</span></code> is optional. When not provided, <code class="docutils literal notranslate"><span class="pre">display_name</span></code> defaults
+to the <code class="docutils literal notranslate"><span class="pre">instance_id</span></code> value.</li>
 </ul>
-<p>You can also use <code class="xref py py-meth docutils literal"><span class="pre">Client.instance()</span></code> to create a local wrapper for
+<p>You can also use <code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.instance()</span></code> to create a local wrapper for
 an instance that has already been created:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">existing_instance_id</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">existing_instance_id</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -109,16 +100,16 @@ an instance that has already been created:</p>
 <div class="section" id="create-a-new-instance">
 <h2>Create a new Instance<a class="headerlink" href="#create-a-new-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, use its
-<code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> method to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code> method to
 trigger its creation on the server:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;My very own instance&#39;</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;My very own instance&#39;</span>
 <span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Creating an instance triggers a “long-running operation” and
-returns an <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
+returns an <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
 object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Resolve Current Instance Operation</span></a> for polling
 to find out if the operation is completed.</p>
 </div>
@@ -126,25 +117,25 @@ to find out if the operation is completed.</p>
 <div class="section" id="refresh-metadata-for-an-existing-instance">
 <h2>Refresh metadata for an existing Instance<a class="headerlink" href="#refresh-metadata-for-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, reload its server-side configuration
-using its <code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code> method:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+using its <code class="xref py py-meth docutils literal notranslate"><span class="pre">reload()</span></code> method:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This will load <code class="docutils literal"><span class="pre">display_name</span></code>, <code class="docutils literal"><span class="pre">config_name</span></code>, and <code class="docutils literal"><span class="pre">node_count</span></code>
-for the existing <code class="docutils literal"><span class="pre">instance</span></code> object from the back-end.</p>
+<p>This will load <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">config_name</span></code>, and <code class="docutils literal notranslate"><span class="pre">node_count</span></code>
+for the existing <code class="docutils literal notranslate"><span class="pre">instance</span></code> object from the back-end.</p>
 </div>
 <div class="section" id="update-an-existing-instance">
 <h2>Update an existing Instance<a class="headerlink" href="#update-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, you can update its metadata via
-its <code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> method:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;New display_name&#39;</span>
+its <code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code> method:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;New display_name&#39;</span>
 <span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Update an instance triggers a “long-running operation” and
-returns a <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
+returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
 object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Resolve Current Instance Operation</span></a> for polling
 to find out if the operation is completed.</p>
 </div>
@@ -152,20 +143,20 @@ to find out if the operation is completed.</p>
 <div class="section" id="delete-an-existing-instance">
 <h2>Delete an existing Instance<a class="headerlink" href="#delete-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>Delete an instance using its
-<code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code> method:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code> method:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="resolve-current-instance-operation">
 <span id="check-on-current-instance-operation"></span><h2>Resolve Current Instance Operation<a class="headerlink" href="#resolve-current-instance-operation" title="Permalink to this headline">#</a></h2>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> and
-<code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> methods of instance
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code> methods of instance
 object trigger long-running operations on the server, and return instances
-of the <code class="xref py py-class docutils literal"><span class="pre">Operation</span></code> class.</p>
+of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code> class.</p>
 <p>If you want to block on the completion of those operations, use the
-<code class="docutils literal"><span class="pre">result</span></code> method on the returned objects:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<code class="docutils literal notranslate"><span class="pre">result</span></code> method on the returned objects:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -174,8 +165,8 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 <div class="section" id="next-step">
 <h2>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h2>
 <p>Now we go down the hierarchy from
-<code class="xref py py-class docutils literal"><span class="pre">Instance</span></code> to a
-<code class="xref py py-class docutils literal"><span class="pre">Database</span></code>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code> to a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Database</span></code>.</p>
 <p>Next, learn about the <a class="reference internal" href="database-usage.html"><span class="doc">Database Admin</span></a>.</p>
 </div>
 </div>
@@ -206,7 +197,7 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -214,6 +205,7 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -222,7 +214,7 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-spanner</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-spanner</span></code> Releases</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Instance Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
@@ -249,7 +241,7 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
-      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-spanner</span></code> Releases</a></li>
+      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-spanner</span></code> Releases</a></li>
       <li>Next: <a href="database-usage.html" title="next chapter">Database Admin</a></li>
   </ul></li>
   </ul></li>
@@ -257,12 +249,14 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -273,7 +267,7 @@ of the <code class="xref py py-class docutils literal"><span class="pre">Operati
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

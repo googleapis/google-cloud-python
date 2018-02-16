@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Video Intelligence Client Types &#8212; google-cloud 9de1026 documentation</title>
+    <title>Video Intelligence Client Types &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -46,14 +37,14 @@
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoProgress">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">AnnotateVideoProgress</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoProgress" title="Permalink to this definition">#</a></dt>
-<dd><p>Video annotation progress. Included in the <code class="docutils literal"><span class="pre">metadata</span></code> field of the
-<code class="docutils literal"><span class="pre">Operation</span></code> returned by the <code class="docutils literal"><span class="pre">GetOperation</span></code> call of the
-<code class="docutils literal"><span class="pre">google::longrunning::Operations</span></code> service.</p>
+<dd><p>Video annotation progress. Included in the <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field of the
+<code class="docutils literal notranslate"><span class="pre">Operation</span></code> returned by the <code class="docutils literal notranslate"><span class="pre">GetOperation</span></code> call of the
+<code class="docutils literal notranslate"><span class="pre">google::longrunning::Operations</span></code> service.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoProgress.annotation_progress">
 <code class="descname">annotation_progress</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoProgress.annotation_progress" title="Permalink to this definition">#</a></dt>
 <dd><p>Progress metadata for all videos specified in
-<code class="docutils literal"><span class="pre">AnnotateVideoRequest</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -67,21 +58,21 @@
 <code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest.input_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Input video location. Currently, only <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a> URIs are supported,
 which must be specified in the following format:
-<code class="docutils literal"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return [google
+<code class="docutils literal notranslate"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return [google
 .rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT
 ]). For more information, see <a class="reference external" href="/storage/docs/reference-uris">Request URIs</a>. A video URI may include
-wildcards in <code class="docutils literal"><span class="pre">object-id</span></code>, and thus identify multiple videos.
+wildcards in <code class="docutils literal notranslate"><span class="pre">object-id</span></code>, and thus identify multiple videos.
 Supported wildcards: ‘*’ to match 0 or more characters; ‘?’
 to match 1 character. If unset, the input video should be
-embedded in the request as <code class="docutils literal"><span class="pre">input_content</span></code>. If set,
-<code class="docutils literal"><span class="pre">input_content</span></code> should be unset.</p>
+embedded in the request as <code class="docutils literal notranslate"><span class="pre">input_content</span></code>. If set,
+<code class="docutils literal notranslate"><span class="pre">input_content</span></code> should be unset.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest.input_content">
 <code class="descname">input_content</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest.input_content" title="Permalink to this definition">#</a></dt>
 <dd><p>The video data bytes. If unset, the input video(s) should be
-specified via <code class="docutils literal"><span class="pre">input_uri</span></code>. If set, <code class="docutils literal"><span class="pre">input_uri</span></code> should be
+specified via <code class="docutils literal notranslate"><span class="pre">input_uri</span></code>. If set, <code class="docutils literal notranslate"><span class="pre">input_uri</span></code> should be
 unset.</p>
 </dd></dl>
 
@@ -103,7 +94,7 @@ unset.</p>
 <dd><p>Optional location where the output (in JSON format) should be
 stored. Currently, only <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a> URIs are supported,
 which must be specified in the following format:
-<code class="docutils literal"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return [google
+<code class="docutils literal notranslate"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return [google
 .rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT
 ]). For more information, see <a class="reference external" href="/storage/docs/reference-uris">Request URIs</a>.</p>
 </dd></dl>
@@ -112,8 +103,8 @@ which must be specified in the following format:
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest.location_id">
 <code class="descname">location_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest.location_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional cloud region where annotation should take place.
-Supported cloud regions: <code class="docutils literal"><span class="pre">us-east1</span></code>, <code class="docutils literal"><span class="pre">us-west1</span></code>, <code class="docutils literal"><span class="pre">europe-</span>
-<span class="pre">west1</span></code>, <code class="docutils literal"><span class="pre">asia-east1</span></code>. If no region is specified, a region
+Supported cloud regions: <code class="docutils literal notranslate"><span class="pre">us-east1</span></code>, <code class="docutils literal notranslate"><span class="pre">us-west1</span></code>, <code class="docutils literal notranslate"><span class="pre">europe-</span>
+<span class="pre">west1</span></code>, <code class="docutils literal notranslate"><span class="pre">asia-east1</span></code>. If no region is specified, a region
 will be determined based on video file location.</p>
 </dd></dl>
 
@@ -122,17 +113,62 @@ will be determined based on video file location.</p>
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">AnnotateVideoResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Video annotation response. Included in the <code class="docutils literal"><span class="pre">response</span></code> field of the
-<code class="docutils literal"><span class="pre">Operation</span></code> returned by the <code class="docutils literal"><span class="pre">GetOperation</span></code> call of the
-<code class="docutils literal"><span class="pre">google::longrunning::Operations</span></code> service.</p>
+<dd><p>Video annotation response. Included in the <code class="docutils literal notranslate"><span class="pre">response</span></code> field of the
+<code class="docutils literal notranslate"><span class="pre">Operation</span></code> returned by the <code class="docutils literal notranslate"><span class="pre">GetOperation</span></code> call of the
+<code class="docutils literal notranslate"><span class="pre">google::longrunning::Operations</span></code> service.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1beta2.types.AnnotateVideoResponse.annotation_results">
 <code class="descname">annotation_results</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.AnnotateVideoResponse.annotation_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation results for all videos specified in
-<code class="docutils literal"><span class="pre">AnnotateVideoRequest</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.Entity">
@@ -148,16 +184,41 @@ Knowledge Graph Search API</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1beta2.types.Entity.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Entity.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Textual description, e.g. <code class="docutils literal"><span class="pre">Fixed-gear</span> <span class="pre">bicycle</span></code>.</p>
+<dd><p>Textual description, e.g. <code class="docutils literal notranslate"><span class="pre">Fixed-gear</span> <span class="pre">bicycle</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1beta2.types.Entity.language_code">
 <code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Entity.language_code" title="Permalink to this definition">#</a></dt>
-<dd><p>Language code for <code class="docutils literal"><span class="pre">description</span></code> in BCP-47 format.</p>
+<dd><p>Language code for <code class="docutils literal notranslate"><span class="pre">description</span></code> in BCP-47 format.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.ExplicitContentAnnotation">
@@ -204,6 +265,11 @@ corresponding to the video frame for this location.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.FaceAnnotation">
@@ -283,6 +349,56 @@ corresponding to the video frame for this location.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.LabelAnnotation">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">LabelAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.LabelAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotation.</p>
@@ -296,9 +412,9 @@ corresponding to the video frame for this location.</p>
 <dt id="google.cloud.videointelligence_v1beta2.types.LabelAnnotation.category_entities">
 <code class="descname">category_entities</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.LabelAnnotation.category_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Common categories for the detected entity. E.g. when the label
-is <code class="docutils literal"><span class="pre">Terrier</span></code> the category is likely <code class="docutils literal"><span class="pre">dog</span></code>. And in some
-cases there might be more than one categories e.g. <code class="docutils literal"><span class="pre">Terrier</span></code>
-could also be a <code class="docutils literal"><span class="pre">pet</span></code>.</p>
+is <code class="docutils literal notranslate"><span class="pre">Terrier</span></code> the category is likely <code class="docutils literal notranslate"><span class="pre">dog</span></code>. And in some
+cases there might be more than one categories e.g. <code class="docutils literal notranslate"><span class="pre">Terrier</span></code>
+could also be a <code class="docutils literal notranslate"><span class="pre">pet</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -324,7 +440,7 @@ could also be a <code class="docutils literal"><span class="pre">pet</span></cod
 <code class="descname">label_detection_mode</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.LabelDetectionConfig.label_detection_mode" title="Permalink to this definition">#</a></dt>
 <dd><p>What labels should be detected with LABEL_DETECTION, in
 addition to video-level labels or segment-level labels. If
-unspecified, defaults to <code class="docutils literal"><span class="pre">SHOT_MODE</span></code>.</p>
+unspecified, defaults to <code class="docutils literal notranslate"><span class="pre">SHOT_MODE</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -333,7 +449,7 @@ unspecified, defaults to <code class="docutils literal"><span class="pre">SHOT_M
 <dd><p>Whether the video has been shot from a stationary (i.e. non-
 moving) camera. When set to true, might improve detection
 accuracy for moving objects. Should be used with
-<code class="docutils literal"><span class="pre">SHOT_AND_FRAME_MODE</span></code> enabled.</p>
+<code class="docutils literal notranslate"><span class="pre">SHOT_AND_FRAME_MODE</span></code> enabled.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -383,6 +499,31 @@ corresponding to the video frame for this location.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.NormalizedBoundingBox">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">NormalizedBoundingBox</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.NormalizedBoundingBox" title="Permalink to this definition">#</a></dt>
 <dd><p>Normalized bounding box. The normalized vertex coordinates are relative
@@ -414,6 +555,31 @@ to the original image. Range: [0, 1].</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1beta2.types.ShotChangeDetectionConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">ShotChangeDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.ShotChangeDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SHOT_CHANGE_DETECTION.</p>
@@ -423,6 +589,36 @@ to the original image. Range: [0, 1].</p>
 <dd><p>Model to use for shot change detection. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1beta2.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.videointelligence_v1beta2.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -511,7 +707,7 @@ face.</p>
 <dt id="google.cloud.videointelligence_v1beta2.types.VideoAnnotationResults.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, indicates an error. Note that for a single
-<code class="docutils literal"><span class="pre">AnnotateVideoRequest</span></code> some videos may succeed and some may
+<code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code> some videos may succeed and some may
 fail.</p>
 </dd></dl>
 
@@ -603,7 +799,7 @@ corresponding to the end of the segment (inclusive).</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -611,6 +807,7 @@ corresponding to the end of the segment (inclusive).</p>
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -647,12 +844,14 @@ corresponding to the end of the segment (inclusive).</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -663,7 +862,7 @@ corresponding to the end of the segment (inclusive).</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

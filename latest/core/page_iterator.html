@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Page Iterators &#8212; google-cloud 9de1026 documentation</title>
+    <title>Page Iterators &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -49,23 +40,23 @@ where the request takes a page token and the response is a list of results with
 a token for the next page. See <a class="reference external" href="https://cloud.google.com/apis/design/design_patterns#list_pagination">list pagination</a> in the Google API Style Guide
 for more details.</p>
 <p>API clients that have methods that follow the list pagination pattern can
-return an <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a>. You can use this iterator to get <strong>all</strong> of
+return an <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>. You can use this iterator to get <strong>all</strong> of
 the results across all pages:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_resources</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_resources</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">results_iterator</span><span class="p">)</span>  <span class="c1"># Convert to a list (consumes all values).</span>
 </pre></div>
 </div>
 <p>Or you can walk your way through items and call off the search early if
 you find what you’re looking for (resulting in possibly fewer requests):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">resource</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">break</span>
 </pre></div>
 </div>
 <p>At any point, you may check the number of items consumed by referencing the
-<code class="docutils literal"><span class="pre">num_results</span></code> property of the iterator:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">my_item</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="p">:</span>
+<code class="docutils literal notranslate"><span class="pre">num_results</span></code> property of the iterator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">my_item</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">results_iterator</span><span class="o">.</span><span class="n">num_results</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">break</span>
 </pre></div>
@@ -73,7 +64,7 @@ you find what you’re looking for (resulting in possibly fewer requests):</p>
 <p>When iterating, not every new item will send a request to the server.
 To iterate based on each page of items (where a page corresponds to
 a request):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">results_iterator</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    Page number: </span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">page_number</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Items in page: </span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">num_items</span><span class="p">))</span>
@@ -95,8 +86,8 @@ a request):</p>
 </pre></div>
 </div>
 <p>Then, for each page you can get all the resources on that page by iterating
-through it or using <code class="xref py py-func docutils literal"><span class="pre">list()</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+through it or using <code class="xref py py-func docutils literal notranslate"><span class="pre">list()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
 <span class="go">[</span>
 <span class="go">    &lt;MyItemClass at 0x7fd64a098ad0&gt;,</span>
 <span class="go">    &lt;MyItemClass at 0x7fd64a098ed0&gt;,</span>
@@ -107,12 +98,12 @@ through it or using <code class="xref py py-func docutils literal"><span class="
 <dl class="class">
 <dt id="google.api_core.page_iterator.GRPCIterator">
 <em class="property">class </em><code class="descclassname">google.api_core.page_iterator.</code><code class="descname">GRPCIterator</code><span class="sig-paren">(</span><em>client</em>, <em>method</em>, <em>request</em>, <em>items_field</em>, <em>item_to_value=&lt;function _item_to_value_identity&gt;</em>, <em>request_token_field='page_token'</em>, <em>response_token_field='next_page_token'</em>, <em>max_results=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/page_iterator.html#GRPCIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.page_iterator.GRPCIterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.page_iterator.Iterator</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.page_iterator.Iterator</span></code></a></p>
 <p>A generic class for iterating through gRPC list responses.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The class does not take a <code class="docutils literal"><span class="pre">page_token</span></code> argument because it can
-just be specified in the <code class="docutils literal"><span class="pre">request</span></code>.</p>
+<p class="last">The class does not take a <code class="docutils literal notranslate"><span class="pre">page_token</span></code> argument because it can
+just be specified in the <code class="docutils literal notranslate"><span class="pre">request</span></code>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -120,13 +111,13 @@ just be specified in the <code class="docutils literal"><span class="pre">reques
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><em>google.cloud.client.Client</em></a>) – The API client. This unused by
-this class, but kept to satisfy the <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> interface.</li>
+this class, but kept to satisfy the <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a> interface.</li>
 <li><strong>method</strong> (<em>Callable</em><em>[</em><em>protobuf.Message</em><em>]</em>) – A bound gRPC method that should
 take a single message for the request.</li>
 <li><strong>request</strong> (<em>protobuf.Message</em>) – The request message.</li>
 <li><strong>items_field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The field in the response message that has the
 items for the page.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><em>GRPCIterator</em></a><em>, </em><em>Any</em><em>]</em>) – Callable to convert an
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><em>GRPCIterator</em></a><em>, </em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an
 item from the type in the JSON response into a native object. Will
 be called with the iterator and a single item.</li>
 <li><strong>request_token_field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The field in the request message used to
@@ -153,9 +144,9 @@ the token for the next page.</li>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/types.html#types.GeneratorType" title="(in Python v3.6)">types.GeneratorType</a>[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">types.GeneratorType[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
 </tr>
 </tbody>
 </table>
@@ -166,11 +157,11 @@ the token for the next page.</li>
 <dl class="class">
 <dt id="google.api_core.page_iterator.HTTPIterator">
 <em class="property">class </em><code class="descclassname">google.api_core.page_iterator.</code><code class="descname">HTTPIterator</code><span class="sig-paren">(</span><em>client</em>, <em>api_request</em>, <em>path</em>, <em>item_to_value</em>, <em>items_key='items'</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em>, <em>page_start=&lt;function _do_nothing_page_start&gt;</em>, <em>next_token='nextPageToken'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/page_iterator.html#HTTPIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.page_iterator.HTTPIterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.page_iterator.Iterator</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.page_iterator.Iterator</span></code></a></p>
 <p>A generic class for iterating through HTTP/JSON API list responses.</p>
 <p>To make an iterator work, you’ll need to provide a way to convert a JSON
 item returned from the API into the object of your choice (via
-<code class="docutils literal"><span class="pre">item_to_value</span></code>). You also may need to specify a custom <code class="docutils literal"><span class="pre">items_key</span></code> so
+<code class="docutils literal notranslate"><span class="pre">item_to_value</span></code>). You also may need to specify a custom <code class="docutils literal notranslate"><span class="pre">items_key</span></code> so
 that a given response (containing a page of results) can be parsed into an
 iterable page of the actual objects you want.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -181,9 +172,9 @@ iterable page of the actual objects you want.</p>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><em>google.cloud.client.Client</em></a>) – The API client.</li>
 <li><strong>api_request</strong> (<em>Callable</em>) – The function to use to make API requests.
 Generally, this will be
-<code class="xref py py-meth docutils literal"><span class="pre">google.cloud._http.JSONConnection.api_request()</span></code>.</li>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud._http.JSONConnection.api_request()</span></code>.</li>
 <li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The method path to query for the list of items.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><em>Any</em><em>]</em>) – Callable to convert an item from the type in the JSON response into
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the JSON response into
 a native object. Will be called with the iterator and a single
 item.</li>
 <li><strong>items_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The key in the API response where the list of items
@@ -196,8 +187,8 @@ API call.</li>
 <li><strong>(</strong><strong>Callable</strong><strong>[</strong> (<em>page_start</em>) – google.api_core.page_iterator.Iterator,
 google.api_core.page_iterator.Page, dict]): Callable to provide
 any special behavior after a new page has been created. Assumed
-signature takes the <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> that started the page,
-the <a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> that was started and the dictionary containing
+signature takes the <a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a> that started the page,
+the <a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a> that was started and the dictionary containing
 the page response.</li>
 <li><strong>next_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the field used in the response for page
 tokens.</li>
@@ -220,9 +211,9 @@ tokens.</li>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/types.html#types.GeneratorType" title="(in Python v3.6)">types.GeneratorType</a>[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">types.GeneratorType[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
 </tr>
 </tbody>
 </table>
@@ -233,7 +224,7 @@ tokens.</li>
 <dl class="class">
 <dt id="google.api_core.page_iterator.Iterator">
 <em class="property">class </em><code class="descclassname">google.api_core.page_iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>client</em>, <em>item_to_value=&lt;function _item_to_value_identity&gt;</em>, <em>page_token=None</em>, <em>max_results=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/page_iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.page_iterator.Iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A generic class for iterating through API list responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -241,7 +232,7 @@ tokens.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><em>google.cloud.client.Client</em></a>) – The API client.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><em>Any</em><em>]</em>) – Callable to convert an item from the type in the raw API response
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
 into the native object. Will be called with the iterator and a
 single item.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A token identifying a page in a result set to start
@@ -266,9 +257,9 @@ fetching results from.</li>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/types.html#types.GeneratorType" title="(in Python v3.6)">types.GeneratorType</a>[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">types.GeneratorType[<a class="reference internal" href="#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
 </tr>
 </tbody>
 </table>
@@ -279,7 +270,7 @@ fetching results from.</li>
 <dl class="class">
 <dt id="google.api_core.page_iterator.Page">
 <em class="property">class </em><code class="descclassname">google.api_core.page_iterator.</code><code class="descname">Page</code><span class="sig-paren">(</span><em>parent</em>, <em>items</em>, <em>item_to_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/page_iterator.html#Page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.page_iterator.Page" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Single page of results in an iterator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -288,9 +279,9 @@ fetching results from.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a>) – The iterator that owns
 the current page.</li>
-<li><strong>items</strong> (<em>Sequence</em><em>[</em><em>Any</em><em>]</em>) – An iterable (that also defines __len__) of items
+<li><strong>items</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – An iterable (that also defines __len__) of items
 from a raw API response.</li>
-<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><em>Any</em><em>]</em>) – Callable to convert an item from the type in the raw API response
+<li><strong>item_to_value</strong> (<em>Callable</em><em>[</em><a class="reference internal" href="#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><em>google.api_core.page_iterator.Iterator</em></a><em>, </em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – Callable to convert an item from the type in the raw API response
 into the native object. Will be called with the iterator and a
 single item.</li>
 </ul>
@@ -346,7 +337,7 @@ single item.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Core Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -369,6 +360,7 @@ single item.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -400,12 +392,14 @@ single item.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -416,7 +410,7 @@ single item.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -68,18 +59,17 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_AbstractQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_query_param_from_api_repr</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">ArrayQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">ScalarQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">StructQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">UDFResource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">EncryptionConfiguration</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_EnumApiResourceProperty</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_ListApiResourceProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedApiResourceProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_int_or_none</span>
@@ -134,48 +124,48 @@
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``compression`` properties.&quot;&quot;&quot;</span>
-    <span class="n">GZIP</span> <span class="o">=</span> <span class="s1">&#39;GZIP&#39;</span>
-    <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;NONE&#39;</span></div>
+    <span class="n">GZIP</span> <span class="o">=</span> <span class="s1">&#39;GZIP&#39;</span></div>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;NONE&#39;</span>
 
 
 <div class="viewcode-block" id="CreateDisposition"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CreateDisposition">[docs]</a><span class="k">class</span> <span class="nc">CreateDisposition</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``create_disposition`` properties.&quot;&quot;&quot;</span>
-    <span class="n">CREATE_IF_NEEDED</span> <span class="o">=</span> <span class="s1">&#39;CREATE_IF_NEEDED&#39;</span>
-    <span class="n">CREATE_NEVER</span> <span class="o">=</span> <span class="s1">&#39;CREATE_NEVER&#39;</span></div>
+    <span class="n">CREATE_IF_NEEDED</span> <span class="o">=</span> <span class="s1">&#39;CREATE_IF_NEEDED&#39;</span></div>
+    <span class="n">CREATE_NEVER</span> <span class="o">=</span> <span class="s1">&#39;CREATE_NEVER&#39;</span>
 
 
 <div class="viewcode-block" id="DestinationFormat"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.DestinationFormat">[docs]</a><span class="k">class</span> <span class="nc">DestinationFormat</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``destination_format`` properties.&quot;&quot;&quot;</span>
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span></div>
+    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span></div>
+    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
 
 
 <div class="viewcode-block" id="Encoding"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.Encoding">[docs]</a><span class="k">class</span> <span class="nc">Encoding</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``encoding`` properties.&quot;&quot;&quot;</span>
-    <span class="n">UTF_8</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span>
-    <span class="n">ISO_8559_1</span> <span class="o">=</span> <span class="s1">&#39;ISO-8559-1&#39;</span></div>
+    <span class="n">UTF_8</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span></div>
+    <span class="n">ISO_8559_1</span> <span class="o">=</span> <span class="s1">&#39;ISO-8559-1&#39;</span>
 
 
 <div class="viewcode-block" id="QueryPriority"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryPriority">[docs]</a><span class="k">class</span> <span class="nc">QueryPriority</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``QueryJob.priority`` property.&quot;&quot;&quot;</span>
-    <span class="n">INTERACTIVE</span> <span class="o">=</span> <span class="s1">&#39;INTERACTIVE&#39;</span>
-    <span class="n">BATCH</span> <span class="o">=</span> <span class="s1">&#39;BATCH&#39;</span></div>
+    <span class="n">INTERACTIVE</span> <span class="o">=</span> <span class="s1">&#39;INTERACTIVE&#39;</span></div>
+    <span class="n">BATCH</span> <span class="o">=</span> <span class="s1">&#39;BATCH&#39;</span>
 
 
 <div class="viewcode-block" id="SourceFormat"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.SourceFormat">[docs]</a><span class="k">class</span> <span class="nc">SourceFormat</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``source_format`` properties.&quot;&quot;&quot;</span>
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">DATASTORE_BACKUP</span> <span class="o">=</span> <span class="s1">&#39;DATASTORE_BACKUP&#39;</span>
-    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span></div>
+    <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span></div>
+    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
 
 
 <div class="viewcode-block" id="WriteDisposition"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.WriteDisposition">[docs]</a><span class="k">class</span> <span class="nc">WriteDisposition</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``write_disposition`` properties.&quot;&quot;&quot;</span>
     <span class="n">WRITE_APPEND</span> <span class="o">=</span> <span class="s1">&#39;WRITE_APPEND&#39;</span>
-    <span class="n">WRITE_TRUNCATE</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
-    <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span></div>
+    <span class="n">WRITE_TRUNCATE</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span></div>
+    <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span>
 
 
 <div class="viewcode-block" id="AutoDetectSchema"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.AutoDetectSchema">[docs]</a><span class="k">class</span> <span class="nc">AutoDetectSchema</span><span class="p">(</span><span class="n">_TypedApiResourceProperty</span><span class="p">):</span>
@@ -185,8 +175,8 @@
 <span class="sd">                        is already defined.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 
 <span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>
@@ -682,6 +672,29 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
+
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">EncryptionConfiguration</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@destination_encryption_configuration</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+
 <div class="viewcode-block" id="LoadJobConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.LoadJobConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of the load job config.</span>
 
@@ -695,8 +708,8 @@
         <span class="c1"># can&#39;t be represented as a JSON number.</span>
         <span class="n">slr</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">slr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">config</span></div>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">config</span>
 
 <div class="viewcode-block" id="LoadJobConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.LoadJobConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -717,8 +730,8 @@
         <span class="n">config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
         <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span>
-        <span class="k">return</span> <span class="n">config</span></div></div>
+            <span class="k">del</span> <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span></div></div>
+        <span class="k">return</span> <span class="n">config</span>
 
 
 <div class="viewcode-block" id="LoadJob"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.LoadJob">[docs]</a><span class="k">class</span> <span class="nc">LoadJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
@@ -855,11 +868,25 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">schema</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
+
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys)</span>
+<span class="sd">        or ``None`` if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">destination_encryption_configuration</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_file_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Count of bytes loaded from source files.</span>
 
 <span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the count (None until set from the server).</span>
+<span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;statistics&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -947,8 +974,8 @@
         <span class="c1"># sourceUris will be absent if this is a file upload.</span>
         <span class="n">source_uris</span> <span class="o">=</span> <span class="n">config_resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceUris&#39;</span><span class="p">)</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">job</span></div></div>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">job</span>
 
 
 <div class="viewcode-block" id="CopyJobConfig"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CopyJobConfig">[docs]</a><span class="k">class</span> <span class="nc">CopyJobConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -973,13 +1000,36 @@
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
+
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">EncryptionConfiguration</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@destination_encryption_configuration</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+
 <div class="viewcode-block" id="CopyJobConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CopyJobConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of the copy job config.</span>
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CopyJobConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CopyJobConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -994,8 +1044,8 @@
 <span class="sd">        :returns: Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">config</span></div></div>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">config</span>
 
 
 <div class="viewcode-block" id="CopyJob"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CopyJob">[docs]</a><span class="k">class</span> <span class="nc">CopyJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
@@ -1043,6 +1093,19 @@
 <span class="sd">        :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">write_disposition</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
+
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        :attr:`google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">destination_encryption_configuration</span>
 
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`begin`.&quot;&quot;&quot;</span>
@@ -1111,8 +1174,8 @@
             <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">job_id</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">job</span></div></div>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">job</span>
 
 
 <div class="viewcode-block" id="ExtractJobConfig"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.ExtractJobConfig">[docs]</a><span class="k">class</span> <span class="nc">ExtractJobConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1153,8 +1216,8 @@
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ExtractJobConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.ExtractJobConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -1169,8 +1232,8 @@
 <span class="sd">        :returns: Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">config</span></div></div>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">config</span>
 
 
 <div class="viewcode-block" id="ExtractJob"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.ExtractJob">[docs]</a><span class="k">class</span> <span class="nc">ExtractJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
@@ -1310,8 +1373,8 @@
 
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">job</span></div></div>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">job</span>
 
 
 <span class="k">def</span> <span class="nf">_from_api_repr_query_parameters</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
@@ -1358,59 +1421,68 @@
 <span class="sd">    server defaults.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_QUERY_PARAMETERS_KEY</span> <span class="o">=</span> <span class="s1">&#39;queryParameters&#39;</span>
-    <span class="n">_UDF_RESOURCES_KEY</span> <span class="o">=</span> <span class="s1">&#39;userDefinedFunctionResources&#39;</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="QueryJobConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJobConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Build an API representation of the copy job config.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">EncryptionConfiguration</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@destination_encryption_configuration</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_repr</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;destinationEncryptionConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_repr</span>
+
+<div class="viewcode-block" id="QueryJobConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJobConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of the query job config.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary in the format used by the BigQuery API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
 
         <span class="c1"># Query parameters have an addition property associated with them</span>
         <span class="c1"># to indicate if the query is using named or positional parameters.</span>
-        <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_QUERY_PARAMETERS_KEY</span><span class="p">)</span>
+        <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queryParameters&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">query_parameters</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">query_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">query_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;POSITIONAL&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NAMED&#39;</span>
-
-        <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">convert</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NESTED_PROPERTIES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">to_resource</span> <span class="o">=</span> <span class="n">convert</span>
-            <span class="n">nested_resource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">nested_resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">resource</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_resource</span><span class="p">(</span><span class="n">nested_resource</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">resource</span></div>
+</div>
+        <span class="k">return</span> <span class="n">resource</span>
 
 <div class="viewcode-block" id="QueryJobConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJobConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a job configuration given its API representation</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource:</span>
-<span class="sd">            An extract job configuration in the same representation as is</span>
-<span class="sd">            returned from the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            resource (dict):</span>
+<span class="sd">                A query job configuration in the same representation as is</span>
+<span class="sd">                returned from the API.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.QueryJobConfig`</span>
-<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ~google.cloud.bigquery.job.QueryJobConfig:</span>
+<span class="sd">                Configuration parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">convert</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_NESTED_PROPERTIES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">from_resource</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">convert</span>
-            <span class="n">nested_resource</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">nested_resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_resource</span><span class="p">(</span><span class="n">nested_resource</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">config</span></div>
+</div>
+        <span class="k">return</span> <span class="n">config</span>
 
     <span class="n">allow_large_results</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
         <span class="s1">&#39;allow_large_results&#39;</span><span class="p">,</span> <span class="s1">&#39;allowLargeResults&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -1426,20 +1498,39 @@
 <span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">default_dataset</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;default_dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;defaultDataset&#39;</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;See</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">default_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.dataset.DatasetReference: the default dataset</span>
+<span class="sd">        to use for unqualified table names in the query or ``None`` if not set.</span>
 
-    <span class="n">destination</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;destination&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    google.cloud.bigquery.table.TableReference: table where results are written</span>
+<span class="sd">        See</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaultDataset&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
 
-<span class="sd">    See</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@default_dataset</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">default_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;defaultDataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.TableReference: table where results are</span>
+<span class="sd">        written or ``None`` if not set.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@destination</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
 
     <span class="n">dry_run</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span><span class="s1">&#39;dry_run&#39;</span><span class="p">,</span> <span class="s1">&#39;dryRun&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1461,39 +1552,60 @@
 <span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">maximum_bytes_billed</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;maximum_bytes_billed&#39;</span><span class="p">,</span> <span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;See</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maximum_bytes_billed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;int: Maximum bytes to be billed for this job or ``None`` if not set.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@maximum_bytes_billed</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">maximum_bytes_billed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="n">priority</span> <span class="o">=</span> <span class="n">QueryPriority</span><span class="p">(</span><span class="s1">&#39;priority&#39;</span><span class="p">,</span> <span class="s1">&#39;priority&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See</span>
 <span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;query_parameters&#39;</span><span class="p">,</span> <span class="n">_QUERY_PARAMETERS_KEY</span><span class="p">,</span> <span class="n">_AbstractQueryParameter</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A list of</span>
-<span class="sd">    :class:`google.cloud.bigquery.ArrayQueryParameter`,</span>
-<span class="sd">    :class:`google.cloud.bigquery.ScalarQueryParameter`, or</span>
-<span class="sd">    :class:`google.cloud.bigquery.StructQueryParameter`</span>
-<span class="sd">    (empty by default)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">query_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List[Union[google.cloud.bigquery.query.ArrayQueryParameter, \</span>
+<span class="sd">        google.cloud.bigquery.query.ScalarQueryParameter, \</span>
+<span class="sd">        google.cloud.bigquery.query.StructQueryParameter]]: list of parameters</span>
+<span class="sd">        for parameterized query (empty by default)</span>
 
-<span class="sd">    See:</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        See:</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queryParameters&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="n">_from_api_repr_query_parameters</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
 
-    <span class="n">udf_resources</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;udf_resources&#39;</span><span class="p">,</span> <span class="n">_UDF_RESOURCES_KEY</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A list of :class:`google.cloud.bigquery.UDFResource` (empty</span>
-<span class="sd">    by default)</span>
+    <span class="nd">@query_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">query_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;queryParameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_api_repr_query_parameters</span><span class="p">(</span>
+            <span class="n">values</span><span class="p">)</span>
 
-<span class="sd">    See:</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">udf_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.query.UDFResource]: user</span>
+<span class="sd">        defined function resources (empty by default)</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;userDefinedFunctionResources&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="n">_from_api_repr_udf_resources</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+    <span class="nd">@udf_resources</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">udf_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;userDefinedFunctionResources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_to_api_repr_udf_resources</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
 
     <span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
         <span class="s1">&#39;use_legacy_sql&#39;</span><span class="p">,</span> <span class="s1">&#39;useLegacySql&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -1513,32 +1625,25 @@
 <span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">table_definitions</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
-        <span class="s1">&#39;table_definitions&#39;</span><span class="p">,</span> <span class="s1">&#39;tableDefinitions&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Definitions for external tables. A dictionary from table names (strings)</span>
-<span class="sd">    to :class:`google.cloud.bigquery.ExternalConfig`.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:</span>
+<span class="sd">        Definitions for external tables or ``None`` if not set.</span>
 
-<span class="sd">    See</span>
-<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        See</span>
+<span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableDefinitions&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">_from_api_repr_table_defs</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
 
-    <span class="n">_maximum_billing_tier</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nd">@table_definitions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">table_definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableDefinitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_api_repr_table_defs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="n">_maximum_billing_tier</span> <span class="o">=</span> <span class="kc">None</span></div>
     <span class="n">_maximum_bytes_billed</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="n">_NESTED_PROPERTIES</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;defaultDataset&#39;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">DatasetReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">),</span>
-        <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">TableReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">,</span> <span class="n">TableReference</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">),</span>
-        <span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
-        <span class="s1">&#39;tableDefinitions&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">_from_api_repr_table_defs</span><span class="p">,</span>
-                             <span class="n">_to_api_repr_table_defs</span><span class="p">),</span>
-        <span class="n">_QUERY_PARAMETERS_KEY</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">_from_api_repr_query_parameters</span><span class="p">,</span> <span class="n">_to_api_repr_query_parameters</span><span class="p">),</span>
-        <span class="n">_UDF_RESOURCES_KEY</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">_from_api_repr_udf_resources</span><span class="p">,</span> <span class="n">_to_api_repr_udf_resources</span><span class="p">),</span>
-    <span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="QueryJob"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJob">[docs]</a><span class="k">class</span> <span class="nc">QueryJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
@@ -1601,6 +1706,19 @@
 <span class="sd">        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">destination</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">destination_encryption_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.cloud.bigquery.table.EncryptionConfiguration: Custom</span>
+<span class="sd">        encryption configuration for the destination table.</span>
+
+<span class="sd">        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``</span>
+<span class="sd">        if using default encryption.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">destination_encryption_configuration</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dry_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1746,8 +1864,8 @@
         <span class="n">job_id</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">job</span></div>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">job</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">query_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1943,8 +2061,8 @@
             <span class="c1"># correctly populated.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_DONE_STATE</span></div>
+</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_DONE_STATE</span>
 
     <span class="k">def</span> <span class="nf">_blocking_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_done_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
@@ -1981,8 +2099,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">schema</span>
         <span class="n">dest_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">dest_table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span>
-                                      <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">dest_table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span></div>
+                                      <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
 
 <div class="viewcode-block" id="QueryJob.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJob.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a pandas DataFrame from a QueryJob</span>
@@ -1994,11 +2112,11 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If the `pandas` library cannot be imported.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">())</span></div>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="QueryPlanEntryStep"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryPlanEntryStep">[docs]</a><span class="k">class</span> <span class="nc">QueryPlanEntryStep</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -2026,13 +2144,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">kind</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kind&#39;</span><span class="p">),</span>
-            <span class="n">substeps</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;substeps&#39;</span><span class="p">,</span> <span class="p">()),</span>
-        <span class="p">)</span></div>
+            <span class="n">substeps</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;substeps&#39;</span><span class="p">,</span> <span class="p">()),</span></div>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">kind</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">substeps</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">substeps</span></div>
+            <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">kind</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">substeps</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">substeps</span>
 
 
 <div class="viewcode-block" id="QueryPlanEntry"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryPlanEntry">[docs]</a><span class="k">class</span> <span class="nc">QueryPlanEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -2143,8 +2261,8 @@
             <span class="n">records_written</span><span class="o">=</span><span class="n">records_written</span><span class="p">,</span>
             <span class="n">status</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">),</span>
             <span class="n">steps</span><span class="o">=</span><span class="p">[</span><span class="n">QueryPlanEntryStep</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
-                   <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="p">())],</span>
-        <span class="p">)</span></div></div>
+                   <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="p">())],</span></div></div>
+        <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -2172,7 +2290,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -2180,6 +2298,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -2209,12 +2328,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -2225,7 +2346,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

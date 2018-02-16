@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore &#8212; google-cloud 9de1026 documentation</title>
+    <title>Datastore &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -49,7 +40,7 @@
 <span id="modules"></span><h2>Modules<a class="headerlink" href="#module-google.cloud.datastore" title="Permalink to this headline">#</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You’ll typically use these to get started with the API:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
@@ -64,32 +55,32 @@
 </div>
 <p>The main concepts with this API are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
+<li><a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>
 which represents a project (string) and namespace (string) bundled with
 a connection and has convenience methods for constructing objects with that
 project / namespace.</li>
-<li><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
+<li><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a>
 which represents a single entity in the datastore
 (akin to a row in relational database world).</li>
-<li><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>
+<li><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>
 which represents a pointer to a particular entity in the datastore
 (akin to a unique identifier in relational database world).</li>
-<li><a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+<li><a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a>
 which represents a lookup or search over the rows in the datastore.</li>
-<li><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>
+<li><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code></a>
 which represents an all-or-none transaction and enables consistency
 when race conditions may occur.</li>
 </ul>
 <dl class="class">
 <dt id="google.cloud.datastore.Batch">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Batch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>An abstraction representing a collected group of updates / deletes.</p>
 <p>Used to build up a bulk mutation.</p>
-<p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
-operations and the <code class="docutils literal"><span class="pre">delete</span></code> operation into the same mutation, and send
+<p>For example, the following snippet of code will put the two <code class="docutils literal notranslate"><span class="pre">save</span></code>
+operations and the <code class="docutils literal notranslate"><span class="pre">delete</span></code> operation into the same mutation, and send
 them to the server in a single API request:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
@@ -99,16 +90,16 @@ them to the server in a single API request:</p>
 </pre></div>
 </div>
 <p>You can also use a batch as a context manager, in which case
-<a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> will be called automatically if its block exits without
+<a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a> will be called automatically if its block exits without
 raising an exception:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">batch</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity2</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, no updates will be sent if the block exits with an error:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">batch</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span>  <span class="c1"># rolls back</span>
 </pre></div>
@@ -117,7 +108,7 @@ raising an exception:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -128,12 +119,12 @@ raising an exception:</p>
 <p>This method is called automatically when entering a with
 statement, however it can be called explicitly if you don’t want
 to use a context manager.</p>
-<p>Overridden by <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
+<p>Overridden by <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch has already begun.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if the batch has already begun.</td>
 </tr>
 </tbody>
 </table>
@@ -150,7 +141,7 @@ context manager.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the batch is not
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the batch is not
 in progress.</td>
 </tr>
 </tbody>
@@ -166,16 +157,16 @@ in progress.</td>
 <dl class="method">
 <dt id="google.cloud.datastore.Batch.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/batch.html#Batch.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Batch.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember a key to be deleted during <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<dd><p>Remember a key to be deleted during <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – the key to be deleted.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – the key to be deleted.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the batch is not in
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the batch is not in
 progress, if key is not complete, or if the key’s
-<code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
+<code class="docutils literal notranslate"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -186,8 +177,8 @@ progress, if key is not complete, or if the key’s
 <code class="descname">mutations</code><a class="headerlink" href="#google.cloud.datastore.Batch.mutations" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the changes accumulated by this batch.</p>
 <p>Every batch is committed with a single commit request containing all
-the work to be done as mutations. Inside a batch, calling <a class="reference internal" href="#google.cloud.datastore.Batch.put" title="google.cloud.datastore.Batch.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a>
-with an entity, or <a class="reference internal" href="#google.cloud.datastore.Batch.delete" title="google.cloud.datastore.Batch.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> with a key, builds up the request by
+the work to be done as mutations. Inside a batch, calling <a class="reference internal" href="#google.cloud.datastore.Batch.put" title="google.cloud.datastore.Batch.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a>
+with an entity, or <a class="reference internal" href="#google.cloud.datastore.Batch.delete" title="google.cloud.datastore.Batch.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> with a key, builds up the request by
 adding a new mutation. This getter returns the protobuf that has been
 built-up so far.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -196,7 +187,7 @@ built-up so far.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">iterable</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of <code class="xref py py-class docutils literal"><span class="pre">datastore_pb2.Mutation</span></code>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of <code class="xref py py-class docutils literal notranslate"><span class="pre">datastore_pb2.Mutation</span></code>
 protobufs to be sent in the commit request.</td>
 </tr>
 </tbody>
@@ -211,7 +202,7 @@ protobufs to be sent in the commit request.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace in which the batch will run.</td>
 </tr>
@@ -227,7 +218,7 @@ protobufs to be sent in the commit request.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project in which the batch will run.</td>
 </tr>
@@ -238,7 +229,7 @@ protobufs to be sent in the commit request.</td>
 <dl class="method">
 <dt id="google.cloud.datastore.Batch.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/batch.html#Batch.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Batch.put" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember an entity’s state to be saved during <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<dd><p>Remember an entity’s state to be saved during <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Any existing properties for the entity will be replaced by those
@@ -252,19 +243,19 @@ the datastore.</p>
 Python3) map to ‘string_value’ in the datastore;  values which are
 “bytes” (‘str’ in Python2, ‘bytes’ in Python3) map to ‘blob_value’.</p>
 </div>
-<p>When an entity has a partial key, calling <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> sends it as
-an <code class="docutils literal"><span class="pre">insert</span></code> mutation and the key is completed. On return,
-the key for the <code class="docutils literal"><span class="pre">entity</span></code> passed in is updated to match the key ID
+<p>When an entity has a partial key, calling <a class="reference internal" href="#google.cloud.datastore.Batch.commit" title="google.cloud.datastore.Batch.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a> sends it as
+an <code class="docutils literal notranslate"><span class="pre">insert</span></code> mutation and the key is completed. On return,
+the key for the <code class="docutils literal notranslate"><span class="pre">entity</span></code> passed in is updated to match the key ID
 assigned by the server.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – the entity to be saved.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – the entity to be saved.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the batch is not in
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the batch is not in
 progress, if entity has no key assigned, or if the key’s
-<code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
+<code class="docutils literal notranslate"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -275,12 +266,12 @@ progress, if entity has no key assigned, or if the key’s
 <code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/batch.html#Batch.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Batch.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Rolls back the current batch.</p>
 <p>Marks the batch as aborted (can’t be used again).</p>
-<p>Overridden by <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
+<p>Overridden by <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the batch is not
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the batch is not
 in progress.</td>
 </tr>
 </tbody>
@@ -292,9 +283,9 @@ in progress.</td>
 <dl class="class">
 <dt id="google.cloud.datastore.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>namespace=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>_use_grpc=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Convenience wrapper for invoking APIs/factories w/ a project.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -305,20 +296,20 @@ in progress.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The project to pass to proxied API methods.</li>
 <li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) namespace to pass to proxied API methods.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
-client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal notranslate"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
-that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
-<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
-<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal notranslate"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
+<code class="docutils literal notranslate"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal notranslate"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
 <li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
-falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
+falls back to the <code class="docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable.
 This parameter should be considered private, and could
 change in the future.</li>
@@ -342,19 +333,19 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>incomplete_key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Partial key to use as base for allocated IDs.</li>
+<li><strong>incomplete_key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Partial key to use as base for allocated IDs.</li>
 <li><strong>num_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of IDs to allocate.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The (complete) keys allocated with <code class="docutils literal"><span class="pre">incomplete_key</span></code> as
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The (complete) keys allocated with <code class="docutils literal notranslate"><span class="pre">incomplete_key</span></code> as
 root.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">incomplete_key</span></code> is not a
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">incomplete_key</span></code> is not a
 partial key.</p>
 </td>
 </tr>
@@ -365,7 +356,7 @@ partial key.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.Client.batch">
 <code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client.batch" title="Permalink to this definition">#</a></dt>
-<dd><p>Proxy to <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a>.</p>
+<dd><p>Proxy to <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -376,8 +367,8 @@ partial key.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a>, or an object
-implementing its API, or <code class="docutils literal"><span class="pre">NoneType</span></code> (if no batch is active).</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a>, or an object
+implementing its API, or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> (if no batch is active).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The batch/transaction at the top of the batch stack.</td>
 </tr>
@@ -393,8 +384,8 @@ implementing its API, or <code class="docutils literal"><span class="pre">NoneTy
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>, or an
-object implementing its API, or <code class="docutils literal"><span class="pre">NoneType</span></code> (if no transaction
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>, or an
+object implementing its API, or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> (if no transaction
 is active).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The transaction at the top of the batch stack.</td>
@@ -409,7 +400,7 @@ is active).</td>
 <dd><p>Delete the key in the Cloud Datastore.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.delete_multi" title="google.cloud.datastore.Client.delete_multi"><code class="xref py py-meth docutils literal"><span class="pre">delete_multi()</span></code></a>.
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.delete_multi" title="google.cloud.datastore.Client.delete_multi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_multi()</span></code></a>.
 The backend API does not make a distinction between a single key or
 multiple keys in a commit request.</p>
 </div>
@@ -417,7 +408,7 @@ multiple keys in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be deleted from the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be deleted from the datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +422,7 @@ multiple keys in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keys</strong> (list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be deleted from the Datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keys</strong> (list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be deleted from the Datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +434,7 @@ multiple keys in a commit request.</p>
 <dd><p>Retrieve an entity from a single key (if it exists).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.get_multi" title="google.cloud.datastore.Client.get_multi"><code class="xref py py-meth docutils literal"><span class="pre">get_multi()</span></code></a>.
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.get_multi" title="google.cloud.datastore.Client.get_multi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_multi()</span></code></a>.
 The backend API does not make a distinction between a single key or
 multiple keys in a lookup request.</p>
 </div>
@@ -452,13 +443,13 @@ multiple keys in a lookup request.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be retrieved from the datastore.</li>
+<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be retrieved from the datastore.</li>
 <li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) If a list is passed, the key-only entities
 returned by the backend as “missing” will be copied
 into it.</li>
 <li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) If a list is passed, the keys returned
 by the backend as “deferred” will be copied into it.</li>
-<li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
+<li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
 Setting True will use eventual consistency, but cannot
@@ -466,13 +457,13 @@ be used inside a transaction or will raise ValueError.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entity if it exists.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
 </td>
 </tr>
 </tbody>
@@ -488,14 +479,14 @@ be used inside a transaction or will raise ValueError.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>keys</strong> (list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be retrieved from the datastore.</li>
+<li><strong>keys</strong> (list of <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be retrieved from the datastore.</li>
 <li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) If a list is passed, the key-only entities
 returned by the backend as “missing” will be copied
 into it. If the list is not empty, an error will occur.</li>
 <li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) If a list is passed, the keys returned
 by the backend as “deferred” will be copied into it.
 If the list is not empty, an error will occur.</li>
-<li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
+<li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
 Setting True will use eventual consistency, but cannot
@@ -503,17 +494,17 @@ be used inside a transaction or will raise ValueError.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entities.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a project
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if one or more of <code class="docutils literal notranslate"><span class="pre">keys</span></code> has a project
 which does not match our project.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
 </td>
 </tr>
 </tbody>
@@ -523,8 +514,8 @@ which does not match our project.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.Client.key">
 <code class="descname">key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client.key" title="Permalink to this definition">#</a></dt>
-<dd><p>Proxy to <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
+<dd><p>Proxy to <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>.</p>
+<p>Passes our <code class="docutils literal notranslate"><span class="pre">project</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -533,7 +524,7 @@ which does not match our project.</p>
 <dd><p>Save an entity in the Cloud Datastore.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.put_multi" title="google.cloud.datastore.Client.put_multi"><code class="xref py py-meth docutils literal"><span class="pre">put_multi()</span></code></a>.
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#google.cloud.datastore.Client.put_multi" title="google.cloud.datastore.Client.put_multi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put_multi()</span></code></a>.
 The backend API does not make a distinction between a single
 entity or multiple entities in a commit request.</p>
 </div>
@@ -541,7 +532,7 @@ entity or multiple entities in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entity to be saved to the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entity to be saved to the datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -555,9 +546,9 @@ entity or multiple entities in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entities</strong> (list of <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entities to be saved to the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entities</strong> (list of <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entities to be saved to the datastore.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">entities</span></code> is a single entity.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">entities</span></code> is a single entity.</td>
 </tr>
 </tbody>
 </table>
@@ -566,26 +557,26 @@ entity or multiple entities in a commit request.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.Client.query">
 <code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client.query" title="Permalink to this definition">#</a></dt>
-<dd><p>Proxy to <a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
+<dd><p>Proxy to <a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.query.Query</span></code></a>.</p>
+<p>Passes our <code class="docutils literal notranslate"><span class="pre">project</span></code>.</p>
 <p>Using query to search a datastore:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;MyKind&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;MyKind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;property&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using the query iterator</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">query_iter</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">do_something</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or manually page through results</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">start_cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">start_cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pages</span> <span class="o">=</span> <span class="n">query_iter</span><span class="o">.</span><span class="n">pages</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page_entities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -594,9 +585,9 @@ entity or multiple entities in a commit request.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Parameters for initializing and instance of
-<a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>.</td>
+<a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A query object.</td>
 </tr>
@@ -607,7 +598,7 @@ entity or multiple entities in a commit request.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.Client.transaction">
 <code class="descname">transaction</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client.transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Proxy to <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
+<dd><p>Proxy to <a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -623,11 +614,11 @@ entity or multiple entities in a commit request.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.Entity">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>key=None</em>, <em>exclude_from_indexes=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Entity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Entities are akin to rows in a relational database</p>
 <p>An entity storing the actual instance of data.</p>
 <p>Each entity is officially represented with a
-<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>, however it is possible that
+<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>, however it is possible that
 you might create an entity with only a partial key (that is, a key
 with a kind, and possibly a parent, but without an ID).  In such a
 case, the datastore service will automatically assign an ID to the
@@ -637,46 +628,46 @@ allow you to delete or persist the data stored on the entity.</p>
 <p>Entities are mutable and act like a subclass of a dictionary.
 This means you could take an existing entity and change the key
 to duplicate the object.</p>
-<p>Use <a class="reference internal" href="client.html#google.cloud.datastore.client.Client.get" title="google.cloud.datastore.client.Client.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> to retrieve an
+<p>Use <a class="reference internal" href="client.html#google.cloud.datastore.client.Client.get" title="google.cloud.datastore.client.Client.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> to retrieve an
 existing entity:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity(&#39;EntityKind&#39;, 1234) {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 </pre></div>
 </div>
 <p>You can the set values on the entity just like you would on any
 other dictionary.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;JJ&#39;</span>
 </pre></div>
 </div>
 <p>However, not all types are allowed as a value for a Google Cloud Datastore
 entity. The following basic types are supported by the API:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a></li>
-<li><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a> (as well as <code class="xref py py-class docutils literal"><span class="pre">long</span></code> in Python 2)</li>
-<li><code class="docutils literal"><span class="pre">unicode</span></code> (called <code class="docutils literal"><span class="pre">str</span></code> in Python 3)</li>
-<li><code class="docutils literal"><span class="pre">bytes</span></code> (called <code class="docutils literal"><span class="pre">str</span></code> in Python 2)</li>
-<li><a class="reference internal" href="helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal"><span class="pre">GeoPoint</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></li>
+<li><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> (as well as <code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> in Python 2)</li>
+<li><code class="docutils literal notranslate"><span class="pre">unicode</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3)</li>
+<li><code class="docutils literal notranslate"><span class="pre">bytes</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 2)</li>
+<li><a class="reference internal" href="helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoPoint</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a></li>
 </ul>
 <p>In addition, three container types are supported:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a></li>
-<li><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a> (will just be treated like an <code class="docutils literal"><span class="pre">Entity</span></code> without
-a key or <code class="docutils literal"><span class="pre">exclude_from_indexes</span></code>)</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></li>
+<li><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> (will just be treated like an <code class="docutils literal notranslate"><span class="pre">Entity</span></code> without
+a key or <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code>)</li>
 </ul>
 <p>Each entry in a list must be one of the value types (basic or
 container) and each value in an
-<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> must as well. In
-this case an <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> <strong>as a
-container</strong> acts as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a>, but also has the special annotations
-of <code class="docutils literal"><span class="pre">key</span></code> and <code class="docutils literal"><span class="pre">exclude_from_indexes</span></code>.</p>
+<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a> must as well. In
+this case an <a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a> <strong>as a
+container</strong> acts as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, but also has the special annotations
+of <code class="docutils literal notranslate"><span class="pre">key</span></code> and <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code>.</p>
 <p>And you can treat an entity like a regular Python dictionary:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;age&#39;, &#39;name&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 <span class="go">[(&#39;age&#39;, 20), (&#39;name&#39;, &#39;JJ&#39;)]</span>
@@ -685,10 +676,10 @@ of <code class="docutils literal"><span class="pre">key</span></code> and <code 
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When saving an entity to the backend, values which are “text”
-(<code class="docutils literal"><span class="pre">unicode</span></code> in Python2, <code class="docutils literal"><span class="pre">str</span></code> in Python3) will be saved using
+(<code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python2, <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python3) will be saved using
 the ‘text_value’ field, after being encoded to UTF-8.  When
 retrieved from the back-end, such values will be decoded to “text”
-again.  Values which are “bytes” (<code class="docutils literal"><span class="pre">str</span></code> in Python2, <code class="docutils literal"><span class="pre">bytes</span></code> in
+again.  Values which are “bytes” (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python2, <code class="docutils literal notranslate"><span class="pre">bytes</span></code> in
 Python3), will be saved using the ‘blob_value’ field, without
 any decoding / encoding step.</p>
 </div>
@@ -697,7 +688,7 @@ any decoding / encoding step.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Optional key to be set on entity.</li>
+<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Optional key to be set on entity.</li>
 <li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) – Names of fields whose values are not to be
 indexed for this entity.</li>
 </ul>
@@ -717,7 +708,7 @@ indexed for this entity.</li>
 <dd><p>Get the ID of the current entity.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
+<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
 set on the entity.  That means that we’re not storing the ID
 of the entity at all, just the properties and a pointer to a
 Key which knows its ID.</p>
@@ -730,7 +721,7 @@ Key which knows its ID.</p>
 <dd><p>Get the kind of the current entity.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
+<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
 set on the entity.  That means that we’re not storing the kind
 of the entity at all, just the properties and a pointer to a
 Key which knows its Kind.</p>
@@ -742,32 +733,32 @@ Key which knows its Kind.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.Key">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Key" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>An immutable representation of a datastore Key.</p>
 <p>To create a basic key directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
 </pre></div>
 </div>
 <p>Though typical usage comes via the
-<a class="reference internal" href="client.html#google.cloud.datastore.client.Client.key" title="google.cloud.datastore.client.Client.key"><code class="xref py py-meth docutils literal"><span class="pre">key()</span></code></a> factory:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<a class="reference internal" href="client.html#google.cloud.datastore.client.Client.key" title="google.cloud.datastore.client.Client.key"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key()</span></code></a> factory:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a key with a parent:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a partial key:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;), project=...&gt;</span>
 </pre></div>
 </div>
@@ -788,7 +779,7 @@ length) key path.</li>
 <ul class="simple">
 <li>namespace (string): A namespace identifier for the key.</li>
 <li>project (string): The project associated with the key.</li>
-<li>parent (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>): The parent of the key.</li>
+<li>parent (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>): The parent of the key.</li>
 </ul>
 <p>The project argument is required unless it has been set implicitly.</p>
 <dl class="method">
@@ -801,13 +792,13 @@ length) key path.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_or_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>integer</em>) – ID or name to be added to the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">Key</span></code> instance with the same data as the current one
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance with the same data as the current one
 and an extra ID or name added.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the current key is not partial or if
-<code class="docutils literal"><span class="pre">id_or_name</span></code> is not a string or integer.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if the current key is not partial or if
+<code class="docutils literal notranslate"><span class="pre">id_or_name</span></code> is not a string or integer.</td>
 </tr>
 </tbody>
 </table>
@@ -832,11 +823,11 @@ and an extra ID or name added.</td>
 <dl class="classmethod">
 <dt id="google.cloud.datastore.Key.from_legacy_urlsafe">
 <em class="property">classmethod </em><code class="descname">from_legacy_urlsafe</code><span class="sig-paren">(</span><em>urlsafe</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.from_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Key.from_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert urlsafe string to <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>.</p>
+<dd><p>Convert urlsafe string to <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>.</p>
 <p>This is intended to work with the “legacy” representation of a
 datastore “Key” used within Google App Engine (a so-called
-“Reference”). This assumes that <code class="docutils literal"><span class="pre">urlsafe</span></code> was created within an App
-Engine app via something like <code class="docutils literal"><span class="pre">ndb.Key(...).urlsafe()</span></code>.</p>
+“Reference”). This assumes that <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code> was created within an App
+Engine app via something like <code class="docutils literal notranslate"><span class="pre">ndb.Key(...).urlsafe()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -844,9 +835,9 @@ Engine app via something like <code class="docutils literal"><span class="pre">n
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>urlsafe</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em> or </em><em>unicode</em>) – The base64 encoded (ASCII) string corresponding to a
 datastore “Key” / “Reference”.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key corresponding to <code class="docutils literal"><span class="pre">urlsafe</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key corresponding to <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -876,10 +867,10 @@ datastore “Key” / “Reference”.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int (if <code class="docutils literal"><span class="pre">id</span></code>) or string (if <code class="docutils literal"><span class="pre">name</span></code>)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int (if <code class="docutils literal notranslate"><span class="pre">id</span></code>) or string (if <code class="docutils literal notranslate"><span class="pre">name</span></code>)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key’s path if it is either an <code class="docutils literal"><span class="pre">id</span></code>
-or a <code class="docutils literal"><span class="pre">name</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key’s path if it is either an <code class="docutils literal notranslate"><span class="pre">id</span></code>
+or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -895,8 +886,8 @@ or a <code class="docutils literal"><span class="pre">name</span></code>.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if the last element of the key’s path does not have
-an <code class="docutils literal"><span class="pre">id</span></code> or a <code class="docutils literal"><span class="pre">name</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the last element of the key’s path does not have
+an <code class="docutils literal notranslate"><span class="pre">id</span></code> or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -958,11 +949,11 @@ an <code class="docutils literal"><span class="pre">id</span></code> or a <code 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a> or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal"><span class="pre">Key</span></code> instance, whose path consists of all but the
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance, whose path consists of all but the
 last element of current path. If the current key has only
-one path element, returns <code class="docutils literal"><span class="pre">None</span></code>.</td>
+one path element, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -977,7 +968,7 @@ one path element, returns <code class="docutils literal"><span class="pre">None<
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (key) path of the current key.</td>
 </tr>
@@ -1007,13 +998,13 @@ one path element, returns <code class="docutils literal"><span class="pre">None<
 <dd><p>Convert to a base64 encode urlsafe string for App Engine.</p>
 <p>This is intended to work with the “legacy” representation of a
 datastore “Key” used within Google App Engine (a so-called
-“Reference”). The returned string can be used as the <code class="docutils literal"><span class="pre">urlsafe</span></code>
-argument to <code class="docutils literal"><span class="pre">ndb.Key(urlsafe=...)</span></code>. The base64 encoded values
+“Reference”). The returned string can be used as the <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code>
+argument to <code class="docutils literal notranslate"><span class="pre">ndb.Key(urlsafe=...)</span></code>. The base64 encoded values
 will have padding removed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The string returned by <code class="docutils literal"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
-not identical, to the string returned by <code class="docutils literal"><span class="pre">ndb</span></code>. The location
+<p class="last">The string returned by <code class="docutils literal notranslate"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
+not identical, to the string returned by <code class="docutils literal notranslate"><span class="pre">ndb</span></code>. The location
 prefix may need to be specified to obtain identical urlsafe
 keys.</p>
 </div>
@@ -1042,7 +1033,7 @@ unknown.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">entity_pb2.Key</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Key</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the key.</td>
 </tr>
@@ -1055,7 +1046,7 @@ unknown.</td>
 <dl class="class">
 <dt id="google.cloud.datastore.Query">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>client</em>, <em>kind=None</em>, <em>project=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>distinct_on=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Query" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A Query against the Cloud Datastore.</p>
 <p>This class serves as an abstraction for creating a query over data
 stored in the Cloud Datastore.</p>
@@ -1064,24 +1055,24 @@ stored in the Cloud Datastore.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to Datastore.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to Datastore.</li>
 <li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The kind to query.</li>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The project associated with the query.  If not passed, uses
 the client’s value.</li>
 <li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The namespace to which to restrict results.  If not passed,
 uses the client’s value.</li>
-<li><strong>ancestor</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>) – (Optional) key of the ancestor to which this query’s results are
+<li><strong>ancestor</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>) – (Optional) key of the ancestor to which this query’s results are
 restricted.</li>
 <li><strong>filters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Property filters applied by this query. The sequence
-is <code class="docutils literal"><span class="pre">(property_name,</span> <span class="pre">operator,</span> <span class="pre">value)</span></code>.</li>
+is <code class="docutils literal notranslate"><span class="pre">(property_name,</span> <span class="pre">operator,</span> <span class="pre">value)</span></code>.</li>
 <li><strong>projection</strong> (<em>sequence of string</em>) – fields returned as part of query results.</li>
-<li><strong>order</strong> (<em>sequence of string</em>) – field names used to order query results. Prepend <code class="docutils literal"><span class="pre">-</span></code>
+<li><strong>order</strong> (<em>sequence of string</em>) – field names used to order query results. Prepend <code class="docutils literal notranslate"><span class="pre">-</span></code>
 to a field name to sort it in descending order.</li>
 <li><strong>distinct_on</strong> (<em>sequence of string</em>) – field names used to group query results.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if <code class="docutils literal"><span class="pre">project</span></code> is not passed and no implicit
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if <code class="docutils literal notranslate"><span class="pre">project</span></code> is not passed and no implicit
 default is set.</p>
 </td>
 </tr>
@@ -1098,13 +1089,13 @@ default is set.</p>
 <code class="descname">add_filter</code><span class="sig-paren">(</span><em>property_name</em>, <em>operator</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query.add_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Query.add_filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter the query based on a property name, operator and a value.</p>
 <p>Expressions take the form of:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;&lt;property&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;operator&gt;&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;&lt;property&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;operator&gt;&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where property is a property stored on the entity in the datastore
-and operator is one of <code class="docutils literal"><span class="pre">OPERATORS</span></code>
-(ie, <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+and operator is one of <code class="docutils literal notranslate"><span class="pre">OPERATORS</span></code>
+(ie, <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;James&#39;</span><span class="p">)</span>
@@ -1117,16 +1108,16 @@ and operator is one of <code class="docutils literal"><span class="pre">OPERATOR
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A property name.</li>
-<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.</li>
-<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>,
-<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>,
-<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>,
-<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The value to filter on.</li>
+<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – One of <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>,
+<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code>,
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>,
+<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The value to filter on.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">operation</span></code> is not one of the
-specified values, or if a filter names <code class="docutils literal"><span class="pre">'__key__'</span></code> but
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">operation</span></code> is not one of the
+specified values, or if a filter names <code class="docutils literal notranslate"><span class="pre">'__key__'</span></code> but
 passes an invalid value (a key is required).</p>
 </td>
 </tr>
@@ -1142,7 +1133,7 @@ passes an invalid value (a key is required).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a> or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ancestor for the query.</td>
 </tr>
@@ -1171,7 +1162,7 @@ passes an invalid value (a key is required).</p>
 <code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>client=None</em>, <em>eventual=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Query.fetch" title="Permalink to this definition">#</a></dt>
 <dd><p>Execute the Query; return an iterator for the matching entities.</p>
 <p>For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;Sally&#39;</span><span class="p">)</span>
@@ -1190,7 +1181,7 @@ passes an invalid value (a key is required).</p>
 <li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) offset passed through to the iterator.</li>
 <li><strong>start_cursor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) cursor passed through to the iterator.</li>
 <li><strong>end_cursor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) cursor passed through to the iterator.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – (Optional) client used to connect to datastore.
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – (Optional) client used to connect to datastore.
 If not supplied, uses the query’s value.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
 Setting True will use eventual consistency,
@@ -1199,7 +1190,7 @@ will raise ValueError.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The iterator for the query.</p>
@@ -1220,7 +1211,7 @@ will raise ValueError.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The filters set on the query. The sequence is
-<code class="docutils literal"><span class="pre">(property_name,</span> <span class="pre">operator,</span> <span class="pre">value)</span></code>.</td>
+<code class="docutils literal notranslate"><span class="pre">(property_name,</span> <span class="pre">operator,</span> <span class="pre">value)</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -1235,9 +1226,9 @@ will raise ValueError.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to filter on.</li>
-<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.
-Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</li>
+<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to filter on.</li>
+<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) One of <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>.
+Defaults to <code class="docutils literal notranslate"><span class="pre">=</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1275,7 +1266,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)">None</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a> or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the namespace assigned to this query</td>
 </tr>
@@ -1336,27 +1327,27 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
 <dl class="class">
 <dt id="google.cloud.datastore.Transaction">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>client</em>, <em>read_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.batch.Batch</span></code></a></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used to build up a bulk mutation and ensure all
 or none succeed (transactionally).</p>
-<p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
-operations (either <code class="docutils literal"><span class="pre">insert</span></code> or <code class="docutils literal"><span class="pre">upsert</span></code>) into the same
+<p>For example, the following snippet of code will put the two <code class="docutils literal notranslate"><span class="pre">save</span></code>
+operations (either <code class="docutils literal notranslate"><span class="pre">insert</span></code> or <code class="docutils literal notranslate"><span class="pre">upsert</span></code>) into the same
 mutation, and execute those within a transaction:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put_multi</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Because it derives from <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a>,
-<a class="reference internal" href="#google.cloud.datastore.Transaction" title="google.cloud.datastore.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a> also provides <a class="reference internal" href="#google.cloud.datastore.Transaction.put" title="google.cloud.datastore.Transaction.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> and <code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code> methods:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<p>Because it derives from <a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch" title="google.cloud.datastore.batch.Batch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></a>,
+<a class="reference internal" href="#google.cloud.datastore.Transaction" title="google.cloud.datastore.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transaction</span></code></a> also provides <a class="reference internal" href="#google.cloud.datastore.Transaction.put" title="google.cloud.datastore.Transaction.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code> methods:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">entity2</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, the transaction is rolled back if the transaction block
 exits with an error:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="k">raise</span> <span class="n">SomeException</span>  <span class="c1"># rolls back</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -1372,30 +1363,30 @@ by default.</p>
 <div><p>Inside a transaction, automatically assigned IDs for
 entities will not be available at save time!  That means, if you
 try:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p><code class="docutils literal"><span class="pre">entity</span></code> won’t have a complete key until the transaction is
+<p><code class="docutils literal notranslate"><span class="pre">entity</span></code> won’t have a complete key until the transaction is
 committed.</p>
-<p>Once you exit the transaction (or call <a class="reference internal" href="#google.cloud.datastore.Transaction.commit" title="google.cloud.datastore.Transaction.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>), the
+<p>Once you exit the transaction (or call <a class="reference internal" href="#google.cloud.datastore.Transaction.commit" title="google.cloud.datastore.Transaction.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>), the
 automatically generated ID will be assigned to the entity:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<div class="last highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There is no ID on this key.</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There is no ID on this key.</span>
 <span class="gp">...</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There *is* an ID.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">)</span>  <span class="c1"># There *is* an ID.</span>
 <span class="go">False</span>
 </pre></div>
 </div>
 </div>
 <p>If you don’t want to use the context manager you can initialize a
 transaction manually:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Thing&#39;</span><span class="p">))</span>
@@ -1409,7 +1400,7 @@ transaction manually:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – the client used to connect to datastore.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – the client used to connect to datastore.</li>
 <li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – indicates the transaction is read only.</li>
 </ul>
 </td>
@@ -1427,7 +1418,7 @@ to use a context manager.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the transaction has
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the transaction has
 already begun.</td>
 </tr>
 </tbody>
@@ -1460,7 +1451,7 @@ returns None.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a> or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a> or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current transaction (if any are active).</td>
 </tr>
@@ -1490,14 +1481,14 @@ returns None.</p>
 <dd><p>Adds an entity to be committed.</p>
 <p>Ensures the transaction is not marked readonly.
 Please see documentation at
-<a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch.put" title="google.cloud.datastore.batch.Batch.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a></p>
+<a class="reference internal" href="batches.html#google.cloud.datastore.batch.Batch.put" title="google.cloud.datastore.batch.Batch.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>) – the entity to be saved.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a>) – the entity to be saved.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">RuntimeError</span></code></a> if the transaction
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></a> if the transaction
 is marked ReadOnly</td>
 </tr>
 </tbody>
@@ -1545,7 +1536,7 @@ is marked ReadOnly</td>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1553,7 +1544,7 @@ is marked ReadOnly</td>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Datastore</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Datastore Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entities.html">Entities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keys.html">Keys</a></li>
@@ -1564,6 +1555,7 @@ is marked ReadOnly</td>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.datastore">Modules</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -1587,18 +1579,20 @@ is marked ReadOnly</td>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../dataproc/gapic/v1/types.html" title="previous chapter">Types for Google Cloud Dataproc API Client</a></li>
-      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
+      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-datastore</span></code> Releases</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1609,7 +1603,7 @@ is marked ReadOnly</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

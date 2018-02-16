@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Video Intelligence &#8212; google-cloud 9de1026 documentation</title>
+    <title>Video Intelligence &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -54,26 +45,26 @@ relevant information at the video, shot or per frame.</p>
 <div class="section" id="authentication-and-configuration">
 <h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>,
+<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>,
 see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
-like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
+like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
 variable is not present, the project ID from JSON file credentials is used.</p>
 <p>If you are using Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="gapic/v1beta2/api.html#google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient" title="google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient"><code class="xref py py-class docutils literal"><span class="pre">VideoIntelligenceServiceClient</span></code></a>.</p>
+<a class="reference internal" href="gapic/v1beta2/api.html#google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient" title="google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoIntelligenceServiceClient</span></code></a>.</p>
 </li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> explicitly.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> explicitly.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -84,7 +75,7 @@ this will be detected automatically.</p>
 <h2>Annotating a Video<a class="headerlink" href="#annotating-a-video" title="Permalink to this headline">#</a></h2>
 <p>To annotate a video, just determine which annotation features you want, and point
 the API at your video:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_video</span><span class="p">(</span>
@@ -102,17 +93,17 @@ the API at your video:</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>The video intelligence API is currently in beta. While the <code class="docutils literal"><span class="pre">v1beta2</span></code> endpoint
+<p>The video intelligence API is currently in beta. While the <code class="docutils literal notranslate"><span class="pre">v1beta2</span></code> endpoint
 will continue to work for some time, when the GA version comes out, the client
 library will automatically move to it.</p>
 <p>If you wish, you can pin to the beta version explicitly, and it will continue
 to be supported. If so, use the following import statement:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence_v1beta2</span>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence_v1beta2</span>
 </pre></div>
 </div>
 </div>
 <p>This package includes clients for multiple versions of the Natural Language
-API. By default, you will get <code class="docutils literal"><span class="pre">v1beta2</span></code>, the latest beta version. When the GA
+API. By default, you will get <code class="docutils literal notranslate"><span class="pre">v1beta2</span></code>, the latest beta version. When the GA
 version is released, it will become the default (as described in the warning above).</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -120,10 +111,10 @@ version is released, it will become the default (as described in the warning abo
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1beta2/types.html">Video Intelligence Client Types</a></li>
 </ul>
 </div>
-<p>The previous beta release, spelled <code class="docutils literal"><span class="pre">v1beta1</span></code>, is provided to continue to support
+<p>The previous beta release, spelled <code class="docutils literal notranslate"><span class="pre">v1beta1</span></code>, is provided to continue to support
 code previously written against it. In order to use this,
-you will want to import from <code class="docutils literal"><span class="pre">google.cloud.videointelligence_v1beta1</span></code> in lieu of
-<code class="docutils literal"><span class="pre">google.cloud.videointelligence_v1beta1</span></code>.</p>
+you will want to import from <code class="docutils literal notranslate"><span class="pre">google.cloud.videointelligence_v1beta1</span></code> in lieu of
+<code class="docutils literal notranslate"><span class="pre">google.cloud.videointelligence_v1beta1</span></code>.</p>
 <p>An API and type reference is provided the first beta also:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -131,10 +122,10 @@ you will want to import from <code class="docutils literal"><span class="pre">go
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/types.html">Video Intelligence Beta 1 Client Types</a></li>
 </ul>
 </div>
-<p>For a list of all <code class="docutils literal"><span class="pre">google-cloud-videointelligence</span></code> releases:</p>
+<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-videointelligence</span></code> releases:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-videointelligence</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-videointelligence</span></code> Releases</a></li>
 </ul>
 </div>
 </div>
@@ -166,7 +157,7 @@ you will want to import from <code class="docutils literal"><span class="pre">go
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -174,6 +165,7 @@ you will want to import from <code class="docutils literal"><span class="pre">go
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -201,19 +193,21 @@ you will want to import from <code class="docutils literal"><span class="pre">go
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../vision/releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-vision</span></code> Releases</a></li>
+      <li>Previous: <a href="../vision/releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-vision</span></code> Releases</a></li>
       <li>Next: <a href="gapic/v1beta2/api.html" title="next chapter">Video Intelligence Client API</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -224,7 +218,7 @@ you will want to import from <code class="docutils literal"><span class="pre">go
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

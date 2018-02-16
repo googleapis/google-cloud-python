@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Path Templates &#8212; google-cloud 9de1026 documentation</title>
+    <title>Path Templates &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,7 +35,7 @@
   <div class="section" id="module-google.api_core.path_template">
 <span id="path-templates"></span><h1>Path Templates<a class="headerlink" href="#module-google.api_core.path_template" title="Permalink to this headline">#</a></h1>
 <p>Expand and validate URL path templates.</p>
-<p>This module provides the <a class="reference internal" href="#google.api_core.path_template.expand" title="google.api_core.path_template.expand"><code class="xref py py-func docutils literal"><span class="pre">expand()</span></code></a> and <a class="reference internal" href="#google.api_core.path_template.validate" title="google.api_core.path_template.validate"><code class="xref py py-func docutils literal"><span class="pre">validate()</span></code></a> functions for
+<p>This module provides the <a class="reference internal" href="#google.api_core.path_template.expand" title="google.api_core.path_template.expand"><code class="xref py py-func docutils literal notranslate"><span class="pre">expand()</span></code></a> and <a class="reference internal" href="#google.api_core.path_template.validate" title="google.api_core.path_template.validate"><code class="xref py py-func docutils literal notranslate"><span class="pre">validate()</span></code></a> functions for
 interacting with Google-style URL <a class="reference external" href="https://github.com/googleapis/googleapis/blob/57e2d376ac7ef48681554204a3ba78a414f2c533/google/api/http.proto#L212">path templates</a> which are commonly used
 in Google APIs for <a class="reference external" href="https://cloud.google.com/apis/design/resource_names">resource names</a>.</p>
 <dl class="function">
@@ -52,7 +43,7 @@ in Google APIs for <a class="reference external" href="https://cloud.google.com/
 <code class="descclassname">google.api_core.path_template.</code><code class="descname">expand</code><span class="sig-paren">(</span><em>tmpl</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/path_template.html#expand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.path_template.expand" title="Permalink to this definition">#</a></dt>
 <dd><p>Expand a path template with the given variables.</p>
 <p>..code-block:: python</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">expand</span><span class="p">(</span><span class="s1">&#39;users/*/messages/*&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;123&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">expand</span><span class="p">(</span><span class="s1">&#39;users/*/messages/*&#39;</span><span class="p">,</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;123&#39;</span><span class="p">)</span>
 <span class="go">users/me/messages/123</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">expand</span><span class="p">(</span><span class="s1">&#39;/v1/{name=shelves/*/books/*}&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;shelves/1/books/3&#39;</span><span class="p">)</span>
 <span class="go">/v1/shelves/1/books/3</span>
@@ -75,7 +66,7 @@ in Google APIs for <a class="reference external" href="https://cloud.google.com/
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If a positional or named variable is required by the
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If a positional or named variable is required by the
 template but not specified or if an unexpected template expression
 is encountered.</p>
 </td>
@@ -88,7 +79,7 @@ is encountered.</p>
 <dt id="google.api_core.path_template.validate">
 <code class="descclassname">google.api_core.path_template.</code><code class="descname">validate</code><span class="sig-paren">(</span><em>tmpl</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/path_template.html#validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.path_template.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Validate a path against the path template.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;users/*/messages/*&#39;</span><span class="p">,</span> <span class="s1">&#39;users/me/messages/123&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;users/*/messages/*&#39;</span><span class="p">,</span> <span class="s1">&#39;users/me/messages/123&#39;</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;users/*/messages/*&#39;</span><span class="p">,</span> <span class="s1">&#39;users/me/drafts/123&#39;</span><span class="p">)</span>
 <span class="go">False</span>
@@ -146,7 +137,7 @@ is encountered.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Core Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -169,6 +160,7 @@ is encountered.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -200,12 +192,14 @@ is encountered.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -216,7 +210,7 @@ is encountered.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

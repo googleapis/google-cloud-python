@@ -4,27 +4,19 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Speech &#8212; google-cloud 9de1026 documentation</title>
+    <title>Speech &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Speech Client API" href="gapic/api.html" />
+    <link rel="next" title="Speech Client API" href="gapic/v1/api.html" />
     <link rel="prev" title="Spanner Admin Instance Client Types" href="../spanner/gapic/v1/admin_instance_types.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,26 +39,26 @@ The API recognizes over 80 languages and variants, to support your global user
 base.</p>
 <div class="section" id="authentication-and-configuration">
 <h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
-<p><a class="reference internal" href="gapic/api.html#google.cloud.speech_v1.SpeechClient" title="google.cloud.speech_v1.SpeechClient"><code class="xref py py-class docutils literal"><span class="pre">SpeechClient</span></code></a> objects provide a
+<p><a class="reference internal" href="gapic/v1/api.html#google.cloud.speech_v1.SpeechClient" title="google.cloud.speech_v1.SpeechClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeechClient</span></code></a> objects provide a
 means to configure your application. Each instance holds
 an authenticated connection to the Cloud Speech Service.</p>
-<p>For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>, see
+<p>For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>, see
 <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
 <p>Assuming your environment is set up as described in that document,
-create an instance of <a class="reference internal" href="gapic/api.html#google.cloud.speech_v1.SpeechClient" title="google.cloud.speech_v1.SpeechClient"><code class="xref py py-class docutils literal"><span class="pre">SpeechClient</span></code></a>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+create an instance of <a class="reference internal" href="gapic/v1/api.html#google.cloud.speech_v1.SpeechClient" title="google.cloud.speech_v1.SpeechClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeechClient</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="asynchronous-recognition">
 <h2>Asynchronous Recognition<a class="headerlink" href="#asynchronous-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/api.html#google.cloud.speech_v1.SpeechClient.long_running_recognize" title="google.cloud.speech_v1.SpeechClient.long_running_recognize"><code class="xref py py-meth docutils literal"><span class="pre">long_running_recognize()</span></code></a> method
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.speech_v1.SpeechClient.long_running_recognize" title="google.cloud.speech_v1.SpeechClient.long_running_recognize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">long_running_recognize()</span></code></a> method
 sends audio data to the Speech API and initiates a Long Running Operation.</p>
 <p>Using this operation, you can periodically poll for recognition results.
 Use asynchronous requests for audio data of any duration up to 80 minutes.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">Speech Asynchronous Recognize</a></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">long_running_recognize</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">audio</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span>
@@ -93,11 +84,11 @@ Use asynchronous requests for audio data of any duration up to 80 minutes.</p>
 </div>
 <div class="section" id="synchronous-recognition">
 <h2>Synchronous Recognition<a class="headerlink" href="#synchronous-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="gapic/api.html#google.cloud.speech_v1.SpeechClient.recognize" title="google.cloud.speech_v1.SpeechClient.recognize"><code class="xref py py-meth docutils literal"><span class="pre">recognize()</span></code></a> method converts speech
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.speech_v1.SpeechClient.recognize" title="google.cloud.speech_v1.SpeechClient.recognize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">recognize()</span></code></a> method converts speech
 data to text and returns alternative text transcriptions.</p>
-<p>This example uses <code class="docutils literal"><span class="pre">language_code='en-GB'</span></code> to better recognize a dialect from
+<p>This example uses <code class="docutils literal notranslate"><span class="pre">language_code='en-GB'</span></code> to better recognize a dialect from
 Great Britain.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">audio</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span>
@@ -123,7 +114,7 @@ Great Britain.</p>
 </pre></div>
 </div>
 <p>Example of using the profanity filter.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">audio</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span>
@@ -149,7 +140,7 @@ Great Britain.</p>
 <p>Using speech context hints to get better results. This can be used to improve
 the accuracy for specific words and phrases. This can also be used to add new
 words to the vocabulary of the recognizer.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
@@ -178,14 +169,14 @@ words to the vocabulary of the recognizer.</p>
 </div>
 <div class="section" id="streaming-recognition">
 <h2>Streaming Recognition<a class="headerlink" href="#streaming-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">streaming_recognize()</span></code> method converts
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">streaming_recognize()</span></code> method converts
 speech data to possible text alternatives on the fly.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Streaming recognition requests are limited to 1 minute of audio.</p>
 <p class="last">See: <a class="reference external" href="https://cloud.google.com/speech/limits#content">https://cloud.google.com/speech/limits#content</a></p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span>
@@ -216,9 +207,9 @@ speech data to possible text alternatives on the fly.</p>
 until the client closes the output stream or until the maximum time limit has
 been reached.</p>
 <p>If you only want to recognize a single utterance you can set
-<code class="docutils literal"><span class="pre">single_utterance</span></code> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> and only one result will be returned.</p>
+<code class="docutils literal notranslate"><span class="pre">single_utterance</span></code> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> and only one result will be returned.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig">Single Utterance</a></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span>
@@ -252,9 +243,9 @@ been reached.</p>
 <span class="go">confidence: 0.933770477772</span>
 </pre></div>
 </div>
-<p>If <code class="docutils literal"><span class="pre">interim_results</span></code> is set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, interim results
+<p>If <code class="docutils literal notranslate"><span class="pre">interim_results</span></code> is set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>, interim results
 (tentative hypotheses) may be returned as they become available.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span>
@@ -294,17 +285,27 @@ been reached.</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="gapic/api.html">Speech Client API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gapic/types.html">Speech Client Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/api.html">Speech Client API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/types.html">Speech Client Types</a></li>
+</ul>
+</div>
+<p>A new beta release, spelled <code class="docutils literal notranslate"><span class="pre">v1p1beta1</span></code>, is provided to provide for preview
+of upcoming features. In order to use this, you will want to import from
+<code class="docutils literal notranslate"><span class="pre">google.cloud.speech_v1p1beta1</span></code> in lieu of <code class="docutils literal notranslate"><span class="pre">google.cloud.speech</span></code>.</p>
+<p>An API and type reference is provided the first beta also:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1p1beta1/api.html">Speech Client API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1p1beta1/types.html">Speech Client Types</a></li>
 </ul>
 </div>
 </div>
 <div class="section" id="releases">
 <h2>Releases<a class="headerlink" href="#releases" title="Permalink to this headline">#</a></h2>
-<p>For a list of all <code class="docutils literal"><span class="pre">google-cloud-speech</span></code> releases:</p>
+<p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-speech</span></code> releases:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-speech</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-speech</span></code> Releases</a></li>
 </ul>
 </div>
 </div>
@@ -336,7 +337,7 @@ been reached.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -344,6 +345,7 @@ been reached.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -375,18 +377,20 @@ been reached.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../spanner/gapic/v1/admin_instance_types.html" title="previous chapter">Spanner Admin Instance Client Types</a></li>
-      <li>Next: <a href="gapic/api.html" title="next chapter">Speech Client API</a></li>
+      <li>Next: <a href="gapic/v1/api.html" title="next chapter">Speech Client API</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -397,7 +401,7 @@ been reached.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

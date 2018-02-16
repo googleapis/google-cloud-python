@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.grpc_helpers &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.api_core.grpc_helpers &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -149,8 +140,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callable_</span><span class="p">,</span> <span class="n">_STREAM_WRAP_CLASSES</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_wrap_stream_errors</span><span class="p">(</span><span class="n">callable_</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_wrap_unary_errors</span><span class="p">(</span><span class="n">callable_</span><span class="p">)</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">_wrap_unary_errors</span><span class="p">(</span><span class="n">callable_</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="create_channel"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.create_channel">[docs]</a><span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scopes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -178,8 +169,8 @@
 
     <span class="n">request</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">secure_authorized_channel</span><span class="p">(</span>
-        <span class="n">credentials</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">secure_authorized_channel</span><span class="p">(</span></div>
+        <span class="n">credentials</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="n">_MethodCall</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
@@ -334,34 +325,34 @@
 <div class="viewcode-block" id="ChannelStub.unary_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_unary">[docs]</a>    <span class="k">def</span> <span class="nf">unary_unary</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
             <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_unary implementation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_unary implementation.&quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelStub.unary_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_stream">[docs]</a>    <span class="k">def</span> <span class="nf">unary_stream</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
             <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_stream implementation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_stream implementation.&quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelStub.stream_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_unary">[docs]</a>    <span class="k">def</span> <span class="nf">stream_unary</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
             <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_unary implementation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_unary implementation.&quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelStub.stream_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream_stream</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
             <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_stream implementation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_stream implementation.&quot;&quot;&quot;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelStub.subscribe"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">try_to_connect</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.subscribe implementation.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.subscribe implementation.&quot;&quot;&quot;</span></div>
+        <span class="k">pass</span>
 
 <div class="viewcode-block" id="ChannelStub.unsubscribe"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unsubscribe">[docs]</a>    <span class="k">def</span> <span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;grpc.Channel.unsubscribe implementation.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div></div>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unsubscribe implementation.&quot;&quot;&quot;</span></div></div>
+        <span class="k">pass</span>
 </pre></div>
 
           </div>
@@ -389,7 +380,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -397,6 +388,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -426,12 +418,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -442,7 +436,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

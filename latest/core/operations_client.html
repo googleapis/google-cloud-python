@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Long-Running Operations Client &#8212; google-cloud 9de1026 documentation</title>
+    <title>Long-Running Operations Client &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,7 +38,7 @@
 <dl class="class">
 <dt id="google.api_core.operations_v1.OperationsClient">
 <em class="property">class </em><code class="descclassname">google.api_core.operations_v1.</code><code class="descname">OperationsClient</code><span class="sig-paren">(</span><em>channel, client_config={'interfaces': {'google.longrunning.Operations': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 60000, 'initial_rpc_timeout_millis': 20000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 600000, 'total_timeout_millis': 600000}}, 'methods': {'GetOperation': {'timeout_millis': 60000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListOperations': {'timeout_millis': 60000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CancelOperation': {'timeout_millis': 60000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteOperation': {'timeout_millis': 60000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}}}}}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operations_v1/operations_client.html#OperationsClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operations_v1.OperationsClient" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Client for interacting with long-running operations within a service.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -55,7 +46,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – The gRPC channel associated with the service
-that implements the <code class="docutils literal"><span class="pre">google.longrunning.operations</span></code> interface.</li>
+that implements the <code class="docutils literal notranslate"><span class="pre">google.longrunning.operations</span></code> interface.</li>
 <li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of call options for each method. If not specified
 the default configuration is used.</li>
 </ul>
@@ -68,15 +59,15 @@ the default configuration is used.</li>
 <code class="descname">cancel_operation</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operations_v1/operations_client.html#OperationsClient.cancel_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operations_v1.OperationsClient.cancel_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Starts asynchronous cancellation on a long-running operation.</p>
 <p>The server makes a best effort to cancel the operation, but success is
-not guaranteed. Clients can use <a class="reference internal" href="#google.api_core.operations_v1.OperationsClient.get_operation" title="google.api_core.operations_v1.OperationsClient.get_operation"><code class="xref py py-meth docutils literal"><span class="pre">get_operation()</span></code></a> or service-
+not guaranteed. Clients can use <a class="reference internal" href="#google.api_core.operations_v1.OperationsClient.get_operation" title="google.api_core.operations_v1.OperationsClient.get_operation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_operation()</span></code></a> or service-
 specific methods to check whether the cancellation succeeded or whether
 the operation completed despite cancellation. On successful
 cancellation, the operation is not deleted; instead, it becomes an
-operation with an <code class="docutils literal"><span class="pre">Operation.error</span></code> value with a
-<code class="docutils literal"><span class="pre">google.rpc.Status.code</span></code> of <code class="docutils literal"><span class="pre">1</span></code>, corresponding to
-<code class="docutils literal"><span class="pre">Code.CANCELLED</span></code>.</p>
+operation with an <code class="docutils literal notranslate"><span class="pre">Operation.error</span></code> value with a
+<code class="docutils literal notranslate"><span class="pre">google.rpc.Status.code</span></code> of <code class="docutils literal notranslate"><span class="pre">1</span></code>, corresponding to
+<code class="docutils literal notranslate"><span class="pre">Code.CANCELLED</span></code>.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">cancel_operation</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -90,24 +81,24 @@ operation with an <code class="docutils literal"><span class="pre">Operation.err
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the operation resource to be cancelled.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry strategy to use
 when invoking the RPC. If unspecified, the default retry from
-the client configuration will be used. If <code class="docutils literal"><span class="pre">None</span></code>, then this
+the client configuration will be used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then this
 method will not retry the RPC at all.</li>
 <li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The amount of time in seconds to wait for the RPC
-to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is used, this timeout
+to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is used, this timeout
 applies to each individual attempt and the overall time it
 takes for this method to complete may be longer. If
 unspecified, the the default timeout in the client
-configuration is used. If <code class="docutils literal"><span class="pre">None</span></code>, then the RPC method will
+configuration is used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the RPC method will
 not time out.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
 does not support this method. Services are not required to
 implement this method.</li>
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
-while invoking the RPC, the appropriate <code class="docutils literal"><span class="pre">GoogleAPICallError</span></code>
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
+while invoking the RPC, the appropriate <code class="docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code>
 subclass will be raised.</li>
 </ul>
 </td>
@@ -123,7 +114,7 @@ subclass will be raised.</li>
 <p>This method indicates that the client is no longer interested in the
 operation result. It does not cancel the operation.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span><span class="o">.</span><span class="n">delete_operation</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -137,24 +128,24 @@ operation result. It does not cancel the operation.</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the operation resource to be deleted.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry strategy to use
 when invoking the RPC. If unspecified, the default retry from
-the client configuration will be used. If <code class="docutils literal"><span class="pre">None</span></code>, then this
+the client configuration will be used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then this
 method will not retry the RPC at all.</li>
 <li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The amount of time in seconds to wait for the RPC
-to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is used, this timeout
+to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is used, this timeout
 applies to each individual attempt and the overall time it
 takes for this method to complete may be longer. If
 unspecified, the the default timeout in the client
-configuration is used. If <code class="docutils literal"><span class="pre">None</span></code>, then the RPC method will
+configuration is used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the RPC method will
 not time out.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
 does not support this method. Services are not required to
 implement this method.</li>
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
-while invoking the RPC, the appropriate <code class="docutils literal"><span class="pre">GoogleAPICallError</span></code>
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
+while invoking the RPC, the appropriate <code class="docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code>
 subclass will be raised.</li>
 </ul>
 </td>
@@ -170,7 +161,7 @@ subclass will be raised.</li>
 <p>Clients can use this method to poll the operation result at intervals
 as recommended by the API service.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_operation</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -184,14 +175,14 @@ as recommended by the API service.</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the operation resource.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry strategy to use
 when invoking the RPC. If unspecified, the default retry from
-the client configuration will be used. If <code class="docutils literal"><span class="pre">None</span></code>, then this
+the client configuration will be used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then this
 method will not retry the RPC at all.</li>
 <li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The amount of time in seconds to wait for the RPC
-to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is used, this timeout
+to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is used, this timeout
 applies to each individual attempt and the overall time it
 takes for this method to complete may be longer. If
 unspecified, the the default timeout in the client
-configuration is used. If <code class="docutils literal"><span class="pre">None</span></code>, then the RPC method will
+configuration is used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the RPC method will
 not time out.</li>
 </ul>
 </td>
@@ -207,8 +198,8 @@ not time out.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">google.longrunning.operations_pb2.Operation</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
-while invoking the RPC, the appropriate <code class="docutils literal"><span class="pre">GoogleAPICallError</span></code>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
+while invoking the RPC, the appropriate <code class="docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code>
 subclass will be raised.</p>
 </td>
 </tr>
@@ -221,7 +212,7 @@ subclass will be raised.</p>
 <code class="descname">list_operations</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operations_v1/operations_client.html#OperationsClient.list_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operations_v1.OperationsClient.list_operations" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists operations that match the specified filter in the request.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -247,21 +238,21 @@ subclass will be raised.</p>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The standard list filter.</li>
 <li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry strategy to use
 when invoking the RPC. If unspecified, the default retry from
-the client configuration will be used. If <code class="docutils literal"><span class="pre">None</span></code>, then this
+the client configuration will be used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then this
 method will not retry the RPC at all.</li>
 <li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The amount of time in seconds to wait for the RPC
-to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is used, this timeout
+to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is used, this timeout
 applies to each individual attempt and the overall time it
 takes for this method to complete may be longer. If
 unspecified, the the default timeout in the client
-configuration is used. If <code class="docutils literal"><span class="pre">None</span></code>, then the RPC method will
+configuration is used. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the RPC method will
 not time out.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
 <dt>An iterator that yields</dt>
-<dd><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">google.longrunning.operations_pb2.Operation</span></code> instances.</p>
+<dd><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.longrunning.operations_pb2.Operation</span></code> instances.</p>
 </dd>
 </dl>
 </p>
@@ -271,11 +262,11 @@ not time out.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.MethodNotImplemented" title="google.api_core.exceptions.MethodNotImplemented"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.MethodNotImplemented</span></code></a> – If the server
 does not support this method. Services are not required to
 implement this method.</li>
-<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
-while invoking the RPC, the appropriate <code class="docutils literal"><span class="pre">GoogleAPICallError</span></code>
+<li><a class="reference internal" href="exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If an error occurred
+while invoking the RPC, the appropriate <code class="docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code>
 subclass will be raised.</li>
 </ul>
 </td>
@@ -314,7 +305,7 @@ subclass will be raised.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Core Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -337,6 +328,7 @@ subclass will be raised.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -368,12 +360,14 @@ subclass will be raised.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -384,7 +378,7 @@ subclass will be raised.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

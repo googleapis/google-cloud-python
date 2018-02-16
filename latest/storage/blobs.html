@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 9de1026 documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,8 +38,8 @@
 <dl class="class">
 <dt id="google.cloud.storage.blob.Blob">
 <em class="property">class </em><code class="descclassname">google.cloud.storage.blob.</code><code class="descname">Blob</code><span class="sig-paren">(</span><em>name</em>, <em>bucket</em>, <em>chunk_size=None</em>, <em>encryption_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage._helpers._PropertyMixin</span></code></p>
-<p>A wrapper around Cloud Storage’s concept of an <code class="docutils literal"><span class="pre">Object</span></code>.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.storage._helpers._PropertyMixin</span></code></p>
+<p>A wrapper around Cloud Storage’s concept of an <code class="docutils literal notranslate"><span class="pre">Object</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -59,7 +50,7 @@ the object in the bucket. If bytes, will be converted to a
 unicode object. Blob / object names can contain any sequence
 of valid unicode characters, of length 1-1024 bytes when
 UTF-8 encoded.</li>
-<li><strong>bucket</strong> (<a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) – The bucket to which this blob belongs.</li>
+<li><strong>bucket</strong> (<a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) – The bucket to which this blob belongs.</li>
 <li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The size of a chunk of data whenever iterating (1 MB).
 This must be a multiple of 256 KB per the API
 specification.</li>
@@ -81,12 +72,12 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/en
 <code class="descname">cache_control</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.cache_control" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP ‘Cache-Control’ header for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc7234#section-5.2">RFC 7234</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -100,7 +91,7 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/en
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current blob’s chunk size, if it is set.</td>
 </tr>
@@ -123,11 +114,11 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/en
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The component count (in case of a composed object) or
-<code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally. This property
-will not be set on objects not created via <code class="docutils literal"><span class="pre">compose</span></code>.</td>
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally. This property
+will not be set on objects not created via <code class="docutils literal notranslate"><span class="pre">compose</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -137,22 +128,22 @@ will not be set on objects not created via <code class="docutils literal"><span 
 <dt id="google.cloud.storage.blob.Blob.compose">
 <code class="descname">compose</code><span class="sig-paren">(</span><em>sources</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.compose" title="Permalink to this definition">#</a></dt>
 <dd><p>Concatenate source blobs into this one.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sources</strong> (list of <a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>) – blobs whose contents will be composed into this blob.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>sources</strong> (list of <a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blob</span></code></a>) – blobs whose contents will be composed into this blob.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if this blob does not have its
-<a class="reference internal" href="#google.cloud.storage.blob.Blob.content_type" title="google.cloud.storage.blob.Blob.content_type"><code class="xref py py-attr docutils literal"><span class="pre">content_type</span></code></a> set.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> if this blob does not have its
+<a class="reference internal" href="#google.cloud.storage.blob.Blob.content_type" title="google.cloud.storage.blob.Blob.content_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">content_type</span></code></a> set.</p>
 </td>
 </tr>
 </tbody>
@@ -164,12 +155,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">content_disposition</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.content_disposition" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP ‘Content-Disposition’ header for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc7234#section-5.2">RFC 6266</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -180,12 +171,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">content_encoding</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.content_encoding" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP ‘Content-Encoding’ header for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">RFC 7231</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
+<p>If the property is not set locally, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -196,12 +187,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">content_language</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.content_language" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP ‘Content-Language’ header for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/bcp47">BCP47</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -212,12 +203,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">content_type</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.content_type" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP ‘Content-Type’ header for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc2616#section-14.17">RFC 2616</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -228,12 +219,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">crc32c</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.crc32c" title="Permalink to this definition">#</a></dt>
 <dd><p>CRC32C checksum for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+<p>If the property is not set locally, returns <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -254,7 +245,7 @@ access-controlled bucket. For more details, see the
 <p>The content type of the upload will be determined in order
 of precedence:</p>
 <ul class="simple">
-<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>)</li>
 <li>The value stored on the current blob</li>
 <li>The default value (‘application/octet-stream’)</li>
 </ul>
@@ -268,9 +259,9 @@ overwrite any existing contents.</p>
 <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
 API documents for details.</p>
 </div>
-<p>If <code class="xref py py-attr docutils literal"><span class="pre">encryption_key</span></code> is set, the blob will be encrypted with
+<p>If <code class="xref py py-attr docutils literal notranslate"><span class="pre">encryption_key</span></code> is set, the blob will be encrypted with
 a <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">customer-supplied</a> encryption key.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -284,8 +275,8 @@ when creating the session, this should be left blank.</li>
 <li><strong>origin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) If set, the upload can only be completed
 by a user-agent that uploads from the given origin. This
 can be useful when passing the session to a web client.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
@@ -297,7 +288,7 @@ completed by making an HTTP PUT request with the
 file’s contents.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code>
 if the session creation response returns an error status.</p>
 </td>
 </tr>
@@ -309,23 +300,23 @@ if the session creation response returns an error status.</p>
 <dt id="google.cloud.storage.blob.Blob.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from Cloud Storage.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blob</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The blob that was just deleted.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code>
 (propagated from
-<a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket.delete_blob" title="google.cloud.storage.bucket.Bucket.delete_blob"><code class="xref py py-meth docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket.delete_blob()</span></code></a>).</td>
+<a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket.delete_blob" title="google.cloud.storage.bucket.Bucket.delete_blob"><code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud.storage.bucket.Bucket.delete_blob()</span></code></a>).</td>
 </tr>
 </tbody>
 </table>
@@ -335,21 +326,21 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.download_as_string">
 <code class="descname">download_as_string</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob as a string.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this blob.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -361,13 +352,13 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dd><p>Download the contents of this blob into a file-like object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If the server-set property, <a class="reference internal" href="#google.cloud.storage.blob.Blob.media_link" title="google.cloud.storage.blob.Blob.media_link"><code class="xref py py-attr docutils literal"><span class="pre">media_link</span></code></a>, is not yet
+<p class="last">If the server-set property, <a class="reference internal" href="#google.cloud.storage.blob.Blob.media_link" title="google.cloud.storage.blob.Blob.media_link"><code class="xref py py-attr docutils literal notranslate"><span class="pre">media_link</span></code></a>, is not yet
 initialized, makes an additional API request to load it.</p>
 </div>
 <p>Downloading a file that has been encrypted with a <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">customer-supplied</a>
 encryption key:</p>
 <blockquote>
-<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
 <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -379,12 +370,12 @@ encryption key:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The <code class="docutils literal"><span class="pre">encryption_key</span></code> should be a str or bytes with a length of at
+<p>The <code class="docutils literal notranslate"><span class="pre">encryption_key</span></code> should be a str or bytes with a length of at
 least 32.</p>
 <p>For more fine-grained control over the download process, check out
 <a class="reference external" href="https://googlecloudplatform.github.io/google-resumable-media-python/latest/google.resumable_media.requests.html">google-resumable-media</a>. For example, this library allows
 downloading <strong>parts</strong> of a blob rather than the whole thing.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -392,13 +383,13 @@ to that project.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<em>file</em>) – A file handle to which to write the blob’s data.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -409,21 +400,21 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.download_to_filename">
 <code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a named file.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A filename to be passed to <code class="docutils literal notranslate"><span class="pre">open</span></code>.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.exceptions.NotFound</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -439,9 +430,9 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The blob etag or <code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The blob etag or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -451,15 +442,15 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.exists">
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether or not this blob exists.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
 </tr>
@@ -494,23 +485,23 @@ log in.</p>
 <li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>long</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><em>datetime.datetime</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><em>datetime.timedelta</em></a>) – When the signed URL should expire.</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The HTTP verb that will be used when requesting the URL.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The content type of the object
-referenced by <code class="docutils literal"><span class="pre">resource</span></code>.</li>
+referenced by <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</li>
 <li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) A value that indicates which generation
 of the resource to fetch.</li>
 <li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content disposition of
 responses to requests for the signed URL.
 For example, to enable the signed URL
-to initiate a file of <code class="docutils literal"><span class="pre">blog.png</span></code>, use
+to initiate a file of <code class="docutils literal notranslate"><span class="pre">blog.png</span></code>, use
 the value
-<code class="docutils literal"><span class="pre">'attachment;</span> <span class="pre">filename=blob.png'</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">'attachment;</span> <span class="pre">filename=blob.png'</span></code>.</li>
 <li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content type of responses to requests
 for the signed URL. Used to over-ride the content
 type of the underlying blob/object.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – (Optional) The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
-<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) – (Optional) The OAuth2 credentials to use to sign
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – (Optional) The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code>) – (Optional) The OAuth2 credentials to use to sign
 the URL. Defaults to the credentials stored on the
 client used.</li>
 </ul>
@@ -536,9 +527,9 @@ until expiration.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The generation of the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The generation of the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property
 is not set locally.</td>
 </tr>
 </tbody>
@@ -551,20 +542,20 @@ is not set locally.</td>
 <dd><p>Retrieve the IAM policy for the object.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</a></p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current object’s bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current object’s bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the policy instance, based on the resource returned from
-the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
+the <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code> API request.</td>
 </tr>
 </tbody>
 </table>
@@ -579,9 +570,9 @@ the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ID of the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property is not
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ID of the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not
 set locally.</td>
 </tr>
 </tbody>
@@ -596,9 +587,9 @@ set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</td>
 </tr>
 </tbody>
 </table>
@@ -609,12 +600,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">md5_hash</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.md5_hash" title="Permalink to this definition">#</a></dt>
 <dd><p>MD5 hash for this object.</p>
 <p>See <a class="reference external" href="https://tools.ietf.org/html/rfc1321">RFC 1321</a> and <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">API reference docs</a>.</p>
-<p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
+<p>If the property is not set locally, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -629,9 +620,9 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The media link for the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property is
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The media link for the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is
 not set locally.</td>
 </tr>
 </tbody>
@@ -653,9 +644,9 @@ object.</td>
 <tr class="field-even field"><th class="field-name">Getter:</th><td class="field-body">Retrieve arbitrary/application specific metadata for
 the object.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metadata associated with the blob or <code class="docutils literal"><span class="pre">None</span></code> if the
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metadata associated with the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the
 property is not set locally.</td>
 </tr>
 </tbody>
@@ -671,9 +662,9 @@ property is not set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metageneration of the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metageneration of the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property
 is not set locally.</td>
 </tr>
 </tbody>
@@ -689,10 +680,10 @@ is not set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mapping of owner’s role/ID. If the property is not set
-locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</td>
+locally, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -702,15 +693,15 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <dt id="google.cloud.storage.blob.Blob.patch">
 <code class="descname">patch</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.patch" title="Permalink to this definition">#</a></dt>
 <dd><p>Sends all changed properties in a PATCH request.</p>
-<p>Updates the <code class="docutils literal"><span class="pre">_properties</span></code> with the response from the backend.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
+<p>Updates the <code class="docutils literal notranslate"><span class="pre">_properties</span></code> with the response from the backend.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
 </table>
@@ -734,7 +725,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 
 <dl class="staticmethod">
 <dt id="google.cloud.storage.blob.Blob.path_helper">
-<em class="property">static </em><code class="descname">path_helper</code><span class="sig-paren">(</span><em>bucket_path</em>, <em>blob_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.path_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.path_helper" title="Permalink to this definition">#</a></dt>
+<em class="property">static </em><code class="descname">path_helper</code><span class="sig-paren">(</span><em>blob_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.path_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.path_helper" title="Permalink to this definition">#</a></dt>
 <dd><p>Relative URL path for a blob.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -749,7 +740,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The relative URL path for <code class="docutils literal"><span class="pre">blob_name</span></code>.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The relative URL path for <code class="docutils literal notranslate"><span class="pre">blob_name</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -776,14 +767,14 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <dt id="google.cloud.storage.blob.Blob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload properties from Cloud Storage.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
 </table>
@@ -793,30 +784,30 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <dt id="google.cloud.storage.blob.Blob.rewrite">
 <code class="descname">rewrite</code><span class="sig-paren">(</span><em>source</em>, <em>token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.rewrite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.rewrite" title="Permalink to this definition">#</a></dt>
 <dd><p>Rewrite source blob into this one.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>source</strong> (<a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>) – blob whose contents will be rewritten into this blob.</li>
+<li><strong>source</strong> (<a class="reference internal" href="#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blob</span></code></a>) – blob whose contents will be rewritten into this blob.</li>
 <li><strong>token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional. Token returned from an earlier, not-completed
 call to rewrite the same source blob.  If passed,
 result will include updated status, total bytes written.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)">tuple</a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(token,</span> <span class="pre">bytes_rewritten,</span> <span class="pre">total_bytes)</span></code>, where <code class="docutils literal"><span class="pre">token</span></code>
-is a rewrite token (<code class="docutils literal"><span class="pre">None</span></code> if the rewrite is complete),
-<code class="docutils literal"><span class="pre">bytes_rewritten</span></code> is the number of bytes rewritten so far,
-and <code class="docutils literal"><span class="pre">total_bytes</span></code> is the total number of bytes to be
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">(token,</span> <span class="pre">bytes_rewritten,</span> <span class="pre">total_bytes)</span></code>, where <code class="docutils literal notranslate"><span class="pre">token</span></code>
+is a rewrite token (<code class="docutils literal notranslate"><span class="pre">None</span></code> if the rewrite is complete),
+<code class="docutils literal notranslate"><span class="pre">bytes_rewritten</span></code> is the number of bytes rewritten so far,
+and <code class="docutils literal notranslate"><span class="pre">total_bytes</span></code> is the total number of bytes to be
 rewritten.</p>
 </td>
 </tr>
@@ -833,9 +824,9 @@ rewritten.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The self link for the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property is
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The self link for the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is
 not set locally.</td>
 </tr>
 </tbody>
@@ -848,25 +839,25 @@ not set locally.</td>
 <dd><p>Update the IAM policy for the bucket.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</a></p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>policy</strong> (<a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) – policy instance used to update bucket’s IAM policy.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+<li><strong>policy</strong> (<a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.iam.Policy</span></code></a>) – policy instance used to update bucket’s IAM policy.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the policy instance, based on the resource returned from
-the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API request.</p>
+the <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> API request.</p>
 </td>
 </tr>
 </tbody>
@@ -882,9 +873,9 @@ the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The size of the blob or <code class="docutils literal"><span class="pre">None</span></code> if the property
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The size of the blob or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the property
 is not set locally.</td>
 </tr>
 </tbody>
@@ -897,18 +888,18 @@ is not set locally.</td>
 <dd><p>Retrieve the storage class for the object.</p>
 <p>This can only be set at blob / object <strong>creation</strong> time. If you’d
 like to change the storage class <strong>after</strong> the blob / object already
-exists in a bucket, call <a class="reference internal" href="#google.cloud.storage.blob.Blob.update_storage_class" title="google.cloud.storage.blob.Blob.update_storage_class"><code class="xref py py-meth docutils literal"><span class="pre">update_storage_class()</span></code></a> (which uses
+exists in a bucket, call <a class="reference internal" href="#google.cloud.storage.blob.Blob.update_storage_class" title="google.cloud.storage.blob.Blob.update_storage_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_storage_class()</span></code></a> (which uses
 the “storage.objects.rewrite” method).</p>
 <p>See <a class="reference external" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of “MULTI_REGIONAL”, “REGIONAL”,
 “NEARLINE”, “COLDLINE”, “STANDARD”, or
-“DURABLE_REDUCED_AVAILABILITY”, else <code class="docutils literal"><span class="pre">None</span></code>.</td>
+“DURABLE_REDUCED_AVAILABILITY”, else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -920,7 +911,7 @@ the “storage.objects.rewrite” method).</p>
 <dd><p>API call:  test permissions</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions">https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</a></p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -928,16 +919,16 @@ to that project.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>permissions</strong> (<em>list of string</em>) – the permissions to check</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of string</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the permissions returned by the <code class="docutils literal"><span class="pre">testIamPermissions</span></code> API
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the permissions returned by the <code class="docutils literal notranslate"><span class="pre">testIamPermissions</span></code> API
 request.</p>
 </td>
 </tr>
@@ -954,10 +945,10 @@ request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
-<code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally.</td>
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -972,10 +963,10 @@ request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
-<code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally. If the blob has
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally. If the blob has
 not been deleted, this will never be set.</td>
 </tr>
 </tbody>
@@ -986,15 +977,15 @@ not been deleted, this will never be set.</td>
 <dt id="google.cloud.storage.blob.Blob.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.update" title="Permalink to this definition">#</a></dt>
 <dd><p>Sends all properties in a PUT request.</p>
-<p>Updates the <code class="docutils literal"><span class="pre">_properties</span></code> with the response from the backend.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
+<p>Updates the <code class="docutils literal notranslate"><span class="pre">_properties</span></code> with the response from the backend.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
 </table>
@@ -1006,7 +997,7 @@ not been deleted, this will never be set.</td>
 <dd><p>Update blob’s storage class via a rewrite-in-place.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/per-object-storage-class">https://cloud.google.com/storage/docs/per-object-storage-class</a></p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1014,8 +1005,8 @@ to that project.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>new_class</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – new storage class for the object</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
@@ -1032,10 +1023,10 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal notranslate"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
-<code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally.</td>
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if the property is not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -1048,7 +1039,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <p>The content type of the upload will be determined in order
 of precedence:</p>
 <ul class="simple">
-<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>)</li>
 <li>The value stored on the current blob</li>
 <li>The default value (‘application/octet-stream’)</li>
 </ul>
@@ -1062,7 +1053,7 @@ overwrite any existing contents.</p>
 for details.</p>
 </div>
 <p>Uploading a file with a <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">customer-supplied</a> encryption key:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Blob</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
 <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -1072,11 +1063,11 @@ for details.</p>
     <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">encryption_key</span></code> should be a str or bytes with a length of at
+<p>The <code class="docutils literal notranslate"><span class="pre">encryption_key</span></code> should be a str or bytes with a length of at
 least 32.</p>
 <p>For more fine-grained over the upload process, check out
 <a class="reference external" href="https://googlecloudplatform.github.io/google-resumable-media-python/latest/google.resumable_media.requests.html">google-resumable-media</a>.</p>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1087,17 +1078,17 @@ to that project.</p>
 <li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
 <li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of bytes to be uploaded (which will be read
-from <code class="docutils literal"><span class="pre">file_obj</span></code>). If not provided, the upload will be
-concluded once <code class="docutils literal"><span class="pre">file_obj</span></code> is exhausted.</li>
+from <code class="docutils literal notranslate"><span class="pre">file_obj</span></code>). If not provided, the upload will be
+concluded once <code class="docutils literal notranslate"><span class="pre">file_obj</span></code> is exhausted.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional type of content being uploaded.</li>
 <li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of upload retries. (Deprecated: This
 argument will be removed in a future release.)</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleCloudError</span></code>
 if the upload response returns an error status.</p>
 </td>
 </tr>
@@ -1112,9 +1103,9 @@ if the upload response returns an error status.</p>
 <p>The content type of the upload will be determined in order
 of precedence:</p>
 <ul class="simple">
-<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>)</li>
 <li>The value stored on the current blob</li>
-<li>The value given by <code class="docutils literal"><span class="pre">mimetypes.guess_type</span></code></li>
+<li>The value given by <code class="docutils literal notranslate"><span class="pre">mimetypes.guess_type</span></code></li>
 <li>The default value (‘application/octet-stream’)</li>
 </ul>
 <div class="admonition note">
@@ -1127,7 +1118,7 @@ overwrite any existing contents.</p>
 <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
 API documents for details.</p>
 </div>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1136,8 +1127,8 @@ to that project.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The path to the file.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional type of content being uploaded.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
@@ -1159,7 +1150,7 @@ overwrite any existing contents.</p>
 <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
 API documents for details.</p>
 </div>
-<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
 to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1169,10 +1160,10 @@ to that project.</p>
 <li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The data to store in this blob.  If the value is
 text, it will be encoded as UTF-8.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional type of content being uploaded. Defaults
-to <code class="docutils literal"><span class="pre">'text/plain'</span></code>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
+to <code class="docutils literal notranslate"><span class="pre">'text/plain'</span></code>.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
 </ul>
 </td>
 </tr>
@@ -1225,7 +1216,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1233,6 +1224,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -1246,7 +1238,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="client.html">Storage</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-storage</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-storage</span></code> Releases</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Blobs / Objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="buckets.html">Buckets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="acl.html">ACL</a></li>
@@ -1263,7 +1255,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="client.html">Storage</a><ul>
-      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-storage</span></code> Releases</a></li>
+      <li>Previous: <a href="releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-storage</span></code> Releases</a></li>
       <li>Next: <a href="buckets.html" title="next chapter">Buckets</a></li>
   </ul></li>
   </ul></li>
@@ -1271,12 +1263,14 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1287,7 +1281,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Exceptions &#8212; google-cloud 9de1026 documentation</title>
+    <title>Exceptions &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -45,96 +36,96 @@
 <span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-google.api_core.exceptions" title="Permalink to this headline">#</a></h1>
 <p>Exceptions raised by Google API core &amp; clients.</p>
 <p>This module provides base classes for all errors raised by libraries based
-on <code class="xref py py-mod docutils literal"><span class="pre">google.api_core</span></code>, including both HTTP and gRPC clients.</p>
+on <code class="xref py py-mod docutils literal notranslate"><span class="pre">google.api_core</span></code>, including both HTTP and gRPC clients.</p>
 <dl class="exception">
 <dt id="google.api_core.exceptions.Aborted">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Aborted</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Aborted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Aborted" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Conflict" title="google.api_core.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Conflict</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.ABORTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.ABORTED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Conflict" title="google.api_core.exceptions.Conflict"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Conflict</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.ABORTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.ABORTED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.AlreadyExists">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">AlreadyExists</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#AlreadyExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.AlreadyExists" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Conflict" title="google.api_core.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Conflict</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.ALREADY_EXISTS" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.ALREADY_EXISTS</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Conflict" title="google.api_core.exceptions.Conflict"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Conflict</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.ALREADY_EXISTS" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.ALREADY_EXISTS</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.BadGateway">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">BadGateway</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#BadGateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.BadGateway" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.BadRequest">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">BadRequest</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#BadRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.BadRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Cancelled">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Cancelled</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Cancelled" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.CANCELLED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.CANCELLED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.CANCELLED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.CANCELLED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.ClientError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">ClientError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#ClientError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.ClientError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
 <p>Base class for all client error (HTTP 4xx) responses.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Conflict">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Conflict</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Conflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Conflict" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">409</span> <span class="pre">Conflict</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">409</span> <span class="pre">Conflict</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.DataLoss">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">DataLoss</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#DataLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.DataLoss" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.DATA_LOSS" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.DATA_LOSS</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.DATA_LOSS" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.DATA_LOSS</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.DeadlineExceeded">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">DeadlineExceeded</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#DeadlineExceeded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.DeadlineExceeded" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GatewayTimeout" title="google.api_core.exceptions.GatewayTimeout"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GatewayTimeout</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.DEADLINE_EXCEEDED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.DEADLINE_EXCEEDED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GatewayTimeout" title="google.api_core.exceptions.GatewayTimeout"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GatewayTimeout</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.DEADLINE_EXCEEDED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.DEADLINE_EXCEEDED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.FailedPrecondition">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">FailedPrecondition</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#FailedPrecondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.FailedPrecondition" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.FAILED_PRECONDITION" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.FAILED_PRECONDITION</span></code></a>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.FAILED_PRECONDITION" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.FAILED_PRECONDITION</span></code></a>
 error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Forbidden">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Forbidden</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Forbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Forbidden" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">403</span> <span class="pre">Forbidden</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">403</span> <span class="pre">Forbidden</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.GatewayTimeout">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">GatewayTimeout</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#GatewayTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.GatewayTimeout" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">504</span> <span class="pre">Gateway</span> <span class="pre">Timeout</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">504</span> <span class="pre">Gateway</span> <span class="pre">Timeout</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.GoogleAPICallError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">GoogleAPICallError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#GoogleAPICallError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPIError" title="google.api_core.exceptions.GoogleAPIError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPIError</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPIError" title="google.api_core.exceptions.GoogleAPIError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPIError</span></code></a></p>
 <p>Base class for exceptions raised by calling API methods.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -142,7 +133,7 @@ error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The exception message.</li>
-<li><strong>errors</strong> (<em>Sequence</em><em>[</em><em>Any</em><em>]</em>) – An optional list of error details.</li>
+<li><strong>errors</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a><em>]</em>) – An optional list of error details.</li>
 <li><strong>response</strong> (<em>Union</em><em>[</em><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Request" title="(in Requests v2.18.4)"><em>requests.Request</em></a><em>, </em><a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Call" title="(in grpcio v1.8.0)"><em>grpc.Call</em></a><em>]</em>) – The response or
 gRPC call metadata.</li>
 </ul>
@@ -154,7 +145,7 @@ gRPC call metadata.</li>
 <dt id="google.api_core.exceptions.GoogleAPICallError.code">
 <code class="descname">code</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional[int]</em> – The HTTP status code associated with this error.</p>
-<p>This may be <code class="docutils literal"><span class="pre">None</span></code> if the exception does not have a direct mapping
+<p>This may be <code class="docutils literal notranslate"><span class="pre">None</span></code> if the exception does not have a direct mapping
 to an HTTP error.</p>
 <p>See <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
 </dd></dl>
@@ -169,7 +160,7 @@ to an HTTP error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of additional error details.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[Any]</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[<a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any">Any</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -180,7 +171,7 @@ to an HTTP error.</p>
 <code class="descname">grpc_status_code</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.exceptions.GoogleAPICallError.grpc_status_code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional[grpc.StatusCode]</em> – The gRPC status code associated with this
 error.</p>
-<p>This may be <code class="docutils literal"><span class="pre">None</span></code> if the exception does not match up to a gRPC error.</p>
+<p>This may be <code class="docutils literal notranslate"><span class="pre">None</span></code> if the exception does not match up to a gRPC error.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -201,119 +192,119 @@ gRPC call metadata.</p>
 <dl class="exception">
 <dt id="google.api_core.exceptions.GoogleAPIError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">GoogleAPIError</code><a class="reference internal" href="../_modules/google/api_core/exceptions.html#GoogleAPIError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.GoogleAPIError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Base class for all exceptions raised by Google API Clients.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.InternalServerError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">InternalServerError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#InternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.InternalServerError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> response. or a
-<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.INTERNAL" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.INTERNAL</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code> response. or a
+<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.INTERNAL" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.INTERNAL</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.InvalidArgument">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">InvalidArgument</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#InvalidArgument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.InvalidArgument" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.INVALID_ARGUMENT" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.INVALID_ARGUMENT</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.INVALID_ARGUMENT" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.INVALID_ARGUMENT</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.LengthRequired">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">LengthRequired</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#LengthRequired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.LengthRequired" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">411</span> <span class="pre">Length</span> <span class="pre">Required</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">411</span> <span class="pre">Length</span> <span class="pre">Required</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.MethodNotAllowed">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">MethodNotAllowed</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#MethodNotAllowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.MethodNotAllowed" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">405</span> <span class="pre">Method</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">405</span> <span class="pre">Method</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.MethodNotImplemented">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">MethodNotImplemented</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#MethodNotImplemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.MethodNotImplemented" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">501</span> <span class="pre">Not</span> <span class="pre">Implemented</span></code> response or a
-<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNIMPLEMENTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.UNIMPLEMENTED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">501</span> <span class="pre">Not</span> <span class="pre">Implemented</span></code> response or a
+<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNIMPLEMENTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.UNIMPLEMENTED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.MovedPermanently">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">MovedPermanently</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#MovedPermanently"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.MovedPermanently" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">301</span> <span class="pre">Moved</span> <span class="pre">Permanently</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">301</span> <span class="pre">Moved</span> <span class="pre">Permanently</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.NotFound">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">NotFound</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.NotFound" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code> response or a
-<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.NOT_FOUND" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.NOT_FOUND</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code> response or a
+<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.NOT_FOUND" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.NOT_FOUND</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.NotModified">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">NotModified</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#NotModified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.NotModified" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">304</span> <span class="pre">Not</span> <span class="pre">Modified</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">304</span> <span class="pre">Not</span> <span class="pre">Modified</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.OutOfRange">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">OutOfRange</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#OutOfRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.OutOfRange" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.OUT_OF_RANGE" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.OUT_OF_RANGE</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.BadRequest" title="google.api_core.exceptions.BadRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.BadRequest</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.OUT_OF_RANGE" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.OUT_OF_RANGE</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.PermissionDenied">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">PermissionDenied</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#PermissionDenied"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.PermissionDenied" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Forbidden" title="google.api_core.exceptions.Forbidden"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Forbidden</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.PERMISSION_DENIED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.PERMISSION_DENIED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Forbidden" title="google.api_core.exceptions.Forbidden"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Forbidden</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.PERMISSION_DENIED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.PERMISSION_DENIED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.PreconditionFailed">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">PreconditionFailed</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#PreconditionFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.PreconditionFailed" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">412</span> <span class="pre">Precondition</span> <span class="pre">Failed</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">412</span> <span class="pre">Precondition</span> <span class="pre">Failed</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Redirection">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Redirection</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Redirection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Redirection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
 <p>Base class for for all redirection (HTTP 3xx) responses.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.RequestRangeNotSatisfiable">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">RequestRangeNotSatisfiable</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#RequestRangeNotSatisfiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.RequestRangeNotSatisfiable" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">416</span> <span class="pre">Request</span> <span class="pre">Range</span> <span class="pre">Not</span> <span class="pre">Satisfiable</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">416</span> <span class="pre">Request</span> <span class="pre">Range</span> <span class="pre">Not</span> <span class="pre">Satisfiable</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.ResourceExhausted">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">ResourceExhausted</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#ResourceExhausted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.ResourceExhausted" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.TooManyRequests" title="google.api_core.exceptions.TooManyRequests"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.TooManyRequests</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.RESOURCE_EXHAUSTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.RESOURCE_EXHAUSTED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.TooManyRequests" title="google.api_core.exceptions.TooManyRequests"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.TooManyRequests</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.RESOURCE_EXHAUSTED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.RESOURCE_EXHAUSTED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.ResumeIncomplete">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">ResumeIncomplete</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#ResumeIncomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.ResumeIncomplete" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">308</span> <span class="pre">Resume</span> <span class="pre">Incomplete</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">308</span> <span class="pre">Resume</span> <span class="pre">Incomplete</span></code> response.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="xref py py-attr docutils literal"><span class="pre">http_client.PERMANENT_REDIRECT</span></code> is <code class="docutils literal"><span class="pre">308</span></code>, but Google
+<p class="last"><code class="xref py py-attr docutils literal notranslate"><span class="pre">http_client.PERMANENT_REDIRECT</span></code> is <code class="docutils literal notranslate"><span class="pre">308</span></code>, but Google
 APIs differ in their use of this status code.</p>
 </div>
 </dd></dl>
@@ -321,7 +312,7 @@ APIs differ in their use of this status code.</p>
 <dl class="exception">
 <dt id="google.api_core.exceptions.RetryError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">RetryError</code><span class="sig-paren">(</span><em>message</em>, <em>cause</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#RetryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.RetryError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPIError" title="google.api_core.exceptions.GoogleAPIError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPIError</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPIError" title="google.api_core.exceptions.GoogleAPIError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPIError</span></code></a></p>
 <p>Raised when a function has exhausted all of its available retries.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -347,66 +338,66 @@ function.</li>
 <dl class="exception">
 <dt id="google.api_core.exceptions.ServerError">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">ServerError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#ServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.ServerError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a></p>
 <p>Base for 5xx responses.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.ServiceUnavailable">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">ServiceUnavailable</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#ServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.ServiceUnavailable" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">503</span> <span class="pre">Service</span> <span class="pre">Unavailable</span></code> response or a
-<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNAVAILABLE" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.UNAVAILABLE</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">503</span> <span class="pre">Service</span> <span class="pre">Unavailable</span></code> response or a
+<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNAVAILABLE" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.UNAVAILABLE</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.TemporaryRedirect">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">TemporaryRedirect</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#TemporaryRedirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.TemporaryRedirect" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">307</span> <span class="pre">Temporary</span> <span class="pre">Redirect</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Redirection" title="google.api_core.exceptions.Redirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">307</span> <span class="pre">Temporary</span> <span class="pre">Redirect</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.TooManyRequests">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">TooManyRequests</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#TooManyRequests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.TooManyRequests" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">Many</span> <span class="pre">Requests</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">Many</span> <span class="pre">Requests</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Unauthenticated">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Unauthenticated</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Unauthenticated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Unauthenticated" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Unauthorized" title="google.api_core.exceptions.Unauthorized"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.Unauthorized</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNAUTHENTICATED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.UNAUTHENTICATED</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.Unauthorized" title="google.api_core.exceptions.Unauthorized"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.Unauthorized</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNAUTHENTICATED" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.UNAUTHENTICATED</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Unauthorized">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Unauthorized</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Unauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Unauthorized" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
-<p>Exception mapping a <code class="docutils literal"><span class="pre">401</span> <span class="pre">Unauthorized</span></code> response.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ClientError" title="google.api_core.exceptions.ClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a <code class="docutils literal notranslate"><span class="pre">401</span> <span class="pre">Unauthorized</span></code> response.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.api_core.exceptions.Unknown">
 <em class="property">exception </em><code class="descclassname">google.api_core.exceptions.</code><code class="descname">Unknown</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#Unknown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.Unknown" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
-<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNKNOWN" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal"><span class="pre">grpc.StatusCode.UNKNOWN</span></code></a> error.</p>
+<dd><p>Bases: <a class="reference internal" href="#google.api_core.exceptions.ServerError" title="google.api_core.exceptions.ServerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode.UNKNOWN" title="(in grpcio v1.8.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grpc.StatusCode.UNKNOWN</span></code></a> error.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.api_core.exceptions.exception_class_for_grpc_status">
 <code class="descclassname">google.api_core.exceptions.</code><code class="descname">exception_class_for_grpc_status</code><span class="sig-paren">(</span><em>status_code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#exception_class_for_grpc_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.exception_class_for_grpc_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the exception class for a specific <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.StatusCode</span></code></a>.</p>
+<dd><p>Return the exception class for a specific <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">grpc.StatusCode</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status_code</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><em>grpc.StatusCode</em></a>) – The gRPC status code.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the appropriate subclass of <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the appropriate subclass of <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-func docutils literal"><span class="pre">type()</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -422,9 +413,9 @@ function.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The HTTP status code.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the appropriate subclass of <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the appropriate subclass of <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-func docutils literal"><span class="pre">type()</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -433,7 +424,7 @@ function.</li>
 <dl class="function">
 <dt id="google.api_core.exceptions.from_grpc_error">
 <code class="descclassname">google.api_core.exceptions.</code><code class="descname">from_grpc_error</code><span class="sig-paren">(</span><em>rpc_exc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#from_grpc_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.from_grpc_error" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.RpcError" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.RpcError</span></code></a>.</p>
+<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.RpcError" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">grpc.RpcError</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -442,7 +433,7 @@ function.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>An instance of the appropriate subclass of</dt>
-<dd><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>.</dd>
+<dd><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>.</dd>
 </dl>
 </td>
 </tr>
@@ -455,7 +446,7 @@ function.</li>
 <dl class="function">
 <dt id="google.api_core.exceptions.from_grpc_status">
 <code class="descclassname">google.api_core.exceptions.</code><code class="descname">from_grpc_status</code><span class="sig-paren">(</span><em>status_code</em>, <em>message</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#from_grpc_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.from_grpc_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.StatusCode</span></code></a>.</p>
+<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">grpc.StatusCode</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -463,14 +454,14 @@ function.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>status_code</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.StatusCode" title="(in grpcio v1.8.0)"><em>grpc.StatusCode</em></a>) – The gRPC status code.</li>
 <li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The exception message.</li>
-<li><strong>kwargs</strong> – Additional arguments passed to the <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>
+<li><strong>kwargs</strong> – Additional arguments passed to the <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>
 constructor.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
 <dt>An instance of the appropriate subclass of</dt>
-<dd><p class="first last"><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>.</p>
+<dd><p class="first last"><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>.</p>
 </dd>
 </dl>
 </p>
@@ -486,7 +477,7 @@ constructor.</li>
 <dl class="function">
 <dt id="google.api_core.exceptions.from_http_response">
 <code class="descclassname">google.api_core.exceptions.</code><code class="descname">from_http_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#from_http_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.from_http_response" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Response</span></code></a>.</p>
+<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a> from a <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Response</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -495,7 +486,7 @@ constructor.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>An instance of the appropriate subclass of</dt>
-<dd><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>, with the message and errors populated
+<dd><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>, with the message and errors populated
 from the response.</dd>
 </dl>
 </td>
@@ -509,7 +500,7 @@ from the response.</dd>
 <dl class="function">
 <dt id="google.api_core.exceptions.from_http_status">
 <code class="descclassname">google.api_core.exceptions.</code><code class="descname">from_http_status</code><span class="sig-paren">(</span><em>status_code</em>, <em>message</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/exceptions.html#from_http_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.exceptions.from_http_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> from an HTTP status code.</p>
+<dd><p>Create a <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a> from an HTTP status code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -517,14 +508,14 @@ from the response.</dd>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The HTTP status code.</li>
 <li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The exception message.</li>
-<li><strong>kwargs</strong> – Additional arguments passed to the <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>
+<li><strong>kwargs</strong> – Additional arguments passed to the <a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>
 constructor.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
 <dt>An instance of the appropriate subclass of</dt>
-<dd><p class="first last"><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a>.</p>
+<dd><p class="first last"><a class="reference internal" href="#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a>.</p>
 </dd>
 </dl>
 </p>
@@ -565,7 +556,7 @@ constructor.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Core Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
@@ -588,6 +579,7 @@ constructor.</li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -619,12 +611,14 @@ constructor.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -635,7 +629,7 @@ constructor.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

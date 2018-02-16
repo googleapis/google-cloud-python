@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.cluster &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.cloud.bigtable.cluster &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -166,8 +157,8 @@
                              <span class="s1">&#39;instance ID on the client&#39;</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">),</span> <span class="n">instance</span><span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">result</span>
 
 <div class="viewcode-block" id="Cluster.copy"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a copy of this cluster.</span>
@@ -179,8 +170,8 @@
 <span class="sd">        :returns: A copy of the current cluster.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">new_instance</span><span class="p">,</span>
-                              <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">new_instance</span><span class="p">,</span></div>
+                              <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -222,8 +213,8 @@
             <span class="n">request_pb</span><span class="p">)</span>
 
         <span class="c1"># NOTE: _update_from_pb does not check that the project, instance and</span>
-        <span class="c1">#       cluster ID on the response match the request.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span></div>
+        <span class="c1">#       cluster ID on the response match the request.</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Cluster.create"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this cluster.</span>
@@ -255,8 +246,8 @@
             <span class="n">operation_pb</span><span class="p">,</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="p">,</span>
             <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">,</span>
-            <span class="n">metadata_type</span><span class="o">=</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">operation_future</span></div>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">operation_future</span>
 
 <div class="viewcode-block" id="Cluster.update"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this cluster.</span>
@@ -289,8 +280,8 @@
             <span class="n">operation_pb</span><span class="p">,</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="p">,</span>
             <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">,</span>
-            <span class="n">metadata_type</span><span class="o">=</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">operation_future</span></div>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">operation_future</span>
 
 <div class="viewcode-block" id="Cluster.delete"><a class="viewcode-back" href="../../../../bigtable/cluster.html#google.cloud.bigtable.cluster.Cluster.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this cluster.</span>
@@ -313,8 +304,8 @@
 <span class="sd">          permanently deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">DeleteClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># We expect a `google.protobuf.empty_pb2.Empty`</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">DeleteCluster</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span></div></div>
+        <span class="c1"># We expect a `google.protobuf.empty_pb2.Empty`</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">DeleteCluster</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -342,7 +333,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -350,6 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -379,12 +371,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -395,7 +389,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

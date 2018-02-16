@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>DNS &#8212; google-cloud 9de1026 documentation</title>
+    <title>DNS &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -25,15 +17,14 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="google-cloud-dns Releases" href="releases.html" />
-    <link rel="prev" title="Helpers" href="../datastore/helpers.html" />
+    <link rel="prev" title="Types for DLP API Client" href="../dlp/gapic/v2beta1/types.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,14 +38,14 @@
 </div>
 <div class="section" id="client">
 <h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">#</a></h2>
-<p><a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects provide a means to
-configure your DNS applications.  Each instance holds both a <code class="docutils literal"><span class="pre">project</span></code>
+<p><a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> objects provide a means to
+configure your DNS applications.  Each instance holds both a <code class="docutils literal notranslate"><span class="pre">project</span></code>
 and an authenticated connection to the DNS service.</p>
-<p>For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>, see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
+<p>For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>, see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
 <p>Assuming your environment is set up as described in that document,
-create an instance of <a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
+create an instance of <a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -62,16 +53,16 @@ create an instance of <a class="reference internal" href="client.html#google.clo
 </div>
 <div class="section" id="projects">
 <h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">#</a></h2>
-<p>A project is the top-level container in the <code class="docutils literal"><span class="pre">DNS</span></code> API:  it is tied
+<p>A project is the top-level container in the <code class="docutils literal notranslate"><span class="pre">DNS</span></code> API:  it is tied
 closely to billing, and can provide default access control across all its
-datasets.  If no <code class="docutils literal"><span class="pre">project</span></code> is passed to the client container, the library
+datasets.  If no <code class="docutils literal notranslate"><span class="pre">project</span></code> is passed to the client container, the library
 attempts to infer a project using the environment (including explicit
 environment variables, GAE, or GCE).</p>
 <p>To override the project inferred from the environment, pass an explicit
-<code class="docutils literal"><span class="pre">project</span></code> to the constructor, or to either of the alternative
-<code class="docutils literal"><span class="pre">classmethod</span></code> factories:</p>
+<code class="docutils literal notranslate"><span class="pre">project</span></code> to the constructor, or to either of the alternative
+<code class="docutils literal notranslate"><span class="pre">classmethod</span></code> factories:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -81,7 +72,7 @@ environment variables, GAE, or GCE).</p>
 <h2>Project Quotas<a class="headerlink" href="#project-quotas" title="Permalink to this headline">#</a></h2>
 <p>Query the quotas for a given project:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">quotas</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">quotas</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">quotas</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
@@ -107,7 +98,7 @@ via the API:  it must be managed using the Google Developer Console.</p>
 <p>A “managed zone” is the container for DNS records for the same DNS name
 suffix and has a set of name servers that accept and responds to queries:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Acme Company zone&#39;</span><span class="p">)</span>
@@ -122,7 +113,7 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 </div></blockquote>
 <p>List the zones for a given project:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zones</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_zones</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">zones</span><span class="p">]</span>
@@ -135,7 +126,7 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 <h2>Resource Record Sets<a class="headerlink" href="#resource-record-sets" title="Permalink to this headline">#</a></h2>
 <p>Each managed zone exposes a read-only set of resource records:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
@@ -147,12 +138,12 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <code class="docutils literal"><span class="pre">page_token</span></code> returned from <code class="docutils literal"><span class="pre">zone.list_resource_record_sets()</span></code> will
+<p>The <code class="docutils literal notranslate"><span class="pre">page_token</span></code> returned from <code class="docutils literal notranslate"><span class="pre">zone.list_resource_record_sets()</span></code> will
 be an opaque string if there are more resources than can be returned in a
 single request.  To enumerate them all, repeat calling
-<code class="docutils literal"><span class="pre">zone.list_resource_record_sets()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until
-the token is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
+<code class="docutils literal notranslate"><span class="pre">zone.list_resource_record_sets()</span></code>, passing the <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, until
+the token is <code class="docutils literal notranslate"><span class="pre">None</span></code>.  E.g.</p>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
@@ -166,7 +157,7 @@ the token is <code class="docutils literal"><span class="pre">None</span></code>
 <p>Update the resource record set for a zone by creating a change request
 bundling additions to or deletions from the set.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
@@ -185,7 +176,7 @@ bundling additions to or deletions from the set.</p>
 </div></blockquote>
 <p>List changes made to the resource record set for a given zone:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -195,12 +186,12 @@ bundling additions to or deletions from the set.</p>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <code class="docutils literal"><span class="pre">page_token</span></code> returned from <code class="docutils literal"><span class="pre">zone.list_changes()</span></code> will be
+<p>The <code class="docutils literal notranslate"><span class="pre">page_token</span></code> returned from <code class="docutils literal notranslate"><span class="pre">zone.list_changes()</span></code> will be
 an opaque string if there are more changes than can be returned in a
 single request.  To enumerate them all, repeat calling
-<code class="docutils literal"><span class="pre">zone.list_changes()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until the token
-is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
+<code class="docutils literal notranslate"><span class="pre">zone.list_changes()</span></code>, passing the <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, until the token
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>.  E.g.:</p>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
@@ -237,7 +228,7 @@ is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -245,8 +236,9 @@ is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DNS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-dns</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-dns</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">DNS Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zone.html">Managed Zones</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resource-record-set.html">Resource Record Sets</a></li>
@@ -280,19 +272,21 @@ is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../datastore/helpers.html" title="previous chapter">Helpers</a></li>
-      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal"><span class="pre">google-cloud-dns</span></code> Releases</a></li>
+      <li>Previous: <a href="../dlp/gapic/v2beta1/types.html" title="previous chapter">Types for DLP API Client</a></li>
+      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-dns</span></code> Releases</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -303,7 +297,7 @@ is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

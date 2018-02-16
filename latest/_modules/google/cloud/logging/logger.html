@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.logger &#8212; google-cloud 9de1026 documentation</title>
+    <title>google.cloud.logging.logger &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -132,8 +123,8 @@
 <span class="sd">        :rtype: :class:`Batch`</span>
 <span class="sd">        :returns: A batch to use as a context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></div>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_make_entry_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -255,8 +246,8 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
-            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
+            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Logger.log_struct"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -297,8 +288,8 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
-            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
+            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Logger.log_proto"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -340,8 +331,8 @@
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span>
             <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Logger.delete"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete all entries in a logger via a DELETE request</span>
@@ -354,8 +345,8 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current logger.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">logger_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">logger_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Logger.list_entries"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Logger.list_entries">[docs]</a>    <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -396,8 +387,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filter_</span> <span class="o">=</span> <span class="n">log_filter</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span>
-            <span class="n">projects</span><span class="o">=</span><span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
-            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span></div></div>
+            <span class="n">projects</span><span class="o">=</span><span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span></div></div>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -464,8 +455,8 @@
 <span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
+            <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Batch.log_struct"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -499,8 +490,8 @@
 <span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
+            <span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Batch.log_proto"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -534,8 +525,8 @@
 <span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="s1">&#39;proto&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
+            <span class="p">(</span><span class="s1">&#39;proto&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../logging/logger.html#google.cloud.logging.logger.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved log entries as a single API call.</span>
@@ -588,8 +579,8 @@
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
             <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
-        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[:]</span></div></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[:]</span>
 </pre></div>
 
           </div>
@@ -617,7 +608,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -625,6 +616,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -654,12 +646,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -670,7 +664,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

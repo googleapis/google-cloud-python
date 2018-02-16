@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Stackdriver Error Reporting &#8212; google-cloud 9de1026 documentation</title>
+    <title>Stackdriver Error Reporting &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,22 +39,22 @@
 <div class="section" id="authentication-and-configuration">
 <h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>,
+<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code>,
 see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
 to interact with. If you are Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="client.html#google.cloud.error_reporting.client.Client" title="google.cloud.error_reporting.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<a class="reference internal" href="client.html#google.cloud.error_reporting.client.Client" title="google.cloud.error_reporting.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> and <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -72,7 +63,7 @@ App Engine service, or job. The default service is “python”, but a default c
 for the client on construction time. You can also optionally specify a version for that service,
 which defaults to “default.”</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                                <span class="n">service</span><span class="o">=</span><span class="s2">&quot;login_service&quot;</span><span class="p">,</span>
 <span class="gp">... </span>                                <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.1.0&quot;</span><span class="p">)</span>
@@ -85,7 +76,7 @@ which defaults to “default.”</p>
 <div class="section" id="reporting-an-exception">
 <h2>Reporting an exception<a class="headerlink" href="#reporting-an-exception" title="Permalink to this headline">#</a></h2>
 <p>Report a stacktrace to Stackdriver Error Reporting after an exception</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">raise</span> <span class="ne">NameError</span>
@@ -96,9 +87,9 @@ which defaults to “default.”</p>
 <p>By default, the client will report the error using the service specified in the client’s
 constructor, or the default service of “python”.</p>
 <p>The user and HTTP context can also be included in the exception. The HTTP context
-can be constructed using <code class="xref py py-class docutils literal"><span class="pre">google.cloud.error_reporting.HTTPContext</span></code>. This will
+can be constructed using <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.error_reporting.HTTPContext</span></code>. This will
 be used by Stackdriver Error Reporting to help group exceptions.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;example@gmail.com&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">http_context</span> <span class="o">=</span> <span class="n">HTTPContext</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">userAgent</span><span class="o">=</span><span class="s1">&#39;test agent&#39;</span><span class="p">,</span>
@@ -113,7 +104,7 @@ be used by Stackdriver Error Reporting to help group exceptions.</p>
 <p>An automatic helper to build the HTTP Context from a Flask (Werkzeug) request
 object is provided.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.error_reporting</span> <span class="kn">import</span> <span class="n">build_flask_context</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.error_reporting</span> <span class="kn">import</span> <span class="n">build_flask_context</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">(</span>
@@ -128,13 +119,13 @@ object is provided.</p>
 <p>Errors can also be reported to Stackdriver Error Reporting outside the context of an exception.
 The library will include the file path, function name, and line number of the location where the
 error was reported.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">error_reporting</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s2">&quot;Found an error!&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Similarly to reporting an exception, the user and HTTP context can be provided:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;example@gmail.com&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">http_context</span> <span class="o">=</span> <span class="n">HTTPContext</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">userAgent</span><span class="o">=</span><span class="s1">&#39;test agent&#39;</span><span class="p">,</span>
@@ -172,7 +163,7 @@ error was reported.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -180,6 +171,7 @@ error was reported.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -190,7 +182,7 @@ error was reported.</p>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Stackdriver Error Reporting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-error-reporting</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-error-reporting</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Error Reporting Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="util.html">Error Reporting Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a></li>
@@ -210,19 +202,21 @@ error was reported.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../speech/releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-speech</span></code> Releases</a></li>
-      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal"><span class="pre">google-cloud-error-reporting</span></code> Releases</a></li>
+      <li>Previous: <a href="../speech/releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-speech</span></code> Releases</a></li>
+      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-error-reporting</span></code> Releases</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -233,7 +227,7 @@ error was reported.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

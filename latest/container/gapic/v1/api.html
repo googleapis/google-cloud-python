@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Container Engine API &#8212; google-cloud 9de1026 documentation</title>
+    <title>Client for Google Container Engine API &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -53,10 +44,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through
 which to make calls. This argument is mutually exclusive
-with <code class="docutils literal"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><em>google.auth.credentials.Credentials</em></a>) – The
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.4.1)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
@@ -64,7 +55,7 @@ credentials from the environment.</li>
 <li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of call options for each
 method. If not specified, the default configuration is used.</li>
 <li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
-API requests. If <code class="docutils literal"><span class="pre">None</span></code>, then default info will be used.
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</li>
 </ul>
@@ -77,7 +68,7 @@ your own client library.</li>
 <code class="descname">cancel_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.cancel_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.cancel_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Cancels the specified operation.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -97,22 +88,22 @@ your own client library.</li>
 number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
 <li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the Google Compute Engine
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the operation resides.</li>
-<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</li>
+<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -125,7 +116,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">complete_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.complete_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.complete_i_p_rotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Completes master IP rotation.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -149,23 +140,23 @@ resides.</p>
 </li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -187,7 +178,7 @@ cluster.</p>
 <p>Finally, an entry is added to the project’s global metadata indicating
 which CIDR range is being used by the cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -212,25 +203,25 @@ resides.</p>
 <li><strong>cluster</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><em>Cluster</em></a><em>]</em>) – A [cluster
 resource](/container-engine/reference/rest/v1/projects.zones.clusters)
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -243,7 +234,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">create_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.create_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.create_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a node pool for a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -269,25 +260,25 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>node_pool</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><em>NodePool</em></a><em>]</em>) – The node pool to create.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal"><span class="pre">NodePool</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePool</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -306,7 +297,7 @@ are also deleted.</p>
 (e.g. load balancer resources) will not be deleted if they weren’t present
 at the initial create time.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -330,23 +321,23 @@ resides.</p>
 </li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to delete.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -359,7 +350,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">delete_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.delete_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.delete_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a node pool from a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -385,23 +376,23 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to delete.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -419,7 +410,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">get_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the details of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -443,23 +434,23 @@ resides.</p>
 </li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to retrieve.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Cluster" title="google.cloud.container_v1.types.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -472,7 +463,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">get_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the node pool requested.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -498,23 +489,23 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal"><span class="pre">NodePool</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePool" title="google.cloud.container_v1.types.NodePool"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePool</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -527,7 +518,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">get_operation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>operation_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the specified operation.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -549,25 +540,25 @@ number](<a class="reference external" href="https://support.google.com/cloud/ans
 <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a> in which the cluster
 resides.</p>
 </li>
-<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</li>
+<li><strong>operation_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The server-assigned <code class="docutils literal notranslate"><span class="pre">name</span></code> of the operation.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -580,7 +571,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">get_server_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.get_server_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.get_server_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns configuration info about the Container Engine service.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -601,23 +592,23 @@ number](<a class="reference external" href="https://support.google.com/cloud/ans
 to return operations for.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ServerConfig" title="google.cloud.container_v1.types.ServerConfig"><code class="xref py py-class docutils literal"><span class="pre">ServerConfig</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ServerConfig" title="google.cloud.container_v1.types.ServerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServerConfig</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -631,7 +622,7 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Lists all clusters owned by a project in either the specified zone or all
 zones.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -653,23 +644,23 @@ number](<a class="reference external" href="https://support.google.com/cloud/ans
 resides, or “-” for all zones.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListClustersResponse" title="google.cloud.container_v1.types.ListClustersResponse"><code class="xref py py-class docutils literal"><span class="pre">ListClustersResponse</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListClustersResponse" title="google.cloud.container_v1.types.ListClustersResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListClustersResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -682,7 +673,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">list_node_pools</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_node_pools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_node_pools" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the node pools for a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -706,23 +697,23 @@ resides.</p>
 </li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListNodePoolsResponse" title="google.cloud.container_v1.types.ListNodePoolsResponse"><code class="xref py py-class docutils literal"><span class="pre">ListNodePoolsResponse</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListNodePoolsResponse" title="google.cloud.container_v1.types.ListNodePoolsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListNodePoolsResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -735,7 +726,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">list_operations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.list_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.list_operations" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all operations in a project in a specific zone or all zones.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -753,26 +744,26 @@ to a retryable error and retry attempts failed.</li>
 <li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The Google Developers Console [project ID or project
 number](<a class="reference external" href="https://support.google.com/cloud/answer/6158840">https://support.google.com/cloud/answer/6158840</a>).</li>
 <li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>The name of the Google Compute Engine <a class="reference external" href="https://cloud.google.com/compute/docs/zones#available">zone</a>
-to return operations for, or <code class="docutils literal"><span class="pre">-</span></code> for all zones.</p>
+to return operations for, or <code class="docutils literal notranslate"><span class="pre">-</span></code> for all zones.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListOperationsResponse" title="google.cloud.container_v1.types.ListOperationsResponse"><code class="xref py py-class docutils literal"><span class="pre">ListOperationsResponse</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.ListOperationsResponse" title="google.cloud.container_v1.types.ListOperationsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListOperationsResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -786,7 +777,7 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Roll back the previously Aborted or Failed NodePool upgrade.
 This will be an no-op if the last upgrade successfully completed.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -812,23 +803,23 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to rollback.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to rollback.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -841,7 +832,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_addons_config</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>addons_config</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_addons_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_addons_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the addons of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -868,25 +859,25 @@ resides.</p>
 <li><strong>addons_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><em>AddonsConfig</em></a><em>]</em>) – The desired configurations for the various addons available to run in the
 cluster.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><code class="xref py py-class docutils literal"><span class="pre">AddonsConfig</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.AddonsConfig" title="google.cloud.container_v1.types.AddonsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddonsConfig</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -899,7 +890,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_labels</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>resource_labels</em>, <em>label_fingerprint</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets labels on a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -932,23 +923,23 @@ labels. You must always provide an up-to-date fingerprint hash when
 updating or changing labels. Make a &lt;code&gt;get()&lt;/code&gt; request to the
 resource to get the latest fingerprint.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -961,7 +952,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_legacy_abac</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>enabled</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_legacy_abac"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_legacy_abac" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables or disables the ABAC authorization mechanism on a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -987,23 +978,23 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to update.</li>
 <li><strong>enabled</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Whether ABAC authorization will be enabled in the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1016,7 +1007,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_locations</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>locations</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_locations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_locations" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the locations of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1048,23 +1039,23 @@ whether locations are being added or removed.</p>
 <p>This list must always include the cluster’s primary zone.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1077,7 +1068,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_logging_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>logging_service</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_logging_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_logging_service" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the logging service of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1109,23 +1100,23 @@ Currently available options:</p>
 </ul>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1138,7 +1129,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_maintenance_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>maintenance_policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_maintenance_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_maintenance_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the maintenance policy for a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1165,25 +1156,25 @@ resides.</p>
 <li><strong>maintenance_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><em>MaintenancePolicy</em></a><em>]</em>) – The maintenance policy to be set for the cluster. An empty field
 clears the existing maintenance policy.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><code class="xref py py-class docutils literal"><span class="pre">MaintenancePolicy</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MaintenancePolicy" title="google.cloud.container_v1.types.MaintenancePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaintenancePolicy</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1198,7 +1189,7 @@ to a retryable error and retry attempts failed.</li>
 Changing the admin password of a specific cluster.
 This can be either via password generation or explicitly set the password.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.container_v1</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
@@ -1227,25 +1218,25 @@ resides.</p>
 <li><strong>action</strong> (<em>Action</em>) – The exact form of action to be taken on the master auth.</li>
 <li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><em>MasterAuth</em></a><em>]</em>) – A description of the update.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><code class="xref py py-class docutils literal"><span class="pre">MasterAuth</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.MasterAuth" title="google.cloud.container_v1.types.MasterAuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterAuth</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1258,7 +1249,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_monitoring_service</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>monitoring_service</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_monitoring_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_monitoring_service" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the monitoring service of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1290,23 +1281,23 @@ Currently available options:</p>
 </ul>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1319,7 +1310,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_network_policy</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>network_policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_network_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_network_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/Disables Network Policy for a cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1345,25 +1336,25 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>network_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><em>NetworkPolicy</em></a><em>]</em>) – Configuration options for the NetworkPolicy feature.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><code class="xref py py-class docutils literal"><span class="pre">NetworkPolicy</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NetworkPolicy" title="google.cloud.container_v1.types.NetworkPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkPolicy</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1376,7 +1367,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_node_pool_autoscaling</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>autoscaling</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_autoscaling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_autoscaling" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the autoscaling settings of a specific node pool.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1404,25 +1395,25 @@ resides.</p>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
 <li><strong>autoscaling</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><em>NodePoolAutoscaling</em></a><em>]</em>) – Autoscaling configuration for the node pool.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><code class="xref py py-class docutils literal"><span class="pre">NodePoolAutoscaling</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodePoolAutoscaling" title="google.cloud.container_v1.types.NodePoolAutoscaling"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePoolAutoscaling</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1435,7 +1426,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_node_pool_management</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>management</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_management"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_management" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the NodeManagement options for a node pool.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1463,25 +1454,25 @@ resides.</p>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to update.</li>
 <li><strong>management</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><em>NodeManagement</em></a><em>]</em>) – NodeManagement configuration for the node pool.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><code class="xref py py-class docutils literal"><span class="pre">NodeManagement</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.NodeManagement" title="google.cloud.container_v1.types.NodeManagement"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeManagement</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1494,7 +1485,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">set_node_pool_size</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_count</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.set_node_pool_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.set_node_pool_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the size of a specific node pool.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1522,23 +1513,23 @@ resides.</p>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to update.</li>
 <li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The desired node count for the pool.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1551,7 +1542,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">start_i_p_rotation</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.start_i_p_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.start_i_p_rotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Start master IP rotation.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1575,23 +1566,23 @@ resides.</p>
 </li>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1604,7 +1595,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">update_cluster</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>update</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the settings of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1630,25 +1621,25 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>update</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><em>ClusterUpdate</em></a><em>]</em>) – A description of the update.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><code class="xref py py-class docutils literal"><span class="pre">ClusterUpdate</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.container_v1.types.ClusterUpdate" title="google.cloud.container_v1.types.ClusterUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusterUpdate</span></code></a></li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1661,7 +1652,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">update_master</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>master_version</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_master"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_master" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the master of a specific cluster.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1689,23 +1680,23 @@ resides.</p>
 latest supported version. Use “-” to have the server automatically select
 the latest version.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1718,7 +1709,7 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">update_node_pool</code><span class="sig-paren">(</span><em>project_id</em>, <em>zone</em>, <em>cluster_id</em>, <em>node_pool_id</em>, <em>node_version</em>, <em>image_type</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/container_v1/gapic/cluster_manager_client.html#ClusterManagerClient.update_node_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.container_v1.ClusterManagerClient.update_node_pool" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the version and/or image type of a specific node pool.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">container_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">container_v1</span><span class="o">.</span><span class="n">ClusterManagerClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1746,27 +1737,27 @@ resides.</p>
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the cluster to upgrade.</li>
 <li><strong>node_pool_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the node pool to upgrade.</li>
 <li><strong>node_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The Kubernetes version to change the nodes to (typically an
-upgrade). Use <code class="docutils literal"><span class="pre">-</span></code> to upgrade to the latest version supported by
+upgrade). Use <code class="docutils literal notranslate"><span class="pre">-</span></code> to upgrade to the latest version supported by
 the server.</li>
 <li><strong>image_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The desired image type for the node pool.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.container_v1.types.Operation" title="google.cloud.container_v1.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -1804,7 +1795,7 @@ to a retryable error and retry attempts failed.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -1816,6 +1807,7 @@ to a retryable error and retry attempts failed.</li>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -1839,7 +1831,7 @@ to a retryable error and retry attempts failed.</li>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Python Client for Google Container Engine API (Beta)</a><ul>
-      <li>Previous: <a href="../../releases.html" title="previous chapter"><code class="docutils literal"><span class="pre">google-cloud-container</span></code> Releases</a></li>
+      <li>Previous: <a href="../../releases.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-container</span></code> Releases</a></li>
       <li>Next: <a href="types.html" title="next chapter">Types for Google Container Engine API Client</a></li>
   </ul></li>
   </ul></li>
@@ -1847,12 +1839,14 @@ to a retryable error and retry attempts failed.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1863,7 +1857,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

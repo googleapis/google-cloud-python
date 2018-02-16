@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Video Intelligence Client API &#8212; google-cloud 9de1026 documentation</title>
+    <title>Video Intelligence Client API &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -53,10 +44,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
-which to make calls. If specified, then the <code class="docutils literal"><span class="pre">credentials</span></code>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through
+which to make calls. If specified, then the <code class="docutils literal notranslate"><span class="pre">credentials</span></code>
 argument is ignored.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><em>google.auth.credentials.Credentials</em></a>) – The
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.4.1)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
@@ -65,7 +56,7 @@ credentials from the environment.</li>
 the default configuration is used. Generally, you only need
 to set this if you’re developing your own client library.</li>
 <li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
-API requests. If <code class="docutils literal"><span class="pre">None</span></code>, then default info will be used.
+API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</li>
 </ul>
@@ -77,11 +68,11 @@ your own client library.</li>
 <dt id="google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient.annotate_video">
 <code class="descname">annotate_video</code><span class="sig-paren">(</span><em>input_uri=None</em>, <em>input_content=None</em>, <em>features=None</em>, <em>video_context=None</em>, <em>output_uri=None</em>, <em>location_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/videointelligence_v1beta2/gapic/video_intelligence_service_client.html#VideoIntelligenceServiceClient.annotate_video"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient.annotate_video" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs asynchronous video annotation. Progress and results can be
-retrieved through the <code class="docutils literal"><span class="pre">google.longrunning.Operations</span></code> interface.
-<code class="docutils literal"><span class="pre">Operation.metadata</span></code> contains <code class="docutils literal"><span class="pre">AnnotateVideoProgress</span></code> (progress).
-<code class="docutils literal"><span class="pre">Operation.response</span></code> contains <code class="docutils literal"><span class="pre">AnnotateVideoResponse</span></code> (results).</p>
+retrieved through the <code class="docutils literal notranslate"><span class="pre">google.longrunning.Operations</span></code> interface.
+<code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code> contains <code class="docutils literal notranslate"><span class="pre">AnnotateVideoProgress</span></code> (progress).
+<code class="docutils literal notranslate"><span class="pre">Operation.response</span></code> contains <code class="docutils literal notranslate"><span class="pre">AnnotateVideoResponse</span></code> (results).</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">videointelligence_v1beta2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">videointelligence_v1beta2</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence_v1beta2</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -105,48 +96,48 @@ retrieved through the <code class="docutils literal"><span class="pre">google.lo
 <li><strong>input_uri</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Input video location. Currently, only
 <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a> URIs are
 supported, which must be specified in the following format:
-<code class="docutils literal"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return
-<code class="docutils literal"><span class="pre">google.rpc.Code.INVALID_ARGUMENT</span></code>). For more information, see
+<code class="docutils literal notranslate"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return
+<code class="docutils literal notranslate"><span class="pre">google.rpc.Code.INVALID_ARGUMENT</span></code>). For more information, see
 <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.
-A video URI may include wildcards in <code class="docutils literal"><span class="pre">object-id</span></code>, and thus identify
+A video URI may include wildcards in <code class="docutils literal notranslate"><span class="pre">object-id</span></code>, and thus identify
 multiple videos. Supported wildcards: ‘*’ to match 0 or more characters;
 ‘?’ to match 1 character. If unset, the input video should be embedded
-in the request as <code class="docutils literal"><span class="pre">input_content</span></code>. If set, <code class="docutils literal"><span class="pre">input_content</span></code> should be unset.</li>
+in the request as <code class="docutils literal notranslate"><span class="pre">input_content</span></code>. If set, <code class="docutils literal notranslate"><span class="pre">input_content</span></code> should be unset.</li>
 <li><strong>input_content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The video data bytes.
-If unset, the input video(s) should be specified via <code class="docutils literal"><span class="pre">input_uri</span></code>.
-If set, <code class="docutils literal"><span class="pre">input_uri</span></code> should be unset.</li>
+If unset, the input video(s) should be specified via <code class="docutils literal notranslate"><span class="pre">input_uri</span></code>.
+If set, <code class="docutils literal notranslate"><span class="pre">input_uri</span></code> should be unset.</li>
 <li><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><em>Feature</em><em>]</em>) – Requested video annotation features.</li>
 <li><strong>video_context</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.videointelligence_v1beta2.types.VideoContext" title="google.cloud.videointelligence_v1beta2.types.VideoContext"><em>VideoContext</em></a><em>]</em>) – Additional video context and/or feature-specific parameters.
 If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.videointelligence_v1beta2.types.VideoContext" title="google.cloud.videointelligence_v1beta2.types.VideoContext"><code class="xref py py-class docutils literal"><span class="pre">VideoContext</span></code></a></li>
+message <a class="reference internal" href="types.html#google.cloud.videointelligence_v1beta2.types.VideoContext" title="google.cloud.videointelligence_v1beta2.types.VideoContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoContext</span></code></a></li>
 <li><strong>output_uri</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Optional location where the output (in JSON format) should be stored.
 Currently, only <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>
 URIs are supported, which must be specified in the following format:
-<code class="docutils literal"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return
-<code class="docutils literal"><span class="pre">google.rpc.Code.INVALID_ARGUMENT</span></code>). For more information, see
+<code class="docutils literal notranslate"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return
+<code class="docutils literal notranslate"><span class="pre">google.rpc.Code.INVALID_ARGUMENT</span></code>). For more information, see
 <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.</p>
 </li>
 <li><strong>location_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional cloud region where annotation should take place. Supported cloud
-regions: <code class="docutils literal"><span class="pre">us-east1</span></code>, <code class="docutils literal"><span class="pre">us-west1</span></code>, <code class="docutils literal"><span class="pre">europe-west1</span></code>, <code class="docutils literal"><span class="pre">asia-east1</span></code>. If no region
+regions: <code class="docutils literal notranslate"><span class="pre">us-east1</span></code>, <code class="docutils literal notranslate"><span class="pre">us-west1</span></code>, <code class="docutils literal notranslate"><span class="pre">europe-west1</span></code>, <code class="docutils literal notranslate"><span class="pre">asia-east1</span></code>. If no region
 is specified, a region will be determined based on video file location.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
 <li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
-for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal"><span class="pre">_OperationFuture</span></code> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
 to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -189,7 +180,7 @@ to a retryable error and retry attempts failed.</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -197,6 +188,7 @@ to a retryable error and retry attempts failed.</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -233,12 +225,14 @@ to a retryable error and retry attempts failed.</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -249,7 +243,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

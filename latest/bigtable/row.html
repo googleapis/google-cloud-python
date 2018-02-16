@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Bigtable Row &#8212; google-cloud 9de1026 documentation</title>
+    <title>Bigtable Row &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -47,13 +38,13 @@
 <dl class="class">
 <dt id="google.cloud.bigtable.row.AppendRow">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row.</code><code class="descname">AppendRow</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#AppendRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.AppendRow" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row.Row</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row.Row</span></code></a></p>
 <p>Google Cloud Bigtable Row for sending append mutations.</p>
 <p>These mutations are intended to augment the value of an existing cell
 and uses the methods:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.append_cell_value" title="google.cloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">append_cell_value()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.increment_cell_value" title="google.cloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">increment_cell_value()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.append_cell_value" title="google.cloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append_cell_value()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.increment_cell_value" title="google.cloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">increment_cell_value()</span></code></a></li>
 </ul>
 <p>The first works by appending bytes and the second by incrementing an
 integer (stored in the cell as 8 bytes). In either case, if the
@@ -65,7 +56,7 @@ bytes or 0 for integer).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key for the current row.</li>
-<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
+<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
 </ul>
 </td>
 </tr>
@@ -80,7 +71,7 @@ bytes or 0 for integer).</p>
 <p class="last">This method adds a read-modify rule protobuf to the accumulated
 read-modify rules on this row, but does not make an API
 request. To actually send an API request (with the rules) to the
-Google Cloud Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.commit" title="google.cloud.bigtable.row.AppendRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Google Cloud Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.commit" title="google.cloud.bigtable.row.AppendRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -89,7 +80,7 @@ Google Cloud Bigtable API, call <a class="reference internal" href="#google.clou
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column.
 Must be of the form
-<code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cell
 is located.</li>
 <li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The value to append to the existing value in the cell. If
@@ -111,17 +102,17 @@ containing the empty string.</li>
 <dl class="method">
 <dt id="google.cloud.bigtable.row.AppendRow.commit">
 <code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#AppendRow.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.AppendRow.commit" title="Permalink to this definition">#</a></dt>
-<dd><p>Makes a <code class="docutils literal"><span class="pre">ReadModifyWriteRow</span></code> API request.</p>
-<p>This commits modifications made by <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.append_cell_value" title="google.cloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">append_cell_value()</span></code></a> and
-<a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.increment_cell_value" title="google.cloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">increment_cell_value()</span></code></a>. If no modifications were made, makes
-no API request and just returns <code class="docutils literal"><span class="pre">{}</span></code>.</p>
+<dd><p>Makes a <code class="docutils literal notranslate"><span class="pre">ReadModifyWriteRow</span></code> API request.</p>
+<p>This commits modifications made by <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.append_cell_value" title="google.cloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append_cell_value()</span></code></a> and
+<a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.increment_cell_value" title="google.cloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">increment_cell_value()</span></code></a>. If no modifications were made, makes
+no API request and just returns <code class="docutils literal notranslate"><span class="pre">{}</span></code>.</p>
 <p>Modifies a row atomically, reading the latest existing
 timestamp / value from the specified columns and writing a new value by
 appending / incrementing. The new cell created uses either the current
 server time or the highest timestamp of a cell in that column (if it
 exceeds the server time).</p>
 <p>After committing the accumulated mutations, resets the local mutations.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">append_row</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">append_row</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 <span class="go">{</span>
 <span class="go">    u&#39;col-fam-id&#39;: {</span>
 <span class="go">        b&#39;col-name1&#39;: [</span>
@@ -152,8 +143,8 @@ dictionary of columns. Each column contains a list of cells
 modified. Each cell is represented with a two-tuple with the
 value (in bytes) and the timestamp for the cell.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the number of
-mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
+mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal notranslate"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -170,7 +161,7 @@ serialized to bytes.</p>
 <p class="last">This method adds a read-modify rule protobuf to the accumulated
 read-modify rules on this row, but does not make an API
 request. To actually send an API request (with the rules) to the
-Google Cloud Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.commit" title="google.cloud.bigtable.row.AppendRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Google Cloud Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.AppendRow.commit" title="google.cloud.bigtable.row.AppendRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -179,7 +170,7 @@ Google Cloud Bigtable API, call <a class="reference internal" href="#google.clou
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column.
 Must be of the form
-<code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cell
 is located.</li>
 <li><strong>int_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The value to increment the existing value in the cell
@@ -219,7 +210,7 @@ will fail.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
@@ -232,30 +223,30 @@ will fail.</li>
 <dl class="class">
 <dt id="google.cloud.bigtable.row.ConditionalRow">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row.</code><code class="descname">ConditionalRow</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em>, <em>filter_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#ConditionalRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row._SetDeleteRow</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row._SetDeleteRow</span></code></p>
 <p>Google Cloud Bigtable Row for sending mutations conditionally.</p>
-<p>Each mutation has an associated state: <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.
-When <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>-ed, the mutations for the <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
+<p>Each mutation has an associated state: <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.
+When <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>-ed, the mutations for the <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>
 state will be applied if the filter matches any cells in
-the row, otherwise the <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a> state will be applied.</p>
-<p>A <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> accumulates mutations in the same way a
-<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> does:</p>
+the row, otherwise the <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a> state will be applied.</p>
+<p>A <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRow</span></code></a> accumulates mutations in the same way a
+<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRow</span></code></a> does:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.set_cell" title="google.cloud.bigtable.row.ConditionalRow.set_cell"><code class="xref py py-meth docutils literal"><span class="pre">set_cell()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete" title="google.cloud.bigtable.row.ConditionalRow.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete_cell" title="google.cloud.bigtable.row.ConditionalRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete_cells" title="google.cloud.bigtable.row.ConditionalRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.set_cell" title="google.cloud.bigtable.row.ConditionalRow.set_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_cell()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete" title="google.cloud.bigtable.row.ConditionalRow.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete_cell" title="google.cloud.bigtable.row.ConditionalRow.delete_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cell()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete_cells" title="google.cloud.bigtable.row.ConditionalRow.delete_cells"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cells()</span></code></a></li>
 </ul>
-<p>with the only change the extra <code class="docutils literal"><span class="pre">state</span></code> parameter:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key2&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">row_filter</span><span class="p">)</span>
+<p>with the only change the extra <code class="docutils literal notranslate"><span class="pre">state</span></code> parameter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key2&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">row_filter</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">As with <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a>, to actually send these mutations to the
-Google Cloud Bigtable API, you must call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<p class="last">As with <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRow</span></code></a>, to actually send these mutations to the
+Google Cloud Bigtable API, you must call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -263,8 +254,8 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#go
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key for the current row.</li>
-<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – Filter to be used for conditional mutations.</li>
+<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RowFilter</span></code></a>) – Filter to be used for conditional mutations.</li>
 </ul>
 </td>
 </tr>
@@ -279,11 +270,11 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#go
 <dl class="method">
 <dt id="google.cloud.bigtable.row.ConditionalRow.commit">
 <code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#ConditionalRow.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="Permalink to this definition">#</a></dt>
-<dd><p>Makes a <code class="docutils literal"><span class="pre">CheckAndMutateRow</span></code> API request.</p>
+<dd><p>Makes a <code class="docutils literal notranslate"><span class="pre">CheckAndMutateRow</span></code> API request.</p>
 <p>If no mutations have been created in the row, no request is made.</p>
 <p>The mutations will be applied conditionally, based on whether the
-filter matches any cells in the <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> or not. (Each
-method which adds a mutation has a <code class="docutils literal"><span class="pre">state</span></code> parameter for this
+filter matches any cells in the <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRow</span></code></a> or not. (Each
+method which adds a mutation has a <code class="docutils literal notranslate"><span class="pre">state</span></code> parameter for this
 purpose.)</p>
 <p>Mutations are applied atomically and in order, meaning that earlier
 mutations can be masked / negated by later ones. Cells already present
@@ -299,8 +290,8 @@ mutations.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Flag indicating if the filter was matched (which also
 indicates which set of mutations were applied by the server).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the number of
-mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
+mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal notranslate"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -315,14 +306,14 @@ mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</td>
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -337,7 +328,7 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -346,13 +337,13 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column
 or columns with cells being deleted. Must be
-of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+of the form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family that will have a
 cell deleted.</li>
-<li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
+<li><strong>time_range</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
 should be deleted.</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -369,7 +360,7 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -378,15 +369,15 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column
 or columns with cells being deleted. Must be
-of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
-<code class="xref py py-func docutils literal"><span class="pre">unicode</span></code>, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) – The columns within the column family that will have
-cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then the
+of the form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> /
+<code class="xref py py-func docutils literal notranslate"><span class="pre">unicode</span></code>, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – The columns within the column family that will have
+cells deleted. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">ALL_COLUMNS</span></code> is used then the
 entire column family will be deleted from the row.</li>
-<li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
+<li><strong>time_range</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
 should be deleted.</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -414,16 +405,16 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <dt id="google.cloud.bigtable.row.ConditionalRow.set_cell">
 <code class="descname">set_cell</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>value</em>, <em>timestamp=None</em>, <em>state=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#ConditionalRow.set_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow.set_cell" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets a value in this row.</p>
-<p>The cell is determined by the <code class="docutils literal"><span class="pre">row_key</span></code> of this
-<a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> and the <code class="docutils literal"><span class="pre">column</span></code>. The <code class="docutils literal"><span class="pre">column</span></code> must be in
-an existing <a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> (as determined by
-<code class="docutils literal"><span class="pre">column_family_id</span></code>).</p>
+<p>The cell is determined by the <code class="docutils literal notranslate"><span class="pre">row_key</span></code> of this
+<a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRow</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">column</span></code>. The <code class="docutils literal notranslate"><span class="pre">column</span></code> must be in
+an existing <a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnFamily</span></code></a> (as determined by
+<code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.commit" title="google.cloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -432,15 +423,15 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column.
 Must be of the form
-<code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cell
 is located.</li>
-<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) – The value to set in the cell. If an integer is used,
+<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The value to set in the cell. If an integer is used,
 will be interpreted as a 64-bit big-endian signed
 integer (8 bytes).</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The timestamp of the operation.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The timestamp of the operation.</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -456,7 +447,7 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
@@ -469,27 +460,27 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <dl class="class">
 <dt id="google.cloud.bigtable.row.DirectRow">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row.</code><code class="descname">DirectRow</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#DirectRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigtable.row._SetDeleteRow</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.row._SetDeleteRow</span></code></p>
 <p>Google Cloud Bigtable Row for sending “direct” mutations.</p>
 <p>These mutations directly set or delete cell contents:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="google.cloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal"><span class="pre">set_cell()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete" title="google.cloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="google.cloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_cell()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete" title="google.cloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cell()</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cells()</span></code></a></li>
 </ul>
 <p>These methods can be used directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key1&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">A <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> accumulates mutations locally via the
-<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="google.cloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal"><span class="pre">set_cell()</span></code></a>, <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete" title="google.cloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a>, <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a> and
-<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a> methods. To actually send these mutations to the
-Google Cloud Bigtable API, you must call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<p class="last">A <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRow</span></code></a> accumulates mutations locally via the
+<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="google.cloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_cell()</span></code></a>, <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete" title="google.cloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a>, <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cell()</span></code></a> and
+<a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_cells()</span></code></a> methods. To actually send these mutations to the
+Google Cloud Bigtable API, you must call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -497,7 +488,7 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#go
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key for the current row.</li>
-<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
+<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
 </ul>
 </td>
 </tr>
@@ -512,7 +503,7 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#go
 <dl class="method">
 <dt id="google.cloud.bigtable.row.DirectRow.commit">
 <code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#DirectRow.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow.commit" title="Permalink to this definition">#</a></dt>
-<dd><p>Makes a <code class="docutils literal"><span class="pre">MutateRow</span></code> API request.</p>
+<dd><p>Makes a <code class="docutils literal notranslate"><span class="pre">MutateRow</span></code> API request.</p>
 <p>If no mutations have been created in the row, no request is made.</p>
 <p>Mutations are applied atomically and in order, meaning that earlier
 mutations can be masked / negated by later ones. Cells already present
@@ -523,8 +514,8 @@ mutations to an empty list.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the number of
-mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
+mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable.row.MAX_MUTATIONS" title="google.cloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal notranslate"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -539,7 +530,7 @@ mutations exceeds the <a class="reference internal" href="#google.cloud.bigtable
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 </dd></dl>
 
@@ -552,7 +543,7 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -561,10 +552,10 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column
 or columns with cells being deleted. Must be
-of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+of the form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family that will have a
 cell deleted.</li>
-<li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
+<li><strong>time_range</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
 should be deleted.</li>
 </ul>
 </td>
@@ -582,7 +573,7 @@ should be deleted.</li>
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -591,12 +582,12 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column
 or columns with cells being deleted. Must be
-of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
-<code class="xref py py-func docutils literal"><span class="pre">unicode</span></code>, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) – The columns within the column family that will have
-cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then
+of the form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> /
+<code class="xref py py-func docutils literal notranslate"><span class="pre">unicode</span></code>, or <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – The columns within the column family that will have
+cells deleted. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">ALL_COLUMNS</span></code> is used then
 the entire column family will be deleted from the row.</li>
-<li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
+<li><strong>time_range</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampRange</span></code>) – (Optional) The range of time within which cells
 should be deleted.</li>
 </ul>
 </td>
@@ -625,15 +616,15 @@ should be deleted.</li>
 <dt id="google.cloud.bigtable.row.DirectRow.set_cell">
 <code class="descname">set_cell</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>value</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#DirectRow.set_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets a value in this row.</p>
-<p>The cell is determined by the <code class="docutils literal"><span class="pre">row_key</span></code> of this <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a>
-and the <code class="docutils literal"><span class="pre">column</span></code>. The <code class="docutils literal"><span class="pre">column</span></code> must be in an existing
-<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> (as determined by <code class="docutils literal"><span class="pre">column_family_id</span></code>).</p>
+<p>The cell is determined by the <code class="docutils literal notranslate"><span class="pre">row_key</span></code> of this <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRow</span></code></a>
+and the <code class="docutils literal notranslate"><span class="pre">column</span></code>. The <code class="docutils literal notranslate"><span class="pre">column</span></code> must be in an existing
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnFamily</span></code></a> (as determined by <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method adds a mutation to the accumulated mutations on this
 row, but does not make an API request. To actually
 send an API request (with the mutations) to the Google Cloud
-Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.commit" title="google.cloud.bigtable.row.DirectRow.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a>.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -642,13 +633,13 @@ Bigtable API, call <a class="reference internal" href="#google.cloud.bigtable.ro
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The column family that contains the column.
 Must be of the form
-<code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cell
 is located.</li>
-<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) – The value to set in the cell. If an integer is used,
+<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The value to set in the cell. If an integer is used,
 will be interpreted as a 64-bit big-endian signed
 integer (8 bytes).</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The timestamp of the operation.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The timestamp of the operation.</li>
 </ul>
 </td>
 </tr>
@@ -664,7 +655,7 @@ integer (8 bytes).</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
@@ -683,14 +674,14 @@ integer (8 bytes).</li>
 <dl class="class">
 <dt id="google.cloud.bigtable.row.Row">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.row.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row.html#Row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.Row" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base representation of a Google Cloud Bigtable Row.</p>
 <p>This class has three subclasses corresponding to the three
 RPC methods for sending row mutations:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> for <code class="docutils literal"><span class="pre">MutateRow</span></code></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> for <code class="docutils literal"><span class="pre">CheckAndMutateRow</span></code></li>
-<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow" title="google.cloud.bigtable.row.AppendRow"><code class="xref py py-class docutils literal"><span class="pre">AppendRow</span></code></a> for <code class="docutils literal"><span class="pre">ReadModifyWriteRow</span></code></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectRow</span></code></a> for <code class="docutils literal notranslate"><span class="pre">MutateRow</span></code></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalRow</span></code></a> for <code class="docutils literal notranslate"><span class="pre">CheckAndMutateRow</span></code></li>
+<li><a class="reference internal" href="#google.cloud.bigtable.row.AppendRow" title="google.cloud.bigtable.row.AppendRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppendRow</span></code></a> for <code class="docutils literal notranslate"><span class="pre">ReadModifyWriteRow</span></code></li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -698,7 +689,7 @@ RPC methods for sending row mutations:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key for the current row.</li>
-<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
+<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the row.</li>
 </ul>
 </td>
 </tr>
@@ -728,7 +719,7 @@ RPC methods for sending row mutations:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
@@ -766,12 +757,12 @@ RPC methods for sending row mutations:</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
@@ -789,6 +780,7 @@ RPC methods for sending row mutations:</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -820,12 +812,14 @@ RPC methods for sending row mutations:</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -836,7 +830,7 @@ RPC methods for sending row mutations:</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

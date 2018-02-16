@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Queries &#8212; google-cloud 9de1026 documentation</title>
+    <title>Queries &#8212; google-cloud bae0f75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '9de1026',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,13 +35,13 @@
   <div class="section" id="module-google.cloud.firestore_v1beta1.query">
 <span id="queries"></span><h1>Queries<a class="headerlink" href="#module-google.cloud.firestore_v1beta1.query" title="Permalink to this headline">#</a></h1>
 <p>Classes for representing queries for the Google Cloud Firestore API.</p>
-<p>A <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> can be created directly from
-a <code class="xref py py-class docutils literal"><span class="pre">Collection</span></code> and that can be
+<p>A <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> can be created directly from
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code> and that can be
 a more common way to create a query than direct usage of the constructor.</p>
 <dl class="class">
 <dt id="google.cloud.firestore_v1beta1.query.Query">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>parent</em>, <em>projection=None</em>, <em>field_filters=()</em>, <em>orders=()</em>, <em>limit=None</em>, <em>offset=None</em>, <em>start_at=None</em>, <em>end_at=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Represents a query to the Firestore API.</p>
 <p>Instances of this class are considered immutable: all methods that
 would modify an instance instead return a new instance.</p>
@@ -73,30 +64,30 @@ query is allowed to return.</li>
 <li><strong>start_at</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>]</em><em>]</em>) – <p>Two-tuple of</p>
 <ul>
 <li>a mapping of fields. Any field that is present in this mapping
-must also be present in <code class="docutils literal"><span class="pre">orders</span></code></li>
-<li>an <code class="docutils literal"><span class="pre">after</span></code> flag</li>
+must also be present in <code class="docutils literal notranslate"><span class="pre">orders</span></code></li>
+<li>an <code class="docutils literal notranslate"><span class="pre">after</span></code> flag</li>
 </ul>
 <p>The fields and the flag combine to form a cursor used as
-a starting point in a query result set. If the <code class="docutils literal"><span class="pre">after</span></code>
-flag is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, the results will start just after any
+a starting point in a query result set. If the <code class="docutils literal notranslate"><span class="pre">after</span></code>
+flag is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>, the results will start just after any
 documents which have fields matching the cursor, otherwise
 any matching documents will be included in the result set.
 When the query is formed, the document values
-will be used in the order given by <code class="docutils literal"><span class="pre">orders</span></code>.</p>
+will be used in the order given by <code class="docutils literal notranslate"><span class="pre">orders</span></code>.</p>
 </li>
 <li><strong>end_at</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>]</em><em>]</em>) – <p>Two-tuple of</p>
 <ul>
 <li>a mapping of fields. Any field that is present in this mapping
-must also be present in <code class="docutils literal"><span class="pre">orders</span></code></li>
-<li>a <code class="docutils literal"><span class="pre">before</span></code> flag</li>
+must also be present in <code class="docutils literal notranslate"><span class="pre">orders</span></code></li>
+<li>a <code class="docutils literal notranslate"><span class="pre">before</span></code> flag</li>
 </ul>
 <p>The fields and the flag combine to form a cursor used as
-an ending point in a query result set. If the <code class="docutils literal"><span class="pre">before</span></code>
-flag is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, the results will end just before any
+an ending point in a query result set. If the <code class="docutils literal notranslate"><span class="pre">before</span></code>
+flag is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>, the results will end just before any
 documents which have fields matching the cursor, otherwise
 any matching documents will be included in the result set.
 When the query is formed, the document values
-will be used in the order given by <code class="docutils literal"><span class="pre">orders</span></code>.</p>
+will be used in the order given by <code class="docutils literal notranslate"><span class="pre">orders</span></code>.</p>
 </li>
 </ul>
 </td>
@@ -120,14 +111,14 @@ will be used in the order given by <code class="docutils literal"><span class="p
 <code class="descname">end_at</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.end_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.end_at" title="Permalink to this definition">#</a></dt>
 <dd><p>End query results at a particular document value.</p>
 <p>The result set will <strong>include</strong> the document specified by
-<code class="docutils literal"><span class="pre">document_fields</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">document_fields</span></code>.</p>
 <p>If the current query already has specified an end cursor – either
 via this method or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.end_before" title="google.cloud.firestore_v1beta1.query.Query.end_before"><code class="xref py py-meth docutils literal"><span class="pre">end_before()</span></code></a> – this will
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.end_before" title="google.cloud.firestore_v1beta1.query.Query.end_before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_before()</span></code></a> – this will
 overwrite it.</p>
-<p>When the query is sent to the server, the <code class="docutils literal"><span class="pre">document_fields</span></code> will
+<p>When the query is sent to the server, the <code class="docutils literal notranslate"><span class="pre">document_fields</span></code> will
 be used in the order given by fields set by
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a>.</p>
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -152,14 +143,14 @@ a copy of the current query, modified with the newly added
 <code class="descname">end_before</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.end_before"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.end_before" title="Permalink to this definition">#</a></dt>
 <dd><p>End query results before a particular document value.</p>
 <p>The result set will <strong>exclude</strong> the document specified by
-<code class="docutils literal"><span class="pre">document_fields</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">document_fields</span></code>.</p>
 <p>If the current query already has specified an end cursor – either
 via this method or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.end_at" title="google.cloud.firestore_v1beta1.query.Query.end_at"><code class="xref py py-meth docutils literal"><span class="pre">end_at()</span></code></a> – this will
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.end_at" title="google.cloud.firestore_v1beta1.query.Query.end_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_at()</span></code></a> – this will
 overwrite it.</p>
-<p>When the query is sent to the server, the <code class="docutils literal"><span class="pre">document_fields</span></code> will
+<p>When the query is sent to the server, the <code class="docutils literal notranslate"><span class="pre">document_fields</span></code> will
 be used in the order given by fields set by
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a>.</p>
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -183,9 +174,9 @@ a copy of the current query, modified with the newly added
 <dt id="google.cloud.firestore_v1beta1.query.Query.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the documents in the collection that match this query.</p>
-<p>This sends a <code class="docutils literal"><span class="pre">RunQuery</span></code> RPC and then consumes each document
-returned in the stream of <code class="docutils literal"><span class="pre">RunQueryResponse</span></code> messages.</p>
-<p>If a <code class="docutils literal"><span class="pre">transaction</span></code> is used and it already has write operations
+<p>This sends a <code class="docutils literal notranslate"><span class="pre">RunQuery</span></code> RPC and then consumes each document
+returned in the stream of <code class="docutils literal notranslate"><span class="pre">RunQueryResponse</span></code> messages.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">transaction</span></code> is used and it already has write operations
 added, this method cannot be used (i.e. read-after-write is not
 allowed).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -201,9 +192,9 @@ document that fulfills the query.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the first response in the stream is empty, but
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the first response in the stream is empty, but
 then more responses follow.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If a response other than the first does not contain
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If a response other than the first does not contain
 a document.</li>
 </ul>
 </td>
@@ -261,9 +252,9 @@ copy of the current query, modified with the newly added
 <dt id="google.cloud.firestore_v1beta1.query.Query.order_by">
 <code class="descname">order_by</code><span class="sig-paren">(</span><em>field_path</em>, <em>direction='ASCENDING'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.order_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="Permalink to this definition">#</a></dt>
 <dd><p>Modify the query to add an order clause on a specific field.</p>
-<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a> for
+<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">field_path()</span></code></a> for
 more information on <strong>field paths</strong>.</p>
-<p>Successive <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a> calls
+<p>Successive <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a> calls
 will further refine the ordering of results returned by the query
 (i.e. the new “order by” fields will be added to existing ones).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -271,11 +262,11 @@ will further refine the ordering of results returned by the query
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of
+<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of
 field names) on which to order the query results.</li>
 <li><strong>direction</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The direction to order by. Must be one
-of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal"><span class="pre">ASCENDING</span></code></a> or <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal"><span class="pre">DESCENDING</span></code></a>, defaults to
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal"><span class="pre">ASCENDING</span></code></a>.</li>
+of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ASCENDING</span></code></a> or <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DESCENDING</span></code></a>, defaults to
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ASCENDING</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -287,8 +278,8 @@ copy of the current query, modified with the newly added
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal"><span class="pre">direction</span></code> is not one of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal"><span class="pre">ASCENDING</span></code></a> or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal"><span class="pre">DESCENDING</span></code></a>.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">direction</span></code> is not one of <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.ASCENDING" title="google.cloud.firestore_v1beta1.query.Query.ASCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ASCENDING</span></code></a> or
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.DESCENDING" title="google.cloud.firestore_v1beta1.query.Query.DESCENDING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DESCENDING</span></code></a>.</p>
 </td>
 </tr>
 </tbody>
@@ -299,17 +290,17 @@ copy of the current query, modified with the newly added
 <dt id="google.cloud.firestore_v1beta1.query.Query.select">
 <code class="descname">select</code><span class="sig-paren">(</span><em>field_paths</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.select" title="Permalink to this definition">#</a></dt>
 <dd><p>Project documents matching query to a limited set of fields.</p>
-<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a> for
+<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">field_path()</span></code></a> for
 more information on <strong>field paths</strong>.</p>
 <p>If the current query already has a projection set (i.e. has already
-called <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.select" title="google.cloud.firestore_v1beta1.query.Query.select"><code class="xref py py-meth docutils literal"><span class="pre">select()</span></code></a>), this
+called <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.select" title="google.cloud.firestore_v1beta1.query.Query.select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select()</span></code></a>), this
 will overwrite it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field_paths</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>..</em><em>]</em>) – An iterable of field paths
-(<code class="docutils literal"><span class="pre">.</span></code>-delimited list of field names) to use as a projection
+(<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of field names) to use as a projection
 of document fields in the query results.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A “projected” query. Acts as
@@ -327,14 +318,14 @@ projection.</td>
 <code class="descname">start_after</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.start_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.start_after" title="Permalink to this definition">#</a></dt>
 <dd><p>Start query results after a particular document value.</p>
 <p>The result set will <strong>exclude</strong> the document specified by
-<code class="docutils literal"><span class="pre">document_fields</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">document_fields</span></code>.</p>
 <p>If the current query already has specified a start cursor – either
 via this method or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.start_at" title="google.cloud.firestore_v1beta1.query.Query.start_at"><code class="xref py py-meth docutils literal"><span class="pre">start_at()</span></code></a> – this will
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.start_at" title="google.cloud.firestore_v1beta1.query.Query.start_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_at()</span></code></a> – this will
 overwrite it.</p>
-<p>When the query is sent to the server, the <code class="docutils literal"><span class="pre">document_fields</span></code> will
+<p>When the query is sent to the server, the <code class="docutils literal notranslate"><span class="pre">document_fields</span></code> will
 be used in the order given by fields set by
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a>.</p>
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -359,14 +350,14 @@ a copy of the current query, modified with the newly added
 <code class="descname">start_at</code><span class="sig-paren">(</span><em>document_fields</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.start_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.start_at" title="Permalink to this definition">#</a></dt>
 <dd><p>Start query results at a particular document value.</p>
 <p>The result set will <strong>include</strong> the document specified by
-<code class="docutils literal"><span class="pre">document_fields</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">document_fields</span></code>.</p>
 <p>If the current query already has specified a start cursor – either
 via this method or
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.start_after" title="google.cloud.firestore_v1beta1.query.Query.start_after"><code class="xref py py-meth docutils literal"><span class="pre">start_after()</span></code></a> – this will
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.start_after" title="google.cloud.firestore_v1beta1.query.Query.start_after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_after()</span></code></a> – this will
 overwrite it.</p>
-<p>When the query is sent to the server, the <code class="docutils literal"><span class="pre">document_fields</span></code> will
+<p>When the query is sent to the server, the <code class="docutils literal notranslate"><span class="pre">document_fields</span></code> will
 be used in the order given by fields set by
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal"><span class="pre">order_by()</span></code></a>.</p>
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query.order_by" title="google.cloud.firestore_v1beta1.query.Query.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -390,24 +381,24 @@ a copy of the current query, modified with the newly added
 <dt id="google.cloud.firestore_v1beta1.query.Query.where">
 <code class="descname">where</code><span class="sig-paren">(</span><em>field_path</em>, <em>op_string</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/query.html#Query.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.query.Query.where" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter the query on a field.</p>
-<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a> for
+<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">field_path()</span></code></a> for
 more information on <strong>field paths</strong>.</p>
-<p>Returns a new <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> that
+<p>Returns a new <a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> that
 filters on a specific field path, according to an operation (e.g.
-<code class="docutils literal"><span class="pre">==</span></code> or “equals”) and a particular value to be paired with that
+<code class="docutils literal notranslate"><span class="pre">==</span></code> or “equals”) and a particular value to be paired with that
 operation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of
+<li><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal notranslate"><span class="pre">.</span></code>-delimited list of
 field names) for the field to filter on.</li>
 <li><strong>op_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A comparison operation in the form of a string.
-Acceptable values are <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">==</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>
-and <code class="docutils literal"><span class="pre">&gt;</span></code>.</li>
-<li><strong>value</strong> (<em>Any</em>) – The value to compare the field against in the filter.
-If <code class="docutils literal"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> or a NaN, then <code class="docutils literal"><span class="pre">==</span></code> is the only
+Acceptable values are <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>
+and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>.</li>
+<li><strong>value</strong> (<a class="reference internal" href="../bigquery_datatransfer/gapic/v1/types.html#google.cloud.bigquery_datatransfer_v1.types.Any" title="google.cloud.bigquery_datatransfer_v1.types.Any"><em>Any</em></a>) – The value to compare the field against in the filter.
+If <code class="docutils literal notranslate"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> or a NaN, then <code class="docutils literal notranslate"><span class="pre">==</span></code> is the only
 allowed operation.</li>
 </ul>
 </td>
@@ -419,8 +410,8 @@ copy of the current query, modified with the newly added filter.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal"><span class="pre">value</span></code> is a NaN or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> and
-<code class="docutils literal"><span class="pre">op_string</span></code> is not <code class="docutils literal"><span class="pre">==</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> is a NaN or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> and
+<code class="docutils literal notranslate"><span class="pre">op_string</span></code> is not <code class="docutils literal notranslate"><span class="pre">==</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -457,7 +448,7 @@ copy of the current query, modified with the newly added filter.</p>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
@@ -465,9 +456,10 @@ copy of the current query, modified with the newly added filter.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Firestore</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-firestore</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collection.html">Collections</a></li>
@@ -507,12 +499,14 @@ copy of the current query, modified with the newly added filter.</p>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -523,7 +517,7 @@ copy of the current query, modified with the newly added filter.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
