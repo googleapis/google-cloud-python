@@ -14,9 +14,9 @@
 
 """Populate spanner databases with data for streaming system tests."""
 
-from google.cloud.spanner import Client
-from google.cloud.spanner.keyset import KeySet
-from google.cloud.spanner.pool import BurstyPool
+from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1.keyset import KeySet
+from google.cloud.spanner_v1.pool import BurstyPool
 
 # Import relative to the script's directory
 from streaming_utils import FOUR_KAY
