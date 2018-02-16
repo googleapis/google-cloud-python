@@ -19,8 +19,6 @@ import os
 import re
 
 from google.auth._default import _load_credentials_from_file
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
 from google.protobuf import timestamp_pb2
 from grpc import StatusCode
 import pytest
@@ -117,7 +115,6 @@ def test_cannot_use_foreign_key(client, cleanup):
         database='dee-bee')
     assert other_client._database_string != client._database_string
     fake_doc = other_client.document('foo', 'bar')
-    # NOTE: google-gax **does not** raise a GaxError for INVALID_ARGUMENT.
     with pytest.raises(ValueError) as exc_info:
         document.create({'ref': fake_doc})
 
@@ -177,8 +174,7 @@ def test_document_set(client, cleanup):
 
     # 4. Call ``set()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option3._last_update_time, snapshot3.update_time)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-past'}, option=option3)
+    document.set({'bad': 'time-past'}, option=option3)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
@@ -188,8 +184,7 @@ def test_document_set(client, cleanup):
         nanos=snapshot3.update_time.nanos,
     )
     option5 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-future'}, option=option5)
+    document.set({'bad': 'time-future'}, option=option5)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
@@ -259,8 +254,7 @@ def test_update_document(client, cleanup):
 
     # 5. Call ``update()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option4._last_update_time, snapshot4.update_time)
-    with pytest.raises(GaxError) as exc_info:
-        document.update({'bad': 'time-past'}, option=option4)
+    document.update({'bad': 'time-past'}, option=option4)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
@@ -270,8 +264,7 @@ def test_update_document(client, cleanup):
         nanos=snapshot4.update_time.nanos,
     )
     option6 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.set({'bad': 'time-future'}, option=option6)
+    document.set({'bad': 'time-future'}, option=option6)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
@@ -336,8 +329,7 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option1 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.delete(option=option1)
+    document.delete(option=option1)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
@@ -347,8 +339,8 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option2 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
-        document.delete(option=option2)
+
+    document.delete(option=option2)
 
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 

@@ -98,8 +98,7 @@ class TestCrossLanguage(unittest.TestCase):
             firestore_api.commit.assert_called_once_with(
                 client._database_string,
                 list(tp.request.writes),
-                transaction=None,
-                options=client._call_options)
+                transaction=None)
 
 
     def setup(self, firestore_api, proto):

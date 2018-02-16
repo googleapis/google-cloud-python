@@ -20,9 +20,6 @@ import contextlib
 import datetime
 import sys
 
-import google.gax
-import google.gax.errors
-import google.gax.grpc
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import grpc
@@ -932,35 +929,3 @@ def get_transaction_id(transaction, read_operation=True):
         return transaction.id
 
 
-@contextlib.contextmanager
-def remap_gax_error_on_commit():
-    """Remap GAX exceptions that happen in context.
-
-    Remaps gRPC exceptions that can occur during the ``Comitt`` RPC to
-    the classes defined in :mod:`~google.cloud.exceptions`.
-    """
-    try:
-        yield
-    except google.gax.errors.GaxError as exc:
-        status_code = google.gax.grpc.exc_to_code(exc.cause)
-        error_class = _GRPC_ERROR_MAPPING.get(status_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
-
-
-def options_with_prefix(database_string):
-    """Create GAPIC options w / cloud resource prefix.
-
-    Args:
-        database_string (str): A database string of the form
-            ``projects/{project_id}/databases/{database_id}``.
-
-    Returns:
-        ~google.gax.CallOptions: GAPIC call options with supplied prefix.
-    """
-    return google.gax.CallOptions(
-        metadata=[('google-cloud-resource-prefix', database_string)],
-    )

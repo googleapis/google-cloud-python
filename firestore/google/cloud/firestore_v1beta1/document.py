@@ -392,10 +392,8 @@ class DocumentReference(object):
             ValueError: If the ``create_if_missing`` write option is used.
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = self._client._firestore_api.commit(
-                self._client._database_string, [write_pb], transaction=None,
-                options=self._client._call_options)
+        commit_response = self._client._firestore_api.commit(
+            self._client._database_string, [write_pb], transaction=None)
 
         return commit_response.commit_time
 
