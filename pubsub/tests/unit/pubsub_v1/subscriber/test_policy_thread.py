@@ -25,7 +25,6 @@ from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import thread
@@ -229,16 +228,3 @@ def test_on_response():
     for call in submit_calls:
         assert call[1][0] == callback
         assert isinstance(call[1][1], message.Message)
-
-    add_done_callback_calls = [
-        m for m in future.method_calls if m[0] == 'add_done_callback']
-    assert len(add_done_callback_calls) == 2
-    for call in add_done_callback_calls:
-        assert call[1][0] == thread._callback_completed
-
-
-def test__callback_completed():
-    future = mock.Mock()
-    thread._callback_completed(future)
-    result_calls = [m for m in future.method_calls if m[0] == 'result']
-    assert len(result_calls) == 1

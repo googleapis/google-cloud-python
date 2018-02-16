@@ -156,7 +156,20 @@ class BasePolicy(object):
         return max([
             len(self.managed_ack_ids) / self.flow_control.max_messages,
             self._bytes / self.flow_control.max_bytes,
+            self._consumer.pending_requests / self.flow_control.max_requests
         ])
+
+    def _maybe_resume_consumer(self):
+        """Check the current load and resume the consumer if needed."""
+        # If we have been paused by flow control, check and see if we are
+        # back within our limits.
+        #
+        # In order to not thrash too much, require us to have passed below
+        # the resume threshold (80% by default) of each flow control setting
+        # before restarting.
+        if (self._consumer.paused and
+                self._load < self.flow_control.resume_threshold):
+            self._consumer.resume()
 
     def ack(self, ack_id, time_to_ack=None, byte_size=None):
         """Acknowledge the message corresponding to the given ack_id.
@@ -216,15 +229,7 @@ class BasePolicy(object):
                     'Bytes was unexpectedly negative: %d', self._bytes)
                 self._bytes = 0
 
-        # If we have been paused by flow control, check and see if we are
-        # back within our limits.
-        #
-        # In order to not thrash too much, require us to have passed below
-        # the resume threshold (80% by default) of each flow control setting
-        # before restarting.
-        if (self._consumer.paused and
-                self._load < self.flow_control.resume_threshold):
-            self._consumer.resume()
+        self._maybe_resume_consumer()
 
     def get_initial_request(self, ack_queue=False):
         """Return the initial request.
@@ -396,6 +401,18 @@ class BasePolicy(object):
             NotImplementedError: Always
         """
         raise NotImplementedError
+
+    def on_request(self, request):
+        """Called whenever a request has been sent to gRPC.
+
+        This allows the policy to measure the rate of requests sent along the
+        stream and apply backpressure by pausing or resuming the consumer
+        if needed.
+
+        Args:
+            request (Any): The protobuf request that was sent to gRPC.
+        """
+        self._maybe_resume_consumer()
 
     @abc.abstractmethod
     def on_response(self, response):
