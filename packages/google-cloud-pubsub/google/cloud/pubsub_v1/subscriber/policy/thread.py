@@ -19,7 +19,6 @@ import logging
 import sys
 import threading
 
-import grpc
 from six.moves import queue as queue_mod
 
 from google.cloud.pubsub_v1 import types
@@ -31,19 +30,6 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
-
-
-def _callback_completed(future):
-    """Simple callback that just logs a future's result.
-
-    Used on completion of processing a message received by a
-    subscriber.
-
-    Args:
-        future (concurrent.futures.Future): A future returned
-            from :meth:`~concurrent.futures.Executor.submit`.
-    """
-    _LOGGER.debug('Result: %s', future.result())
 
 
 def _do_nothing_callback(message):
@@ -332,8 +318,7 @@ class Policy(base.BasePolicy):
         """
         for msg in response.received_messages:
             _LOGGER.debug(
-                'Using %s to process new message received:\n%r',
-                self._callback, msg)
+                'Using %s to process message with ack_id %s.',
+                self._callback, msg.ack_id)
             message = Message(msg.message, msg.ack_id, self._request_queue)
-            future = self._executor.submit(self._callback, message)
-            future.add_done_callback(_callback_completed)
+            self._executor.submit(self._callback, message)

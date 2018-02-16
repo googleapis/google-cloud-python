@@ -169,7 +169,30 @@ def test_drop_below_threshold():
     assert consumer.paused is False
 
 
-def test_load():
+def test_on_request_below_threshold():
+    """Establish that we resume a paused subscription when the pending
+    requests count is below threshold."""
+    flow_control = types.FlowControl(max_requests=100)
+    policy = create_policy(flow_control=flow_control)
+    consumer = policy._consumer
+
+    assert consumer.paused is True
+
+    pending_requests_patch = mock.patch.object(
+        consumer.__class__, 'pending_requests', new_callable=mock.PropertyMock)
+    with pending_requests_patch as pending_requests:
+        # should still be paused, not under the threshold.
+        pending_requests.return_value = 90
+        policy.on_request(None)
+        assert consumer.paused is True
+
+        # should unpause, we're under the resume threshold
+        pending_requests.return_value = 50
+        policy.on_request(None)
+        assert consumer.paused is False
+
+
+def test_load_w_lease():
     flow_control = types.FlowControl(max_messages=10, max_bytes=1000)
     policy = create_policy(flow_control=flow_control)
     consumer = policy._consumer
@@ -189,6 +212,26 @@ def test_load():
         policy.lease(ack_id='three', byte_size=1000)
         assert policy._load == 1.16
         pause.assert_called_once_with()
+
+
+def test_load_w_requests():
+    flow_control = types.FlowControl(max_bytes=100, max_requests=100)
+    policy = create_policy(flow_control=flow_control)
+    consumer = policy._consumer
+
+    pending_requests_patch = mock.patch.object(
+        consumer.__class__, 'pending_requests', new_callable=mock.PropertyMock)
+    with pending_requests_patch as pending_requests:
+        pending_requests.return_value = 0
+        assert policy._load == 0
+
+        pending_requests.return_value = 100
+        print(consumer.pending_requests)
+        assert policy._load == 1
+
+        # If bytes count is higher, it should return that.
+        policy._bytes = 110
+        assert policy._load == 1.1
 
 
 def test_modify_ack_deadline():

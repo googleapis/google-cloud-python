@@ -81,7 +81,7 @@ def test_blocking_consume_when_exiting(_LOGGER):
     # Make sure method cleanly exits.
     assert consumer._blocking_consume(None) is None
 
-    _LOGGER.debug.assert_called_once_with('Event signalled consumer exit.')
+    _LOGGER.debug.assert_called_once_with('Event signaled consumer exit.')
 
 
 class OnException(object):
