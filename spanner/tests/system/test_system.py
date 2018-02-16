@@ -1276,20 +1276,14 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         keyset = [[expected[row][0], expected[row][1]]]
         union = []
 
-        with self._db.snapshot(multi_use=True) as snapshot:
-            partitions = snapshot.partition_read(
-                self.TABLE, columns, KeySet(all_=True), index='name')
-            for partition in partitions:
-                p_results_iter = snapshot.read(
-                    self.TABLE,
-                    columns,
-                    KeySet(all_=True),
-                    index='name',
-                    partition=partition,
-                )
-                union.extend(list(p_results_iter))
+        batch_txn = self._db.batch_transaction()
+        for batch in batch_txn.generate_read_batches(
+            self.TABLE, columns, KeySet(all_=True), index='name'):
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
 
         self.assertEqual(union, expected)
+        batch_txn.close()
 
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
@@ -1542,13 +1536,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         all_data_rows = list(self._row_data(row_count))
 
         union = []
-
-        with self._db.snapshot(multi_use=True) as snapshot:
-            for partition in snapshot.partition_query(sql):
-                p_results_iter = snapshot.execute_sql(sql, partition=partition)
-                union.extend(list(p_results_iter))
+        batch_txn = self._db.batch_transaction()
+        for batch in batch_txn.generate_query_batches(sql):
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
 
         self.assertEqual(union, all_data_rows)
+        batch_txn.close()
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):

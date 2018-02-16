@@ -85,6 +85,35 @@ class KeyRange(object):
 
         return KeyRangePB(**kwargs)
 
+    def _to_dict(self):
+        """Return keyrange's state as a dict.
+
+        :rtype: dict
+        :returns: state of this instance.
+        """
+        mapping = {}
+
+        if self.start_open:
+            mapping['start_open'] = self.start_open
+
+        if self.start_closed:
+            mapping['start_closed'] = self.start_closed
+
+        if self.end_open:
+            mapping['end_open'] = self.end_open
+
+        if self.end_closed:
+            mapping['end_closed'] = self.end_closed
+
+        return mapping
+
+    def __eq__(self, other):
+        """Compare by serialized state."""
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._to_dict() == other._to_dict()
+
+
 
 class KeySet(object):
     """Identify table rows via keys / ranges.
@@ -122,3 +151,41 @@ class KeySet(object):
             kwargs['ranges'] = [krange._to_pb() for krange in self.ranges]
 
         return KeySetPB(**kwargs)
+
+    def _to_dict(self):
+        """Return keyset's state as a dict.
+
+        The result can be used to serialize the instance and reconstitute
+        it later using :meth:`_from_dict`.
+
+        :rtype: dict
+        :returns: state of this instance.
+        """
+        if self.all_:
+            return {'all': True}
+
+        return {
+            'keys': self.keys,
+            'ranges': [keyrange._to_dict() for keyrange in self.ranges],
+        }
+
+    def __eq__(self, other):
+        """Compare by serialized state."""
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._to_dict() == other._to_dict()
+
+    @classmethod
+    def _from_dict(cls, mapping):
+        """Create an instance from the corresponding state mapping.
+
+        :type mapping: dict
+        :param mapping: the instance state.
+        """
+        if mapping.get('all'):
+            return cls(all_=True)
+
+        r_mappings = mapping.get('ranges', ())
+        ranges = [KeyRange(**r_mapping) for r_mapping in r_mappings]
+
+        return cls(keys=mapping.get('keys', ()), ranges=ranges)
