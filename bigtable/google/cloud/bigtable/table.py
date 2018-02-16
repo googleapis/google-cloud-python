@@ -15,6 +15,9 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
+from grpc import StatusCode
+
+
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
@@ -32,7 +35,6 @@ from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
-from grpc import StatusCode
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):

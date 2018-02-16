@@ -254,24 +254,6 @@ class TestYieldRowsData(unittest.TestCase):
 
     def test_state_new_row_w_row(self):
         yrd = self._make_one([])
-        chunk = _ReadRowsResponseCellChunkPB(
-            row_key=self.ROW_KEY,
-            family_name=self.FAMILY_NAME,
-            qualifier=self.QUALIFIER,
-            timestamp_micros=self.TIMESTAMP_MICROS,
-            value=self.VALUE,
-            commit_row=True,
-        )
-        chunks = [chunk]
-
-        response = _ReadRowsResponseV2(chunks)
-        iterator = _MockCancellableIterator(response)
-        yrd._response_iterator = iterator
-        rows = [row for row in yrd.read_rows()]
-
-        result = rows[0]
-        self.assertEqual(result.row_key, self.ROW_KEY)
-
         yrd._last_scanned_row_key = ''
         yrd._row = object()
         self.assertEqual(yrd.state, yrd.NEW_ROW)
