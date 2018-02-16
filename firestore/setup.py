@@ -57,7 +57,7 @@ REQUIREMENTS = [
 
 setuptools.setup(
     name='google-cloud-firestore',
-    version='0.28.1.dev1',
+    version='0.29.0',
     description='Python Client for Google Cloud Firestore',
     long_description=README,
     namespace_packages=[
