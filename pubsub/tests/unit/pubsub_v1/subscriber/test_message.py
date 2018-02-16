@@ -19,6 +19,7 @@ from six.moves import queue
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
+from google.cloud.pubsub_v1.subscriber.policy import base
 
 
 def create_message(data, ack_id='ACKID', **attrs):
@@ -53,53 +54,52 @@ def test_publish_time():
 def test_ack():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
-        with mock.patch.object(message.Message, 'drop') as drop:
-            msg.ack()
-            put.assert_called_once_with(('ack', {
-                'ack_id': 'bogus_ack_id',
-                'byte_size': 25,
-                'time_to_ack': mock.ANY,
-            }))
+        msg.ack()
+        put.assert_called_once_with(base.AckRequest(
+            ack_id='bogus_ack_id',
+            byte_size=25,
+            time_to_ack=mock.ANY,
+        ))
 
 
 def test_drop():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.drop()
-        put.assert_called_once_with(('drop', {
-            'ack_id': 'bogus_ack_id',
-            'byte_size': 25,
-        }))
+        put.assert_called_once_with(base.DropRequest(
+            ack_id='bogus_ack_id',
+            byte_size=25,
+        ))
 
 
 def test_lease():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.lease()
-        put.assert_called_once_with(('lease', {
-            'ack_id': 'bogus_ack_id',
-            'byte_size': 25,
-        }))
+        put.assert_called_once_with(base.LeaseRequest(
+            ack_id='bogus_ack_id',
+            byte_size=25,
+        ))
 
 
 def test_modify_ack_deadline():
-    msg = create_message(b'foo', ack_id='bogus_id')
+    msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.modify_ack_deadline(60)
-        put.assert_called_once_with(('modify_ack_deadline', {
-            'ack_id': 'bogus_id',
-            'seconds': 60,
-        }))
+        put.assert_called_once_with(base.ModAckRequest(
+            ack_id='bogus_ack_id',
+            seconds=60,
+        ))
 
 
 def test_nack():
-    msg = create_message(b'foo', ack_id='bogus_id')
+    msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.nack()
-        put.assert_called_once_with(('nack', {
-            'ack_id': 'bogus_id',
-            'byte_size': 25,
-        }))
+        put.assert_called_once_with(base.NackRequest(
+            ack_id='bogus_ack_id',
+            byte_size=25,
+        ))
 
 
 def test_repr():
