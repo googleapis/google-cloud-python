@@ -32,6 +32,7 @@ from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
+from google.cloud.bigtable.row import _retry_commit_exception
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 from grpc import StatusCode
@@ -345,25 +346,14 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-        client = self._instance._client
 
-        if retry:
-            retryable_read_rows = _RetryableReadRows(
-                client, self.name, start_key, end_key, filter_, limit)
+        retryable_read_rows = _RetryableReadRows(
+            self._instance._client, self.name, start_key,
+            end_key, filter_, limit, retry)
 
-            for row in retryable_read_rows().read_rows():
-                retryable_read_rows.last_scanned_key = row.row_key
-                yield row
-
-        else:
-            request_pb = _create_row_request(
-                self.name, start_key=start_key, end_key=end_key,
-                filter_=filter_, limit=limit)
-            response_iterator = client._data_stub.ReadRows(request_pb)
-            generator = YieldRowsData(response_iterator)
-
-            for row in generator.read_rows():
-                yield row
+        for row in retryable_read_rows().read_rows():
+            retryable_read_rows.last_scanned_key = row.row_key
+            yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -552,22 +542,24 @@ class _RetryableReadRows(object):
     """
 
     def __init__(self, client, table_name, last_scanned_key,
-                 end_key, filter_, limit):
+                 end_key, filter_, limit, retry):
         self.client = client
         self.table_name = table_name
         self.last_scanned_key = last_scanned_key
         self.end_key = end_key
         self.filter_ = filter_
         self.limit = limit
+        self.retry = retry
 
     def __call__(self):
-        from google.cloud.bigtable.row import _retry_commit_exception
-
-        read_rows = functools.partial(self._do_read_retryable_rows)
-        retry_ = Retry(
-            predicate=_retry_commit_exception,
-            deadline=30)
-        return retry_(read_rows)()
+        if self.retry:
+            read_rows = functools.partial(self._do_read_retryable_rows)
+            retry_ = Retry(
+                predicate=_retry_commit_exception,
+                deadline=30)
+            return retry_(read_rows)()
+        else:
+            return self._do_read_retryable_rows()
 
     def _do_read_retryable_rows(self):
         request_pb = _create_row_request(
