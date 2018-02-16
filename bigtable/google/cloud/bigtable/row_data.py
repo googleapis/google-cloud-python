@@ -381,17 +381,15 @@ class YieldRowsData(object):
 
     def _validate_cell_data_new_row(self, cell):
         if (not cell.row_key or
-                not cell.family_name or
-                    cell.qualifier is None):
+                not cell.family_name or cell.qualifier is None):
             raise InvalidChunk()
 
         if (self._previous_row is not None and
-                    cell.row_key <= self._previous_row.row_key):
+                cell.row_key <= self._previous_row.row_key):
             raise InvalidChunk()
 
     def _validate_cell_data_row_in_progress(self, cell):
-        if ((cell.row_key and
-                     cell.row_key != self._row.row_key) or
+        if ((cell.row_key and cell.row_key != self._row.row_key) or
                 (cell.family_name and cell.qualifier is None)):
             raise InvalidChunk()
 
