@@ -375,8 +375,7 @@ class YieldRowsData(object):
     def _validate_cell_data(self, cell):
         if self._state == self.STATE_ROW_IN_PROGRESS:
             self._validate_cell_data_row_in_progress(cell)
-
-        if self._state == self.STATE_NEW_ROW:
+        elif self._state == self.STATE_NEW_ROW:
             self._validate_cell_data_new_row(cell)
 
     def _validate_cell_data_new_row(self, cell):
