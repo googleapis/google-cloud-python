@@ -17,6 +17,8 @@
 
 import functools
 
+from grpc import StatusCode
+
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
@@ -29,13 +31,12 @@ from google.cloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.row import _retry_commit_exception
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
-from google.cloud.bigtable.row import _retry_commit_exception
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
-from grpc import StatusCode
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
@@ -320,7 +321,7 @@ class Table(object):
         return PartialRowsData(response_iterator)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None, retry=False):
+                   filter_=None, retry=True):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -342,6 +343,9 @@ class Table(object):
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
+
+        :type retry: bool
+        :param retry: (Optional) Apply retry on read rows.
 
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
