@@ -300,24 +300,11 @@ class TestYieldRowsData(unittest.TestCase):
         self.assertEqual(chunk.timestamp_micros, TIMESTAMP_MICROS)
         self.assertEqual(chunk.labels, LABELS)
 
-    def test__copy_from_current_empty_chunk(self):
-        yrd = self._make_one([])
-        yrd._cell = _PartialCellData()
-        chunks = _generate_cell_chunks([''])
-        chunk = chunks[0]
-        yrd._copy_from_current(chunk)
-        self.assertEqual(chunk.row_key, b'')
-        self.assertEqual(chunk.family_name.value, '')
-        self.assertEqual(chunk.qualifier.value, b'')
-        self.assertEqual(chunk.timestamp_micros, 0)
-        self.assertEqual(chunk.labels, [])
-
     def test__copy_from_previous_unset(self):
         yrd = self._make_one([])
         cell = _PartialCellData()
-        cell.qualifier = None
         yrd._copy_from_previous(cell)
-        self.assertEqual(cell.row_key, b'')
+        self.assertEqual(cell.row_key, '')
         self.assertEqual(cell.family_name, u'')
         self.assertIsNone(cell.qualifier)
         self.assertEqual(cell.timestamp_micros, 0)
@@ -346,9 +333,9 @@ class TestYieldRowsData(unittest.TestCase):
         self.assertEqual(cell.labels, LABELS)
 
     def test__copy_from_previous_filled(self):
-        ROW_KEY = b'RK'
+        ROW_KEY = 'RK'
         FAMILY_NAME = u'A'
-        QUALIFIER = b''
+        QUALIFIER = b'C'
         TIMESTAMP_MICROS = 100
         LABELS = ['L1', 'L2']
         yrd = self._make_one([])
@@ -394,6 +381,33 @@ class TestYieldRowsData(unittest.TestCase):
         yrd = self._make_one(iterator)
         with self.assertRaises(InvalidChunk):
             self._consume_all(yrd)
+
+    def test_state_cell_in_progress(self):
+        LABELS = ['L1', 'L2']
+
+        yrd = self._make_one([])
+        yrd._last_scanned_row_key = ''
+        yrd._row = object()
+        cell = _PartialCellData(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            labels=LABELS
+        )
+
+        yrd._cell = cell
+        more_cell_data = _PartialCellData(
+            value=self.VALUE
+        )
+
+        yrd._validate_cell_data(more_cell_data)
+
+        self.assertEqual(more_cell_data.row_key, self.ROW_KEY)
+        self.assertEqual(more_cell_data.family_name, self.FAMILY_NAME)
+        self.assertEqual(more_cell_data.qualifier, self.QUALIFIER)
+        self.assertEqual(more_cell_data.timestamp_micros, self.TIMESTAMP_MICROS)
+        self.assertEqual(more_cell_data.labels, LABELS)
 
     def test_yield_rows_data(self):
         from google.cloud.bigtable.row_data import YieldRowsData
@@ -682,9 +696,9 @@ class _MockCancellableIterator(object):
 
 class _PartialCellData(object):
 
-    row_key = b''
+    row_key = ''
     family_name = u''
-    qualifier = b''
+    qualifier = None
     timestamp_micros = 0
 
     def __init__(self, **kw):

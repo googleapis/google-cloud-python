@@ -375,8 +375,10 @@ class YieldRowsData(object):
     def _validate_cell_data(self, cell):
         if self._state == self.STATE_ROW_IN_PROGRESS:
             self._validate_cell_data_row_in_progress(cell)
-        elif self._state == self.STATE_NEW_ROW:
+        if self._state == self.STATE_NEW_ROW:
             self._validate_cell_data_new_row(cell)
+        if self._state == self.STATE_CELL_IN_PROGRESS:
+            self._copy_from_current(cell)
 
     def _validate_cell_data_new_row(self, cell):
         if (not cell.row_key or
@@ -414,20 +416,20 @@ class YieldRowsData(object):
         qualified.append(complete)
         self._cell, self._previous_cell = None, cell
 
-    def _copy_from_current(self, chunk):
-        """Helper for :meth:`consume_next`."""
+    def _copy_from_current(self, cell):
         current = self._cell
         if current is not None:
-            if not chunk.row_key:
-                chunk.row_key = current.row_key
-            if not chunk.HasField('family_name'):
-                chunk.family_name.value = current.family_name
-            if not chunk.HasField('qualifier'):
-                chunk.qualifier.value = current.qualifier
-            if not chunk.timestamp_micros:
-                chunk.timestamp_micros = current.timestamp_micros
-            if not chunk.labels:
-                chunk.labels.extend(current.labels)
+            if not cell.row_key:
+                cell.row_key = current.row_key
+            if not cell.family_name:
+                cell.family_name = current.family_name
+            # NOTE: ``cell.qualifier`` **can** be empty string.
+            if cell.qualifier is None:
+                cell.qualifier = current.qualifier
+            if not cell.timestamp_micros:
+                cell.timestamp_micros = current.timestamp_micros
+            if not cell.labels:
+                cell.labels.extend(current.labels)
 
     def _copy_from_previous(self, cell):
         """Helper for :meth:`consume_next`."""
