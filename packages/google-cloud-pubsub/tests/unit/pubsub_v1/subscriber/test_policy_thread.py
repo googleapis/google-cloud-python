@@ -27,6 +27,7 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.futures import Future
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -138,30 +139,19 @@ def test_open_already_open():
     assert exc_info.value.args == ('This policy has already been opened.',)
 
 
-def test_dispatch_callback_valid_actions():
+@pytest.mark.parametrize('item,method', [
+    (base.AckRequest(0, 0, 0), 'ack'),
+    (base.DropRequest(0, 0), 'drop'),
+    (base.LeaseRequest(0, 0), 'lease'),
+    (base.ModAckRequest(0, 0), 'modify_ack_deadline'),
+    (base.NackRequest(0, 0), 'nack')
+])
+def test_dispatch_callback_valid(item, method):
     policy = create_policy()
-    kwargs = {'foo': 10, 'bar': 13.37}
-    actions = (
-        'ack',
-        'drop',
-        'lease',
-        'modify_ack_deadline',
-        'nack',
-    )
-    for action in actions:
-        with mock.patch.object(policy, action) as mocked:
-            policy.dispatch_callback(action, kwargs)
-            mocked.assert_called_once_with(**kwargs)
-
-
-def test_dispatch_callback_invalid_action():
-    policy = create_policy()
-    with pytest.raises(ValueError) as exc_info:
-        policy.dispatch_callback('gecko', {})
-
-    assert len(exc_info.value.args) == 3
-    assert exc_info.value.args[0] == 'Unexpected action'
-    assert exc_info.value.args[1] == 'gecko'
+    with mock.patch.object(policy, method) as mocked:
+        items = [item]
+        policy.dispatch_callback(items)
+        mocked.assert_called_once_with([item])
 
 
 def test_on_exception_deadline_exceeded():

@@ -17,6 +17,7 @@
 from __future__ import absolute_import, division
 
 import abc
+import collections
 import logging
 import random
 import time
@@ -30,6 +31,33 @@ from google.cloud.pubsub_v1.subscriber import _histogram
 
 
 _LOGGER = logging.getLogger(__name__)
+
+# Namedtuples for management requests. Used by the Message class to communicate
+# items of work back to the policy.
+AckRequest = collections.namedtuple(
+    'AckRequest',
+    ['ack_id', 'byte_size', 'time_to_ack'],
+)
+
+DropRequest = collections.namedtuple(
+    'DropRequest',
+    ['ack_id', 'byte_size'],
+)
+
+LeaseRequest = collections.namedtuple(
+    'LeaseRequest',
+    ['ack_id', 'byte_size'],
+)
+
+ModAckRequest = collections.namedtuple(
+    'ModAckRequest',
+    ['ack_id', 'seconds'],
+)
+
+NackRequest = collections.namedtuple(
+    'NackRequest',
+    ['ack_id', 'byte_size'],
+)
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -167,36 +195,39 @@ class BasePolicy(object):
         # In order to not thrash too much, require us to have passed below
         # the resume threshold (80% by default) of each flow control setting
         # before restarting.
-        if (self._consumer.paused and
-                self._load < self.flow_control.resume_threshold):
-            self._consumer.resume()
+        if not self._consumer.paused:
+            return
 
-    def ack(self, ack_id, time_to_ack=None, byte_size=None):
-        """Acknowledge the message corresponding to the given ack_id.
+        if self._load < self.flow_control.resume_threshold:
+            self._consumer.resume()
+        else:
+            _LOGGER.debug('Did not resume, current load is %s', self._load)
+
+    def ack(self, items):
+        """Acknowledge the given messages.
 
         Args:
-            ack_id (str): The ack ID.
-            time_to_ack (int): The time it took to ack the message, measured
-                from when it was received from the subscription. This is used
-                to improve the automatic ack timing.
-            byte_size (int): The size of the PubSub message, in bytes.
+            items(Sequence[AckRequest]): The items to acknowledge.
         """
         # If we got timing information, add it to the histogram.
-        if time_to_ack is not None:
-            self.histogram.add(int(time_to_ack))
+        for item in items:
+            time_to_ack = item.time_to_ack
+            if time_to_ack is not None:
+                self.histogram.add(int(time_to_ack))
 
+        ack_ids = [item.ack_id for item in items]
         if self._consumer.active:
             # Send the request to ack the message.
-            request = types.StreamingPullRequest(ack_ids=[ack_id])
+            request = types.StreamingPullRequest(ack_ids=ack_ids)
             self._consumer.send_request(request)
         else:
-            # If the consumer is inactive, then queue the ack_id here; it
+            # If the consumer is inactive, then queue the ack_ids here; it
             # will be acked as part of the initial request when the consumer
             # is started again.
-            self._ack_on_resume.add(ack_id)
+            self._ack_on_resume.update(ack_ids)
 
         # Remove the message from lease management.
-        self.drop(ack_id=ack_id, byte_size=byte_size)
+        self.drop(items)
 
     def call_rpc(self, request_generator):
         """Invoke the Pub/Sub streaming pull RPC.
@@ -212,22 +243,25 @@ class BasePolicy(object):
         """
         return self._client.api.streaming_pull(request_generator)
 
-    def drop(self, ack_id, byte_size):
-        """Remove the given ack ID from lease management.
+    def drop(self, items):
+        """Remove the given messages from lease management.
 
         Args:
-            ack_id (str): The ack ID.
-            byte_size (int): The size of the PubSub message, in bytes.
+            items(Sequence[DropRequest]): The items to drop.
         """
         # Remove the ack ID from lease management, and decrement the
         # byte counter.
-        if ack_id in self.managed_ack_ids:
-            self.managed_ack_ids.remove(ack_id)
-            self._bytes -= byte_size
-            if self._bytes < 0:
-                _LOGGER.debug(
-                    'Bytes was unexpectedly negative: %d', self._bytes)
-                self._bytes = 0
+        for item in items:
+            if item.ack_id in self.managed_ack_ids:
+                self.managed_ack_ids.remove(item.ack_id)
+                self._bytes -= item.byte_size
+            else:
+                _LOGGER.debug('Item %s wasn\'t managed', item.ack_id)
+
+        if self._bytes < 0:
+            _LOGGER.debug(
+                'Bytes was unexpectedly negative: %d', self._bytes)
+            self._bytes = 0
 
         self._maybe_resume_consumer()
 
@@ -278,18 +312,21 @@ class BasePolicy(object):
         # Return the initial request.
         return request
 
-    def lease(self, ack_id, byte_size):
-        """Add the given ack ID to lease management.
+    def lease(self, items):
+        """Add the given messages to lease management.
 
         Args:
-            ack_id (str): The ack ID.
-            byte_size (int): The size of the PubSub message, in bytes.
+            items(Sequence[LeaseRequest]): The items to lease.
         """
-        # Add the ack ID to the set of managed ack IDs, and increment
-        # the size counter.
-        if ack_id not in self.managed_ack_ids:
-            self.managed_ack_ids.add(ack_id)
-            self._bytes += byte_size
+        for item in items:
+            # Add the ack ID to the set of managed ack IDs, and increment
+            # the size counter.
+            if item.ack_id not in self.managed_ack_ids:
+                self.managed_ack_ids.add(item.ack_id)
+                self._bytes += item.byte_size
+            else:
+                _LOGGER.debug(
+                    'Message %s is already lease managed', item.ack_id)
 
         # Sanity check: Do we have too many things in our inventory?
         # If we do, we need to stop the stream.
@@ -351,28 +388,32 @@ class BasePolicy(object):
             _LOGGER.debug('Snoozing lease management for %f seconds.', snooze)
             time.sleep(snooze)
 
-    def modify_ack_deadline(self, ack_id, seconds):
-        """Modify the ack deadline for the given ack_id.
+    def modify_ack_deadline(self, items):
+        """Modify the ack deadline for the given messages.
 
         Args:
-            ack_id (str): The ack ID
-            seconds (int): The number of seconds to set the new deadline to.
+            items(Sequence[ModAckRequest]): The items to modify.
         """
+        ack_ids = [item.ack_id for item in items]
+        seconds = [item.seconds for item in items]
+
         request = types.StreamingPullRequest(
-            modify_deadline_ack_ids=[ack_id],
-            modify_deadline_seconds=[seconds],
+            modify_deadline_ack_ids=ack_ids,
+            modify_deadline_seconds=seconds,
         )
         self._consumer.send_request(request)
 
-    def nack(self, ack_id, byte_size=None):
-        """Explicitly deny receipt of a message.
+    def nack(self, items):
+        """Explicitly deny receipt of messages.
 
         Args:
-            ack_id (str): The ack ID.
-            byte_size (int): The size of the PubSub message, in bytes.
+            items(Sequence[NackRequest]): The items to deny.
         """
-        self.modify_ack_deadline(ack_id=ack_id, seconds=0)
-        self.drop(ack_id=ack_id, byte_size=byte_size)
+        self.modify_ack_deadline([
+            ModAckRequest(ack_id=item.ack_id, seconds=0)
+            for item in items])
+        self.drop(
+            [DropRequest(*item) for item in items])
 
     @abc.abstractmethod
     def close(self):

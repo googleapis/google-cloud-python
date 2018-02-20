@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import collections
 from concurrent import futures
 import logging
 import sys
@@ -30,6 +31,13 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
+_VALID_ACTIONS = frozenset([
+    'ack',
+    'drop',
+    'lease',
+    'modify_ack_deadline',
+    'nack',
+])
 
 
 def _do_nothing_callback(message):
@@ -185,6 +193,8 @@ class Policy(base.BasePolicy):
         dispatch_worker = _helper_threads.QueueCallbackWorker(
             self._request_queue,
             self.dispatch_callback,
+            max_items=self.flow_control.max_request_batch_size,
+            max_latency=self.flow_control.max_request_batch_latency
         )
         # Create and start the helper thread.
         thread = threading.Thread(
@@ -261,7 +271,7 @@ class Policy(base.BasePolicy):
         # Return the future.
         return self._future
 
-    def dispatch_callback(self, action, kwargs):
+    def dispatch_callback(self, items):
         """Map the callback request to the appropriate gRPC request.
 
         Args:
@@ -273,21 +283,26 @@ class Policy(base.BasePolicy):
             ValueError: If ``action`` isn't one of the expected actions
                 "ack", "drop", "lease", "modify_ack_deadline" or "nack".
         """
-        if action == 'ack':
-            self.ack(**kwargs)
-        elif action == 'drop':
-            self.drop(**kwargs)
-        elif action == 'lease':
-            self.lease(**kwargs)
-        elif action == 'modify_ack_deadline':
-            self.modify_ack_deadline(**kwargs)
-        elif action == 'nack':
-            self.nack(**kwargs)
-        else:
-            raise ValueError(
-                'Unexpected action', action,
-                'Must be one of "ack", "drop", "lease", '
-                '"modify_ack_deadline" or "nack".')
+        batched_commands = collections.defaultdict(list)
+
+        for item in items:
+            batched_commands[item.__class__].append(item)
+
+        _LOGGER.debug('Handling %d batched requests', len(items))
+
+        if batched_commands[base.LeaseRequest]:
+            self.lease(batched_commands.pop(base.LeaseRequest))
+        if batched_commands[base.ModAckRequest]:
+            self.modify_ack_deadline(
+                batched_commands.pop(base.ModAckRequest))
+        # Note: Drop and ack *must* be after lease. It's possible to get both
+        # the lease the and ack/drop request in the same batch.
+        if batched_commands[base.AckRequest]:
+            self.ack(batched_commands.pop(base.AckRequest))
+        if batched_commands[base.NackRequest]:
+            self.nack(batched_commands.pop(base.NackRequest))
+        if batched_commands[base.DropRequest]:
+            self.drop(batched_commands.pop(base.DropRequest))
 
     def on_exception(self, exception):
         """Handle the exception.
