@@ -21,6 +21,15 @@ import six
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
 
+_MISSING_COLUMN_FAMILY = (
+    'Column family {} is not among the cells stored in this row.')
+_MISSING_COLUMN = (
+    'Column {} is not among the cells stored in this row in the '
+    'column family {}.')
+_MISSING_INDEX = (
+    'Index {!r} is not valid for the cells stored in this row for column {} '
+    'in the column family {}. There are {} such cells.')
+
 
 class Cell(object):
     """Representation of a Google Cloud Bigtable Cell.
@@ -174,6 +183,103 @@ class PartialRowData(object):
         :returns: The current (partial) row's key.
         """
         return self._row_key
+
+    def _find_cells(self, column_family_id, column):
+        """Get a time series of cells stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+
+        Returns:
+            List[~google.cloud.bigtable.row_data.Cell]: The cells stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        try:
+            column_family = self._cells[column_family_id]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
+
+        try:
+            cells = column_family[column]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+
+        return cells
+
+    def cell_value(self, column_family_id, column, index=0):
+        """Get a single cell value stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cell
+                is located.
+            index (Optional[int]): The offset within the series of values. If
+                not specified, will return the first cell.
+
+        Returns:
+            ~google.cloud.bigtable.row_data.Cell value: The cell value stored
+            in the specified column and specified index.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+            IndexError: If ``index`` cannot be found within the cells stored
+                in this row for the given ``column_family_id``, ``column``
+                pair.
+        """
+        cells = self._find_cells(column_family_id, column)
+
+        try:
+            cell = cells[index]
+        except (TypeError, IndexError):
+            num_cells = len(cells)
+            msg = _MISSING_INDEX.format(
+                index, column, column_family_id, num_cells)
+            raise IndexError(msg)
+
+        return cell.value
+
+    def cell_values(self, column_family_id, column, max_count=-1):
+        """Get a time series of cells stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+            max_count (int): The maximum number of cells to use.
+
+        Returns:
+            A generator which provides: cell.value, cell.timestamp_micros
+                for each cell in the list of cells
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        cells = self._find_cells(column_family_id, column)
+        if max_count == -1:
+            max_count = len(cells)
+
+        for index, cell in enumerate(cells):
+            if index == max_count:
+                break
+
+            yield cell.value, cell.timestamp_micros
 
 
 class InvalidReadRowsResponse(RuntimeError):
