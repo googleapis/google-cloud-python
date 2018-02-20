@@ -13,13 +13,7 @@
 # limitations under the License.
 
 
-import datetime
-import json
-import operator
-import os
 import unittest
-
-import mock
 
 
 class TestCell(unittest.TestCase):
