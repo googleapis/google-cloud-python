@@ -6,7 +6,7 @@
   <head>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud e3c4002 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 9d74276 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../../../_static/documentation_options.js"></script>
@@ -47,6 +47,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="k">import</span> <span class="n">futures</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -63,6 +64,13 @@
 
 <span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_CALLBACK_WORKER_NAME</span> <span class="o">=</span> <span class="s1">&#39;Thread-Consumer-CallbackRequestsWorker&#39;</span>
+<span class="n">_VALID_ACTIONS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
+    <span class="s1">&#39;ack&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;drop&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;lease&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;modify_ack_deadline&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;nack&#39;</span><span class="p">,</span>
+<span class="p">])</span>
 
 
 <span class="k">def</span> <span class="nf">_do_nothing_callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
@@ -218,6 +226,8 @@
         <span class="n">dispatch_worker</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackWorker</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_callback</span><span class="p">,</span>
+            <span class="n">max_items</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flow_control</span><span class="o">.</span><span class="n">max_request_batch_size</span><span class="p">,</span>
+            <span class="n">max_latency</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flow_control</span><span class="o">.</span><span class="n">max_request_batch_latency</span>
         <span class="p">)</span>
         <span class="c1"># Create and start the helper thread.</span>
         <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
@@ -294,7 +304,7 @@
         <span class="c1"># Return the future.</span></div>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span>
 
-    <span class="k">def</span> <span class="nf">dispatch_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate gRPC request.</span>
 
 <span class="sd">        Args:</span>
@@ -306,21 +316,26 @@
 <span class="sd">            ValueError: If ``action`` isn&#39;t one of the expected actions</span>
 <span class="sd">                &quot;ack&quot;, &quot;drop&quot;, &quot;lease&quot;, &quot;modify_ack_deadline&quot; or &quot;nack&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;ack&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;drop&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;lease&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;modify_ack_deadline&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;nack&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">nack</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Unexpected action&#39;</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span>
-                <span class="s1">&#39;Must be one of &quot;ack&quot;, &quot;drop&quot;, &quot;lease&quot;, &#39;</span>
-                <span class="s1">&#39;&quot;modify_ack_deadline&quot; or &quot;nack&quot;.&#39;</span><span class="p">)</span>
+        <span class="n">batched_commands</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">batched_commands</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="vm">__class__</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Handling </span><span class="si">%d</span><span class="s1"> batched requests&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">batched_commands</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">(</span><span class="n">batched_commands</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">batched_commands</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">ModAckRequest</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span>
+                <span class="n">batched_commands</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">ModAckRequest</span><span class="p">))</span>
+        <span class="c1"># Note: Drop and ack *must* be after lease. It&#39;s possible to get both</span>
+        <span class="c1"># the lease the and ack/drop request in the same batch.</span>
+        <span class="k">if</span> <span class="n">batched_commands</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">AckRequest</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="n">batched_commands</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">AckRequest</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">batched_commands</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">NackRequest</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nack</span><span class="p">(</span><span class="n">batched_commands</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">NackRequest</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">batched_commands</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">DropRequest</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">batched_commands</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">DropRequest</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle the exception.</span>
