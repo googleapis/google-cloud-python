@@ -221,7 +221,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
             tzinfo=UTC)
         self.ETAG = 'ETAG'
-        self.TABLE_FULL_ID = '%s:%s:%s' % (
+        self.TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
@@ -469,7 +469,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
-        TABLE_FULL_ID = '%s:%s:%s' % (
+        TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
@@ -621,7 +621,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
@@ -652,7 +652,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_with_encryption(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
@@ -864,7 +864,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'coffee_table'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
@@ -887,7 +887,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertEqual(
             table.full_table_id,
-            '{}:{}:{}'.format(project, dataset_id, table_id))
+            '{}:{}.{}'.format(project, dataset_id, table_id))
         self.assertEqual(table.reference.project, project)
         self.assertEqual(table.reference.dataset_id, dataset_id)
         self.assertEqual(table.reference.table_id, table_id)
@@ -904,7 +904,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'just_looking'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
@@ -919,7 +919,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertEqual(
             table.full_table_id,
-            '{}:{}:{}'.format(project, dataset_id, table_id))
+            '{}:{}.{}'.format(project, dataset_id, table_id))
         self.assertEqual(table.reference.project, project)
         self.assertEqual(table.reference.dataset_id, dataset_id)
         self.assertEqual(table.reference.table_id, table_id)
