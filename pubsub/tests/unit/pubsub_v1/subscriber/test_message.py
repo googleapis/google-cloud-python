@@ -51,6 +51,29 @@ def test_publish_time():
     assert msg.publish_time == types.Timestamp(seconds=1335020400 - 86400)
 
 
+def check_call_types(mock, *args, **kwargs):
+    """Checks a mock's call types.
+
+    Args:
+        mock: The mock to check.
+        args: The types of the positional arguments.
+        kwargs: The names of the keyword args to check and their respective
+            types.
+
+    Raises:
+        AssertionError: if any of the types don't match, or if the number of
+            arguments does not match.
+    """
+    for call in mock.mock_calls:
+        _, call_args, call_kwargs = call
+        assert len(call_args) == len(args)
+        for n, argtype in enumerate(args):
+            assert isinstance(call_args[n], argtype)
+        for argname, argtype in kwargs:
+            assert argname in call_kwargs
+            assert isinstance(call_kwargs[argname], argtype)
+
+
 def test_ack():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
@@ -60,6 +83,7 @@ def test_ack():
             byte_size=25,
             time_to_ack=mock.ANY,
         ))
+        check_call_types(put, base.AckRequest)
 
 
 def test_drop():
@@ -70,6 +94,7 @@ def test_drop():
             ack_id='bogus_ack_id',
             byte_size=25,
         ))
+        check_call_types(put, base.DropRequest)
 
 
 def test_lease():
@@ -80,6 +105,7 @@ def test_lease():
             ack_id='bogus_ack_id',
             byte_size=25,
         ))
+        check_call_types(put, base.LeaseRequest)
 
 
 def test_modify_ack_deadline():
@@ -90,6 +116,7 @@ def test_modify_ack_deadline():
             ack_id='bogus_ack_id',
             seconds=60,
         ))
+        check_call_types(put, base.ModAckRequest)
 
 
 def test_nack():
@@ -100,6 +127,7 @@ def test_nack():
             ack_id='bogus_ack_id',
             byte_size=25,
         ))
+        check_call_types(put, base.NackRequest)
 
 
 def test_repr():
