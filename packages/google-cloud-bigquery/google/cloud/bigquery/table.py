@@ -450,7 +450,7 @@ class Table(object):
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+        """ID for the table, in the form ``project_id:dataset_id.table_id``.
 
         :rtype: str, or ``NoneType``
         :returns: the full ID (None until set from the server).
@@ -908,7 +908,7 @@ class TableListItem(object):
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+        """ID for the table, in the form ``project_id:dataset_id.table_id``.
 
         Returns:
             str: The fully-qualified ID of the table
