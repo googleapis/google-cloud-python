@@ -103,5 +103,32 @@ def add_characters(client=None):
                                                    character['family']))
 
 
+def add_uid_keys():
+    with self.CLIENT.batch() as batch:
+        for index in range(1000):
+            uid = str(uuid.uuid4())
+            key = self.CLIENT.key('uuid_key', uid)
+            entity = datastore.Entity(key=key)
+            batch.put(entity)
+
+
+def add_uid_keys():
+    num_batches = 2
+    batch_size = 500
+
+    keys = []
+    for batch_num in range(num_batches):
+        with self.CLIENT.batch() as batch:
+            for seq_no in range(batch_size):
+                uid = str(uuid.uuid4())
+                key = self.CLIENT.key('uuid_key', uid)
+                keys.append(key)
+                entity = datastore.Entity(key=key)
+                entity['batch_num'] = batch_num
+                entity['seq_no'] = seq_no
+                batch.put(entity)
+
+
 if __name__ == '__main__':
     add_characters()
+    add_uid_keys()
