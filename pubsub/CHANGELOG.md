@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.31.1
+
+### New features
+
+- Added the ability for subscriber to batch requests. (#4895)
+- Added pending request backpressure for subscriber. (#4892)
+
+### Implementation changes
+
+- Raise `ValueError` when a message is too large for a batch. (#4872)
+- Updated the default batch size to 10 MB. (#4857)
+- Allow a custom `Event` type in Pub / Sub futures. (#4643)
+
+### Documentation
+
+- Clarify that `modify_ack_deadline` resets the deadline (#4822)
+
+### Testing
+
+- Fix unit test for default `max_bytes` value (#4860)
+
 ## 0.30.1
 
 ### Notable Implementation Changes
