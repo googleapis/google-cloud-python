@@ -172,7 +172,7 @@ class TestPartialRowData(unittest.TestCase):
     def test_cell_value(self):
         family_name = u'name1'
         qual = b'col1'
-        cell = _make_cell(b'')
+        cell = _make_cell(b'value-bytes')
 
         partial_row_data = self._make_one(None)
         partial_row_data._cells = {
@@ -211,7 +211,6 @@ class TestPartialRowData(unittest.TestCase):
     def test_cell_value_invalid_column_key(self):
         family_name = u'name1'
         qual = b'col1'
-        cell = _make_cell(b'')
 
         partial_row_data = self._make_one(None)
         partial_row_data._cells = {
@@ -224,7 +223,7 @@ class TestPartialRowData(unittest.TestCase):
     def test_cell_values(self):
         family_name = u'name1'
         qual = b'col1'
-        cell = _make_cell(b'')
+        cell = _make_cell(b'value-bytes')
 
         partial_row_data = self._make_one(None)
         partial_row_data._cells = {
@@ -243,8 +242,8 @@ class TestPartialRowData(unittest.TestCase):
     def test_cell_values_with_max_count(self):
         family_name = u'name1'
         qual = b'col1'
-        cell_1 = _make_cell(b'cell_1')
-        cell_2 = _make_cell(b'cell_2')
+        cell_1 = _make_cell(b'value-bytes-1')
+        cell_2 = _make_cell(b'value-bytes-2')
 
         partial_row_data = self._make_one(None)
         partial_row_data._cells = {
