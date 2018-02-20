@@ -621,7 +621,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
@@ -652,7 +652,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_with_encryption(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
@@ -864,7 +864,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'coffee_table'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
@@ -904,7 +904,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'just_looking'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
