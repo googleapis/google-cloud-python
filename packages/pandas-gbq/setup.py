@@ -29,7 +29,7 @@ setup(
     name=NAME,
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description="Pandas interface to Google Big Query",
+    description="Pandas interface to Google BigQuery",
     long_description=readme(),
     license='BSD License',
     author='The PyData Development Team',
