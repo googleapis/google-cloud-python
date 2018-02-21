@@ -6,7 +6,7 @@
   <head>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Stackdriver Monitoring &#8212; google-cloud 82d13a8 documentation</title>
+    <title>Stackdriver Monitoring &#8212; google-cloud 6a3c773 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -122,7 +122,7 @@ You can list all of these with the
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a> and the
-<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/ projects.metricDescriptors">Metric Descriptors</a> API documentation for more information.</p>
+<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors">Metric Descriptors</a> API documentation for more information.</p>
 <p>You can create new metric descriptors to define custom metrics in
 the <code class="docutils literal notranslate"><span class="pre">custom.googleapis.com</span></code> namespace. You do this by creating a
 <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a> object using the
@@ -168,7 +168,7 @@ before you call
 <h2>Groups<a class="headerlink" href="#groups" title="Permalink to this headline">#</a></h2>
 <p>A group is a dynamic collection of <em>monitored resources</em> whose membership is
 defined by a <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters#group-filter">filter</a>.  These groups are usually created via the
-<a class="reference external" href="https://support.stackdriver.com/customer/portal/articles/ 1535145-creating-groups">Stackdriver dashboard</a>. You can list all the groups in a project with the
+<a class="reference external" href="https://support.stackdriver.com/customer/portal/articles/1535145-creating-groups">Stackdriver dashboard</a>. You can list all the groups in a project with the
 <a class="reference internal" href="client.html#google.cloud.monitoring.client.Client.list_groups" title="google.cloud.monitoring.client.Client.list_groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_groups()</span></code></a> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
@@ -178,7 +178,7 @@ defined by a <a class="reference external" href="https://cloud.google.com/monito
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a> and the API documentation for
-<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/ projects.groups">Groups</a> and <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/ projects.groups.members">Group members</a> for more information.</p>
+<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups">Groups</a> and <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups.members">Group members</a> for more information.</p>
 <p>You can get a specific group based on it’s ID as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_group</span><span class="p">(</span><span class="s1">&#39;a001&#39;</span><span class="p">)</span>
 </pre></div>
@@ -273,7 +273,7 @@ the documentation on <a class="reference external" href="https://cloud.google.co
 <p>To write a data point to a custom metric, you must provide an instance of
 <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> specifying the metric type as well as the values for
 the metric labels. You will need to have either created the metric descriptor earlier (see the
-<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/ projects.metricDescriptors">Metric Descriptors</a> section) or rely on metric type auto-creation (see <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics/creating-metrics#auto-creation">Auto-creation of
+<a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors">Metric Descriptors</a> section) or rely on metric type auto-creation (see <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics/creating-metrics#auto-creation">Auto-creation of
 custom metrics</a>).</p>
 <p>You will also need to provide a <a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> instance
 specifying a monitored resource type as well as values for all of the monitored resource labels,
