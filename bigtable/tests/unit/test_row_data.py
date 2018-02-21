@@ -254,7 +254,7 @@ class TestPartialRowData(unittest.TestCase):
 
         values = []
         for value, timestamp_micros in partial_row_data.cell_values(
-                family_name, qualifier,max_count=1):
+                family_name, qualifier, max_count=1):
             values.append(value)
 
         self.assertEqual(1, len(values))
