@@ -1058,7 +1058,6 @@ class TestRowIterator(unittest.TestCase):
         rows_iter = iter(row_iterator)
 
         val1 = six.next(rows_iter)
-        print(val1)
         self.assertEqual(val1.name, 'Phred Phlyntstone')
         self.assertEqual(row_iterator.num_results, 1)
 
