@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +77,75 @@ class TestVariable(unittest.TestCase):
         with self.assertRaises(ValueError):
             getattr(variable, 'full_name')
 
+    def test_value_with_bytes(self):
+        from google.cloud.runtimeconfig.config import Config
+        import base64
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        bytestring = base64.b64encode(b'abc')
+        variable._set_properties({'value': bytestring})
+        self.assertEqual(variable.value, b'abc')
+
+    def test_value_with_none(self):
+        from google.cloud.runtimeconfig.config import Config
+        import base64
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        self.assertIsNone(variable.value)
+
+    def test_value_with_wrong_bytes(self):
+        from google.cloud.runtimeconfig.config import Config
+        import binascii
+        import six
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        bytestring = b'abc'
+        variable._set_properties({'value': bytestring})
+
+        if six.PY3:
+            error = binascii.Error
+        else:
+            error = TypeError
+
+        with self.assertRaises(error):
+            variable.value
+
+    def test_text_with_string(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        variable._set_properties({'text': 'abc'})
+        self.assertEqual(variable.value, 'abc')
+
+    def test_text_with_byte_compatible_string(self):
+        from google.cloud.runtimeconfig.config import Config
+        import base64
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        compatible = 'bXktdmFyaWFibGUtdmFsdWU='
+        variable._set_properties({'text': 'bXktdmFyaWFibGUtdmFsdWU='})
+        self.assertEqual(variable.value, compatible)
+
+    def test_text_with_unicode(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
+        bytestring = u'一二三'
+        variable._set_properties({'text': bytestring})
+        self.assertEqual(variable.value, u'一二三')
+
     def test_exists_miss_w_bound_client(self):
         from google.cloud.runtimeconfig.config import Config
 
@@ -116,7 +186,7 @@ class TestVariable(unittest.TestCase):
 
         RESOURCE = {
             'name': self.PATH,
-            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
+            'value': b'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
             'updateTime': '2016-04-14T21:21:54.5000Z',
             'state': 'VARIABLE_STATE_UNSPECIFIED',
         }
@@ -158,7 +228,7 @@ class TestVariable(unittest.TestCase):
 
         RESOURCE = {
             'name': self.PATH,
-            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
+            'value': b'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
             'updateTime': '2016-04-14T21:21:54.5000Z',
             'state': 'VARIABLE_STATE_UNSPECIFIED',
         }

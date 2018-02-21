@@ -116,19 +116,21 @@ class Variable(object):
 
     @property
     def value(self):
-        """Value of the variable, as bytes.
+        """Value of the variable
 
         See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
-        :rtype: bytes or ``NoneType``
+        :rtype: bytes, str or ``NoneType``
         :returns: The value of the variable or ``None`` if the property
                   is not set locally.
         """
         value = self._properties.get('value')
-        if value is not None:
-            value = base64.b64decode(value)
-        return value
+        if value is None:
+            text = self._properties.get('text')
+            return text
+        else:
+            return base64.b64decode(value)
 
     @property
     def state(self):
