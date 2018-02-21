@@ -211,19 +211,15 @@ def test_on_response():
 
     # Actually run the method and prove that modack and executor.submit
     # are called in the expected way.
-    with mock.patch.object(thread.Policy, 'modify_ack_deadline') as modack:
+    modack_patch = mock.patch.object(
+        policy, 'modify_ack_deadline', autospec=True)
+    with modack_patch as modack:
         policy.on_response(response)
-        assert modack.called_with(
-            [base.ModAckRequest('fack', 10),
-             base.ModAckRequest('back', 10)]
-        )
 
-    requests = [{'modify_deadline_ack_ids':['fack'],
-                 'modify_deadline_seconds':[10]},
-                {'modify_deadline_ack_ids':['back'],
-                 'modify_deadline_seconds':[10]}]
-    calls = [mock.call(types.StreamingPullRequest(**requests[0])),
-             mock.call(types.StreamingPullRequest(**requests[1]))]
+    modack.assert_called_once_with(
+        [base.ModAckRequest('fack', 10),
+         base.ModAckRequest('back', 10)]
+    )
 
     submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
     assert len(submit_calls) == 2
