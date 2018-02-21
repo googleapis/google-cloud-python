@@ -364,6 +364,23 @@ class TestDatastoreQuery(TestDatastore):
         sansa_dict = dict(sansa_entity)
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 
+    def test_query_paginate_simple(self):
+
+        # See issue #4264 
+        page_query = self.CLIENT.query(kind='uuid_key')
+        iterator = page_query.fetch()
+
+        seen = set()
+        page_count = 0
+        for page in iterator.pages:
+            page_count += 1
+            for entity in page:
+                uuid_str = entity.key.name
+                self.assertNotIn(uuid_str, seen, uuid_str)
+                seen.add(uuid_str)
+
+        self.assertTrue(page_count > 1)
+
     def test_query_paginate_with_offset(self):
         page_query = self._base_query()
         page_query.order = 'appearances'
