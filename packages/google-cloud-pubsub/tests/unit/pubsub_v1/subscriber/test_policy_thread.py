@@ -209,9 +209,17 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that executor.submit and
-    # future.add_done_callback were called in the expected way.
-    policy.on_response(response)
+    # Actually run the method and prove that modack and executor.submit
+    # are called in the expected way.
+    modack_patch = mock.patch.object(
+        policy, 'modify_ack_deadline', autospec=True)
+    with modack_patch as modack:
+        policy.on_response(response)
+
+    modack.assert_called_once_with(
+        [base.ModAckRequest('fack', 10),
+         base.ModAckRequest('back', 10)]
+    )
 
     submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
     assert len(submit_calls) == 2
