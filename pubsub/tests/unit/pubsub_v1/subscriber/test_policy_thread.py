@@ -194,7 +194,6 @@ def test_on_response():
     # Set up the policy.
     policy = create_policy(executor=executor)
     policy._callback = callback
-    policy.modify_ack_deadline = mock.Mock()
 
     # Set up the messages to send.
     messages = (
@@ -210,14 +209,15 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that executor.submit
-    # was called in the expected way.
-    policy.on_response(response)
-    assert policy.modify_ack_deadline.called_with(
-        [base.ModAckRequest('fack', 10),
-         base.ModAckRequest('back', 10)]
-    )
-    
+    # Actually run the method and prove that modack and executor.submit
+    # are called in the expected way.
+    with mock.patch.object(thread.Policy, 'modify_ack_deadline') as modack:
+        policy.on_response(response)
+        assert modack.called_with(
+            [base.ModAckRequest('fack', 10),
+             base.ModAckRequest('back', 10)]
+        )
+
     requests = [{'modify_deadline_ack_ids':['fack'],
                  'modify_deadline_seconds':[10]},
                 {'modify_deadline_ack_ids':['back'],

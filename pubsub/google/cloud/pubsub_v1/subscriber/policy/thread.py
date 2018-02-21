@@ -329,7 +329,14 @@ class Policy(base.BasePolicy):
     def on_response(self, response):
         """Process all received Pub/Sub messages.
 
-        For each message, schedule a callback with the executor.
+        For each message, send a modified acknowledgement request to the
+        server to prevent expiration of the message due to buffering by
+        gRPC or proxy/firewall. This allows the server and client
+        expiration timer to be closer to each other thus preventing the
+        message being redelivered multiple times.
+
+        After the `ModAckRequest` is delivered, execute callback with the
+        executor.
         """
         items = [
             base.ModAckRequest(message.ack_id, self.histogram.percentile(99))
