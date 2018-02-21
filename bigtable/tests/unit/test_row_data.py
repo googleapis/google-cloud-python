@@ -233,11 +233,11 @@ class TestPartialRowData(unittest.TestCase):
         }
 
         cells = []
-        for cell in partial_row_data.cell_values(family_name, qual):
-            cells.append(cell)
+        for _cell in partial_row_data.cell_values(family_name, qual):
+            cells.append(_cell)
 
         result = cells[0]
-        self.assertEqual(result.value, cell.value)
+        self.assertEqual(result[0], cell.value)
 
     def test_cell_values_with_max_count(self):
         family_name = u'name1'
@@ -253,12 +253,12 @@ class TestPartialRowData(unittest.TestCase):
         }
 
         cells = []
-        for cell in partial_row_data.cell_values(
+        for _cell in partial_row_data.cell_values(
                 family_name, qual, max_count=1):
-            cells.append(cell)
+            cells.append(_cell)
 
         result = cells[0]
-        self.assertEqual(result.value, cell_1.value)
+        self.assertEqual(result[0], cell_1.value)
 
     def test_cells_property(self):
         partial_row_data = self._make_one(None)

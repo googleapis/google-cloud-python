@@ -279,7 +279,7 @@ class PartialRowData(object):
             if index == max_count:
                 break
 
-            yield cell
+            yield cell.value, cell.timestamp_micros
 
 
 class InvalidReadRowsResponse(RuntimeError):
