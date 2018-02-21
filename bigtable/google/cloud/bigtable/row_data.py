@@ -184,7 +184,7 @@ class PartialRowData(object):
         """
         return self._row_key
 
-    def _find_cells(self, column_family_id, column):
+    def find_cells(self, column_family_id, column):
         """Get a time series of cells stored on this instance.
 
         Args:
@@ -239,7 +239,7 @@ class PartialRowData(object):
                 in this row for the given ``column_family_id``, ``column``
                 pair.
         """
-        cells = self._find_cells(column_family_id, column)
+        cells = self.find_cells(column_family_id, column)
 
         try:
             cell = cells[index]
@@ -271,7 +271,7 @@ class PartialRowData(object):
             KeyError: If ``column`` is not among the cells stored in this row
                 for the given ``column_family_id``.
         """
-        cells = self._find_cells(column_family_id, column)
+        cells = self.find_cells(column_family_id, column)
         if max_count == -1:
             max_count = len(cells)
 
