@@ -293,8 +293,20 @@ API Reference
 .. toctree::
   :maxdepth: 2
 
-  gapic/api
-  gapic/types
+  gapic/v1/api
+  gapic/v1/types
+
+A new beta release, spelled ``v1p1beta1``, is provided to provide for preview
+of upcoming features. In order to use this, you will want to import from
+``google.cloud.speech_v1p1beta1`` in lieu of ``google.cloud.speech``.
+
+An API and type reference is provided the first beta also:
+
+.. toctree::
+  :maxdepth: 2
+
+  gapic/v1p1beta1/api
+  gapic/v1p1beta1/types
 
 Releases
 --------

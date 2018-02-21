@@ -80,7 +80,6 @@ def test_publish_messages(publisher, topic_path, cleanup):
                 num=str(index),
             ),
         )
-
     for future in futures:
         result = future.result()
         assert isinstance(result, six.string_types)

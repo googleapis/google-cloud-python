@@ -232,7 +232,7 @@ class TestClient(unittest.TestCase):
                 project=project, credentials=creds, _http=http)
             self.assertEqual(client._base_url, 'http://' + host)
 
-    def test__datastore_api_property_gax(self):
+    def test__datastore_api_property_gapic(self):
         client = self._make_one(
             project='prahj-ekt', credentials=_make_credentials(),
             _http=object(), _use_grpc=True)

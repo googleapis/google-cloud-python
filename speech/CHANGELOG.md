@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.31.1
+
+### Bugfixes
+
+- Fix speech helpers to properly pass retry and timeout args. (#4828, #4830)
+
+## 0.31.0
+
+This is the (hopefully) final release candidate before 1.0.
+
+### Breaking Changes
+
+- The deprecated Speech layer (deprecated since 0.27.0) has been removed. If you are still using  it, the [migration guide](https://cloud.google.com/speech/docs/python-client-migration) is still available.
+- The following changes are _technically_ breaking but very unlikely to affect you directly:
+  * `google.cloud.gapic.speech.v1` moved to `google.cloud.speech_v1.gapic`, in accordance with more recent clients.
+  * `google.cloud.proto.speech.v1` moved to `google.cloud.speech_v1.proto`, in accordance with more recent clients.
+
+### Dependencies
+
+  * Removed dependency on `google-gax`.
+  * Added dependency on `google-api-core`, its replacement.
+
 ## 0.30.0
 
 ### Documentation

@@ -63,6 +63,12 @@ Whenever you publish a message, a
 This way, if you publish a large volume of messages, it reduces the number of
 requests made to the server.
 
+.. note::
+
+    By default, this uses ``threading``, and you will need to be in an
+    environment with threading enabled. It is possible to provide an
+    alternative batch class that uses another concurrency strategy.
+
 The way that this works is that on the first message that you send, a new
 :class:`~.pubsub_v1.publisher.batch.thread.Batch` is created automatically.
 For every subsequent message, if there is already a valid batch that is still

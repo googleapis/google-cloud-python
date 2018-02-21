@@ -294,6 +294,29 @@ def test_create_table(client, to_delete):
     to_delete.insert(0, table)
 
 
+def test_create_table_cmek(client, to_delete):
+    DATASET_ID = 'create_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_create_table_cmek]
+    table_ref = dataset.table('my_table')
+    table = bigquery.Table(table_ref)
+
+    # Set the encryption key to use for the table.
+    # TODO: Replace this key with a key you have created in Cloud KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+
+    table = client.create_table(table)  # API request
+
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_create_table_cmek]
+
+
 def test_get_table(client, to_delete):
     """Reload a table's metadata."""
     DATASET_ID = 'get_table_dataset_{}'.format(_millis())
@@ -415,6 +438,42 @@ def test_update_table_multiple_properties(client, to_delete):
     # [END update_table_multiple_properties]
 
 
+def test_update_table_cmek(client, to_delete):
+    """Patch a table's metadata."""
+    dataset_id = 'update_table_cmek_{}'.format(_millis())
+    table_id = 'update_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id))
+    original_kms_key_name = (
+        'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+            'cloud-samples-tests', 'us-central1', 'test', 'test'))
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=original_kms_key_name)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_update_table_cmek]
+    assert table.encryption_configuration.kms_key_name == original_kms_key_name
+
+    # Set a new encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    updated_kms_key_name = (
+        'projects/cloud-samples-tests/locations/us-central1/'
+        'keyRings/test/cryptoKeys/otherkey')
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=updated_kms_key_name)
+
+    table = client.update_table(
+        table, ['encryption_configuration'])  # API request
+
+    assert table.encryption_configuration.kms_key_name == updated_kms_key_name
+    assert original_kms_key_name != updated_kms_key_name
+    # [END bigquery_update_table_cmek]
+
+
 def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
     dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
@@ -515,7 +574,6 @@ def test_load_table_from_uri(client, to_delete):
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
 
-    assert load_job.state == 'RUNNING'
     assert load_job.job_type == 'load'
 
     load_job.result()  # Waits for table load to complete.
@@ -523,6 +581,42 @@ def test_load_table_from_uri(client, to_delete):
     assert load_job.state == 'DONE'
     assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
     # [END bigquery_load_table_gcs_json]
+
+
+def test_load_table_from_uri_cmek(client, to_delete):
+    dataset_id = 'load_table_from_uri_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_json_cmek]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.autodetect = True
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config.destination_encryption_configuration = encryption_config
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    table = client.get_table(dataset_ref.table('us_states'))
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_load_table_gcs_json_cmek]
 
 
 def test_load_table_from_uri_autodetect(client, to_delete):
@@ -543,7 +637,6 @@ def test_load_table_from_uri_autodetect(client, to_delete):
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
 
-    assert load_job.state == 'RUNNING'
     assert load_job.job_type == 'load'
 
     load_job.result()  # Waits for table load to complete.
@@ -581,7 +674,6 @@ def test_load_table_from_uri_append(client, to_delete):
         table_ref,
         job_config=job_config)  # API request
 
-    assert load_job.state == 'RUNNING'
     assert load_job.job_type == 'load'
 
     load_job.result()  # Waits for table load to complete.
@@ -621,7 +713,6 @@ def test_load_table_from_uri_truncate(client, to_delete):
         table_ref,
         job_config=job_config)  # API request
 
-    assert load_job.state == 'RUNNING'
     assert load_job.job_type == 'load'
 
     load_job.result()  # Waits for table load to complete.
@@ -657,19 +748,20 @@ def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
 
 
 def test_copy_table(client, to_delete):
-    DATASET_ID = 'copy_table_dataset_{}'.format(_millis())
+    dataset_id = 'copy_table_dataset_{}'.format(_millis())
+    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset = client.create_dataset(dest_dataset)
+    to_delete.append(dest_dataset)
+
     # [START copy_table]
     source_dataset = bigquery.DatasetReference(
         'bigquery-public-data', 'samples')
     source_table_ref = source_dataset.table('shakespeare')
 
-    dest_dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dest_dataset = client.create_dataset(dest_dataset)  # API request
+    # dataset_id = 'my_dataset'
     dest_table_ref = dest_dataset.table('destination_table')
 
-    job_config = bigquery.CopyJobConfig()
-    job = client.copy_table(
-        source_table_ref, dest_table_ref, job_config=job_config)  # API request
+    job = client.copy_table(source_table_ref, dest_table_ref)  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
@@ -677,7 +769,42 @@ def test_copy_table(client, to_delete):
     assert dest_table.table_id == 'destination_table'
     # [END copy_table]
 
+    to_delete.insert(0, dest_table)
+
+
+def test_copy_table_cmek(client, to_delete):
+    dataset_id = 'copy_table_cmek_{}'.format(_millis())
+    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
+
+    # [START bigquery_copy_table_cmek]
+    source_dataset = bigquery.DatasetReference(
+        'bigquery-public-data', 'samples')
+    source_table_ref = source_dataset.table('shakespeare')
+
+    # dataset_id = 'my_dataset'
+    dest_dataset_ref = client.dataset(dataset_id)
+    dest_table_ref = dest_dataset_ref.table('destination_table')
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config = bigquery.CopyJobConfig()
+    job_config.destination_encryption_configuration = encryption_config
+
+    job = client.copy_table(
+        source_table_ref, dest_table_ref, job_config=job_config)  # API request
+    job.result()  # Waits for job to complete.
+
+    assert job.state == 'DONE'
+    dest_table = client.get_table(dest_table_ref)
+    assert dest_table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_copy_table_cmek]
+
     to_delete.insert(0, dest_table)
 
 
@@ -771,7 +898,6 @@ def test_client_query(client):
         'LIMIT 100')
     TIMEOUT = 30  # in seconds
     query_job = client.query(QUERY)  # API request - starts the query
-    assert query_job.state == 'RUNNING'
 
     # Waits for the query to finish
     iterator = query_job.result(timeout=TIMEOUT)
@@ -826,6 +952,41 @@ def test_client_query_destination_table(client, to_delete):
     # [END bigquery_query_destination_table]
 
 
+def test_client_query_destination_table_cmek(client, to_delete):
+    """Run a query"""
+    dataset_id = 'query_destination_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    to_delete.append(dataset_ref)
+    client.create_dataset(bigquery.Dataset(dataset_ref))
+    to_delete.insert(0, dataset_ref.table('your_table_id'))
+
+    # [START bigquery_query_destination_table_cmek]
+    job_config = bigquery.QueryJobConfig()
+
+    # Set the destination table. Here, dataset_id is a string, such as:
+    # dataset_id = 'your_dataset_id'
+    table_ref = client.dataset(dataset_id).table('your_table_id')
+    job_config.destination = table_ref
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config.destination_encryption_configuration = encryption_config
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        'SELECT 17 AS my_col;', job_config=job_config)
+    query_job.result()
+
+    # The destination table is written using the encryption configuration.
+    table = client.get_table(table_ref)
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_query_destination_table_cmek]
+
+
 def test_client_query_w_param(client):
     """Run a query using a query parameter"""
 
@@ -841,7 +1002,6 @@ def test_client_query_w_param(client):
     job_config.query_parameters = [param]
     query_job = client.query(
         QUERY_W_PARAM, job_config=job_config)  # API request - starts the query
-    assert query_job.state == 'RUNNING'
 
     # Waits for the query to finish
     iterator = query_job.result(timeout=TIMEOUT)

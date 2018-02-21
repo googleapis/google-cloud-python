@@ -41,9 +41,9 @@ BatchSettings = collections.namedtuple(
     ['max_bytes', 'max_latency', 'max_messages'],
 )
 BatchSettings.__new__.__defaults__ = (
-    1024 * 1024 * 5,  # max_bytes: 5 MB
-    0.05,             # max_latency: 0.05 seconds
-    1000,             # max_messages: 1,000
+    1024 * 1024 * 10,  # max_bytes: 10 MB
+    0.05,              # max_latency: 0.05 seconds
+    1000,              # max_messages: 1,000
 )
 
 # Define the type class and default values for flow control settings.
@@ -53,12 +53,13 @@ BatchSettings.__new__.__defaults__ = (
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple(
     'FlowControl',
-    ['max_bytes', 'max_messages', 'resume_threshold'],
+    ['max_bytes', 'max_messages', 'resume_threshold', 'max_requests'],
 )
 FlowControl.__new__.__defaults__ = (
     psutil.virtual_memory().total * 0.2,  # max_bytes: 20% of total RAM
     float('inf'),                         # max_messages: no limit
     0.8,                                  # resume_threshold: 80%
+    100,                                  # max_requests: 100
 )
 
 

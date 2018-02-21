@@ -62,43 +62,10 @@ but you can also use a ``virtualenv`` of your own creation.
 
 .. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
 
-Using a custom ``virtualenv``
-=============================
-
-- To create a virtualenv in which to install ``google-cloud-python``::
-
-    $ cd ${HOME}/hack-on-google-cloud-python
-    $ virtualenv --python python3.6 ${ENV_NAME}
-
-  You can choose which Python version you want to use by passing a ``--python``
-  flag to ``virtualenv``.  For example, ``virtualenv --python python3.6``
-  chooses the Python 3.6 interpreter to be installed.
-
-  .. note::
-      We recommend developing in Python 3, and using the test suite to
-      ensure compatibility with Python 2.
-
-- From here on in within these instructions, the
-  ``${HOME}/hack-on-google-cloud-python/${ENV_NAME}`` virtual environment you
-  created above will be referred to as ``${VENV}``. To use the instructions
-  in the steps that follow literally, use::
-
-    $ export VENV=${HOME}/hack-on-google-cloud-python/${ENV_NAME}
-
-- To install ``google-cloud-python`` from your source checkout into
-  ``${VENV}``, run::
-
-    $ # Make sure you are in the same directory as setup.py
-    $ cd ${HOME}/hack-on-google-cloud-python
-    $ ${VENV}/bin/python setup.py install
-
-  Unfortunately using ``setup.py develop`` is not possible with this
-  project, because it uses `namespace packages`_.
-
 Using ``nox``
 =============
 
-We use `nox`_ to instrument our tests.
+We use `nox <https://https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 
