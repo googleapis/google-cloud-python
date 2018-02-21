@@ -336,7 +336,7 @@ class Policy(base.BasePolicy):
         redelivered multiple times.
 
         After the messages have all had their ack deadline updated, execute
-        the callback for each messaging using the executor.
+        the callback for each message using the executor.
         """
         items = [
             base.ModAckRequest(message.ack_id, self.histogram.percentile(99))
