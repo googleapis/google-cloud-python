@@ -27,6 +27,7 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.futures import Future
+from google.cloud.pubsub_v1.subscriber.monitor import Monitor
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
@@ -55,6 +56,7 @@ def test_close():
     policy = create_policy()
     policy._dispatch_thread = dispatch_thread
     policy._leases_thread = leases_thread
+    policy._monitor = mock.create_autospec(Monitor)
     future = mock.Mock(spec=('done',))
     future.done.return_value = True
     policy._future = future
@@ -71,6 +73,7 @@ def test_close():
     assert closed_fut is future
     assert policy._future is None
     future.done.assert_called_once_with()
+    policy._monitor._stop.assert_called_once()
 
 
 def test_close_without_future():
@@ -117,6 +120,7 @@ def test_open():
     with mock.patch.object(threading, 'Thread', side_effect=threads):
         policy.open(mock.sentinel.CALLBACK)
 
+    assert policy._monitor is None
     assert policy._callback is mock.sentinel.CALLBACK
 
     assert policy._dispatch_thread is threads[0]
@@ -128,6 +132,23 @@ def test_open():
     assert policy._leases_thread is threads[2]
     threads[2].start.assert_called_once_with()
 
+
+def test_monitor_open():
+    policy = create_policy()
+    policy._monitor = mock.create_autospec(Monitor)
+    threads = (
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+    )
+    with mock.patch.object(threading, 'Thread', side_effect=threads):
+        policy.open(mock.sentinel.CALLBACK)
+    policy._monitor._start.assert_called_once_with(True)
+    policy.stop_monitor()
+    policy._monitor._stop.assert_called_once()
+    policy.clear_monitor()
+    assert policy._monitor is None
+        
 
 def test_open_already_open():
     policy = create_policy()
@@ -226,3 +247,19 @@ def test_on_response():
     for call in submit_calls:
         assert call[1][0] == callback
         assert isinstance(call[1][1], message.Message)
+
+
+def test_without_monitor():
+    policy = create_policy()
+    assert policy._monitor is None
+    with mock.patch.object(Monitor, '_clear') as clear:
+        policy.monitor(1, '')
+        assert clear.call_count == 0
+
+
+def test_with_monitor():
+    policy = create_policy()
+    policy._monitor = mock.create_autospec(Monitor)
+    clear = policy._monitor._clear
+    policy.monitor(1, '')
+    clear.assert_called_once()
