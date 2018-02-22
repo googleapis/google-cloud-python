@@ -15,7 +15,7 @@
 
 import pytest
 
-from google.cloud import firestore_v1beta1
+from google.cloud.firestore_v1beta1.gapic import firestore_client
 from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
@@ -82,7 +82,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -99,7 +99,7 @@ class TestFirestoreClient(object):
     def test_get_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -122,7 +122,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -143,7 +143,7 @@ class TestFirestoreClient(object):
 
     def test_list_documents_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -162,7 +162,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -187,7 +187,7 @@ class TestFirestoreClient(object):
     def test_create_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -208,7 +208,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         document = {}
@@ -226,7 +226,7 @@ class TestFirestoreClient(object):
     def test_update_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         document = {}
@@ -237,7 +237,7 @@ class TestFirestoreClient(object):
 
     def test_delete_document(self):
         channel = ChannelStub()
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -253,7 +253,7 @@ class TestFirestoreClient(object):
     def test_delete_document_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         name = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -272,7 +272,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -292,7 +292,7 @@ class TestFirestoreClient(object):
     def test_batch_get_documents_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -310,7 +310,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -327,7 +327,7 @@ class TestFirestoreClient(object):
     def test_begin_transaction_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -342,7 +342,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -360,7 +360,7 @@ class TestFirestoreClient(object):
     def test_commit_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -371,7 +371,7 @@ class TestFirestoreClient(object):
 
     def test_rollback(self):
         channel = ChannelStub()
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -388,7 +388,7 @@ class TestFirestoreClient(object):
     def test_rollback_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -409,7 +409,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -428,7 +428,7 @@ class TestFirestoreClient(object):
     def test_run_query_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -449,7 +449,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -471,7 +471,7 @@ class TestFirestoreClient(object):
     def test_write_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -490,7 +490,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[iter([expected_response])])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -512,7 +512,7 @@ class TestFirestoreClient(object):
     def test_listen_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         database = client.database_root_path('[PROJECT]', '[DATABASE]')
@@ -538,7 +538,7 @@ class TestFirestoreClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup Request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
@@ -558,7 +558,7 @@ class TestFirestoreClient(object):
 
     def test_list_collection_ids_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = firestore_v1beta1.FirestoreClient(channel=channel)
+        client = firestore_client.FirestoreClient(channel=channel)
 
         # Setup request
         parent = client.any_path_path('[PROJECT]', '[DATABASE]', '[DOCUMENT]',
