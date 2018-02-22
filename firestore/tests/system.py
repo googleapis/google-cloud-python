@@ -139,7 +139,7 @@ def test_document_set(client, cleanup):
     cleanup(document)
 
     # 0. Make sure the document doesn't exist yet using an option.
-    option0 = client.write_option(create_if_missing=False)
+    option0 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
         document.set({'no': 'way'}, option=option0)
 
@@ -148,7 +148,7 @@ def test_document_set(client, cleanup):
 
     # 1. Use ``set()`` to create the document (using an option).
     data1 = {'foo': 88}
-    option1 = client.write_option(create_if_missing=True)
+    option1 = client.write_option(exists=False)
     write_result1 = document.set(data1, option=option1)
     snapshot1 = document.get()
     assert snapshot1.to_dict() == data1
@@ -207,7 +207,7 @@ def test_update_document(client, cleanup):
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
-    option1 = client.write_option(create_if_missing=False)
+    option1 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
         document.update({'still': 'not-there'}, option=option1)
     assert exc_info.value.message.startswith(MISSING_DOCUMENT)
@@ -223,7 +223,7 @@ def test_update_document(client, cleanup):
         },
         'other': True,
     }
-    option2 = client.write_option(create_if_missing=True)
+    option2 = client.write_option(exists=False)
     write_result2 = document.update(data, option=option2)
 
     # 3. Send an update without a field path (no option).
