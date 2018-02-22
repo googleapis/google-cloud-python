@@ -365,8 +365,8 @@ def _commit_with_retry(client, write_pbs, transaction_id):
         The protobuf response from ``Commit``.
 
     Raises:
-        ~google.gax.errors.GaxError: If a non-retryable exception
-            is encountered.
+        ~google.api_core.exceptions.GoogleAPICallError: If a non-retryable
+            exception is encountered.
     """
     current_sleep = _INITIAL_SLEEP
     while True:
