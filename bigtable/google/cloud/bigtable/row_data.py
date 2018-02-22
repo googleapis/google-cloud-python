@@ -251,7 +251,7 @@ class PartialRowData(object):
 
         return cell.value
 
-    def cell_values(self, column_family_id, column, max_count=-1):
+    def cell_values(self, column_family_id, column, max_count=None):
         """Get a time series of cells stored on this instance.
 
         Args:
@@ -272,7 +272,7 @@ class PartialRowData(object):
                 for the given ``column_family_id``.
         """
         cells = self.find_cells(column_family_id, column)
-        if max_count == -1:
+        if max_count is None:
             max_count = len(cells)
 
         for index, cell in enumerate(cells):
