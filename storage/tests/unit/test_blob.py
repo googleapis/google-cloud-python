@@ -137,7 +137,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = 'parent/child'
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.path, '/b/name/o/parent/child')
+        self.assertEqual(blob.path, '/b/name/o/parent%2Fchild')
 
     def test_path_with_non_ascii(self):
         blob_name = u'Caf\xe9'

@@ -244,7 +244,7 @@ class Blob(_PropertyMixin):
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url=_API_ACCESS_ENDPOINT,
             bucket_name=self.bucket.name,
-            quoted_name=_quote(self.name))
+            quoted_name=quote(self.name))
 
     def generate_signed_url(self, expiration, method='GET',
                             content_type=None,
@@ -315,7 +315,7 @@ class Blob(_PropertyMixin):
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            quoted_name=_quote(self.name))
+            quoted_name=quote(self.name))
 
         if credentials is None:
             client = self._require_client(client)
@@ -1706,7 +1706,7 @@ def _quote(value):
     :returns: The encoded value (bytes in Python 2, unicode in Python 3).
     """
     value = _to_bytes(value, encoding='utf-8')
-    return quote(value)
+    return quote(value, safe='')
 
 
 def _maybe_rewind(stream, rewind=False):
