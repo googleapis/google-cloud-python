@@ -38,6 +38,8 @@ dependencies = [
     'pytz',
 ]
 extras = {
+    'grpc': 'grpcio>=1.8.2',
+    ':python_version < "3.2"': 'futures>=3.2.0',
 }
 
 
@@ -74,6 +76,7 @@ setuptools.setup(
     include_package_data=True,
     long_description=readme,
     install_requires=dependencies,
+    extras_require=extras,
     packages=setuptools.find_packages(exclude=('tests*',)),
     namespace_packages=['google'],
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',

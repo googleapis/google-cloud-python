@@ -21,7 +21,7 @@ import setuptools
 # Package metadata.
 
 name = 'google-cloud-core'
-description = 'Google Cloud API core library'
+description = 'Google Cloud API client core library'
 version = '0.28.1.dev1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
@@ -32,6 +32,7 @@ dependencies = [
     'google-api-core<0.2.0dev,>=0.1.1',
 ]
 extras = {
+    'grpc': 'grpcio>=1.8.2',
 }
 
 
@@ -68,6 +69,7 @@ setuptools.setup(
     include_package_data=True,
     long_description=readme,
     install_requires=dependencies,
+    extras_require=extras,
     packages=setuptools.find_packages(exclude=('tests*',)),
     namespace_packages=['google', 'google.cloud'],
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',

@@ -34,6 +34,7 @@ dependencies = [
     'google-resumable-media>=0.2.1',
 ]
 extras = {
+    'pandas': 'pandas>=0.17.1',
 }
 
 
@@ -70,6 +71,7 @@ setuptools.setup(
     include_package_data=True,
     long_description=readme,
     install_requires=dependencies,
+    extras_require=extras,
     packages=setuptools.find_packages(exclude=('tests*',)),
     namespace_packages=['google', 'google.cloud'],
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',
