@@ -191,6 +191,28 @@ class Test_entity_from_protobuf(unittest.TestCase):
         self.assertEqual(len(inside_entity), 1)
         self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
 
+    def test_index_mismatch_ignores_empty_list(self):
+        from google.cloud.datastore_v1.proto import entity_pb2
+
+        _PROJECT = 'PROJECT'
+        _KIND = 'KIND'
+        _ID = 1234
+
+        array_val_pb = entity_pb2.Value(
+            array_value=entity_pb2.ArrayValue(values=[]))
+
+        entity_pb = entity_pb2.Entity(
+            properties={
+                'baz': array_val_pb,
+            },
+        )
+        entity_pb.key.partition_id.project_id = _PROJECT
+        entity_pb.key.path.add(kind=_KIND, id=_ID)
+
+        entity = self._call_fut(entity_pb)
+        entity_dict = dict(entity)
+        self.assertEqual(entity_dict['baz'], [])
+
 
 class Test_entity_to_protobuf(unittest.TestCase):
 
