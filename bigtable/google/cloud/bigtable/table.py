@@ -545,11 +545,11 @@ class _RetryableReadRows(object):
     transient errors.
     """
 
-    def __init__(self, client, table_name, last_scanned_key,
+    def __init__(self, client, table_name, start_key,
                  end_key, filter_, limit, retry):
         self.client = client
         self.table_name = table_name
-        self.last_scanned_key = last_scanned_key
+        self.last_scanned_key = start_key
         self.end_key = end_key
         self.filter_ = filter_
         self.limit = limit
