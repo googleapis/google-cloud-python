@@ -24,11 +24,8 @@ In the hierarchy of API concepts
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
 
-from google.cloud._helpers import make_secure_channel
-from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 
-from google.cloud.firestore_v1beta1 import __version__
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -98,7 +95,8 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            self._firestore_api_internal = _make_firestore_api(self)
+            self._firestore_api_internal = firestore_client.FirestoreClient(
+                credentials=self._credentials)
 
         return self._firestore_api_internal
 
@@ -516,24 +514,6 @@ class ExistsOption(WriteOption):
         """
         current_doc = types.Precondition(exists=self._exists)
         write_pb.current_document.CopyFrom(current_doc)
-
-
-def _make_firestore_api(client):
-    """Create an instance of the GAPIC Firestore client.
-
-    Args:
-        client (~.firestore_v1beta1.client.Client): The client that holds
-            configuration details.
-
-    Returns:
-        ~.gapic.firestore.v1beta1.firestore_client.FirestoreClient: A
-        Firestore GAPIC client instance with the proper credentials.
-    """
-    host = firestore_client.FirestoreClient.SERVICE_ADDRESS
-    channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT, host)
-    return firestore_client.FirestoreClient(
-        channel=channel, lib_name='gccl', lib_version=__version__)
 
 
 def _reference_info(references):

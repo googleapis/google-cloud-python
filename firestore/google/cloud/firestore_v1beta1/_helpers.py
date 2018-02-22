@@ -929,7 +929,7 @@ def get_transaction_id(transaction, read_operation=True):
         return transaction.id
 
 
-def _metadata_with_prefix(prefix, **kw):
+def metadata_with_prefix(prefix, **kw):
     """Create RPC metadata containing a prefix.
 
     Args:

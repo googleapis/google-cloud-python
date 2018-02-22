@@ -233,7 +233,7 @@ class TestDocumentReference(unittest.TestCase):
             document._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     @staticmethod
     def _write_pb_for_set(document_path, document_data):
@@ -281,7 +281,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_set(self):
         self._set_helper()
@@ -349,7 +349,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_update(self):
         self._update_helper()
@@ -386,7 +386,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_delete(self):
         self._delete_helper()

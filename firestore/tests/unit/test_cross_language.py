@@ -18,9 +18,9 @@ import os
 import unittest
 
 import mock
-from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.protobuf import text_format
+
 
 class TestCrossLanguage(unittest.TestCase):
 
@@ -99,7 +99,7 @@ class TestCrossLanguage(unittest.TestCase):
                 client._database_string,
                 list(tp.request.writes),
                 transaction=None,
-                options=client._call_options)
+                metadata=client._rpc_metadata)
 
 
     def setup(self, firestore_api, proto):

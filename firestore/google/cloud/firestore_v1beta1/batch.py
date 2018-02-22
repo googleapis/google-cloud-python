@@ -131,7 +131,7 @@ class WriteBatch(object):
         """
         commit_response = self._client._firestore_api.commit(
             self._client._database_string, self._write_pbs,
-            transaction=None, options=self._client._call_options)
+            transaction=None, metadata=self._client._rpc_metadata)
 
         self._write_pbs = []
         return list(commit_response.write_results)
