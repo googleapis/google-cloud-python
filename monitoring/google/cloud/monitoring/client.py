@@ -29,6 +29,7 @@ and monitored resource descriptors.
 """
 
 import datetime
+import six
 
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.client import ClientWithProject
@@ -246,7 +247,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.monitoring.metric.Metric`
         :returns: The metric object.
         """
-        labels = {k: str(v) for k, v in labels.items()}
+        labels = {k: str(v) for k, v in six.iteritems(labels)}
         return Metric(type=type_, labels=labels)
 
     @staticmethod
