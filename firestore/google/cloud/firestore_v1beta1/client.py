@@ -78,7 +78,7 @@ class Client(ClientWithProject):
 
     _firestore_api_internal = None
     _database_string_internal = None
-    _call_options_internal = None
+    _rpc_metadata_internal = None
 
     def __init__(self, project=None, credentials=None,
                  database=DEFAULT_DATABASE):
@@ -128,18 +128,18 @@ class Client(ClientWithProject):
         return self._database_string_internal
 
     @property
-    def _call_options(self):
-        """The call options for this client's associated database.
+    def _rpc_metadata(self):
+        """The RPC metadata for this client's associated database.
 
         Returns:
-            ~google.gax.CallOptions: GAPIC call options with a resource prefix
+            Sequence[Tuple(str, str)]: RPC metadata with resource prefix
             for the database associated with this client.
         """
-        if self._call_options_internal is None:
-            self._call_options_internal = _helpers.options_with_prefix(
+        if self._rpc_metadata_internal is None:
+            self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string)
 
-        return self._call_options_internal
+        return self._rpc_metadata_internal
 
     def collection(self, *collection_path):
         """Get a reference to a collection.
@@ -333,7 +333,7 @@ class Client(ClientWithProject):
         response_iterator = self._firestore_api.batch_get_documents(
             self._database_string, document_paths, mask,
             transaction=_helpers.get_transaction_id(transaction),
-            options=self._call_options)
+            metadata=self._rpc_metadata)
 
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)

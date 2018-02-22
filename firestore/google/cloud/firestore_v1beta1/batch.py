@@ -129,10 +129,9 @@ class WriteBatch(object):
             changes were applied to this batch. A write result contains an
             ``update_time`` field.
         """
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = self._client._firestore_api.commit(
-                self._client._database_string, self._write_pbs,
-                transaction=None, options=self._client._call_options)
+        commit_response = self._client._firestore_api.commit(
+            self._client._database_string, self._write_pbs,
+            transaction=None, options=self._client._call_options)
 
         self._write_pbs = []
         return list(commit_response.write_results)

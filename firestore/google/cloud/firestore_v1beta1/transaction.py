@@ -18,12 +18,9 @@
 import random
 import time
 
-import google.gax.errors
-import google.gax.grpc
-import grpc
 import six
 
-from google.cloud.firestore_v1beta1 import _helpers
+from google.api_core import exceptions
 from google.cloud.firestore_v1beta1 import batch
 from google.cloud.firestore_v1beta1 import types
 
@@ -198,9 +195,8 @@ class Transaction(batch.WriteBatch):
         if not self.in_progress:
             raise ValueError(_CANT_COMMIT)
 
-        with _helpers.remap_gax_error_on_commit():
-            commit_response = _commit_with_retry(
-                self._client, self._write_pbs, self._id)
+        commit_response = _commit_with_retry(
+            self._client, self._write_pbs, self._id)
 
         self._clean_up()
         return list(commit_response.write_results)
@@ -284,13 +280,12 @@ class _Transactional(object):
         try:
             transaction._commit()
             return True
-        except google.gax.errors.GaxError as exc:
+        except exceptions.GoogleAPICallError as exc:
             if transaction._read_only:
                 raise
 
-            status_code = google.gax.grpc.exc_to_code(exc.cause)
-            # If a read-write transaction returns ABORTED, retry.
-            if status_code == grpc.StatusCode.ABORTED:
+            if isinstance(exc, exceptions.Aborted):
+                # If a read-write transaction returns ABORTED, retry.
                 return False
             else:
                 raise
@@ -350,10 +345,6 @@ def transactional(to_wrap):
 def _commit_with_retry(client, write_pbs, transaction_id):
     """Call ``Commit`` on the GAPIC client with retry / sleep.
 
-    This function is **distinct** from
-    :func:`~.firestore_v1beta1._helpers.remap_gax_error_on_commit` in
-    that it does not seek to re-wrap exceptions, it just seeks to retry.
-
     Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
     retry is handled by the underlying GAPICd client, but in this case it
     doesn't because ``Commit`` is not always idempotent. But here we know it
@@ -384,12 +375,9 @@ def _commit_with_retry(client, write_pbs, transaction_id):
                 client._database_string, write_pbs,
                 transaction=transaction_id,
                 options=client._call_options)
-        except google.gax.errors.GaxError as exc:
-            status_code = google.gax.grpc.exc_to_code(exc.cause)
-            if status_code == grpc.StatusCode.UNAVAILABLE:
-                pass  # Retry
-            else:
-                raise
+        except exceptions.ServiceUnavailable:
+            # Retry
+            pass
 
         current_sleep = _sleep(current_sleep)
 
