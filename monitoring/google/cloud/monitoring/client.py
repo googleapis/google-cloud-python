@@ -246,6 +246,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.monitoring.metric.Metric`
         :returns: The metric object.
         """
+        labels = {k: str(v) for k, v in labels.items()}
         return Metric(type=type_, labels=labels)
 
     @staticmethod
