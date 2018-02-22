@@ -1,4 +1,4 @@
-# Copyright 2018, Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,16 +42,31 @@ extras = {
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-with io.open(os.path.join(package_root, 'README.rst')) as readme_file:
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
     readme = readme_file.read()
+
+# Only include packages under the 'google' namespace. Do not include tests,
+# benchmarks, etc.
+packages = [
+    package for package in setuptools.find_packages()
+    if package.startswith('google')]
+
+# Determine which namespaces are needed.
+namespaces = ['google']
+if 'google.cloud' in packages:
+    namespaces.append('google.cloud')
+
 
 setuptools.setup(
     name=name,
-    description=description,
     version=version,
+    description=description,
+    long_description=readme,
     author='Google LLC',
     author_email='googleapis-packages@google.com',
     license='Apache 2.0',
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
     classifiers=[
         release_status,
         'Intended Audience :: Developers',
@@ -67,12 +82,10 @@ setuptools.setup(
         'Topic :: Internet',
     ],
     platforms='Posix; MacOS X; Windows',
-    zip_safe=False,
-    include_package_data=True,
-    long_description=readme,
+    packages=packages,
+    namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    packages=setuptools.find_packages(exclude=('tests*',)),
-    namespace_packages=['google', 'google.cloud'],
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    include_package_data=True,
+    zip_safe=False,
 )
