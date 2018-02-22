@@ -18,13 +18,14 @@ import operator
 import os
 import re
 
-from google.auth._default import _load_credentials_from_file
+from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2
 import pytest
 import six
 
 from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import FailedPrecondition
+from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud._helpers import UTC
@@ -33,6 +34,7 @@ from test_utils.system import unique_resource_id
 
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
+FIRESTORE_PROJECT = os.environ.get('GCLOUD_PROJECT')
 RANDOM_ID_REGEX = re.compile('^[a-zA-Z0-9]{20}$')
 MISSING_DOCUMENT = 'No document to update: '
 DOCUMENT_EXISTS = 'Document already exists: '
@@ -40,7 +42,9 @@ DOCUMENT_EXISTS = 'Document already exists: '
 
 @pytest.fixture(scope=u'module')
 def client():
-    credentials, project = _load_credentials_from_file(FIRESTORE_CREDS)
+    credentials = service_account.Credentials.from_service_account_file(
+        FIRESTORE_CREDS)
+    project = FIRESTORE_PROJECT or credentials.project
     yield firestore.Client(project=project, credentials=credentials)
 
 
@@ -115,13 +119,8 @@ def test_cannot_use_foreign_key(client, cleanup):
         database='dee-bee')
     assert other_client._database_string != client._database_string
     fake_doc = other_client.document('foo', 'bar')
-    # NOTE: google-gax **does not** raise a GaxError for INVALID_ARGUMENT.
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(InvalidArgument):
         document.create({'ref': fake_doc})
-
-    assert len(exc_info.value.args) == 1
-    err_msg = exc_info.value.args[0]
-    assert err_msg == 'RPC failed'
 
 
 def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
