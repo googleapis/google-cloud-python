@@ -6,7 +6,7 @@
   <head>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner &#8212; google-cloud 60d4460 documentation</title>
+    <title>Spanner &#8212; google-cloud db4c151 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -96,6 +96,16 @@ Engine or Google Compute Engine the project will be detected automatically.
 <p class="first admonition-title">Tip</p>
 <p class="last">Be sure to use the <strong>Project ID</strong>, not the <strong>Project Number</strong>.</p>
 </div>
+</div>
+<div class="section" id="warnings-about-multiprocessing">
+<h3>Warnings about Multiprocessing<a class="headerlink" href="#warnings-about-multiprocessing" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>When using multiprocessing, the application may hang if a
+:class:~google.cloud.spanner_v1.client.Client instance is created before
+:class:multiprocessing.Pool or :class:multiprocessing.Process invokes :func:os.fork.
+The issue is under investigation, but may be only happening on Macintosh and not Linux.
+See <a class="reference external" href="https://github.com/grpc/grpc/issues/12455#issuecomment-348578950">GRPC/GRPC#12455</a> for more information.</li>
+</ul>
 </div>
 <div class="section" id="next-step">
 <h3>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h3>
