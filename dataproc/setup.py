@@ -1,45 +1,56 @@
-# Copyright 2017 Google LLC
+# Copyright 2018, Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""A setup module for the GAPIC Google Cloud Dataproc API library.
 
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
-"""
-
-from setuptools import setup, find_packages
 import io
-import sys
+import os
 
-install_requires = [
-    'google-api-core >= 0.1.0, < 0.2.0dev',
-    'google-auth >= 1.0.2, < 2.0dev',
-    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
-    'requests >= 2.18.4, < 3.0dev',
+import setuptools
+
+
+# Package metadata.
+
+name = 'google-cloud-dataproc'
+description = 'Google Cloud Dataproc API client library'
+version = '0.1.0'
+# Should be one of:
+# 'Development Status :: 3 - Alpha'
+# 'Development Status :: 4 - Beta'
+# 'Development Status :: 5 - Stable'
+release_status = 'Development Status :: 3 - Alpha'
+dependencies = [
+    'google-api-core[grpc]<0.2.0dev,>=0.1.0',
 ]
+extras = {
+}
 
-with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
-    long_description = readme_file.read()
 
-setup(
-    name='google-cloud-dataproc',
-    version='0.1.0',
+# Setup boilerplate below this line.
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+with io.open(os.path.join(package_root, 'README.rst')) as readme_file:
+    readme = readme_file.read()
+
+setuptools.setup(
+    name=name,
+    description=description,
+    version=version,
     author='Google LLC',
     author_email='googleapis-packages@google.com',
+    license='Apache 2.0',
     classifiers=[
-        'Intended Audience :: Developers',
-        'Development Status :: 3 - Alpha',
+        release_status,
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
@@ -49,14 +60,15 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Operating System :: OS Independent',
+        'Topic :: Internet',
     ],
-    description='GAPIC library for the Google Cloud Dataproc API',
+    platforms='Posix; MacOS X; Windows',
+    zip_safe=False,
     include_package_data=True,
-    long_description=long_description,
-    install_requires=install_requires,
-    license='Apache 2.0',
-    packages=find_packages(exclude=('tests*', )),
+    long_description=readme,
+    install_requires=dependencies,
+    packages=setuptools.find_packages(exclude=('tests*',)),
     namespace_packages=['google', 'google.cloud'],
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',
-    zip_safe=False,
 )
