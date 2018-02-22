@@ -44,7 +44,7 @@ DOCUMENT_EXISTS = 'Document already exists: '
 def client():
     credentials = service_account.Credentials.from_service_account_file(
         FIRESTORE_CREDS)
-    project = FIRESTORE_PROJECT or credentials.project
+    project = FIRESTORE_PROJECT or credentials.project_id
     yield firestore.Client(project=project, credentials=credentials)
 
 
