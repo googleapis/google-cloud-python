@@ -32,7 +32,7 @@ def test_init():
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.batch_settings.max_bytes == 5 * (2 ** 20)
+    assert client.batch_settings.max_bytes == 10 * (2 ** 20)
     assert client.batch_settings.max_latency == 0.05
     assert client.batch_settings.max_messages == 1000
 
@@ -130,6 +130,19 @@ def test_publish_data_not_bytestring_error():
         client.publish(topic, u'This is a text string.')
     with pytest.raises(TypeError):
         client.publish(topic, 42)
+
+
+def test_publish_data_too_large():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+    topic = 'topic/path'
+    client.batch_settings = types.BatchSettings(
+        0,
+        client.batch_settings.max_latency,
+        client.batch_settings.max_messages
+    )
+    with pytest.raises(ValueError):
+        client.publish(topic, b'This is a text string.')
 
 
 def test_publish_attrs_bytestring():

@@ -26,18 +26,17 @@ from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.query import _AbstractQueryParameter
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
-from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
@@ -640,6 +639,29 @@ class LoadJobConfig(object):
             raise ValueError('Schema items must be fields')
         self._schema = tuple(value)
 
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
     def to_api_repr(self):
         """Build an API representation of the load job config.
 
@@ -813,11 +835,25 @@ class LoadJob(_AsyncJob):
         return self._configuration.schema
 
     @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys)
+        or ``None`` if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
+
+    @property
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
+        :raises: ValueError for invalid value types.
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
@@ -931,6 +967,29 @@ class CopyJobConfig(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
     """
 
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
     def to_api_repr(self):
         """Build an API representation of the copy job config.
 
@@ -1001,6 +1060,19 @@ class CopyJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
+
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -1316,34 +1388,48 @@ class QueryJobConfig(object):
     server defaults.
     """
 
-    _QUERY_PARAMETERS_KEY = 'queryParameters'
-    _UDF_RESOURCES_KEY = 'userDefinedFunctionResources'
-
     def __init__(self):
         self._properties = {}
 
-    def to_api_repr(self):
-        """Build an API representation of the copy job config.
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration
+        """
+        prop = self._properties.get('destinationEncryptionConfiguration')
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @destination_encryption_configuration.setter
+    def destination_encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['destinationEncryptionConfiguration'] = api_repr
+
+    def to_api_repr(self):
+        """Build an API representation of the query job config.
+
+        Returns:
+            dict: A dictionary in the format used by the BigQuery API.
         """
         resource = copy.deepcopy(self._properties)
 
         # Query parameters have an addition property associated with them
         # to indicate if the query is using named or positional parameters.
-        query_parameters = resource.get(self._QUERY_PARAMETERS_KEY)
+        query_parameters = resource.get('queryParameters')
         if query_parameters:
-            if query_parameters[0].name is None:
+            if query_parameters[0].get('name') is None:
                 resource['parameterMode'] = 'POSITIONAL'
             else:
                 resource['parameterMode'] = 'NAMED'
-
-        for prop, convert in self._NESTED_PROPERTIES.items():
-            _, to_resource = convert
-            nested_resource = resource.get(prop)
-            if nested_resource is not None:
-                resource[prop] = to_resource(nested_resource)
 
         return resource
 
@@ -1351,22 +1437,17 @@ class QueryJobConfig(object):
     def from_api_repr(cls, resource):
         """Factory: construct a job configuration given its API representation
 
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
+        Args:
+            resource (dict):
+                A query job configuration in the same representation as is
+                returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.job.QueryJobConfig`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            ~google.cloud.bigquery.job.QueryJobConfig:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-
-        for prop, convert in cls._NESTED_PROPERTIES.items():
-            from_resource, _ = convert
-            nested_resource = resource.get(prop)
-            if nested_resource is not None:
-                config._properties[prop] = from_resource(nested_resource)
 
         return config
 
@@ -1384,20 +1465,39 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
     """
 
-    default_dataset = _TypedApiResourceProperty(
-        'default_dataset', 'defaultDataset', DatasetReference)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
-    """
+    @property
+    def default_dataset(self):
+        """google.cloud.bigquery.dataset.DatasetReference: the default dataset
+        to use for unqualified table names in the query or ``None`` if not set.
 
-    destination = _TypedApiResourceProperty(
-        'destination', 'destinationTable', TableReference)
-    """
-    google.cloud.bigquery.table.TableReference: table where results are written
+        See
+        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+        """
+        prop = self._properties.get('defaultDataset')
+        if prop is not None:
+            prop = DatasetReference.from_api_repr(prop)
+        return prop
 
-    See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
-    """
+    @default_dataset.setter
+    def default_dataset(self, value):
+        self._properties['defaultDataset'] = value.to_api_repr()
+
+    @property
+    def destination(self):
+        """google.cloud.bigquery.table.TableReference: table where results are
+        written or ``None`` if not set.
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
+        """
+        prop = self._properties.get('destinationTable')
+        if prop is not None:
+            prop = TableReference.from_api_repr(prop)
+        return prop
+
+    @destination.setter
+    def destination(self, value):
+        self._properties['destinationTable'] = value.to_api_repr()
 
     dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
     """
@@ -1419,39 +1519,60 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
     """
 
-    maximum_bytes_billed = _TypedApiResourceProperty(
-        'maximum_bytes_billed', 'maximumBytesBilled', int)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
-    """
+    @property
+    def maximum_bytes_billed(self):
+        """int: Maximum bytes to be billed for this job or ``None`` if not set.
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
+        """
+        prop = self._properties.get('maximumBytesBilled')
+        if prop is not None:
+            prop = int(prop)
+        return prop
+
+    @maximum_bytes_billed.setter
+    def maximum_bytes_billed(self, value):
+        self._properties['maximumBytesBilled'] = str(value)
 
     priority = QueryPriority('priority', 'priority')
     """See
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
     """
 
-    query_parameters = _ListApiResourceProperty(
-        'query_parameters', _QUERY_PARAMETERS_KEY, _AbstractQueryParameter)
-    """
-    A list of
-    :class:`google.cloud.bigquery.ArrayQueryParameter`,
-    :class:`google.cloud.bigquery.ScalarQueryParameter`, or
-    :class:`google.cloud.bigquery.StructQueryParameter`
-    (empty by default)
+    @property
+    def query_parameters(self):
+        """List[Union[google.cloud.bigquery.query.ArrayQueryParameter, \
+        google.cloud.bigquery.query.ScalarQueryParameter, \
+        google.cloud.bigquery.query.StructQueryParameter]]: list of parameters
+        for parameterized query (empty by default)
 
-    See:
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
-    """
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
+        """
+        prop = self._properties.get('queryParameters', [])
+        return _from_api_repr_query_parameters(prop)
 
-    udf_resources = _ListApiResourceProperty(
-        'udf_resources', _UDF_RESOURCES_KEY, UDFResource)
-    """
-    A list of :class:`google.cloud.bigquery.UDFResource` (empty
-    by default)
+    @query_parameters.setter
+    def query_parameters(self, values):
+        self._properties['queryParameters'] = _to_api_repr_query_parameters(
+            values)
 
-    See:
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
-    """
+    @property
+    def udf_resources(self):
+        """List[google.cloud.bigquery.query.UDFResource]: user
+        defined function resources (empty by default)
+
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
+        """
+        prop = self._properties.get('userDefinedFunctionResources', [])
+        return _from_api_repr_udf_resources(prop)
+
+    @udf_resources.setter
+    def udf_resources(self, values):
+        self._properties['userDefinedFunctionResources'] = (
+            _to_api_repr_udf_resources(values))
 
     use_legacy_sql = _TypedApiResourceProperty(
         'use_legacy_sql', 'useLegacySql', bool)
@@ -1471,32 +1592,25 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
 
-    table_definitions = _TypedApiResourceProperty(
-        'table_definitions', 'tableDefinitions', dict)
-    """
-    Definitions for external tables. A dictionary from table names (strings)
-    to :class:`google.cloud.bigquery.ExternalConfig`.
+    @property
+    def table_definitions(self):
+        """Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
+        Definitions for external tables or ``None`` if not set.
 
-    See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
-    """
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
+        """
+        prop = self._properties.get('tableDefinitions')
+        if prop is not None:
+            prop = _from_api_repr_table_defs(prop)
+        return prop
+
+    @table_definitions.setter
+    def table_definitions(self, values):
+        self._properties['tableDefinitions'] = _to_api_repr_table_defs(values)
 
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
-
-    _NESTED_PROPERTIES = {
-        'defaultDataset': (
-            DatasetReference.from_api_repr, DatasetReference.to_api_repr),
-        'destinationTable': (
-            TableReference.from_api_repr, TableReference.to_api_repr),
-        'maximumBytesBilled': (int, str),
-        'tableDefinitions': (_from_api_repr_table_defs,
-                             _to_api_repr_table_defs),
-        _QUERY_PARAMETERS_KEY: (
-            _from_api_repr_query_parameters, _to_api_repr_query_parameters),
-        _UDF_RESOURCES_KEY: (
-            _from_api_repr_udf_resources, _to_api_repr_udf_resources),
-    }
 
 
 class QueryJob(_AsyncJob):
@@ -1559,6 +1673,19 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.
         """
         return self._configuration.destination
+
+    @property
+    def destination_encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the destination table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or ``None``
+        if using default encryption.
+
+        See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration`.
+        """
+        return self._configuration.destination_encryption_configuration
 
     @property
     def dry_run(self):
@@ -1781,13 +1908,13 @@ class QueryJob(_AsyncJob):
 
     @property
     def num_dml_affected_rows(self):
-        """Return total bytes billed from job statistics, if present.
+        """Return the number of DML rows affected by the job.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
 
         :rtype: int or None
-        :returns: number of DML rows affectd by the job, or None if job is not
+        :returns: number of DML rows affected by the job, or None if job is not
                   yet complete.
         """
         result = self._job_statistics().get('numDmlAffectedRows')

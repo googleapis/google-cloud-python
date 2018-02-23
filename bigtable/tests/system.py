@@ -311,8 +311,12 @@ class TestDataAPI(unittest.TestCase):
         timestamp1 = _datetime_from_microseconds(timestamp1_micros)
         # 1000 microseconds is a millisecond
         timestamp2 = timestamp1 + datetime.timedelta(microseconds=1000)
+        timestamp2_micros = _microseconds_from_datetime(timestamp2)
         timestamp3 = timestamp1 + datetime.timedelta(microseconds=2000)
+        timestamp3_micros = _microseconds_from_datetime(timestamp3)
         timestamp4 = timestamp1 + datetime.timedelta(microseconds=3000)
+        timestamp4_micros = _microseconds_from_datetime(timestamp4)
+
         if row1 is not None:
             row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1,
                           timestamp=timestamp1)
@@ -327,10 +331,10 @@ class TestDataAPI(unittest.TestCase):
                           timestamp=timestamp4)
 
         # Create the cells we will check.
-        cell1 = Cell(CELL_VAL1, timestamp1)
-        cell2 = Cell(CELL_VAL2, timestamp2)
-        cell3 = Cell(CELL_VAL3, timestamp3)
-        cell4 = Cell(CELL_VAL4, timestamp4)
+        cell1 = Cell(CELL_VAL1, timestamp1_micros)
+        cell2 = Cell(CELL_VAL2, timestamp2_micros)
+        cell3 = Cell(CELL_VAL3, timestamp3_micros)
+        cell4 = Cell(CELL_VAL4, timestamp4_micros)
         return cell1, cell2, cell3, cell4
 
     def test_mutate_rows(self):

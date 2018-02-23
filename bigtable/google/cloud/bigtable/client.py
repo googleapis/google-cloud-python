@@ -31,7 +31,7 @@ In the hierarchy of API concepts
 
 import os
 
-from google.gax.utils import metrics
+from google.api_core import gapic_v1
 from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_insecure_stub
@@ -67,13 +67,9 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
-_METRICS_HEADERS = (
-    ('gccl', __version__),
-)
-_HEADER_STR = metrics.stringify(metrics.fill(_METRICS_HEADERS))
-_GRPC_EXTRA_OPTIONS = (
-    ('x-goog-api-client', _HEADER_STR),
-)
+_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    client_library_version=__version__,)
+_GRPC_EXTRA_OPTIONS = (_CLIENT_INFO.to_grpc_metadata(),)
 # NOTE: 'grpc.max_message_length' will no longer be recognized in
 #       grpcio 1.1 and later.
 _MAX_MSG_LENGTH_100MB = 100 * 1024 * 1024

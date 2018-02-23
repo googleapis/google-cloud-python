@@ -187,6 +187,10 @@ class Consumer(object):
     def active(self):
         """bool: Indicates if the consumer is active.
 
+        *Active* means that the stream is open and that it is possible to
+        send and receive messages. This is distinct from *pausing* which just
+        pauses *response* consumption.
+
         This is intended to be an implementation independent way of indicating
         that the consumer is stopped. (E.g. so a policy that owns a consumer
         doesn't need to know what a ``threading.Event`` is.)
@@ -201,6 +205,14 @@ class Consumer(object):
         """
         with self._put_lock:
             self._request_queue.put(request)
+
+    @property
+    def pending_requests(self):
+        """int: An approximate count of the outstanding requests.
+
+        This can be used to determine if the consumer should be paused if there
+        are too many outstanding requests."""
+        return self._request_queue.qsize()
 
     def _request_generator_thread(self, policy):
         """Generate requests for the stream.
@@ -231,8 +243,9 @@ class Consumer(object):
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
 
-            _LOGGER.debug('Sending request:\n%r', request)
+            _LOGGER.debug('Sending request on stream')
             yield request
+            policy.on_request(request)
 
     def _stop_request_generator(self, request_generator, response_generator):
         """Ensure a request generator is closed.
@@ -325,7 +338,7 @@ class Consumer(object):
             # checks to make sure we're not exiting before opening a new
             # stream.
             if self._stopped.is_set():
-                _LOGGER.debug('Event signalled consumer exit.')
+                _LOGGER.debug('Event signaled consumer exit.')
                 break
 
             request_generator = self._request_generator_thread(policy)
@@ -334,14 +347,14 @@ class Consumer(object):
                 response_generator, self._can_consume)
             try:
                 for response in responses:
-                    _LOGGER.debug('Received response:\n%r', response)
+                    _LOGGER.debug('Received response on stream')
                     policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
                 # request stream terminated cleanly, which should only happen
                 # when it was signaled to do so by stop_consuming. In this
                 # case, break out of the while loop and exit this thread.
-                _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
+                _LOGGER.debug('Clean RPC loop exit signaled consumer exit.')
                 break
             except Exception as exc:
                 recover = policy.on_exception(exc)
@@ -364,7 +377,8 @@ class Consumer(object):
 
         This will clear the ``_can_consume`` event which is checked
         every time :meth:`_blocking_consume` consumes a response from the
-        bidirectional streaming pull.
+        bidirectional streaming pull. *requests* can still be sent along
+        the stream.
 
         Complement to :meth:`resume`.
         """

@@ -112,10 +112,8 @@ def system(session, py):
         'py.test',
         '-vvv',
         '-s',
-        'tests/system.py',
-        *session.posargs,
-        success_codes=range(0, 100)
-    )
+        'tests/system',
+        *session.posargs)
 
 
 @nox.session

@@ -66,7 +66,7 @@ def to_delete(client):
     yield doomed
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
-            client.delete_dataset(item)
+            client.delete_dataset(item, delete_contents=True)
         elif isinstance(item, (bigquery.Table, bigquery.TableReference)):
             client.delete_table(item)
         else:
@@ -294,6 +294,29 @@ def test_create_table(client, to_delete):
     to_delete.insert(0, table)
 
 
+def test_create_table_cmek(client, to_delete):
+    DATASET_ID = 'create_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_create_table_cmek]
+    table_ref = dataset.table('my_table')
+    table = bigquery.Table(table_ref)
+
+    # Set the encryption key to use for the table.
+    # TODO: Replace this key with a key you have created in Cloud KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+
+    table = client.create_table(table)  # API request
+
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_create_table_cmek]
+
+
 def test_get_table(client, to_delete):
     """Reload a table's metadata."""
     DATASET_ID = 'get_table_dataset_{}'.format(_millis())
@@ -415,6 +438,42 @@ def test_update_table_multiple_properties(client, to_delete):
     # [END update_table_multiple_properties]
 
 
+def test_update_table_cmek(client, to_delete):
+    """Patch a table's metadata."""
+    dataset_id = 'update_table_cmek_{}'.format(_millis())
+    table_id = 'update_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id))
+    original_kms_key_name = (
+        'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+            'cloud-samples-tests', 'us-central1', 'test', 'test'))
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=original_kms_key_name)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_update_table_cmek]
+    assert table.encryption_configuration.kms_key_name == original_kms_key_name
+
+    # Set a new encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    updated_kms_key_name = (
+        'projects/cloud-samples-tests/locations/us-central1/'
+        'keyRings/test/cryptoKeys/otherkey')
+    table.encryption_configuration = bigquery.EncryptionConfiguration(
+        kms_key_name=updated_kms_key_name)
+
+    table = client.update_table(
+        table, ['encryption_configuration'])  # API request
+
+    assert table.encryption_configuration.kms_key_name == updated_kms_key_name
+    assert original_kms_key_name != updated_kms_key_name
+    # [END bigquery_update_table_cmek]
+
+
 def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
     dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
@@ -485,63 +544,182 @@ Wylma Phlyntstone,29
     token = iterator.next_page_token
     # [END table_list_rows_iterator_properties]
 
-    expected_rows = [
-        bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1}),
-        bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1}),
-    ]
     assert len(rows) == total == 2
     assert token is None
-    assert rows == expected_rows
+    # Order is not preserved, so compare individually
+    row1 = bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1})
+    assert row1 in rows
+    row2 = bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1})
+    assert row2 in rows
 
 
 def test_load_table_from_uri(client, to_delete):
-    ROWS = [
-        ('Phred Phlyntstone', 32),
-        ('Bharney Rhubble', 33),
-        ('Wylma Phlyntstone', 29),
-        ('Bhettye Rhubble', 27),
-    ]
-    HEADER_ROW = ('Full Name', 'Age')
-    bucket_name = 'gs_bq_load_test_{}'.format(_millis())
-    blob_name = 'person_ages.csv'
-    bucket, blob = _write_csv_to_storage(
-        bucket_name, blob_name, HEADER_ROW, ROWS)
-    to_delete.extend((blob, bucket))
-    DATASET_ID = 'delete_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
-    table_ref = dataset.table('my_table')
-    table = bigquery.Table(table_ref)
-    table.schema = [
-        bigquery.SchemaField('full_name', 'STRING', mode='required'),
-        bigquery.SchemaField('age', 'INTEGER', mode='required')
-    ]
-    client.create_table(table)
 
-    # [START load_table_from_uri]
-    table_ref = dataset.table('my_table')
-    GS_URL = 'gs://{}/{}'.format(bucket_name, blob_name)
-    job_id_prefix = "my_job"
+    # [START bigquery_load_table_gcs_json]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
-    job_config.create_disposition = 'NEVER'
-    job_config.skip_leading_rows = 1
-    job_config.source_format = 'CSV'
-    job_config.write_disposition = 'WRITE_EMPTY'
-    load_job = client.load_table_from_uri(
-        GS_URL, table_ref, job_config=job_config,
-        job_id_prefix=job_id_prefix)  # API request
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
 
-    assert load_job.state == 'RUNNING'
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
     assert load_job.job_type == 'load'
 
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert load_job.job_id.startswith(job_id_prefix)
-    # [END load_table_from_uri]
+    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    # [END bigquery_load_table_gcs_json]
 
-    to_delete.insert(0, table)
+
+def test_load_table_from_uri_cmek(client, to_delete):
+    dataset_id = 'load_table_from_uri_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_json_cmek]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.autodetect = True
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config.destination_encryption_configuration = encryption_config
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    table = client.get_table(dataset_ref.table('us_states'))
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_load_table_gcs_json_cmek]
+
+
+def test_load_table_from_uri_autodetect(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_json_autodetect]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.autodetect = True
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    # [END bigquery_load_table_gcs_json_autodetect]
+
+
+def test_load_table_from_uri_append(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.StringIO('Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_json_append]
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.write_disposition = 'WRITE_APPEND'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == previous_rows + 50
+    # [END bigquery_load_table_gcs_json_append]
+
+
+def test_load_table_from_uri_truncate(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.StringIO('Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_json_truncate]
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    assert previous_rows > 0
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == 50
+    # [END bigquery_load_table_gcs_json_truncate]
 
 
 def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
@@ -570,19 +748,20 @@ def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
 
 
 def test_copy_table(client, to_delete):
-    DATASET_ID = 'copy_table_dataset_{}'.format(_millis())
+    dataset_id = 'copy_table_dataset_{}'.format(_millis())
+    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset = client.create_dataset(dest_dataset)
+    to_delete.append(dest_dataset)
+
     # [START copy_table]
     source_dataset = bigquery.DatasetReference(
         'bigquery-public-data', 'samples')
     source_table_ref = source_dataset.table('shakespeare')
 
-    dest_dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dest_dataset = client.create_dataset(dest_dataset)  # API request
+    # dataset_id = 'my_dataset'
     dest_table_ref = dest_dataset.table('destination_table')
 
-    job_config = bigquery.CopyJobConfig()
-    job = client.copy_table(
-        source_table_ref, dest_table_ref, job_config=job_config)  # API request
+    job = client.copy_table(source_table_ref, dest_table_ref)  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
@@ -590,7 +769,42 @@ def test_copy_table(client, to_delete):
     assert dest_table.table_id == 'destination_table'
     # [END copy_table]
 
+    to_delete.insert(0, dest_table)
+
+
+def test_copy_table_cmek(client, to_delete):
+    dataset_id = 'copy_table_cmek_{}'.format(_millis())
+    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
+
+    # [START bigquery_copy_table_cmek]
+    source_dataset = bigquery.DatasetReference(
+        'bigquery-public-data', 'samples')
+    source_table_ref = source_dataset.table('shakespeare')
+
+    # dataset_id = 'my_dataset'
+    dest_dataset_ref = client.dataset(dataset_id)
+    dest_table_ref = dest_dataset_ref.table('destination_table')
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config = bigquery.CopyJobConfig()
+    job_config.destination_encryption_configuration = encryption_config
+
+    job = client.copy_table(
+        source_table_ref, dest_table_ref, job_config=job_config)  # API request
+    job.result()  # Waits for job to complete.
+
+    assert job.state == 'DONE'
+    dest_table = client.get_table(dest_table_ref)
+    assert dest_table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_copy_table_cmek]
+
     to_delete.insert(0, dest_table)
 
 
@@ -684,7 +898,6 @@ def test_client_query(client):
         'LIMIT 100')
     TIMEOUT = 30  # in seconds
     query_job = client.query(QUERY)  # API request - starts the query
-    assert query_job.state == 'RUNNING'
 
     # Waits for the query to finish
     iterator = query_job.result(timeout=TIMEOUT)
@@ -739,6 +952,41 @@ def test_client_query_destination_table(client, to_delete):
     # [END bigquery_query_destination_table]
 
 
+def test_client_query_destination_table_cmek(client, to_delete):
+    """Run a query"""
+    dataset_id = 'query_destination_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    to_delete.append(dataset_ref)
+    client.create_dataset(bigquery.Dataset(dataset_ref))
+    to_delete.insert(0, dataset_ref.table('your_table_id'))
+
+    # [START bigquery_query_destination_table_cmek]
+    job_config = bigquery.QueryJobConfig()
+
+    # Set the destination table. Here, dataset_id is a string, such as:
+    # dataset_id = 'your_dataset_id'
+    table_ref = client.dataset(dataset_id).table('your_table_id')
+    job_config.destination = table_ref
+
+    # Set the encryption key to use for the destination.
+    # TODO: Replace this key with a key you have created in KMS.
+    kms_key_name = 'projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}'.format(
+        'cloud-samples-tests', 'us-central1', 'test', 'test')
+    encryption_config = bigquery.EncryptionConfiguration(
+        kms_key_name=kms_key_name)
+    job_config.destination_encryption_configuration = encryption_config
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        'SELECT 17 AS my_col;', job_config=job_config)
+    query_job.result()
+
+    # The destination table is written using the encryption configuration.
+    table = client.get_table(table_ref)
+    assert table.encryption_configuration.kms_key_name == kms_key_name
+    # [END bigquery_query_destination_table_cmek]
+
+
 def test_client_query_w_param(client):
     """Run a query using a query parameter"""
 
@@ -754,7 +1002,6 @@ def test_client_query_w_param(client):
     job_config.query_parameters = [param]
     query_job = client.query(
         QUERY_W_PARAM, job_config=job_config)  # API request - starts the query
-    assert query_job.state == 'RUNNING'
 
     # Waits for the query to finish
     iterator = query_job.result(timeout=TIMEOUT)

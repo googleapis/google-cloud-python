@@ -28,16 +28,16 @@ class Cell(object):
     :type value: bytes
     :param value: The value stored in the cell.
 
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: The timestamp when the cell was stored.
+    :type timestamp_micros: int
+    :param timestamp_micros: The timestamp_micros when the cell was stored.
 
     :type labels: list
     :param labels: (Optional) List of strings. Labels applied to the cell.
     """
 
-    def __init__(self, value, timestamp, labels=()):
+    def __init__(self, value, timestamp_micros, labels=()):
         self.value = value
-        self.timestamp = timestamp
+        self.timestamp_micros = timestamp_micros
         self.labels = list(labels)
 
     @classmethod
@@ -50,17 +50,21 @@ class Cell(object):
         :rtype: :class:`Cell`
         :returns: The cell corresponding to the protobuf.
         """
-        timestamp = _datetime_from_microseconds(cell_pb.timestamp_micros)
         if cell_pb.labels:
-            return cls(cell_pb.value, timestamp, labels=cell_pb.labels)
+            return cls(cell_pb.value, cell_pb.timestamp_micros,
+                       labels=cell_pb.labels)
         else:
-            return cls(cell_pb.value, timestamp)
+            return cls(cell_pb.value, cell_pb.timestamp_micros)
+
+    @property
+    def timestamp(self):
+        return _datetime_from_microseconds(self.timestamp_micros)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return (other.value == self.value and
-                other.timestamp == self.timestamp and
+                other.timestamp_micros == self.timestamp_micros and
                 other.labels == self.labels)
 
     def __ne__(self, other):
@@ -187,27 +191,18 @@ class PartialRowsData(object):
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
     """
-    START = "Start"                         # No responses yet processed.
-    NEW_ROW = "New row"                     # No cells yet complete for row
-    ROW_IN_PROGRESS = "Row in progress"     # Some cells complete for row
-    CELL_IN_PROGRESS = "Cell in progress"   # Incomplete cell for row
+
+    START = 'Start'                         # No responses yet processed.
+    NEW_ROW = 'New row'                     # No cells yet complete for row
+    ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
+    CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
 
     def __init__(self, response_iterator):
         self._response_iterator = response_iterator
+        self._generator = YieldRowsData(response_iterator)
+
         # Fully-processed rows, keyed by `row_key`
-        self._rows = {}
-        # Counter for responses pulled from iterator
-        self._counter = 0
-        # Maybe cached from previous response
-        self._last_scanned_row_key = None
-        # In-progress row, unset until first response, after commit/reset
-        self._row = None
-        # Last complete row, unset until first commit
-        self._previous_row = None
-        # In-progress cell, unset until first response, after completion
-        self._cell = None
-        # Last complete cell, unset until first completion, after new row
-        self._previous_cell = None
+        self.rows = {}
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -225,6 +220,56 @@ class PartialRowsData(object):
         :returns:  name of state corresponding to currrent row / chunk
                    processing.
         """
+        return self._generator.state
+
+    def consume_all(self, max_loops=None):
+        """Consume the streamed responses until there are no more.
+
+        :type max_loops: int
+        :param max_loops: (Optional) Maximum number of times to try to consume
+                          an additional ``ReadRowsResponse``. You can use this
+                          to avoid long wait times.
+        """
+        for row in self._generator.read_rows():
+            self.rows[row.row_key] = row
+
+
+class YieldRowsData(object):
+    """Convenience wrapper for consuming a ``ReadRows`` streaming response.
+
+    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
+    :param response_iterator: A streaming iterator returned from a
+                              ``ReadRows`` request.
+    """
+
+    START = 'Start'  # No responses yet processed.
+    NEW_ROW = 'New row'  # No cells yet complete for row
+    ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
+    CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
+
+    def __init__(self, response_iterator):
+        self._response_iterator = response_iterator
+        # Counter for responses pulled from iterator
+        self._counter = 0
+        # Maybe cached from previous response
+        self._last_scanned_row_key = None
+        # In-progress row, unset until first response, after commit/reset
+        self._row = None
+        # Last complete row, unset until first commit
+        self._previous_row = None
+        # In-progress cell, unset until first response, after completion
+        self._cell = None
+        # Last complete cell, unset until first completion, after new row
+        self._previous_cell = None
+
+    @property
+    def state(self):
+        """State machine state.
+
+        :rtype: str
+        :returns:  name of state corresponding to current row / chunk
+                   processing.
+        """
         if self._last_scanned_row_key is None:
             return self.START
         if self._row is None:
@@ -237,96 +282,75 @@ class PartialRowsData(object):
             return self.ROW_IN_PROGRESS
         return self.NEW_ROW  # row added, no chunk yet processed
 
-    @property
-    def rows(self):
-        """Property returning all rows accumulated from the stream.
-
-        :rtype: dict
-        :returns: row_key -> :class:`PartialRowData`.
-        """
-        # NOTE: To avoid duplicating large objects, this is just the
-        #       mutable private data.
-        return self._rows
-
     def cancel(self):
         """Cancels the iterator, closing the stream."""
         self._response_iterator.cancel()
 
-    def consume_next(self):
-        """Consume the next ``ReadRowsResponse`` from the stream.
+    def read_rows(self):
+        """Consume the ``ReadRowsResponse's`` from the stream.
+        Read the rows and yield each to the reader
 
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
-        response = six.next(self._response_iterator)
-        self._counter += 1
-
-        if self._last_scanned_row_key is None:  # first response
-            if response.last_scanned_row_key:
-                raise InvalidReadRowsResponse()
-
-        self._last_scanned_row_key = response.last_scanned_row_key
-
-        row = self._row
-        cell = self._cell
-
-        for chunk in response.chunks:
-
-            self._validate_chunk(chunk)
-
-            if chunk.reset_row:
-                row = self._row = None
-                cell = self._cell = self._previous_cell = None
-                continue
-
-            if row is None:
-                row = self._row = PartialRowData(chunk.row_key)
-
-            if cell is None:
-                qualifier = None
-                if chunk.HasField('qualifier'):
-                    qualifier = chunk.qualifier.value
-
-                cell = self._cell = PartialCellData(
-                    chunk.row_key,
-                    chunk.family_name.value,
-                    qualifier,
-                    chunk.timestamp_micros,
-                    chunk.labels,
-                    chunk.value)
-                self._copy_from_previous(cell)
-            else:
-                cell.append_value(chunk.value)
-
-            if chunk.commit_row:
-                self._save_current_row()
-                row = cell = None
-                continue
-
-            if chunk.value_size == 0:
-                self._save_current_cell()
-                cell = None
-
-    def consume_all(self, max_loops=None):
-        """Consume the streamed responses until there are no more.
-
-        This simply calls :meth:`consume_next` until there are no
-        more to consume.
-
-        :type max_loops: int
-        :param max_loops: (Optional) Maximum number of times to try to consume
-                          an additional ``ReadRowsResponse``. You can use this
-                          to avoid long wait times.
-        """
-        curr_loop = 0
-        if max_loops is None:
-            max_loops = float('inf')
-        while curr_loop < max_loops:
-            curr_loop += 1
+        while True:
             try:
-                self.consume_next()
+                response = six.next(self._response_iterator)
             except StopIteration:
                 break
+
+            self._counter += 1
+
+            if self._last_scanned_row_key is None:  # first response
+                if response.last_scanned_row_key:
+                    raise InvalidReadRowsResponse()
+
+            self._last_scanned_row_key = response.last_scanned_row_key
+
+            row = self._row
+            cell = self._cell
+
+            for chunk in response.chunks:
+
+                self._validate_chunk(chunk)
+
+                if chunk.reset_row:
+                    row = self._row = None
+                    cell = self._cell = self._previous_cell = None
+                    continue
+
+                if row is None:
+                    row = self._row = PartialRowData(chunk.row_key)
+
+                if cell is None:
+                    qualifier = None
+                    if chunk.HasField('qualifier'):
+                        qualifier = chunk.qualifier.value
+
+                    cell = self._cell = PartialCellData(
+                        chunk.row_key,
+                        chunk.family_name.value,
+                        qualifier,
+                        chunk.timestamp_micros,
+                        chunk.labels,
+                        chunk.value)
+                    self._copy_from_previous(cell)
+                else:
+                    cell.append_value(chunk.value)
+
+                if chunk.commit_row:
+                    self._save_current_cell()
+
+                    yield self._row
+
+                    self._row, self._previous_row = None, self._row
+                    self._previous_cell = None
+                    row = cell = None
+                    continue
+
+                if chunk.value_size == 0:
+                    self._save_current_cell()
+                    cell = None
 
     @staticmethod
     def _validate_chunk_status(chunk):
@@ -428,14 +452,6 @@ class PartialRowsData(object):
             # NOTE: ``cell.qualifier`` **can** be empty string.
             if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
-
-    def _save_current_row(self):
-        """Helper for :meth:`consume_next`."""
-        if self._cell:
-            self._save_current_cell()
-        self._rows[self._row.row_key] = self._row
-        self._row, self._previous_row = None, self._row
-        self._previous_cell = None
 
 
 def _raise_if(predicate, *args):

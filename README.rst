@@ -24,6 +24,7 @@ The following client libraries have **GA** support:
 
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
@@ -46,7 +47,6 @@ The following client libraries have **beta** support:
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
--  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)

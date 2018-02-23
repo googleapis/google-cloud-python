@@ -18,6 +18,8 @@ import json
 import math
 import time
 
+from google.cloud.pubsub_v1.subscriber.policy import base as base_policy
+
 
 _MESSAGE_REPR = """\
 Message {{
@@ -172,14 +174,11 @@ class Message(object):
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
-            (
-                'ack',
-                {
-                    'ack_id': self._ack_id,
-                    'byte_size': self.size,
-                    'time_to_ack': time_to_ack,
-                },
-            ),
+            base_policy.AckRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size,
+                time_to_ack=time_to_ack
+            )
         )
 
     def drop(self):
@@ -196,13 +195,10 @@ class Message(object):
             directly.
         """
         self._request_queue.put(
-            (
-                'drop',
-                {
-                    'ack_id': self._ack_id,
-                    'byte_size': self.size,
-                },
-            ),
+            base_policy.DropRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size
+            )
         )
 
     def lease(self):
@@ -213,27 +209,21 @@ class Message(object):
             need to call it manually.
         """
         self._request_queue.put(
-            (
-                'lease',
-                {
-                    'ack_id': self._ack_id,
-                    'byte_size': self.size,
-                },
-            ),
+            base_policy.LeaseRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size
+            )
         )
 
     def modify_ack_deadline(self, seconds):
-        """Set the deadline for acknowledgement to the given value.
+        """Resets the deadline for acknowledgement.
+
+        New deadline will be the given value of seconds from now.
 
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
-
-        .. note::
-            This is not an extension; it *sets* the deadline to the given
-            number of seconds from right now. It is even possible to use this
-            method to make a deadline shorter.
 
         Args:
             seconds (int): The number of seconds to set the lease deadline
@@ -241,13 +231,10 @@ class Message(object):
                 values below 10 are advised against.
         """
         self._request_queue.put(
-            (
-                'modify_ack_deadline',
-                {
-                    'ack_id': self._ack_id,
-                    'seconds': seconds,
-                },
-            ),
+            base_policy.ModAckRequest(
+                ack_id=self._ack_id,
+                seconds=seconds
+            )
         )
 
     def nack(self):
@@ -256,11 +243,8 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self._request_queue.put(
-            (
-                'nack',
-                {
-                    'ack_id': self._ack_id,
-                    'byte_size': self.size,
-                },
-            ),
+            base_policy.NackRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size
+            )
         )

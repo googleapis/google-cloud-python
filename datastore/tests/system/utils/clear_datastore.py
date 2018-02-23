@@ -30,6 +30,7 @@ ALL_KINDS = (
     'Kind',
     'Person',
     'Post',
+    'uuid_key',
 )
 TRANSACTION_MAX_GROUPS = 5
 

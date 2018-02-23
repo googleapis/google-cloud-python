@@ -27,7 +27,7 @@ Authentication and Configuration
 
 - In addition to any authentication configuration, you should also set the
   :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
-  to interact with. If you are Google App Engine or Google Compute Engine
+  to interact with. If you are using Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - The library now enables the ``gRPC`` transport for the logging API by

@@ -25,9 +25,9 @@ from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.futures import Future
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -139,30 +139,19 @@ def test_open_already_open():
     assert exc_info.value.args == ('This policy has already been opened.',)
 
 
-def test_dispatch_callback_valid_actions():
+@pytest.mark.parametrize('item,method', [
+    (base.AckRequest(0, 0, 0), 'ack'),
+    (base.DropRequest(0, 0), 'drop'),
+    (base.LeaseRequest(0, 0), 'lease'),
+    (base.ModAckRequest(0, 0), 'modify_ack_deadline'),
+    (base.NackRequest(0, 0), 'nack')
+])
+def test_dispatch_callback_valid(item, method):
     policy = create_policy()
-    kwargs = {'foo': 10, 'bar': 13.37}
-    actions = (
-        'ack',
-        'drop',
-        'lease',
-        'modify_ack_deadline',
-        'nack',
-    )
-    for action in actions:
-        with mock.patch.object(policy, action) as mocked:
-            policy.dispatch_callback(action, kwargs)
-            mocked.assert_called_once_with(**kwargs)
-
-
-def test_dispatch_callback_invalid_action():
-    policy = create_policy()
-    with pytest.raises(ValueError) as exc_info:
-        policy.dispatch_callback('gecko', {})
-
-    assert len(exc_info.value.args) == 3
-    assert exc_info.value.args[0] == 'Unexpected action'
-    assert exc_info.value.args[1] == 'gecko'
+    with mock.patch.object(policy, method) as mocked:
+        items = [item]
+        policy.dispatch_callback(items)
+        mocked.assert_called_once_with([item])
 
 
 def test_on_exception_deadline_exceeded():
@@ -220,25 +209,20 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that executor.submit and
-    # future.add_done_callback were called in the expected way.
-    policy.on_response(response)
+    # Actually run the method and prove that modack and executor.submit
+    # are called in the expected way.
+    modack_patch = mock.patch.object(
+        policy, 'modify_ack_deadline', autospec=True)
+    with modack_patch as modack:
+        policy.on_response(response)
+
+    modack.assert_called_once_with(
+        [base.ModAckRequest('fack', 10),
+         base.ModAckRequest('back', 10)]
+    )
 
     submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
     assert len(submit_calls) == 2
     for call in submit_calls:
         assert call[1][0] == callback
         assert isinstance(call[1][1], message.Message)
-
-    add_done_callback_calls = [
-        m for m in future.method_calls if m[0] == 'add_done_callback']
-    assert len(add_done_callback_calls) == 2
-    for call in add_done_callback_calls:
-        assert call[1][0] == thread._callback_completed
-
-
-def test__callback_completed():
-    future = mock.Mock()
-    thread._callback_completed(future)
-    result_calls = [m for m in future.method_calls if m[0] == 'result']
-    assert len(result_calls) == 1

@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,10 +46,9 @@ class TextAnnotation(object):
               SPACE (int): Regular space.
               SURE_SPACE (int): Sure space (very wide).
               EOL_SURE_SPACE (int): Line-wrapping break.
-              HYPHEN (int): End-line hyphen that is not present in text; does
-              LINE_BREAK (int): not co-occur with SPACE, LEADER_SPACE, or
-              LINE_BREAK.
-              Line break that ends a paragraph.
+              HYPHEN (int): End-line hyphen that is not present in text; does not co-occur with
+              ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+              LINE_BREAK (int): Line break that ends a paragraph.
             """
             UNKNOWN = 0
             SPACE = 1
@@ -83,7 +82,7 @@ class Block(object):
 class Feature(object):
     class Type(object):
         """
-        Type of image feature.
+        Type of Google Cloud Vision API feature to be extracted.
 
         Attributes:
           TYPE_UNSPECIFIED (int): Unspecified feature type.
@@ -91,11 +90,15 @@ class Feature(object):
           LANDMARK_DETECTION (int): Run landmark detection.
           LOGO_DETECTION (int): Run logo detection.
           LABEL_DETECTION (int): Run label detection.
-          TEXT_DETECTION (int): Run OCR.
+          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
+          is optimized for areas of text within a larger image; if the image is
+          a document, use ``DOCUMENT_TEXT_DETECTION`` instead.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
-          SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
-          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
+          ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
+          SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe
+          or undesirable content.
+          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the
+          image's dominant colors.
           CROP_HINTS (int): Run crop hints.
           WEB_DETECTION (int): Run web detection.
         """

@@ -39,6 +39,52 @@ class _SchemaBase(object):
             self._verify_field(field, r_field)
 
 
+class TestEncryptionConfiguration(unittest.TestCase):
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        return EncryptionConfiguration
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        encryption_config = self._make_one()
+        self.assertIsNone(encryption_config.kms_key_name)
+
+    def test_ctor_with_key(self):
+        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
+    def test_kms_key_name_setter(self):
+        encryption_config = self._make_one()
+        self.assertIsNone(encryption_config.kms_key_name)
+        encryption_config.kms_key_name = self.KMS_KEY_NAME
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+        encryption_config.kms_key_name = None
+        self.assertIsNone(encryption_config.kms_key_name)
+
+    def test_from_api_repr(self):
+        RESOURCE = {
+            'kmsKeyName': self.KMS_KEY_NAME,
+        }
+        klass = self._get_target_class()
+        encryption_config = klass.from_api_repr(RESOURCE)
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
+    def test_to_api_repr(self):
+        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
+        resource = encryption_config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'kmsKeyName': self.KMS_KEY_NAME,
+            })
+
+
 class TestTableReference(unittest.TestCase):
 
     @staticmethod
@@ -156,6 +202,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = 'prahj-ekt'
     DS_ID = 'dataset-name'
     TABLE_NAME = 'table-name'
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
 
     @staticmethod
     def _get_target_class():
@@ -174,7 +221,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
             tzinfo=UTC)
         self.ETAG = 'ETAG'
-        self.TABLE_FULL_ID = '%s:%s:%s' % (
+        self.TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
@@ -290,6 +337,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
         else:
             self.assertEqual(table.labels, {})
 
+        if 'encryptionConfiguration' in resource:
+            self.assertIsNotNone(table.encryption_configuration)
+            self.assertEqual(table.encryption_configuration.kms_key_name,
+                             resource['encryptionConfiguration']['kmsKeyName'])
+        else:
+            self.assertIsNone(table.encryption_configuration)
+
     def test_ctor(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -323,6 +377,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.view_use_legacy_sql)
         self.assertIsNone(table.external_data_configuration)
         self.assertEquals(table.labels, {})
+        self.assertIsNone(table.encryption_configuration)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -414,7 +469,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
-        TABLE_FULL_ID = '%s:%s:%s' % (
+        TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
@@ -566,7 +621,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
@@ -590,6 +645,24 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['location'] = 'EU'
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        klass = self._get_target_class()
+        table = klass.from_api_repr(RESOURCE)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_from_api_with_encryption(self):
+        self._setUpConstants()
+        RESOURCE = {
+            'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_NAME,
+            },
+            'encryptionConfiguration': {
+                'kmsKeyName': self.KMS_KEY_NAME
+            },
+            'type': 'TABLE',
+        }
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE)
         self._verifyResourceProperties(table, RESOURCE)
@@ -695,6 +768,19 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
 
+    def test_encryption_configuration_setter(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME)
+        table.encryption_configuration = encryption_configuration
+        self.assertEqual(table.encryption_configuration.kms_key_name,
+                         self.KMS_KEY_NAME)
+        table.encryption_configuration = None
+        self.assertIsNone(table.encryption_configuration)
+
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
 
@@ -778,7 +864,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'coffee_table'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
@@ -801,7 +887,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertEqual(
             table.full_table_id,
-            '{}:{}:{}'.format(project, dataset_id, table_id))
+            '{}:{}.{}'.format(project, dataset_id, table_id))
         self.assertEqual(table.reference.project, project)
         self.assertEqual(table.reference.dataset_id, dataset_id)
         self.assertEqual(table.reference.table_id, table_id)
@@ -818,7 +904,7 @@ class TestTableListItem(unittest.TestCase):
         table_id = 'just_looking'
         resource = {
             'kind': 'bigquery#table',
-            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'id': '{}:{}.{}'.format(project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
@@ -833,7 +919,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertEqual(
             table.full_table_id,
-            '{}:{}:{}'.format(project, dataset_id, table_id))
+            '{}:{}.{}'.format(project, dataset_id, table_id))
         self.assertEqual(table.reference.project, project)
         self.assertEqual(table.reference.dataset_id, dataset_id)
         self.assertEqual(table.reference.table_id, table_id)
@@ -972,7 +1058,6 @@ class TestRowIterator(unittest.TestCase):
         rows_iter = iter(row_iterator)
 
         val1 = six.next(rows_iter)
-        print(val1)
         self.assertEqual(val1.name, 'Phred Phlyntstone')
         self.assertEqual(row_iterator.num_results, 1)
 

@@ -15,10 +15,14 @@
 """User-friendly container for Google Cloud Bigtable Row."""
 
 
+import functools
 import struct
 
+import grpc
 import six
 
+from google.api_core import exceptions
+from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -236,6 +240,12 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
+def _retry_commit_exception(exc):
+    if isinstance(exc, grpc.RpcError):
+        exc = exceptions.from_grpc_error(exc)
+    return isinstance(exc, exceptions.ServiceUnavailable)
+
+
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -412,9 +422,15 @@ class DirectRow(_SetDeleteRow):
             row_key=self._row_key,
             mutations=mutations_list,
         )
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client = self._table._instance._client
-        client._data_stub.MutateRow(request_pb)
+
+        commit = functools.partial(
+            self._table._instance._client._data_stub.MutateRow,
+            request_pb)
+        retry_ = retry.Retry(
+            predicate=_retry_commit_exception,
+            deadline=30)
+        retry_(commit)()
+
         self.clear()
 
     def clear(self):
