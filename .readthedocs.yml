@@ -1,5 +1,4 @@
 formats:
-- html
 - pdf
 requirements_file: docs/requirements.txt
 build:
