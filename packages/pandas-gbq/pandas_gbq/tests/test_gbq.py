@@ -973,6 +973,14 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         tm.assert_frame_equal(df, DataFrame([["a", [1, 3]], ["b", [2]]],
                               columns=["letter", "numbers"]))
 
+    def test_array_of_floats(self):
+        query = """select [1.1, 2.2, 3.3] as a, 4 as b"""
+        df = gbq.read_gbq(query, project_id=_get_project_id(),
+                          private_key=_get_private_key_path(),
+                          dialect='standard')
+        tm.assert_frame_equal(df, DataFrame([[[1.1, 2.2, 3.3], 4]],
+                              columns=["a", "b"]))
+
 
 class TestToGBQIntegrationWithServiceAccountKeyPath(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015

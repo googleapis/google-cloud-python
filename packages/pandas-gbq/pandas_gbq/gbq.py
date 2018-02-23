@@ -720,6 +720,8 @@ def _parse_data(schema, rows):
     col_names = [str(field['name']) for field in fields]
     col_dtypes = [
         dtype_map.get(field['type'].upper(), object)
+        if field['mode'] != 'repeated'
+        else object
         for field in fields
     ]
     page_array = np.zeros((len(rows),), dtype=lzip(col_names, col_dtypes))

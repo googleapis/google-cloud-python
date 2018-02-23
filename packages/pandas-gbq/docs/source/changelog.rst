@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.3.2 / [TBD]
+------------------
+- Fix bug with querying for an array of floats (:issue:`123`)
+
 0.3.1 / 2018-02-13
 ------------------
 
