@@ -546,9 +546,7 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub(response_iterator)
 
-        rows = []
-        for row in table.yield_rows(retry=False):
-            rows.append(row)
+        rows = table.yield_rows(retry=False)
         result = rows[0]
 
         self.assertEqual(result.row_key, self.ROW_KEY)
@@ -599,9 +597,7 @@ class TestTable(unittest.TestCase):
                                                   ErrorDeadlineExceeded(),
                                                   response_iterator]
 
-        rows = []
-        for row in table.yield_rows(start_key=self.ROW_KEY):
-            rows.append(row)
+        rows = table.yield_rows(start_key=self.ROW_KEY)
         result = rows[0]
 
         self.assertEqual(result.row_key, self.ROW_KEY)

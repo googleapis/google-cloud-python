@@ -355,9 +355,7 @@ class Table(object):
             self._instance._client, self.name, start_key,
             end_key, filter_, limit, retry)
 
-        for row in retryable_read_rows().read_rows():
-            retryable_read_rows.last_scanned_key = row.row_key
-            yield row
+        return retryable_read_rows()
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -576,7 +574,12 @@ class _RetryableReadRows(object):
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
         generator = YieldRowsData(response_iterator)
-        return generator
+        rows = []
+        for row in generator.read_rows():
+            self.last_scanned_key = row.row_key
+            rows.append(row)
+
+        return rows
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
