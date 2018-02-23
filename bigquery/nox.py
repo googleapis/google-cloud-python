@@ -145,19 +145,12 @@ def lint(session):
     """
     session.interpreter = 'python3.6'
 
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
+    session.install('flake8')
     session.install('.')
     session.run('flake8', os.path.join('google', 'cloud', 'bigquery'))
     session.run('flake8', 'tests')
     session.run(
         'flake8', os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'))
-    session.run(
-        'gcp-devrel-py-tools', 'run-pylint',
-        '--config', 'pylint.config.py',
-        '--library-filesets', 'google',
-        '--test-filesets', 'tests',
-        # Temporarily allow this to fail.
-        success_codes=range(0, 100))
 
 
 @nox.session
