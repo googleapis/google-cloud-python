@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.32.0
+
+### Implementation changes
+
+- Added support for streaming pull receipts. (#4878)
+
 ## 0.31.0
 
 ### New features
