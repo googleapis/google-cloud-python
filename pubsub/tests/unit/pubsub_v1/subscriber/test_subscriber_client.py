@@ -62,5 +62,5 @@ def test_subscribe_with_failed_callback():
     client = subscriber.Client(credentials=creds)
     callback = 'abcdefg'
     with pytest.raises(TypeError) as exc_info:
-        subscription = client.subscribe('sub_name_b', callback)
+        client.subscribe('sub_name_b', callback)
     assert callback in str(exc_info.value)

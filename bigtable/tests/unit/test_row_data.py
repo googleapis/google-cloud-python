@@ -14,8 +14,6 @@
 
 
 import unittest
-import timeit
-import csv
 
 
 class TestCell(unittest.TestCase):
@@ -47,7 +45,8 @@ class TestCell(unittest.TestCase):
         else:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
-            cell_expected = self._make_one(value, timestamp_micros, labels=labels)
+            cell_expected = self._make_one(
+                value, timestamp_micros, labels=labels)
 
         klass = self._get_target_class()
         result = klass.from_pb(cell_pb)
@@ -630,6 +629,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     def test_empty_second_qualifier(self):
         self._match_results('empty second qualifier')
+
 
 def _flatten_cells(prd):
     # Match results format from JSON testcases.

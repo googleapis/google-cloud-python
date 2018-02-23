@@ -143,7 +143,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query, new_query, '_field_filters')
 
     def _where_unary_helper(self, value, op_enum, op_string='=='):
-        from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import query_pb2
 
         query = self._make_one_all_fields(skip_fields=('field_filters',))
@@ -653,6 +652,8 @@ class TestQuery(unittest.TestCase):
         }
         expected_pb = query_pb2.StructuredQuery(**query_kwargs)
 
+        self.assertEqual(structured_query_pb, expected_pb)
+
     def test_get_simple(self):
         # Create a minimal fake GAPIC.
         firestore_api = mock.Mock(spec=['run_query'])
@@ -1044,7 +1045,8 @@ class Test__query_response_to_snapshot(unittest.TestCase):
 
     @staticmethod
     def _call_fut(response_pb, collection, expected_prefix):
-        from google.cloud.firestore_v1beta1.query import _query_response_to_snapshot
+        from google.cloud.firestore_v1beta1.query import (
+            _query_response_to_snapshot)
 
         return _query_response_to_snapshot(
             response_pb, collection, expected_prefix)

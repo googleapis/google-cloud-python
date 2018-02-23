@@ -164,7 +164,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(document.id, document_id)
 
     def test_parent_property(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
@@ -177,7 +178,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(parent._path, (collection_id,))
 
     def test_collection_factory(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
