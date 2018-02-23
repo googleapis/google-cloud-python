@@ -243,7 +243,8 @@ class _SetDeleteRow(Row):
 def _retry_commit_exception(exc):
     if isinstance(exc, grpc.RpcError):
         exc = exceptions.from_grpc_error(exc)
-    return isinstance(exc, exceptions.ServiceUnavailable)
+    return isinstance(exc, exceptions.ServiceUnavailable) \
+           or isinstance(exc, exceptions.DeadlineExceeded)
 
 
 class DirectRow(_SetDeleteRow):

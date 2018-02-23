@@ -569,6 +569,15 @@ class TestTable(unittest.TestCase):
             def details(self):
                 return 'Endpoint read failed'
 
+        class ErrorDeadlineExceeded(grpc.RpcError, grpc.Call):
+            """ErrorDeadlineExceeded exception"""
+
+            def code(self):
+                return grpc.StatusCode.DEADLINE_EXCEEDED
+
+            def details(self):
+                return 'Error while reading table'
+
         # Create response_iterator
         chunk = _ReadRowsResponseCellChunkPB(
             row_key=self.ROW_KEY,
@@ -586,7 +595,9 @@ class TestTable(unittest.TestCase):
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [ErrorUnavailable(), response_iterator]
+        client._data_stub.ReadRows.side_effect = [ErrorUnavailable(),
+                                                  ErrorDeadlineExceeded(),
+                                                  response_iterator]
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY):
