@@ -180,7 +180,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_bucket_acls_iam_with_user_project(self):
         new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        Config.CLIENT.create_bucket(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -865,7 +865,6 @@ class TestStorageNotificationCRUD(unittest.TestCase):
                 Config.CLIENT.project))
         self.publisher_client.set_iam_policy(self.topic_path, policy)
 
-
     def setUp(self):
         self.case_buckets_to_delete = []
         self._intialize_topic()
@@ -936,7 +935,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_notification_w_user_project(self):
         new_bucket_name = 'notification-minimal' + unique_resource_id('-')
-        bucket = retry_429(Config.CLIENT.create_bucket)(
+        retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         with_user_project = Config.CLIENT.bucket(

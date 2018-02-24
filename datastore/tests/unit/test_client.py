@@ -935,15 +935,15 @@ class TestClient(unittest.TestCase):
             mock_klass.assert_called_once_with(client)
 
     def test_read_only_transaction_defaults(self):
-        from google.cloud.datastore.transaction import Transaction
         from google.cloud.datastore_v1.types import TransactionOptions
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         xact = client.transaction(read_only=True)
-        self.assertEqual(xact._options,
-                         TransactionOptions(
-                             read_only=TransactionOptions.ReadOnly()
-                         )
+        self.assertEqual(
+            xact._options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly()
+            )
         )
         self.assertFalse(xact._options.HasField("read_write"))
         self.assertTrue(xact._options.HasField("read_only"))
