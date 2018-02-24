@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import base64
-import calendar
 import datetime
 import hashlib
 import io
