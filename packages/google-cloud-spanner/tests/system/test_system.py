@@ -547,7 +547,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         raise CustomException()
 
     @RetryErrors(exception=exceptions.ServerError)
-    @RetryErrors(exception=exceptions.Conflict)    
+    @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_read_and_insert_then_exception(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -564,7 +564,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(rows, [])
 
     @RetryErrors(exception=exceptions.ServerError)
-    @RetryErrors(exception=exceptions.Conflict)    
+    @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_read_and_insert_or_update_then_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -722,7 +722,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_read_with_single_keys_index(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
 
         expected = [[row[1], row[2]] for row in self._row_data(row_count)]
         row = 5
@@ -740,7 +740,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_empty_read_with_single_keys_index(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         keyset = [["Non", "Existent"]]
         with self._db.snapshot() as snapshot:
             results_iter = snapshot.read(
@@ -755,7 +755,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_read_with_multiple_keys_index(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         expected = [[row[1], row[2]] for row in self._row_data(row_count)]
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
@@ -808,7 +808,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     def test_multiuse_snapshot_read_isolation_strong(self):
         ROW_COUNT = 40
-        committed = self._set_up_table(ROW_COUNT)
+        self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
         with self._db.snapshot(multi_use=True) as strong:
             before = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
@@ -841,7 +841,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_multiuse_snapshot_read_isolation_exact_staleness(self):
         ROW_COUNT = 40
 
-        committed = self._set_up_table(ROW_COUNT)
+        self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
         time.sleep(1)
@@ -903,7 +903,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     def test_empty_read(self):
         ROW_COUNT = 40
-        committed = self._set_up_table(ROW_COUNT)
+        self._set_up_table(ROW_COUNT)
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
@@ -949,35 +949,35 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             single_key = KeyRange(start_closed=[START], end_open=[START + 1])
             keyset = KeySet(ranges=(single_key,))
             rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START : START+1]
+            expected = all_data_rows[START: START+1]
             self._check_rows_data(rows, expected)
 
             closed_closed = KeyRange(start_closed=[START], end_closed=[END])
             keyset = KeySet(ranges=(closed_closed,))
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START : END+1]
+            expected = all_data_rows[START:END+1]
             self._check_row_data(rows, expected)
 
             closed_open = KeyRange(start_closed=[START], end_open=[END])
             keyset = KeySet(ranges=(closed_open,))
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START : END]
+            expected = all_data_rows[START:END]
             self._check_row_data(rows, expected)
 
             open_open = KeyRange(start_open=[START], end_open=[END])
             keyset = KeySet(ranges=(open_open,))
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START+1 : END]
+            expected = all_data_rows[START+1:END]
             self._check_row_data(rows, expected)
 
             open_closed = KeyRange(start_open=[START], end_closed=[END])
             keyset = KeySet(ranges=(open_closed,))
             rows = list(snapshot.read(
                 self.TABLE, self.COLUMNS, keyset))
-            expected = all_data_rows[START+1 : END+1]
+            expected = all_data_rows[START+1:END+1]
             self._check_row_data(rows, expected)
 
     def test_read_partial_range_until_end(self):
@@ -1049,7 +1049,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
                 self.TABLE, columns, keyset, index='name'))
-            self.assertEqual(rows, data[start : start+1])
+            self.assertEqual(rows, data[start:start+1])
 
     def test_read_with_range_keys_index_closed_closed(self):
         row_count = 10
@@ -1066,7 +1066,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 keyset,
                 index='name')
             )
-            self.assertEqual(rows, data[start : end+1])
+            self.assertEqual(rows, data[start:end+1])
 
     def test_read_with_range_keys_index_closed_open(self):
         row_count = 10
@@ -1096,7 +1096,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(self.TABLE, columns,
                                       keyset, index='name'))
-            self.assertEqual(rows, data[start+1 : end+1])
+            self.assertEqual(rows, data[start+1:end+1])
 
     def test_read_with_range_keys_index_open_open(self):
         row_count = 10
@@ -1109,7 +1109,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(self.TABLE, columns,
                                       keyset, index='name'))
-            self.assertEqual(rows, data[start+1 : end])
+            self.assertEqual(rows, data[start+1:end])
 
     def test_read_with_range_keys_index_limit_closed_closed(self):
         row_count = 10
@@ -1127,7 +1127,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 index='name',
                 limit=limit)
             )
-            expected = data[start : end+1]
+            expected = data[start:end+1]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_index_limit_closed_open(self):
@@ -1165,7 +1165,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 index='name',
                 limit=limit)
             )
-            expected = data[start+1 : end+1]
+            expected = data[start+1:end+1]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_index_limit_open_open(self):
@@ -1183,19 +1183,19 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 keyset,
                 index='name',
                 limit=limit))
-            expected = data[start+1 : end]
+            expected = data[start+1:end]
             self.assertEqual(rows, expected[:limit])
 
     def test_read_with_range_keys_and_index_closed_closed(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
 
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
         closed_closed = KeyRange(start_closed=data[start],
                                  end_closed=data[end])
-        keys = [data[keyrow],]
+        keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(closed_closed,))
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
@@ -1204,37 +1204,37 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 keyset,
                 index='name')
             )
-            expected = ([data[keyrow]] + data[start : end+1])
+            expected = ([data[keyrow]] + data[start:end+1])
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_closed_open(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
         closed_open = KeyRange(start_closed=data[start],
                                end_open=data[end])
-        keys = [data[keyrow],]
+        keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(closed_open,))
         with self._db.snapshot() as snapshot:
-            rows = list(snapshot.read(self.TABLE,
+            rows = list(snapshot.read(
+                self.TABLE,
                 columns,
                 keyset,
-                index='name')
-            )
-            expected = ([data[keyrow]] + data[start : end])
+                index='name'))
+            expected = ([data[keyrow]] + data[start:end])
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_open_closed(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
         open_closed = KeyRange(start_open=data[start],
                                end_closed=data[end])
-        keys = [data[keyrow],]
+        keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(open_closed,))
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
@@ -1243,18 +1243,18 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 keyset,
                 index='name')
             )
-            expected = ([data[keyrow]] + data[start+1 : end+1])
+            expected = ([data[keyrow]] + data[start+1:end+1])
             self.assertEqual(rows, expected)
 
     def test_read_with_range_keys_and_index_open_open(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
-        committed = self._set_up_table(row_count)
+        self._set_up_table(row_count)
         data = [[row[1], row[2]] for row in self._row_data(row_count)]
         keyrow, start, end = 1, 3, 7
         open_open = KeyRange(start_open=data[start],
                              end_open=data[end])
-        keys = [data[keyrow],]
+        keys = [data[keyrow]]
         keyset = KeySet(keys=keys, ranges=(open_open,))
         with self._db.snapshot() as snapshot:
             rows = list(snapshot.read(
@@ -1263,7 +1263,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 keyset,
                 index='name')
             )
-            expected = ([data[keyrow]] + data[start+1 : end])
+            expected = ([data[keyrow]] + data[start+1:end])
             self.assertEqual(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
@@ -1292,7 +1292,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def test_multiuse_snapshot_execute_sql_isolation_strong(self):
         ROW_COUNT = 40
         SQL = 'SELECT * FROM {}'.format(self.TABLE)
-        committed = self._set_up_table(ROW_COUNT)
+        self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
         with self._db.snapshot(multi_use=True) as strong:
 
@@ -1349,7 +1349,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 self.ALL_TYPES_COLUMNS,
                 self.ALL_TYPES_ROWDATA)
 
-        snapshot = self._db.snapshot(
+        self._db.snapshot(
             read_timestamp=batch.committed, multi_use=True)
 
         # Cannot equality-test array values.  See below for a test w/

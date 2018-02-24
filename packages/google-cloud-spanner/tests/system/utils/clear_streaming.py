@@ -15,7 +15,6 @@
 """Depopulate spanner databases with data for streaming system tests."""
 
 from google.cloud.spanner import Client
-from google.cloud.spanner.pool import BurstyPool
 
 # Import relative to the script's directory
 from streaming_utils import DATABASE_NAME
@@ -33,7 +32,6 @@ def remove_database(client):
     print_func("Instance exists: {}".format(INSTANCE_NAME))
     instance.reload()
 
-    pool = BurstyPool()
     database = instance.database(DATABASE_NAME)
 
     if not database.exists():

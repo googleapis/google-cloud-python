@@ -44,7 +44,6 @@ class Test_restart_on_unavailable(unittest.TestCase):
             spec=['value', 'resume_token'])
 
     def test_iteration_w_empty_raw(self):
-        ITEMS = ()
         raw = _MockIterator()
         restart = mock.Mock(spec=[], return_value=raw)
         resumable = self._call_fut(restart)
@@ -168,8 +167,6 @@ class Test_SnapshotBase(unittest.TestCase):
             base._make_txn_selector()
 
     def test_read_other_error(self):
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionSelector)
         from google.cloud.spanner_v1.keyset import KeySet
 
         KEYSET = KeySet(all_=True)
@@ -219,7 +216,6 @@ class Test_SnapshotBase(unittest.TestCase):
         KEYSET = KeySet(keys=KEYS)
         INDEX = 'email-address-index'
         LIMIT = 20
-        TOKEN = b'DEADBEEF'
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _streaming_read_response=_MockIterator(*result_sets))
@@ -287,9 +283,6 @@ class Test_SnapshotBase(unittest.TestCase):
             self._read_helper(multi_use=True, first=True, count=1)
 
     def test_execute_sql_other_error(self):
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionSelector)
-
         database = _Database()
         database.spanner_api = self._make_spanner_api()
         database.spanner_api.execute_streaming_sql.side_effect = RuntimeError()
@@ -327,7 +320,6 @@ class Test_SnapshotBase(unittest.TestCase):
             for row in VALUES
         ]
         MODE = 2  # PROFILE
-        TOKEN = b'DEADBEEF'
         struct_type_pb = StructType(fields=[
             StructType.Field(name='first_name', type=Type(code=STRING)),
             StructType.Field(name='last_name', type=Type(code=STRING)),
