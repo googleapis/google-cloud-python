@@ -261,7 +261,7 @@ class _Transactional(object):
             self.retry_id = self.current_id
         try:
             return self.to_wrap(transaction, *args, **kwargs)
-        except:
+        except:  # noqa
             # NOTE: If ``rollback`` fails this will lose the information
             #       from the original failure.
             transaction._rollback()
