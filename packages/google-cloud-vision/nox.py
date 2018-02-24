@@ -103,17 +103,9 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
+    session.install('flake8')
     session.install('.')
-    session.run('flake8', 'google/cloud/vision')
-    session.run(
-        'gcp-devrel-py-tools', 'run-pylint',
-        '--config', 'pylint.config.py',
-        '--library-filesets', 'google',
-        '--test-filesets', 'tests',
-        # Temporarily allow this to fail.
-        success_codes=range(0, 100))
-
+    session.run('flake8', 'google', 'tests')
 
 @nox.session
 def lint_setup_py(session):
