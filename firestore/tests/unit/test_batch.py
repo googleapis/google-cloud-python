@@ -14,9 +14,6 @@
 
 import unittest
 
-from google.gax.errors import GaxError
-from grpc import StatusCode
-from grpc._channel import _RPCState
 import mock
 
 

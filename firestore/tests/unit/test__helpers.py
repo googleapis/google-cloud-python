@@ -361,7 +361,8 @@ class TestFieldPathHelper(unittest.TestCase):
         klass = self._get_target_class()
 
         update_values, field_paths = klass.to_field_paths(field_updates)
-        self.assertEqual(update_values, {'a': {'b': field_updates[field_path]}})
+        self.assertEqual(
+            update_values, {'a': {'b': field_updates[field_path]}})
         self.assertEqual(field_paths, [field_path])
 
 
@@ -492,7 +493,8 @@ class Test_encode_value(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_array(self):
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
 
         result = self._call_fut([
             99,
@@ -540,7 +542,8 @@ class Test_encode_dict(unittest.TestCase):
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
 
         dt_seconds = 1497397225
@@ -675,7 +678,7 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(double_value=float_val)
         self.assertEqual(self._call_fut(value), float_val)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_datetime(self):
         from google.protobuf import timestamp_pb2
@@ -815,12 +818,13 @@ class Test_decode_dict(unittest.TestCase):
 
         return decode_dict(value_fields, client)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
         from google.cloud._helpers import UTC
 
@@ -1249,7 +1253,6 @@ class Test_pbs_for_update(unittest.TestCase):
         self._helper(current_document=precondition)
 
     def test_with_option(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
 
         option = CreateIfMissingOption(True)
@@ -1342,7 +1345,6 @@ class Test_get_transaction_id(unittest.TestCase):
             self._call_fut(transaction)
 
     def test_after_writes_allowed(self):
-        from google.cloud.firestore_v1beta1._helpers import ReadAfterWriteError
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
         transaction = Transaction(mock.sentinel.client)
