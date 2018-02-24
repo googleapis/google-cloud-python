@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import threading
-import types as base_types
 
 from google.auth import credentials
 import mock
@@ -24,7 +23,6 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
 from google.cloud.pubsub_v1.subscriber import _helper_threads
-from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def test_send_request():

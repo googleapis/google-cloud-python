@@ -192,7 +192,8 @@ def test_blocking__commit_wrong_messageid_length():
     publish_response = types.PublishResponse(message_ids=['a'])
     patch = mock.patch.object(
         type(batch.client.api), 'publish', return_value=publish_response)
-    with patch as publish:
+
+    with patch:
         batch._commit()
 
     for future in futures:

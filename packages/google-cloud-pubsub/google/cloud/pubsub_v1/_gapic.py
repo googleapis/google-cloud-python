@@ -39,9 +39,9 @@ def add_methods(source_class, blacklist=()):
         # Okay, we have figured out what kind of method this is; send
         # down the correct wrapper function.
         if instance_method:
-            fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)
+            fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)  # noqa
             return functools.wraps(wrapped_fx)(fx)
-        fx = lambda self, *a, **kw: wrapped_fx(*a, **kw)
+        fx = lambda self, *a, **kw: wrapped_fx(*a, **kw)  # noqa
         return functools.wraps(wrapped_fx)(fx)
 
     def actual_decorator(cls):
