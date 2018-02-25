@@ -200,15 +200,23 @@ def test_document_integer_field(client, cleanup):
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document)
 
-    data1 = {'1a': 'SF'}
+    data1 = {'1a': {'2b': '3c',
+                    '4d': '5e'},
+             '6f': {'7g': '8h',
+                    '9i': '0j'}
+             }
     option1 = client.write_option(exists=False)
-    write_result1 = document.set(data1, option=option1)
-    
-    data2 = {'1a': 'LA'}
+    document.set(data1, option=option1)
+
+    data2 = {'1a.4d': '0j', '6f.9i': '5e'}
     option2 = client.write_option(create_if_missing=True)
-    write_result2 = document.update(data2, option=option2)
+    document.update(data2, option=option2)
     snapshot = document.get()
-    assert snapshot.to_dict() == {'1a': 'LA'}
+    assert snapshot.to_dict() == {'1a': {'2b': '3c',
+                                         '4d': '0j'},
+                                  '6f': {'7g': '8h',
+                                         '9i': '5e'}
+                                  }
 
 
 def test_update_document(client, cleanup):

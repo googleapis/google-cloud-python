@@ -1190,10 +1190,13 @@ class Test___convert_simple_field_paths_with_leading_digits(unittest.TestCase):
 
     def test_convert_simple_field_paths_with_leading_digits(self):
         from google.cloud.firestore_v1beta1 import _helpers
-        field_paths = ["0abc", "abc", "321"]
+        field_paths = ['0abc.deq', 'abc.654', '321.0deq',
+                       u'0abc.deq', u'abc.654', u'321.0deq']
         convert = _helpers._convert_simple_field_paths_with_leading_digits(
             field_paths)
-        self.assertListEqual(convert, ["`0abc`", "abc", "`321`"])
+        self.assertListEqual(convert,
+            ['`0abc`.deq', 'abc.`654`', '`321`.`0deq`',
+             '`0abc`.deq', 'abc.`654`', '`321`.`0deq`'])
 
 
 class Test_pbs_for_update(unittest.TestCase):

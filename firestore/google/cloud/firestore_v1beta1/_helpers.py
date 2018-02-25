@@ -845,19 +845,24 @@ def _convert_simple_field_paths_with_leading_digits(field_paths):
 
     Returns:
         new_field_paths (List[str, ...]):
-            The same list of field paths except field paths that start with
-            integers have been converted into quoted field paths. Simple field
-            paths cannot start with 0-9. See `Document`_ page for more
-            information.
+            The same list of field paths except field names in the `.`
+            delimited field path that start with integers have been converted
+            into quoted field paths. Simple field paths cannot start with 0-9.
+            See `Document`_ page for more information.  Other simple field
+            paths remain the same.
 
-    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
     new_field_paths = []
     for field_path in field_paths:
-        if field_path[0] in '0123456789':
-            new_field_paths.append("`{}`".format(field_path))
-        else:
-            new_field_paths.append(field_path)
+        field_names = field_path.split('.')
+        new_field_names = []
+        for field_name in field_names:
+            if field_name[0] in '0123456789':
+                new_field_names.append("`{}`".format(field_name))
+            else:
+                new_field_names.append(field_name)
+        new_field_paths.append('.'.join(new_field_names))
     return new_field_paths
 
 
