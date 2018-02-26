@@ -171,7 +171,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket)
         self.assertEqual(
             blob.public_url,
-            'https://storage.googleapis.com/name/parent%2Fchild')
+            'https://storage.googleapis.com/name/parent/child')
 
     def test_public_url_with_non_ascii(self):
         blob_name = u'winter \N{snowman}'
@@ -274,7 +274,7 @@ class Test_Blob(unittest.TestCase):
             'api_access_endpoint': 'https://storage.googleapis.com',
             'expiration': EXPIRATION,
             'method': 'GET',
-            'resource': '/name/parent%2Fchild',
+            'resource': '/name/parent/child',
             'content_type': None,
             'response_type': None,
             'response_disposition': None,
