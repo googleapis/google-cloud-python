@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Long-Running Operations &#8212; google-cloud 8c95c43 documentation</title>
+    <title>Long-Running Operations &#8212; google-cloud fa0ef38 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -52,7 +52,7 @@ long-running operation using <code class="xref py py-meth docutils literal notra
 </div>
 <dl class="class">
 <dt id="google.api_core.operation.Operation">
-<em class="property">class </em><code class="descclassname">google.api_core.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation</em>, <em>refresh</em>, <em>cancel</em>, <em>result_type</em>, <em>metadata_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.api_core.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation</em>, <em>refresh</em>, <em>cancel</em>, <em>result_type</em>, <em>metadata_type=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.future.polling.PollingFuture</span></code></p>
 <p>A Future for interacting with a Google API Long-Running Operation.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -70,6 +70,10 @@ the operation.</li>
 result.</li>
 <li><strong>(</strong><strong>func</strong> – <cite>type</cite>): The protobuf type for the operation’s
 metadata.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry configuration used
+when polling. This can be used to control how often <a class="reference internal" href="#google.api_core.operation.Operation.done" title="google.api_core.operation.Operation.done"><code class="xref py py-meth docutils literal notranslate"><span class="pre">done()</span></code></a>
+is polled. Regardless of the retry’s <code class="docutils literal notranslate"><span class="pre">deadline</span></code>, it will be
+overridden by the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> argument to <code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code>.</li>
 </ul>
 </td>
 </tr>

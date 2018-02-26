@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.operation &#8212; google-cloud 8c95c43 documentation</title>
+    <title>google.api_core.operation &#8212; google-cloud fa0ef38 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
@@ -94,12 +94,16 @@
 <span class="sd">            result.</span>
 <span class="sd">        metadata_type (func:`type`): The protobuf type for the operation&#39;s</span>
 <span class="sd">            metadata.</span>
+<span class="sd">        retry (google.api_core.retry.Retry): The retry configuration used</span>
+<span class="sd">            when polling. This can be used to control how often :meth:`done`</span>
+<span class="sd">            is polled. Regardless of the retry&#39;s ``deadline``, it will be</span>
+<span class="sd">            overridden by the ``timeout`` argument to :meth:`result`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span>
-            <span class="n">result_type</span><span class="p">,</span> <span class="n">metadata_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Operation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="n">result_type</span><span class="p">,</span> <span class="n">metadata_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">polling</span><span class="o">.</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Operation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span> <span class="o">=</span> <span class="n">refresh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="o">=</span> <span class="n">cancel</span>

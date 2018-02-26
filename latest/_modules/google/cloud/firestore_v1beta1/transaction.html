@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 8c95c43 documentation</title>
+    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud fa0ef38 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -294,7 +294,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_id</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_wrap</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
             <span class="c1"># NOTE: If ``rollback`` fails this will lose the information</span>
             <span class="c1">#       from the original failure.</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">_rollback</span><span class="p">()</span>
