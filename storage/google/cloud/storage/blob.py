@@ -244,7 +244,7 @@ class Blob(_PropertyMixin):
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url=_API_ACCESS_ENDPOINT,
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name))
+            quoted_name=quote(self.name.encode('utf-8')))
 
     def generate_signed_url(self, expiration, method='GET',
                             content_type=None,
