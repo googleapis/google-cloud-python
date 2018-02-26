@@ -708,7 +708,8 @@ class Blob(_PropertyMixin):
         return response
 
     def _initiate_resumable_upload(self, client, stream, content_type,
-                                   size, num_retries, predefined_acl,
+                                   size, num_retries,
+                                   predefined_acl=None,
                                    extra_headers=None, chunk_size=None):
         """Initiate a resumable upload.
 
@@ -831,7 +832,8 @@ class Blob(_PropertyMixin):
                   is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
-            client, stream, content_type, size, num_retries, predefined_acl)
+            client, stream, content_type, size, num_retries,
+            predefined_acl=predefined_acl)
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
@@ -1145,7 +1147,8 @@ class Blob(_PropertyMixin):
             # to the `ResumableUpload` constructor. The chunk size only
             # matters when **sending** bytes to an upload.
             upload, _ = self._initiate_resumable_upload(
-                client, dummy_stream, content_type, size, None, None,
+                client, dummy_stream, content_type, size, None,
+                predefined_acl=None,
                 extra_headers=extra_headers,
                 chunk_size=self._CHUNK_SIZE_MULTIPLE)
 
