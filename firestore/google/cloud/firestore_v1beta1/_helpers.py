@@ -18,6 +18,7 @@
 import collections
 import contextlib
 import datetime
+import re
 import sys
 
 import google.gax
@@ -67,6 +68,7 @@ _GRPC_ERROR_MAPPING = {
     grpc.StatusCode.ALREADY_EXISTS: exceptions.Conflict,
     grpc.StatusCode.NOT_FOUND: exceptions.NotFound,
 }
+UNESCAPED_FIELD_NAME_RE = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
 
 
 class GeoPoint(object):
@@ -837,33 +839,32 @@ def pbs_for_set(document_path, document_data, option):
     return write_pbs
 
 
-def _convert_simple_field_paths_with_leading_digits(field_paths):
+def canonical_strings(field_paths):
     """ Converts simple field path with integer beginnings to quoted field path
 
     Args:
-        field_paths (List[str, ...]): A list of field paths
+        field_paths (Sequence[str, ...]): A list of field paths
 
     Returns:
-        new_field_paths (List[str, ...]):
-            The same list of field paths except field names in the `.`
-            delimited field path that start with integers have been converted
-            into quoted field paths. Simple field paths cannot start with 0-9.
-            See `Document`_ page for more information.  Other simple field
-            paths remain the same.
+        canonical_strings (Sequence[str, ...]):
+            The same list of field paths except non-simple field names
+            in the `.` delimited field path have been converted
+            into quoted unicode field paths. Simple field paths match
+            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
+            more information.
 
     .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
-    new_field_paths = []
+    canonical_strings = []
     for field_path in field_paths:
         field_names = field_path.split('.')
-        new_field_names = []
-        for field_name in field_names:
-            if field_name[0] in '0123456789':
-                new_field_names.append("`{}`".format(field_name))
-            else:
-                new_field_names.append(field_name)
-        new_field_paths.append('.'.join(new_field_names))
-    return new_field_paths
+        escaped_names = [u"`{}`".format(
+            field_name.replace('\\', '\\\\').replace('`', '``'))
+            if not re.match(UNESCAPED_FIELD_NAME_RE, field_name)
+            else field_name for field_name in field_names]
+        new_field_path = '.'.join(escaped_names)
+        canonical_strings.append(new_field_path)
+    return canonical_strings
 
 
 def pbs_for_update(client, document_path, field_updates, option):
@@ -889,7 +890,7 @@ def pbs_for_update(client, document_path, field_updates, option):
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
-    field_paths = _convert_simple_field_paths_with_leading_digits(field_paths)
+    field_paths = canonical_strings(field_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(

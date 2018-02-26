@@ -201,21 +201,21 @@ def test_document_integer_field(client, cleanup):
     cleanup(document)
 
     data1 = {'1a': {'2b': '3c',
-                    '4d': '5e'},
+                    'ab': '5e'},
              '6f': {'7g': '8h',
-                    '9i': '0j'}
+                    'cd': '0j'}
              }
     option1 = client.write_option(exists=False)
     document.set(data1, option=option1)
 
-    data2 = {'1a.4d': '0j', '6f.9i': '5e'}
+    data2 = {'1a.ab': '4d', '6f.7g': '9h'}
     option2 = client.write_option(create_if_missing=True)
     document.update(data2, option=option2)
     snapshot = document.get()
     assert snapshot.to_dict() == {'1a': {'2b': '3c',
-                                         '4d': '0j'},
-                                  '6f': {'7g': '8h',
-                                         '9i': '5e'}
+                                         'ab': '4d'},
+                                  '6f': {'7g': '9h',
+                                         'cd': '0j'}
                                   }
 
 
