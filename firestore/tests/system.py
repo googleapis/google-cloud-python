@@ -194,6 +194,38 @@ def test_document_set(client, cleanup):
     assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
 
+def test_document_integer_field(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    data1 = {
+        '1a': {
+            '2b': '3c',
+            'ab': '5e'},
+        '6f': {
+            '7g': '8h',
+            'cd': '0j'}
+    }
+    option1 = client.write_option(exists=False)
+    document.set(data1, option=option1)
+
+    data2 = {'1a.ab': '4d', '6f.7g': '9h'}
+    option2 = client.write_option(create_if_missing=True)
+    document.update(data2, option=option2)
+    snapshot = document.get()
+    expected = {
+        '1a': {
+            '2b': '3c',
+            'ab': '4d'},
+        '6f': {
+            '7g': '9h',
+            'cd': '0j'}
+    }
+    assert snapshot.to_dict() == expected
+
+
 def test_update_document(client, cleanup):
     document_id = 'for-update' + unique_resource_id('-')
     document = client.document('made', document_id)
