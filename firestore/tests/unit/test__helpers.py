@@ -1186,13 +1186,13 @@ class Test_pbs_for_set(unittest.TestCase):
         self._helper(do_transform=True)
 
 
-class Test_canonical_strings(unittest.TestCase):
+class Test_canonicalize_field_paths(unittest.TestCase):
 
-    def test_canonical_strings(self):
+    def test_canonicalize_field_paths(self):
         from google.cloud.firestore_v1beta1 import _helpers
         field_paths = ['0abc.deq', 'abc.654', '321.0deq._321',
                        u'0abc.deq', u'abc.654', u'321.0deq._321']
-        convert = _helpers.canonical_strings(field_paths)
+        convert = _helpers.canonicalize_field_paths(field_paths)
         self.assertListEqual(
             convert,
             ['`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321',
