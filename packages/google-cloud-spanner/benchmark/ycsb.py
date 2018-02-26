@@ -96,8 +96,9 @@ def open_database(parameters):
 def load_keys(database, parameters):
     """Loads keys from database."""
     keys = []
-    results = database.execute_sql(
-        'SELECT u.id FROM %s u' % parameters['table'])
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            'SELECT u.id FROM %s u' % parameters['table'])
 
     for row in results:
         keys.append(row[0])
