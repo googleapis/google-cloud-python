@@ -1289,7 +1289,8 @@ class Client(ClientWithProject):
                            row to read.
 
         :type page_size: int
-        :param page_size: (Optional) The maximum number of items to return.
+        :param page_size: (Optional) The maximum number of items to return
+                          per page in the iterator.  Defaults to 50.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
