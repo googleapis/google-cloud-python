@@ -2800,6 +2800,7 @@ class TestClient(unittest.TestCase):
             ({'max_results': 2}, {'maxResults': 2}),
             ({'start_index': 1, 'max_results': 2},
              {'startIndex': 1, 'maxResults': 2}),
+            ({'page_size': 3}, {'pageSize': 3}),
         ]
         conn = client._connection = _make_connection(*len(tests)*[{}])
         for i, test in enumerate(tests):
