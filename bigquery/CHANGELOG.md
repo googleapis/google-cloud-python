@@ -10,6 +10,10 @@
 
 - Add support for `EncryptionConfiguration` (#4845)
 
+### Implementation changes
+
+- Allow listing/getting jobs even when there is an "invalid" job. (#4786)
+
 ### Dependencies
 
 - The minimum version for `google-api-core` has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)
@@ -17,7 +21,6 @@
 ### Documentation
 
 - Update format in `Table.full_table_id` and `TableListItem.full_table_id` docstrings. (#4906)
-- Allow listing/getting jobs even when there is an "invalid" job. (#4786)
 
 ### Testing and internal changes
 
