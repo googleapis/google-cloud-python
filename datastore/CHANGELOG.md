@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.6.0
+
+### Implementation changes
+
+- Don't check 'exclude_from_indexes' for empty lists. (#4915)
+
+### Dependencies
+
+- The minimum version for `google-api-core` has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+- Exercise datastore query result paging (#4905)
+- Pass '*session.posargs' through on command line for system tests. (#4904)
+
 ## 1.5.0
 
 ### Interface additions
