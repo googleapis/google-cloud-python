@@ -56,19 +56,21 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._database, database)
 
     @mock.patch(
-        'google.cloud.firestore_v1beta1.client._make_firestore_api',
+        'google.cloud.firestore_v1beta1.gapic.firestore_client.'
+        'FirestoreClient',
+        autospec=True,
         return_value=mock.sentinel.firestore_api)
-    def test__firestore_api_property(self, mock_make_api):
+    def test__firestore_api_property(self, mock_client):
         client = self._make_default_one()
         self.assertIsNone(client._firestore_api_internal)
         firestore_api = client._firestore_api
-        self.assertIs(firestore_api, mock_make_api.return_value)
+        self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
-        mock_make_api.assert_called_once_with(client)
+        mock_client.assert_called_once_with(credentials=client._credentials)
 
         # Call again to show that it is cached, but call count is still 1.
-        self.assertIs(client._firestore_api, mock_make_api.return_value)
-        self.assertEqual(mock_make_api.call_count, 1)
+        self.assertIs(client._firestore_api, mock_client.return_value)
+        self.assertEqual(mock_client.call_count, 1)
 
     def test___database_string_property(self):
         credentials = _make_credentials()
@@ -86,29 +88,15 @@ class TestClient(unittest.TestCase):
         client._database_string_internal = mock.sentinel.cached
         self.assertIs(client._database_string, mock.sentinel.cached)
 
-    def test___call_options_property(self):
-        import google.gax
-
+    def test___rpc_metadata_property(self):
         credentials = _make_credentials()
         database = 'quanta'
         client = self._make_one(
             project=self.PROJECT, credentials=credentials, database=database)
-        self.assertIsNone(client._call_options_internal)
 
-        call_options = client._call_options
-        self.assertIsInstance(call_options, google.gax.CallOptions)
-        expected_kwargs = {
-            'metadata': [
-                ('google-cloud-resource-prefix', client._database_string),
-            ],
-        }
-        self.assertEqual(call_options.kwargs, expected_kwargs)
-
-        self.assertIs(call_options, client._call_options_internal)
-
-        # Swap it out with a unique value to verify it is cached.
-        client._call_options_internal = mock.sentinel.cached
-        self.assertIs(client._call_options, mock.sentinel.cached)
+        self.assertEqual(client._rpc_metadata, [
+            ('google-cloud-resource-prefix', client._database_string),
+        ])
 
     def test_collection_factory(self):
         from google.cloud.firestore_v1beta1.collection import (
@@ -315,7 +303,7 @@ class TestClient(unittest.TestCase):
         mask = common_pb2.DocumentMask(field_paths=field_paths)
         client._firestore_api.batch_get_documents.assert_called_once_with(
             client._database_string, doc_paths, mask, transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_all_with_transaction(self):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
@@ -341,7 +329,7 @@ class TestClient(unittest.TestCase):
         doc_paths = [document._document_path]
         client._firestore_api.batch_get_documents.assert_called_once_with(
             client._database_string, doc_paths, None, transaction=txn_id,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_all_unknown_result(self):
         from google.cloud.firestore_v1beta1.client import _BAD_DOC_TEMPLATE
@@ -361,7 +349,7 @@ class TestClient(unittest.TestCase):
         doc_paths = [document._document_path]
         client._firestore_api.batch_get_documents.assert_called_once_with(
             client._database_string, doc_paths, None, transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_all_wrong_order(self):
         from google.cloud.firestore_v1beta1.document import DocumentSnapshot
@@ -400,7 +388,7 @@ class TestClient(unittest.TestCase):
         ]
         client._firestore_api.batch_get_documents.assert_called_once_with(
             client._database_string, doc_paths, None, transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_batch(self):
         from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -556,39 +544,6 @@ class TestExistsOption(unittest.TestCase):
             self.assertIsNone(ret_val)
             expected_doc = common_pb2.Precondition(exists=exists)
             self.assertEqual(write_pb.current_document, expected_doc)
-
-
-class Test__make_firestore_api(unittest.TestCase):
-
-    CLIENT_PATH = (
-        'google.cloud.firestore_v1beta1.gapic.'
-        'firestore_client.FirestoreClient')
-
-    @staticmethod
-    def _call_fut(client):
-        from google.cloud.firestore_v1beta1.client import _make_firestore_api
-
-        return _make_firestore_api(client)
-
-    @mock.patch(CLIENT_PATH, return_value=mock.sentinel.firestore_client)
-    @mock.patch('google.cloud.firestore_v1beta1.client.make_secure_channel',
-                return_value=mock.sentinel.channel)
-    def test_it(self, make_chan, mock_klass):
-        from google.cloud._http import DEFAULT_USER_AGENT
-        from google.cloud.firestore_v1beta1 import __version__
-
-        client = mock.Mock(
-            _credentials=mock.sentinel.credentials,
-            spec=['_credentials'])
-        firestore_client = self._call_fut(client)
-        self.assertIs(firestore_client, mock.sentinel.firestore_client)
-
-        host = mock_klass.SERVICE_ADDRESS
-        make_chan.assert_called_once_with(
-            mock.sentinel.credentials, DEFAULT_USER_AGENT, host)
-        mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, lib_name='gccl',
-            lib_version=__version__)
 
 
 class Test__reference_info(unittest.TestCase):

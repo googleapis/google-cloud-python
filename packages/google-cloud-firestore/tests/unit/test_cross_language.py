@@ -100,7 +100,7 @@ class TestCrossLanguage(unittest.TestCase):
                 client._database_string,
                 list(tp.request.writes),
                 transaction=None,
-                options=client._call_options)
+                metadata=client._rpc_metadata)
 
     def setup(self, firestore_api, proto):
         from google.cloud.firestore_v1beta1 import Client

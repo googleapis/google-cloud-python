@@ -23,9 +23,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/firestore_v1beta1/proto/write.proto',
   package='google.firestore.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation\"\xda\x02\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\xdc\x01\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type\"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\x97\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1b\x06proto3')
+  serialized_pb=_b('\n0google/cloud/firestore_v1beta1/proto/write.proto\x12\x18google.firestore.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore_v1beta1/proto/common.proto\x1a\x33google/cloud/firestore_v1beta1/proto/document.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x02\n\x05Write\x12\x34\n\x06update\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.DocumentH\x00\x12\x10\n\x06\x64\x65lete\x18\x02 \x01(\tH\x00\x12@\n\ttransform\x18\x06 \x01(\x0b\x32+.google.firestore.v1beta1.DocumentTransformH\x00\x12;\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32&.google.firestore.v1beta1.DocumentMask\x12@\n\x10\x63urrent_document\x18\x04 \x01(\x0b\x32&.google.firestore.v1beta1.PreconditionB\x0b\n\toperation\"\xda\x02\n\x11\x44ocumentTransform\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12T\n\x10\x66ield_transforms\x18\x02 \x03(\x0b\x32:.google.firestore.v1beta1.DocumentTransform.FieldTransform\x1a\xdc\x01\n\x0e\x46ieldTransform\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x65\n\x13set_to_server_value\x18\x02 \x01(\x0e\x32\x46.google.firestore.v1beta1.DocumentTransform.FieldTransform.ServerValueH\x00\"=\n\x0bServerValue\x12\x1c\n\x18SERVER_VALUE_UNSPECIFIED\x10\x00\x12\x10\n\x0cREQUEST_TIME\x10\x01\x42\x10\n\x0etransform_type\"z\n\x0bWriteResult\x12/\n\x0bupdate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\x11transform_results\x18\x02 \x03(\x0b\x32\x1f.google.firestore.v1beta1.Value\"v\n\x0e\x44ocumentChange\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.firestore.v1beta1.Document\x12\x12\n\ntarget_ids\x18\x05 \x03(\x05\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\"m\n\x0e\x44ocumentDelete\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x06 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"m\n\x0e\x44ocumentRemove\x12\x10\n\x08\x64ocument\x18\x01 \x01(\t\x12\x1a\n\x12removed_target_ids\x18\x02 \x03(\x05\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"3\n\x0f\x45xistenceFilter\x12\x11\n\ttarget_id\x18\x01 \x01(\x05\x12\r\n\x05\x63ount\x18\x02 \x01(\x05\x42\xb8\x01\n\x1c\x63om.google.firestore.v1beta1B\nWriteProtoP\x01ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\xa2\x02\x04GCFS\xaa\x02\x1eGoogle.Cloud.Firestore.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Firestore\\V1beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_cloud_dot_firestore__v1beta1_dot_proto_dot_document__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -435,7 +436,6 @@ DESCRIPTOR.message_types_by_name['DocumentChange'] = _DOCUMENTCHANGE
 DESCRIPTOR.message_types_by_name['DocumentDelete'] = _DOCUMENTDELETE
 DESCRIPTOR.message_types_by_name['DocumentRemove'] = _DOCUMENTREMOVE
 DESCRIPTOR.message_types_by_name['ExistenceFilter'] = _EXISTENCEFILTER
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Write = _reflection.GeneratedProtocolMessageType('Write', (_message.Message,), dict(
   DESCRIPTOR = _WRITE,
@@ -481,6 +481,17 @@ DocumentTransform = _reflection.GeneratedProtocolMessageType('DocumentTransform'
     __module__ = 'google.cloud.firestore_v1beta1.proto.write_pb2'
     ,
     __doc__ = """A transformation of a field of the document.
+    
+    
+    Attributes:
+        field_path:
+            The path of the field. See
+            [Document.fields][google.firestore.v1beta1.Document.fields]
+            for the field path syntax reference.
+        transform_type:
+            The transformation to apply on the field.
+        set_to_server_value:
+            Sets the field to the given server value.
     """,
     # @@protoc_insertion_point(class_scope:google.firestore.v1beta1.DocumentTransform.FieldTransform)
     ))
@@ -492,19 +503,11 @@ DocumentTransform = _reflection.GeneratedProtocolMessageType('DocumentTransform'
   
   
   Attributes:
-      field_path:
-          The path of the field. See
-          [Document.fields][google.firestore.v1beta1.Document.fields]
-          for the field path syntax reference.
-      transform_type:
-          The transformation to apply on the field.
-      set_to_server_value:
-          Sets the field to the given server value.
       document:
           The name of the document to transform.
       field_transforms:
           The list of transformations to apply to the fields of the
-          document, in order.
+          document, in order. This must not be empty.
   """,
   # @@protoc_insertion_point(class_scope:google.firestore.v1beta1.DocumentTransform)
   ))
@@ -648,7 +651,7 @@ _sym_db.RegisterMessage(ExistenceFilter)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.firestore.v1beta1B\nWriteProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.firestore.v1beta1B\nWriteProtoP\001ZAgoogle.golang.org/genproto/googleapis/firestore/v1beta1;firestore\242\002\004GCFS\252\002\036Google.Cloud.Firestore.V1Beta1\312\002\036Google\\Cloud\\Firestore\\V1beta1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
