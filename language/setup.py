@@ -29,7 +29,7 @@ version = '1.0.1.dev1'
 # 'Development Status :: 5 - Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
-    'google-api-core[grpc]<0.2.0dev,>=0.1.1',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.1',
 ]
 extras = {
     ':python_version < "3.4"': 'enum34',
