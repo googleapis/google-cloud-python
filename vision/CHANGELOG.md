@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.30.1
+
+### Dependencies
+
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+- Fix coveragerc to correctly omit generated files (#4843)
+
 ## 0.29.0
 
 ### :warning: Breaking Changes
