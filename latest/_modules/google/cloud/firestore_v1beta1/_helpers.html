@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1._helpers &#8212; google-cloud 186f882 documentation</title>
+    <title>google.cloud.firestore_v1beta1._helpers &#8212; google-cloud e926301 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -51,6 +51,7 @@
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">google.gax</span>
@@ -100,6 +101,7 @@
     <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Conflict</span><span class="p">,</span>
     <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">,</span>
 <span class="p">}</span>
+<span class="n">_UNESCAPED_FIELD_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^[_a-zA-Z][_a-zA-Z0-9]*$&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GeoPoint"><a class="viewcode-back" href="../../../../firestore/index.html#google.cloud.firestore_v1beta1.GeoPoint">[docs]</a><span class="k">class</span> <span class="nc">GeoPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -870,6 +872,38 @@
     <span class="k">return</span> <span class="n">write_pbs</span>
 
 
+<span class="k">def</span> <span class="nf">canonicalize_field_paths</span><span class="p">(</span><span class="n">field_paths</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts simple field path with integer beginnings to quoted field path</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        field_paths (Sequence[str]): A list of field paths</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Sequence[str]:</span>
+<span class="sd">            The same list of field paths except non-simple field names</span>
+<span class="sd">            in the `.` delimited field path have been converted</span>
+<span class="sd">            into quoted unicode field paths. Simple field paths match</span>
+<span class="sd">            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for</span>
+<span class="sd">            more information.</span>
+
+<span class="sd">    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">canonical_strings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field_path</span> <span class="ow">in</span> <span class="n">field_paths</span><span class="p">:</span>
+        <span class="n">escaped_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="n">field_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">_UNESCAPED_FIELD_NAME_RE</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+                <span class="n">escaped_name</span> <span class="o">=</span> <span class="n">field_name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">escaped_name</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;`</span><span class="si">{}</span><span class="s2">`&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">field_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;`&#39;</span><span class="p">,</span> <span class="s1">&#39;``&#39;</span><span class="p">))</span>
+            <span class="n">escaped_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">escaped_name</span><span class="p">)</span>
+        <span class="n">new_field_path</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">escaped_names</span><span class="p">)</span>
+        <span class="n">canonical_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_field_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">canonical_strings</span>
+
+
 <span class="k">def</span> <span class="nf">pbs_for_update</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">document_path</span><span class="p">,</span> <span class="n">field_updates</span><span class="p">,</span> <span class="n">option</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make ``Write`` protobufs for ``update()`` methods.</span>
 
@@ -893,6 +927,7 @@
 
     <span class="n">transform_paths</span><span class="p">,</span> <span class="n">actual_updates</span> <span class="o">=</span> <span class="n">remove_server_timestamp</span><span class="p">(</span><span class="n">field_updates</span><span class="p">)</span>
     <span class="n">update_values</span><span class="p">,</span> <span class="n">field_paths</span> <span class="o">=</span> <span class="n">FieldPathHelper</span><span class="o">.</span><span class="n">to_field_paths</span><span class="p">(</span><span class="n">actual_updates</span><span class="p">)</span>
+    <span class="n">field_paths</span> <span class="o">=</span> <span class="n">canonicalize_field_paths</span><span class="p">(</span><span class="n">field_paths</span><span class="p">)</span>
 
     <span class="n">update_pb</span> <span class="o">=</span> <span class="n">write_pb2</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span>
         <span class="n">update</span><span class="o">=</span><span class="n">document_pb2</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
