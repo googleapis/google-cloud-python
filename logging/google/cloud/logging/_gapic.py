@@ -94,7 +94,7 @@ class _LoggingAPI(object):
         # objects are created by entry_from_resource, they can be
         # re-used by other log entries from the same logger.
         loggers = {}
-        page_iter._item_to_value = functools.partial(
+        page_iter.item_to_value = functools.partial(
             _item_to_entry, loggers=loggers)
         return page_iter
 
@@ -175,7 +175,7 @@ class _SinksAPI(object):
             path, page_size=page_size)
         page_iter.client = self._client
         page_iter.next_page_token = page_token
-        page_iter._item_to_value = _item_to_sink
+        page_iter.item_to_value = _item_to_sink
         return page_iter
 
     def sink_create(self, project, sink_name, filter_, destination,
@@ -327,7 +327,7 @@ class _MetricsAPI(object):
             path, page_size=page_size)
         page_iter.client = self._client
         page_iter.next_page_token = page_token
-        page_iter._item_to_value = _item_to_metric
+        page_iter.item_to_value = _item_to_metric
         return page_iter
 
     def metric_create(self, project, metric_name, filter_, description):
