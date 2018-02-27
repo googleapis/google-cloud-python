@@ -1384,7 +1384,8 @@ class Test_metadata_with_prefix(unittest.TestCase):
 
     @staticmethod
     def _call_fut(database_string):
-        from google.cloud.firestore_v1beta1._helpers import metadata_with_prefix
+        from google.cloud.firestore_v1beta1._helpers import (
+            metadata_with_prefix)
 
         return metadata_with_prefix(database_string)
 
