@@ -309,13 +309,36 @@ class Database(object):
         """
         return BatchCheckout(self)
 
-    def batch_transaction(self):
+    def batch_transaction(
+            self, read_timestamp=None, min_read_timestamp=None,
+            max_staleness=None, exact_staleness=None):
         """Return an object which wraps a batch read / query.
+
+        :type read_timestamp: :class:`datetime.datetime`
+        :param read_timestamp: Execute all reads at the given timestamp.
+
+        :type min_read_timestamp: :class:`datetime.datetime`
+        :param min_read_timestamp: Execute all reads at a
+                                timestamp >= ``min_read_timestamp``.
+
+        :type max_staleness: :class:`datetime.timedelta`
+        :param max_staleness: Read data at a
+                            timestamp >= NOW - ``max_staleness`` seconds.
+
+        :type exact_staleness: :class:`datetime.timedelta`
+        :param exact_staleness: Execute all reads at a timestamp that is
+                                ``exact_staleness`` old.
 
         :rtype: :class:`~google.cloud.spanner_v1.database.BatchTransaction`
         :returns: new wrapper
         """
-        return BatchTransaction(self)
+        return BatchTransaction(
+            self,
+            read_timestamp=read_timestamp,
+            min_read_timestamp=min_read_timestamp,
+            max_staleness=max_staleness,
+            exact_staleness=exact_staleness,
+        )
 
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.

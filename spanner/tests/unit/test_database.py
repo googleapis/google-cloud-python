@@ -44,6 +44,19 @@ class _BaseTest(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _make_timestamp():
+        import datetime
+        from google.cloud._helpers import UTC
+
+        return datetime.datetime.utcnow().replace(tzinfo=UTC)
+
+    @staticmethod
+    def _make_duration(seconds=1, microseconds=0):
+        import datetime
+
+        return datetime.timedelta(seconds=seconds, microseconds=microseconds)
+
 
 class TestDatabase(_BaseTest):
 
@@ -655,6 +668,70 @@ class TestDatabase(_BaseTest):
         batch_txn = database.batch_transaction()
         self.assertIsInstance(batch_txn, BatchTransaction)
         self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertIsNone(batch_txn._min_read_timestamp)
+        self.assertIsNone(batch_txn._max_staleness)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_transaction_w_read_timestamp(self):
+        from google.cloud.spanner_v1.database import BatchTransaction
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        timestamp = self._make_timestamp()
+
+        batch_txn = database.batch_transaction(read_timestamp=timestamp)
+        self.assertIsInstance(batch_txn, BatchTransaction)
+        self.assertIs(batch_txn._database, database)
+        self.assertEqual(batch_txn._read_timestamp, timestamp)
+        self.assertIsNone(batch_txn._min_read_timestamp)
+        self.assertIsNone(batch_txn._max_staleness)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_transaction_w_min_read_timestamp(self):
+        from google.cloud.spanner_v1.database import BatchTransaction
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        timestamp = self._make_timestamp()
+
+        batch_txn = database.batch_transaction(min_read_timestamp=timestamp)
+        self.assertIsInstance(batch_txn, BatchTransaction)
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertEqual(batch_txn._min_read_timestamp, timestamp)
+        self.assertIsNone(batch_txn._max_staleness)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_transaction_w_max_staleness(self):
+        from google.cloud.spanner_v1.database import BatchTransaction
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        duration = self._make_duration()
+
+        batch_txn = database.batch_transaction(max_staleness=duration)
+        self.assertIsInstance(batch_txn, BatchTransaction)
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertIsNone(batch_txn._min_read_timestamp)
+        self.assertEqual(batch_txn._max_staleness, duration)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_transaction_w_exact_staleness(self):
+        from google.cloud.spanner_v1.database import BatchTransaction
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        duration = self._make_duration()
+
+        batch_txn = database.batch_transaction(exact_staleness=duration)
+        self.assertIsInstance(batch_txn, BatchTransaction)
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertIsNone(batch_txn._min_read_timestamp)
+        self.assertIsNone(batch_txn._max_staleness)
+        self.assertEqual(batch_txn._exact_staleness, duration)
 
     def test_run_in_transaction_wo_args(self):
         import datetime
@@ -908,19 +985,6 @@ class TestBatchTransaction(_BaseTest):
         from google.cloud.spanner_v1.keyset import KeySet
 
         return KeySet(all_=True)
-
-    @staticmethod
-    def _make_timestamp():
-        import datetime
-        from google.cloud._helpers import UTC
-
-        return datetime.datetime.utcnow().replace(tzinfo=UTC)
-
-    @staticmethod
-    def _make_duration(seconds=1, microseconds=0):
-        import datetime
-
-        return datetime.timedelta(seconds=seconds, microseconds=microseconds)
 
     def test_ctor_no_staleness(self):
         database = self._make_database()
