@@ -1027,7 +1027,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, path)
-        self.assertIs(iterator._item_to_value, _item_to_row)
+        self.assertIs(iterator.item_to_value, _item_to_row)
         self.assertEqual(iterator._items_key, 'rows')
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator.extra_params, {})
