@@ -179,15 +179,6 @@ class Iterator(object):
         """int: The total number of results fetched so far."""
 
     @property
-    def _item_to_value(self):
-        """DEPRECATED: Backwards-compatible alias to ``item_to_value``."""
-        return self.item_to_value
-
-    @_item_to_value.setter
-    def _item_to_value(self, value):
-        self.item_to_value = value
-
-    @property
     def pages(self):
         """Iterator of pages in the response.
 

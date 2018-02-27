@@ -95,12 +95,6 @@ class TestIterator(object):
         assert iterator.next_page_token == token
         assert iterator.num_results == 0
 
-    def test__item_to_value_alias(self):
-        iterator = PageIteratorImpl(None, None)
-        assert iterator._item_to_value is iterator.item_to_value
-        iterator._item_to_value = mock.sentinel.item_to_value
-        assert iterator._item_to_value is iterator.item_to_value
-
     def test_pages_property_starts(self):
         iterator = PageIteratorImpl(None, None)
 
