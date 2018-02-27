@@ -305,8 +305,7 @@ class YieldRowsData(object):
                 if response.last_scanned_row_key:
                     raise InvalidReadRowsResponse()
 
-            if response.last_scanned_row_key:
-                self.last_scanned_row_key = response.last_scanned_row_key
+            self.last_scanned_row_key = response.last_scanned_row_key
 
             row = self._row
             cell = self._cell
