@@ -358,7 +358,7 @@ class Table(object):
             end_key, filter_, limit, retry)
 
         for row in retryable_read_rows().read_rows():
-        	yield row
+            yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -571,7 +571,7 @@ class _RetryableReadRows(object):
         if (self.generator and self.generator.last_scanned_row_key):
             next_start_key = self.generator.last_scanned_row_key
             _LOGGER.info('Start key is {} for retry read rows.'
-                              .format(next_start_key))
+                         .format(next_start_key))
         else:
             next_start_key = self.start_key
 
