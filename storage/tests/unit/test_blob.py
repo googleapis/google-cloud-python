@@ -925,7 +925,8 @@ class Test_Blob(unittest.TestCase):
         return fake_transport
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
-                              num_retries=None, user_project=None):
+                              num_retries=None, user_project=None,
+                              predefined_acl=None):
         bucket = _Bucket(name='w00t', user_project=user_project)
         blob = self._make_one(u'blob-name', bucket=bucket)
         self.assertIsNone(blob.chunk_size)
@@ -939,7 +940,7 @@ class Test_Blob(unittest.TestCase):
         stream = io.BytesIO(data)
         content_type = u'application/xml'
         response = blob._do_multipart_upload(
-            client, stream, content_type, size, num_retries)
+            client, stream, content_type, size, num_retries, predefined_acl)
 
         # Check the mocks and the returned value.
         self.assertIs(response, transport.request.return_value)
@@ -958,6 +959,9 @@ class Test_Blob(unittest.TestCase):
             '/o?uploadType=multipart')
         if user_project is not None:
             upload_url += '&userProject={}'.format(user_project)
+        if predefined_acl is not None:
+            upload_url += '&predefinedAcl={}'.format(predefined_acl)
+
         payload = (
             b'--==0==\r\n' +
             b'content-type: application/json; charset=UTF-8\r\n\r\n' +
@@ -973,7 +977,7 @@ class Test_Blob(unittest.TestCase):
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
     def test__do_multipart_upload_no_size(self, mock_get_boundary):
-        self._do_multipart_success(mock_get_boundary)
+        self._do_multipart_success(mock_get_boundary, predefined_acl='private')
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
@@ -1001,7 +1005,7 @@ class Test_Blob(unittest.TestCase):
         self.assertGreater(size, len(data))
 
         with self.assertRaises(ValueError) as exc_info:
-            blob._do_multipart_upload(None, stream, None, size, None)
+            blob._do_multipart_upload(None, stream, None, size, None, None)
 
         exc_contents = str(exc_info.exception)
         self.assertIn(
@@ -1010,7 +1014,7 @@ class Test_Blob(unittest.TestCase):
 
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
-            num_retries=None, user_project=None):
+            num_retries=None, user_project=None, predefined_acl=None):
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
@@ -1037,7 +1041,8 @@ class Test_Blob(unittest.TestCase):
         content_type = u'text/plain'
         upload, transport = blob._initiate_resumable_upload(
             client, stream, content_type, size, num_retries,
-            extra_headers=extra_headers, chunk_size=chunk_size)
+            extra_headers=extra_headers,
+            chunk_size=chunk_size, predefined_acl=predefined_acl)
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
@@ -1047,6 +1052,8 @@ class Test_Blob(unittest.TestCase):
             '/o?uploadType=resumable')
         if user_project is not None:
             upload_url += '&userProject={}'.format(user_project)
+        if predefined_acl is not None:
+            upload_url += '&predefinedAcl={}'.format(predefined_acl)
         self.assertEqual(upload.upload_url, upload_url)
         if extra_headers is None:
             self.assertEqual(upload._headers, {})
@@ -1113,6 +1120,9 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_retry(self):
         self._initiate_resumable_helper(num_retries=11)
 
+    def test__initiate_resumable_upload_with_predefined_acl(self):
+        self._initiate_resumable_helper(predefined_acl='private')
+
     def _make_resumable_transport(self, headers1, headers2,
                                   headers3, total_bytes):
         from google import resumable_media
@@ -1133,12 +1143,14 @@ class Test_Blob(unittest.TestCase):
         return fake_transport, responses
 
     @staticmethod
-    def _do_resumable_upload_call0(blob, content_type, size=None):
+    def _do_resumable_upload_call0(blob, content_type, size=None, predefined_acl=None):
         # First mock transport.request() does initiates upload.
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
             blob.bucket.path +
             '/o?uploadType=resumable')
+        if predefined_acl is not None:
+            upload_url += '&predefinedAcl={}'.format(predefined_acl)
         expected_headers = {
             'content-type': 'application/json; charset=UTF-8',
             'x-upload-content-type': content_type,
@@ -1151,7 +1163,7 @@ class Test_Blob(unittest.TestCase):
 
     @staticmethod
     def _do_resumable_upload_call1(blob, content_type, data,
-                                   resumable_url, size=None):
+                                   resumable_url, size=None, predefined_acl=None):
         # Second mock transport.request() does sends first chunk.
         if size is None:
             content_range = 'bytes 0-{:d}/*'.format(blob.chunk_size - 1)
@@ -1169,7 +1181,7 @@ class Test_Blob(unittest.TestCase):
 
     @staticmethod
     def _do_resumable_upload_call2(blob, content_type, data,
-                                   resumable_url, total_bytes):
+                                   resumable_url, total_bytes, predefined_acl=None):
         # Third mock transport.request() does sends last chunk.
         content_range = 'bytes {:d}-{:d}/{:d}'.format(
             blob.chunk_size, total_bytes - 1, total_bytes)
@@ -1181,7 +1193,7 @@ class Test_Blob(unittest.TestCase):
         return mock.call(
             'PUT', resumable_url, data=payload, headers=expected_headers)
 
-    def _do_resumable_helper(self, use_size=False, num_retries=None):
+    def _do_resumable_helper(self, use_size=False, num_retries=None, predefined_acl=None):
         bucket = _Bucket(name='yesterday')
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
@@ -1207,18 +1219,18 @@ class Test_Blob(unittest.TestCase):
         stream = io.BytesIO(data)
         content_type = u'text/html'
         response = blob._do_resumable_upload(
-            client, stream, content_type, size, num_retries)
+            client, stream, content_type, size, num_retries, predefined_acl)
 
         # Check the returned values.
         self.assertIs(response, responses[2])
         self.assertEqual(stream.tell(), total_bytes)
 
         # Check the mocks.
-        call0 = self._do_resumable_upload_call0(blob, content_type, size=size)
+        call0 = self._do_resumable_upload_call0(blob, content_type, size=size, predefined_acl=predefined_acl)
         call1 = self._do_resumable_upload_call1(
-            blob, content_type, data, resumable_url, size=size)
+            blob, content_type, data, resumable_url, size=size, predefined_acl=predefined_acl)
         call2 = self._do_resumable_upload_call2(
-            blob, content_type, data, resumable_url, total_bytes)
+            blob, content_type, data, resumable_url, total_bytes, predefined_acl=predefined_acl)
         self.assertEqual(
             transport.request.mock_calls, [call0, call1, call2])
 
@@ -1231,7 +1243,10 @@ class Test_Blob(unittest.TestCase):
     def test__do_resumable_upload_with_retry(self):
         self._do_resumable_helper(num_retries=6)
 
-    def _do_upload_helper(self, chunk_size=None, num_retries=None):
+    def test__do_resumable_upload_with_predefined_acl(self):
+        self._do_resumable_helper(predefined_acl='private')
+
+    def _do_upload_helper(self, chunk_size=None, num_retries=None, predefined_acl=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1251,20 +1266,20 @@ class Test_Blob(unittest.TestCase):
         stream = mock.sentinel.stream
         content_type = u'video/mp4'
         size = 12345654321
-
         # Make the request and check the mocks.
         created_json = blob._do_upload(
-            client, stream, content_type, size, num_retries)
+            client, stream, content_type, size, num_retries, predefined_acl)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
         if chunk_size is None:
+
             blob._do_multipart_upload.assert_called_once_with(
-                client, stream, content_type, size, num_retries)
+                client, stream, content_type, size, num_retries, predefined_acl)
             blob._do_resumable_upload.assert_not_called()
         else:
             blob._do_multipart_upload.assert_not_called()
             blob._do_resumable_upload.assert_called_once_with(
-                client, stream, content_type, size, num_retries)
+                client, stream, content_type, size, num_retries, predefined_acl)
 
     def test__do_upload_without_chunk_size(self):
         self._do_upload_helper()
@@ -1278,9 +1293,9 @@ class Test_Blob(unittest.TestCase):
 
     def _upload_from_file_helper(self, side_effect=None, **kwargs):
         from google.cloud._helpers import UTC
+        from google.cloud.storage.acl import ACL
 
         blob = self._make_one('blob-name', bucket=None)
-
         # Mock low-level upload helper on blob (it is tested elsewhere).
         created_json = {'updated': '2017-01-01T09:09:09.081Z'}
         blob._do_upload = mock.Mock(return_value=created_json, spec=[])
@@ -1294,6 +1309,7 @@ class Test_Blob(unittest.TestCase):
         stream.seek(2)  # Not at zero.
         content_type = u'font/woff'
         client = mock.sentinel.client
+        predefined_acl = kwargs.get('predefined_acl', None)
         ret_val = blob.upload_from_file(
             stream, size=len(data), content_type=content_type,
             client=client, **kwargs)
@@ -1307,12 +1323,12 @@ class Test_Blob(unittest.TestCase):
         # Check the mock.
         num_retries = kwargs.get('num_retries')
         blob._do_upload.assert_called_once_with(
-            client, stream, content_type, len(data), num_retries)
-
+            client, stream, content_type,
+            len(data), num_retries, predefined_acl)
         return stream
 
     def test_upload_from_file_success(self):
-        stream = self._upload_from_file_helper()
+        stream = self._upload_from_file_helper(predefined_acl='private')
         assert stream.tell() == 2
 
     @mock.patch('warnings.warn')
@@ -1352,11 +1368,12 @@ class Test_Blob(unittest.TestCase):
         mock_call = blob._do_upload.mock_calls[0]
         call_name, pos_args, kwargs = mock_call
         self.assertEqual(call_name, '')
-        self.assertEqual(len(pos_args), 5)
+        self.assertEqual(len(pos_args), 6)
         self.assertEqual(pos_args[0], client)
         self.assertEqual(pos_args[2], content_type)
         self.assertEqual(pos_args[3], size)
         self.assertIsNone(pos_args[4])  # num_retries
+        self.assertIsNone(pos_args[5])  # predefined_acl
         self.assertEqual(kwargs, {})
 
         return pos_args[1]

@@ -55,6 +55,7 @@ from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._signing import generate_signed_url
+from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
 
@@ -633,7 +634,7 @@ class Blob(_PropertyMixin):
         return headers, object_metadata, content_type
 
     def _do_multipart_upload(self, client, stream, content_type,
-                             size, num_retries):
+                             size, num_retries, predefined_acl):
         """Perform a multipart upload.
 
         Assumes ``chunk_size`` is :data:`None` on the current blob.
@@ -664,6 +665,9 @@ class Blob(_PropertyMixin):
         :param num_retries: Number of upload retries. (Deprecated: This
                             argument will be removed in a future release.)
 
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the multipart
                   upload request.
@@ -688,6 +692,8 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+        if predefined_acl is not None:
+            name_value_pairs.append(('predefinedAcl', predefined_acl))
 
         upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = MultipartUpload(upload_url, headers=headers)
@@ -702,8 +708,9 @@ class Blob(_PropertyMixin):
         return response
 
     def _initiate_resumable_upload(self, client, stream, content_type,
-                                   size, num_retries, extra_headers=None,
-                                   chunk_size=None):
+                                   size, num_retries,
+                                   predefined_acl=None,
+                                   extra_headers=None, chunk_size=None):
         """Initiate a resumable upload.
 
         The content type of the upload will be determined in order
@@ -727,6 +734,9 @@ class Blob(_PropertyMixin):
         :param size: The number of bytes to be uploaded (which will be read
                      from ``stream``). If not provided, the upload will be
                      concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
 
         :type num_retries: int
         :param num_retries: Number of upload retries. (Deprecated: This
@@ -766,6 +776,8 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+        if predefined_acl is not None:
+            name_value_pairs.append(('predefinedAcl', predefined_acl))
 
         upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
@@ -781,7 +793,7 @@ class Blob(_PropertyMixin):
         return upload, transport
 
     def _do_resumable_upload(self, client, stream, content_type,
-                             size, num_retries):
+                             size, num_retries, predefined_acl):
         """Perform a resumable upload.
 
         Assumes ``chunk_size`` is not :data:`None` on the current blob.
@@ -812,19 +824,24 @@ class Blob(_PropertyMixin):
         :param num_retries: Number of upload retries. (Deprecated: This
                             argument will be removed in a future release.)
 
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the final chunk
                   is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
-            client, stream, content_type, size, num_retries)
+            client, stream, content_type, size, num_retries,
+            predefined_acl=predefined_acl)
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
 
         return response
 
-    def _do_upload(self, client, stream, content_type, size, num_retries):
+    def _do_upload(self, client, stream, content_type,
+                   size, num_retries, predefined_acl):
         """Determine an upload strategy and then perform the upload.
 
         If the current blob has a ``chunk_size`` set, then a resumable upload
@@ -857,6 +874,9 @@ class Blob(_PropertyMixin):
         :param num_retries: Number of upload retries. (Deprecated: This
                             argument will be removed in a future release.)
 
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
+
         :rtype: dict
         :returns: The parsed JSON from the "200 OK" response. This will be the
                   **only** response in the multipart case and it will be the
@@ -864,15 +884,18 @@ class Blob(_PropertyMixin):
         """
         if self.chunk_size is None:
             response = self._do_multipart_upload(
-                client, stream, content_type, size, num_retries)
+                client, stream, content_type,
+                size, num_retries, predefined_acl)
         else:
             response = self._do_resumable_upload(
-                client, stream, content_type, size, num_retries)
+                client, stream, content_type, size,
+                num_retries, predefined_acl)
 
         return response.json()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=None, client=None):
+                         content_type=None, num_retries=None, client=None,
+                         predefined_acl=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will be determined in order
@@ -930,6 +953,9 @@ class Blob(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
+
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
 
@@ -941,14 +967,18 @@ class Blob(_PropertyMixin):
             warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
 
         _maybe_rewind(file_obj, rewind=rewind)
+        predefined_acl = ACL.validate_predefined(predefined_acl)
+
         try:
             created_json = self._do_upload(
-                client, file_obj, content_type, size, num_retries)
+                client, file_obj, content_type,
+                size, num_retries, predefined_acl)
             self._set_properties(created_json)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def upload_from_filename(self, filename, content_type=None, client=None):
+    def upload_from_filename(self, filename, content_type=None, client=None,
+                             predefined_acl=None):
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will be determined in order
@@ -982,6 +1012,9 @@ class Blob(_PropertyMixin):
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
         """
         content_type = self._get_content_type(content_type, filename=filename)
 
@@ -989,9 +1022,10 @@ class Blob(_PropertyMixin):
             total_bytes = os.fstat(file_obj.fileno()).st_size
             self.upload_from_file(
                 file_obj, content_type=content_type, client=client,
-                size=total_bytes)
+                size=total_bytes, predefined_acl=predefined_acl)
 
-    def upload_from_string(self, data, content_type='text/plain', client=None):
+    def upload_from_string(self, data, content_type='text/plain', client=None,
+                           predefined_acl=None):
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -1020,12 +1054,16 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
         """
         data = _to_bytes(data, encoding='utf-8')
         string_buffer = BytesIO(data)
         self.upload_from_file(
             file_obj=string_buffer, size=len(data),
-            content_type=content_type, client=client)
+            content_type=content_type, client=client,
+            predefined_acl=predefined_acl)
 
     def create_resumable_upload_session(
             self,
@@ -1110,6 +1148,7 @@ class Blob(_PropertyMixin):
             # matters when **sending** bytes to an upload.
             upload, _ = self._initiate_resumable_upload(
                 client, dummy_stream, content_type, size, None,
+                predefined_acl=None,
                 extra_headers=extra_headers,
                 chunk_size=self._CHUNK_SIZE_MULTIPLE)
 
