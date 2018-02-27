@@ -1290,7 +1290,7 @@ class Client(ClientWithProject):
 
         :type page_size: int
         :param page_size: (Optional) The maximum number of items to return
-                          per page in the iterator.  Defaults to 50.
+                          per page in the iterator.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -1321,8 +1321,6 @@ class Client(ClientWithProject):
                 field.name for field in selected_fields)
         if start_index is not None:
             params['startIndex'] = start_index
-        if page_size is not None:
-            params['pageSize'] = page_size
 
         row_iterator = RowIterator(
             client=self,
@@ -1331,6 +1329,7 @@ class Client(ClientWithProject):
             schema=schema,
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
             extra_params=params)
         return row_iterator
 

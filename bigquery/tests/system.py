@@ -1737,6 +1737,31 @@ class TestBigQuery(unittest.TestCase):
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
 
+    def test_list_rows_page_size(self):
+        num_items = 7
+        page_size = 3
+        num_pages, num_last_page = divmod(num_items, page_size)
+
+        SF = bigquery.SchemaField
+        schema = [SF('string_col', 'STRING', mode='NULLABLE')]
+        to_insert = [{'string_col': 'item%d' % i} for i in range(num_items)]
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
+        table_arg = Table(dataset.table(table_id), schema=schema)
+        table = Config.CLIENT.create_table(table_arg)
+        self.to_delete.insert(0, table)
+        Config.CLIENT.insert_rows(table, to_insert, selected_fields=schema)
+
+        df = Config.CLIENT.list_rows(
+            table, selected_fields=schema, page_size=page_size)
+        pages = df.pages
+
+        for i in range(num_pages):
+            page = next(pages)
+            self.assertEqual(page.num_items, page_size)
+        page = next(pages)
+        self.assertEqual(page.num_items, num_last_page)
+
     def temp_dataset(self, dataset_id, location=None):
         dataset = Dataset(Config.CLIENT.dataset(dataset_id))
         if location:
