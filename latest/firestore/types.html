@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Firestore Protobuf Types &#8212; google-cloud e926301 documentation</title>
+    <title>Firestore Protobuf Types &#8212; google-cloud 00ea201 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -210,12 +210,6 @@ transaction.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.CancelOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.firestore_v1beta1.types.CommitRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">CommitRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.CommitRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
@@ -311,29 +305,6 @@ field will not be returned in the response.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.CreateIndexRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">CreateIndexRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.CreateIndexRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>The request for
-[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.CreateIndexRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.CreateIndexRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the database this index will apply to. For
-example: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.CreateIndexRequest.index">
-<code class="descname">index</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.CreateIndexRequest.index" title="Permalink to this definition">#</a></dt>
-<dd><p>The index to create. The name and state should not be
-specified. Certain single field indexes cannot be created or
-deleted.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.firestore_v1beta1.types.Cursor">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Cursor</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Cursor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
@@ -382,27 +353,6 @@ ent_path}``.</p>
 fail if this is set and not met by the target document.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.DeleteIndexRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">DeleteIndexRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DeleteIndexRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>The request for
-[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.DeleteIndexRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DeleteIndexRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The index name. For example: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases</span>
-<span class="pre">/{database_id}/indexes/{index_id}</span></code></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.DeleteOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 </dd></dl>
 
 <dl class="class">
@@ -616,26 +566,6 @@ or equal to the <code class="docutils literal notranslate"><span class="pre">com
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A transformation of a document.</p>
 <dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.field_path">
-<code class="descname">field_path</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.field_path" title="Permalink to this definition">#</a></dt>
-<dd><p>The path of the field. See
-[Document.fields][google.firestore.v1beta1.Document.fields]
-for the field path syntax reference.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.transform_type">
-<code class="descname">transform_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.transform_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The transformation to apply on the field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.set_to_server_value">
-<code class="descname">set_to_server_value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.set_to_server_value" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the field to the given server value.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.document">
 <code class="descname">document</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.document" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the document to transform.</p>
@@ -645,7 +575,7 @@ for the field path syntax reference.</p>
 <dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.field_transforms">
 <code class="descname">field_transforms</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.field_transforms" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of transformations to apply to the fields of the
-document, in order.</p>
+document, in order. This must not be empty.</p>
 </dd></dl>
 
 <dl class="class">
@@ -653,6 +583,26 @@ document, in order.</p>
 <em class="property">class </em><code class="descname">FieldTransform</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A transformation of a field of the document.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.field_path">
+<code class="descname">field_path</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.field_path" title="Permalink to this definition">#</a></dt>
+<dd><p>The path of the field. See
+[Document.fields][google.firestore.v1beta1.Document.fields]
+for the field path syntax reference.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.transform_type">
+<code class="descname">transform_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.transform_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The transformation to apply on the field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.set_to_server_value">
+<code class="descname">set_to_server_value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.DocumentTransform.FieldTransform.set_to_server_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the field to the given server value.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -821,27 +771,6 @@ not be older than 60 seconds.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.GetIndexRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">GetIndexRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.GetIndexRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>The request for
-[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.GetIndexRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.GetIndexRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the index. For example: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/da</span>
-<span class="pre">tabases/{database_id}/indexes/{index_id}</span></code></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.GetOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.firestore_v1beta1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Http" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
@@ -851,111 +780,6 @@ not be older than 60 seconds.</p>
 <dt id="google.cloud.firestore_v1beta1.types.HttpRule">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.HttpRule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.Index">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Index</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Index" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>An index definition.</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Index.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Index.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The resource name of the index.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Index.collection_id">
-<code class="descname">collection_id</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Index.collection_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The collection ID to which this index applies. Required.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Index.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Index.fields" title="Permalink to this definition">#</a></dt>
-<dd><p>The fields to index.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Index.state">
-<code class="descname">state</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Index.state" title="Permalink to this definition">#</a></dt>
-<dd><p>The state of the index. The state is read-only. &#64;OutputOnly</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.IndexField">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">IndexField</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexField" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>A field of an index.</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexField.field_path">
-<code class="descname">field_path</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexField.field_path" title="Permalink to this definition">#</a></dt>
-<dd><p>The path of the field. Must match the field path specification
-described by
-[google.firestore.v1beta1.Document.fields][fields]. Special
-field path <code class="docutils literal notranslate"><span class="pre">__name__</span></code> may be used by itself or at the end of
-a path. <code class="docutils literal notranslate"><span class="pre">__type__</span></code> may be used only at the end of path.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexField.mode">
-<code class="descname">mode</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexField.mode" title="Permalink to this definition">#</a></dt>
-<dd><p>The field’s mode.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">IndexOperationMetadata</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>Metadata for index operations. This metadata populates the metadata
-field of [google.longrunning.Operation][google.longrunning.Operation].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.start_time">
-<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>The time that work began on the operation.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.end_time">
-<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.end_time" title="Permalink to this definition">#</a></dt>
-<dd><p>The time the operation ended, either successfully or
-otherwise. Unset if the operation is still active.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.index">
-<code class="descname">index</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.index" title="Permalink to this definition">#</a></dt>
-<dd><p>The index resource that this operation is acting on. For
-example: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}/index</span>
-<span class="pre">es/{index_id}</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.operation_type">
-<code class="descname">operation_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.operation_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The type of index operation.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.cancelled">
-<code class="descname">cancelled</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.cancelled" title="Permalink to this definition">#</a></dt>
-<dd><p>True if the [google.longrunning.Operation] was cancelled. If
-the cancellation is in progress, cancelled will be true but [g
-oogle.longrunning.Operation.done][google.longrunning.Operation
-.done] will be false.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.IndexOperationMetadata.document_progress">
-<code class="descname">document_progress</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.IndexOperationMetadata.document_progress" title="Permalink to this definition">#</a></dt>
-<dd><p>Progress of the existing operation, measured in number of
-documents.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -1134,65 +958,6 @@ ent.create_time], or [Document.update_time][google.firestore
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">ListIndexesRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>The request for
-[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The database name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesRequest.page_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The standard List page size.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesRequest.page_token" title="Permalink to this definition">#</a></dt>
-<dd><p>The standard List page token.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">ListIndexesResponse</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>The response for
-[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes].</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesResponse.indexes">
-<code class="descname">indexes</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesResponse.indexes" title="Permalink to this definition">#</a></dt>
-<dd><p>The indexes.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.ListIndexesResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListIndexesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
-<dd><p>The standard List next-page token.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.ListOperationsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.ListOperationsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.firestore_v1beta1.types.ListValue">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">ListValue</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.ListValue" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.internal.well_known_types.ListValue</span></code></p>
@@ -1347,12 +1112,6 @@ not exceed 1,500 bytes and cannot be empty.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.Operation">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.firestore_v1beta1.types.Precondition">
 <em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Precondition</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Precondition" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
@@ -1375,28 +1134,6 @@ to <code class="docutils literal notranslate"><span class="pre">false</span></co
 <code class="descname">update_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Precondition.update_time" title="Permalink to this definition">#</a></dt>
 <dd><p>When set, the target document must exist and have been last
 updated at that time.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.firestore_v1beta1.types.Progress">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.types.</code><code class="descname">Progress</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Progress" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
-<p>Measures the progress of a particular metric.</p>
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Progress.work_completed">
-<code class="descname">work_completed</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Progress.work_completed" title="Permalink to this definition">#</a></dt>
-<dd><p>An estimate of how much work has been completed. Note that
-this may be greater than <code class="docutils literal notranslate"><span class="pre">work_estimated</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Progress.work_estimated">
-<code class="descname">work_estimated</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Progress.work_estimated" title="Permalink to this definition">#</a></dt>
-<dd><p>An estimate of how much work needs to be performed. Zero if
-the work estimate is unavailable. May change as work
-progresses.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1579,90 +1316,6 @@ between the last response and the current response.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A Firestore query.</p>
 <dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.collection_id">
-<code class="descname">collection_id</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.collection_id" title="Permalink to this definition">#</a></dt>
-<dd><p>The collection ID. When set, selects only collections with
-this ID.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.all_descendants">
-<code class="descname">all_descendants</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.all_descendants" title="Permalink to this definition">#</a></dt>
-<dd><p>When false, selects only collections that are immediate
-children of the <code class="docutils literal notranslate"><span class="pre">parent</span></code> specified in the containing
-<code class="docutils literal notranslate"><span class="pre">RunQueryRequest</span></code>. When true, selects all descendant
-collections.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.filter_type">
-<code class="descname">filter_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.filter_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The type of filter.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.composite_filter">
-<code class="descname">composite_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.composite_filter" title="Permalink to this definition">#</a></dt>
-<dd><p>A composite filter.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.field_filter">
-<code class="descname">field_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.field_filter" title="Permalink to this definition">#</a></dt>
-<dd><p>A filter on a document field.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.unary_filter">
-<code class="descname">unary_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.unary_filter" title="Permalink to this definition">#</a></dt>
-<dd><p>A filter that takes exactly one argument.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.op">
-<code class="descname">op</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.op" title="Permalink to this definition">#</a></dt>
-<dd><p>The unary operator to apply.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.filters">
-<code class="descname">filters</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.filters" title="Permalink to this definition">#</a></dt>
-<dd><p>The list of filters to combine. Must contain at least one
-filter.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.field">
-<code class="descname">field</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.field" title="Permalink to this definition">#</a></dt>
-<dd><p>The field to order by.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.value" title="Permalink to this definition">#</a></dt>
-<dd><p>The value to compare to.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.operand_type">
-<code class="descname">operand_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.operand_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The argument to the filter.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.direction">
-<code class="descname">direction</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.direction" title="Permalink to this definition">#</a></dt>
-<dd><p>The direction to order by. Defaults to <code class="docutils literal notranslate"><span class="pre">ASCENDING</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.fields" title="Permalink to this definition">#</a></dt>
-<dd><p>The fields to return.  If empty, all fields are returned. To
-only return the name of the document, use <code class="docutils literal notranslate"><span class="pre">['__name__']</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.select">
 <code class="descname">select</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.select" title="Permalink to this definition">#</a></dt>
 <dd><p>The projection to return.</p>
@@ -1730,6 +1383,22 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">CollectionSelector</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CollectionSelector" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A selection of a collection, such as <code class="docutils literal notranslate"><span class="pre">messages</span> <span class="pre">as</span> <span class="pre">m1</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.CollectionSelector.collection_id">
+<code class="descname">collection_id</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CollectionSelector.collection_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The collection ID. When set, selects only collections with
+this ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.CollectionSelector.all_descendants">
+<code class="descname">all_descendants</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CollectionSelector.all_descendants" title="Permalink to this definition">#</a></dt>
+<dd><p>When false, selects only collections that are immediate
+children of the <code class="docutils literal notranslate"><span class="pre">parent</span></code> specified in the containing
+<code class="docutils literal notranslate"><span class="pre">RunQueryRequest</span></code>. When true, selects all descendant
+collections.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1737,6 +1406,19 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">CompositeFilter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CompositeFilter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A filter that merges multiple other filters using the given operator.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.CompositeFilter.op">
+<code class="descname">op</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CompositeFilter.op" title="Permalink to this definition">#</a></dt>
+<dd><p>The operator for combining multiple filters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.CompositeFilter.filters">
+<code class="descname">filters</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.CompositeFilter.filters" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of filters to combine. Must contain at least one
+filter.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1744,6 +1426,24 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">FieldFilter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A filter on a specific field.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.field" title="Permalink to this definition">#</a></dt>
+<dd><p>The field to filter by.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.op">
+<code class="descname">op</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.op" title="Permalink to this definition">#</a></dt>
+<dd><p>The operator to filter by.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.FieldFilter.value" title="Permalink to this definition">#</a></dt>
+<dd><p>The value to compare to.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1758,6 +1458,30 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">Filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A filter.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.filter_type">
+<code class="descname">filter_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.filter_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.composite_filter">
+<code class="descname">composite_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.composite_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A composite filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.field_filter">
+<code class="descname">field_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.field_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A filter on a document field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.unary_filter">
+<code class="descname">unary_filter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Filter.unary_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A filter that takes exactly one argument.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1765,6 +1489,18 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">Order</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Order" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>An order on a field.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Order.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Order.field" title="Permalink to this definition">#</a></dt>
+<dd><p>The field to order by.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Order.direction">
+<code class="descname">direction</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Order.direction" title="Permalink to this definition">#</a></dt>
+<dd><p>The direction to order by. Defaults to <code class="docutils literal notranslate"><span class="pre">ASCENDING</span></code>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1772,6 +1508,13 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">Projection</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Projection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>The projection of document’s fields to return.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.Projection.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.Projection.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields to return.  If empty, all fields are returned. To
+only return the name of the document, use <code class="docutils literal notranslate"><span class="pre">['__name__']</span></code>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1779,6 +1522,24 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <em class="property">class </em><code class="descname">UnaryFilter</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A filter with a single operand.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.op">
+<code class="descname">op</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.op" title="Permalink to this definition">#</a></dt>
+<dd><p>The unary operator to apply.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.operand_type">
+<code class="descname">operand_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.operand_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The argument to the filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.StructuredQuery.UnaryFilter.field" title="Permalink to this definition">#</a></dt>
+<dd><p>The field to which to apply the operator.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -1789,36 +1550,6 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A specification of a set of documents to listen to.</p>
 <dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Target.documents">
-<code class="descname">documents</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.documents" title="Permalink to this definition">#</a></dt>
-<dd><p>A target specified by a set of document names.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Target.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The parent resource name. In the format:
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}/documents</span></code> or
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}/documents/{doc</span>
-<span class="pre">ument_path}</span></code>. For example: <code class="docutils literal notranslate"><span class="pre">projects/my-</span>
-<span class="pre">project/databases/my-database/documents</span></code> or <code class="docutils literal notranslate"><span class="pre">projects/my-</span>
-<span class="pre">project/databases/my-database/documents/chatrooms/my-</span>
-<span class="pre">chatroom</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Target.query_type">
-<code class="descname">query_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.query_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The query to run.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.Target.structured_query">
-<code class="descname">structured_query</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.structured_query" title="Permalink to this definition">#</a></dt>
-<dd><p>A structured query.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.firestore_v1beta1.types.Target.target_type">
 <code class="descname">target_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.target_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of target to listen to.</p>
@@ -1828,6 +1559,12 @@ other constraints. Must be &gt;= 0 if specified.</p>
 <dt id="google.cloud.firestore_v1beta1.types.Target.query">
 <code class="descname">query</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.query" title="Permalink to this definition">#</a></dt>
 <dd><p>A target specified by a query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.Target.documents">
+<code class="descname">documents</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.documents" title="Permalink to this definition">#</a></dt>
+<dd><p>A target specified by a set of document names.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1876,6 +1613,16 @@ consistent.</p>
 <em class="property">class </em><code class="descname">DocumentsTarget</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.DocumentsTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A target specified by a set of documents names.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.Target.DocumentsTarget.documents">
+<code class="descname">documents</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.DocumentsTarget.documents" title="Permalink to this definition">#</a></dt>
+<dd><p>The names of the documents to retrieve. In the format: <code class="docutils literal notranslate"><span class="pre">proje</span>
+<span class="pre">cts/{project_id}/databases/{database_id}/documents/{document_p</span>
+<span class="pre">ath}</span></code>. The request will fail if any of the document is not a
+child resource of the given <code class="docutils literal notranslate"><span class="pre">database</span></code>. Duplicate names will
+be elided.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1883,6 +1630,30 @@ consistent.</p>
 <em class="property">class </em><code class="descname">QueryTarget</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.QueryTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>A target specified by a query.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.Target.QueryTarget.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.QueryTarget.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The parent resource name. In the format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}/documents</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/databases/{database_id}/documents/{doc</span>
+<span class="pre">ument_path}</span></code>. For example: <code class="docutils literal notranslate"><span class="pre">projects/my-</span>
+<span class="pre">project/databases/my-database/documents</span></code> or <code class="docutils literal notranslate"><span class="pre">projects/my-</span>
+<span class="pre">project/databases/my-database/documents/chatrooms/my-</span>
+<span class="pre">chatroom</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.Target.QueryTarget.query_type">
+<code class="descname">query_type</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.QueryTarget.query_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The query to run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.Target.QueryTarget.structured_query">
+<code class="descname">structured_query</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.Target.QueryTarget.structured_query" title="Permalink to this definition">#</a></dt>
+<dd><p>A structured query.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -1952,26 +1723,6 @@ increasing.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>Options for creating a new transaction.</p>
 <dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.retry_transaction">
-<code class="descname">retry_transaction</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.retry_transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>An optional transaction to retry.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.consistency_selector">
-<code class="descname">consistency_selector</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.consistency_selector" title="Permalink to this definition">#</a></dt>
-<dd><p>The consistency mode for this transaction. If not set,
-defaults to strong consistency.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.read_time">
-<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.read_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads documents at the given time. This may not be older than
-60 seconds.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.mode">
 <code class="descname">mode</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.mode" title="Permalink to this definition">#</a></dt>
 <dd><p>The mode of the transaction.</p>
@@ -1995,6 +1746,20 @@ operations.</p>
 <em class="property">class </em><code class="descname">ReadOnly</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.ReadOnly" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>Options for a transaction that can only be used to read documents.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.ReadOnly.consistency_selector">
+<code class="descname">consistency_selector</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.ReadOnly.consistency_selector" title="Permalink to this definition">#</a></dt>
+<dd><p>The consistency mode for this transaction. If not set,
+defaults to strong consistency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.ReadOnly.read_time">
+<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.ReadOnly.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Reads documents at the given time. This may not be older than
+60 seconds.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2002,6 +1767,12 @@ operations.</p>
 <em class="property">class </em><code class="descname">ReadWrite</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.ReadWrite" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.pyext._message.CMessage</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.message.Message</span></code></p>
 <p>Options for a transaction that can be used to read and write documents.</p>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.types.TransactionOptions.ReadWrite.retry_transaction">
+<code class="descname">retry_transaction</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.types.TransactionOptions.ReadWrite.retry_transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional transaction to retry.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

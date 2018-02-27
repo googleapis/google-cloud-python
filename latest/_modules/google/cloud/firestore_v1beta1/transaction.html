@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud e926301 documentation</title>
+    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 00ea201 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -51,12 +51,9 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">google.gax.errors</span>
-<span class="kn">import</span> <span class="nn">google.gax.grpc</span>
-<span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">types</span>
 
@@ -186,7 +183,7 @@
         <span class="n">transaction_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
             <span class="n">options_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options_protobuf</span><span class="p">(</span><span class="n">retry_id</span><span class="p">),</span>
-            <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">transaction_response</span><span class="o">.</span><span class="n">transaction</span>
 
@@ -211,7 +208,7 @@
             <span class="c1"># NOTE: The response is just ``google.protobuf.Empty``.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
-                <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
 
@@ -231,9 +228,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_CANT_COMMIT</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">remap_gax_error_on_commit</span><span class="p">():</span>
-            <span class="n">commit_response</span> <span class="o">=</span> <span class="n">_commit_with_retry</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+        <span class="n">commit_response</span> <span class="o">=</span> <span class="n">_commit_with_retry</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span></div>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">commit_response</span><span class="o">.</span><span class="n">write_results</span><span class="p">)</span>
@@ -317,13 +313,12 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">_commit</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
                 <span class="k">raise</span>
 
-            <span class="n">status_code</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
-            <span class="c1"># If a read-write transaction returns ABORTED, retry.</span>
-            <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Aborted</span><span class="p">):</span>
+                <span class="c1"># If a read-write transaction returns ABORTED, retry.</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span>
@@ -383,10 +378,6 @@
 <span class="k">def</span> <span class="nf">_commit_with_retry</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Call ``Commit`` on the GAPIC client with retry / sleep.</span>
 
-<span class="sd">    This function is **distinct** from</span>
-<span class="sd">    :func:`~.firestore_v1beta1._helpers.remap_gax_error_on_commit` in</span>
-<span class="sd">    that it does not seek to re-wrap exceptions, it just seeks to retry.</span>
-
 <span class="sd">    Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level</span>
 <span class="sd">    retry is handled by the underlying GAPICd client, but in this case it</span>
 <span class="sd">    doesn&#39;t because ``Commit`` is not always idempotent. But here we know it</span>
@@ -407,8 +398,8 @@
 <span class="sd">        The protobuf response from ``Commit``.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ~google.gax.errors.GaxError: If a non-retryable exception</span>
-<span class="sd">            is encountered.</span>
+<span class="sd">        ~google.api_core.exceptions.GoogleAPICallError: If a non-retryable</span>
+<span class="sd">            exception is encountered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">current_sleep</span> <span class="o">=</span> <span class="n">_INITIAL_SLEEP</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -416,13 +407,10 @@
             <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
                 <span class="n">client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">,</span>
                 <span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
-                <span class="n">options</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">status_code</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">:</span>
-                <span class="k">pass</span>  <span class="c1"># Retry</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_rpc_metadata</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">:</span>
+            <span class="c1"># Retry</span>
+            <span class="k">pass</span>
 
         <span class="n">current_sleep</span> <span class="o">=</span> <span class="n">_sleep</span><span class="p">(</span><span class="n">current_sleep</span><span class="p">)</span>
 
