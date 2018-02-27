@@ -209,15 +209,8 @@ class _SnapshotBase(_SessionWrapper):
         else:
             return StreamedResultSet(iterator)
 
-    def partition_read(
-            self,
-            table,
-            columns,
-            keyset,
-            index='',
-            partition_size_bytes=None,
-            max_partitions=None,
-        ):
+    def partition_read(self, table, columns, keyset, index='',
+                       partition_size_bytes=None, max_partitions=None):
         """Perform a ``ParitionRead`` API request for rows in a table.
 
         :type table: str
@@ -280,14 +273,8 @@ class _SnapshotBase(_SessionWrapper):
 
         return [partition.partition_token for partition in response.partitions]
 
-    def partition_query(
-            self,
-            sql,
-            params=None,
-            param_types=None,
-            partition_size_bytes=None,
-            max_partitions=None,
-        ):
+    def partition_query(self, sql, params=None, param_types=None,
+                        partition_size_bytes=None, max_partitions=None):
         """Perform a ``ParitionQuery`` API request.
 
         :type sql: str

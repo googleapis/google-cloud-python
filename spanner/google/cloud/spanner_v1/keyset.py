@@ -114,7 +114,6 @@ class KeyRange(object):
         return self._to_dict() == other._to_dict()
 
 
-
 class KeySet(object):
     """Identify table rows via keys / ranges.
 

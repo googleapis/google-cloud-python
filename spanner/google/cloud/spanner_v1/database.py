@@ -436,13 +436,8 @@ class BatchTransaction(object):
     :param exact_staleness: Execute all reads at a timestamp that is
                             ``exact_staleness`` old.
     """
-    def __init__(
-        self, database,
-        read_timestamp=None,
-        min_read_timestamp=None,
-        max_staleness=None,
-        exact_staleness=None):
-
+    def __init__(self, database, read_timestamp=None, min_read_timestamp=None,
+                 max_staleness=None, exact_staleness=None):
         self._database = database
         self._session = None
         self._snapshot = None

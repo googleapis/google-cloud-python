@@ -1013,7 +1013,7 @@ class TestBatchTransaction(_BaseTest):
         database = self._make_database()
         batch_txn = self._make_one(database)
         txn = self._make_transaction(_transaction_id=self.TRANSACTION_ID)
-        session = batch_txn._session = self._make_session(
+        batch_txn._session = self._make_session(
             _session_id=self.SESSION_ID, _transaction=txn)
 
         expected = {
@@ -1301,7 +1301,6 @@ class TestBatchTransaction(_BaseTest):
         session.delete.assert_called_once_with()
 
     def test_process_w_invalid_batch(self):
-        keyset = self._make_keyset()
         token = b'TOKEN'
         batch = {
             'partition': token,

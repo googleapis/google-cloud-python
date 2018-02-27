@@ -373,8 +373,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(result_set.stats, stats_pb)
 
         (r_session, sql, transaction, params, param_types,
-            resume_token, query_mode, partition_token, metadata
-        ) = api._executed_streaming_sql_with
+         resume_token, query_mode, partition_token,
+         metadata) = api._executed_streaming_sql_with
 
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
@@ -417,7 +417,8 @@ class Test_SnapshotBase(unittest.TestCase):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
 
     def _partition_read_helper(
-            self, multi_use, first, size=None, max_partitions=None, index=None):
+            self, multi_use, first,
+            size=None, max_partitions=None, index=None):
         from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud.spanner_v1.types import Partition
         from google.cloud.spanner_v1.types import PartitionOptions
@@ -506,9 +507,6 @@ class Test_SnapshotBase(unittest.TestCase):
             multi_use=True, first=True, max_partitions=4)
 
     def test_partition_query_other_error(self):
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionSelector)
-
         database = _Database()
         database.spanner_api = self._make_spanner_api()
         database.spanner_api.partition_query.side_effect = RuntimeError()
@@ -983,11 +981,11 @@ class _FauxSpannerAPI(object):
 
     # pylint: disable=too-many-arguments
     def partition_query(self, session, sql,
-                       transaction=None,
-                       params=None,
-                       param_types=None,
-                       partition_options=None,
-                       metadata=None):
+                        transaction=None,
+                        params=None,
+                        param_types=None,
+                        partition_options=None,
+                        metadata=None):
         self._partition_query_with = (
             session, sql, transaction, params, param_types,
             partition_options, metadata)

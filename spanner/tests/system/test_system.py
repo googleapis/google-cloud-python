@@ -1272,13 +1272,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = self._set_up_table(row_count)
 
         expected = [[row[1], row[2]] for row in self._row_data(row_count)]
-        row = 5
-        keyset = [[expected[row][0], expected[row][1]]]
         union = []
 
-        batch_txn = self._db.batch_transaction()
-        for batch in batch_txn.generate_read_batches(
-            self.TABLE, columns, KeySet(all_=True), index='name'):
+        batch_txn = self._db.batch_transaction(read_timestamp=committed)
+        batches = batch_txn.generate_read_batches(
+            self.TABLE, columns, KeySet(all_=True), index='name')
+        for batch in batches:
             p_results_iter = batch_txn.process(batch)
             union.extend(list(p_results_iter))
 
@@ -1536,7 +1535,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         all_data_rows = list(self._row_data(row_count))
 
         union = []
-        batch_txn = self._db.batch_transaction()
+        batch_txn = self._db.batch_transaction(read_timestamp=committed)
         for batch in batch_txn.generate_query_batches(sql):
             p_results_iter = batch_txn.process(batch)
             union.extend(list(p_results_iter))
