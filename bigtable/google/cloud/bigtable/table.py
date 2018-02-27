@@ -16,6 +16,7 @@
 
 
 import functools
+import logging
 
 from grpc import StatusCode
 
@@ -43,6 +44,7 @@ from google.cloud.bigtable.row_data import YieldRowsData
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
+_LOGGER = logging.getLogger(__name__).setLevel(logging.INFO)
 
 
 class _BigtableRetryableError(Exception):
@@ -355,7 +357,8 @@ class Table(object):
             self._instance._client, self.name, start_key,
             end_key, filter_, limit, retry)
 
-        return retryable_read_rows()
+        for row in retryable_read_rows().read_rows():
+        	yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
@@ -545,9 +548,10 @@ class _RetryableReadRows(object):
 
     def __init__(self, client, table_name, start_key,
                  end_key, filter_, limit, retry):
+        self.generator = None
         self.client = client
         self.table_name = table_name
-        self.last_scanned_key = start_key
+        self.start_key = start_key
         self.end_key = end_key
         self.filter_ = filter_
         self.limit = limit
@@ -564,22 +568,24 @@ class _RetryableReadRows(object):
             return self._do_read_retryable_rows()
 
     def _do_read_retryable_rows(self):
+        if (self.generator and self.generator.last_scanned_row_key):
+            next_start_key = self.generator.last_scanned_row_key
+            _LOGGER.info('Start key is {} for retry read rows.'
+                              .format(next_start_key))
+        else:
+            next_start_key = self.start_key
+
         request_pb = _create_row_request(
             self.table_name,
-            start_key=self.last_scanned_key,
+            start_key=next_start_key,
             end_key=self.end_key,
             filter_=self.filter_,
             limit=self.limit,
             start_inclusive=False)
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
-        generator = YieldRowsData(response_iterator)
-        rows = []
-        for row in generator.read_rows():
-            self.last_scanned_key = row.row_key
-            rows.append(row)
-
-        return rows
+        self.generator = YieldRowsData(response_iterator)
+        return self.generator
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,

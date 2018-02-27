@@ -546,7 +546,10 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub(response_iterator)
 
-        rows = table.yield_rows(retry=False)
+        generator = table.yield_rows(retry=False)
+        rows = []
+        for row in generator:
+            rows.append(row)
         result = rows[0]
 
         self.assertEqual(result.row_key, self.ROW_KEY)
@@ -587,17 +590,19 @@ class TestTable(unittest.TestCase):
         )
 
         chunks = [chunk]
-
         response = _ReadRowsResponseV2(chunks)
         response_iterator = _MockCancellableIterator(response)
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
         client._data_stub.ReadRows.side_effect = [ErrorUnavailable(),
-                                                  ErrorDeadlineExceeded(),
-                                                  response_iterator]
+                                                   ErrorDeadlineExceeded(),
+                                                   response_iterator]
 
-        rows = table.yield_rows(start_key=self.ROW_KEY)
+        generator = table.yield_rows()
+        rows = []
+        for row in generator:
+            rows.append(row)
         result = rows[0]
 
         self.assertEqual(result.row_key, self.ROW_KEY)

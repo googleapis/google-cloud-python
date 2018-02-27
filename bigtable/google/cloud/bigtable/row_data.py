@@ -251,8 +251,6 @@ class YieldRowsData(object):
         self._response_iterator = response_iterator
         # Counter for responses pulled from iterator
         self._counter = 0
-        # Maybe cached from previous response
-        self._last_scanned_row_key = None
         # In-progress row, unset until first response, after commit/reset
         self._row = None
         # Last complete row, unset until first commit
@@ -261,6 +259,8 @@ class YieldRowsData(object):
         self._cell = None
         # Last complete cell, unset until first completion, after new row
         self._previous_cell = None
+        # May be cached from previous response
+        self.last_scanned_row_key = None
 
     @property
     def state(self):
@@ -270,7 +270,7 @@ class YieldRowsData(object):
         :returns:  name of state corresponding to current row / chunk
                    processing.
         """
-        if self._last_scanned_row_key is None:
+        if self.last_scanned_row_key is None:
             return self.START
         if self._row is None:
             assert self._cell is None
@@ -301,11 +301,12 @@ class YieldRowsData(object):
 
             self._counter += 1
 
-            if self._last_scanned_row_key is None:  # first response
+            if self.last_scanned_row_key is None:  # first response
                 if response.last_scanned_row_key:
                     raise InvalidReadRowsResponse()
 
-            self._last_scanned_row_key = response.last_scanned_row_key
+            if response.last_scanned_row_key:
+                self.last_scanned_row_key = response.last_scanned_row_key
 
             row = self._row
             cell = self._cell
@@ -343,6 +344,7 @@ class YieldRowsData(object):
 
                     yield self._row
 
+                    self.last_scanned_row_key = self._row.row_key
                     self._row, self._previous_row = None, self._row
                     self._previous_cell = None
                     row = cell = None

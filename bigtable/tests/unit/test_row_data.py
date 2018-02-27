@@ -256,7 +256,7 @@ class TestYieldRowsData(unittest.TestCase):
 
     def test_state_new_row_w_row(self):
         yrd = self._make_one([])
-        yrd._last_scanned_row_key = ''
+        yrd.last_scanned_row_key = ''
         yrd._row = object()
         self.assertEqual(yrd.state, yrd.NEW_ROW)
 
@@ -370,9 +370,9 @@ class TestYieldRowsData(unittest.TestCase):
             chunks=(), last_scanned_row_key='AFTER')
         iterator = _MockCancellableIterator(response)
         yrd = self._make_one(iterator)
-        yrd._last_scanned_row_key = 'BEFORE'
+        yrd.last_scanned_row_key = 'BEFORE'
         self._consume_all(yrd)
-        self.assertEqual(yrd._last_scanned_row_key, 'AFTER')
+        self.assertEqual(yrd.last_scanned_row_key, 'AFTER')
 
     def test_invalid_empty_chunk(self):
         from google.cloud.bigtable.row_data import InvalidChunk
