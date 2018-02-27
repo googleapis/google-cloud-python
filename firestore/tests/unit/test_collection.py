@@ -24,7 +24,8 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         return CollectionReference
 

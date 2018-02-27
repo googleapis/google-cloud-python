@@ -18,6 +18,7 @@
 import collections
 import contextlib
 import datetime
+import re
 import sys
 
 from google.protobuf import struct_pb2
@@ -64,6 +65,7 @@ _GRPC_ERROR_MAPPING = {
     grpc.StatusCode.ALREADY_EXISTS: exceptions.Conflict,
     grpc.StatusCode.NOT_FOUND: exceptions.NotFound,
 }
+_UNESCAPED_FIELD_NAME_RE = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
 
 
 class GeoPoint(object):
@@ -834,6 +836,38 @@ def pbs_for_set(document_path, document_data, option):
     return write_pbs
 
 
+def canonicalize_field_paths(field_paths):
+    """Converts simple field path with integer beginnings to quoted field path
+
+    Args:
+        field_paths (Sequence[str]): A list of field paths
+
+    Returns:
+        Sequence[str]:
+            The same list of field paths except non-simple field names
+            in the `.` delimited field path have been converted
+            into quoted unicode field paths. Simple field paths match
+            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
+            more information.
+
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
+    """
+    canonical_strings = []
+    for field_path in field_paths:
+        escaped_names = []
+        field_names = field_path.split('.')
+        for field_name in field_names:
+            if re.match(_UNESCAPED_FIELD_NAME_RE, field_name):
+                escaped_name = field_name
+            else:
+                escaped_name = u"`{}`".format(
+                    field_name.replace('\\', '\\\\').replace('`', '``'))
+            escaped_names.append(escaped_name)
+        new_field_path = '.'.join(escaped_names)
+        canonical_strings.append(new_field_path)
+    return canonical_strings
+
+
 def pbs_for_update(client, document_path, field_updates, option):
     """Make ``Write`` protobufs for ``update()`` methods.
 
@@ -857,6 +891,7 @@ def pbs_for_update(client, document_path, field_updates, option):
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
+    field_paths = canonicalize_field_paths(field_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(

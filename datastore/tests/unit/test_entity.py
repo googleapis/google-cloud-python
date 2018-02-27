@@ -200,7 +200,6 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.id,  _ID)
 
     def test_id_none(self):
-        from google.cloud.datastore.key import Key
 
         entity = self._make_one(key=None)
         self.assertEqual(entity.id,  None)

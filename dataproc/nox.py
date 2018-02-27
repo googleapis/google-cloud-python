@@ -42,7 +42,7 @@ def default(session):
         'py.test',
         '--quiet',
         '--cov=google.cloud.dataproc',
-        '--cov=google.cloud.dataproc_v1',        
+        '--cov=google.cloud.dataproc_v1',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',

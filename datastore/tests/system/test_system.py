@@ -22,7 +22,6 @@ import six
 from google.cloud._helpers import UTC
 from google.cloud import datastore
 from google.cloud.datastore.helpers import GeoPoint
-from google.cloud.datastore_v1 import types
 from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.exceptions import Conflict
 
@@ -366,7 +365,7 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_query_paginate_simple(self):
 
-        # See issue #4264 
+        # See issue #4264
         page_query = self.CLIENT.query(kind='uuid_key')
         iterator = page_query.fetch()
 

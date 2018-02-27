@@ -56,7 +56,7 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             batch._add_write_pbs([mock.sentinel.write])
 
-        self.assertEqual(exc_info.exception.args, ( _WRITE_READ_ONLY,))
+        self.assertEqual(exc_info.exception.args, (_WRITE_READ_ONLY,))
         self.assertEqual(batch._write_pbs, [])
 
     def test__add_write_pbs(self):
@@ -75,7 +75,8 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(options_pb, expected_pb)
 
     def test__options_protobuf_read_only_retry(self):
-        from google.cloud.firestore_v1beta1.transaction import _CANT_RETRY_READ_ONLY
+        from google.cloud.firestore_v1beta1.transaction import (
+            _CANT_RETRY_READ_ONLY)
 
         transaction = self._make_one(mock.sentinel.client, read_only=True)
         retry_id = b'illuminate'
@@ -719,7 +720,8 @@ class Test__commit_with_retry(unittest.TestCase):
 
     @staticmethod
     def _call_fut(client, write_pbs, transaction_id):
-        from google.cloud.firestore_v1beta1.transaction import _commit_with_retry
+        from google.cloud.firestore_v1beta1.transaction import (
+            _commit_with_retry)
 
         return _commit_with_retry(client, write_pbs, transaction_id)
 

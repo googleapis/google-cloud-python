@@ -19,14 +19,16 @@ import mock
 
 from google.api_core import grpc_helpers
 
+
 class _Base(object):
     project = 'PROJECT'
 
     def _make_one(self, gapic_client=None, handwritten_client=None):
-        from google.cloud.trace_v1.gapic import trace_service_client        
+        from google.cloud.trace_v1.gapic import trace_service_client
         channel = grpc_helpers.ChannelStub()
         if gapic_client is None:
-            gapic_client = trace_service_client.TraceServiceClient(channel=channel)
+            gapic_client = trace_service_client.TraceServiceClient(
+                channel=channel)
         if handwritten_client is None:
             handwritten_client = mock.Mock()
         api = self._get_target_class()(gapic_client, handwritten_client)
@@ -43,7 +45,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_constructor(self):
         from google.cloud.trace_v1.gapic import trace_service_client
-        channel = grpc_helpers.ChannelStub()        
+        channel = grpc_helpers.ChannelStub()
         gapic_client = trace_service_client.TraceServiceClient(channel=channel)
         _, api = self._make_one(gapic_client, mock.sentinel.client)
         self.assertIs(api._gapic_api, gapic_client)
@@ -165,7 +167,6 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         return trace_pb
 
     def test_list_traces(self):
-        from google.api_core.page_iterator import GRPCIterator
         from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud._helpers import UTC
         from google.cloud.trace_v1.gapic import trace_service_client
@@ -198,10 +199,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             labels)
 
         gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
-        gapic_api.list_traces = mock.create_autospec(gapic_api.list_traces)        
+        gapic_api.list_traces = mock.create_autospec(gapic_api.list_traces)
         channel, api = self._make_one()
 
-        channel.ListTraces.response = trace_pb2.ListTracesResponse(traces=[trace_pb[0]])
+        channel.ListTraces.response = trace_pb2.ListTracesResponse(
+            traces=[trace_pb[0]])
         iterator = api.list_traces(
             project_id=self.project,
             view=view_type,
@@ -238,8 +240,12 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(request.project_id, self.project)
         self.assertEqual(request.view, view_type)
         self.assertEqual(request.page_size, size)
-        self.assertEqual(request.start_time.ToDatetime(), datetime.datetime(1970, 1, 1, 0, 0))
-        self.assertEqual(request.end_time.ToDatetime(), datetime.datetime(1970, 1, 1, 0, 0))
+        self.assertEqual(
+            request.start_time.ToDatetime(),
+            datetime.datetime(1970, 1, 1, 0, 0))
+        self.assertEqual(
+            request.end_time.ToDatetime(),
+            datetime.datetime(1970, 1, 1, 0, 0))
         self.assertEqual(request.filter, '')
         self.assertEqual(request.order_by, '')
 
@@ -317,7 +323,6 @@ class Test_make_trace_api(unittest.TestCase):
 
     def test_it(self):
         from google.cloud.trace.v1._gapic import _TraceAPI
-        from google.cloud._http import DEFAULT_USER_AGENT
 
         credentials = object()
         client = mock.Mock(_credentials=credentials, spec=['_credentials'])
@@ -332,7 +337,8 @@ class Test_make_trace_api(unittest.TestCase):
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace.v1._gapic.trace_service_client.TraceServiceClient',
+            'google.cloud.trace.v1._gapic.trace_service_client.'
+            'TraceServiceClient',
             new=generated_api)
 
         with patch_api:

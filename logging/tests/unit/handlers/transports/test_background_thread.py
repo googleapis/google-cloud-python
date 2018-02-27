@@ -380,7 +380,8 @@ class _Batch(object):
         self.commit_called = False
         self.commit_count = None
 
-    def log_struct(self, info, severity=logging.INFO, resource=None, labels=None):
+    def log_struct(
+            self, info, severity=logging.INFO, resource=None, labels=None):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         assert resource is None

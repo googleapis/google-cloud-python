@@ -98,7 +98,8 @@ class TestClient(unittest.TestCase):
         ])
 
     def test_collection_factory(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'users'
         client = self._make_default_one()
@@ -109,7 +110,8 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(collection, CollectionReference)
 
     def test_collection_factory_nested(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         client = self._make_default_one()
         parts = ('users', 'alovelace', 'beep')

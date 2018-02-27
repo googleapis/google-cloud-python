@@ -642,7 +642,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_callable_no_retry_strategy(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
 
         # Setup:
@@ -685,7 +684,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
 
@@ -735,7 +733,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
 
@@ -811,8 +808,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2])
         statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
@@ -853,8 +850,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2, row_3])
 
         with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows()
@@ -902,8 +899,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -954,8 +952,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -974,7 +973,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_second_try_no_retryable(self):
         from google.cloud.bigtable.row import DirectRow
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 2 rows.
@@ -993,10 +991,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2])
         worker.responses_statuses = self._make_responses_statuses(
-                [self.SUCCESS, self.NON_RETRYABLE])
+            [self.SUCCESS, self.NON_RETRYABLE])
 
         statuses = worker._do_mutate_retryable_rows()
 
@@ -1023,8 +1021,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):
             worker._do_mutate_retryable_rows()
 

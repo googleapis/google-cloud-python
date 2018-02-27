@@ -17,8 +17,6 @@ import unittest
 
 import mock
 
-from google.cloud.spanner_v1 import __version__
-
 
 def _make_credentials():  # pragma: NO COVER
     import google.auth.credentials

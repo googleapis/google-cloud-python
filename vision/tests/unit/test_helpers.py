@@ -24,7 +24,6 @@ from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1 import types
 
 
-
 class TestSingleImageHelper(unittest.TestCase):
     def setUp(self):
         credentials = mock.Mock(spec=Credentials)

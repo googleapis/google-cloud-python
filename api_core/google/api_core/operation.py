@@ -61,12 +61,16 @@ class Operation(polling.PollingFuture):
             result.
         metadata_type (func:`type`): The protobuf type for the operation's
             metadata.
+        retry (google.api_core.retry.Retry): The retry configuration used
+            when polling. This can be used to control how often :meth:`done`
+            is polled. Regardless of the retry's ``deadline``, it will be
+            overridden by the ``timeout`` argument to :meth:`result`.
     """
 
     def __init__(
             self, operation, refresh, cancel,
-            result_type, metadata_type=None):
-        super(Operation, self).__init__()
+            result_type, metadata_type=None, retry=polling.DEFAULT_RETRY):
+        super(Operation, self).__init__(retry=retry)
         self._operation = operation
         self._refresh = refresh
         self._cancel = cancel

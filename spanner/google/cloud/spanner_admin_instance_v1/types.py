@@ -18,7 +18,8 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
-from google.cloud.spanner_admin_instance_v1.proto import spanner_instance_admin_pb2
+from google.cloud.spanner_admin_instance_v1.proto import (
+    spanner_instance_admin_pb2)
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.iam.v1.logging import audit_data_pb2

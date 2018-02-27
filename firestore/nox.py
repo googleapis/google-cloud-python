@@ -99,22 +99,15 @@ def system(session, py):
 
 @nox.session
 def lint(session):
-    """Run flake8.
+    """Run linters.
 
-    Returns a failure if flake8 finds linting errors or sufficiently
+    Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
+    session.install('flake8', *LOCAL_DEPS)
     session.install('.')
-    session.run('flake8', os.path.join('google', 'cloud', 'firestore'))
-    session.run(
-        'gcp-devrel-py-tools', 'run-pylint',
-        '--config', 'pylint.config.py',
-        '--library-filesets', 'google',
-        '--test-filesets', 'tests',
-        # Temporarily allow this to fail.
-        success_codes=range(0, 100))
+    session.run('flake8', 'google', 'tests')
 
 
 @nox.session
