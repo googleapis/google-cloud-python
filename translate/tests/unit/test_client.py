@@ -137,12 +137,12 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/detect')
-        query_params = [
-            ('q', value.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+        expected_data = {
+            'q': [value],
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_detect_language_single_value(self):
         client = self._make_one(_http=object())
@@ -166,12 +166,12 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/detect')
-        query_params = [
-            ('q', value.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+        expected_data = {
+            'q': [value],
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_detect_language_multiple_values(self):
         client = self._make_one(_http=object())
@@ -205,13 +205,12 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/detect')
-        query_params = [
-            ('q', value1.encode('utf-8')),
-            ('q', value2.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+        expected_data = {
+            'q': [value1, value2],
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_detect_language_multiple_results(self):
         client = self._make_one(_http=object())
@@ -251,11 +250,15 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
-        query_params = [
-            ('target', 'en'),
-            ('q', value.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+        expected_data = {
+            'target': 'en',
+            'q': [value],
+            'cid': (),
+            'source': None,
+            'model': None,
+            'format': None,
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_translate_defaults(self):
         client = self._make_one(_http=object())
@@ -280,11 +283,16 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
-        query_params = [
-            ('target', 'en'),
-            ('q', value.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+
+        expected_data = {
+            'target': 'en',
+            'q': [value],
+            'cid': (),
+            'source': None,
+            'model': None,
+            'format': None,
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_translate_multiple(self):
         client = self._make_one(_http=object())
@@ -315,12 +323,16 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
-        query_params = [
-            ('target', 'en'),
-            ('q', value1.encode('utf-8')),
-            ('q', value2.encode('utf-8')),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+
+        expected_data = {
+            'target': 'en',
+            'q': [value1, value2],
+            'cid': (),
+            'source': None,
+            'model': None,
+            'format': None,
+        }
+        self.assertEqual(req['data'], expected_data)
 
     def test_translate_explicit(self):
         client = self._make_one(_http=object())
@@ -352,15 +364,16 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
-        query_params = [
-            ('target', target_language),
-            ('q', value.encode('utf-8')),
-            ('cid', cid),
-            ('format', format_),
-            ('source', source_language),
-            ('model', model),
-        ]
-        self.assertEqual(req['query_params'], query_params)
+
+        expected_data = {
+            'target': target_language,
+            'q': [value],
+            'cid': [cid],
+            'source': source_language,
+            'model': model,
+            'format': format_,
+        }
+        self.assertEqual(req['data'], expected_data)
 
 
 class _Connection(object):
