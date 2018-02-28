@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ACL &#8212; google-cloud 00ea201 documentation</title>
+    <title>ACL &#8212; google-cloud 71d4adb documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -98,7 +98,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'private', 'bucketOwnerFullControl', 'publicRead', 'publicReadWrite', 'authenticatedRead', 'projectPrivate', 'bucketOwnerRead'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'private', 'authenticatedRead', 'bucketOwnerRead', 'publicReadWrite', 'publicRead', 'bucketOwnerFullControl', 'projectPrivate'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/lists#predefined-acl">https://cloud.google.com/storage/docs/access-control/lists#predefined-acl</a></p>
 </dd></dl>
@@ -406,6 +406,34 @@ to the <code class="docutils literal notranslate"><span class="pre">client</span
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An Entity corresponding to this user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.storage.acl.ACL.validate_predefined">
+<em class="property">classmethod </em><code class="descname">validate_predefined</code><span class="sig-paren">(</span><em>predefined</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/acl.html#ACL.validate_predefined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.validate_predefined" title="Permalink to this definition">#</a></dt>
+<dd><p>Ensures predefined is in list of predefined json values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of a predefined acl</li>
+<li><strong>predefined</strong> – validated JSON name of predefined acl</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">exc:</th><td class="field-body"><cite>ValueError</cite>: If predefined is not a valid acl</td>
+</tr>
+</tbody>
+</table>
+</td>
 </tr>
 </tbody>
 </table>

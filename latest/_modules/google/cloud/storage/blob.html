@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 00ea201 documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 71d4adb documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -88,6 +88,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._signing</span> <span class="k">import</span> <span class="n">generate_signed_url</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">ACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">ObjectACL</span>
 
 
@@ -666,7 +667,7 @@
         <span class="k">return</span> <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span>
 
     <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
 
 <span class="sd">        Assumes ``chunk_size`` is :data:`None` on the current blob.</span>
@@ -697,6 +698,9 @@
 <span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
 <span class="sd">                            argument will be removed in a future release.)</span>
 
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
+
 <span class="sd">        :rtype: :class:`~requests.Response`</span>
 <span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the multipart</span>
 <span class="sd">                  upload request.</span>
@@ -721,6 +725,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;userProject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">predefined_acl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;predefinedAcl&#39;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
@@ -735,8 +741,9 @@
         <span class="k">return</span> <span class="n">response</span>
 
     <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span>
+                                   <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -760,6 +767,9 @@
 <span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
 <span class="sd">                     from ``stream``). If not provided, the upload will be</span>
 <span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
+
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
 
 <span class="sd">        :type num_retries: int</span>
 <span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
@@ -799,6 +809,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;userProject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">predefined_acl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name_value_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;predefinedAcl&#39;</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">))</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
@@ -814,7 +826,7 @@
         <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
 
     <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
 
 <span class="sd">        Assumes ``chunk_size`` is not :data:`None` on the current blob.</span>
@@ -845,19 +857,24 @@
 <span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
 <span class="sd">                            argument will be removed in a future release.)</span>
 
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
+
 <span class="sd">        :rtype: :class:`~requests.Response`</span>
 <span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the final chunk</span>
 <span class="sd">                  is uploaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span>
+            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
 
 <span class="sd">        If the current blob has a ``chunk_size`` set, then a resumable upload</span>
@@ -890,6 +907,9 @@
 <span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
 <span class="sd">                            argument will be removed in a future release.)</span>
 
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
+
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The parsed JSON from the &quot;200 OK&quot; response. This will be the</span>
 <span class="sd">                  **only** response in the multipart case and it will be the</span>
@@ -897,15 +917,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+                <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span>
+                <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                         <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -963,6 +986,9 @@
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
+
 <span class="sd">        :raises: :class:`~google.cloud.exceptions.GoogleCloudError`</span>
 <span class="sd">                 if the upload response returns an error status.</span>
 
@@ -974,14 +1000,18 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_NUM_RETRIES_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
         <span class="n">_maybe_rewind</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="n">rewind</span><span class="p">)</span>
+        <span class="n">predefined_acl</span> <span class="o">=</span> <span class="n">ACL</span><span class="o">.</span><span class="n">validate_predefined</span><span class="p">(</span><span class="n">predefined_acl</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">created_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+                <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span></div>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -1015,6 +1045,9 @@
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_content_type</span><span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
 
@@ -1022,9 +1055,10 @@
             <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
                 <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span></div>
-                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">)</span>
+                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -1053,12 +1087,16 @@
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+
+<span class="sd">        :type predefined_acl: str</span>
+<span class="sd">        :param predefined_acl: (Optional) predefined access control list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
-            <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span></div>
-            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+            <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span></div>
+            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -1143,6 +1181,7 @@
             <span class="c1"># matters when **sending** bytes to an upload.</span>
             <span class="n">upload</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
                 <span class="n">client</span><span class="p">,</span> <span class="n">dummy_stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">extra_headers</span><span class="o">=</span><span class="n">extra_headers</span><span class="p">,</span>
                 <span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">)</span>
 
