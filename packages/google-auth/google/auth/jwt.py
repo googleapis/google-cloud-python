@@ -21,7 +21,7 @@ See `rfc7519`_ for more details on JWTs.
 
 To encode a JWT use :func:`encode`::
 
-    from google.auth import crypto
+    from google.auth import crypt
     from google.auth import jwt
 
     signer = crypt.Signer(private_key)
