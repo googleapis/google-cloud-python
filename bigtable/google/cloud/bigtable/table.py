@@ -44,7 +44,7 @@ from google.cloud.bigtable.row_data import YieldRowsData
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
-_LOGGER = logging.getLogger(__name__).setLevel(logging.INFO)
+logging.getLogger().setLevel(logging.INFO)
 
 
 class _BigtableRetryableError(Exception):
@@ -357,7 +357,7 @@ class Table(object):
             self._instance._client, self.name, start_key,
             end_key, filter_, limit, retry)
 
-        for row in retryable_read_rows().read_rows():
+        for row in retryable_read_rows():
             yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
@@ -570,7 +570,7 @@ class _RetryableReadRows(object):
     def _do_read_retryable_rows(self):
         if (self.generator and self.generator.last_scanned_row_key):
             next_start_key = self.generator.last_scanned_row_key
-            _LOGGER.info('Start key is {} for retry read rows.'
+            logging.info('Start key is {} for retry read rows.'
                          .format(next_start_key))
         else:
             next_start_key = self.start_key
@@ -585,7 +585,8 @@ class _RetryableReadRows(object):
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
         self.generator = YieldRowsData(response_iterator)
-        return self.generator
+        for row in self.generator.read_rows():
+            yield row
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
