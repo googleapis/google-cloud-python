@@ -410,18 +410,18 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_upload_blob_acl(self):
         control = self.bucket.blob('logo')
-        control_data = self.FILES['logo']        
+        control_data = self.FILES['logo']
 
         blob = self.bucket.blob('SmallFile')
         file_data = self.FILES['simple']
 
         try:
-            control.upload_from_filename(control_data['path'])            
+            control.upload_from_filename(control_data['path'])
             blob.upload_from_filename(file_data['path'],
                                       predefined_acl='publicRead')
         finally:
             self.case_blobs_to_delete.append(blob)
-            self.case_blobs_to_delete.append(control)            
+            self.case_blobs_to_delete.append(control)
 
         control_acl = control.acl
         self.assertNotIn('READER', control_acl.all().get_roles())
