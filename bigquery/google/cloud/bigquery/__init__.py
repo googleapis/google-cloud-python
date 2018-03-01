@@ -95,3 +95,11 @@ __all__ = [
     'GoogleSheetsOptions',
     'DEFAULT_RETRY',
 ]
+
+
+def load_ipython_extension(ipython):
+    """Called by IPython when this module is loaded as an IPython extension"""
+    from google.cloud.bigquery.magics import _cell_magic
+
+    ipython.register_magic_function(
+        _cell_magic, magic_kind='cell', magic_name='bigquery')
