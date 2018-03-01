@@ -108,7 +108,7 @@ try:
     from IPython.display import clear_output
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
-    raise Exception('This module can only be loaded in IPython.')
+    raise ImportError('This module can only be loaded in IPython.')
 
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.job import QueryJobConfig
