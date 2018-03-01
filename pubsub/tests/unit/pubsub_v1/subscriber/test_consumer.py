@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import threading
-import types as base_types
 
 from google.auth import credentials
 import mock
@@ -24,7 +23,6 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
 from google.cloud.pubsub_v1.subscriber import _helper_threads
-from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def test_send_request():
@@ -81,7 +79,7 @@ def test_blocking_consume_when_exiting(_LOGGER):
     # Make sure method cleanly exits.
     assert consumer._blocking_consume(None) is None
 
-    _LOGGER.debug.assert_called_once_with('Event signalled consumer exit.')
+    _LOGGER.debug.assert_called_once_with('Event signaled consumer exit.')
 
 
 class OnException(object):

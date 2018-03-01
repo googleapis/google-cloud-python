@@ -18,6 +18,7 @@
 from __future__ import print_function
 
 import os
+import uuid
 
 import six
 
@@ -103,5 +104,27 @@ def add_characters(client=None):
                                                    character['family']))
 
 
+def add_uid_keys(client):
+    if client is None:
+        # Get a client that uses the test dataset.
+        client = datastore.Client()
+
+    num_batches = 2
+    batch_size = 500
+
+    keys = []
+    for batch_num in range(num_batches):
+        with client.batch() as batch:
+            for seq_no in range(batch_size):
+                uid = str(uuid.uuid4())
+                key = client.key('uuid_key', uid)
+                keys.append(key)
+                entity = datastore.Entity(key=key)
+                entity['batch_num'] = batch_num
+                entity['seq_no'] = seq_no
+                batch.put(entity)
+
+
 if __name__ == '__main__':
     add_characters()
+    add_uid_keys()

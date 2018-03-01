@@ -14,12 +14,12 @@
 
 from __future__ import absolute_import
 
+import collections
 from concurrent import futures
 import logging
 import sys
 import threading
 
-import grpc
 from six.moves import queue as queue_mod
 
 from google.cloud.pubsub_v1 import types
@@ -31,19 +31,13 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
-
-
-def _callback_completed(future):
-    """Simple callback that just logs a future's result.
-
-    Used on completion of processing a message received by a
-    subscriber.
-
-    Args:
-        future (concurrent.futures.Future): A future returned
-            from :meth:`~concurrent.futures.Executor.submit`.
-    """
-    _LOGGER.debug('Result: %s', future.result())
+_VALID_ACTIONS = frozenset([
+    'ack',
+    'drop',
+    'lease',
+    'modify_ack_deadline',
+    'nack',
+])
 
 
 def _do_nothing_callback(message):
@@ -199,6 +193,8 @@ class Policy(base.BasePolicy):
         dispatch_worker = _helper_threads.QueueCallbackWorker(
             self._request_queue,
             self.dispatch_callback,
+            max_items=self.flow_control.max_request_batch_size,
+            max_latency=self.flow_control.max_request_batch_latency
         )
         # Create and start the helper thread.
         thread = threading.Thread(
@@ -275,7 +271,7 @@ class Policy(base.BasePolicy):
         # Return the future.
         return self._future
 
-    def dispatch_callback(self, action, kwargs):
+    def dispatch_callback(self, items):
         """Map the callback request to the appropriate gRPC request.
 
         Args:
@@ -287,21 +283,26 @@ class Policy(base.BasePolicy):
             ValueError: If ``action`` isn't one of the expected actions
                 "ack", "drop", "lease", "modify_ack_deadline" or "nack".
         """
-        if action == 'ack':
-            self.ack(**kwargs)
-        elif action == 'drop':
-            self.drop(**kwargs)
-        elif action == 'lease':
-            self.lease(**kwargs)
-        elif action == 'modify_ack_deadline':
-            self.modify_ack_deadline(**kwargs)
-        elif action == 'nack':
-            self.nack(**kwargs)
-        else:
-            raise ValueError(
-                'Unexpected action', action,
-                'Must be one of "ack", "drop", "lease", '
-                '"modify_ack_deadline" or "nack".')
+        batched_commands = collections.defaultdict(list)
+
+        for item in items:
+            batched_commands[item.__class__].append(item)
+
+        _LOGGER.debug('Handling %d batched requests', len(items))
+
+        if batched_commands[base.LeaseRequest]:
+            self.lease(batched_commands.pop(base.LeaseRequest))
+        if batched_commands[base.ModAckRequest]:
+            self.modify_ack_deadline(
+                batched_commands.pop(base.ModAckRequest))
+        # Note: Drop and ack *must* be after lease. It's possible to get both
+        # the lease the and ack/drop request in the same batch.
+        if batched_commands[base.AckRequest]:
+            self.ack(batched_commands.pop(base.AckRequest))
+        if batched_commands[base.NackRequest]:
+            self.nack(batched_commands.pop(base.NackRequest))
+        if batched_commands[base.DropRequest]:
+            self.drop(batched_commands.pop(base.DropRequest))
 
     def on_exception(self, exception):
         """Handle the exception.
@@ -328,12 +329,23 @@ class Policy(base.BasePolicy):
     def on_response(self, response):
         """Process all received Pub/Sub messages.
 
-        For each message, schedule a callback with the executor.
+        For each message, send a modified acknowledgement request to the
+        server. This prevents expiration of the message due to buffering by
+        gRPC or proxy/firewall. This makes the server and client expiration
+        timer closer to each other thus preventing the message being
+        redelivered multiple times.
+
+        After the messages have all had their ack deadline updated, execute
+        the callback for each message using the executor.
         """
+        items = [
+            base.ModAckRequest(message.ack_id, self.histogram.percentile(99))
+            for message in response.received_messages
+        ]
+        self.modify_ack_deadline(items)
         for msg in response.received_messages:
             _LOGGER.debug(
-                'Using %s to process new message received:\n%r',
-                self._callback, msg)
+                'Using %s to process message with ack_id %s.',
+                self._callback, msg.ack_id)
             message = Message(msg.message, msg.ack_id, self._request_queue)
-            future = self._executor.submit(self._callback, message)
-            future.add_done_callback(_callback_completed)
+            self._executor.submit(self._callback, message)

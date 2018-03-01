@@ -120,7 +120,7 @@ class _TraceAPI(object):
             end_time=end_time,
             filter_=filter_,
             order_by=order_by)
-        page_iter._item_to_value = _item_to_mapping
+        page_iter.item_to_value = _item_to_mapping
         page_iter.next_page_token = page_token
         return page_iter
 

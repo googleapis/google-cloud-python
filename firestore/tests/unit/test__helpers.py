@@ -361,7 +361,8 @@ class TestFieldPathHelper(unittest.TestCase):
         klass = self._get_target_class()
 
         update_values, field_paths = klass.to_field_paths(field_updates)
-        self.assertEqual(update_values, {'a': {'b': field_updates[field_path]}})
+        self.assertEqual(
+            update_values, {'a': {'b': field_updates[field_path]}})
         self.assertEqual(field_paths, [field_path])
 
 
@@ -492,7 +493,8 @@ class Test_encode_value(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_array(self):
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
 
         result = self._call_fut([
             99,
@@ -540,7 +542,8 @@ class Test_encode_dict(unittest.TestCase):
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
 
         dt_seconds = 1497397225
@@ -675,7 +678,7 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(double_value=float_val)
         self.assertEqual(self._call_fut(value), float_val)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_datetime(self):
         from google.protobuf import timestamp_pb2
@@ -815,12 +818,13 @@ class Test_decode_dict(unittest.TestCase):
 
         return decode_dict(value_fields, client)
 
-    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+    @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import ArrayValue
+        from google.cloud.firestore_v1beta1.proto.document_pb2 import (
+            ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
         from google.cloud._helpers import UTC
 
@@ -1182,6 +1186,20 @@ class Test_pbs_for_set(unittest.TestCase):
         self._helper(do_transform=True)
 
 
+class Test_canonicalize_field_paths(unittest.TestCase):
+
+    def test_canonicalize_field_paths(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+        field_paths = ['0abc.deq', 'abc.654', '321.0deq._321',
+                       u'0abc.deq', u'abc.654', u'321.0deq._321']
+        convert = _helpers.canonicalize_field_paths(field_paths)
+        self.assertListEqual(
+            convert,
+            ['`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321',
+             '`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321']
+        )
+
+
 class Test_pbs_for_update(unittest.TestCase):
 
     @staticmethod
@@ -1249,7 +1267,6 @@ class Test_pbs_for_update(unittest.TestCase):
         self._helper(current_document=precondition)
 
     def test_with_option(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
 
         option = CreateIfMissingOption(True)
@@ -1342,7 +1359,6 @@ class Test_get_transaction_id(unittest.TestCase):
             self._call_fut(transaction)
 
     def test_after_writes_allowed(self):
-        from google.cloud.firestore_v1beta1._helpers import ReadAfterWriteError
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
         transaction = Transaction(mock.sentinel.client)
@@ -1364,103 +1380,22 @@ class Test_get_transaction_id(unittest.TestCase):
         self.assertEqual(self._call_fut(transaction), txn_id)
 
 
-class Test_remap_gax_error_on_commit(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut():
-        from google.cloud.firestore_v1beta1._helpers import (
-            remap_gax_error_on_commit)
-
-        return remap_gax_error_on_commit()
-
-    @staticmethod
-    def _fake_method(exc, result=None):
-        if exc is None:
-            return result
-        else:
-            raise exc
-
-    @staticmethod
-    def _make_rendezvous(status_code, details):
-        from grpc import _channel
-        from google.cloud import exceptions
-
-        exc_state = _channel._RPCState((), None, None, status_code, details)
-        return exceptions.GrpcRendezvous(exc_state, None, None, None)
-
-    def _make_gax_error(self, err_name, details):
-        from google.gax import errors
-        import grpc
-
-        # First, create low-level GrpcRendezvous exception.
-        status_code = getattr(grpc.StatusCode, err_name)
-        cause = self._make_rendezvous(status_code, details)
-        # Then put it into a high-level GaxError.
-        return errors.GaxError('RPC failed', cause=cause)
-
-    def test_success(self):
-        expected = object()
-        with self._call_fut():
-            result = self._fake_method(None, expected)
-        self.assertIs(result, expected)
-
-    def test_non_grpc_err(self):
-        exc = RuntimeError('Not a gRPC error')
-        with self.assertRaises(RuntimeError):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_already_exists(self):
-        from google.cloud import exceptions
-
-        exc = self._make_gax_error(
-            'ALREADY_EXISTS', 'entity already exists: app: ...')
-        with self.assertRaises(exceptions.Conflict):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_not_found(self):
-        from google.cloud import exceptions
-
-        exc = self._make_gax_error(
-            'NOT_FOUND', 'no entity to update: app: ...')
-        with self.assertRaises(exceptions.NotFound):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_gax_error_not_mapped(self):
-        from google.gax import errors
-
-        exc = self._make_gax_error(
-            'INVALID_ARGUMENT', 'transaction closed')
-        with self.assertRaises(errors.GaxError) as exc_info:
-            with self._call_fut():
-                self._fake_method(exc)
-
-        self.assertIs(exc_info.exception, exc)
-
-
-class Test_options_with_prefix(unittest.TestCase):
+class Test_metadata_with_prefix(unittest.TestCase):
 
     @staticmethod
     def _call_fut(database_string):
-        from google.cloud.firestore_v1beta1._helpers import options_with_prefix
+        from google.cloud.firestore_v1beta1._helpers import (
+            metadata_with_prefix)
 
-        return options_with_prefix(database_string)
+        return metadata_with_prefix(database_string)
 
     def test_it(self):
-        import google.gax
-
         database_string = u'projects/prahj/databases/dee-bee'
-        options = self._call_fut(database_string)
+        metadata = self._call_fut(database_string)
 
-        self.assertIsInstance(options, google.gax.CallOptions)
-        expected_kwargs = {
-            'metadata': [
-                ('google-cloud-resource-prefix', database_string),
-            ],
-        }
-        self.assertEqual(options.kwargs, expected_kwargs)
+        self.assertEqual(metadata, [
+            ('google-cloud-resource-prefix', database_string),
+        ])
 
 
 def _value_pb(**kwargs):

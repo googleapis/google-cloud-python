@@ -10,6 +10,7 @@
   container/index
   dataproc/index
   datastore/usage
+  dlp/index
   dns/usage
   firestore/index
   language/usage

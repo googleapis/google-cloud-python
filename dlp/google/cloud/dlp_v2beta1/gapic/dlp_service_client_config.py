@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.firestore.admin.v1beta1.FirestoreAdmin": {
+        "google.privacy.dlp.v2beta1.DlpService": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []
@@ -17,22 +17,42 @@ config = {
                 }
             },
             "methods": {
-                "CreateIndex": {
+                "InspectContent": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default"
                 },
-                "ListIndexes": {
+                "RedactContent": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "DeidentifyContent": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
-                "GetIndex": {
+                "AnalyzeDataSourceRisk": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
-                "DeleteIndex": {
+                "CreateInspectOperation": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "ListInspectFindings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "ListInfoTypes": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "ListRootCategories": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"

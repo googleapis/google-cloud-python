@@ -4,6 +4,44 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.32.1
+
+### Dependencies
+
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+
+## 0.32.0
+
+### Implementation changes
+
+- Added support for streaming pull receipts. (#4878)
+
+## 0.31.0
+
+### New features
+
+- Added the ability for subscriber to batch requests. (#4895)
+- Added pending request backpressure for subscriber. (#4892)
+
+### Implementation changes
+
+- Raise `ValueError` when a message is too large for a batch. (#4872)
+- Updated the default batch size to 10 MB. (#4857)
+- Allow a custom `Event` type in Pub / Sub futures. (#4643)
+
+### Documentation
+
+- Clarify that `modify_ack_deadline` resets the deadline. (#4822)
+
+### Testing
+
+- Fix unit test for default `max_bytes` value. (#4860)
+
 ## 0.30.1
 
 ### Notable Implementation Changes

@@ -24,7 +24,8 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         return CollectionReference
 
@@ -202,7 +203,7 @@ class TestCollectionReference(unittest.TestCase):
         firestore_api.create_document.assert_called_once_with(
             parent_path, collection_id=collection.id, document_id=None,
             document=expected_document_pb, mask=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     @staticmethod
     def _write_pb_for_create(document_path, document_data):
@@ -254,7 +255,7 @@ class TestCollectionReference(unittest.TestCase):
             document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_select(self):
         from google.cloud.firestore_v1beta1.query import Query

@@ -1,4 +1,4 @@
-# Copyright 2017 Google LLC
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+from __future__ import absolute_import
 
+from google.cloud.dlp_v2beta1 import DlpServiceClient
+from google.cloud.dlp_v2beta1 import enums
+from google.cloud.dlp_v2beta1 import types
 
-class Test_constants(unittest.TestCase):
-
-    def test_ctor_defaults(self):
-        from google.cloud.storage.iam import STORAGE_ADMIN_ROLE
-        role = STORAGE_ADMIN_ROLE
+__all__ = (
+    'enums',
+    'types',
+    'DlpServiceClient', )

@@ -178,8 +178,7 @@ before you call
 .. _agent metrics: https://cloud.google.com/monitoring/agent/
 .. _custom metrics: https://cloud.google.com/monitoring/custom-metrics/
 .. _Metric Descriptors:
-    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-    projects.metricDescriptors
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors
 
 
 Groups
@@ -262,16 +261,13 @@ Update a group:
     >>> group.update()
 
 .. _Stackdriver dashboard:
-    https://support.stackdriver.com/customer/portal/articles/\
-    1535145-creating-groups
+    https://support.stackdriver.com/customer/portal/articles/1535145-creating-groups
 .. _filter:
     https://cloud.google.com/monitoring/api/v3/filters#group-filter
 .. _Groups:
-    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-    projects.groups
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups
 .. _Group members:
-    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-    projects.groups.members
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups.members
 
 
 Time Series Queries

@@ -164,7 +164,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(document.id, document_id)
 
     def test_parent_property(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
@@ -177,7 +178,8 @@ class TestDocumentReference(unittest.TestCase):
         self.assertEqual(parent._path, (collection_id,))
 
     def test_collection_factory(self):
-        from google.cloud.firestore_v1beta1.collection import CollectionReference
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
 
         collection_id = 'grocery-store'
         document_id = 'market'
@@ -233,7 +235,7 @@ class TestDocumentReference(unittest.TestCase):
             document._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     @staticmethod
     def _write_pb_for_set(document_path, document_data):
@@ -281,7 +283,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_set(self):
         self._set_helper()
@@ -349,7 +351,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_update(self):
         self._update_helper()
@@ -386,7 +388,7 @@ class TestDocumentReference(unittest.TestCase):
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_delete(self):
         self._delete_helper()

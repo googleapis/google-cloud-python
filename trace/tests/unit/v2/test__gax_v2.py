@@ -83,7 +83,7 @@ class _Base(object):
                         'build_id':
                             _str_to_truncatablestr(
                                 st_build_id),
-                    },
+                        },
                     'source_version':
                         _str_to_truncatablestr(
                             st_source_version),
@@ -158,7 +158,6 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_batch_write_spans(self):
         from google.cloud.trace_v2.gapic import trace_service_client
-        from google.cloud.trace_v2.proto.trace_pb2 import Span
         from google.cloud.trace._gapic import _dict_mapping_to_pb
 
         spans = {
@@ -296,7 +295,6 @@ class Test_make_trace_api(unittest.TestCase):
 
     def test_it(self):
         from google.cloud.trace._gapic import _TraceAPI
-        from google.cloud._http import DEFAULT_USER_AGENT
 
         credentials = object()
         client = mock.Mock(_credentials=credentials, spec=['_credentials'])
@@ -311,7 +309,8 @@ class Test_make_trace_api(unittest.TestCase):
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace._gapic.trace_service_client.TraceServiceClient',
+            'google.cloud.trace._gapic.trace_service_client.'
+            'TraceServiceClient',
             new=generated_api)
 
         with patch_api:

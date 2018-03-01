@@ -62,7 +62,7 @@ class TestSession(unittest.TestCase):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         with self.assertRaises(ValueError):
-            _ = session.name
+            (session.name)
 
     def test_name_property_w_session_id(self):
         database = _Database(self.DATABASE_NAME)
@@ -305,7 +305,6 @@ class TestSession(unittest.TestCase):
         from google.cloud._testing import _Monkey
 
         SQL = 'SELECT first_name, age FROM citizens'
-        TOKEN = b'DEADBEEF'
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
