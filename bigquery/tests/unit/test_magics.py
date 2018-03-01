@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import re
-import os
 import mock
 from concurrent import futures
 
@@ -31,6 +30,7 @@ try:
 except ImportError:  # pragma: NO COVER
     IPython = None
 
+import google.auth.credentials
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.table import Row
 from google.cloud.bigquery import magics
@@ -62,16 +62,32 @@ class TestMagics():
         will be created the first time it is called
         """
         assert magics.context._client is None
-        assert os.environ['GOOGLE_APPLICATION_CREDENTIALS'] is not None
-        adc_client = Client()
 
-        assert magics.context.client.project == adc_client.project
+        credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+        patch = mock.patch(
+            'google.auth.default', return_value=(credentials_mock, None))
+        PROJECT = 'prahj-ekt'
+        patch2 = mock.patch(
+            'google.cloud.client._determine_default_project',
+            return_value=PROJECT)
+        with patch as default, patch2 as _determine_default_project:
+            assert magics.context.client.project == PROJECT
+
+        assert magics.context.client._credentials is credentials_mock
+        default.assert_called_once_with()
+        _determine_default_project.assert_called_once_with(None)
 
     def test_context_client_can_be_set_explicitly(self):
-        new_client = Client(project='other-project-52569')
-        magics.context.client = new_client
+        credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+        patch = mock.patch(
+            'google.auth.default', return_value=(credentials_mock, None))
+        with patch as default:
+            new_client = Client(project='other-project-52569')
+            magics.context.client = new_client
 
         assert magics.context.client.project == 'other-project-52569'
+        assert magics.context.client._credentials is credentials_mock
+        default.assert_called_once_with()
 
     def test__run_query(self):
         magics.context._client = None
@@ -150,9 +166,9 @@ class TestMagics():
 
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
-        get_job_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client.get_job', autospec=True)
-        with run_query_patch as run_query_mock, get_job_patch:
+        client_patch = mock.patch(
+            'google.cloud.bigquery.magics.Client', autospec=True)
+        with run_query_patch as run_query_mock, client_patch:
             ip.run_cell_magic(
                 'bigquery', '--use_legacy_sql', 'SELECT 17 AS num')
 
@@ -218,11 +234,14 @@ class TestMagics():
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
+        credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+        default_patch = mock.patch(
+            'google.auth.default', return_value=(credentials_mock, None))
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
         get_job_patch = mock.patch(
             'google.cloud.bigquery.magics.Client.get_job', autospec=True)
-        with run_query_patch as run_query_mock, get_job_patch:
+        with run_query_patch as run_query_mock, default_patch, get_job_patch:
             magics.context.client = Client(project='general-project')
 
             ip.run_cell_magic(
