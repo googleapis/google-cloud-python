@@ -22,6 +22,7 @@ import time
 import unittest
 
 from google.api_core import exceptions
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
 from google.cloud.spanner_v1.proto.type_pb2 import BYTES
@@ -33,7 +34,6 @@ from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
 from google.cloud.spanner_v1.proto.type_pb2 import Type
 
 from google.cloud._helpers import UTC
-from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
 from google.cloud.spanner import KeySet
@@ -206,7 +206,7 @@ class _TestData(object):
         self.assertEqual(value.minute, nano_value.minute)
         self.assertEqual(value.second, nano_value.second)
         self.assertEqual(value.microsecond, nano_value.microsecond)
-        if isinstance(value, TimestampWithNanoseconds):
+        if isinstance(value, DatetimeWithNanoseconds):
             self.assertEqual(value.nanosecond, nano_value.nanosecond)
         else:
             self.assertEqual(value.microsecond * 1000, nano_value.nanosecond)
@@ -222,7 +222,7 @@ class _TestData(object):
     def _check_row_data(self, row_data, expected):
         self.assertEqual(len(row_data), len(expected))
         for found_cell, expected_cell in zip(row_data, expected):
-            if isinstance(found_cell, TimestampWithNanoseconds):
+            if isinstance(found_cell, DatetimeWithNanoseconds):
                 self._assert_timestamp(expected_cell, found_cell)
             elif isinstance(found_cell, float) and math.isnan(found_cell):
                 self.assertTrue(math.isnan(expected_cell))
@@ -410,7 +410,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     )
     SOME_DATE = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
     OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
     BYTES_1 = b'Ymlu'
     BYTES_2 = b'Ym9vdHM='
