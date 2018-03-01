@@ -570,10 +570,12 @@ class _RetryableReadRows(object):
     def _do_read_retryable_rows(self):
         if (self.generator and self.generator.last_scanned_row_key):
             next_start_key = self.generator.last_scanned_row_key
+            start_inclusive = False
             logging.info('Start key is {} for retry read rows.'
                          .format(next_start_key))
         else:
             next_start_key = self.start_key
+            start_inclusive = True
 
         request_pb = _create_row_request(
             self.table_name,
@@ -581,7 +583,7 @@ class _RetryableReadRows(object):
             end_key=self.end_key,
             filter_=self.filter_,
             limit=self.limit,
-            start_inclusive=False)
+            start_inclusive=start_inclusive)
         client = self.client
         response_iterator = client._data_stub.ReadRows(request_pb)
         self.generator = YieldRowsData(response_iterator)
