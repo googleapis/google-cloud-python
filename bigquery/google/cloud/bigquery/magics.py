@@ -104,8 +104,8 @@ import time
 from concurrent import futures
 
 try:
-    from IPython import get_ipython
-    from IPython.display import clear_output
+    import IPython
+    from IPython import display
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
     raise ImportError('This module can only be loaded in IPython.')
@@ -242,9 +242,9 @@ def _cell_magic(line, query):
     query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
-        clear_output()
+        display.clear_output()
 
     result = query_job.to_dataframe()
     if args.destination_var:
-        get_ipython().push({args.destination_var: result})
+        IPython.get_ipython().push({args.destination_var: result})
     return result

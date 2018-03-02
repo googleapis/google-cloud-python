@@ -23,10 +23,9 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 try:
     import IPython
-    from IPython import get_ipython
-    from IPython.utils.io import capture_output
-    from IPython.testing.tools import default_config
-    from IPython.terminal.interactiveshell import TerminalInteractiveShell
+    from IPython.utils import io
+    from IPython.testing import tools
+    from IPython.terminal import interactiveshell
 except ImportError:  # pragma: NO COVER
     IPython = None
 
@@ -38,9 +37,9 @@ from google.cloud.bigquery import magics
 
 @pytest.fixture(scope='session')
 def ipython():
-    config = default_config()
+    config = tools.default_config()
     config.TerminalInteractiveShell.simple_prompt = True
-    shell = TerminalInteractiveShell.instance(config=config)
+    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
     return shell
 
 
@@ -102,7 +101,7 @@ class TestMagics():
 
         client_patch = mock.patch(
             'google.cloud.bigquery.magics.Client', autospec=True)
-        with client_patch as client_mock, capture_output() as captured:
+        with client_patch as client_mock, io.capture_output() as captured:
             client_mock().query(SQL).result.side_effect = RESPONSES
             client_mock().query(SQL).job_id = JOB_ID
 
@@ -122,7 +121,7 @@ class TestMagics():
         assert re.match("Query complete after .*s", updates[-1])
 
     def test_extension_load(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
 
         # verify that the magic is registered and has the correct source
@@ -131,7 +130,7 @@ class TestMagics():
 
     @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
     def test_bigquery_magic_without_optional_arguments(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
@@ -153,7 +152,7 @@ class TestMagics():
         assert list(result) == list(RESULT)  # verify column names
 
     def test_bigquery_magic_with_legacy_sql(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
@@ -168,7 +167,7 @@ class TestMagics():
 
     @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
     def test_bigquery_magic_with_result_saved_to_variable(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
@@ -193,12 +192,12 @@ class TestMagics():
         assert list(df) == list(RESULT)  # verify column names
 
     def test_bigquery_magic_does_not_clear_display_in_verbose_mode(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
         clear_patch = mock.patch(
-            'google.cloud.bigquery.magics.clear_output', autospec=True)
+            'google.cloud.bigquery.magics.display.clear_output', autospec=True)
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
         with clear_patch as clear_mock, run_query_patch:
@@ -207,12 +206,12 @@ class TestMagics():
             assert clear_mock.call_count == 0
 
     def test_bigquery_magic_clears_display_in_verbose_mode(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
         clear_patch = mock.patch(
-            'google.cloud.bigquery.magics.clear_output', autospec=True)
+            'google.cloud.bigquery.magics.display.clear_output', autospec=True)
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
         with clear_patch as clear_mock, run_query_patch:
@@ -221,7 +220,7 @@ class TestMagics():
             assert clear_mock.call_count == 1
 
     def test_bigquery_magic_with_project(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 

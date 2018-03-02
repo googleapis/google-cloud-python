@@ -32,10 +32,9 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 try:
     import IPython
-    from IPython import get_ipython
-    from IPython.utils.io import capture_output
-    from IPython.testing.tools import default_config
-    from IPython.terminal.interactiveshell import TerminalInteractiveShell
+    from IPython.utils import io
+    from IPython.testing import tools
+    from IPython.terminal import interactiveshell
 except ImportError:  # pragma: NO COVER
     IPython = None
 
@@ -1629,7 +1628,7 @@ class TestBigQuery(unittest.TestCase):
     @pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
     @pytest.mark.usefixtures('ipython_interactive')
     def test_bigquery_magic(self):
-        ip = get_ipython()
+        ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
         SQL = """
             SELECT
@@ -1642,7 +1641,7 @@ class TestBigQuery(unittest.TestCase):
             ORDER BY view_count DESC
             LIMIT 10
         """
-        with capture_output() as captured:
+        with io.capture_output() as captured:
             result = ip.run_cell_magic('bigquery', '', SQL)
 
         lines = re.split('\n|\r', captured.stdout)
@@ -1680,9 +1679,9 @@ def _table_exists(t):
 
 @pytest.fixture(scope='session')
 def ipython():
-    config = default_config()
+    config = tools.default_config()
     config.TerminalInteractiveShell.simple_prompt = True
-    shell = TerminalInteractiveShell.instance(config=config)
+    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
     return shell
 
 
