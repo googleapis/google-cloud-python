@@ -669,8 +669,6 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(batch_txn, BatchTransaction)
         self.assertIs(batch_txn._database, database)
         self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
         self.assertIsNone(batch_txn._exact_staleness)
 
     def test_batch_transaction_w_read_timestamp(self):
@@ -684,38 +682,6 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(batch_txn, BatchTransaction)
         self.assertIs(batch_txn._database, database)
         self.assertEqual(batch_txn._read_timestamp, timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
-        self.assertIsNone(batch_txn._exact_staleness)
-
-    def test_batch_transaction_w_min_read_timestamp(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
-
-        database = self._make_one(
-            self.DATABASE_ID, instance=object(), pool=_Pool())
-        timestamp = self._make_timestamp()
-
-        batch_txn = database.batch_transaction(min_read_timestamp=timestamp)
-        self.assertIsInstance(batch_txn, BatchTransaction)
-        self.assertIs(batch_txn._database, database)
-        self.assertIsNone(batch_txn._read_timestamp)
-        self.assertEqual(batch_txn._min_read_timestamp, timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
-        self.assertIsNone(batch_txn._exact_staleness)
-
-    def test_batch_transaction_w_max_staleness(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
-
-        database = self._make_one(
-            self.DATABASE_ID, instance=object(), pool=_Pool())
-        duration = self._make_duration()
-
-        batch_txn = database.batch_transaction(max_staleness=duration)
-        self.assertIsInstance(batch_txn, BatchTransaction)
-        self.assertIs(batch_txn._database, database)
-        self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertEqual(batch_txn._max_staleness, duration)
         self.assertIsNone(batch_txn._exact_staleness)
 
     def test_batch_transaction_w_exact_staleness(self):
@@ -729,8 +695,6 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(batch_txn, BatchTransaction)
         self.assertIs(batch_txn._database, database)
         self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
         self.assertEqual(batch_txn._exact_staleness, duration)
 
     def test_run_in_transaction_wo_args(self):
@@ -995,8 +959,6 @@ class TestBatchTransaction(_BaseTest):
         self.assertIsNone(batch_txn._session)
         self.assertIsNone(batch_txn._snapshot)
         self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
         self.assertIsNone(batch_txn._exact_staleness)
 
     def test_ctor_w_read_timestamp(self):
@@ -1009,36 +971,6 @@ class TestBatchTransaction(_BaseTest):
         self.assertIsNone(batch_txn._session)
         self.assertIsNone(batch_txn._snapshot)
         self.assertEqual(batch_txn._read_timestamp, timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
-        self.assertIsNone(batch_txn._exact_staleness)
-
-    def test_ctor_w_min_read_timestamp(self):
-        database = self._make_database()
-        timestamp = self._make_timestamp()
-
-        batch_txn = self._make_one(database, min_read_timestamp=timestamp)
-
-        self.assertIs(batch_txn._database, database)
-        self.assertIsNone(batch_txn._session)
-        self.assertIsNone(batch_txn._snapshot)
-        self.assertIsNone(batch_txn._read_timestamp)
-        self.assertEqual(batch_txn._min_read_timestamp, timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
-        self.assertIsNone(batch_txn._exact_staleness)
-
-    def test_ctor_w_max_staleness(self):
-        database = self._make_database()
-        duration = self._make_duration()
-
-        batch_txn = self._make_one(database, max_staleness=duration)
-
-        self.assertIs(batch_txn._database, database)
-        self.assertIsNone(batch_txn._session)
-        self.assertIsNone(batch_txn._snapshot)
-        self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertEqual(batch_txn._max_staleness, duration)
         self.assertIsNone(batch_txn._exact_staleness)
 
     def test_ctor_w_exact_staleness(self):
@@ -1051,8 +983,6 @@ class TestBatchTransaction(_BaseTest):
         self.assertIsNone(batch_txn._session)
         self.assertIsNone(batch_txn._snapshot)
         self.assertIsNone(batch_txn._read_timestamp)
-        self.assertIsNone(batch_txn._min_read_timestamp)
-        self.assertIsNone(batch_txn._max_staleness)
         self.assertEqual(batch_txn._exact_staleness, duration)
 
     def test_from_dict(self):
@@ -1114,11 +1044,7 @@ class TestBatchTransaction(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=None,
-            min_read_timestamp=None,
-            max_staleness=None,
-            exact_staleness=None,
-            multi_use=True)
+            read_timestamp=None, exact_staleness=None, multi_use=True)
 
     def test__get_snapshot_w_read_timestamp(self):
         database = self._make_database()
@@ -1128,39 +1054,7 @@ class TestBatchTransaction(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=timestamp,
-            min_read_timestamp=None,
-            max_staleness=None,
-            exact_staleness=None,
-            multi_use=True)
-
-    def test__get_snapshot_w_min_read_timestamp(self):
-        database = self._make_database()
-        timestamp = self._make_timestamp()
-        batch_txn = self._make_one(database, min_read_timestamp=timestamp)
-        session = batch_txn._session = self._make_session()
-        snapshot = session.snapshot.return_value = self._make_snapshot()
-        self.assertIs(batch_txn._get_snapshot(), snapshot)
-        session.snapshot.assert_called_once_with(
-            read_timestamp=None,
-            min_read_timestamp=timestamp,
-            max_staleness=None,
-            exact_staleness=None,
-            multi_use=True)
-
-    def test__get_snapshot_w_max_staleness(self):
-        database = self._make_database()
-        duration = self._make_duration()
-        batch_txn = self._make_one(database, max_staleness=duration)
-        session = batch_txn._session = self._make_session()
-        snapshot = session.snapshot.return_value = self._make_snapshot()
-        self.assertIs(batch_txn._get_snapshot(), snapshot)
-        session.snapshot.assert_called_once_with(
-            read_timestamp=None,
-            min_read_timestamp=None,
-            max_staleness=duration,
-            exact_staleness=None,
-            multi_use=True)
+            read_timestamp=timestamp, exact_staleness=None, multi_use=True)
 
     def test__get_snapshot_w_exact_staleness(self):
         database = self._make_database()
@@ -1170,11 +1064,7 @@ class TestBatchTransaction(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=None,
-            min_read_timestamp=None,
-            max_staleness=None,
-            exact_staleness=duration,
-            multi_use=True)
+            read_timestamp=None, exact_staleness=duration, multi_use=True)
 
     def test_generate_read_batches_w_max_partitions(self):
         max_partitions = len(self.TOKENS)

@@ -310,20 +310,11 @@ class Database(object):
         return BatchCheckout(self)
 
     def batch_transaction(
-            self, read_timestamp=None, min_read_timestamp=None,
-            max_staleness=None, exact_staleness=None):
+            self, read_timestamp=None, exact_staleness=None):
         """Return an object which wraps a batch read / query.
 
         :type read_timestamp: :class:`datetime.datetime`
         :param read_timestamp: Execute all reads at the given timestamp.
-
-        :type min_read_timestamp: :class:`datetime.datetime`
-        :param min_read_timestamp: Execute all reads at a
-                                timestamp >= ``min_read_timestamp``.
-
-        :type max_staleness: :class:`datetime.timedelta`
-        :param max_staleness: Read data at a
-                            timestamp >= NOW - ``max_staleness`` seconds.
 
         :type exact_staleness: :class:`datetime.timedelta`
         :param exact_staleness: Execute all reads at a timestamp that is
@@ -335,8 +326,6 @@ class Database(object):
         return BatchTransaction(
             self,
             read_timestamp=read_timestamp,
-            min_read_timestamp=min_read_timestamp,
-            max_staleness=max_staleness,
             exact_staleness=exact_staleness,
         )
 
@@ -447,26 +436,15 @@ class BatchTransaction(object):
     :type read_timestamp: :class:`datetime.datetime`
     :param read_timestamp: Execute all reads at the given timestamp.
 
-    :type min_read_timestamp: :class:`datetime.datetime`
-    :param min_read_timestamp: Execute all reads at a
-                               timestamp >= ``min_read_timestamp``.
-
-    :type max_staleness: :class:`datetime.timedelta`
-    :param max_staleness: Read data at a
-                          timestamp >= NOW - ``max_staleness`` seconds.
-
     :type exact_staleness: :class:`datetime.timedelta`
     :param exact_staleness: Execute all reads at a timestamp that is
                             ``exact_staleness`` old.
     """
-    def __init__(self, database, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def __init__(self, database, read_timestamp=None, exact_staleness=None):
         self._database = database
         self._session = None
         self._snapshot = None
         self._read_timestamp = read_timestamp
-        self._min_read_timestamp = min_read_timestamp
-        self._max_staleness = max_staleness
         self._exact_staleness = exact_staleness
 
     @classmethod
@@ -522,8 +500,6 @@ class BatchTransaction(object):
         if self._snapshot is None:
             self._snapshot = self._get_session().snapshot(
                 read_timestamp=self._read_timestamp,
-                min_read_timestamp=self._min_read_timestamp,
-                max_staleness=self._max_staleness,
                 exact_staleness=self._exact_staleness,
                 multi_use=True)
         return self._snapshot
