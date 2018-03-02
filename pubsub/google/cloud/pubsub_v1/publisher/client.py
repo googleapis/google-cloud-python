@@ -92,6 +92,8 @@ class Client(object):
         self._batch_class = batch_class
         self._batch_lock = batch_class.make_lock()
         self._batches = {}
+        self._commit_count = 0
+        self._publish_count = 0
 
     @property
     def target(self):
@@ -101,6 +103,50 @@ class Client(object):
             str: The location of the API.
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
+
+    def _batch(
+            self, topic, create=False, autocommit=True, batch_settings=None):
+        """Return the current batch for the provided topic.
+
+        This will create a new batch if ``create=True`` or if no batch
+        currently exists.
+
+        Args:
+            topic (str): A string representing the topic.
+            create (bool): Whether to create a new batch. Defaults to
+                :data:`False`. If :data:`True`, this will create a new batch
+                even if one already exists.
+            autocommit (bool): Whether to autocommit this batch. This is
+                primarily useful for debugging and testing, since it allows
+                the caller to avoid some side effects that batch creation
+                might have (e.g. spawning a worker to publish a batch).
+            batch_settings (~.pubsub_v1.types.BatchSettings):
+                The batch settings to use for this batch.
+
+        Returns:
+            ~.pubsub_v1.batch.Batch: The batch object.
+        """
+        # If there is no matching batch yet, then potentially create one
+        # and place it on the batches dictionary.
+        with self._batch_lock:
+            if not create:
+                batch = self._batches.get(topic)
+                if batch is None:
+                    create = True
+
+            if create:
+                if batch_settings is None:
+                    batch_settings = self.batch_settings
+
+                batch = self._batch_class(
+                    autocommit=autocommit,
+                    client=self,
+                    settings=batch_settings,
+                    topic=topic,
+                )
+                self._batches[topic] = batch
+
+        return batch
 
     def batch(self, topic, create=False, autocommit=True):
         """Return the current batch for the provided topic.
@@ -121,24 +167,7 @@ class Client(object):
         Returns:
             ~.pubsub_v1.batch.Batch: The batch object.
         """
-        # If there is no matching batch yet, then potentially create one
-        # and place it on the batches dictionary.
-        with self._batch_lock:
-            if not create:
-                batch = self._batches.get(topic)
-                if batch is None:
-                    create = True
-
-            if create:
-                batch = self._batch_class(
-                    autocommit=autocommit,
-                    client=self,
-                    settings=self.batch_settings,
-                    topic=topic,
-                )
-                self._batches[topic] = batch
-
-        return batch
+        return self._batch(topic, create, autocommit)
 
     def publish(self, topic, data, **attrs):
         """Publish a single message.
@@ -199,19 +228,26 @@ class Client(object):
 
         # Create the Pub/Sub message object.
         message = types.PubsubMessage(data=data, attributes=attrs)
-        if message.ByteSize() > self.batch_settings.max_bytes:
-            raise ValueError(
-                'Message being published is too large for the '
-                'batch settings with max bytes {}.'.
-                format(self.batch_settings.max_bytes)
-            )
 
         # Delegate the publishing to the batch.
         batch = self.batch(topic)
-        future = None
-        while future is None:
-            future = batch.publish(message)
-            if future is None:
-                batch = self.batch(topic, create=True)
+        message_size = message.ByteSize()
+
+        if message_size > batch.settings.max_bytes:
+            with self._batch_lock:
+                backup = self._batches[topic]
+                settings = types.BatchSettings(message_size, 0.05, 1)
+                batch = self._batch(
+                    topic, create=True, batch_settings=settings)
+                future = None
+                while future is None:
+                    future = batch.publish(message)
+                self._batches[topic] = backup
+        else:
+            future = None
+            while future is None:
+                future = batch.publish(message)
+                if future is None:
+                    batch = self.batch(topic, create=True)
 
         return future

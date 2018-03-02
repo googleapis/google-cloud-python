@@ -17,14 +17,13 @@ from __future__ import absolute_import
 import datetime
 import threading
 import time
+from multiprocessing.pool import ThreadPool
 
 import pytest
 import six
 
 import google.auth
 from google.cloud import pubsub_v1
-
-
 from test_utils.system import unique_resource_id
 
 
@@ -182,6 +181,84 @@ def test_subscribe_to_messages_async_callbacks(
     assert callback.calls >= 2
 
 
+def worker(function, topic_path, index, max_messages):
+    if int(index) < max_messages // 2:
+        max_size = max_messages // 5
+    else:
+        max_size = max_messages
+    bytestring = index.zfill(int(max_size))
+    return function(topic_path, bytestring, num=str(index))
+
+
+def worker_helper(args):
+    function, topic_path, index, max_messages = args
+    return worker(function, topic_path, index, max_messages)
+
+
+def test_publish_many_messages_over_batch_size(
+        publisher, topic_path, cleanup, subscriber, subscription_path):
+
+    futures = []
+    cleanup.append((publisher.delete_topic, topic_path))
+    publisher.create_topic(topic_path)
+    publisher._publish_count = 0
+    publisher._commit_count = 0
+
+    subscriber.create_subscription(subscription_path, topic_path)
+    subscription = subscriber.subscribe(subscription_path)
+
+    max_bytes = 40
+    max_latency = 5
+    max_messages = 40
+    publisher.batch_settings = pubsub_v1.types.BatchSettings(
+        max_bytes,
+        max_latency,
+        max_messages)
+    callback = MessageAckCallback()
+
+    # Actually open the subscription and hold it open for a few seconds.
+    subscription.open(callback)
+
+    pool = ThreadPool()
+    if six.PY3:
+        indices = [
+            str(index).encode()
+            for index in six.moves.range(max_messages)]
+    else:
+        indices = [bytes(index) for index in six.moves.range(max_messages)]
+    futures = pool.map(
+        worker_helper,
+        zip([publisher.publish] * max_messages,
+            [topic_path] * max_messages,
+            indices,
+            [max_messages] * max_messages)
+    )
+    pool.close()
+    pool.join()
+
+    for future in futures:
+        future.result()
+
+    assert len(futures) == max_messages
+    assert publisher._publish_count == 40
+    assert publisher._commit_count <= publisher._publish_count
+
+    # We want to make sure that the callback was called asynchronously. So
+    # track when each call happened and make sure below.
+    for second in six.moves.range(50):
+        time.sleep(1)
+
+        # The callback should have fired at least fifty times, but it
+        # may take some time.
+        if callback.calls >= max_messages:
+            break
+
+    assert sorted(set(callback.data)) == sorted(indices)
+
+    # Okay, we took too long; fail out.
+    assert callback.calls >= max_messages
+
+
 class AckCallback(object):
 
     def __init__(self):
@@ -193,6 +270,25 @@ class AckCallback(object):
         # Only increment the number of calls **after** finishing.
         with self.lock:
             self.calls += 1
+
+
+class MessageAckCallback(object):
+
+    def __init__(self):
+        self.calls = 0
+        self.data = []
+        self.lock = threading.Lock()
+
+    def __call__(self, message):
+        message.ack()
+        # Only increment the number of calls **after** finishing.
+        with self.lock:
+            self.calls += 1
+            data = message.data.lstrip(b'0')
+            if data == b'':
+                self.data.append(b'0')
+            else:
+                self.data.append(data)
 
 
 class TimesCallback(object):

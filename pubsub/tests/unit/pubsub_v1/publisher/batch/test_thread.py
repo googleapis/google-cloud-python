@@ -72,7 +72,7 @@ def test_init_infinite_latency():
     assert batch._thread is None
 
 
-@mock.patch.object(threading, 'Lock')
+@mock.patch.object(threading, 'RLock')
 def test_make_lock(Lock):
     lock = Batch.make_lock()
     assert lock is Lock.return_value
@@ -203,6 +203,7 @@ def test_blocking__commit_wrong_messageid_length():
 
 def test_monitor():
     batch = create_batch(max_latency=5.0)
+    batch._size = 1
     with mock.patch.object(time, 'sleep') as sleep:
         with mock.patch.object(type(batch), '_commit') as _commit:
             batch.monitor()
