@@ -167,7 +167,7 @@ def _run_query(client, query, job_config=None):
             Extra configuration options for the job.
 
     Returns:
-        str: the ID of the query job created
+        google.cloud.bigquery.job.QueryJob: the query job created
 
     Example:
         >>> client = bigquery.Client()
@@ -190,7 +190,7 @@ def _run_query(client, query, job_config=None):
             continue
         break
     print('\nQuery complete after {:0.2f}s'.format(time.time() - start_time))
-    return query_job.job_id
+    return query_job
 
 
 @magic_arguments.magic_arguments()
@@ -239,13 +239,12 @@ def _cell_magic(line, query):
 
     job_config = QueryJobConfig()
     job_config.use_legacy_sql = args.use_legacy_sql
-    job_id = _run_query(client, query, job_config)
+    query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
         clear_output()
 
-    # Fetch the results.
-    result = client.get_job(job_id).to_dataframe()
+    result = query_job.to_dataframe()
     if args.destination_var:
         get_ipython().push({args.destination_var: result})
     return result

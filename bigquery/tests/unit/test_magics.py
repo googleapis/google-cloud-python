@@ -106,13 +106,13 @@ class TestMagics():
             client_mock().query(SQL).result.side_effect = RESPONSES
             client_mock().query(SQL).job_id = JOB_ID
 
-            job_id = magics._run_query(client_mock(), SQL)
+            query_job = magics._run_query(client_mock(), SQL)
 
         lines = re.split('\n|\r', captured.stdout)
         # Removes blanks & terminal code (result of display clearing)
         updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
 
-        assert job_id == JOB_ID
+        assert query_job.job_id == JOB_ID
         expected_first_line = "Executing query with job ID: {}".format(JOB_ID)
         assert updates[0] == expected_first_line
         execution_updates = updates[1:-1]
@@ -135,22 +135,15 @@ class TestMagics():
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
-        JOB_ID = 'job_1234'
         SQL = 'SELECT 17 AS num'
-        RESPONSES = [
-            futures.TimeoutError,
-            futures.TimeoutError,
-            [Row((17,), {'num': 0})]
-        ]
         RESULT = pandas.DataFrame([17], columns=['num'])
-
-        client_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client', autospec=True)
-        with client_patch as client_mock:
-            client_mock().project = 'my-project'
-            client_mock().query(SQL).result.side_effect = RESPONSES
-            client_mock().query(SQL).job_id = JOB_ID
-            client_mock().get_job(JOB_ID).to_dataframe.return_value = RESULT
+        run_query_patch = mock.patch(
+            'google.cloud.bigquery.magics._run_query', autospec=True)
+        query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
+        query_job_mock().to_dataframe.return_value = RESULT
+        client_mock = mock.Mock(spec='google.cloud.bigquery.magics.Client')
+        with run_query_patch as run_query_mock:
+            run_query_mock.return_value = query_job_mock()
             magics.context.client = client_mock()
 
             result = ip.run_cell_magic('bigquery', '', SQL)
@@ -166,9 +159,7 @@ class TestMagics():
 
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
-        client_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client', autospec=True)
-        with run_query_patch as run_query_mock, client_patch:
+        with run_query_patch as run_query_mock:
             ip.run_cell_magic(
                 'bigquery', '--use_legacy_sql', 'SELECT 17 AS num')
 
@@ -181,16 +172,20 @@ class TestMagics():
         ip.extension_manager.load_extension('google.cloud.bigquery')
         magics.context._client = None
 
-        JOB_ID = 'job_1234'
+        SQL = 'SELECT 17 AS num'
         RESULT = pandas.DataFrame([17], columns=['num'])
         assert 'myvariable' not in ip.user_ns
 
-        client_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client', autospec=True)
-        with client_patch as client_mock:
-            client_mock().get_job(JOB_ID).to_dataframe.return_value = RESULT
+        run_query_patch = mock.patch(
+            'google.cloud.bigquery.magics._run_query', autospec=True)
+        query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
+        query_job_mock().to_dataframe.return_value = RESULT
+        client_mock = mock.Mock(spec='google.cloud.bigquery.magics.Client')
+        with run_query_patch as run_query_mock:
+            run_query_mock.return_value = query_job_mock()
+            magics.context.client = client_mock()
 
-            ip.run_cell_magic('bigquery', 'df', 'SELECT 17 as num')
+            ip.run_cell_magic('bigquery', 'df', SQL)
 
         assert 'df' in ip.user_ns        # verify that variable exists
         df = ip.user_ns['df']
@@ -206,9 +201,7 @@ class TestMagics():
             'google.cloud.bigquery.magics.clear_output', autospec=True)
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
-        client_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client', autospec=True)
-        with clear_patch as clear_mock, run_query_patch, client_patch:
+        with clear_patch as clear_mock, run_query_patch:
             ip.run_cell_magic('bigquery', '--verbose', 'SELECT 17 as num')
 
             assert clear_mock.call_count == 0
@@ -222,9 +215,7 @@ class TestMagics():
             'google.cloud.bigquery.magics.clear_output', autospec=True)
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
-        client_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client', autospec=True)
-        with clear_patch as clear_mock, run_query_patch, client_patch:
+        with clear_patch as clear_mock, run_query_patch:
             ip.run_cell_magic('bigquery', '', 'SELECT 17 as num')
 
             assert clear_mock.call_count == 1
@@ -239,9 +230,7 @@ class TestMagics():
             'google.auth.default', return_value=(credentials_mock, None))
         run_query_patch = mock.patch(
             'google.cloud.bigquery.magics._run_query', autospec=True)
-        get_job_patch = mock.patch(
-            'google.cloud.bigquery.magics.Client.get_job', autospec=True)
-        with run_query_patch as run_query_mock, default_patch, get_job_patch:
+        with run_query_patch as run_query_mock, default_patch:
             magics.context.client = Client(project='general-project')
 
             ip.run_cell_magic(
