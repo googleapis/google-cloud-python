@@ -676,7 +676,7 @@ class BatchTransaction(object):
 
     def close(self):
         """Clean up underlying session.
-        
+
         .. note::
 
            If the transaction has been shared across multiple machines,
