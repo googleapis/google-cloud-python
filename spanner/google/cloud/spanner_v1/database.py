@@ -661,7 +661,15 @@ class BatchTransaction(object):
         raise ValueError("Invalid batch")
 
     def close(self):
-        """Clean up underlying session."""
+        """Clean up underlying session.
+        
+        .. note::
+
+           If the transaction has been shared across multiple machines,
+           calling this on any machine would invalidate the transaction
+           everywhere. Ideally this would be called when data has been read
+           from all the partitions.
+        """
         if self._session is not None:
             self._session.delete()
 
