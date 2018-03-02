@@ -504,6 +504,20 @@ class BatchTransaction(object):
                 multi_use=True)
         return self._snapshot
 
+    def read(self, *args, **kw):
+        """Convenience method:  perform read operation via snapshot.
+
+        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.read`.
+        """
+        return self._get_snapshot().read(*args, **kw)
+
+    def execute_sql(self, *args, **kw):
+        """Convenience method:  perform query operation via snapshot.
+
+        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.execute_sql`.
+        """
+        return self._get_snapshot().execute_sql(*args, **kw)
+
     def generate_read_batches(
             self, table, columns, keyset,
             index='', partition_size_bytes=None, max_partitions=None):

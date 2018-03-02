@@ -1066,6 +1066,38 @@ class TestBatchTransaction(_BaseTest):
         session.snapshot.assert_called_once_with(
             read_timestamp=None, exact_staleness=duration, multi_use=True)
 
+    def test_read(self):
+        keyset = self._make_keyset()
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        session = batch_txn._session = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+
+        rows = batch_txn.read(
+            self.TABLE, self.COLUMNS, keyset, self.INDEX)
+
+        self.assertIs(rows, snapshot.read.return_value)
+        snapshot.read.assert_called_once_with(
+            self.TABLE, self.COLUMNS, keyset, self.INDEX)
+
+    def test_execute_sql(self):
+        sql = (
+            "SELECT first_name, last_name, email FROM citizens "
+            "WHERE age <= @max_age"
+        )
+        params = {'max_age': 30}
+        param_types = {'max_age': 'INT64'}
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        session = batch_txn._session = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+
+        rows = batch_txn.execute_sql(sql, params, param_types)
+
+        self.assertIs(rows, snapshot.execute_sql.return_value)
+        snapshot.execute_sql.assert_called_once_with(
+            sql, params, param_types)
+
     def test_generate_read_batches_w_max_partitions(self):
         max_partitions = len(self.TOKENS)
         keyset = self._make_keyset()
