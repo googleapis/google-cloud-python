@@ -42,7 +42,7 @@ from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud.bigtable import __version__
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
-from google.cloud.bigtable._generated import bigtable_pb2
+from google.cloud.bigtable_v2.proto import bigtable_pb2
 from google.cloud.bigtable._generated import bigtable_table_admin_pb2
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.instance import Instance

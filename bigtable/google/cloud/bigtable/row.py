@@ -26,9 +26,9 @@ from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as messages_v2_pb2)
 
 

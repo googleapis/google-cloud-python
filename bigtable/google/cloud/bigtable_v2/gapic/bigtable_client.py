@@ -22,8 +22,8 @@ import google.api_core.grpc_helpers
 import google.api_core.path_template
 
 from google.cloud.bigtable_v2.gapic import bigtable_client_config
-from google.cloud.bigtable._generated import bigtable_pb2
-from google.cloud.bigtable._generated import data_pb2
+from google.cloud.bigtable_v2.proto import bigtable_pb2
+from google.cloud.bigtable_v2.proto import data_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-bigtable', ).version
