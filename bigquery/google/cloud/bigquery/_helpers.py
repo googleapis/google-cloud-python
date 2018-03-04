@@ -17,8 +17,9 @@
 import base64
 import datetime
 
+import pytz
+
 from google.api_core import retry
-from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
@@ -94,11 +95,13 @@ def _timestamp_query_param_from_json(value, field):
         if '.' in value:
             # YYYY-MM-DDTHH:MM:SS.ffffff
             return datetime.datetime.strptime(
-                value, _RFC3339_MICROS_NO_ZULU).replace(tzinfo=UTC)
+                value, _RFC3339_MICROS_NO_ZULU).replace(
+                    tzinfo=pytz.UTC)
         else:
             # YYYY-MM-DDTHH:MM:SS
             return datetime.datetime.strptime(
-                value, _RFC3339_NO_FRACTION).replace(tzinfo=UTC)
+                value, _RFC3339_NO_FRACTION).replace(
+                    tzinfo=pytz.UTC)
     else:
         return None
 
@@ -248,7 +251,7 @@ def _timestamp_to_json_parameter(value):
     This version returns the string representation used in query parameters.
     """
     if isinstance(value, datetime.datetime):
-        if value.tzinfo not in (None, UTC):
+        if value.tzinfo not in (None, pytz.UTC):
             # Convert to UTC and remove the time zone info.
             value = value.replace(tzinfo=None) - value.utcoffset()
         value = '%s %s+00:00' % (

@@ -430,9 +430,9 @@ class TestSnapshot(unittest.TestCase):
 
     def _makeTimestamp(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
-        return datetime.datetime.utcnow().replace(tzinfo=UTC)
+        return datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
 
     def _makeDuration(self, seconds=1, microseconds=0):
         import datetime

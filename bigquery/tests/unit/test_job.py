@@ -105,11 +105,11 @@ class _Base(object):
 
     def _setUpConstants(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         self.ETAG = 'ETAG'
         self.FULL_JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_ID)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
@@ -503,12 +503,12 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_props_set_by_server(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _millis
 
-        CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=UTC)
-        STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=UTC)
-        ENDED = datetime.datetime(2015, 8, 11, 14, 47, 15, tzinfo=UTC)
+        CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=pytz.UTC)
+        STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=pytz.UTC)
+        ENDED = datetime.datetime(2015, 8, 11, 14, 47, 15, tzinfo=pytz.UTC)
         FULL_JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_ID)
         URL = 'http://example.com/projects/%s/jobs/%s' % (
             self.PROJECT, self.JOB_ID)

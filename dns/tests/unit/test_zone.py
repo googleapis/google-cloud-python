@@ -32,7 +32,7 @@ class TestManagedZone(unittest.TestCase):
 
     def _setUpConstants(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         year = 2015
         month = 7
@@ -45,7 +45,7 @@ class TestManagedZone(unittest.TestCase):
         self.WHEN_STR = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
             year, month, day, hour, minute, seconds, micros)
         self.WHEN = datetime.datetime(
-            year, month, day, hour, minute, seconds, micros, tzinfo=UTC)
+            year, month, day, hour, minute, seconds, micros, tzinfo=pytz.UTC)
         self.ZONE_ID = 12345
 
     def _make_resource(self):

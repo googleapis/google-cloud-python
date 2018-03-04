@@ -836,8 +836,8 @@ class Test_decode_value(unittest.TestCase):
     @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_datetime(self):
+        import pytz
         from google.protobuf import timestamp_pb2
-        from google.cloud._helpers import UTC
 
         dt_seconds = 552855006
         dt_nanos = 766961000
@@ -851,7 +851,7 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(timestamp_value=timestamp_pb)
 
         expected_dt_val = datetime.datetime.utcfromtimestamp(
-            dt_seconds + 1e-9 * dt_nanos).replace(tzinfo=UTC)
+            dt_seconds + 1e-9 * dt_nanos).replace(tzinfo=pytz.UTC)
         self.assertEqual(self._call_fut(value), expected_dt_val)
 
     def test_unicode(self):
@@ -976,19 +976,19 @@ class Test_decode_dict(unittest.TestCase):
     @unittest.skipIf((3,) <= sys.version_info < (3, 4, 4),
                      'known datetime bug (bpo-23517) in Python')
     def test_many_types(self):
+        import pytz
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1beta1.proto.document_pb2 import (
             ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
-        from google.cloud._helpers import UTC
 
         dt_seconds = 1394037350
         dt_nanos = 667285000
         # Make sure precision is valid in microseconds too.
         self.assertEqual(dt_nanos % 1000, 0)
         dt_val = datetime.datetime.utcfromtimestamp(
-            dt_seconds + 1e-9 * dt_nanos).replace(tzinfo=UTC)
+            dt_seconds + 1e-9 * dt_nanos).replace(tzinfo=pytz.UTC)
 
         value_fields = {
             'foo': _value_pb(null_value=struct_pb2.NULL_VALUE),

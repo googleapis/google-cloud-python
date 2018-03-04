@@ -565,11 +565,11 @@ class Test__pb_attr_value(unittest.TestCase):
     def test_datetime_naive(self):
         import calendar
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         micros = 4375
         naive = datetime.datetime(2014, 9, 16, 10, 19, 32, micros)  # No zone.
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, pytz.UTC)
         name, value = self._call_fut(naive)
         self.assertEqual(name, 'timestamp_value')
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
@@ -578,10 +578,10 @@ class Test__pb_attr_value(unittest.TestCase):
     def test_datetime_w_zone(self):
         import calendar
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         micros = 4375
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, pytz.UTC)
         name, value = self._call_fut(utc)
         self.assertEqual(name, 'timestamp_value')
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
@@ -702,11 +702,11 @@ class Test__get_value_from_value_pb(unittest.TestCase):
     def test_datetime(self):
         import calendar
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud.datastore_v1.proto import entity_pb2
 
         micros = 4375
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, pytz.UTC)
         pb = entity_pb2.Value()
         pb.timestamp_value.seconds = calendar.timegm(utc.timetuple())
         pb.timestamp_value.nanos = 1000 * micros
@@ -814,11 +814,11 @@ class Test_set_protobuf_value(unittest.TestCase):
     def test_datetime(self):
         import calendar
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         pb = self._makePB()
         micros = 4375
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, pytz.UTC)
         self._call_fut(pb, utc)
         value = pb.timestamp_value
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))

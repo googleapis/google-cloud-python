@@ -21,6 +21,8 @@ import threading
 import time
 import unittest
 
+import pytz
+
 from google.api_core import exceptions
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
@@ -33,7 +35,6 @@ from google.cloud.spanner_v1.proto.type_pb2 import STRING
 from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
 from google.cloud.spanner_v1.proto.type_pb2 import Type
 
-from google.cloud._helpers import UTC
 from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
 from google.cloud.spanner import KeySet
@@ -197,7 +198,7 @@ class _TestData(object):
     def _assert_timestamp(self, value, nano_value):
         self.assertIsInstance(value, datetime.datetime)
         self.assertIsNone(value.tzinfo)
-        self.assertIs(nano_value.tzinfo, UTC)
+        self.assertIs(nano_value.tzinfo, pytz.UTC)
 
         self.assertEqual(value.year, nano_value.year)
         self.assertEqual(value.month, nano_value.month)
@@ -768,12 +769,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         ROW_COUNT = 400
         committed = self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
-        before_reads = datetime.utcnow().replace(tzinfo=UTC)
+        before_reads = datetime.utcnow().replace(tzinfo=pytz.UTC)
 
         # Test w/ read timestamp
         with self._db.snapshot(read_timestamp=committed) as read_tx:
@@ -785,7 +786,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(min_read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
             self._check_row_data(rows, all_data_rows)
 
-        staleness = datetime.utcnow().replace(tzinfo=UTC) - before_reads
+        staleness = datetime.utcnow().replace(tzinfo=pytz.UTC) - before_reads
 
         # Test w/ max staleness
         with self._db.snapshot(max_staleness=staleness) as max_staleness:

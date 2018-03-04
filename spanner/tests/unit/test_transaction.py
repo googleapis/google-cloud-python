@@ -261,12 +261,12 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_ok(self):
         import datetime
+        import pytz
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.keyset import KeySet
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
@@ -293,15 +293,15 @@ class TestTransaction(unittest.TestCase):
 
     def test_context_mgr_success(self):
         import datetime
+        import pytz
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()

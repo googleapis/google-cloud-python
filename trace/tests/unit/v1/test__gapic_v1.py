@@ -167,8 +167,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         return trace_pb
 
     def test_list_traces(self):
+        import pytz
         from google.cloud._helpers import _rfc3339_to_datetime
-        from google.cloud._helpers import UTC
         from google.cloud.trace_v1.gapic import trace_service_client
         from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
         from google.cloud.trace_v1.proto import trace_pb2
@@ -226,10 +226,10 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
         self.assertEqual(
             _rfc3339_to_datetime(span['startTime']),
-            start_ts.replace(tzinfo=UTC))
+            start_ts.replace(tzinfo=pytz.UTC))
         self.assertEqual(
             _rfc3339_to_datetime(span['endTime']),
-            end_ts.replace(tzinfo=UTC))
+            end_ts.replace(tzinfo=pytz.UTC))
         self.assertEqual(span['kind'], span_kind)
         self.assertEqual(span['parentSpanId'], str(parent_span_id))
         self.assertEqual(span['labels'], labels)

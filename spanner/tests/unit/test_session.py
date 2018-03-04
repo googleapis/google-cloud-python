@@ -475,11 +475,11 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_args_w_kwargs_wo_abort(self):
         import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
@@ -490,7 +490,7 @@ class TestSession(unittest.TestCase):
         ]
         TRANSACTION_ID = b'FACEDACE'
         transaction_pb = TransactionPB(id=TRANSACTION_ID)
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         gax_api = _SpannerApi(
@@ -560,11 +560,11 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
         import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
@@ -575,7 +575,7 @@ class TestSession(unittest.TestCase):
         ]
         TRANSACTION_ID = b'FACEDACE'
         transaction_pb = TransactionPB(id=TRANSACTION_ID)
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         gax_api = _SpannerApi(
@@ -607,11 +607,11 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_w_retry_metadata(self):
         import datetime
+        import pytz
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.transaction import Transaction
         from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
@@ -626,7 +626,7 @@ class TestSession(unittest.TestCase):
         RETRY_SECONDS = 12
         RETRY_NANOS = 3456
         transaction_pb = TransactionPB(id=TRANSACTION_ID)
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         gax_api = _SpannerApi(
@@ -666,11 +666,11 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_callback_raises_abort_wo_metadata(self):
         import datetime
+        import pytz
         from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1.transaction import Transaction
         from google.cloud.spanner_v1 import session as MUT
@@ -686,7 +686,7 @@ class TestSession(unittest.TestCase):
         RETRY_SECONDS = 1
         RETRY_NANOS = 3456
         transaction_pb = TransactionPB(id=TRANSACTION_ID)
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         gax_api = _SpannerApi(
@@ -728,11 +728,11 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_w_retry_metadata_deadline(self):
         import datetime
+        import pytz
         from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
@@ -747,7 +747,7 @@ class TestSession(unittest.TestCase):
         RETRY_SECONDS = 1
         RETRY_NANOS = 3456
         transaction_pb = TransactionPB(id=TRANSACTION_ID)
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         gax_api = _SpannerApi(

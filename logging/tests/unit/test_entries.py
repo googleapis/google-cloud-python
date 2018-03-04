@@ -129,7 +129,7 @@ class Test_BaseEntry(unittest.TestCase):
 
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud.logging.resource import Resource
 
         klass = self._get_target_class()
@@ -137,7 +137,7 @@ class Test_BaseEntry(unittest.TestCase):
         PAYLOAD = 'PAYLOAD'
         SEVERITY = 'CRITICAL'
         IID = 'IID'
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.utcnow().replace(tzinfo=pytz.UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -187,12 +187,12 @@ class Test_BaseEntry(unittest.TestCase):
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.utcnow().replace(tzinfo=pytz.UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}

@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytz
 
 
 class Test__LocalStack(unittest.TestCase):
@@ -44,72 +45,6 @@ class Test__LocalStack(unittest.TestCase):
         popped = batches.pop()
         self.assertIsNone(batches.top)
         self.assertEqual(list(batches), [])
-
-
-class Test__UTC(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud._helpers import _UTC
-
-        return _UTC
-
-    def _make_one(self):
-        return self._get_target_class()()
-
-    def test_module_property(self):
-        from google.cloud import _helpers as MUT
-
-        klass = self._get_target_class()
-        try:
-            import pytz
-        except ImportError:  # pragma: NO COVER
-            self.assertIsInstance(MUT.UTC, klass)
-        else:
-            self.assertIs(MUT.UTC, pytz.UTC)
-
-    def test_dst(self):
-        import datetime
-
-        tz = self._make_one()
-        self.assertEqual(tz.dst(None), datetime.timedelta(0))
-
-    def test_fromutc(self):
-        import datetime
-
-        naive_epoch = datetime.datetime(
-            1970, 1, 1, 0, 0, 1, tzinfo=None)
-        self.assertIsNone(naive_epoch.tzinfo)
-        tz = self._make_one()
-        epoch = tz.fromutc(naive_epoch)
-        self.assertEqual(epoch.tzinfo, tz)
-
-    def test_fromutc_with_tz(self):
-        import datetime
-
-        tz = self._make_one()
-        epoch_with_tz = datetime.datetime(
-            1970, 1, 1, 0, 0, 1, tzinfo=tz)
-        epoch = tz.fromutc(epoch_with_tz)
-        self.assertEqual(epoch.tzinfo, tz)
-
-    def test_tzname(self):
-        tz = self._make_one()
-        self.assertEqual(tz.tzname(None), 'UTC')
-
-    def test_utcoffset(self):
-        import datetime
-
-        tz = self._make_one()
-        self.assertEqual(tz.utcoffset(None), datetime.timedelta(0))
-
-    def test___repr__(self):
-        tz = self._make_one()
-        self.assertEqual(repr(tz), '<UTC>')
-
-    def test___str__(self):
-        tz = self._make_one()
-        self.assertEqual(str(tz), 'UTC')
 
 
 class Test__ensure_tuple_or_list(unittest.TestCase):
@@ -173,9 +108,8 @@ class Test__millis(unittest.TestCase):
 
     def test_one_second_from_epoch(self):
         import datetime
-        from google.cloud._helpers import UTC
 
-        WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=UTC)
+        WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=pytz.UTC)
         self.assertEqual(self._call_fut(WHEN), 1000)
 
 
@@ -210,10 +144,9 @@ class Test__millis_from_datetime(unittest.TestCase):
     def test_w_utc_datetime(self):
         import datetime
         import six
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
-        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._call_fut(NOW)
@@ -223,12 +156,16 @@ class Test__millis_from_datetime(unittest.TestCase):
     def test_w_non_utc_datetime(self):
         import datetime
         import six
-        from google.cloud._helpers import _UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
-        class CET(_UTC):
+        class CET(datetime.tzinfo):
             _tzname = 'CET'
-            _utcoffset = datetime.timedelta(hours=-1)
+
+            def utcoffset(self, dt):
+                return datetime.timedelta(hours=-1)
+
+            def dst(self, dt):
+                return datetime.timedelta(0)
 
         zone = CET()
         NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=zone)
@@ -237,15 +174,15 @@ class Test__millis_from_datetime(unittest.TestCase):
         result = self._call_fut(NOW)
         self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
+        self.assertEqual(zone.dst(0), datetime.timedelta(0))
 
     def test_w_naive_datetime(self):
         import datetime
         import six
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
         NOW = datetime.datetime.utcnow()
-        UTC_NOW = NOW.replace(tzinfo=UTC)
+        UTC_NOW = NOW.replace(tzinfo=pytz.UTC)
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
         result = self._call_fut(NOW)
@@ -262,11 +199,10 @@ class Test__datetime_from_microseconds(unittest.TestCase):
 
     def test_it(self):
         import datetime
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
         NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
-                                tzinfo=UTC)
+                                tzinfo=pytz.UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
         self.assertEqual(self._call_fut(NOW_MICROS), NOW)
 
@@ -322,7 +258,6 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def test_w_microseconds(self):
         import datetime
-        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -336,7 +271,7 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
             year, month, day, hour, minute, seconds, micros)
         result = self._call_fut(dt_str)
         expected_result = datetime.datetime(
-            year, month, day, hour, minute, seconds, micros, UTC)
+            year, month, day, hour, minute, seconds, micros, pytz.UTC)
         self.assertEqual(result, expected_result)
 
     def test_w_naonseconds(self):
@@ -377,7 +312,6 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def test_w_truncated_nanos(self):
         import datetime
-        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -401,12 +335,11 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
                 year, month, day, hour, minute, seconds, truncated)
             result = self._call_fut(dt_str)
             expected_result = datetime.datetime(
-                year, month, day, hour, minute, seconds, micros, UTC)
+                year, month, day, hour, minute, seconds, micros, pytz.UTC)
             self.assertEqual(result, expected_result)
 
     def test_without_nanos(self):
         import datetime
-        from google.cloud._helpers import UTC
 
         year = 1988
         month = 4
@@ -419,12 +352,11 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
             year, month, day, hour, minute, seconds)
         result = self._call_fut(dt_str)
         expected_result = datetime.datetime(
-            year, month, day, hour, minute, seconds, 0, UTC)
+            year, month, day, hour, minute, seconds, 0, pytz.UTC)
         self.assertEqual(result, expected_result)
 
     def test_w_naonseconds(self):
         import datetime
-        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -439,7 +371,7 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
             year, month, day, hour, minute, seconds, nanos)
         result = self._call_fut(dt_str)
         expected_result = datetime.datetime(
-            year, month, day, hour, minute, seconds, micros, UTC)
+            year, month, day, hour, minute, seconds, micros, pytz.UTC)
         self.assertEqual(result, expected_result)
 
 
@@ -452,19 +384,25 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     @staticmethod
     def _make_timezone(offset):
-        from google.cloud._helpers import _UTC
+        from datetime import tzinfo
+        from datetime import timedelta
 
-        class CET(_UTC):
+        class CET(tzinfo):
+
             _tzname = 'CET'
-            _utcoffset = offset
+
+            def utcoffset(self, dt):
+                return offset
+
+            def dst(self, dst):
+                return timedelta(0)
 
         return CET()
 
     def test_w_utc_datetime(self):
         import datetime
-        from google.cloud._helpers import UTC
 
-        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=pytz.UTC)
         result = self._call_fut(TIMESTAMP, ignore_zone=False)
         self.assertEqual(result, '2016-04-05T13:30:00.000000Z')
 
@@ -552,12 +490,11 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
     def test_it(self):
         import datetime
         from google.protobuf.timestamp_pb2 import Timestamp
-        from google.cloud._helpers import UTC
 
         # Epoch is midnight on January 1, 1970 ...
         dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
                                      minute=1, second=1, microsecond=1234,
-                                     tzinfo=UTC)
+                                     tzinfo=pytz.UTC)
         # ... so 1 minute and 1 second after is 61 seconds and 1234
         # microseconds is 1234000 nanoseconds.
         timestamp = Timestamp(seconds=61, nanos=1234000)
@@ -621,12 +558,11 @@ class Test__datetime_to_pb_timestamp(unittest.TestCase):
     def test_it(self):
         import datetime
         from google.protobuf.timestamp_pb2 import Timestamp
-        from google.cloud._helpers import UTC
 
         # Epoch is midnight on January 1, 1970 ...
         dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
                                      minute=1, second=1, microsecond=1234,
-                                     tzinfo=UTC)
+                                     tzinfo=pytz.UTC)
         # ... so 1 minute and 1 second after is 61 seconds and 1234
         # microseconds is 1234000 nanoseconds.
         timestamp = Timestamp(seconds=61, nanos=1234000)

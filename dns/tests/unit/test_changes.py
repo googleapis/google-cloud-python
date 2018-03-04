@@ -30,10 +30,10 @@ class TestChanges(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _NOW
 
-        self.WHEN = _NOW().replace(tzinfo=UTC)
+        self.WHEN = _NOW().replace(tzinfo=pytz.UTC)
 
     def _make_resource(self):
         from google.cloud._helpers import _datetime_to_rfc3339

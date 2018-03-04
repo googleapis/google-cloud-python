@@ -25,6 +25,7 @@ import os
 import re
 from threading import local as Local
 
+import pytz
 import six
 from six.moves import http_client
 
@@ -64,6 +65,7 @@ _GCLOUD_CONFIG_FILE = os.path.join(
     'gcloud', 'configurations', 'config_default')
 _GCLOUD_CONFIG_SECTION = 'core'
 _GCLOUD_CONFIG_KEY = 'project'
+_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.UTC)
 
 
 class _LocalStack(Local):
@@ -104,41 +106,6 @@ class _LocalStack(Local):
         """
         if self._stack:
             return self._stack[-1]
-
-
-class _UTC(datetime.tzinfo):
-    """Basic UTC implementation.
-
-    Implementing a small surface area to avoid depending on ``pytz``.
-    """
-
-    _dst = datetime.timedelta(0)
-    _tzname = 'UTC'
-    _utcoffset = _dst
-
-    def dst(self, dt):  # pylint: disable=unused-argument
-        """Daylight savings time offset."""
-        return self._dst
-
-    def fromutc(self, dt):
-        """Convert a timestamp from (naive) UTC to this timezone."""
-        if dt.tzinfo is None:
-            return dt.replace(tzinfo=self)
-        return super(_UTC, self).fromutc(dt)
-
-    def tzname(self, dt):  # pylint: disable=unused-argument
-        """Get the name of this timezone."""
-        return self._tzname
-
-    def utcoffset(self, dt):  # pylint: disable=unused-argument
-        """UTC offset of this timezone."""
-        return self._utcoffset
-
-    def __repr__(self):
-        return '<%s>' % (self._tzname,)
-
-    def __str__(self):
-        return self._tzname
 
 
 def _ensure_tuple_or_list(arg_name, tuple_or_list):
@@ -215,9 +182,9 @@ def _microseconds_from_datetime(value):
     :returns: The timestamp, in microseconds.
     """
     if not value.tzinfo:
-        value = value.replace(tzinfo=UTC)
+        value = value.replace(tzinfo=pytz.UTC)
     # Regardless of what timezone is on the value, convert it to UTC.
-    value = value.astimezone(UTC)
+    value = value.astimezone(pytz.UTC)
     # Convert the datetime to a microsecond timestamp.
     return int(calendar.timegm(value.timetuple()) * 1e6) + value.microsecond
 
@@ -271,7 +238,7 @@ def _rfc3339_to_datetime(dt_str):
     :returns: The datetime object created from the string.
     """
     return datetime.datetime.strptime(
-        dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
+        dt_str, _RFC3339_MICROS).replace(tzinfo=pytz.UTC)
 
 
 def _rfc3339_nanos_to_datetime(dt_str):
@@ -304,7 +271,7 @@ def _rfc3339_nanos_to_datetime(dt_str):
         scale = 9 - len(fraction)
         nanos = int(fraction) * (10 ** scale)
         micros = nanos // 1000
-    return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
+    return bare_seconds.replace(microsecond=micros, tzinfo=pytz.UTC)
 
 
 def _datetime_to_rfc3339(value, ignore_zone=True):
@@ -616,12 +583,3 @@ def make_insecure_stub(stub_class, host, port=None):
         target = '%s:%d' % (host, port)
     channel = grpc.insecure_channel(target)
     return stub_class(channel)
-
-
-try:
-    from pytz import UTC  # pylint: disable=unused-import,wrong-import-order
-except ImportError:  # pragma: NO COVER
-    UTC = _UTC()  # Singleton instance to be used throughout.
-
-# Need to define _EPOCH at the end of module since it relies on UTC.
-_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
