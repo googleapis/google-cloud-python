@@ -36,14 +36,21 @@ from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
+from google.cloud.bigquery.job import CreateDisposition
+from google.cloud.bigquery.job import DestinationFormat
+from google.cloud.bigquery.job import Encoding
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import ExtractJobConfig
-from google.cloud.bigquery.job import QueryJob
-from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import LoadJobConfig
+from google.cloud.bigquery.job import QueryJob
+from google.cloud.bigquery.job import QueryJobConfig
+from google.cloud.bigquery.job import QueryPriority
+from google.cloud.bigquery.job import SourceFormat
+from google.cloud.bigquery.job import WriteDisposition
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
@@ -94,4 +101,12 @@ __all__ = [
     'CSVOptions',
     'GoogleSheetsOptions',
     'DEFAULT_RETRY',
+    # Enum Constants
+    'Compression',
+    'CreateDisposition',
+    'DestinationFormat',
+    'Encoding',
+    'QueryPriority',
+    'SourceFormat',
+    'WriteDisposition'
 ]
