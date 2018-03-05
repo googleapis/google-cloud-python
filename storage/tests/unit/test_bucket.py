@@ -1494,6 +1494,92 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(properties=properties)
         self.assertEqual(bucket.project_number, PROJECT_NUMBER)
 
+    def test_retention_policy_effective_time_policy_missing(self):
+        bucket = self._make_one()
+        self.assertIsNone(bucket.retention_policy_effective_time)
+
+    def test_retention_policy_effective_time_et_missing(self):
+        properties = {
+            'retentionPolicy': {
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertIsNone(bucket.retention_policy_effective_time)
+
+    def test_retention_policy_effective_time(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import UTC
+
+        effective_time = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        properties = {
+            'retentionPolicy': {
+                'effectiveTime': _datetime_to_rfc3339(effective_time),
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertEqual(
+            bucket.retention_policy_effective_time, effective_time)
+
+    def test_retention_policy_locked_missing(self):
+        bucket = self._make_one()
+        self.assertFalse(bucket.retention_policy_locked)
+
+    def test_retention_policy_locked_false(self):
+        properties = {
+            'retentionPolicy': {
+                'isLocked': False,
+            },
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertFalse(bucket.retention_policy_locked)
+
+    def test_retention_policy_locked_true(self):
+        properties = {
+            'retentionPolicy': {
+                'isLocked': True,
+            },
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertTrue(bucket.retention_policy_locked)
+
+    def test_retention_period_getter_policymissing(self):
+        bucket = self._make_one()
+
+        self.assertIsNone(bucket.retention_period)
+
+    def test_retention_period_getter_pr_missing(self):
+        properties = {
+            'retentionPolicy': {
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertIsNone(bucket.retention_period)
+
+    def test_retention_period_getter(self):
+        period = 86400 * 100  # 100 days
+        properties = {
+            'retentionPolicy': {
+                'retentionPeriod': str(period),
+            },
+        }
+        bucket = self._make_one(properties=properties)
+
+        self.assertEqual(bucket.retention_period, period)
+
+    def test_retention_period_setter(self):
+        period = 86400 * 100  # 100 days
+        bucket = self._make_one()
+
+        bucket.retention_period = period
+
+        self.assertEqual(
+            bucket._properties['retentionPolicy']['retentionPeriod'],
+            str(period))
+
     def test_self_link(self):
         SELF_LINK = 'http://example.com/self/'
         properties = {'selfLink': SELF_LINK}

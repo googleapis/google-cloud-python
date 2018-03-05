@@ -972,6 +972,21 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property('cors', entries)
 
+    default_event_based_hold = _scalar_property('defaultEventBasedHold')
+    """Are uploaded objects automatically placed under an even-based hold?
+
+    If True, uploaded objects will be placed under an event-based hold to
+    be released at a future time. When released an object will then begin
+    the retention period determined by the policy retention period for the
+    object bucket.
+
+    See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+    If the property is not set locally, returns ``None``.
+
+    :rtype: bool or ``NoneType``
+    """
+
     @property
     def default_kms_key_name(self):
         """Retrieve / set default KMS encryption key for objects in the bucket.
@@ -1275,6 +1290,64 @@ class Bucket(_PropertyMixin):
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
             return int(project_number)
+
+    @property
+    def retention_policy_effective_time(self):
+        """Retrieve the effective time of the bucket's retention policy.
+
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's retention policy is
+                  effective, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            timestamp = policy.get('effectiveTime')
+            if timestamp is not None:
+                return _rfc3339_to_datetime(timestamp)
+
+    @property
+    def retention_policy_locked(self):
+        """Retrieve whthere the bucket's retention policy is locked.
+
+        :rtype: bool
+        :returns: True if the bucket's policy is locked, or else False
+                  if the policy is not locked, or the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            return policy.get('isLocked')
+
+    @property
+    def retention_period(self):
+        """Retrieve or set the retention period for items in the bucket.
+
+        :rtype: int or ``NoneType``
+        :returns: number of seconds to retain items after upload or release
+                  from event-based lock, or ``None`` if the property is not
+                  set locally.
+        """
+        policy = self._properties.get('retentionPolicy')
+        if policy is not None:
+            period = policy.get('retentionPeriod')
+            if period is not None:
+                return int(period)
+
+    @retention_period.setter
+    def retention_period(self, value):
+        """Set the retention period for items in the bucket.
+
+        :type value: int
+        :param value:
+            number of seconds to retain items after upload or release from
+            event-based lock.
+
+        :raises ValueError: if the bucket's retention policy is locked.
+        """
+        policy = self._properties.setdefault('retentionPolicy', {})
+        policy['retentionPeriod'] = str(value)
+        self._patch_property('retentionPolicy', policy)
 
     @property
     def self_link(self):
