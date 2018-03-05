@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud d8c5002 documentation</title>
+    <title>API Reference &#8212; google-cloud 963db69 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -984,7 +984,8 @@ is already defined.</td>
 <dt id="google.cloud.bigquery.job.Compression">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">Compression</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#Compression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.Compression" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">compression</span></code> properties.</p>
+<p>The compression type to use for exported files.</p>
+<p>Possible values include <cite>GZIP</cite> and <cite>NONE</cite>. The default value is <cite>NONE</cite>.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1133,21 +1134,35 @@ returned from the API.</td>
 <dt id="google.cloud.bigquery.job.CreateDisposition">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">CreateDisposition</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#CreateDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.CreateDisposition" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">create_disposition</span></code> properties.</p>
+<p>Specifies whether the job is allowed to create new tables.</p>
+<p>The following values are supported:
+<cite>CREATE_IF_NEEDED</cite>: If the table does not exist, BigQuery creates
+the table.
+<cite>CREATE_NEVER</cite>: The table must already exist. If it does not,
+a ‘notFound’ error is returned in the job result.
+The default value is <cite>CREATE_IF_NEEDED</cite>.</p>
+<p>Creation, truncation and append actions occur as one atomic update
+upon job completion.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery.job.DestinationFormat">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">DestinationFormat</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#DestinationFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.DestinationFormat" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">destination_format</span></code> properties.</p>
+<p>The exported file format.</p>
+<p>Possible values include <cite>CSV</cite>, <cite>NEWLINE_DELIMITED_JSON</cite> and <cite>AVRO</cite>.
+The default value is <cite>CSV</cite>. Tables with nested or repeated fields
+cannot be exported as CSV.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery.job.Encoding">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">Encoding</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#Encoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.Encoding" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">encoding</span></code> properties.</p>
+<p>The character encoding of the data. The supported values
+are <cite>UTF-8</cite> or <cite>ISO-8859-1</cite>. The default value is <cite>UTF-8</cite>.</p>
+<p>BigQuery decodes the data after the raw, binary data has been
+split using the values of the quote and fieldDelimiter properties.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2362,21 +2377,38 @@ defined function resources (empty by default)</p>
 <dt id="google.cloud.bigquery.job.QueryPriority">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">QueryPriority</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryPriority"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryPriority" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">QueryJob.priority</span></code> property.</p>
+<p>Specifies a priority for the query.</p>
+<p>Possible values include <cite>INTERACTIVE</cite> and <cite>BATCH</cite>. The default value
+is <cite>INTERACTIVE</cite>.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery.job.SourceFormat">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">SourceFormat</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#SourceFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.SourceFormat" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">source_format</span></code> properties.</p>
+<p>The format of the data files.</p>
+<p>For CSV files, specify <cite>CSV</cite>. For datastore backups, specify
+<cite>DATASTORE_BACKUP</cite>. For newline-delimited json, specify
+<cite>NEWLINE_DELIMITED_JSON</cite>. For Avro, specify <cite>AVRO</cite>. The default
+value is <cite>CSV</cite>.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery.job.WriteDisposition">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">WriteDisposition</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#WriteDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.WriteDisposition" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery._helpers._EnumApiResourceProperty</span></code></p>
-<p>Pseudo-enum for <code class="docutils literal notranslate"><span class="pre">write_disposition</span></code> properties.</p>
+<p>Specifies the action that occurs if destination table already exists.</p>
+<p>The following values are supported:
+<cite>WRITE_TRUNCATE</cite>: If the table already exists, BigQuery overwrites the
+table data.
+<cite>WRITE_APPEND</cite>: If the table already exists, BigQuery appends the data
+to the table.
+<cite>WRITE_EMPTY</cite>: If the table already exists and contains data, a ‘duplicate’
+error is returned in the job result.
+The default value is <cite>WRITE_APPEND</cite>.</p>
+<p>Each action is atomic and only occurs if BigQuery is able to complete
+the job successfully. Creation, truncation and append actions occur as one
+atomic update upon job completion.</p>
 </dd></dl>
 
 </div>
@@ -2422,7 +2454,7 @@ a non <code class="docutils literal notranslate"><span class="pre">view</span></
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'domain', 'specialGroup', 'groupByEmail', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'groupByEmail', 'userByEmail', 'specialGroup', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 

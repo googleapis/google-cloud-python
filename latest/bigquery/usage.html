@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud d8c5002 documentation</title>
+    <title>BigQuery &#8212; google-cloud 963db69 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -357,7 +357,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
         <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">),</span>
         <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;post_abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">)</span>
     <span class="p">]</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
 
     <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
         <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
@@ -377,7 +377,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
 
     <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
         <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
@@ -396,8 +396,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_APPEND&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">WriteDisposition</span><span class="o">.</span><span class="n">WRITE_APPEND</span>
 
     <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
         <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
@@ -418,8 +418,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">WriteDisposition</span><span class="o">.</span><span class="n">WRITE_TRUNCATE</span>
 
     <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
         <span class="s1">&#39;gs://cloud-samples-data/bigquery/us-states/us-states.json&#39;</span><span class="p">,</span>
@@ -483,7 +483,7 @@ Cloud KMS for the destination table.</p>
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
 
     <span class="c1"># Set the encryption key to use for the destination.</span>
     <span class="c1"># TODO: Replace this key with a key you have created in KMS.</span>

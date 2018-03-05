@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud d8c5002 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 963db69 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -123,38 +123,72 @@
 
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``compression`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The compression type to use for exported files.</span>
+
+<span class="sd">    Possible values include `GZIP` and `NONE`. The default value is `NONE`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">GZIP</span> <span class="o">=</span> <span class="s1">&#39;GZIP&#39;</span></div>
     <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;NONE&#39;</span>
 
 
 <div class="viewcode-block" id="CreateDisposition"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.CreateDisposition">[docs]</a><span class="k">class</span> <span class="nc">CreateDisposition</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``create_disposition`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Specifies whether the job is allowed to create new tables.</span>
+
+<span class="sd">    The following values are supported:</span>
+<span class="sd">    `CREATE_IF_NEEDED`: If the table does not exist, BigQuery creates</span>
+<span class="sd">    the table.</span>
+<span class="sd">    `CREATE_NEVER`: The table must already exist. If it does not,</span>
+<span class="sd">    a &#39;notFound&#39; error is returned in the job result.</span>
+<span class="sd">    The default value is `CREATE_IF_NEEDED`.</span>
+
+<span class="sd">    Creation, truncation and append actions occur as one atomic update</span>
+<span class="sd">    upon job completion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">CREATE_IF_NEEDED</span> <span class="o">=</span> <span class="s1">&#39;CREATE_IF_NEEDED&#39;</span></div>
     <span class="n">CREATE_NEVER</span> <span class="o">=</span> <span class="s1">&#39;CREATE_NEVER&#39;</span>
 
 
 <div class="viewcode-block" id="DestinationFormat"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.DestinationFormat">[docs]</a><span class="k">class</span> <span class="nc">DestinationFormat</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``destination_format`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The exported file format.</span>
+
+<span class="sd">    Possible values include `CSV`, `NEWLINE_DELIMITED_JSON` and `AVRO`.</span>
+<span class="sd">    The default value is `CSV`. Tables with nested or repeated fields</span>
+<span class="sd">    cannot be exported as CSV.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span></div>
     <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
 
 
 <div class="viewcode-block" id="Encoding"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.Encoding">[docs]</a><span class="k">class</span> <span class="nc">Encoding</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``encoding`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The character encoding of the data. The supported values</span>
+<span class="sd">    are `UTF-8` or `ISO-8859-1`. The default value is `UTF-8`.</span>
+
+<span class="sd">    BigQuery decodes the data after the raw, binary data has been</span>
+<span class="sd">    split using the values of the quote and fieldDelimiter properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">UTF_8</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span></div>
     <span class="n">ISO_8559_1</span> <span class="o">=</span> <span class="s1">&#39;ISO-8559-1&#39;</span>
 
 
 <div class="viewcode-block" id="QueryPriority"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryPriority">[docs]</a><span class="k">class</span> <span class="nc">QueryPriority</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``QueryJob.priority`` property.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Specifies a priority for the query.</span>
+
+<span class="sd">    Possible values include `INTERACTIVE` and `BATCH`. The default value</span>
+<span class="sd">    is `INTERACTIVE`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">INTERACTIVE</span> <span class="o">=</span> <span class="s1">&#39;INTERACTIVE&#39;</span></div>
     <span class="n">BATCH</span> <span class="o">=</span> <span class="s1">&#39;BATCH&#39;</span>
 
 
 <div class="viewcode-block" id="SourceFormat"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.SourceFormat">[docs]</a><span class="k">class</span> <span class="nc">SourceFormat</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``source_format`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The format of the data files.</span>
+
+<span class="sd">    For CSV files, specify `CSV`. For datastore backups, specify</span>
+<span class="sd">    `DATASTORE_BACKUP`. For newline-delimited json, specify</span>
+<span class="sd">    `NEWLINE_DELIMITED_JSON`. For Avro, specify `AVRO`. The default</span>
+<span class="sd">    value is `CSV`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">DATASTORE_BACKUP</span> <span class="o">=</span> <span class="s1">&#39;DATASTORE_BACKUP&#39;</span>
     <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span></div>
@@ -162,7 +196,21 @@
 
 
 <div class="viewcode-block" id="WriteDisposition"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.WriteDisposition">[docs]</a><span class="k">class</span> <span class="nc">WriteDisposition</span><span class="p">(</span><span class="n">_EnumApiResourceProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``write_disposition`` properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Specifies the action that occurs if destination table already exists.</span>
+
+<span class="sd">    The following values are supported:</span>
+<span class="sd">    `WRITE_TRUNCATE`: If the table already exists, BigQuery overwrites the</span>
+<span class="sd">    table data.</span>
+<span class="sd">    `WRITE_APPEND`: If the table already exists, BigQuery appends the data</span>
+<span class="sd">    to the table.</span>
+<span class="sd">    `WRITE_EMPTY`: If the table already exists and contains data, a &#39;duplicate&#39;</span>
+<span class="sd">    error is returned in the job result.</span>
+<span class="sd">    The default value is `WRITE_APPEND`.</span>
+
+<span class="sd">    Each action is atomic and only occurs if BigQuery is able to complete</span>
+<span class="sd">    the job successfully. Creation, truncation and append actions occur as one</span>
+<span class="sd">    atomic update upon job completion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">WRITE_APPEND</span> <span class="o">=</span> <span class="s1">&#39;WRITE_APPEND&#39;</span>
     <span class="n">WRITE_TRUNCATE</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span></div>
     <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span>
