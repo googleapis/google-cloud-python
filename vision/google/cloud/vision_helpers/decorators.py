@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+import copy
+
 
 def add_single_feature_methods(cls):
     """Custom decorator intended for :class:`~vision.helpers.VisionHelpers`.
@@ -99,20 +101,23 @@ def _create_single_feature_method(feature, enum):
     feature_value = {'type': enum.__dict__[feature]}
 
     # Define the function to be returned.
-    def inner(self, image, max_results=2**31-1,
+    def inner(self, image, max_results=None,
               retry=None, timeout=None, **kwargs):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
         single-feature methods.
         """
-        feature_value['max_results'] = max_results
+        copied_features = copy.copy(feature_value)
+        if max_results is not None:
+            copied_features['max_results'] = max_results
         request = dict(
             image=image,
-            features=[feature_value],
+            features=[copied_features],
             **kwargs
         )
-        return self.annotate_image(request, retry=retry, timeout=timeout)
+        response = self.annotate_image(request, retry=retry, timeout=timeout)
+        return response
 
     # Set the appropriate function metadata.
     inner.__name__ = fx_name
