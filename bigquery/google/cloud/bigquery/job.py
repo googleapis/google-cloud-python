@@ -90,38 +90,72 @@ def _error_result_to_exception(error_result):
 
 
 class Compression(_EnumApiResourceProperty):
-    """Pseudo-enum for ``compression`` properties."""
+    """The compression type to use for exported files.
+
+    Possible values include `GZIP` and `NONE`. The default value is `NONE`.
+    """
     GZIP = 'GZIP'
     NONE = 'NONE'
 
 
 class CreateDisposition(_EnumApiResourceProperty):
-    """Pseudo-enum for ``create_disposition`` properties."""
+    """Specifies whether the job is allowed to create new tables.
+
+    The following values are supported:
+    `CREATE_IF_NEEDED`: If the table does not exist, BigQuery creates
+    the table.
+    `CREATE_NEVER`: The table must already exist. If it does not,
+    a 'notFound' error is returned in the job result.
+    The default value is `CREATE_IF_NEEDED`.
+
+    Creation, truncation and append actions occur as one atomic update
+    upon job completion.
+    """
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
     CREATE_NEVER = 'CREATE_NEVER'
 
 
 class DestinationFormat(_EnumApiResourceProperty):
-    """Pseudo-enum for ``destination_format`` properties."""
+    """The exported file format.
+
+    Possible values include `CSV`, `NEWLINE_DELIMITED_JSON` and `AVRO`.
+    The default value is `CSV`. Tables with nested or repeated fields
+    cannot be exported as CSV.
+    """
     CSV = 'CSV'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
 
 
 class Encoding(_EnumApiResourceProperty):
-    """Pseudo-enum for ``encoding`` properties."""
+    """The character encoding of the data. The supported values
+    are `UTF-8` or `ISO-8859-1`. The default value is `UTF-8`.
+
+    BigQuery decodes the data after the raw, binary data has been
+    split using the values of the quote and fieldDelimiter properties.
+    """
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
 
 
 class QueryPriority(_EnumApiResourceProperty):
-    """Pseudo-enum for ``QueryJob.priority`` property."""
+    """Specifies a priority for the query.
+
+    Possible values include `INTERACTIVE` and `BATCH`. The default value
+    is `INTERACTIVE`.
+    """
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
 
 
 class SourceFormat(_EnumApiResourceProperty):
-    """Pseudo-enum for ``source_format`` properties."""
+    """The format of the data files.
+
+    For CSV files, specify `CSV`. For datastore backups, specify
+    `DATASTORE_BACKUP`. For newline-delimited json, specify
+    `NEWLINE_DELIMITED_JSON`. For Avro, specify `AVRO`. The default
+    value is `CSV`.
+    """
     CSV = 'CSV'
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
@@ -129,7 +163,21 @@ class SourceFormat(_EnumApiResourceProperty):
 
 
 class WriteDisposition(_EnumApiResourceProperty):
-    """Pseudo-enum for ``write_disposition`` properties."""
+    """Specifies the action that occurs if destination table already exists.
+
+    The following values are supported:
+    `WRITE_TRUNCATE`: If the table already exists, BigQuery overwrites the
+    table data.
+    `WRITE_APPEND`: If the table already exists, BigQuery appends the data
+    to the table.
+    `WRITE_EMPTY`: If the table already exists and contains data, a 'duplicate'
+    error is returned in the job result.
+    The default value is `WRITE_APPEND`.
+
+    Each action is atomic and only occurs if BigQuery is able to complete
+    the job successfully. Creation, truncation and append actions occur as one
+    atomic update upon job completion.
+    """
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
