@@ -2414,6 +2414,114 @@ class Test_Bucket(unittest.TestCase):
         with self.assertRaises(AttributeError):
             bucket.generate_upload_policy([])
 
+    def test_lock_retention_policy_no_policy_set(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_no_metageneration(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_already_locked(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'isLocked': True,
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        with self.assertRaises(ValueError):
+            bucket.lock_retention_policy()
+
+    def test_lock_retention_policy_ok(self):
+        name = 'name'
+        response = {
+            'name': name,
+            'metageneration': 1235,
+            'retentionPolicy': {
+                'effectiveTime': '2018-03-01T16:46:27.123456Z',
+                'isLocked': True,
+                'retentionPeriod': 86400 * 100,  # 100 days
+            },
+        }
+        credentials = object()
+        connection = _Connection(response)
+        connection.credentials = credentials
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=name)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        bucket.lock_retention_policy()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b/{}/lockRetentionPolicy'.format(name))
+        self.assertEqual(kw['query_params'], {'metageneration': 1234})
+
+    def test_lock_retention_policy_w_user_project(self):
+        name = 'name'
+        user_project = 'user-project-123'
+        response = {
+            'name': name,
+            'metageneration': 1235,
+            'retentionPolicy': {
+                'effectiveTime': '2018-03-01T16:46:27.123456Z',
+                'isLocked': True,
+                'retentionPeriod': 86400 * 100,  # 100 days
+            },
+        }
+        credentials = object()
+        connection = _Connection(response)
+        connection.credentials = credentials
+        client = _Client(connection)
+        bucket = self._make_one(
+            client=client, name=name, user_project=user_project)
+        bucket._properties['metageneration'] = 1234
+        bucket._properties['retentionPolicy'] = {
+            'effectiveTime': '2018-03-01T16:46:27.123456Z',
+            'retentionPeriod': 86400 * 100,  # 100 days
+        }
+
+        bucket.lock_retention_policy()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b/{}/lockRetentionPolicy'.format(name))
+        self.assertEqual(
+            kw['query_params'], {
+                'metageneration': 1234,
+                'userProject': user_project,
+            })
+
 
 class _Connection(object):
     _delete_bucket = False

@@ -1781,3 +1781,37 @@ class Bucket(_PropertyMixin):
         }
 
         return fields
+
+    def lock_retention_policy(self, client=None):
+        """Lock the bucket's retention policy.
+
+        :raises ValueError:
+            if the bucket has no metageneration (i.e., new or never reloaded);
+            if the bucket has no retention policy assigned;
+            if the bucket's retention policy is already locked.
+        """
+        if 'metageneration' not in self._properties:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        policy = self._properties.get('retentionPolicy')
+
+        if policy is None:
+            raise ValueError(
+                "Bucket has no retention policy assigned: try 'reload'?")
+
+        if policy.get('isLocked'):
+            raise ValueError("Bucket's retention policy is already locked.")
+
+        client = self._require_client(client)
+
+        query_params = {'metageneration': self.metageneration}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
+        path = '/b/{}/lockRetentionPolicy'.format(self.name)
+        api_response = client._connection.api_request(
+            method='POST', path=path, query_params=query_params,
+            _target_object=self)
+        self._set_properties(api_response)
