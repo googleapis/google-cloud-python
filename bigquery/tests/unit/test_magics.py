@@ -138,6 +138,7 @@ def test_extension_load():
 def test_bigquery_magic_without_optional_arguments():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.client = mock.Mock(spec=google.cloud.bigquery.client.Client)
 
     SQL = 'SELECT 17 AS num'
     RESULT = pandas.DataFrame([17], columns=['num'])
@@ -145,10 +146,8 @@ def test_bigquery_magic_without_optional_arguments():
         'google.cloud.bigquery.magics._run_query', autospec=True)
     query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
     query_job_mock().to_dataframe.return_value = RESULT
-    client_mock = mock.Mock(spec='google.cloud.bigquery.magics.Client')
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock()
-        magics.context.client = client_mock()
 
         result = ip.run_cell_magic('bigquery', '', SQL)
 
@@ -161,6 +160,7 @@ def test_bigquery_magic_without_optional_arguments():
 def test_bigquery_magic_with_legacy_sql():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.client = mock.Mock(spec=google.cloud.bigquery.client.Client)
 
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
@@ -177,6 +177,7 @@ def test_bigquery_magic_with_legacy_sql():
 def test_bigquery_magic_with_result_saved_to_variable():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.client = mock.Mock(spec=google.cloud.bigquery.client.Client)
 
     SQL = 'SELECT 17 AS num'
     RESULT = pandas.DataFrame([17], columns=['num'])
@@ -186,10 +187,8 @@ def test_bigquery_magic_with_result_saved_to_variable():
         'google.cloud.bigquery.magics._run_query', autospec=True)
     query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
     query_job_mock().to_dataframe.return_value = RESULT
-    client_mock = mock.Mock(spec='google.cloud.bigquery.magics.Client')
     with run_query_patch as run_query_mock:
         run_query_mock.return_value = query_job_mock()
-        magics.context.client = client_mock()
 
         ip.run_cell_magic('bigquery', 'df', SQL)
 
@@ -203,6 +202,7 @@ def test_bigquery_magic_with_result_saved_to_variable():
 def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.client = mock.Mock(spec=google.cloud.bigquery.client.Client)
 
     clear_patch = mock.patch(
         'google.cloud.bigquery.magics.display.clear_output', autospec=True)
@@ -218,6 +218,7 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
 def test_bigquery_magic_clears_display_in_verbose_mode():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
+    magics.context.client = mock.Mock(spec=google.cloud.bigquery.client.Client)
 
     clear_patch = mock.patch(
         'google.cloud.bigquery.magics.display.clear_output', autospec=True)
