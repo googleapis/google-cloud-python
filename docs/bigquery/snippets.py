@@ -567,7 +567,7 @@ def test_load_table_from_uri(client, to_delete):
         bigquery.SchemaField('name', 'STRING'),
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
@@ -594,7 +594,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
     job_config.autodetect = True
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
 
     # Set the encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
@@ -630,7 +630,7 @@ def test_load_table_from_uri_autodetect(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
     job_config.autodetect = True
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
@@ -666,8 +666,8 @@ def test_load_table_from_uri_append(client, to_delete):
     # table_ref = client.dataset('my_dataset').table('existing_table')
     previous_rows = client.get_table(table_ref).num_rows
     job_config = bigquery.LoadJobConfig()
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
-    job_config.write_disposition = 'WRITE_APPEND'
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
@@ -705,8 +705,8 @@ def test_load_table_from_uri_truncate(client, to_delete):
     assert previous_rows > 0
 
     job_config = bigquery.LoadJobConfig()
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
-    job_config.write_disposition = 'WRITE_TRUNCATE'
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
@@ -822,8 +822,8 @@ def test_extract_table(client, to_delete):
     rows = [json.dumps(row) for row in to_insert]
     body = six.StringIO('{}\n'.format('\n'.join(rows)))
     job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = 'WRITE_TRUNCATE'
-    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     job_config.schema = SCHEMA
     to_delete.insert(0, table_ref)
     # Load a table using a local JSON file from memory.
