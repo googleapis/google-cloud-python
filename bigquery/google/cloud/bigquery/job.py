@@ -129,7 +129,8 @@ class DestinationFormat(_EnumApiResourceProperty):
 
 class Encoding(_EnumApiResourceProperty):
     """The character encoding of the data. The supported values
-    are `UTF-8` or `ISO-8859-1`. The default value is `UTF-8`.
+    are `UTF_8` corresponding to `'UTF-8'` or `ISO_8859_1` corresponding to
+    `'ISO-8559-1'`. The default value is `UTF_8`.
 
     BigQuery decodes the data after the raw, binary data has been
     split using the values of the quote and fieldDelimiter properties.
