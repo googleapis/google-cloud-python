@@ -116,6 +116,70 @@ class GeoPoint(object):
             return not equality_val
 
 
+class FieldPath(object):
+    """ Field Path object for client use.
+
+    Args:
+        parts: (one or more strings)
+            Indicating path of the key to be used.
+    """
+    simple_field_name = re.compile(r'[A-Za-z_][A-Za-z_0-9]*')
+
+    def __init__(self, *parts):
+        for part in parts:
+            if not isinstance(part, six.string_types) or not part:
+                error = 'One or more components is not a string or is empty.'
+                raise ValueError(error)
+        self.parts = tuple(parts)
+
+    @staticmethod
+    def from_string(string):
+        """ Creates a FieldPath from a unicode string representation.
+
+        Args:
+            :type string: str
+            :param string: A unicode string which cannot contain
+                           `~*/[]` characters, cannot exceed 1500 bytes,
+                           and cannot be empty.
+
+        Returns:
+            A :class: `FieldPath` instance with the string split on "."
+            as arguments to `FieldPath`.
+        """
+        invalid_characters = '~*/[]'
+        for invalid_character in invalid_characters:
+            if invalid_character in string:
+                raise ValueError('Invalid characters in string.')
+        string = string.split('.')
+        return FieldPath(*string)
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        ans = []
+        for part in self.parts:
+            match = re.match(self.simple_field_name, part)
+            if match:
+                ans.append(part)
+            else:
+                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
+                ans.append('`' + replaced + '`')
+        return '.'.join(ans)
+
+    def __hash__(self):
+        return hash(self.to_api_repr())
+
+    def __eq__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts == other.parts
+        return NotImplemented
+
+
 class FieldPathHelper(object):
     """Helper to convert field names and paths for usage in a request.
 
