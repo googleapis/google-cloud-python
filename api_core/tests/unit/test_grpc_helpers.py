@@ -66,6 +66,57 @@ def test_wrap_unary_errors():
     assert exc_info.value.response == grpc_error
 
 
+def test_wrap_stream_okay():
+    expected_responses = [1, 2, 3]
+    callable_ = mock.Mock(spec=[
+        '__call__'], return_value=iter(expected_responses))
+
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
+
+    got_iterator = wrapped_callable(1, 2, three='four')
+
+    responses = list(got_iterator)
+
+    callable_.assert_called_once_with(1, 2, three='four')
+    assert responses == expected_responses
+
+
+def test_wrap_stream_iterable_iterface():
+    response_iter = mock.create_autospec(grpc.Call, instance=True)
+    callable_ = mock.Mock(spec=['__call__'], return_value=response_iter)
+
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
+
+    got_iterator = wrapped_callable()
+
+    callable_.assert_called_once_with()
+
+    # Check each aliased method in the grpc.Call interface
+    got_iterator.add_callback(mock.sentinel.callback)
+    response_iter.add_callback.assert_called_once_with(mock.sentinel.callback)
+
+    got_iterator.cancel()
+    response_iter.cancel.assert_called_once_with()
+
+    got_iterator.code()
+    response_iter.code.assert_called_once_with()
+
+    got_iterator.details()
+    response_iter.details.assert_called_once_with()
+
+    got_iterator.initial_metadata()
+    response_iter.initial_metadata.assert_called_once_with()
+
+    got_iterator.is_active()
+    response_iter.is_active.assert_called_once_with()
+
+    got_iterator.time_remaining()
+    response_iter.time_remaining.assert_called_once_with()
+
+    got_iterator.trailing_metadata()
+    response_iter.trailing_metadata.assert_called_once_with()
+
+
 def test_wrap_stream_errors_invocation():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)
     callable_ = mock.Mock(spec=['__call__'], side_effect=grpc_error)
@@ -83,16 +134,10 @@ class RpcResponseIteratorImpl(object):
     def __init__(self, exception):
         self._exception = exception
 
-    # Note: This matches grpc._channel._Rendezvous._next which is what is
-    # patched by _wrap_stream_errors.
-    def _next(self):
+    def next(self):
         raise self._exception
 
-    def __next__(self):  # pragma: NO COVER
-        return self._next()
-
-    def next(self):  # pragma: NO COVER
-        return self._next()
+    __next__ = next
 
 
 def test_wrap_stream_errors_iterator():
@@ -107,7 +152,6 @@ def test_wrap_stream_errors_iterator():
     with pytest.raises(exceptions.ServiceUnavailable) as exc_info:
         next(got_iterator)
 
-    assert got_iterator == response_iter
     callable_.assert_called_once_with(1, 2, three='four')
     assert exc_info.value.response == grpc_error
 
