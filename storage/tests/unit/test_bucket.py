@@ -155,7 +155,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_bucket_name_value(self):
         BUCKET_NAME = 'bucket-name'
-        bucket = self._make_one(name=BUCKET_NAME)
+        self._make_one(name=BUCKET_NAME)
 
         bad_start_bucket_name = '/testing123'
         with self.assertRaises(ValueError):
@@ -241,7 +241,6 @@ class Test_Bucket(unittest.TestCase):
 
     def test_create_w_missing_client_project(self):
         BUCKET_NAME = 'bucket-name'
-        USER_PROJECT = 'user-project-123'
         connection = _Connection()
         client = _Client(connection, project=None)
         bucket = self._make_one(client, BUCKET_NAME)
@@ -500,7 +499,7 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertEqual(len(notifications), len(resources))
         for notification, resource, topic_ref in zip(
-            notifications, resources, topic_refs):
+                notifications, resources, topic_refs):
             self.assertIsInstance(notification, BucketNotification)
             self.assertEqual(notification.topic_project, topic_ref[0])
             self.assertEqual(notification.topic_name, topic_ref[1])
@@ -751,7 +750,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
-        self.assertEqual(kw['query_params'], {'sourceGeneration' : GENERATION})
+        self.assertEqual(kw['query_params'], {'sourceGeneration': GENERATION})
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
@@ -1318,8 +1317,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
         key = operator.itemgetter('role')
         for found, expected in zip(
-            sorted(sent['bindings'], key=key),
-            sorted(BINDINGS, key=key)):
+                sorted(sent['bindings'], key=key),
+                sorted(BINDINGS, key=key)):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
@@ -1377,8 +1376,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
         key = operator.itemgetter('role')
         for found, expected in zip(
-            sorted(sent['bindings'], key=key),
-            sorted(BINDINGS, key=key)):
+                sorted(sent['bindings'], key=key),
+                sorted(BINDINGS, key=key)):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))

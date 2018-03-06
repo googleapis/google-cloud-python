@@ -38,7 +38,8 @@ class TestCloudLoggingHandler(unittest.TestCase):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
-        handler = self._make_one(client, transport=_Transport, resource=_GLOBAL_RESOURCE)
+        handler = self._make_one(
+            client, transport=_Transport, resource=_GLOBAL_RESOURCE)
         logname = 'loggername'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,

@@ -22,14 +22,14 @@ import setuptools
 
 name = 'google-cloud-dataproc'
 description = 'Google Cloud Dataproc API client library'
-version = '0.1.0'
+version = '0.1.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-api-core[grpc]<0.2.0dev,>=0.1.0',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.0',
 ]
 extras = {
 }

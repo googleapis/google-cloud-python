@@ -22,14 +22,14 @@ import setuptools
 
 name = 'google-cloud-vision'
 description = 'Google Cloud Vision API client library'
-version = '0.30.0'
+version = '0.30.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
-    'google-api-core[grpc]<0.2.0dev,>=0.1.0',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.0',
 ]
 extras = {
     ':python_version < "3.4"': 'enum34',

@@ -143,7 +143,6 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query, new_query, '_field_filters')
 
     def _where_unary_helper(self, value, op_enum, op_string='=='):
-        from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import query_pb2
 
         query = self._make_one_all_fields(skip_fields=('field_filters',))
@@ -653,6 +652,8 @@ class TestQuery(unittest.TestCase):
         }
         expected_pb = query_pb2.StructuredQuery(**query_kwargs)
 
+        self.assertEqual(structured_query_pb, expected_pb)
+
     def test_get_simple(self):
         # Create a minimal fake GAPIC.
         firestore_api = mock.Mock(spec=['run_query'])
@@ -685,7 +686,7 @@ class TestQuery(unittest.TestCase):
         parent_path, _ = parent._parent_info()
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_with_transaction(self):
         # Create a minimal fake GAPIC.
@@ -723,7 +724,7 @@ class TestQuery(unittest.TestCase):
         # Verify the mock call.
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=txn_id,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_no_results(self):
         # Create a minimal fake GAPIC with a dummy response.
@@ -748,7 +749,7 @@ class TestQuery(unittest.TestCase):
         parent_path, _ = parent._parent_info()
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_second_response_in_empty_stream(self):
         # Create a minimal fake GAPIC with a dummy response.
@@ -780,7 +781,7 @@ class TestQuery(unittest.TestCase):
         parent_path, _ = parent._parent_info()
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_with_skipped_results(self):
         # Create a minimal fake GAPIC.
@@ -817,7 +818,7 @@ class TestQuery(unittest.TestCase):
         parent_path, _ = parent._parent_info()
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test_get_empty_after_first_response(self):
         from google.cloud.firestore_v1beta1.query import _EMPTY_DOC_TEMPLATE
@@ -857,7 +858,7 @@ class TestQuery(unittest.TestCase):
         parent_path, _ = parent._parent_info()
         firestore_api.run_query.assert_called_once_with(
             parent_path, query._to_protobuf(), transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
 
 class Test__enum_from_op_string(unittest.TestCase):
@@ -1044,7 +1045,8 @@ class Test__query_response_to_snapshot(unittest.TestCase):
 
     @staticmethod
     def _call_fut(response_pb, collection, expected_prefix):
-        from google.cloud.firestore_v1beta1.query import _query_response_to_snapshot
+        from google.cloud.firestore_v1beta1.query import (
+            _query_response_to_snapshot)
 
         return _query_response_to_snapshot(
             response_pb, collection, expected_prefix)

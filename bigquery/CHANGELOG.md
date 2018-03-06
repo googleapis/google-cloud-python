@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.31.0
+
+### Interface additions
+
+- Add support for `EncryptionConfiguration` (#4845)
+
+### Implementation changes
+
+- Allow listing/getting jobs even when there is an "invalid" job. (#4786)
+
+### Dependencies
+
+- The minimum version for `google-api-core` has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)
+
+### Documentation
+
+- Update format in `Table.full_table_id` and `TableListItem.full_table_id` docstrings. (#4906)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+- Remove unnecessary debug print from tests (#4907)
+- Use constant strings for job properties in tests (#4833)
+
 ## 0.30.0
 
 This is the release candidate for v1.0.0.

@@ -14,19 +14,15 @@
 
 """System tests for Vision API."""
 
-import functools
 import io
 import os
 import unittest
-
-import six
 
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud import vision
 
 from test_utils.retry import RetryErrors
-from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
 

@@ -193,10 +193,6 @@ class TestBatch(_BaseTest):
 
     def test_commit_grpc_error(self):
         from google.api_core.exceptions import Unknown
-        from google.cloud.spanner_v1.proto.transaction_pb2 import (
-            TransactionOptions)
-        from google.cloud.spanner_v1.proto.mutation_pb2 import (
-            Mutation as MutationPB)
         from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]

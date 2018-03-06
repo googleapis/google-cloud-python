@@ -1,0 +1,7 @@
+formats:
+- pdf
+requirements_file: docs/requirements.txt
+build:
+  image: latest
+python:
+  version: 3.6

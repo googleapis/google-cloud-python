@@ -709,7 +709,8 @@ class Test__to_legacy_path(unittest.TestCase):
         kind2 = 'child'
         name2 = 'naem'
 
-        dict_path = [{'kind': kind1, 'id': id1}, {'kind': kind2, 'name': name2}]
+        dict_path = [
+            {'kind': kind1, 'id': id1}, {'kind': kind2, 'name': name2}]
         path_pb = self._call_fut(dict_path)
 
         element_pb1 = _make_element_pb(type=kind1, id=id1)

@@ -22,14 +22,14 @@ import setuptools
 
 name = 'google-cloud-pubsub'
 description = 'Google Cloud Pub/Sub API client library'
-version = '0.31.0'
+version = '0.32.1'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
-    'google-api-core[grpc]<0.2.0dev,>=0.1.3',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.3',
     'grpc-google-iam-v1<0.12dev,>=0.11.1',
     'psutil<6.0dev,>=5.2.2',
 ]

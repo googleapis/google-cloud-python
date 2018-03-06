@@ -127,6 +127,8 @@ class TestTable(unittest.TestCase):
     TABLE_ID = 'table-id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
     ROW_KEY = b'row-key'
+    ROW_KEY_1 = b'row-key-1'
+    ROW_KEY_2 = b'row-key-2'
     FAMILY_NAME = u'family'
     QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
@@ -541,17 +543,108 @@ class TestTable(unittest.TestCase):
         chunks = [chunk]
 
         response = _ReadRowsResponseV2(chunks)
-        response_iterator = _MockCancellableIterator(response)
+        response_iterator = _MockReadRowsIterator(response)
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub(response_iterator)
 
+        generator = table.yield_rows(retry=False)
         rows = []
-        for row in table.yield_rows():
+        for row in generator:
             rows.append(row)
         result = rows[0]
 
         self.assertEqual(result.row_key, self.ROW_KEY)
+
+    def test_yield_retry_rows_with_response_exception(self):
+        # import grpc
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # class ErrorUnavailable(grpc.RpcError, grpc.Call):
+        #     """ErrorUnavailable exception"""
+        #
+        #     def code(self):
+        #         return grpc.StatusCode.UNAVAILABLE
+        #
+        #     def details(self):
+        #         return 'Endpoint read failed'
+        #
+        # class ErrorDeadlineExceeded(grpc.RpcError, grpc.Call):
+        #     """ErrorDeadlineExceeded exception"""
+        #
+        #     def code(self):
+        #         return grpc.StatusCode.DEADLINE_EXCEEDED
+        #
+        #     def details(self):
+        #         return 'Error while reading table'
+
+        # Create response_iterator
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        response = _ReadRowsResponseV2([chunk])
+        response_iterator= _MockReadRowsIterator(response)
+
+        # Patch the stub used by the API method.
+        client._data_stub = mock.MagicMock()
+        client._data_stub.ReadRows.side_effect = [response_iterator]
+
+        rows = []
+        for row in table.yield_rows():
+            rows.append(row)
+
+        result = rows[0]
+        self.assertEqual(result.row_key, self.ROW_KEY)
+
+    def test_yield_retry_rows(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create response_iterator
+        chunk_1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_1,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        chunk_2 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_2,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        response_1 = _ReadRowsResponseV2([chunk_1])
+        response_2 = _ReadRowsResponseV2([chunk_2])
+        response_retryable_iterator = _MockRetryableIterator([response_1,
+                                                              response_2])
+
+        # Patch the stub used by the API method.
+        client._data_stub = mock.MagicMock()
+        client._data_stub.ReadRows.side_effect = [response_retryable_iterator]
+
+        rows = []
+        for row in table.yield_rows(start_key=self.ROW_KEY_1,
+                                    end_key=self.ROW_KEY_2):
+            rows.append(row)
+
+        result = rows[1]
+        self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub
@@ -642,7 +735,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_callable_no_retry_strategy(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
 
         # Setup:
@@ -685,7 +777,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
 
@@ -735,7 +826,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
-        from google.api_core.retry import Retry
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
 
@@ -811,8 +901,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2])
         statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
@@ -853,8 +943,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2, row_3])
 
         with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows()
@@ -902,8 +992,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -954,8 +1045,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -974,7 +1066,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_second_try_no_retryable(self):
         from google.cloud.bigtable.row import DirectRow
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 2 rows.
@@ -993,10 +1084,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client, table.name, [row_1, row_2])
         worker.responses_statuses = self._make_responses_statuses(
-                [self.SUCCESS, self.NON_RETRYABLE])
+            [self.SUCCESS, self.NON_RETRYABLE])
 
         statuses = worker._do_mutate_retryable_rows()
 
@@ -1023,8 +1114,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
 
-        worker = self._make_worker(table._instance._client,
-                table.name, [row_1, row_2])
+        worker = self._make_worker(
+            table._instance._client,
+            table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):
             worker._do_mutate_retryable_rows()
 
@@ -1218,15 +1310,45 @@ class _Instance(object):
         self._client = client
 
 
-class _MockCancellableIterator(object):
-
-    cancel_calls = 0
-
+class _MockReadRowsIterator(object):
     def __init__(self, *values):
         self.iter_values = iter(values)
 
     def next(self):
         return next(self.iter_values)
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
+
+class _MockRetryableIterator(object):
+
+    def __init__(self, *values):
+        self.iter_values = values[0]
+        self.calls = 0
+
+    def next(self):
+        # import grpc
+        #
+        # class ErrorUnavailable(grpc.RpcError, grpc.Call):
+        #     """ErrorUnavailable exception"""
+        #
+        #     def code(self):
+        #         return grpc.StatusCode.UNAVAILABLE
+        #
+        #     def details(self):
+        #         return 'Endpoint read failed'
+
+        self.calls += 1
+        if self.calls == 1:
+            first = self.iter_values[0]
+            return first
+        # elif self.calls == 2:
+        #     raise ErrorUnavailable()
+        elif self.calls == 2:
+            return self.iter_values[1]
+        else:
+            raise StopIteration()
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()

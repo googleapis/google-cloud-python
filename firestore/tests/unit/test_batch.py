@@ -14,9 +14,6 @@
 
 import unittest
 
-from google.gax.errors import GaxError
-from grpc import StatusCode
-from grpc._channel import _RPCState
 import mock
 
 
@@ -170,7 +167,7 @@ class TestWriteBatch(unittest.TestCase):
         # Verify the mocks.
         firestore_api.commit.assert_called_once_with(
             client._database_string, write_pbs, transaction=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
 
 def _value_pb(**kwargs):

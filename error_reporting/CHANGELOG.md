@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## 0.29.1
+
+### Dependencies
+
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+- Fix missing extra in api-core dependency (#4764)
+
+### Testing and internal changes
+
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+
 ## 0.29.0
 
 ### Breaking changes

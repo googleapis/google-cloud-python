@@ -14,8 +14,6 @@
 
 
 import unittest
-import timeit
-import csv
 
 
 class TestCell(unittest.TestCase):
@@ -47,7 +45,8 @@ class TestCell(unittest.TestCase):
         else:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
-            cell_expected = self._make_one(value, timestamp_micros, labels=labels)
+            cell_expected = self._make_one(
+                value, timestamp_micros, labels=labels)
 
         klass = self._get_target_class()
         result = klass.from_pb(cell_pb)
@@ -256,7 +255,7 @@ class TestYieldRowsData(unittest.TestCase):
 
     def test_state_new_row_w_row(self):
         yrd = self._make_one([])
-        yrd._last_scanned_row_key = ''
+        yrd.last_scanned_row_key = ''
         yrd._row = object()
         self.assertEqual(yrd.state, yrd.NEW_ROW)
 
@@ -370,9 +369,9 @@ class TestYieldRowsData(unittest.TestCase):
             chunks=(), last_scanned_row_key='AFTER')
         iterator = _MockCancellableIterator(response)
         yrd = self._make_one(iterator)
-        yrd._last_scanned_row_key = 'BEFORE'
+        yrd.last_scanned_row_key = 'BEFORE'
         self._consume_all(yrd)
-        self.assertEqual(yrd._last_scanned_row_key, 'AFTER')
+        self.assertEqual(yrd.last_scanned_row_key, 'AFTER')
 
     def test_invalid_empty_chunk(self):
         from google.cloud.bigtable.row_data import InvalidChunk
@@ -630,6 +629,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     def test_empty_second_qualifier(self):
         self._match_results('empty second qualifier')
+
 
 def _flatten_cells(prd):
     # Match results format from JSON testcases.

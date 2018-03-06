@@ -33,7 +33,6 @@ class TestAppEngineHandler(unittest.TestCase):
         from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
-        from google.cloud.logging.handlers.app_engine import _TRACE_ID_LABEL
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
 
