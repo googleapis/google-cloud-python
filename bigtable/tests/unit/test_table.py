@@ -635,7 +635,7 @@ class TestTable(unittest.TestCase):
                                                               response_2])
 
         # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
+        client._rea = mock.MagicMock()
         client._data_stub.ReadRows.side_effect = [response_retryable_iterator]
 
         rows = []

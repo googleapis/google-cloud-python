@@ -24,6 +24,7 @@ from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable_v2.gapic.bigtable_client import BigtableClient
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable._generated import (
@@ -353,9 +354,9 @@ class Table(object):
         :returns: A :class:`.PartialRowData` for each row returned
         """
 
+        client = BigtableClient()
         retryable_read_rows = _RetryableReadRows(
-            self._instance._client, self.name, start_key,
-            end_key, filter_, limit, retry)
+            client, self.name, start_key, end_key, filter_, limit, retry)
 
         for row in retryable_read_rows():
             yield row
@@ -585,7 +586,7 @@ class _RetryableReadRows(object):
             limit=self.limit,
             start_inclusive=start_inclusive)
         client = self.client
-        response_iterator = client._data_stub.ReadRows(request_pb)
+        response_iterator = client._read_rows(request_pb, retry=None)
         self.generator = YieldRowsData(response_iterator)
         for row in self.generator.read_rows():
             yield row
