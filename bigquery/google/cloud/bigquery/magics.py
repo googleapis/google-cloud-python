@@ -29,8 +29,8 @@
     * ``<destination_var>`` (optional, line argument):
         variable to store the query results.
     * ``--project <project>`` (optional, line argument):
-        Project to use for running the query. Defaults to the client's default
-        project.
+        Project to use for running the query. Defaults to the context
+        :attr:`~google.cloud.bigquery.magics.Context.project`.
     * ``--use_legacy_sql`` (optional, line argument):
         Runs the query using Legacy SQL syntax. Defaults to Standard SQL if
         this argument not used.
@@ -46,8 +46,8 @@
         A :class:`pandas.DataFrame` with the query results.
 
     .. note::
-        All queries run using this magic will run using the context client
-        (:func:`Context.client <google.cloud.bigquery.magics.Context.client>`)
+        All queries run using this magic will run using the context
+        :attr:`~google.cloud.bigquery.magics.Context.credentials`.
 
     Examples:
         The following examples can be run in an IPython notebook after loading
@@ -110,45 +110,80 @@ try:
 except ImportError:  # pragma: NO COVER
     raise ImportError('This module can only be loaded in IPython.')
 
+import google.auth
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.job import QueryJobConfig
 
 
 class Context(object):
-    """Storage for objects to be used throughout an IPython notebook session
+    """Storage for objects to be used throughout an IPython notebook session.
 
     A Context object is initialized when the ``magics`` module is imported,
     and can be found at ``google.cloud.bigquery.magics.context``.
     """
     def __init__(self):
-        self._client = None
+        self._credentials = None
+        self._project = None
 
     @property
-    def client(self):
-        """BigQuery Client to use for queries performed through IPython magics
+    def credentials(self):
+        """google.auth.credentials.Credentials: Credentials to use for queries
+        performed through IPython magics
 
         Note:
-            The client does not need to be explicitly defined if you are using
-            Application Default Credentials. If you are not using Application
-            Default Credentials, manually construct a BigQuery Client with your
-            credentials and set it as the context client as demonstrated in the
-            example below.
+            These credentials do not need to be explicitly defined if you are
+            using Application Default Credentials. If you are not using
+            Application Default Credentials, manually construct a
+            :class:`google.auth.credentials.Credentials` object and set it as
+            the context credentials as demonstrated in the example below. See
+            `auth docs`_ for more information on obtaining credentials.
 
         Example:
-            Manually setting the context client:
+            Manually setting the context credentials:
 
             >>> from google.cloud.bigquery import magics
-            >>> from google.cloud.bigquery import Client
-            >>> client = Client.from_service_account_json('/path/to/key.json')
-            >>> magics.context.client = client
-        """
-        if self._client is None:
-            self._client = Client()
-        return self._client
+            >>> from google.oauth2 import service_account
+            >>> credentials = (service_account
+            ...     .Credentials.from_service_account_file(
+            ...         '/path/to/key.json'))
+            >>> magics.context.credentials = credentials
 
-    @client.setter
-    def client(self, value):
-        self._client = value
+
+        .. _auth docs: http://google-auth.readthedocs.io
+            /en/latest/user-guide.html#obtaining-credentials
+        """
+        if self._credentials is None:
+            self._credentials, _ = google.auth.default()
+        return self._credentials
+
+    @credentials.setter
+    def credentials(self, value):
+        self._credentials = value
+
+    @property
+    def project(self):
+        """str: Default project to use for queries performed through IPython
+        magics
+
+        Note:
+            The project does not need to be explicitly defined if you have an
+            environment default project set. If you do not have a default
+            project set in your environment, manually assign the project as
+            demonstrated in the example below.
+
+        Example:
+            Manually setting the context project:
+
+            >>> from google.cloud.bigquery import magics
+            >>> magics.context.project = 'my-project'
+        """
+        if self._project is None:
+            _, self._project = google.auth.default()
+        return self._project
+
+    @project.setter
+    def project(self, value):
+        self._project = value
 
 
 context = Context()
@@ -203,8 +238,8 @@ def _run_query(client, query, job_config=None):
     '--project',
     type=str,
     default=None,
-    help=('Project to use for executing this query. Defaults to the '
-          'client\'s project'))
+    help=('Project to use for executing this query. Defaults to the context '
+          'project.'))
 @magic_arguments.argument(
     '--use_legacy_sql', action='store_true', default=False,
     help=('Sets query to use Legacy SQL instead of Standard SQL. Defaults to '
@@ -231,12 +266,8 @@ def _cell_magic(line, query):
     """
     args = magic_arguments.parse_argstring(_cell_magic, line)
 
-    if args.project:
-        client = Client(
-            project=args.project, credentials=context.client._credentials)
-    else:
-        client = context.client
-
+    project = args.project or context.project
+    client = Client(project=project, credentials=context.credentials)
     job_config = QueryJobConfig()
     job_config.use_legacy_sql = args.use_legacy_sql
     query_job = _run_query(client, query, job_config)
