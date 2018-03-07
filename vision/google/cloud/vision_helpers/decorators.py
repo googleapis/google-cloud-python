@@ -14,8 +14,6 @@
 
 from __future__ import absolute_import
 
-import copy
-
 
 def add_single_feature_methods(cls):
     """Custom decorator intended for :class:`~vision.helpers.VisionHelpers`.
@@ -108,7 +106,7 @@ def _create_single_feature_method(feature, enum):
         Intended for use with functools.partial, to create the particular
         single-feature methods.
         """
-        copied_features = copy.copy(feature_value)
+        copied_features = feature_value.copy()
         if max_results is not None:
             copied_features['max_results'] = max_results
         request = dict(
