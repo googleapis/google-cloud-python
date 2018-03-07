@@ -98,7 +98,7 @@ __all__ = [
 
 
 def load_ipython_extension(ipython):
-    """Called by IPython when this module is loaded as an IPython extension"""
+    """Called by IPython when this module is loaded as an IPython extension."""
     from google.cloud.bigquery.magics import _cell_magic
 
     ipython.register_magic_function(

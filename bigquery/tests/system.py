@@ -1630,7 +1630,7 @@ class TestBigQuery(unittest.TestCase):
     def test_bigquery_magic(self):
         ip = IPython.get_ipython()
         ip.extension_manager.load_extension('google.cloud.bigquery')
-        SQL = """
+        sql = """
             SELECT
               CONCAT(
                 'https://stackoverflow.com/questions/',
@@ -1642,7 +1642,7 @@ class TestBigQuery(unittest.TestCase):
             LIMIT 10
         """
         with io.capture_output() as captured:
-            result = ip.run_cell_magic('bigquery', '', SQL)
+            result = ip.run_cell_magic('bigquery', '', sql)
 
         lines = re.split('\n|\r', captured.stdout)
         # Removes blanks & terminal code (result of display clearing)

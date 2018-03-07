@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Define IPython Magics
+"""IPython Magics
 
 .. function:: %%bigquery
 
@@ -111,8 +111,7 @@ except ImportError:  # pragma: NO COVER
     raise ImportError('This module can only be loaded in IPython.')
 
 import google.auth
-from google.cloud.bigquery.client import Client
-from google.cloud.bigquery.job import QueryJobConfig
+from google.cloud import bigquery
 
 
 class Context(object):
@@ -221,9 +220,9 @@ def _run_query(client, query, job_config=None):
             time.time() - start_time), end='')
         try:
             query_job.result(timeout=0.5)
+            break
         except futures.TimeoutError:
             continue
-        break
     print('\nQuery complete after {:0.2f}s'.format(time.time() - start_time))
     return query_job
 
@@ -253,22 +252,22 @@ def _run_query(client, query, job_config=None):
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
-        Note:
-            This function contains the underlying logic for the 'bigquery' cell
-            magic. This function is not meant to be called directly.
+    Note:
+        This function contains the underlying logic for the 'bigquery' cell
+        magic. This function is not meant to be called directly.
 
-        Args:
-            line (str): "%%bigquery" followed by arguments as required
-            query (str): SQL query to run
+    Args:
+        line (str): "%%bigquery" followed by arguments as required
+        query (str): SQL query to run
 
-        Returns:
-            pandas.DataFrame: the query results.
+    Returns:
+        pandas.DataFrame: the query results.
     """
     args = magic_arguments.parse_argstring(_cell_magic, line)
 
     project = args.project or context.project
-    client = Client(project=project, credentials=context.credentials)
-    job_config = QueryJobConfig()
+    client = bigquery.Client(project=project, credentials=context.credentials)
+    job_config = bigquery.job.QueryJobConfig()
     job_config.use_legacy_sql = args.use_legacy_sql
     query_job = _run_query(client, query, job_config)
 

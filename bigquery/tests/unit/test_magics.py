@@ -30,7 +30,7 @@ except ImportError:  # pragma: NO COVER
     IPython = None
 
 import google.auth.credentials
-from google.cloud.bigquery.table import Row
+from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
 
 
@@ -62,28 +62,30 @@ def test_context_credentials_auto_set_w_application_default_credentials():
     assert magics.context._credentials is None
     assert magics.context._project is None
 
-    PROJECT = 'prahj-ekt'
-    credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+    project = 'prahj-ekt'
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
     default_patch = mock.patch(
-        'google.auth.default', return_value=(credentials_mock, PROJECT))
+        'google.auth.default', return_value=(credentials_mock, project))
     with default_patch as default_mock:
         assert magics.context.credentials is credentials_mock
-        assert magics.context.project == PROJECT
+        assert magics.context.project == project
 
     assert default_mock.call_count == 2
 
 
 def test_context_credentials_and_project_can_be_set_explicitly():
-    PROJECT1 = 'one-project-55564'
-    PROJECT2 = 'other-project-52569'
-    credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+    project1 = 'one-project-55564'
+    project2 = 'other-project-52569'
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
     default_patch = mock.patch(
-        'google.auth.default', return_value=(credentials_mock, PROJECT1))
+        'google.auth.default', return_value=(credentials_mock, project1))
     with default_patch as default_mock:
         magics.context.credentials = credentials_mock
-        magics.context.project = PROJECT2
+        magics.context.project = project2
 
-    assert magics.context.project == PROJECT2
+    assert magics.context.project == project2
     assert magics.context.credentials is credentials_mock
     # default should not be called if credentials & project are explicitly set
     assert default_mock.call_count == 0
@@ -92,28 +94,28 @@ def test_context_credentials_and_project_can_be_set_explicitly():
 def test__run_query():
     magics.context._credentials = None
 
-    JOB_ID = 'job_1234'
-    SQL = 'SELECT 17'
-    RESPONSES = [
+    job_id = 'job_1234'
+    sql = 'SELECT 17'
+    responses = [
         futures.TimeoutError,
         futures.TimeoutError,
-        [Row((17,), {'num': 0})]
+        [table.Row((17,), {'num': 0})]
     ]
 
     client_patch = mock.patch(
-        'google.cloud.bigquery.magics.Client', autospec=True)
+        'google.cloud.bigquery.magics.bigquery.Client', autospec=True)
     with client_patch as client_mock, io.capture_output() as captured:
-        client_mock().query(SQL).result.side_effect = RESPONSES
-        client_mock().query(SQL).job_id = JOB_ID
+        client_mock().query(sql).result.side_effect = responses
+        client_mock().query(sql).job_id = job_id
 
-        query_job = magics._run_query(client_mock(), SQL)
+        query_job = magics._run_query(client_mock(), sql)
 
     lines = re.split('\n|\r', captured.stdout)
     # Removes blanks & terminal code (result of display clearing)
     updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
 
-    assert query_job.job_id == JOB_ID
-    expected_first_line = "Executing query with job ID: {}".format(JOB_ID)
+    assert query_job.job_id == job_id
+    expected_first_line = "Executing query with job ID: {}".format(job_id)
     assert updates[0] == expected_first_line
     execution_updates = updates[1:-1]
     assert len(execution_updates) == 3  # one update per API response
@@ -137,31 +139,32 @@ def test_extension_load():
 def test_bigquery_magic_without_optional_arguments():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
-    magics.context.credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials)
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
 
-    SQL = 'SELECT 17 AS num'
-    RESULT = pandas.DataFrame([17], columns=['num'])
+    sql = 'SELECT 17 AS num'
+    result = pandas.DataFrame([17], columns=['num'])
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
-    query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
-    query_job_mock().to_dataframe.return_value = RESULT
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True)
+    query_job_mock.to_dataframe.return_value = result
     with run_query_patch as run_query_mock:
-        run_query_mock.return_value = query_job_mock()
+        run_query_mock.return_value = query_job_mock
 
-        result = ip.run_cell_magic('bigquery', '', SQL)
+        result = ip.run_cell_magic('bigquery', '', sql)
 
     assert isinstance(result, pandas.DataFrame)
-    assert len(result) == len(RESULT)    # verify row count
-    assert list(result) == list(RESULT)  # verify column names
+    assert len(result) == len(result)    # verify row count
+    assert list(result) == list(result)  # verify column names
 
 
 @pytest.mark.usefixtures('ipython_interactive')
 def test_bigquery_magic_with_legacy_sql():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
-    magics.context.credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials)
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
 
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
@@ -178,34 +181,35 @@ def test_bigquery_magic_with_legacy_sql():
 def test_bigquery_magic_with_result_saved_to_variable():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
-    magics.context.credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials)
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
 
-    SQL = 'SELECT 17 AS num'
-    RESULT = pandas.DataFrame([17], columns=['num'])
+    sql = 'SELECT 17 AS num'
+    result = pandas.DataFrame([17], columns=['num'])
     assert 'myvariable' not in ip.user_ns
 
     run_query_patch = mock.patch(
         'google.cloud.bigquery.magics._run_query', autospec=True)
-    query_job_mock = mock.Mock(spec='google.cloud.bigquery.job.QueryJob')
-    query_job_mock().to_dataframe.return_value = RESULT
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True)
+    query_job_mock.to_dataframe.return_value = result
     with run_query_patch as run_query_mock:
-        run_query_mock.return_value = query_job_mock()
+        run_query_mock.return_value = query_job_mock
 
-        ip.run_cell_magic('bigquery', 'df', SQL)
+        ip.run_cell_magic('bigquery', 'df', sql)
 
     assert 'df' in ip.user_ns        # verify that variable exists
     df = ip.user_ns['df']
-    assert len(df) == len(RESULT)    # verify row count
-    assert list(df) == list(RESULT)  # verify column names
+    assert len(df) == len(result)    # verify row count
+    assert list(df) == list(result)  # verify column names
 
 
 @pytest.mark.usefixtures('ipython_interactive')
 def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
-    magics.context.credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials)
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
 
     clear_patch = mock.patch(
         'google.cloud.bigquery.magics.display.clear_output', autospec=True)
@@ -221,8 +225,8 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
 def test_bigquery_magic_clears_display_in_verbose_mode():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension('google.cloud.bigquery')
-    magics.context.credentials = mock.Mock(
-        spec=google.auth.credentials.Credentials)
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
 
     clear_patch = mock.patch(
         'google.cloud.bigquery.magics.display.clear_output', autospec=True)
@@ -240,7 +244,8 @@ def test_bigquery_magic_with_project():
     ip.extension_manager.load_extension('google.cloud.bigquery')
     magics.context._project = None
 
-    credentials_mock = mock.Mock(spec=google.auth.credentials.Credentials)
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True)
     default_patch = mock.patch(
         'google.auth.default',
         return_value=(credentials_mock, 'general-project'))
