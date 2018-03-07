@@ -8,9 +8,9 @@ scheduled, managed basis.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/docs/transfer-service-overview
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery_datatransfer/index.html
-.. _Product Documentation:  https://cloud.google.com/bigquery/transfer
+.. _BigQuery Data Transfer API: https://cloud.google.com/bigquery-datatransfer
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquerydatatransfer/usage.html
+.. _Product Documentation:  https://cloud.google.com/bigquerydatatransfer
 
 Quick Start
 -----------
@@ -18,12 +18,14 @@ Quick Start
 In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
-2. `Enable the BigQuery Data Transfer API.`_
-3. `Setup Authentication.`_
+2. `Enable billing for your project.`_
+3. `Enable the BigQuery Data Transfer API.`_
+4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable the BigQuery Data Transfer API.:  https://cloud.google.com/bigquery/docs/transfer-service-overview
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the BigQuery Data Transfer API.:  https://cloud.google.com/bigquery-datatransfer
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -47,7 +49,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-bigquerydatatransfer
+    <your-env>/bin/pip install google-cloud-bigquery-datatransfer
 
 
 Windows
@@ -58,7 +60,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-bigquerydatatransfer
+    <your-env>\Scripts\pip.exe install google-cloud-bigquery-datatransfer
 
 Preview
 ~~~~~~~
@@ -72,7 +74,7 @@ DataTransferServiceClient
 
     client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
-    parent = client.location_path('[PROJECT]', '[LOCATION]')
+    parent = client.project_path('[PROJECT]')
 
 
     # Iterate over all results
@@ -96,7 +98,7 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Data Transfer API Product documentation:  https://cloud.google.com/bigquery/docs/transfer-service-overview
+.. _BigQuery Data Transfer API Product documentation:  https://cloud.google.com/bigquerydatatransfer
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 
 Api Reference
