@@ -136,14 +136,14 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START list_tables]
-   :end-before: [END list_tables]
+   :start-after: [START bigquery_list_tables]
+   :end-before: [END bigquery_list_tables]
 
 Create a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START create_table]
-   :end-before: [END create_table]
+   :start-after: [START bigquery_create_table]
+   :end-before: [END bigquery_create_table]
 
 Get a table:
 
