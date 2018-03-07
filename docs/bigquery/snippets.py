@@ -981,6 +981,7 @@ def test_client_query_destination_table(client, to_delete):
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
+    # client = bigquery.Client()
     job_config = bigquery.QueryJobConfig()
 
     # Set the destination table. Here, dataset_id is a string, such as:
