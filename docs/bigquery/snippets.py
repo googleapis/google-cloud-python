@@ -250,13 +250,16 @@ def test_delete_dataset(client):
 
 def test_list_tables(client, to_delete):
     """List tables within a dataset."""
-    DATASET_ID = 'list_tables_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset = client.create_dataset(dataset)
+    dataset_id = 'list_tables_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
     to_delete.append(dataset)
 
     # [START bigquery_list_tables]
-    tables = list(client.list_tables(dataset))  # API request(s)
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    tables = list(client.list_tables(dataset_ref))  # API request(s)
     assert len(tables) == 0
 
     table_ref = dataset.table('my_table')
@@ -273,8 +276,8 @@ def test_list_tables(client, to_delete):
 
 def test_create_table(client, to_delete):
     """Create a table."""
-    DATASET_ID = 'create_table_dataset_{}'.format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
+    dataset_id = 'create_table_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -283,13 +286,13 @@ def test_create_table(client, to_delete):
     # client = bigquery.Client()
     # dataset_ref = client.dataset('my_dataset')
 
-    SCHEMA = [
-        bigquery.SchemaField('full_name', 'STRING', mode='required'),
-        bigquery.SchemaField('age', 'INTEGER', mode='required'),
+    schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
     ]
     table_ref = dataset_ref.table('my_table')
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)      # API request
+    table = bigquery.Table(table_ref, schema=schema)
+    table = client.create_table(table)  # API request
 
     assert table.table_id == 'my_table'
     # [END bigquery_create_table]
@@ -299,8 +302,8 @@ def test_create_table(client, to_delete):
 
 def test_create_table_without_schema(client, to_delete):
     """Create a table without specifying a schema"""
-    DATASET_ID = 'create_table_without_schema_dataset_{}'.format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
+    dataset_id = 'create_table_without_schema_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -363,34 +366,34 @@ def test_get_table(client, to_delete):
     # [END get_table]
 
 
-def test_show_table(client, to_delete):
-    """Show a table's properties"""
-    DATASET_ID = 'show_table_dataset_{}'.format(_millis())
-    TABLE_ID = 'show_table_table_{}'.format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
+def test_get_table_information(client, to_delete):
+    """Show a table's properties."""
+    dataset_id = 'show_table_dataset_{}'.format(_millis())
+    table_id = 'show_table_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table = bigquery.Table(dataset.table(TABLE_ID), schema=SCHEMA)
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table.description = ORIGINAL_DESCRIPTION
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START bigquery_show_table]
+    # [START bigquery_get_table]
     # client = bigquery.Client()
-    # DATASET_ID = 'my_dataset'
-    # TABLE_ID = 'my_table'
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
 
-    dataset_ref = client.dataset(DATASET_ID)
-    table_ref = dataset_ref.table(TABLE_ID)
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
     table = client.get_table(table_ref)  # API Request
 
     # View table properties
     print(table.schema)
     print(table.description)
     print(table.num_rows)
-    # [END bigquery_show_table]
+    # [END bigquery_get_table]
 
     assert table.schema == SCHEMA
     assert table.description == ORIGINAL_DESCRIPTION

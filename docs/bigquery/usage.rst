@@ -148,8 +148,8 @@ Create a table:
 Get a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START get_table]
-   :end-before: [END get_table]
+   :start-after: [START bigquery_get_table]
+   :end-before: [END bigquery_get_table]
 
 Update a property in a table's metadata:
 
