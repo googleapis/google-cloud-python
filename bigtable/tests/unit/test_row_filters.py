@@ -295,10 +295,12 @@ class TestTimestampRange(unittest.TestCase):
         if start_micros is not None:
             start = _EPOCH + datetime.timedelta(microseconds=start_micros)
             pb_kwargs['start_timestamp_micros'] = start_micros
+            self.assertEqual(start_micros % 1000, 0)
         end = None
         if end_micros is not None:
             end = _EPOCH + datetime.timedelta(microseconds=end_micros)
             pb_kwargs['end_timestamp_micros'] = end_micros
+            self.assertEqual(end_micros % 1000, 0)
         time_range = self._make_one(start=start, end=end)
 
         expected_pb = _TimestampRangePB(**pb_kwargs)
