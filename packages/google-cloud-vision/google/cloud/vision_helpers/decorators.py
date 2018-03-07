@@ -83,8 +83,11 @@ def _create_single_feature_method(feature, enum):
 
     Args:
         image (:class:`~.{module}.types.Image`): The image to analyze.
-        options (:class:`google.gax.CallOptions`): Overrides the
-            default settings for this call, e.g, timeout, retries, etc.
+        max_results (int):
+            Number of results to return, does not apply for
+            TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.
+        retry (int): Number of retries to do before giving up.
+        timeout (int): Number of seconds before timing out.
         kwargs (dict): Additional properties to be set on the
             :class:`~.{module}.types.AnnotateImageRequest`.
 
@@ -96,18 +99,23 @@ def _create_single_feature_method(feature, enum):
     feature_value = {'type': enum.__dict__[feature]}
 
     # Define the function to be returned.
-    def inner(self, image, retry=None, timeout=None, **kwargs):
+    def inner(self, image, max_results=None,
+              retry=None, timeout=None, **kwargs):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
         single-feature methods.
         """
+        copied_features = feature_value.copy()
+        if max_results is not None:
+            copied_features['max_results'] = max_results
         request = dict(
             image=image,
-            features=[feature_value],
+            features=[copied_features],
             **kwargs
         )
-        return self.annotate_image(request, retry=retry, timeout=timeout)
+        response = self.annotate_image(request, retry=retry, timeout=timeout)
+        return response
 
     # Set the appropriate function metadata.
     inner.__name__ = fx_name
