@@ -659,40 +659,40 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(checkout, BatchCheckout)
         self.assertIs(checkout._database, database)
 
-    def test_batch_transaction(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
+    def test_batch_snapshot(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
 
         database = self._make_one(
             self.DATABASE_ID, instance=object(), pool=_Pool())
 
-        batch_txn = database.batch_transaction()
-        self.assertIsInstance(batch_txn, BatchTransaction)
+        batch_txn = database.batch_snapshot()
+        self.assertIsInstance(batch_txn, BatchSnapshot)
         self.assertIs(batch_txn._database, database)
         self.assertIsNone(batch_txn._read_timestamp)
         self.assertIsNone(batch_txn._exact_staleness)
 
-    def test_batch_transaction_w_read_timestamp(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
+    def test_batch_snapshot_w_read_timestamp(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
 
         database = self._make_one(
             self.DATABASE_ID, instance=object(), pool=_Pool())
         timestamp = self._make_timestamp()
 
-        batch_txn = database.batch_transaction(read_timestamp=timestamp)
-        self.assertIsInstance(batch_txn, BatchTransaction)
+        batch_txn = database.batch_snapshot(read_timestamp=timestamp)
+        self.assertIsInstance(batch_txn, BatchSnapshot)
         self.assertIs(batch_txn._database, database)
         self.assertEqual(batch_txn._read_timestamp, timestamp)
         self.assertIsNone(batch_txn._exact_staleness)
 
-    def test_batch_transaction_w_exact_staleness(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
+    def test_batch_snapshot_w_exact_staleness(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
 
         database = self._make_one(
             self.DATABASE_ID, instance=object(), pool=_Pool())
         duration = self._make_duration()
 
-        batch_txn = database.batch_transaction(exact_staleness=duration)
-        self.assertIsInstance(batch_txn, BatchTransaction)
+        batch_txn = database.batch_snapshot(exact_staleness=duration)
+        self.assertIsInstance(batch_txn, BatchSnapshot)
         self.assertIs(batch_txn._database, database)
         self.assertIsNone(batch_txn._read_timestamp)
         self.assertEqual(batch_txn._exact_staleness, duration)
@@ -909,16 +909,16 @@ class TestSnapshotCheckout(_BaseTest):
         self.assertIs(pool._session, session)
 
 
-class TestBatchTransaction(_BaseTest):
+class TestBatchSnapshot(_BaseTest):
     TABLE = 'table_name'
     COLUMNS = ['column_one', 'column_two']
     TOKENS = [b'TOKEN1', b'TOKEN2']
     INDEX = 'index'
 
     def _get_target_class(self):
-        from google.cloud.spanner_v1.database import BatchTransaction
+        from google.cloud.spanner_v1.database import BatchSnapshot
 
-        return BatchTransaction
+        return BatchSnapshot
 
     @staticmethod
     def _make_database(**kwargs):

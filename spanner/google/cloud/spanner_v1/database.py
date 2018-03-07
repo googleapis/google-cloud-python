@@ -309,8 +309,7 @@ class Database(object):
         """
         return BatchCheckout(self)
 
-    def batch_transaction(
-            self, read_timestamp=None, exact_staleness=None):
+    def batch_snapshot(self, read_timestamp=None, exact_staleness=None):
         """Return an object which wraps a batch read / query.
 
         :type read_timestamp: :class:`datetime.datetime`
@@ -320,10 +319,10 @@ class Database(object):
         :param exact_staleness: Execute all reads at a timestamp that is
                                 ``exact_staleness`` old.
 
-        :rtype: :class:`~google.cloud.spanner_v1.database.BatchTransaction`
+        :rtype: :class:`~google.cloud.spanner_v1.database.BatchSnapshot`
         :returns: new wrapper
         """
-        return BatchTransaction(
+        return BatchSnapshot(
             self,
             read_timestamp=read_timestamp,
             exact_staleness=exact_staleness,
@@ -427,7 +426,7 @@ class SnapshotCheckout(object):
         self._database._pool.put(self._session)
 
 
-class BatchTransaction(object):
+class BatchSnapshot(object):
     """Wrapper for generating and processing read / query batches.
 
     :type database: :class:`~google.cloud.spannder.database.Database`
@@ -457,7 +456,7 @@ class BatchTransaction(object):
         :type mapping: mapping
         :param mapping: serialized state of the instance
 
-        :rtype: :class:`BatchTransaction`
+        :rtype: :class:`BatchSnapshot`
         """
         instance = cls(database)
         session = instance._session = database.session()

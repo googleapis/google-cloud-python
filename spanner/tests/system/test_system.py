@@ -1274,7 +1274,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = [[row[1], row[2]] for row in self._row_data(row_count)]
         union = []
 
-        batch_txn = self._db.batch_transaction(read_timestamp=committed)
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
         batches = batch_txn.generate_read_batches(
             self.TABLE, columns, KeySet(all_=True), index='name')
         for batch in batches:
@@ -1535,7 +1535,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         all_data_rows = list(self._row_data(row_count))
 
         union = []
-        batch_txn = self._db.batch_transaction(read_timestamp=committed)
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
         for batch in batch_txn.generate_query_batches(sql):
             p_results_iter = batch_txn.process(batch)
             union.extend(list(p_results_iter))
