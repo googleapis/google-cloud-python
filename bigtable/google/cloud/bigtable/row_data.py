@@ -290,9 +290,11 @@ class YieldRowsData(object):
         self._response_iterator.cancel()
 
     def create_retry_request(self):
-        row_range_value = self.request_pb.rows.row_ranges._values[0]
-        row_range_value.start_key_closed = b''
-        row_range_value.start_key_open = self.last_scanned_row_key
+        row_range = self.request_pb.rows.row_ranges.pop()
+        range_kwargs = {}
+        range_kwargs['start_key_open'] = self.last_scanned_row_key
+        range_kwargs['end_key_open'] = row_range.end_key_open
+        self.request_pb.rows.row_ranges.add(**range_kwargs)
 
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.

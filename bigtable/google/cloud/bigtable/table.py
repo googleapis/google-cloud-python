@@ -29,7 +29,6 @@ from google.cloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
-from google.cloud.bigtable.row import _retry_commit_exception
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
