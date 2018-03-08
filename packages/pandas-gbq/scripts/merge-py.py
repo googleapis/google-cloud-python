@@ -25,15 +25,14 @@
 
 from __future__ import print_function
 
-from subprocess import check_output
-from requests.auth import HTTPBasicAuth
-import requests
-
 import os
-import six
 import sys
 import textwrap
+from subprocess import check_output
 
+import requests
+import six
+from requests.auth import HTTPBasicAuth
 from six.moves import input
 
 PANDASGBQ_HOME = '.'

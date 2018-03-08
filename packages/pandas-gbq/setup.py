@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
 import versioneer
-
+from setuptools import find_packages, setup
 
 NAME = 'pandas-gbq'
 

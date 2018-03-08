@@ -1,15 +1,14 @@
+import json
+import os
+import sys
+import time
 import warnings
 from datetime import datetime
-import json
-import time
+from distutils.version import StrictVersion
 from time import sleep
-import sys
-import os
 
 import numpy as np
-
-from distutils.version import StrictVersion
-from pandas import compat, DataFrame
+from pandas import DataFrame, compat
 from pandas.compat import lzip
 
 

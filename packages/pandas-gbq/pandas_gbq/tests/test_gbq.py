@@ -14,6 +14,7 @@ import pytz
 from pandas import DataFrame, NaT, compat
 from pandas.compat import range, u
 from pandas.compat.numpy import np_datetime64_compat
+
 from pandas_gbq import gbq
 
 try:

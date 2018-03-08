@@ -1,7 +1,7 @@
 """Helper methods for loading data into BigQuery"""
 
-from google.cloud import bigquery
 import six
+from google.cloud import bigquery
 
 from pandas_gbq import _schema
 
