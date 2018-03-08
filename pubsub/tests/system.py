@@ -15,15 +15,17 @@
 from __future__ import absolute_import
 
 import datetime
+import io
 import threading
 import time
 
+import mock
 import pytest
 import six
 
 import google.auth
 from google.cloud import pubsub_v1
-
+from google.cloud.pubsub_v1.subscriber import monitor
 
 from test_utils.system import unique_resource_id
 
@@ -128,6 +130,111 @@ def test_subscribe_to_messages(
 
     # Okay, we took too long; fail out.
     assert callback.calls >= 50
+
+
+@pytest.mark.long
+def test_monitor_subscribe_to_messages(
+        publisher, topic_path, subscriber, subscription_path, cleanup):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
+
+    # Create a topic.
+    publisher.create_topic(topic_path)
+
+    # Subscribe to the topic. This must happen before the messages
+    # are published.
+    subscriber.create_subscription(subscription_path, topic_path)
+    subscription = subscriber.subscribe(subscription_path)
+
+    messages = 50
+    seconds = 10
+    monitor_time = 3
+    new_monitor_time = 4
+
+    # Publish some messages.
+    futures = [
+        publisher.publish(
+            topic_path,
+            b'Wooooo! The claaaaaw!',
+            num=str(index),
+        )
+        for index in six.moves.range(messages)
+    ]
+
+    # Make sure the publish completes.
+    for future in futures:
+        future.result()
+
+    callback = AckCallback()
+
+    # Asserts nothing is printed when subscription isn't open
+    subscription.monitor(monitor_time, monitor.Monitor.NAME)
+    output = '{}\n'.format(subscription_path.split('/')[-1])
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+        assert out.getvalue() == ''
+
+    # Asserts message is printed after open
+    subscription.open(callback)
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+    assert out.getvalue() == output * (seconds//monitor_time + 1)
+
+    # Asserts message is stopped
+    subscription.stop_monitor()
+    for second in six.moves.range(seconds):
+        with mock.patch('sys.stderr', new=io.StringIO()) as out:
+            time.sleep(1)
+            assert out.getvalue() == ''
+
+    # Asserts message is printed again after reopen
+    subscription.close()
+    subscription.open(callback)
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+    assert out.getvalue() == output * (seconds//monitor_time + 1)
+
+    # Asserts message restarts with new time
+    subscription.monitor(new_monitor_time,
+                         [monitor.Monitor.NAME, monitor.Monitor.P99])
+    new_output = '{}\n10\n'.format(subscription_path.split('/')[-1])
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+    assert out.getvalue() == new_output * (seconds//new_monitor_time + 1)
+
+    # Asserts nothing is printed after close
+    subscription.close()
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+            assert out.getvalue() == ''
+
+    # Asserts message is printed after open
+    subscription.open(callback)
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+    assert out.getvalue() == new_output * (seconds//new_monitor_time + 1)
+
+    # Asserts nothing is printed after clear
+    subscription.clear_monitor()
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+            assert out.getvalue() == ''
+
+    # Asserts nothing is printed after open
+    subscription.close()
+    subscription.open(callback)
+    with mock.patch('sys.stderr', new=io.StringIO()) as out:
+        for second in six.moves.range(seconds):
+            time.sleep(1)
+            assert out.getvalue() == ''
 
 
 def test_subscribe_to_messages_async_callbacks(

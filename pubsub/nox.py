@@ -47,6 +47,7 @@ def default(session):
         '--cov=google.cloud.pubsub',
         '--cov=google.cloud.pubsub_v1',
         '--cov-config=.coveragerc',
+        '--cov-fail-under=97',
         os.path.join('tests', 'unit'),
         *session.posargs
     )
@@ -88,7 +89,7 @@ def system(session, py):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', '-k-long', 'tests/system.py')
 
 
 @nox.session

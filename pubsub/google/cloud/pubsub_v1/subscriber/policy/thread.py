@@ -27,6 +27,7 @@ from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
+from google.cloud.pubsub_v1.subscriber.monitor import Monitor
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -95,6 +96,8 @@ class Policy(base.BasePolicy):
         # The threads created in ``.open()``.
         self._dispatch_thread = None
         self._leases_thread = None
+        self._monitor = None
+        self._opened = False
 
     @staticmethod
     def _get_queue(queue):
@@ -168,6 +171,8 @@ class Policy(base.BasePolicy):
         self._consumer.stop_consuming()
         self._leases_thread.join()
         self._leases_thread = None
+        if self._monitor is not None:
+            self._monitor._stop()
         self._executor.shutdown()
 
         # The subscription is closing cleanly; resolve the future if it is not
@@ -176,6 +181,7 @@ class Policy(base.BasePolicy):
             self._future.set_result(None)
         future = self._future
         self._future = None
+        self._opened = False
         return future
 
     def _start_dispatch(self):
@@ -259,14 +265,18 @@ class Policy(base.BasePolicy):
         # Create the Future that this method will return.
         # This future is the main thread's interface to handle exceptions,
         # block on the subscription, etc.
+        self._opened = True
         self._future = Future(policy=self, completed=threading.Event())
 
         # Start the thread to pass the requests.
         self._callback = callback
         self._start_dispatch()
+
         # Actually start consuming messages.
         self._consumer.start_consuming(self)
         self._start_lease_worker()
+        if self._monitor:
+            self._monitor._start(self._opened)
 
         # Return the future.
         return self._future
@@ -349,3 +359,37 @@ class Policy(base.BasePolicy):
                 self._callback, msg.ack_id)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             self._executor.submit(self._callback, message)
+
+    def monitor(self, interval, parameters):
+        """Monitor subscriber parameters.
+
+        Creates a monitoring thread of subscriber `parameters` every
+        `interval` seconds and outputs to stderr.  Overwrites the monitor
+        on subsequent calls.
+
+        Args:
+            interval (float): The interval to output
+            parameters (str or Sequence(str)):
+                :class:`~.pubsub_v1.subscriber.monitor.Monitor` options
+        """
+        if self._monitor:
+            self._monitor._clear()
+        self._monitor = Monitor(self, interval, parameters)
+        self._monitor._start(self._opened)
+
+    def stop_monitor(self):
+        """Stops monitoring of subscriber parameters.
+
+        Stops thread from monitoring of parameters.  Will continue monitoring
+        output after reopening of thread.
+        """
+        self._monitor._stop()
+
+    def clear_monitor(self):
+        """Clears monitoring of subscriber parameters.
+
+        Clears thread from monitoring of parameters.  Will not restarting
+        monitoring after reopen.
+        """
+        self._monitor._clear()
+        self._monitor = None
