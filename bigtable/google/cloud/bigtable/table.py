@@ -14,10 +14,6 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 
-
-import functools
-import logging
-
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
@@ -40,12 +36,10 @@ from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 
-
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
-logging.getLogger().setLevel(logging.INFO)
 
 
 class _BigtableRetryableError(Exception):
@@ -60,7 +54,6 @@ DEFAULT_RETRY = Retry(
     deadline=120.0,  # 2 minutes
 )
 """The default retry stategy to be used on retry-able errors.
-
 Used by :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
 """
 
@@ -75,23 +68,17 @@ class TooManyMutationsError(ValueError):
 
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
-
     .. note::
-
         We don't define any properties on a table other than the name.
         The only other fields are ``column_families`` and ``granularity``,
         The ``column_families`` are not stored locally and
         ``granularity`` is an enum with only one value.
-
     We can use a :class:`Table` to:
-
     * :meth:`create` the table
     * :meth:`delete` the table
     * :meth:`list_column_families` in the table
-
     :type table_id: str
     :param table_id: The ID of the table.
-
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
     """
@@ -103,16 +90,11 @@ class Table(object):
     @property
     def name(self):
         """Table name used in requests.
-
         .. note::
-
           This property will not change if ``table_id`` does not, but the
           return value is not cached.
-
         The table name is of the form
-
             ``"projects/../instances/../tables/{table_id}"``
-
         :rtype: str
         :returns: The table name.
         """
@@ -120,15 +102,12 @@ class Table(object):
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
-
         :type column_family_id: str
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-
         :type gc_rule: :class:`.GarbageCollectionRule`
         :param gc_rule: (Optional) The garbage collection settings for this
                         column family.
-
         :rtype: :class:`.ColumnFamily`
         :returns: A column family owned by this table.
         """
@@ -136,23 +115,17 @@ class Table(object):
 
     def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
-
         .. warning::
-
            At most one of ``filter_`` and ``append`` can be used in a
            :class:`~google.cloud.bigtable.row.Row`.
-
         :type row_key: bytes
         :param row_key: The key for the row being created.
-
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) Filter to be used for conditional mutations.
                         See :class:`.ConditionalRow` for more details.
-
         :type append: bool
         :param append: (Optional) Flag to determine if the row should be used
                        for append mutations.
-
         :rtype: :class:`~google.cloud.bigtable.row.Row`
         :returns: A row owned by this table.
         :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -178,13 +151,10 @@ class Table(object):
 
     def create(self, initial_split_keys=None, column_families=()):
         """Creates this table.
-
         .. note::
-
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
-
         :type initial_split_keys: list
         :param initial_split_keys: (Optional) List of row keys that will be
                                    used to initially split the table into
@@ -193,7 +163,6 @@ class Table(object):
                                    ``"s1"`` and ``"s2"``, three tablets will be
                                    created, spanning the key ranges:
                                    ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
-
         :type column_families: list
         :param column_families: (Optional) List or other iterable of
                                 :class:`.ColumnFamily` instances.
@@ -230,7 +199,6 @@ class Table(object):
 
     def list_column_families(self):
         """List the column families owned by this table.
-
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
                   are strings (column family names) and values are
@@ -255,14 +223,11 @@ class Table(object):
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
-
         :type row_key: bytes
         :param row_key: The key of the row to read from.
-
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         row. If unset, returns the entire row.
-
         :rtype: :class:`.PartialRowData`, :data:`NoneType <types.NoneType>`
         :returns: The contents of the row if any chunks were returned in
                   the response, otherwise :data:`None`.
@@ -271,8 +236,8 @@ class Table(object):
         """
         request_pb = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
-        client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
+        client = BigtableClient()
+        response_iterator = client._read_rows(request_pb, retry=None)
         rows_data = PartialRowsData(response_iterator)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
@@ -286,31 +251,25 @@ class Table(object):
     def read_rows(self, start_key=None, end_key=None, limit=None,
                   filter_=None, end_inclusive=False):
         """Read rows from this table.
-
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
                           read from. The range will include ``start_key``. If
                           left empty, will be interpreted as the empty string.
-
         :type end_key: bytes
         :param end_key: (Optional) The end of a range of row keys to read from.
                         The range will not include ``end_key``. If left empty,
                         will be interpreted as an infinite string.
-
         :type limit: int
         :param limit: (Optional) The read will terminate after committing to N
                       rows' worth of results. The default (zero) is to return
                       all results.
-
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
-
         :type end_inclusive: bool
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                       considered inclusive. The default is False (exclusive).
-
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
@@ -318,73 +277,61 @@ class Table(object):
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
-        client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
+        client = BigtableClient()
+        response_iterator = client._read_rows(request_pb, retry=None)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None, retry=True):
+                   filter_=None):
         """Read rows from this table.
-
         :type start_key: bytes
         :param start_key: (Optional) The beginning of a range of row keys to
                           read from. The range will include ``start_key``. If
                           left empty, will be interpreted as the empty string.
-
         :type end_key: bytes
         :param end_key: (Optional) The end of a range of row keys to read from.
                         The range will not include ``end_key``. If left empty,
                         will be interpreted as an infinite string.
-
         :type limit: int
         :param limit: (Optional) The read will terminate after committing to N
                       rows' worth of results. The default (zero) is to return
                       all results.
-
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
-
-        :type retry: bool
-        :param retry: (Optional) Apply retry on read rows.
-
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-
+        request_pb = _create_row_request(
+            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+            limit=limit)
         client = BigtableClient()
-        retryable_read_rows = _RetryableReadRows(
-            client, self.name, start_key, end_key, filter_, limit, retry)
-
-        for row in retryable_read_rows():
+        response_iterator = client._read_rows(request_pb, retry=None)
+        generator = YieldRowsData(response_iterator)
+        for row in generator.read_rows():
             yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
-
         The method tries to update all specified rows.
         If some of the rows weren't updated, it would not remove mutations.
         They can be applied to the row separately.
         If row mutations finished successfully, they would be cleaned up.
-
         Optionally, a ``retry`` strategy can be specified to re-attempt
         mutations on rows that return transient errors. This method will retry
         until all rows succeed or until the request deadline is reached. To
         specify a ``retry`` strategy of "do-nothing", a deadline of ``0.0``
         can be specified.
-
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
-
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry:
             (Optional) Retry delay and deadline arguments. To override, the
             default value :attr:`DEFAULT_RETRY` can be used and modified with
             the :meth:`~google.api_core.retry.Retry.with_delay` method or the
             :meth:`~google.api_core.retry.Retry.with_deadline` method.
-
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
@@ -396,30 +343,24 @@ class Table(object):
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
-
         The returned row keys will delimit contiguous sections of the table of
         approximately equal size, which can be used to break up the data for
         distributed tasks like mapreduces.
-
         The elements in the iterator are a SampleRowKeys response and they have
         the properties ``offset_bytes`` and ``row_key``. They occur in sorted
         order. The table might have contents before the first row key in the
         list and after the last one, but a key containing the empty string
         indicates "end of table" and will be the last response given, if
         present.
-
         .. note::
-
             Row keys in this list may not have ever been written to or read
             from, and users should therefore not make any assumptions about the
             row key structure that are specific to their use case.
-
         The ``offset_bytes`` field on a response indicates the approximate
         total storage space used by all rows in the table which precede
         ``row_key``. Buffering the contents of all rows between two subsequent
         samples would require space roughly equal to the difference in their
         ``offset_bytes`` fields.
-
         :rtype: :class:`~google.cloud.exceptions.GrpcRendezvous`
         :returns: A cancel-able iterator. Can be consumed by calling ``next()``
                   or by casting to a :class:`list` and can be cancelled by
@@ -427,14 +368,13 @@ class Table(object):
         """
         request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
-        client = self._instance._client
-        response_iterator = client._data_stub.SampleRowKeys(request_pb)
+        client = BigtableClient()
+        response_iterator = client._sample_row_keys(request_pb, retry=None)
         return response_iterator
 
 
 class _RetryableMutateRowsWorker(object):
     """A callable worker that can retry to mutate rows with transient errors.
-
     This class is a callable that can retry mutating rows that result in
     transient errors. After all rows are successful or none of the rows
     are retryable, any subsequent call on this callable will be a no-op.
@@ -446,20 +386,19 @@ class _RetryableMutateRowsWorker(object):
         StatusCode.ABORTED.value[0],
         StatusCode.UNAVAILABLE.value[0],
     )
+
     # pylint: enable=unsubscriptable-object
 
     def __init__(self, client, table_name, rows):
-        self.client = client
+        self.client = BigtableClient()
         self.table_name = table_name
         self.rows = rows
         self.responses_statuses = [None] * len(self.rows)
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
-
         Will retry the rows with transient errors until all rows succeed or
         ``deadline`` specified in the `retry` is reached.
-
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
@@ -487,15 +426,12 @@ class _RetryableMutateRowsWorker(object):
 
     def _do_mutate_retryable_rows(self):
         """Mutate all the rows that are eligible for retry.
-
         A row is eligible for retry if it has not been tried or if it resulted
         in a transient error in a previous call.
-
         :rtype: list
         :return: The responses statuses, which is a list of
                  :class:`~google.rpc.status_pb2.Status`.
         :raises: One of the following:
-
                  * :exc:`~.table._BigtableRetryableError` if any
                    row returned a transient error.
                  * :exc:`RuntimeError` if the number of responses doesn't
@@ -514,8 +450,7 @@ class _RetryableMutateRowsWorker(object):
 
         mutate_rows_request = _mutate_rows_request(
             self.table_name, retryable_rows)
-        responses = self.client._data_stub.MutateRows(
-            mutate_rows_request)
+        responses = self.client._mutate_rows(mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
@@ -540,92 +475,31 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
-class _RetryableReadRows(object):
-    """A callable worker that can retry to read rows with transient errors.
-
-    This class is a callable that can retry reading rows that result in
-    transient errors.
-    """
-
-    def __init__(self, client, table_name, start_key,
-                 end_key, filter_, limit, retry):
-        self.generator = None
-        self.client = client
-        self.table_name = table_name
-        self.start_key = start_key
-        self.end_key = end_key
-        self.filter_ = filter_
-        self.limit = limit
-        self.retry = retry
-
-    def __call__(self):
-        if self.retry:
-            read_rows = functools.partial(self._do_read_retryable_rows)
-            retry_ = Retry(
-                predicate=_retry_commit_exception,
-                deadline=30)
-            return retry_(read_rows)()
-        else:
-            return self._do_read_retryable_rows()
-
-    def _do_read_retryable_rows(self):
-        if (self.generator and self.generator.last_scanned_row_key):
-            next_start_key = self.generator.last_scanned_row_key
-            start_inclusive = False
-            logging.info('Start key is {} for retry read rows.'
-                         .format(next_start_key))
-        else:
-            next_start_key = self.start_key
-            start_inclusive = True
-
-        request_pb = _create_row_request(
-            self.table_name,
-            start_key=next_start_key,
-            end_key=self.end_key,
-            filter_=self.filter_,
-            limit=self.limit,
-            start_inclusive=start_inclusive)
-        client = self.client
-        response_iterator = client._read_rows(request_pb, retry=None)
-        self.generator = YieldRowsData(response_iterator)
-        for row in self.generator.read_rows():
-            yield row
-
-
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None,
-                        end_inclusive=False, start_inclusive=True):
+                        filter_=None, limit=None, end_inclusive=False):
     """Creates a request to read rows in a table.
-
     :type table_name: str
     :param table_name: The name of the table to read from.
-
     :type row_key: bytes
     :param row_key: (Optional) The key of a specific row to read from.
-
     :type start_key: bytes
     :param start_key: (Optional) The beginning of a range of row keys to
                       read from. The range will include ``start_key``. If
                       left empty, will be interpreted as the empty string.
-
     :type end_key: bytes
     :param end_key: (Optional) The end of a range of row keys to read from.
                     The range will not include ``end_key``. If left empty,
                     will be interpreted as an infinite string.
-
     :type filter_: :class:`.RowFilter`
     :param filter_: (Optional) The filter to apply to the contents of the
                     specified row(s). If unset, reads the entire table.
-
     :type limit: int
     :param limit: (Optional) The read will terminate after committing to N
                   rows' worth of results. The default (zero) is to return
                   all results.
-
     :type end_inclusive: bool
     :param end_inclusive: (Optional) Whether the ``end_key`` should be
                   considered inclusive. The default is False (exclusive).
-
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -639,10 +513,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     range_kwargs = {}
     if start_key is not None or end_key is not None:
         if start_key is not None:
-            start_key_key = 'start_key_open'
-            if start_inclusive:
-                start_key_key = 'start_key_closed'
-            range_kwargs[start_key_key] = _to_bytes(start_key)
+            range_kwargs['start_key_closed'] = _to_bytes(start_key)
         if end_key is not None:
             end_key_key = 'end_key_open'
             if end_inclusive:
@@ -666,13 +537,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
 
 def _mutate_rows_request(table_name, rows):
     """Creates a request to mutate rows in a table.
-
     :type table_name: str
     :param table_name: The name of the table to write to.
-
     :type rows: list
     :param rows: List or other iterable of :class:`.DirectRow` instances.
-
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
     :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
@@ -698,14 +566,11 @@ def _mutate_rows_request(table_name, rows):
 
 def _check_row_table_name(table_name, row):
     """Checks that a row belongs to a table.
-
     :type table_name: str
     :param table_name: The name of the table.
-
     :type row: :class:`~google.cloud.bigtable.row.Row`
     :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
                 subclasses.
-
     :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
              the table.
     """
@@ -717,11 +582,9 @@ def _check_row_table_name(table_name, row):
 
 def _check_row_type(row):
     """Checks that a row is an instance of :class:`.DirectRow`.
-
     :type row: :class:`~google.cloud.bigtable.row.Row`
     :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
                 subclasses.
-
     :raises: :class:`TypeError <exceptions.TypeError>` if the row is not an
              instance of DirectRow.
     """

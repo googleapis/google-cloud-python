@@ -24,13 +24,10 @@ from google.cloud._helpers import _to_bytes
 
 class Cell(object):
     """Representation of a Google Cloud Bigtable Cell.
-
     :type value: bytes
     :param value: The value stored in the cell.
-
     :type timestamp_micros: int
     :param timestamp_micros: The timestamp_micros when the cell was stored.
-
     :type labels: list
     :param labels: (Optional) List of strings. Labels applied to the cell.
     """
@@ -43,10 +40,8 @@ class Cell(object):
     @classmethod
     def from_pb(cls, cell_pb):
         """Create a new cell from a Cell protobuf.
-
         :type cell_pb: :class:`._generated.data_pb2.Cell`
         :param cell_pb: The protobuf to convert.
-
         :rtype: :class:`Cell`
         :returns: The cell corresponding to the protobuf.
         """
@@ -73,26 +68,19 @@ class Cell(object):
 
 class PartialCellData(object):
     """Representation of partial cell in a Google Cloud Bigtable Table.
-
     These are expected to be updated directly from a
     :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
-
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) cell.
-
     :type family_name: str
     :param family_name: The family name of the (partial) cell.
-
     :type qualifier: bytes
     :param qualifier: The column qualifier of the (partial) cell.
-
     :type timestamp_micros: int
     :param timestamp_micros: The timestamp (in microsecods) of the
                              (partial) cell.
-
     :type labels: list of str
     :param labels: labels assigned to the (partial) cell
-
     :type value: bytes
     :param value: The (accumulated) value of the (partial) cell.
     """
@@ -107,7 +95,6 @@ class PartialCellData(object):
 
     def append_value(self, value):
         """Append bytes from a new chunk to value.
-
         :type value: bytes
         :param value: bytes to append
         """
@@ -116,10 +103,8 @@ class PartialCellData(object):
 
 class PartialRowData(object):
     """Representation of partial row in a Google Cloud Bigtable Table.
-
     These are expected to be updated directly from a
     :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
-
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) data.
     """
@@ -139,10 +124,8 @@ class PartialRowData(object):
 
     def to_dict(self):
         """Convert the cells to a dictionary.
-
         This is intended to be used with HappyBase, so the column family and
         column qualiers are combined (with ``:``).
-
         :rtype: dict
         :returns: Dictionary containing all the data in the cells of this row.
         """
@@ -157,7 +140,6 @@ class PartialRowData(object):
     @property
     def cells(self):
         """Property returning all the cells accumulated on this partial row.
-
         :rtype: dict
         :returns: Dictionary of the :class:`Cell` objects accumulated. This
                   dictionary has two-levels of keys (first for column families
@@ -169,7 +151,6 @@ class PartialRowData(object):
     @property
     def row_key(self):
         """Getter for the current (partial) row's key.
-
         :rtype: bytes
         :returns: The current (partial) row's key.
         """
@@ -186,7 +167,6 @@ class InvalidChunk(RuntimeError):
 
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-
     :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
@@ -215,7 +195,6 @@ class PartialRowsData(object):
     @property
     def state(self):
         """State machine state.
-
         :rtype: str
         :returns:  name of state corresponding to currrent row / chunk
                    processing.
@@ -224,7 +203,6 @@ class PartialRowsData(object):
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
-
         :type max_loops: int
         :param max_loops: (Optional) Maximum number of times to try to consume
                           an additional ``ReadRowsResponse``. You can use this
@@ -236,7 +214,6 @@ class PartialRowsData(object):
 
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-
     :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
@@ -251,6 +228,8 @@ class YieldRowsData(object):
         self._response_iterator = response_iterator
         # Counter for responses pulled from iterator
         self._counter = 0
+        # Maybe cached from previous response
+        self._last_scanned_row_key = None
         # In-progress row, unset until first response, after commit/reset
         self._row = None
         # Last complete row, unset until first commit
@@ -259,18 +238,15 @@ class YieldRowsData(object):
         self._cell = None
         # Last complete cell, unset until first completion, after new row
         self._previous_cell = None
-        # May be cached from previous response
-        self.last_scanned_row_key = None
 
     @property
     def state(self):
         """State machine state.
-
         :rtype: str
         :returns:  name of state corresponding to current row / chunk
                    processing.
         """
-        if self.last_scanned_row_key is None:
+        if self._last_scanned_row_key is None:
             return self.START
         if self._row is None:
             assert self._cell is None
@@ -289,7 +265,6 @@ class YieldRowsData(object):
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
         Read the rows and yield each to the reader
-
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
@@ -301,11 +276,11 @@ class YieldRowsData(object):
 
             self._counter += 1
 
-            if self.last_scanned_row_key is None:  # first response
+            if self._last_scanned_row_key is None:  # first response
                 if response.last_scanned_row_key:
                     raise InvalidReadRowsResponse()
 
-            self.last_scanned_row_key = response.last_scanned_row_key
+            self._last_scanned_row_key = response.last_scanned_row_key
 
             row = self._row
             cell = self._cell
@@ -343,7 +318,6 @@ class YieldRowsData(object):
 
                     yield self._row
 
-                    self.last_scanned_row_key = self._row.row_key
                     self._row, self._previous_row = None, self._row
                     self._previous_cell = None
                     row = cell = None
