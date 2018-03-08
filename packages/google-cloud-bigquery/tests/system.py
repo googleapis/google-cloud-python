@@ -543,50 +543,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_uri_w_autodetect_schema_then_get_job(self):
-        from google.cloud.bigquery import SchemaField
-        from google.cloud.bigquery.job import LoadJob
-
-        rows = ROWS * 100
-        # BigQuery internally uses the first 100 rows to detect schema
-
-        gs_url = self._write_csv_to_storage(
-            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, rows)
-        dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
-        table_ref = dataset.table('test_table')
-        JOB_ID = 'load_table_w_autodetect_{}'.format(str(uuid.uuid4()))
-
-        config = bigquery.LoadJobConfig()
-        config.autodetect = True
-        job = Config.CLIENT.load_table_from_uri(
-            gs_url, table_ref, job_config=config, job_id=JOB_ID)
-
-        # Allow for 90 seconds of "warm up" before rows visible.  See
-        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
-
-        table = Config.CLIENT.get_table(table_ref)
-        self.to_delete.insert(0, table)
-        field_name = SchemaField(
-            u'Full_Name', u'string', u'NULLABLE', None, ())
-        field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
-        self.assertEqual(table.schema, [field_name, field_age])
-
-        actual_rows = self._fetch_single_page(table)
-        actual_row_tuples = [r.values() for r in actual_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(
-            sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
-
-        fetched_job = Config.CLIENT.get_job(JOB_ID)
-
-        self.assertIsInstance(fetched_job, LoadJob)
-        self.assertEqual(fetched_job.job_id, JOB_ID)
-        self.assertEqual(fetched_job.autodetect, True)
-
     def _create_storage(self, bucket_name, blob_name):
         from google.cloud.storage import Client as StorageClient
 
