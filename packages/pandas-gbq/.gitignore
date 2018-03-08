@@ -1,4 +1,4 @@
-gi#########################################
+#########################################
 # Editor temporary/working/backup files #
 .#*
 *\#*\#
@@ -19,6 +19,8 @@ gi#########################################
 .noseids
 .ipynb_checkpoints
 .tags
+.pytest_cache
+.testmondata
 
 # Docs #
 ########

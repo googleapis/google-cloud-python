@@ -1,34 +1,27 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-
-import re
-from datetime import datetime
-import pytz
-from time import sleep
 import os
-from random import randint
-import logging
+import re
 import sys
+from datetime import datetime
+from random import randint
+from time import sleep
 
 import numpy as np
-
-from pandas import compat
-
-from pandas.compat import u, range
-from pandas import NaT, DataFrame
-from pandas_gbq import gbq
 import pandas.util.testing as tm
+import pytest
+import pytz
+from pandas import DataFrame, NaT, compat
+from pandas.compat import range, u
 from pandas.compat.numpy import np_datetime64_compat
+from pandas_gbq import gbq
 
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 TABLE_ID = 'new_test'
-
-
-def _skip_if_no_project_id():
-    if not _get_project_id():
-        pytest.skip(
-            "Cannot run integration tests without a project id")
 
 
 def _skip_local_auth_if_in_travis_env():
@@ -58,7 +51,12 @@ def _get_dataset_prefix_random():
 
 
 def _get_project_id():
-    return os.environ.get('GBQ_PROJECT_ID')
+
+    project = os.environ.get('GBQ_PROJECT_ID')
+    if not project:
+        pytest.skip(
+            "Cannot run integration tests without a project id")
+    return project
 
 
 def _get_private_key_path():
@@ -78,6 +76,7 @@ def _get_private_key_contents():
         return f.read()
 
 
+@pytest.fixture(autouse=True, scope='module')
 def _test_imports():
     try:
         import pkg_resources  # noqa
@@ -87,15 +86,9 @@ def _test_imports():
     gbq._test_google_api_imports()
 
 
-def _setup_common():
-    try:
-        _test_imports()
-    except (ImportError, NotImplementedError) as import_exception:
-        pytest.skip(str(import_exception))
-
-    if _in_travis_environment():
-        logging.getLogger('oauth2client').setLevel(logging.ERROR)
-        logging.getLogger('apiclient').setLevel(logging.ERROR)
+@pytest.fixture
+def project():
+    return _get_project_id()
 
 
 def _check_if_can_get_correct_default_credentials():
@@ -179,39 +172,84 @@ def test_generate_bq_schema_deprecated():
         gbq.generate_bq_schema(df)
 
 
-class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
+@pytest.fixture(params=['local', 'service_path', 'service_creds'])
+def auth_type(request):
 
-    def setup_method(self, method):
-        _setup_common()
-        _skip_if_no_project_id()
-        _skip_local_auth_if_in_travis_env()
+    auth = request.param
 
-        self.sut = gbq.GbqConnector(
-            _get_project_id(), auth_local_webserver=True)
+    if auth == 'local':
 
-    def test_should_be_able_to_make_a_connector(self):
-        assert self.sut is not None, 'Could not create a GbqConnector'
+        if _in_travis_environment():
+            pytest.skip("Cannot run local auth in travis environment")
 
-    def test_should_be_able_to_get_valid_credentials(self):
-        credentials = self.sut.get_credentials()
+    elif auth == 'service_path':
+
+        if _in_travis_environment():
+            pytest.skip("Only run one auth type in Travis to save time")
+
+        _skip_if_no_private_key_path()
+    elif auth == 'service_creds':
+        _skip_if_no_private_key_contents()
+    else:
+        raise ValueError
+    return auth
+
+
+@pytest.fixture()
+def credentials(auth_type):
+
+    if auth_type == 'local':
+        return None
+
+    elif auth_type == 'service_path':
+        return _get_private_key_path()
+    elif auth_type == 'service_creds':
+        return _get_private_key_contents()
+    else:
+        raise ValueError
+
+
+@pytest.fixture()
+def gbq_connector(project, credentials):
+
+    return gbq.GbqConnector(project, private_key=credentials)
+
+
+class TestGBQConnectorIntegration(object):
+
+    def test_should_be_able_to_make_a_connector(self, gbq_connector):
+        assert gbq_connector is not None, 'Could not create a GbqConnector'
+
+    def test_should_be_able_to_get_valid_credentials(self, gbq_connector):
+        credentials = gbq_connector.get_credentials()
         assert credentials.valid
 
-    def test_should_be_able_to_get_a_bigquery_client(self):
-        bigquery_client = self.sut.get_client()
+    def test_should_be_able_to_get_a_bigquery_client(self, gbq_connector):
+        bigquery_client = gbq_connector.get_client()
         assert bigquery_client is not None
 
-    def test_should_be_able_to_get_schema_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
+    def test_should_be_able_to_get_schema_from_query(self, gbq_connector):
+        schema, pages = gbq_connector.run_query('SELECT 1')
         assert schema is not None
 
-    def test_should_be_able_to_get_results_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
+    def test_should_be_able_to_get_results_from_query(self, gbq_connector):
+        schema, pages = gbq_connector.run_query('SELECT 1')
         assert pages is not None
+
+
+class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
+
+    @pytest.fixture(autouse=True)
+    def setup(self, project):
+
+        _skip_local_auth_if_in_travis_env()
+
+        self.sut = gbq.GbqConnector(project, auth_local_webserver=True)
 
     def test_get_application_default_credentials_does_not_throw_error(self):
         if _check_if_can_get_correct_default_credentials():
             # Can get real credentials, so mock it out to fail.
-            import mock
+
             from google.auth.exceptions import DefaultCredentialsError
             with mock.patch('google.auth.default',
                             side_effect=DefaultCredentialsError()):
@@ -229,7 +267,7 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
         assert isinstance(credentials, Credentials)
 
     def test_get_user_account_credentials_bad_file_returns_credentials(self):
-        import mock
+
         from google.auth.credentials import Credentials
         with mock.patch('__main__.open', side_effect=IOError()):
             credentials = self.sut.get_user_account_credentials()
@@ -241,72 +279,7 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
         assert isinstance(credentials, Credentials)
 
 
-class TestGBQConnectorIntegrationWithServiceAccountKeyPath(object):
-
-    def setup_method(self, method):
-        _setup_common()
-
-        _skip_if_no_project_id()
-        _skip_if_no_private_key_path()
-
-        self.sut = gbq.GbqConnector(_get_project_id(),
-                                    private_key=_get_private_key_path())
-
-    def test_should_be_able_to_make_a_connector(self):
-        assert self.sut is not None
-
-    def test_should_be_able_to_get_valid_credentials(self):
-        credentials = self.sut.get_credentials()
-        assert credentials.valid
-
-    def test_should_be_able_to_get_a_bigquery_client(self):
-        bigquery_client = self.sut.get_client()
-        assert bigquery_client is not None
-
-    def test_should_be_able_to_get_schema_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
-        assert schema is not None
-
-    def test_should_be_able_to_get_results_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
-        assert pages is not None
-
-
-class TestGBQConnectorIntegrationWithServiceAccountKeyContents(object):
-
-    def setup_method(self, method):
-        _setup_common()
-
-        _skip_if_no_project_id()
-        _skip_if_no_private_key_contents()
-
-        self.sut = gbq.GbqConnector(_get_project_id(),
-                                    private_key=_get_private_key_contents())
-
-    def test_should_be_able_to_make_a_connector(self):
-        assert self.sut is not None
-
-    def test_should_be_able_to_get_valid_credentials(self):
-        credentials = self.sut.get_credentials()
-        assert credentials.valid
-
-    def test_should_be_able_to_get_a_bigquery_client(self):
-        bigquery_client = self.sut.get_client()
-        assert bigquery_client is not None
-
-    def test_should_be_able_to_get_schema_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
-        assert schema is not None
-
-    def test_should_be_able_to_get_results_from_query(self):
-        schema, pages = self.sut.run_query('SELECT 1')
-        assert pages is not None
-
-
 class GBQUnitTests(object):
-
-    def setup_method(self, method):
-        _setup_common()
 
     def test_import_google_api_python_client(self):
         if not _in_travis_environment():
@@ -325,7 +298,7 @@ class GBQUnitTests(object):
             from googleapiclient.errors import HttpError  # noqa
 
     def test_should_return_credentials_path_set_by_env_var(self):
-        import mock
+
         env = {'PANDAS_GBQ_CREDENTIALS_FILE': '/tmp/dummy.dat'}
         with mock.patch.dict('os.environ', env):
             assert gbq._get_credentials_file() == '/tmp/dummy.dat'
@@ -406,114 +379,46 @@ class GBQUnitTests(object):
                 private_key=re.sub('[a-z]', '9', _get_private_key_contents()))
 
 
+def test_should_read(project, credentials):
+
+    query = 'SELECT "PI" AS valid_string'
+    df = gbq.read_gbq(query, project_id=project, private_key=credentials)
+    tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
+
+
 class TestReadGBQIntegration(object):
 
-    @classmethod
-    def setup_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        #   put here any instruction you want to execute only *ONCE* *BEFORE*
-        #   executing *ALL* tests described below.
-
-        _skip_if_no_project_id()
-
-        _setup_common()
-
-    def setup_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instruction you want to be run *BEFORE* *EVERY* test is
-        # executed.
-        pass
-
-    @classmethod
-    def teardown_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *AFTER*
-        # executing all tests.
-        pass
-
-    def teardown_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instructions you want to be run *AFTER* *EVERY* test is
-        # executed.
-        pass
-
-    def test_should_read_as_user_account(self):
-        _skip_local_auth_if_in_travis_env()
-
-        query = 'SELECT "PI" AS valid_string'
-        df = gbq.read_gbq(query, project_id=_get_project_id())
-        tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
-
-    def test_should_read_as_service_account_with_key_path(self):
-        _skip_if_no_private_key_path()
-        query = 'SELECT "PI" AS valid_string'
-        df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
-        tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
-
-    def test_should_read_as_service_account_with_key_contents(self):
-        _skip_if_no_private_key_contents()
-        query = 'SELECT "PI" AS valid_string'
-        df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_contents())
-        tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
-
-
-class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
-
-    @classmethod
-    def setup_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        #   put here any instruction you want to execute only *ONCE* *BEFORE*
-        #   executing *ALL* tests described below.
-
-        _skip_if_no_project_id()
-        _skip_if_no_private_key_path()
-
-        _setup_common()
-
-    def setup_method(self, method):
+    @pytest.fixture(autouse=True)
+    def setup(self, project, credentials):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
         self.gbq_connector = gbq.GbqConnector(
-            _get_project_id(), private_key=_get_private_key_path())
-
-    @classmethod
-    def teardown_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *AFTER*
-        # executing all tests.
-        pass
-
-    def teardown_method(self):
-        # - PER-TEST FIXTURES -
-        # put here any instructions you want to be run *AFTER* *EVERY* test is
-        # executed.
-        pass
+            project, private_key=credentials)
+        self.credentials = credentials
 
     def test_should_properly_handle_valid_strings(self):
         query = 'SELECT "PI" AS valid_string'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
 
     def test_should_properly_handle_empty_strings(self):
         query = 'SELECT "" AS empty_string'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'empty_string': [""]}))
 
     def test_should_properly_handle_null_strings(self):
         query = 'SELECT STRING(NULL) AS null_string'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'null_string': [None]}))
 
     def test_should_properly_handle_valid_integers(self):
         query = 'SELECT INTEGER(3) AS valid_integer'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'valid_integer': [3]}))
 
     def test_should_properly_handle_nullable_integers(self):
@@ -521,14 +426,14 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                     (SELECT 1 AS nullable_integer),
                     (SELECT NULL AS nullable_integer)'''
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'nullable_integer': [1, None]}).astype(object))
 
     def test_should_properly_handle_valid_longs(self):
         query = 'SELECT 1 << 62 AS valid_long'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'valid_long': [1 << 62]}))
 
@@ -537,21 +442,21 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                     (SELECT 1 << 62 AS nullable_long),
                     (SELECT NULL AS nullable_long)'''
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'nullable_long': [1 << 62, None]}).astype(object))
 
     def test_should_properly_handle_null_integers(self):
         query = 'SELECT INTEGER(NULL) AS null_integer'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'null_integer': [None]}))
 
     def test_should_properly_handle_valid_floats(self):
         from math import pi
         query = 'SELECT PI() AS valid_float'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame(
             {'valid_float': [pi]}))
 
@@ -561,7 +466,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                     (SELECT PI() AS nullable_float),
                     (SELECT NULL AS nullable_float)'''
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'nullable_float': [pi, None]}))
 
@@ -569,7 +474,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         from math import pi
         query = 'SELECT PI() * POW(10, 307) AS valid_double'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame(
             {'valid_double': [pi * 10 ** 307]}))
 
@@ -579,27 +484,27 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                     (SELECT PI() * POW(10, 307) AS nullable_double),
                     (SELECT NULL AS nullable_double)'''
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'nullable_double': [pi * 10 ** 307, None]}))
 
     def test_should_properly_handle_null_floats(self):
         query = 'SELECT FLOAT(NULL) AS null_float'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'null_float': [np.nan]}))
 
     def test_should_properly_handle_timestamp_unix_epoch(self):
         query = 'SELECT TIMESTAMP("1970-01-01 00:00:00") AS unix_epoch'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame(
             {'unix_epoch': [np.datetime64('1970-01-01T00:00:00.000000Z')]}))
 
     def test_should_properly_handle_arbitrary_timestamp(self):
         query = 'SELECT TIMESTAMP("2004-09-15 05:00:00") AS valid_timestamp'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({
             'valid_timestamp': [np.datetime64('2004-09-15T05:00:00.000000Z')]
         }))
@@ -607,25 +512,25 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
     def test_should_properly_handle_null_timestamp(self):
         query = 'SELECT TIMESTAMP(NULL) AS null_timestamp'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'null_timestamp': [NaT]}))
 
     def test_should_properly_handle_true_boolean(self):
         query = 'SELECT BOOLEAN(TRUE) AS true_boolean'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'true_boolean': [True]}))
 
     def test_should_properly_handle_false_boolean(self):
         query = 'SELECT BOOLEAN(FALSE) AS false_boolean'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'false_boolean': [False]}))
 
     def test_should_properly_handle_null_boolean(self):
         query = 'SELECT BOOLEAN(NULL) AS null_boolean'
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, DataFrame({'null_boolean': [None]}))
 
     def test_should_properly_handle_nullable_booleans(self):
@@ -633,7 +538,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                     (SELECT BOOLEAN(TRUE) AS nullable_boolean),
                     (SELECT NULL AS nullable_boolean)'''
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(
             df, DataFrame({'nullable_boolean': [True, None]}).astype(object))
 
@@ -650,14 +555,14 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         query = 'SELECT "{0}" AS unicode_string'.format(unicode_string)
 
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         tm.assert_frame_equal(df, correct_test_datatype)
 
     def test_index_column(self):
         query = "SELECT 'a' AS string_1, 'b' AS string_2"
         result_frame = gbq.read_gbq(query, project_id=_get_project_id(),
                                     index_col="string_1",
-                                    private_key=_get_private_key_path())
+                                    private_key=self.credentials)
         correct_frame = DataFrame(
             {'string_1': ['a'], 'string_2': ['b']}).set_index("string_1")
         assert result_frame.index.name == correct_frame.index.name
@@ -667,7 +572,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         col_order = ['string_3', 'string_1', 'string_2']
         result_frame = gbq.read_gbq(query, project_id=_get_project_id(),
                                     col_order=col_order,
-                                    private_key=_get_private_key_path())
+                                    private_key=self.credentials)
         correct_frame = DataFrame({'string_1': ['a'], 'string_2': [
                                   'b'], 'string_3': ['c']})[col_order]
         tm.assert_frame_equal(result_frame, correct_frame)
@@ -680,14 +585,14 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         with pytest.raises(gbq.InvalidColumnOrder):
             gbq.read_gbq(query, project_id=_get_project_id(),
                          col_order=col_order,
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
     def test_column_order_plus_index(self):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
         col_order = ['string_3', 'string_2']
         result_frame = gbq.read_gbq(query, project_id=_get_project_id(),
                                     index_col='string_1', col_order=col_order,
-                                    private_key=_get_private_key_path())
+                                    private_key=self.credentials)
         correct_frame = DataFrame(
             {'string_1': ['a'], 'string_2': ['b'], 'string_3': ['c']})
         correct_frame.set_index('string_1', inplace=True)
@@ -702,24 +607,24 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         with pytest.raises(gbq.InvalidIndexColumn):
             gbq.read_gbq(query, project_id=_get_project_id(),
                          index_col='string_bbb', col_order=col_order,
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
     def test_malformed_query(self):
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELCET * FORM [publicdata:samples.shakespeare]",
                          project_id=_get_project_id(),
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
     def test_bad_project_id(self):
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELECT 1", project_id='001',
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
     def test_bad_table_name(self):
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELECT * FROM [publicdata:samples.nope]",
                          project_id=_get_project_id(),
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
     def test_download_dataset_larger_than_200k_rows(self):
         test_size = 200005
@@ -729,7 +634,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                           "GROUP EACH BY id ORDER BY id ASC LIMIT {0}"
                           .format(test_size),
                           project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         assert len(df.drop_duplicates()) == test_size
 
     def test_zero_rows(self):
@@ -739,7 +644,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                           "FROM [publicdata:samples.wikipedia] "
                           "WHERE timestamp=-9999999",
                           project_id=_get_project_id(),
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         page_array = np.zeros(
             (0,), dtype=[('title', object), ('id', np.dtype(int)),
                          ('is_bot', np.dtype(bool)), ('ts', 'M8[ns]')])
@@ -755,13 +660,13 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq(legacy_sql, project_id=_get_project_id(),
                          dialect='standard',
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
         # Test that a legacy sql statement succeeds when
         # setting dialect='legacy'
         df = gbq.read_gbq(legacy_sql, project_id=_get_project_id(),
                           dialect='legacy',
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         assert len(df.drop_duplicates()) == 10
 
     def test_standard_sql(self):
@@ -772,13 +677,13 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # the legacy SQL dialect (default value)
         with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq(standard_sql, project_id=_get_project_id(),
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
         # Test that a standard sql statement succeeds when
         # setting dialect='standard'
         df = gbq.read_gbq(standard_sql, project_id=_get_project_id(),
                           dialect='standard',
-                          private_key=_get_private_key_path())
+                          private_key=self.credentials)
         assert len(df.drop_duplicates()) == 10
 
     def test_invalid_option_for_sql_dialect(self):
@@ -789,12 +694,12 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
                          dialect='invalid',
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
         # Test that a correct option for dialect succeeds
         # to make sure ValueError was due to invalid dialect
         gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                     dialect='standard', private_key=_get_private_key_path())
+                     dialect='standard', private_key=self.credentials)
 
     def test_query_with_parameters(self):
         sql_statement = "SELECT @param1 + @param2 AS valid_result"
@@ -828,12 +733,12 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # when parameters are not supplied via configuration
         with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                         private_key=_get_private_key_path())
+                         private_key=self.credentials)
 
         # Test that the query is successful because we have supplied
         # the correct query parameters via the 'config' option
         df = gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           configuration=config)
         tm.assert_frame_equal(df, DataFrame({'valid_result': [3]}))
 
@@ -850,11 +755,11 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # inside config and as parameter
         with pytest.raises(ValueError):
             gbq.read_gbq(query_no_use, project_id=_get_project_id(),
-                         private_key=_get_private_key_path(),
+                         private_key=self.credentials,
                          configuration=config)
 
         df = gbq.read_gbq(None, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           configuration=config)
         tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
 
@@ -878,7 +783,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # nor 'copy','load','extract'
         with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                         private_key=_get_private_key_path(),
+                         private_key=self.credentials,
                          configuration=config)
 
     def test_configuration_raises_value_error_with_multiple_config(self):
@@ -896,7 +801,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # Test that only ValueError is raised with multiple configurations
         with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                         private_key=_get_private_key_path(),
+                         private_key=self.credentials,
                          configuration=config)
 
     def test_timeout_configuration(self):
@@ -909,7 +814,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         # Test that QueryTimeout error raises
         with pytest.raises(gbq.QueryTimeout):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
-                         private_key=_get_private_key_path(),
+                         private_key=self.credentials,
                          configuration=config)
 
     def test_query_response_bytes(self):
@@ -931,18 +836,19 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         query = """SELECT 1 int_field,
                    STRUCT("a" as letter, 1 as num) struct_field"""
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           dialect='standard')
-        tm.assert_frame_equal(df, DataFrame([[1, {"letter": "a", "num": 1}]],
-                              columns=["int_field", "struct_field"]))
+        expected = DataFrame([[1, {"letter": "a", "num": 1}]],
+                             columns=["int_field", "struct_field"])
+        tm.assert_frame_equal(df, expected)
 
     def test_array(self):
         query = """select ["a","x","b","y","c","z"] as letters"""
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           dialect='standard')
         tm.assert_frame_equal(df, DataFrame([[["a", "x", "b", "y", "c", "z"]]],
-                              columns=["letters"]))
+                                            columns=["letters"]))
 
     def test_array_length_zero(self):
         query = """WITH t as (
@@ -954,10 +860,11 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                    from t
                    order by letter ASC"""
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           dialect='standard')
-        tm.assert_frame_equal(df, DataFrame([["a", [""], 1], ["b", [], 0]],
-                              columns=["letter", "array_field", "len"]))
+        expected = DataFrame([["a", [""], 1], ["b", [], 0]],
+                             columns=["letter", "array_field", "len"])
+        tm.assert_frame_equal(df, expected)
 
     def test_array_agg(self):
         query = """WITH t as (
@@ -972,10 +879,10 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                 group by letter
                 order by letter ASC"""
         df = gbq.read_gbq(query, project_id=_get_project_id(),
-                          private_key=_get_private_key_path(),
+                          private_key=self.credentials,
                           dialect='standard')
         tm.assert_frame_equal(df, DataFrame([["a", [1, 3]], ["b", [2]]],
-                              columns=["letter", "numbers"]))
+                                            columns=["letter", "numbers"]))
 
     def test_array_of_floats(self):
         query = """select [1.1, 2.2, 3.3] as a, 4 as b"""
@@ -986,53 +893,33 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                               columns=["a", "b"]))
 
 
-class TestToGBQIntegrationWithServiceAccountKeyPath(object):
+class TestToGBQIntegration(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
     # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the teardown_class when a new
+    # Make sure to modify the for loop range in the autouse fixture when a new
     # test is added See `Issue 191
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
-    @classmethod
-    def setup_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *BEFORE*
-        # executing *ALL* tests described below.
-
-        _skip_if_no_project_id()
-        _skip_if_no_private_key_path()
-
-        _setup_common()
-
-    def setup_method(self, method):
+    @pytest.fixture(autouse=True, scope='function')
+    def setup(self, project, credentials):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
 
         self.dataset_prefix = _get_dataset_prefix_random()
-        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
-        self.dataset = gbq._Dataset(_get_project_id(),
-                                    private_key=_get_private_key_path())
-        self.table = gbq._Table(_get_project_id(), self.dataset_prefix + "1",
-                                private_key=_get_private_key_path())
-        self.sut = gbq.GbqConnector(_get_project_id(),
-                                    private_key=_get_private_key_path())
+        clean_gbq_environment(self.dataset_prefix, credentials)
+        self.dataset = gbq._Dataset(project,
+                                    private_key=credentials)
+        self.table = gbq._Table(project, self.dataset_prefix + "1",
+                                private_key=credentials)
+        self.sut = gbq.GbqConnector(project,
+                                    private_key=credentials)
         self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "1",
                                                      TABLE_ID)
         self.dataset.create(self.dataset_prefix + "1")
-
-    @classmethod
-    def teardown_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *AFTER*
-        # executing all tests.
-        pass
-
-    def teardown_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instructions you want to be run *AFTER* *EVERY* test is
-        # executed.
-        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
+        self.credentials = credentials
+        yield
+        clean_gbq_environment(self.dataset_prefix, self.credentials)
 
     def test_upload_data(self):
         test_id = "1"
@@ -1040,12 +927,12 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         df = make_mixed_dataframe_v2(test_size)
 
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_path())
+                   chunksize=10000, private_key=self.credentials)
 
         result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
-                              private_key=_get_private_key_path())
+                              private_key=self.credentials)
         assert result['num_rows'][0] == test_size
 
     def test_upload_data_if_table_exists_fail(self):
@@ -1057,12 +944,12 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         # Test the default value of if_exists is 'fail'
         with pytest.raises(gbq.TableCreationError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                       private_key=_get_private_key_path())
+                       private_key=self.credentials)
 
         # Test the if_exists parameter with value 'fail'
         with pytest.raises(gbq.TableCreationError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                       if_exists='fail', private_key=_get_private_key_path())
+                       if_exists='fail', private_key=self.credentials)
 
     def test_upload_data_if_table_exists_append(self):
         test_id = "3"
@@ -1072,23 +959,23 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Initialize table with sample data
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_path())
+                   chunksize=10000, private_key=self.credentials)
 
         # Test the if_exists parameter with value 'append'
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   if_exists='append', private_key=_get_private_key_path())
+                   if_exists='append', private_key=self.credentials)
 
         result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
-                              private_key=_get_private_key_path())
+                              private_key=self.credentials)
         assert result['num_rows'][0] == test_size * 2
 
         # Try inserting with a different schema, confirm failure
         with pytest.raises(gbq.InvalidSchema):
             gbq.to_gbq(df_different_schema, self.destination_table + test_id,
                        _get_project_id(), if_exists='append',
-                       private_key=_get_private_key_path())
+                       private_key=self.credentials)
 
     def test_upload_subset_columns_if_table_exists_append(self):
         # Issue 24: Upload is succesful if dataframe has columns
@@ -1100,17 +987,17 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Initialize table with sample data
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_path())
+                   chunksize=10000, private_key=self.credentials)
 
         # Test the if_exists parameter with value 'append'
         gbq.to_gbq(df_subset_cols,
                    self.destination_table + test_id, _get_project_id(),
-                   if_exists='append', private_key=_get_private_key_path())
+                   if_exists='append', private_key=self.credentials)
 
         result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
-                              private_key=_get_private_key_path())
+                              private_key=self.credentials)
         assert result['num_rows'][0] == test_size * 2
 
     # This test is currently failing intermittently due to changes in the
@@ -1132,17 +1019,17 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Initialize table with sample data
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_path())
+                   chunksize=10000, private_key=self.credentials)
 
         # Test the if_exists parameter with the value 'replace'.
         gbq.to_gbq(df_different_schema, self.destination_table + test_id,
                    _get_project_id(), if_exists='replace',
-                   private_key=_get_private_key_path())
+                   private_key=self.credentials)
 
         result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
-                              private_key=_get_private_key_path())
+                              private_key=self.credentials)
         assert result['num_rows'][0] == 5
 
     def test_upload_data_if_table_exists_raises_value_error(self):
@@ -1153,7 +1040,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         # Test invalid value for if_exists parameter raises value error
         with pytest.raises(ValueError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                       if_exists='xxxxx', private_key=_get_private_key_path())
+                       if_exists='xxxxx', private_key=self.credentials)
 
     def test_google_upload_errors_should_raise_exception(self):
         raise pytest.skip("buggy test")
@@ -1167,7 +1054,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         with pytest.raises(gbq.StreamingInsertError):
             gbq.to_gbq(bad_df, self.destination_table + test_id,
-                       _get_project_id(), private_key=_get_private_key_path())
+                       _get_project_id(), private_key=self.credentials)
 
     def test_upload_chinese_unicode_data(self):
         test_id = "2"
@@ -1179,13 +1066,13 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         gbq.to_gbq(
             df, self.destination_table + test_id,
             _get_project_id(),
-            private_key=_get_private_key_path(),
+            private_key=self.credentials,
             chunksize=10000)
 
         result_df = gbq.read_gbq(
             "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=_get_project_id(),
-            private_key=_get_private_key_path())
+            private_key=self.credentials)
 
         assert len(result_df) == test_size
 
@@ -1212,13 +1099,13 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         gbq.to_gbq(
             df, self.destination_table + test_id,
             _get_project_id(),
-            private_key=_get_private_key_path(),
+            private_key=self.credentials,
             chunksize=10000)
 
         result_df = gbq.read_gbq("SELECT * FROM {0}".format(
             self.destination_table + test_id),
             project_id=_get_project_id(),
-            private_key=_get_private_key_path())
+            private_key=self.credentials)
 
         assert len(result_df) == test_size
 
@@ -1244,12 +1131,12 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         gbq.to_gbq(
             df, self.destination_table + test_id,
             _get_project_id(),
-            private_key=_get_private_key_path())
+            private_key=self.credentials)
 
         result_df = gbq.read_gbq("SELECT * FROM {0}".format(
             self.destination_table + test_id),
             project_id=_get_project_id(),
-            private_key=_get_private_key_path())
+            private_key=self.credentials)
 
         assert len(result_df) == test_size
 
@@ -1358,13 +1245,13 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Initialize table with sample data
         gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_path())
+                   chunksize=10000, private_key=self.credentials)
 
         df_columns_reversed = df[df.columns[::-1]]
 
         gbq.to_gbq(df_columns_reversed, self.destination_table + test_id,
                    _get_project_id(), if_exists='append',
-                   private_key=_get_private_key_path())
+                   private_key=self.credentials)
 
     def test_verify_schema_ignores_field_mode(self):
         test_id = "14"
@@ -1468,7 +1355,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
                        {'name': 'D', 'type': 'TIMESTAMP'}]
         destination_table = self.destination_table + test_id
         gbq.to_gbq(df, destination_table, _get_project_id(),
-                   private_key=_get_private_key_path(),
+                   private_key=self.credentials,
                    table_schema=test_schema)
         dataset, table = destination_table.split('.')
         assert self.table.verify_schema(dataset, table,
@@ -1484,7 +1371,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         destination_table = self.destination_table + test_id
         with pytest.raises(gbq.GenericGBQException):
             gbq.to_gbq(df, destination_table, _get_project_id(),
-                       private_key=_get_private_key_path(),
+                       private_key=self.credentials,
                        table_schema=test_schema)
 
     def test_upload_data_with_missing_schema_fields_raises_error(self):
@@ -1496,7 +1383,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         destination_table = self.destination_table + test_id
         with pytest.raises(gbq.GenericGBQException):
             gbq.to_gbq(df, destination_table, _get_project_id(),
-                       private_key=_get_private_key_path(),
+                       private_key=self.credentials,
                        table_schema=test_schema)
 
     def test_list_dataset(self):
@@ -1507,7 +1394,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         dataset_id = self.dataset_prefix + "2"
         self.dataset.create(dataset_id)
         table_list = gbq._Dataset(_get_project_id(),
-                                  private_key=_get_private_key_path()
+                                  private_key=self.credentials
                                   ).tables(dataset_id)
         assert len(table_list) == 0
 
@@ -1549,117 +1436,3 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
     def test_dataset_does_not_exist(self):
         assert not self.dataset.exists(self.dataset_prefix + "_not_found")
-
-
-class TestToGBQIntegrationWithLocalUserAccountAuth(object):
-    # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
-    # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the teardown_class when a new
-    # test is added
-    # See `Issue 191
-    # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
-
-    @classmethod
-    def setup_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *BEFORE*
-        # executing *ALL* tests described below.
-
-        _skip_if_no_project_id()
-        _skip_local_auth_if_in_travis_env()
-
-        _setup_common()
-
-    def setup_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instruction you want to be run *BEFORE* *EVERY* test
-        # is executed.
-
-        gbq.GbqConnector(_get_project_id(), auth_local_webserver=True)
-        self.dataset_prefix = _get_dataset_prefix_random()
-        clean_gbq_environment(self.dataset_prefix)
-        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "2",
-                                                     TABLE_ID)
-
-    @classmethod
-    def teardown_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *AFTER*
-        # executing all tests.
-        pass
-
-    def teardown_method(self):
-        # - PER-TEST FIXTURES -
-        # put here any instructions you want to be run *AFTER* *EVERY* test
-        # is executed.
-        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
-
-    def test_upload_data(self):
-        test_id = "1"
-        test_size = 10
-        df = make_mixed_dataframe_v2(test_size)
-
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000)
-
-        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}".format(
-            self.destination_table + test_id),
-            project_id=_get_project_id())
-
-        assert result['num_rows'][0] == test_size
-
-
-class TestToGBQIntegrationWithServiceAccountKeyContents(object):
-    # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
-    # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the teardown_class when a new
-    # test is added
-    # See `Issue 191
-    # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
-
-    @classmethod
-    def setup_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *BEFORE*
-        # executing *ALL* tests described below.
-
-        _setup_common()
-        _skip_if_no_project_id()
-
-        _skip_if_no_private_key_contents()
-
-    def setup_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instruction you want to be run *BEFORE* *EVERY* test
-        # is executed.
-        self.dataset_prefix = _get_dataset_prefix_random()
-        clean_gbq_environment(self.dataset_prefix, _get_private_key_contents())
-        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "3",
-                                                     TABLE_ID)
-
-    @classmethod
-    def teardown_class(cls):
-        # - GLOBAL CLASS FIXTURES -
-        # put here any instruction you want to execute only *ONCE* *AFTER*
-        # executing all tests.
-        pass
-
-    def teardown_method(self, method):
-        # - PER-TEST FIXTURES -
-        # put here any instructions you want to be run *AFTER* *EVERY* test
-        # is executed.
-        clean_gbq_environment(self.dataset_prefix, _get_private_key_contents())
-
-    def test_upload_data(self):
-        test_id = "1"
-        test_size = 10
-        df = make_mixed_dataframe_v2(test_size)
-
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000, private_key=_get_private_key_contents())
-
-        result = gbq.read_gbq("SELECT COUNT(*) as num_rows FROM {0}".format(
-            self.destination_table + test_id),
-            project_id=_get_project_id(),
-            private_key=_get_private_key_contents())
-        assert result['num_rows'][0] == test_size
