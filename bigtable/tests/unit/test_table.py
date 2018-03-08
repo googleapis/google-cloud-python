@@ -15,6 +15,7 @@
 
 import unittest
 
+import grpc
 import mock
 
 
@@ -548,61 +549,12 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub(response_iterator)
 
-        generator = table.yield_rows(retry=False)
+        generator = table.yield_rows()
         rows = []
         for row in generator:
             rows.append(row)
         result = rows[0]
 
-        self.assertEqual(result.row_key, self.ROW_KEY)
-
-    def test_yield_retry_rows_with_response_exception(self):
-        # import grpc
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        # class ErrorUnavailable(grpc.RpcError, grpc.Call):
-        #     """ErrorUnavailable exception"""
-        #
-        #     def code(self):
-        #         return grpc.StatusCode.UNAVAILABLE
-        #
-        #     def details(self):
-        #         return 'Endpoint read failed'
-        #
-        # class ErrorDeadlineExceeded(grpc.RpcError, grpc.Call):
-        #     """ErrorDeadlineExceeded exception"""
-        #
-        #     def code(self):
-        #         return grpc.StatusCode.DEADLINE_EXCEEDED
-        #
-        #     def details(self):
-        #         return 'Error while reading table'
-
-        # Create response_iterator
-        chunk = _ReadRowsResponseCellChunkPB(
-            row_key=self.ROW_KEY,
-            family_name=self.FAMILY_NAME,
-            qualifier=self.QUALIFIER,
-            timestamp_micros=self.TIMESTAMP_MICROS,
-            value=self.VALUE,
-            commit_row=True
-        )
-
-        response = _ReadRowsResponseV2([chunk])
-        response_iterator= _MockReadRowsIterator(response)
-
-        # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_iterator]
-
-        rows = []
-        for row in table.yield_rows():
-            rows.append(row)
-
-        result = rows[0]
         self.assertEqual(result.row_key, self.ROW_KEY)
 
     def test_yield_retry_rows(self):
@@ -629,14 +581,19 @@ class TestTable(unittest.TestCase):
             commit_row=True
         )
 
+        response_failure_iterator_1 = _MockFailureIterator_1()
+
         response_1 = _ReadRowsResponseV2([chunk_1])
+        response_failure_iterator_2 = _MockFailureIterator_2([response_1])
+
         response_2 = _ReadRowsResponseV2([chunk_2])
-        response_retryable_iterator = _MockRetryableIterator([response_1,
-                                                              response_2])
+        response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_retryable_iterator]
+        client._data_stub.ReadRows.side_effect = [response_failure_iterator_1,
+                                                  response_failure_iterator_2,
+                                                  response_iterator]
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY_1,
@@ -1321,34 +1278,33 @@ class _MockReadRowsIterator(object):
         return self.next()
 
 
-class _MockRetryableIterator(object):
+class _MockFailureIterator_1(object):
+
+    def next(self):
+        class ErrorUnavailable(grpc.RpcError, grpc.Call):
+            """ErrorUnavailable exception"""
+
+        raise ErrorUnavailable()
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
+
+class _MockFailureIterator_2(object):
 
     def __init__(self, *values):
         self.iter_values = values[0]
         self.calls = 0
 
     def next(self):
-        # import grpc
-        #
-        # class ErrorUnavailable(grpc.RpcError, grpc.Call):
-        #     """ErrorUnavailable exception"""
-        #
-        #     def code(self):
-        #         return grpc.StatusCode.UNAVAILABLE
-        #
-        #     def details(self):
-        #         return 'Endpoint read failed'
+        class ErrorUnavailable(grpc.RpcError, grpc.Call):
+            """ErrorUnavailable exception"""
 
         self.calls += 1
         if self.calls == 1:
-            first = self.iter_values[0]
-            return first
-        # elif self.calls == 2:
-        #     raise ErrorUnavailable()
-        elif self.calls == 2:
-            return self.iter_values[1]
+            return self.iter_values[0]
         else:
-            raise StopIteration()
+            raise ErrorUnavailable()
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()

@@ -15,9 +15,6 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
-import functools
-import logging
-
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
@@ -44,7 +41,6 @@ from google.cloud.bigtable.row_data import YieldRowsData
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
 #  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
-logging.getLogger().setLevel(logging.INFO)
 
 
 class _BigtableRetryableError(Exception):
@@ -323,7 +319,7 @@ class Table(object):
         return PartialRowsData(response_iterator)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None, retry=True):
+                   filter_=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -346,18 +342,17 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
-        :type retry: bool
-        :param retry: (Optional) Apply retry on read rows.
-
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
 
-        retryable_read_rows = _RetryableReadRows(
-            self._instance._client, self.name, start_key,
-            end_key, filter_, limit, retry)
-
-        for row in retryable_read_rows():
+        request_pb = _create_row_request(
+            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+            limit=limit)
+        client = self._instance._client
+        response_iterator = client._data_stub.ReadRows(request_pb)
+        generator = YieldRowsData(response_iterator, request_pb, client)
+        for row in generator.read_rows():
             yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
@@ -539,61 +534,8 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
-class _RetryableReadRows(object):
-    """A callable worker that can retry to read rows with transient errors.
-
-    This class is a callable that can retry reading rows that result in
-    transient errors.
-    """
-
-    def __init__(self, client, table_name, start_key,
-                 end_key, filter_, limit, retry):
-        self.generator = None
-        self.client = client
-        self.table_name = table_name
-        self.start_key = start_key
-        self.end_key = end_key
-        self.filter_ = filter_
-        self.limit = limit
-        self.retry = retry
-
-    def __call__(self):
-        if self.retry:
-            read_rows = functools.partial(self._do_read_retryable_rows)
-            retry_ = Retry(
-                predicate=_retry_commit_exception,
-                deadline=30)
-            return retry_(read_rows)()
-        else:
-            return self._do_read_retryable_rows()
-
-    def _do_read_retryable_rows(self):
-        if (self.generator and self.generator.last_scanned_row_key):
-            next_start_key = self.generator.last_scanned_row_key
-            start_inclusive = False
-            logging.info('Start key is {} for retry read rows.'
-                         .format(next_start_key))
-        else:
-            next_start_key = self.start_key
-            start_inclusive = True
-
-        request_pb = _create_row_request(
-            self.table_name,
-            start_key=next_start_key,
-            end_key=self.end_key,
-            filter_=self.filter_,
-            limit=self.limit,
-            start_inclusive=start_inclusive)
-        client = self.client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        self.generator = YieldRowsData(response_iterator)
-        for row in self.generator.read_rows():
-            yield row
-
-
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None,
-                        end_inclusive=False, start_inclusive=True):
+                        filter_=None, limit=None, end_inclusive=False):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -638,10 +580,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     range_kwargs = {}
     if start_key is not None or end_key is not None:
         if start_key is not None:
-            start_key_key = 'start_key_open'
-            if start_inclusive:
-                start_key_key = 'start_key_closed'
-            range_kwargs[start_key_key] = _to_bytes(start_key)
+            range_kwargs['start_key_closed'] = _to_bytes(start_key)
         if end_key is not None:
             end_key_key = 'end_key_open'
             if end_inclusive:

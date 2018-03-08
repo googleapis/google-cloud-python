@@ -17,6 +17,7 @@
 
 import copy
 import six
+import time
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
@@ -247,7 +248,7 @@ class YieldRowsData(object):
     ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
 
-    def __init__(self, response_iterator):
+    def __init__(self, response_iterator, request_pb=None, client=None):
         self._response_iterator = response_iterator
         # Counter for responses pulled from iterator
         self._counter = 0
@@ -261,6 +262,8 @@ class YieldRowsData(object):
         self._previous_cell = None
         # May be cached from previous response
         self.last_scanned_row_key = None
+        self.request_pb = request_pb
+        self.client = client
 
     @property
     def state(self):
@@ -286,6 +289,11 @@ class YieldRowsData(object):
         """Cancels the iterator, closing the stream."""
         self._response_iterator.cancel()
 
+    def create_retry_request(self):
+        row_range_value = self.request_pb.rows.row_ranges._values[0]
+        row_range_value.start_key_closed = b''
+        row_range_value.start_key_open = self.last_scanned_row_key
+
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
         Read the rows and yield each to the reader
@@ -298,6 +306,15 @@ class YieldRowsData(object):
                 response = six.next(self._response_iterator)
             except StopIteration:
                 break
+            except Exception as exc:
+                time.sleep(2)
+
+                if (self.last_scanned_row_key and self.request_pb is not None):
+                    self.create_retry_request()
+
+                self._response_iterator = self.client._data_stub.ReadRows(
+                    self.request_pb)
+                continue
 
             self._counter += 1
 
