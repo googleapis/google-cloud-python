@@ -449,8 +449,8 @@ class TestDocumentReference(unittest.TestCase):
 
         # Create a minimal fake client with a dummy response.
         read_time = 123
-        snapshot = DocumentSnapshot(None, None, False, read_time, None, None)
-        response_iterator = iter([snapshot])
+        expected = DocumentSnapshot(None, None, False, read_time, None, None)
+        response_iterator = iter([expected])
         client = mock.Mock(
             _database_string='sprinklez',
             spec=['_database_string', 'get_all'])
@@ -463,7 +463,7 @@ class TestDocumentReference(unittest.TestCase):
         self.assertIsNone(snapshot.reference)
         self.assertIsNone(snapshot._data)
         self.assertFalse(snapshot.exists)
-        self.assertEqual(snapshot.read_time, read_time)
+        self.assertEqual(snapshot.read_time, expected.read_time)
         self.assertIsNone(snapshot.create_time)
         self.assertIsNone(snapshot.update_time)
 

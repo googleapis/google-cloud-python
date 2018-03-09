@@ -582,7 +582,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             a document factory.
 
     Returns:
-        Optional[.DocumentSnapshot]: The retrieved snapshot.
+       [.DocumentSnapshot]: The retrieved snapshot.
 
     Raises:
         ValueError: If the response has a ``result`` field (a oneof) other

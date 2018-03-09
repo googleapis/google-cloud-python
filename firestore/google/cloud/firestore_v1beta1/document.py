@@ -418,12 +418,14 @@ class DocumentReference(object):
 
         Returns:
             ~.firestore_v1beta1.document.DocumentSnapshot: A snapshot of
-            the current document.
+                the current document. If the document does not exist at
+                the time of `snapshot`, the snapshot `reference`, `data`,
+                `update_time`, and `create_time` attributes will all be
+                `None` and `exists` will be `False`.
         """
         snapshot_generator = self._client.get_all(
             [self], field_paths=field_paths, transaction=transaction)
-        snapshot = _consume_single_get(snapshot_generator)
-        return snapshot
+        return _consume_single_get(snapshot_generator)
 
 
 class DocumentSnapshot(object):
