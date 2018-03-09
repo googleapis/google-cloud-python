@@ -19,6 +19,7 @@ import pytz
 
 from google.api_core import datetime_helpers
 
+
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
 
 
@@ -208,45 +209,35 @@ def test_timestampwithnanos_rfc339_w_nanos_no_trailing_zeroes():
 
 
 def test_timestampwithnanos_from_rfc3339_w_invalid():
-    klass = datetime_helpers.TimestampWithNanoseconds
-    STAMP = '2016-12-20T21:13:47'
+    stamp = '2016-12-20T21:13:47'
     with pytest.raises(ValueError):
-        klass.from_rfc3339(STAMP)
+        datetime_helpers.TimestampWithNanoseconds.from_rfc3339(stamp)
 
 
 def test_timestampwithnanos_from_rfc3339_wo_fraction():
-    from google.api_core import datetime_helpers
-
-    klass = datetime_helpers.TimestampWithNanoseconds
     timestamp = '2016-12-20T21:13:47Z'
     expected = datetime_helpers.TimestampWithNanoseconds(
         2016, 12, 20, 21, 13, 47,
         tzinfo=pytz.UTC)
-    stamp = klass.from_rfc3339(timestamp)
+    stamp = datetime_helpers.TimestampWithNanoseconds.from_rfc3339(timestamp)
     assert (stamp == expected)
 
 
 def test_timestampwithnanos_from_rfc3339_w_partial_precision():
-    from google.api_core import datetime_helpers
-
-    klass = datetime_helpers.TimestampWithNanoseconds
     timestamp = '2016-12-20T21:13:47.1Z'
     expected = datetime_helpers.TimestampWithNanoseconds(
         2016, 12, 20, 21, 13, 47,
         microsecond=100000,
         tzinfo=pytz.UTC)
-    stamp = klass.from_rfc3339(timestamp)
+    stamp = datetime_helpers.TimestampWithNanoseconds.from_rfc3339(timestamp)
     assert stamp == expected
 
 
 def test_timestampwithnanos_from_rfc3339_w_full_precision():
-    from google.api_core import datetime_helpers
-
-    klass = datetime_helpers.TimestampWithNanoseconds
     timestamp = '2016-12-20T21:13:47.123456789Z'
     expected = datetime_helpers.TimestampWithNanoseconds(
         2016, 12, 20, 21, 13, 47,
         nanosecond=123456789,
         tzinfo=pytz.UTC)
-    stamp = klass.from_rfc3339(timestamp)
+    stamp = datetime_helpers.TimestampWithNanoseconds.from_rfc3339(timestamp)
     assert stamp == expected
