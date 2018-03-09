@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Vision Client API &#8212; google-cloud 963db69 documentation</title>
+    <title>Vision Client API &#8212; google-cloud 589cc93 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
@@ -149,7 +149,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.crop_hints">
-<code class="descname">crop_hints</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.crop_hints" title="Permalink to this definition">#</a></dt>
+<code class="descname">crop_hints</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.crop_hints" title="Permalink to this definition">#</a></dt>
 <dd><p>Return crop hints information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -157,8 +157,10 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -176,7 +178,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.document_text_detection">
-<code class="descname">document_text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.document_text_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">document_text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.document_text_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform document text detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -184,8 +186,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -208,7 +212,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.face_detection">
-<code class="descname">face_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.face_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">face_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.face_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform face detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -216,8 +220,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -235,7 +241,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.image_properties">
-<code class="descname">image_properties</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.image_properties" title="Permalink to this definition">#</a></dt>
+<code class="descname">image_properties</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.image_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Return image properties information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -243,8 +249,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -262,7 +270,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.label_detection">
-<code class="descname">label_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.label_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">label_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.label_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform label detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -270,8 +278,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -289,7 +299,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.landmark_detection">
-<code class="descname">landmark_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.landmark_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">landmark_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.landmark_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform landmark detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -297,8 +307,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -316,7 +328,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.logo_detection">
-<code class="descname">logo_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.logo_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">logo_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.logo_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform logo detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -324,8 +336,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -343,7 +357,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.safe_search_detection">
-<code class="descname">safe_search_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.safe_search_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">safe_search_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.safe_search_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform safe search detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -351,8 +365,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -370,7 +386,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.text_detection">
-<code class="descname">text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.text_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.text_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform text detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -378,8 +394,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
@@ -397,7 +415,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.web_detection">
-<code class="descname">web_detection</code><span class="sig-paren">(</span><em>image</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.web_detection" title="Permalink to this definition">#</a></dt>
+<code class="descname">web_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.web_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform web detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -405,8 +423,10 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
-default settings for this call, e.g, timeout, retries, etc.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
+<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of retries to do before giving up.</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of seconds before timing out.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
 </ul>
