@@ -179,3 +179,71 @@ def to_rfc3339(value, ignore_zone=True):
         value = value.replace(tzinfo=None) - value.utcoffset()
 
     return value.strftime(_RFC3339_MICROS)
+
+
+class DatetimeWithNanoseconds(datetime.datetime):
+    """Track nanosecond in addition to normal datetime attrs.
+
+    Nanosecond can be passed only as a keyword argument.
+    """
+    __slots__ = ('_nanosecond',)
+
+    # pylint: disable=arguments-differ
+    def __new__(cls, *args, **kw):
+        nanos = kw.pop('nanosecond', 0)
+        if nanos > 0:
+            if 'microsecond' in kw:
+                raise TypeError(
+                    "Specify only one of 'microsecond' or 'nanosecond'")
+            kw['microsecond'] = nanos // 1000
+        inst = datetime.datetime.__new__(cls, *args, **kw)
+        inst._nanosecond = nanos or 0
+        return inst
+    # pylint: disable=arguments-differ
+
+    @property
+    def nanosecond(self):
+        """Read-only: nanosecond precision."""
+        return self._nanosecond
+
+    def rfc3339(self):
+        """Return an RFC 3339-compliant timestamp.
+
+        Returns:
+            (str): Timestamp string according to RFC 3339 spec.
+        """
+        if self._nanosecond == 0:
+            return to_rfc3339(self)
+        nanos = str(self._nanosecond).rstrip('0')
+        return '{}.{}Z'.format(self.strftime(_RFC3339_NO_FRACTION), nanos)
+
+    @classmethod
+    def from_rfc3339(cls, stamp):
+        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
+
+        Args:
+            stamp (str): RFC 3339 stamp, with up to nanosecond precision
+
+        Returns:
+            :class:`DatetimeWithNanoseconds`:
+                an instance matching the timestamp string
+
+        Raises:
+            ValueError: if `stamp` does not match the expected format
+        """
+        with_nanos = _RFC3339_NANOS.match(stamp)
+        if with_nanos is None:
+            raise ValueError(
+                'Timestamp: {}, does not match pattern: {}'.format(
+                    stamp, _RFC3339_NANOS.pattern))
+        bare = datetime.datetime.strptime(
+            with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
+        fraction = with_nanos.group('nanos')
+        if fraction is None:
+            nanos = 0
+        else:
+            scale = 9 - len(fraction)
+            nanos = int(fraction) * (10 ** scale)
+        return cls(bare.year, bare.month, bare.day,
+                   bare.hour, bare.minute, bare.second,
+                   nanosecond=nanos, tzinfo=pytz.UTC)
