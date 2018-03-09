@@ -16,9 +16,13 @@
 
 
 import copy
+import functools
 import six
-import time
 
+import grpc
+
+from google.api_core import exceptions
+from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
 
@@ -235,6 +239,13 @@ class PartialRowsData(object):
             self.rows[row.row_key] = row
 
 
+def _retry_read_rows_exception(exc):
+    if isinstance(exc, grpc.RpcError):
+        exc = exceptions.from_grpc_error(exc)
+    return isinstance(exc, (exceptions.ServiceUnavailable,
+                            exceptions.DeadlineExceeded))
+
+
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
@@ -296,6 +307,22 @@ class YieldRowsData(object):
         range_kwargs['end_key_open'] = row_range.end_key_open
         self.request_pb.rows.row_ranges.add(**range_kwargs)
 
+    def retry_read_rows(self):
+        if (self.last_scanned_row_key and self.request_pb is not None):
+            self.create_retry_request()
+
+            self._response_iterator = self.client._data_stub.ReadRows(
+                self.request_pb)
+
+        return six.next(self._response_iterator)
+
+    def read_next_response(self):
+        next_response = functools.partial(self.retry_read_rows)
+        retry_ = retry.Retry(
+            predicate=_retry_read_rows_exception,
+            deadline=60)
+        return retry_(next_response)()
+
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
         Read the rows and yield each to the reader
@@ -305,18 +332,9 @@ class YieldRowsData(object):
         """
         while True:
             try:
-                response = six.next(self._response_iterator)
+                response = self.read_next_response()
             except StopIteration:
                 break
-            except Exception as exc:
-                time.sleep(2)
-
-                if (self.last_scanned_row_key and self.request_pb is not None):
-                    self.create_retry_request()
-
-                self._response_iterator = self.client._data_stub.ReadRows(
-                    self.request_pb)
-                continue
 
             self._counter += 1
 

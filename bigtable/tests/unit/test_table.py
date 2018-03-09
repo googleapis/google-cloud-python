@@ -525,38 +525,6 @@ class TestTable(unittest.TestCase):
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
-    def test_yield_rows(self):
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        # Create response_iterator
-        chunk = _ReadRowsResponseCellChunkPB(
-            row_key=self.ROW_KEY,
-            family_name=self.FAMILY_NAME,
-            qualifier=self.QUALIFIER,
-            timestamp_micros=self.TIMESTAMP_MICROS,
-            value=self.VALUE,
-            commit_row=True,
-        )
-        chunks = [chunk]
-
-        response = _ReadRowsResponseV2(chunks)
-        response_iterator = _MockReadRowsIterator(response)
-
-        # Patch the stub used by the API method.
-        client._data_stub = _FakeStub(response_iterator)
-
-        generator = table.yield_rows()
-        rows = []
-        for row in generator:
-            rows.append(row)
-        result = rows[0]
-
-        self.assertEqual(result.row_key, self.ROW_KEY)
-
     def test_yield_retry_rows(self):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -581,19 +549,19 @@ class TestTable(unittest.TestCase):
             commit_row=True
         )
 
-        response_failure_iterator_1 = _MockFailureIterator_1()
-
         response_1 = _ReadRowsResponseV2([chunk_1])
-        response_failure_iterator_2 = _MockFailureIterator_2([response_1])
+        response_iterator_1 = _MockReadRowsIterator(response_1)
+
+        response_failure_iterator = _MockFailureIterator()
 
         response_2 = _ReadRowsResponseV2([chunk_2])
-        response_iterator = _MockReadRowsIterator(response_2)
+        response_iterator_2 = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_failure_iterator_1,
-                                                  response_failure_iterator_2,
-                                                  response_iterator]
+        client._data_stub.ReadRows.side_effect = [response_iterator_1,
+                                                  response_failure_iterator,
+                                                  response_iterator_2]
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY_1,
@@ -1278,33 +1246,19 @@ class _MockReadRowsIterator(object):
         return self.next()
 
 
-class _MockFailureIterator_1(object):
+class _MockFailureIterator(object):
 
     def next(self):
-        class ErrorUnavailable(grpc.RpcError, grpc.Call):
+        class DeadlineExceeded(grpc.RpcError, grpc.Call):
             """ErrorUnavailable exception"""
 
-        raise ErrorUnavailable()
+            def code(self):
+                return grpc.StatusCode.DEADLINE_EXCEEDED
 
-    def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
+            def details(self):
+                return "Failed to read from server"
 
-
-class _MockFailureIterator_2(object):
-
-    def __init__(self, *values):
-        self.iter_values = values[0]
-        self.calls = 0
-
-    def next(self):
-        class ErrorUnavailable(grpc.RpcError, grpc.Call):
-            """ErrorUnavailable exception"""
-
-        self.calls += 1
-        if self.calls == 1:
-            return self.iter_values[0]
-        else:
-            raise ErrorUnavailable()
+        raise DeadlineExceeded()
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()
