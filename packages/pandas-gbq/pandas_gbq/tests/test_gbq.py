@@ -280,7 +280,9 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
         assert isinstance(credentials, Credentials)
 
 
-class GBQUnitTests(object):
+@pytest.mark.skip('Currently fails, see '
+                  'https://github.com/pydata/pandas-gbq/pull/125')
+class TestGBQUnit(object):
 
     def test_import_google_api_python_client(self):
         if not _in_travis_environment():
