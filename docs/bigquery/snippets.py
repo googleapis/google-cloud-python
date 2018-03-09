@@ -23,7 +23,6 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
-import json
 import time
 
 import pytest
@@ -300,7 +299,7 @@ def test_create_table(client, to_delete):
     to_delete.insert(0, table)
 
 
-def test_create_table_without_schema(client, to_delete):
+def test_create_table_then_add_schema(client, to_delete):
     """Create a table without specifying a schema"""
     dataset_id = 'create_table_without_schema_dataset_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
@@ -320,6 +319,24 @@ def test_create_table_without_schema(client, to_delete):
     # [END bigquery_create_table_without_schema]
 
     to_delete.insert(0, table)
+    table_id = 'my_table'
+
+    # [START bigquery_add_schema_to_empty]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+    schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+    ]
+    table = bigquery.Table(table_ref, schema=schema)
+
+    table = client.update_table(table, ['schema'])  # API request
+
+    assert table.schema == schema
+    # [START bigquery_add_schema_to_empty]
 
 
 def test_create_table_cmek(client, to_delete):
@@ -440,64 +457,167 @@ def test_table_exists(client, to_delete):
     assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
-def test_update_table_simple(client, to_delete):
-    """Patch a table's metadata."""
-    DATASET_ID = 'update_table_simple_dataset_{}'.format(_millis())
-    TABLE_ID = 'update_table_simple_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset.description = ORIGINAL_DESCRIPTION
+def test_update_table_description(client, to_delete):
+    """Update a table's description."""
+    dataset_id = 'update_table_description_dataset_{}'.format(_millis())
+    table_id = 'update_table_description_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table = bigquery.Table(dataset.table(TABLE_ID), schema=SCHEMA)
-    table.description = ORIGINAL_DESCRIPTION
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table.description = "Original description."
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START update_table_simple]
-    assert table.description == ORIGINAL_DESCRIPTION
-    table.description = UPDATED_DESCRIPTION
+    # [START bigquery_update_table_description]
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    assert table.description == "Original description."
+    table.description = "Updated description."
 
     table = client.update_table(table, ['description'])  # API request
 
-    assert table.description == UPDATED_DESCRIPTION
-    # [END update_table_simple]
+    assert table.description == "Updated description."
+    # [END bigquery_update_table_description]
+
+
+def test_update_table_expiration(client, to_delete):
+    """Update a table's expiration time."""
+    dataset_id = 'update_table_expiration_dataset_{}'.format(_millis())
+    table_id = 'update_table_expiration_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_update_table_description]
+    import datetime
+    import pytz
+
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    assert table.expires is None
+
+    # set table to expire 5 days from now
+    expiration = datetime.datetime.now(pytz.utc) + datetime.timedelta(days=5)
+    table.expires = expiration
+    table = client.update_table(table, ['expires'])  # API request
+
+    # expiration is stored in milliseconds
+    margin = datetime.timedelta(microseconds=1000)
+    assert expiration - margin <= table.expires <= expiration + margin
+    # [END bigquery_update_table_description]
+
+
+def test_add_empty_column(client, to_delete):
+    """Adds an empty column to an existing table."""
+    dataset_id = 'add_empty_column_dataset_{}'.format(_millis())
+    table_id = 'add_empty_column_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_add_empty_column]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+    table = client.get_table(table_ref)  # API request
+
+    original_schema = table.schema
+    new_schema = original_schema[:]  # creates a copy of the schema
+    new_schema.append(bigquery.SchemaField('phone', 'STRING'))
+
+    table.schema = new_schema
+    table = client.update_table(table, ['schema'])  # API request
+
+    assert len(table.schema) == len(original_schema) + 1 == len(new_schema)
+    # [END bigquery_add_empty_column]
+
+
+def test_relax_column(client, to_delete):
+    """Updates a schema field from required to nullable."""
+    dataset_id = 'relax_column_dataset_{}'.format(_millis())
+    table_id = 'relax_column_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_relax_column]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+    original_schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+    ]
+    table_ref = client.dataset(dataset_id).table(table_id)
+    table = bigquery.Table(table_ref, schema=original_schema)
+    table = client.create_table(table)
+    assert all(field.mode == 'REQUIRED' for field in table.schema)
+
+    # SchemaField properties cannot be edited after initialization.
+    # To make a changes, new SchemaField objects must be constructed.
+    relaxed_schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('age', 'INTEGER', mode='NULLABLE'),
+    ]
+    table.schema = relaxed_schema
+    table = client.update_table(table, ['schema'])
+
+    assert all(field.mode == 'NULLABLE' for field in table.schema)
+    # [END bigquery_relax_column]
+
+    to_delete.insert(0, table)
 
 
 def test_update_table_multiple_properties(client, to_delete):
     """Update a table's metadata."""
-    DATASET_ID = 'update_table_multiple_properties_dataset_{}'.format(
+    dataset_id = 'update_table_multiple_properties_dataset_{}'.format(
         _millis())
-    TABLE_ID = 'update_table_multiple_properties_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset.description = ORIGINAL_DESCRIPTION
+    table_id = 'update_table_multiple_properties_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.description = "Original description"
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table = bigquery.Table(dataset.table(TABLE_ID), schema=SCHEMA)
-    table.friendly_name = ORIGINAL_FRIENDLY_NAME
-    table.description = ORIGINAL_DESCRIPTION
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table.friendly_name = "Original friendly name"
+    table.description = "Original description"
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START update_table_multiple_properties]
-    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME
-    assert table.description == ORIGINAL_DESCRIPTION
+    # [START bigquery_update_table_multiple_properties]
+    assert table.friendly_name == "Original friendly name"
+    assert table.description == "Original description"
 
-    NEW_SCHEMA = list(table.schema)
-    NEW_SCHEMA.append(bigquery.SchemaField('phone', 'STRING'))
-    table.friendly_name = UPDATED_FRIENDLY_NAME
-    table.description = UPDATED_DESCRIPTION
-    table.schema = NEW_SCHEMA
+    new_schema = list(table.schema)
+    new_schema.append(bigquery.SchemaField('phone', 'STRING'))
+    table.friendly_name = "Updated friendly name"
+    table.description = "Updated description"
+    table.schema = new_schema
     table = client.update_table(
         table,
         ['schema', 'friendly_name', 'description']
     )  # API request
 
-    assert table.friendly_name == UPDATED_FRIENDLY_NAME
-    assert table.description == UPDATED_DESCRIPTION
-    assert table.schema == NEW_SCHEMA
-    # [END update_table_multiple_properties]
+    assert table.friendly_name == "Updated friendly name"
+    assert table.description == "Updated description"
+    assert table.schema == new_schema
+    # [END bigquery_update_table_multiple_properties]
 
 
 def test_update_table_cmek(client, to_delete):
@@ -536,6 +656,41 @@ def test_update_table_cmek(client, to_delete):
     # [END bigquery_update_table_cmek]
 
 
+def test_browse_table_data(client, to_delete, capsys):
+    """Retreive selected row data from a table."""
+
+    # [START bigquery_browse_table]
+    # client = bigquery.Client()
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+    table = client.get_table(table_ref)  # API call
+
+    # Load the first 10 rows
+    rows = client.list_rows(table, max_results=10)
+    assert len(list(rows)) == 10
+
+    # Specify selected fields to limit the results to certain columns
+    fields = table.schema[:2]  # first two columns
+    rows = client.list_rows(table, selected_fields=fields, max_results=10)
+    assert len(rows.schema) == 2
+    assert len(list(rows)) == 10
+
+    # Use the start index to print any specified portion of the table
+    rows = client.list_rows(table, start_index=10, max_results=10)
+
+    # Print row data in tabular format
+    format_string = '{!s:<16} ' * len(rows.schema)
+    field_names = [field.name for field in rows.schema]
+    print(format_string.format(*field_names))  # prints column headers
+    for row in rows:
+        print(format_string.format(*row))      # prints row data
+    # [END bigquery_browse_table]
+
+    out, err = capsys.readouterr()
+    out = list(filter(bool, out.split('\n')))  # list of non-blank lines
+    assert len(out) == 11
+
+
 def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
     dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
@@ -548,7 +703,7 @@ def test_table_insert_rows(client, to_delete):
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START table_insert_rows]
+    # [START bigquery_table_insert_rows]
     rows_to_insert = [
         (u'Phred Phlyntstone', 32),
         (u'Wylma Phlyntstone', 29),
@@ -557,7 +712,7 @@ def test_table_insert_rows(client, to_delete):
     errors = client.insert_rows(table, rows_to_insert)  # API request
 
     assert errors == []
-    # [END table_insert_rows]
+    # [END bigquery_table_insert_rows]
 
 
 def test_load_table_from_file(client, to_delete):
@@ -622,6 +777,7 @@ def test_load_table_from_uri(client, to_delete):
     to_delete.append(dataset)
 
     # [START bigquery_load_table_gcs_json]
+    # client = bigquery.Client()
     # dataset_id = 'my_dataset'
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
@@ -688,6 +844,7 @@ def test_load_table_from_uri_autodetect(client, to_delete):
     to_delete.append(dataset)
 
     # [START bigquery_load_table_gcs_json_autodetect]
+    # client = bigquery.Client()
     # dataset_id = 'my_dataset'
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
@@ -725,6 +882,7 @@ def test_load_table_from_uri_append(client, to_delete):
         body, table_ref, job_config=job_config).result()
 
     # [START bigquery_load_table_gcs_json_append]
+    # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
     previous_rows = client.get_table(table_ref).num_rows
     job_config = bigquery.LoadJobConfig()
@@ -762,6 +920,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
         body, table_ref, job_config=job_config).result()
 
     # [START bigquery_load_table_gcs_json_truncate]
+    # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
     previous_rows = client.get_table(table_ref).num_rows
     assert previous_rows > 0
@@ -815,22 +974,70 @@ def test_copy_table(client, to_delete):
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
-    # [START copy_table]
-    source_dataset = bigquery.DatasetReference(
-        'bigquery-public-data', 'samples')
+    # [START bigquery_copy_table]
+    # client = bigquery.Client()
+    source_dataset = client.dataset('samples', project='bigquery-public-data')
     source_table_ref = source_dataset.table('shakespeare')
 
     # dataset_id = 'my_dataset'
-    dest_table_ref = dest_dataset.table('destination_table')
+    dest_table_ref = client.dataset(dataset_id).table('destination_table')
 
     job = client.copy_table(source_table_ref, dest_table_ref)  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
     dest_table = client.get_table(dest_table_ref)  # API request
-    assert dest_table.table_id == 'destination_table'
-    # [END copy_table]
+    assert dest_table.num_rows > 0
+    # [END bigquery_copy_table]
 
+    to_delete.insert(0, dest_table)
+
+
+def test_copy_table_multiple_source(client, to_delete):
+    dest_dataset_id = 'dest_dataset_{}'.format(_millis())
+    dest_dataset = bigquery.Dataset(client.dataset(dest_dataset_id))
+    dest_dataset = client.create_dataset(dest_dataset)
+    to_delete.append(dest_dataset)
+
+    source_dataset_id = 'source_dataset_{}'.format(_millis())
+    source_dataset = bigquery.Dataset(client.dataset(source_dataset_id))
+    source_dataset = client.create_dataset(source_dataset)
+    to_delete.append(source_dataset)
+
+    schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+
+    table_data = {'table1': 'Washington,WA', 'table2': 'California,CA'}
+    for table_id, data in table_data.items():
+        table_ref = source_dataset.table(table_id)
+        table = bigquery.Table(table_ref, schema=schema)
+        to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.schema = schema
+        body = six.StringIO(data)
+        client.load_table_from_file(
+            body, table_ref, job_config=job_config).result()  # API request
+
+    # [START bigquery_copy_table_multiple_source]
+    # client = bigquery.Client()
+    # source_dataset_id = 'my_source_dataset'
+    # dest_dataset_id = 'my_destination_dataset'
+    table1_ref = client.dataset(source_dataset_id).table('table1')
+    table2_ref = client.dataset(source_dataset_id).table('table2')
+    dest_table_ref = client.dataset(dest_dataset_id).table('destination_table')
+
+    job = client.copy_table(
+        [table1_ref, table2_ref], dest_table_ref)  # API request
+    job.result()  # Waits for job to complete.
+
+    assert job.state == 'DONE'
+    dest_table = client.get_table(dest_table_ref)  # API request
+    assert dest_table.num_rows > 0
+    # [END bigquery_copy_table_multiple_source]
+
+    assert dest_table.num_rows == 2
     to_delete.insert(0, dest_table)
 
 
@@ -871,67 +1078,114 @@ def test_copy_table_cmek(client, to_delete):
 
 
 def test_extract_table(client, to_delete):
-    DATASET_ID = 'export_data_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
+    from google.cloud import storage
 
-    table_ref = dataset.table('person_ages')
-    to_insert = [
-        {'full_name': name, 'age': age}
-        for name, age in ROWS
-    ]
-    rows = [json.dumps(row) for row in to_insert]
-    body = six.StringIO('{}\n'.format('\n'.join(rows)))
-    job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    job_config.schema = SCHEMA
-    to_delete.insert(0, table_ref)
-    # Load a table using a local JSON file from memory.
-    client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
-
-    bucket_name = 'extract_person_ages_job_{}'.format(_millis())
-    # [START extract_table]
-    from google.cloud.storage import Client as StorageClient
-
-    storage_client = StorageClient()
+    bucket_name = 'extract_shakespeare_{}'.format(_millis())
+    storage_client = storage.Client()
     bucket = storage_client.create_bucket(bucket_name)  # API request
-    destination_blob_name = 'person_ages_out.csv'
-    destination = bucket.blob(destination_blob_name)
+    to_delete.append(bucket)
 
-    destination_uri = 'gs://{}/{}'.format(bucket_name, destination_blob_name)
+    # [START bigquery_extract_table]
+    # client = bigquery.Client()
+    # bucket_name = 'my-bucket'
+    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.csv')
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+
     extract_job = client.extract_table(
         table_ref, destination_uri)  # API request
-    extract_job.result(timeout=100)  # Waits for job to complete.
+    extract_job.result()  # Waits for job to complete.
+    # [END bigquery_extract_table]
 
-    got = destination.download_as_string().decode('utf-8')  # API request
-    assert 'Bharney Rhubble' in got
-    # [END extract_table]
+    blob = bucket.get_blob('shakespeare.csv')
+    assert blob.exists
+    assert blob.size > 0
+    to_delete.insert(0, blob)
+
+
+def test_extract_table_json(client, to_delete):
+    from google.cloud import storage
+
+    bucket_name = 'extract_shakespeare_json_{}'.format(_millis())
+    storage_client = storage.Client()
+    bucket = storage_client.create_bucket(bucket_name)  # API request
     to_delete.append(bucket)
-    to_delete.insert(0, destination)
+
+    # [START bigquery_extract_table_json]
+    # client = bigquery.Client()
+    # bucket_name = 'my-bucket'
+    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.json')
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+    job_config = bigquery.job.ExtractJobConfig()
+    job_config.destination_format = (
+        bigquery.DestinationFormat.NEWLINE_DELIMITED_JSON)
+
+    extract_job = client.extract_table(
+        table_ref, destination_uri, job_config=job_config)  # API request
+    extract_job.result()  # Waits for job to complete.
+    # [END bigquery_extract_table_json]
+
+    blob = bucket.get_blob('shakespeare.json')
+    assert blob.exists
+    assert blob.size > 0
+    to_delete.insert(0, blob)
+
+
+def test_extract_table_compressed(client, to_delete):
+    from google.cloud import storage
+
+    bucket_name = 'extract_shakespeare_compress_{}'.format(_millis())
+    storage_client = storage.Client()
+    bucket = storage_client.create_bucket(bucket_name)  # API request
+    to_delete.append(bucket)
+
+    # [START bigquery_extract_table_compressed]
+    # client = bigquery.Client()
+    # bucket_name = 'my-bucket'
+    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.zip')
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+    job_config = bigquery.job.ExtractJobConfig()
+    job_config.compression = bigquery.Compression.GZIP
+
+    extract_job = client.extract_table(
+        table_ref, destination_uri, job_config=job_config)  # API request
+    extract_job.result()  # Waits for job to complete.
+    # [END bigquery_extract_table_compressed]
+
+    blob = bucket.get_blob('shakespeare.zip')
+    assert blob.exists
+    assert blob.size > 0
+    to_delete.insert(0, blob)
 
 
 def test_delete_table(client, to_delete):
     """Delete a table."""
-    DATASET_ID = 'delete_table_dataset_{}'.format(_millis())
-    TABLE_ID = 'delete_table_table_{}'.format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
+    from google.cloud.exceptions import NotFound
+
+    dataset_id = 'delete_table_dataset_{}'.format(_millis())
+    table_id = 'delete_table_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
     dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
     to_delete.append(dataset)
 
-    table_ref = dataset.table(TABLE_ID)
+    table_ref = dataset.table(table_id)
     table = bigquery.Table(table_ref, schema=SCHEMA)
     client.create_table(table)
-    # [START delete_table]
-    from google.cloud.exceptions import NotFound
+    # [START bigquery_delete_table]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
 
-    client.delete_table(table)  # API request
+    table_ref = client.dataset(dataset_id).table(table_id)
+    client.delete_table(table_ref)  # API request
+
+    print('Table {}:{} deleted.'.format(dataset_id, table_id))
+    # [END bigquery_delete_table]
 
     with pytest.raises(NotFound):
         client.get_table(table)  # API request
-    # [END delete_table]
 
 
 def test_client_simple_query(client):
