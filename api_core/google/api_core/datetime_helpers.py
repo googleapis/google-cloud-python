@@ -181,7 +181,7 @@ def to_rfc3339(value, ignore_zone=True):
     return value.strftime(_RFC3339_MICROS)
 
 
-class TimestampWithNanoseconds(datetime.datetime):
+class DatetimeWithNanoseconds(datetime.datetime):
     """Track nanosecond in addition to normal datetime attrs.
 
     Nanosecond can be passed only as a keyword argument.
@@ -225,7 +225,7 @@ class TimestampWithNanoseconds(datetime.datetime):
             stamp (str): RFC 3339 stamp, with up to nanosecond precision
 
         Returns:
-            :class:`TimestampWithNanoseconds`:
+            :class:`DatetimeWithNanoseconds`:
                 an instance matching the timestamp string
 
         Raises:
