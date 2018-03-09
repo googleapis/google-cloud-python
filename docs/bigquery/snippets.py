@@ -39,8 +39,8 @@ UPDATED_FRIENDLY_NAME = 'Updated friendly name'
 UPDATED_DESCRIPTION = 'Updated description'
 
 SCHEMA = [
-    bigquery.SchemaField('full_name', 'STRING', mode='required'),
-    bigquery.SchemaField('age', 'INTEGER', mode='required'),
+    bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
 ]
 
 ROWS = [
@@ -250,46 +250,74 @@ def test_delete_dataset(client):
 
 def test_list_tables(client, to_delete):
     """List tables within a dataset."""
-    DATASET_ID = 'list_tables_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset = client.create_dataset(dataset)
+    dataset_id = 'list_tables_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
     to_delete.append(dataset)
 
-    # [START list_tables]
-    tables = list(client.list_tables(dataset))  # API request(s)
+    # [START bigquery_list_tables]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    tables = list(client.list_tables(dataset_ref))  # API request(s)
     assert len(tables) == 0
 
     table_ref = dataset.table('my_table')
     table = bigquery.Table(table_ref)
-    table.view_query = QUERY
-    client.create_table(table)                          # API request
+    client.create_table(table)                  # API request
     tables = list(client.list_tables(dataset))  # API request(s)
 
     assert len(tables) == 1
     assert tables[0].table_id == 'my_table'
-    # [END list_tables]
+    # [END bigquery_list_tables]
 
     to_delete.insert(0, table)
 
 
 def test_create_table(client, to_delete):
     """Create a table."""
-    DATASET_ID = 'create_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'create_table_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    # [START create_table]
-    SCHEMA = [
-        bigquery.SchemaField('full_name', 'STRING', mode='required'),
-        bigquery.SchemaField('age', 'INTEGER', mode='required'),
+    # [START bigquery_create_table]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
     ]
-    table_ref = dataset.table('my_table')
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)      # API request
+    table_ref = dataset_ref.table('my_table')
+    table = bigquery.Table(table_ref, schema=schema)
+    table = client.create_table(table)  # API request
 
     assert table.table_id == 'my_table'
-    # [END create_table]
+    # [END bigquery_create_table]
+
+    to_delete.insert(0, table)
+
+
+def test_create_table_without_schema(client, to_delete):
+    """Create a table without specifying a schema"""
+    dataset_id = 'create_table_without_schema_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_create_table_without_schema]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    table_ref = dataset_ref.table('my_table')
+    table = bigquery.Table(table_ref)
+    table = client.create_table(table)
+
+    assert table.table_id == 'my_table'
+    # [END bigquery_create_table_without_schema]
 
     to_delete.insert(0, table)
 
@@ -336,6 +364,40 @@ def test_get_table(client, to_delete):
     table = client.get_table(table)  # API request
     assert table.description == ORIGINAL_DESCRIPTION
     # [END get_table]
+
+
+def test_get_table_information(client, to_delete):
+    """Show a table's properties."""
+    dataset_id = 'show_table_dataset_{}'.format(_millis())
+    table_id = 'show_table_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table.description = ORIGINAL_DESCRIPTION
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_get_table]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)  # API Request
+
+    # View table properties
+    print(table.schema)
+    print(table.description)
+    print(table.num_rows)
+    # [END bigquery_get_table]
+
+    assert table.schema == SCHEMA
+    assert table.description == ORIGINAL_DESCRIPTION
+    assert table.num_rows == 0
 
 
 # [START bigquery_table_exists]
@@ -919,6 +981,7 @@ def test_client_query_destination_table(client, to_delete):
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
+    # client = bigquery.Client()
     job_config = bigquery.QueryJobConfig()
 
     # Set the destination table. Here, dataset_id is a string, such as:
