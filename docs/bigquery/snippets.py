@@ -319,14 +319,12 @@ def test_create_table_then_add_schema(client, to_delete):
     # [END bigquery_create_table_without_schema]
 
     to_delete.insert(0, table)
-    table_id = 'my_table'
 
     # [START bigquery_add_schema_to_empty]
     # client = bigquery.Client()
     # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
 
-    table_ref = client.dataset(dataset_id).table(table_id)
+    table_ref = client.dataset(dataset_id).table('my_table')
     schema = [
         bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
         bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
@@ -466,7 +464,7 @@ def test_update_table_description(client, to_delete):
     to_delete.append(dataset)
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table.description = "Original description."
+    table.description = 'Original description.'
     table = client.create_table(table)
     to_delete.insert(0, table)
 
@@ -475,12 +473,12 @@ def test_update_table_description(client, to_delete):
     # table_ref = client.dataset('my_dataset').table('my_table')
     # table = client.get_table(table_ref)  # API request
 
-    assert table.description == "Original description."
-    table.description = "Updated description."
+    assert table.description == 'Original description.'
+    table.description = 'Updated description.'
 
     table = client.update_table(table, ['description'])  # API request
 
-    assert table.description == "Updated description."
+    assert table.description == 'Updated description.'
     # [END bigquery_update_table_description]
 
 
@@ -570,7 +568,7 @@ def test_relax_column(client, to_delete):
     assert all(field.mode == 'REQUIRED' for field in table.schema)
 
     # SchemaField properties cannot be edited after initialization.
-    # To make a changes, new SchemaField objects must be constructed.
+    # To make changes, construct new SchemaField objects.
     relaxed_schema = [
         bigquery.SchemaField('full_name', 'STRING', mode='NULLABLE'),
         bigquery.SchemaField('age', 'INTEGER', mode='NULLABLE'),
@@ -590,32 +588,32 @@ def test_update_table_multiple_properties(client, to_delete):
         _millis())
     table_id = 'update_table_multiple_properties_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.description = "Original description"
+    dataset.description = 'Original description'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table.friendly_name = "Original friendly name"
-    table.description = "Original description"
+    table.friendly_name = 'Original friendly name'
+    table.description = 'Original description'
     table = client.create_table(table)
     to_delete.insert(0, table)
 
     # [START bigquery_update_table_multiple_properties]
-    assert table.friendly_name == "Original friendly name"
-    assert table.description == "Original description"
+    assert table.friendly_name == 'Original friendly name'
+    assert table.description == 'Original description'
 
     new_schema = list(table.schema)
     new_schema.append(bigquery.SchemaField('phone', 'STRING'))
-    table.friendly_name = "Updated friendly name"
-    table.description = "Updated description"
+    table.friendly_name = 'Updated friendly name'
+    table.description = 'Updated description'
     table.schema = new_schema
     table = client.update_table(
         table,
         ['schema', 'friendly_name', 'description']
     )  # API request
 
-    assert table.friendly_name == "Updated friendly name"
-    assert table.description == "Updated description"
+    assert table.friendly_name == 'Updated friendly name'
+    assert table.description == 'Updated description'
     assert table.schema == new_schema
     # [END bigquery_update_table_multiple_properties]
 
@@ -665,6 +663,10 @@ def test_browse_table_data(client, to_delete, capsys):
     table_ref = dataset_ref.table('shakespeare')
     table = client.get_table(table_ref)  # API call
 
+    # Load all rows from a table
+    rows = client.list_rows(table)
+    assert len(list(rows)) == table.num_rows
+
     # Load the first 10 rows
     rows = client.list_rows(table, max_results=10)
     assert len(list(rows)) == 10
@@ -675,7 +677,7 @@ def test_browse_table_data(client, to_delete, capsys):
     assert len(rows.schema) == 2
     assert len(list(rows)) == 10
 
-    # Use the start index to print any specified portion of the table
+    # Use the start index to load an arbitrary portion of the table
     rows = client.list_rows(table, start_index=10, max_results=10)
 
     # Print row data in tabular format
@@ -1143,7 +1145,7 @@ def test_extract_table_compressed(client, to_delete):
     # [START bigquery_extract_table_compressed]
     # client = bigquery.Client()
     # bucket_name = 'my-bucket'
-    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.zip')
+    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.gz')
     dataset_ref = client.dataset('samples', project='bigquery-public-data')
     table_ref = dataset_ref.table('shakespeare')
     job_config = bigquery.job.ExtractJobConfig()
@@ -1154,7 +1156,7 @@ def test_extract_table_compressed(client, to_delete):
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_compressed]
 
-    blob = bucket.get_blob('shakespeare.zip')
+    blob = bucket.get_blob('shakespeare.gz')
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
