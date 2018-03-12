@@ -70,7 +70,7 @@ def get_baseline():
         if ci_branch is not None:
             output = subprocess.check_output(
                 ['git', 'merge-base', 'master', ci_branch])
-            return output.strip()
+            return output.strip().decode('ascii')
 
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
