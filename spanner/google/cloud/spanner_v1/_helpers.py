@@ -19,12 +19,13 @@ import math
 
 import six
 
+from google.protobuf.struct_pb2 import ListValue
+from google.protobuf.struct_pb2 import Value
+
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.spanner_v1.proto import type_pb2
-from google.protobuf.struct_pb2 import ListValue
-from google.protobuf.struct_pb2 import Value
 
 
 def _try_to_coerce_bytes(bytestring):

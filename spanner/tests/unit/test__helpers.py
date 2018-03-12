@@ -115,8 +115,8 @@ class Test_make_value_pb(unittest.TestCase):
 
     def test_w_timestamp_w_nanos(self):
         import pytz
-        from google.api_core import datetime_helpers
         from google.protobuf.struct_pb2 import Value
+        from google.api_core import datetime_helpers
 
         when = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC)
@@ -127,8 +127,8 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_datetime(self):
         import datetime
         import pytz
-        from google.api_core import datetime_helpers
         from google.protobuf.struct_pb2 import Value
+        from google.api_core import datetime_helpers
 
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         value_pb = self._callFUT(now)
@@ -291,10 +291,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
     def test_w_timestamp_wo_nanos(self):
         import pytz
+        from google.protobuf.struct_pb2 import Value
         from google.api_core import datetime_helpers
         from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
         from google.cloud.spanner_v1.proto.type_pb2 import Type
-        from google.protobuf.struct_pb2 import Value
 
         value = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47,
@@ -312,10 +312,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
     def test_w_timestamp_w_nanos(self):
         import pytz
+        from google.protobuf.struct_pb2 import Value
         from google.api_core import datetime_helpers
         from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
         from google.cloud.spanner_v1.proto.type_pb2 import Type
-        from google.protobuf.struct_pb2 import Value
 
         value = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47,
