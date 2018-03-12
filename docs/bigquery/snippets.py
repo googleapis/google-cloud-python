@@ -1145,7 +1145,7 @@ def test_extract_table_compressed(client, to_delete):
     # [START bigquery_extract_table_compressed]
     # client = bigquery.Client()
     # bucket_name = 'my-bucket'
-    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.gz')
+    destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.csv.gz')
     dataset_ref = client.dataset('samples', project='bigquery-public-data')
     table_ref = dataset_ref.table('shakespeare')
     job_config = bigquery.job.ExtractJobConfig()
@@ -1156,7 +1156,7 @@ def test_extract_table_compressed(client, to_delete):
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_compressed]
 
-    blob = bucket.get_blob('shakespeare.gz')
+    blob = bucket.get_blob('shakespeare.csv.gz')
     assert blob.exists
     assert blob.size > 0
     to_delete.insert(0, blob)
