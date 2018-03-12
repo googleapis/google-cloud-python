@@ -1004,9 +1004,9 @@ class TestBatchSnapshot(_BaseTest):
     def test_to_dict(self):
         database = self._make_database()
         batch_txn = self._make_one(database)
-        session = batch_txn._session = self._make_session(
+        batch_txn._session = self._make_session(
             _session_id=self.SESSION_ID)
-        snapshot = batch_txn._snapshot = self._make_snapshot(
+        batch_txn._snapshot = self._make_snapshot(
             transaction_id=self.TRANSACTION_ID)
 
         expected = {
