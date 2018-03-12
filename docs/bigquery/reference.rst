@@ -58,3 +58,11 @@ External Configuration
 .. automodule:: google.cloud.bigquery.external_config
   :members:
   :show-inheritance:
+
+
+Magics
+======================
+
+.. automodule:: google.cloud.bigquery.magics
+  :members:
+  :show-inheritance:
