@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import collections
 from concurrent import futures
+import functools
 import logging
 import sys
 import threading
@@ -31,29 +32,25 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
-_VALID_ACTIONS = frozenset([
-    'ack',
-    'drop',
-    'lease',
-    'modify_ack_deadline',
-    'nack',
-])
 
 
-def _do_nothing_callback(message):
-    """Default callback for messages received by subscriber.
-
-    Does nothing with the message and returns :data:`None`.
+def _wrap_callback_errors(callback, message):
+    """Wraps a user callback so that if an exception occurs the message is
+    nacked.
 
     Args:
-        message (~google.cloud.pubsub_v1.subscriber.message.Message): A
-            protobuf message returned by the backend and parsed into
-            our high level message type.
-
-    Returns:
-        NoneType: Always.
+        callback (Callable[None, Message]): The user callback.
+        message (~Message): The Pub/Sub message.
     """
-    return None
+    try:
+        callback(message)
+    except Exception:
+        # Note: the likelihood of this failing is extremely low. This just adds
+        # a message to a queue, so if this doesn't work the world is in an
+        # unrecoverable state and this thread should just bail.
+        message.nack()
+        # Re-raise the exception so that the executor can deal with it.
+        raise
 
 
 class Policy(base.BasePolicy):
@@ -85,9 +82,8 @@ class Policy(base.BasePolicy):
             flow_control=flow_control,
             subscription=subscription,
         )
-        # Default the callback to a no-op; the **actual** callback is
-        # provided by ``.open()``.
-        self._callback = _do_nothing_callback
+        # The **actual** callback is provided by ``.open()``.
+        self._callback = None
         # Create a queue for keeping track of shared state.
         self._request_queue = self._get_queue(queue)
         # Also maintain an executor.
@@ -262,7 +258,7 @@ class Policy(base.BasePolicy):
         self._future = Future(policy=self, completed=threading.Event())
 
         # Start the thread to pass the requests.
-        self._callback = callback
+        self._callback = functools.partial(_wrap_callback_errors, callback)
         self._start_dispatch()
         # Actually start consuming messages.
         self._consumer.start_consuming(self)
