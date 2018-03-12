@@ -57,17 +57,26 @@ def get_baseline():
     On a push to master, return None. This will effectively cause everything
     to be considered to be affected.
     """
+    ci_branch = os.environ.get('CIRCLE_BRANCH')
+    ci_pr = os.environ.get('CIRCLE_PR_NUMBER')
+
     # If this is a pull request or branch, return the tip for master.
     # We will test only packages which have changed since that point.
     ci_non_master = os.environ.get('CI', '') == 'true' and any([
-        os.environ.get('CIRCLE_BRANCH', '') != 'master',
-        os.environ.get('CIRCLE_PR_NUMBER', ''),
+        ci_branch != 'master',
+        ci_pr,
     ])
     if ci_non_master:
+        if ci_branch is not None:
+            output = subprocess.check_output(
+                ['git', 'merge-base', 'master', ci_branch])
+            return output.strip().decode('ascii')
+
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
+        # Can we have a PR but not a branch?
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
