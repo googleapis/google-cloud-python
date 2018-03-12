@@ -154,20 +154,26 @@ Get a table:
 Update a property in a table's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_table_simple]
-   :end-before: [END update_table_simple]
+   :start-after: [START bigquery_update_table_description]
+   :end-before: [END bigquery_update_table_description]
 
 Update multiple properties in a table's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_table_multiple_properties]
-   :end-before: [END update_table_multiple_properties]
+   :start-after: [START bigquery_update_table_multiple_properties]
+   :end-before: [END bigquery_update_table_multiple_properties]
 
 Get rows from a table's data:
 
 .. literalinclude:: snippets.py
    :start-after: [START table_list_rows]
    :end-before: [END table_list_rows]
+
+Browse selected rows in a table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_browse_table]
+   :end-before: [END bigquery_browse_table]
 
 Utilize iterator properties returned with row data:
 
@@ -178,26 +184,26 @@ Utilize iterator properties returned with row data:
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
-   :start-after: [START table_insert_rows]
-   :end-before: [END table_insert_rows]
+   :start-after: [START bigquery_table_insert_rows]
+   :end-before: [END bigquery_table_insert_rows]
 
 Copy a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START copy_table]
-   :end-before: [END copy_table]
+   :start-after: [START bigquery_copy_table]
+   :end-before: [END bigquery_copy_table]
 
 Extract a table to Google Cloud Storage:
 
 .. literalinclude:: snippets.py
-   :start-after: [START extract_table]
-   :end-before: [END extract_table]
+   :start-after: [START bigquery_extract_table]
+   :end-before: [END bigquery_extract_table]
 
 Delete a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START delete_table]
-   :end-before: [END delete_table]
+   :start-after: [START bigquery_delete_table]
+   :end-before: [END bigquery_delete_table]
 
 Upload table data from a file:
 
