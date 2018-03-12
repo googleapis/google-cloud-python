@@ -583,6 +583,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
+        derived._transaction_id = b'DEADBEEF'
 
         with self.assertRaises(ValueError):
             list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
