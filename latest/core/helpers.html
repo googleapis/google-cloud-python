@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud 589cc93 documentation</title>
+    <title>Helpers &#8212; google-cloud 813b154 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -47,6 +47,56 @@
 <div class="section" id="module-google.api_core.datetime_helpers">
 <span id="datetime-helpers"></span><h2>Datetime Helpers<a class="headerlink" href="#module-google.api_core.datetime_helpers" title="Permalink to this headline">#</a></h2>
 <p>Helpers for <a class="reference external" href="https://docs.python.org/3/library/datetime.html#module-datetime" title="(in Python v3.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datetime</span></code></a>.</p>
+<dl class="class">
+<dt id="google.api_core.datetime_helpers.DatetimeWithNanoseconds">
+<em class="property">class </em><code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">DatetimeWithNanoseconds</code><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#DatetimeWithNanoseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.DatetimeWithNanoseconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></p>
+<p>Track nanosecond in addition to normal datetime attrs.</p>
+<p>Nanosecond can be passed only as a keyword argument.</p>
+<dl class="classmethod">
+<dt id="google.api_core.datetime_helpers.DatetimeWithNanoseconds.from_rfc3339">
+<em class="property">classmethod </em><code class="descname">from_rfc3339</code><span class="sig-paren">(</span><em>stamp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#DatetimeWithNanoseconds.from_rfc3339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.DatetimeWithNanoseconds.from_rfc3339" title="Permalink to this definition">#</a></dt>
+<dd><p>Parse RFC 3339-compliant timestamp, preserving nanoseconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – RFC 3339 stamp, with up to nanosecond precision</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an instance matching the timestamp string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.datetime_helpers.DatetimeWithNanoseconds" title="google.api_core.datetime_helpers.DatetimeWithNanoseconds"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeWithNanoseconds</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – if <cite>stamp</cite> does not match the expected format</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.api_core.datetime_helpers.DatetimeWithNanoseconds.nanosecond">
+<code class="descname">nanosecond</code><a class="headerlink" href="#google.api_core.datetime_helpers.DatetimeWithNanoseconds.nanosecond" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Read-only</em> – nanosecond precision.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.datetime_helpers.DatetimeWithNanoseconds.rfc3339">
+<code class="descname">rfc3339</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#DatetimeWithNanoseconds.rfc3339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.DatetimeWithNanoseconds.rfc3339" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an RFC 3339-compliant timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Timestamp string according to RFC 3339 spec.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="google.api_core.datetime_helpers.from_iso8601_date">
 <code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_iso8601_date</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_iso8601_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_iso8601_date" title="Permalink to this definition">#</a></dt>
