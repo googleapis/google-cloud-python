@@ -300,24 +300,30 @@ class YieldRowsData(object):
         """Cancels the iterator, closing the stream."""
         self._response_iterator.cancel()
 
-    def create_retry_request(self):
+    def _create_retry_request(self):
+        """Helper for :meth:`_retry_read_rows`."""
         row_range = self.request_pb.rows.row_ranges.pop()
         range_kwargs = {}
+        # start AFTER the row_key of the last successfully read row
         range_kwargs['start_key_open'] = self.last_scanned_row_key
         range_kwargs['end_key_open'] = row_range.end_key_open
         self.request_pb.rows.row_ranges.add(**range_kwargs)
 
-    def retry_read_rows(self):
+    def _retry_read_rows(self):
+        """Helper for :meth:`read_rows`."""
+        # restart the read scan from AFTER the last successfully read row
+        # the original request_pb must have been provided
         if (self.last_scanned_row_key and self.request_pb is not None):
-            self.create_retry_request()
+            self._create_retry_request()
 
             self._response_iterator = self.client._data_stub.ReadRows(
                 self.request_pb)
 
         return six.next(self._response_iterator)
 
-    def read_next_response(self):
-        next_response = functools.partial(self.retry_read_rows)
+    def _read_next_response(self):
+        """Helper for :meth:`read_rows`."""
+        next_response = functools.partial(self._retry_read_rows)
         retry_ = retry.Retry(
             predicate=_retry_read_rows_exception,
             deadline=60)
@@ -332,7 +338,7 @@ class YieldRowsData(object):
         """
         while True:
             try:
-                response = self.read_next_response()
+                response = self._read_next_response()
             except StopIteration:
                 break
 

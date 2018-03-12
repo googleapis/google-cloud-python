@@ -1239,11 +1239,8 @@ class _MockReadRowsIterator(object):
     def __init__(self, *values):
         self.iter_values = iter(values)
 
-    def next(self):
-        return next(self.iter_values)
-
     def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
+        return next(self.iter_values)
 
 
 class _MockFailureIterator(object):
