@@ -129,6 +129,16 @@ def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert dt_val1 < dt_val2
 
 
+def test_no_document(client, cleanup):
+    document_id = 'no_document' + unique_resource_id('-')
+    document = client.document('abcde', document_id)
+    option0 = client.write_option(create_if_missing=False)
+    with pytest.raises(NotFound):
+        document.set({'no': 'way'}, option=option0)
+    snapshot = document.get()
+    assert snapshot.to_dict() is None
+
+
 def test_document_set(client, cleanup):
     document_id = 'for-set' + unique_resource_id('-')
     document = client.document('i-did-it', document_id)
@@ -313,10 +323,7 @@ def test_document_get(client, cleanup):
     cleanup(document)
 
     # First make sure it doesn't exist.
-    with pytest.raises(NotFound) as exc_info:
-        document.get()
-
-    assert exc_info.value.message == document._document_path
+    assert not document.get().exists
 
     ref_doc = client.document('top', 'middle1', 'middle2', 'bottom')
     data = {
@@ -631,8 +638,10 @@ def test_get_all(client, cleanup):
     snapshots = list(client.get_all(
         [document1, document2, document3]))
 
-    assert snapshots.count(None) == 1
-    snapshots.remove(None)
+    assert snapshots[0].exists
+    assert snapshots[1].exists
+    assert not snapshots[2].exists
+    snapshots = [snapshot for snapshot in snapshots if snapshot.exists]
     id_attr = operator.attrgetter('id')
     snapshots.sort(key=id_attr)
 
@@ -716,5 +725,4 @@ def test_batch(client, cleanup):
     assert_timestamp_less(snapshot2.create_time, write_result2.update_time)
     assert snapshot2.update_time == write_result2.update_time
 
-    with pytest.raises(NotFound):
-        document3.get()
+    assert not document3.get().exists
