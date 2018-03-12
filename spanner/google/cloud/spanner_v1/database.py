@@ -461,8 +461,8 @@ class BatchSnapshot(object):
         instance = cls(database)
         session = instance._session = database.session()
         session._session_id = mapping['session_id']
-        txn = session.transaction()
-        txn._transaction_id = mapping['transaction_id']
+        snapshot = instance._snapshot = session.snapshot()
+        snapshot._transaction_id = mapping['transaction_id']
         return instance
 
     def to_dict(self):
@@ -474,9 +474,10 @@ class BatchSnapshot(object):
         :rtype: dict
         """
         session = self._get_session()
+        snapshot = self._get_snapshot()
         return {
             'session_id': session._session_id,
-            'transaction_id': session._transaction._transaction_id,
+            'transaction_id': snapshot._transaction_id,
         }
 
     def _get_session(self):
@@ -501,6 +502,7 @@ class BatchSnapshot(object):
                 read_timestamp=self._read_timestamp,
                 exact_staleness=self._exact_staleness,
                 multi_use=True)
+            self._snapshot.begin()
         return self._snapshot
 
     def read(self, *args, **kw):

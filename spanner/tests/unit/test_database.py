@@ -933,16 +933,14 @@ class TestBatchSnapshot(_BaseTest):
         return mock.create_autospec(Session, instance=True, **kwargs)
 
     @staticmethod
-    def _make_transaction(**kwargs):
-        from google.cloud.spanner_v1.transaction import Transaction
-
-        return mock.create_autospec(Transaction, instance=True, **kwargs)
-
-    @staticmethod
-    def _make_snapshot(**kwargs):
+    def _make_snapshot(transaction_id=None, **kwargs):
         from google.cloud.spanner_v1.snapshot import Snapshot
 
-        return mock.create_autospec(Snapshot, instance=True, **kwargs)
+        snapshot = mock.create_autospec(Snapshot, instance=True, **kwargs)
+        if transaction_id is not None:
+            snapshot._transaction_id = transaction_id
+
+        return snapshot
 
     @staticmethod
     def _make_keyset():
@@ -989,7 +987,7 @@ class TestBatchSnapshot(_BaseTest):
         klass = self._get_target_class()
         database = self._make_database()
         session = database.session.return_value = self._make_session()
-        txn = session.transaction.return_value = self._make_transaction()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
         api_repr = {
             'session_id': self.SESSION_ID,
             'transaction_id': self.TRANSACTION_ID,
@@ -999,16 +997,17 @@ class TestBatchSnapshot(_BaseTest):
         self.assertIs(batch_txn._database, database)
         self.assertIs(batch_txn._session, session)
         self.assertEqual(session._session_id, self.SESSION_ID)
-        self.assertEqual(txn._transaction_id, self.TRANSACTION_ID)
-        txn.begin.assert_not_called()
-        self.assertIsNone(batch_txn._snapshot)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
+        snapshot.begin.assert_not_called()
+        self.assertIs(batch_txn._snapshot, snapshot)
 
     def test_to_dict(self):
         database = self._make_database()
         batch_txn = self._make_one(database)
-        txn = self._make_transaction(_transaction_id=self.TRANSACTION_ID)
-        batch_txn._session = self._make_session(
-            _session_id=self.SESSION_ID, _transaction=txn)
+        session = batch_txn._session = self._make_session(
+            _session_id=self.SESSION_ID)
+        snapshot = batch_txn._snapshot = self._make_snapshot(
+            transaction_id=self.TRANSACTION_ID)
 
         expected = {
             'session_id': self.SESSION_ID,
@@ -1025,17 +1024,16 @@ class TestBatchSnapshot(_BaseTest):
     def test__get_session_new(self):
         database = self._make_database()
         session = database.session.return_value = self._make_session()
-        txn = session.transaction.return_value = self._make_transaction()
         batch_txn = self._make_one(database)
         self.assertIs(batch_txn._get_session(), session)
         session.create.assert_called_once_with()
-        txn.begin.assert_called_once_with()
 
     def test__get_snapshot_already(self):
         database = self._make_database()
         batch_txn = self._make_one(database)
-        already = batch_txn._snapshot = object()
+        already = batch_txn._snapshot = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), already)
+        already.begin.assert_not_called()
 
     def test__get_snapshot_new_wo_staleness(self):
         database = self._make_database()
@@ -1045,6 +1043,7 @@ class TestBatchSnapshot(_BaseTest):
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
             read_timestamp=None, exact_staleness=None, multi_use=True)
+        snapshot.begin.assert_called_once_with()
 
     def test__get_snapshot_w_read_timestamp(self):
         database = self._make_database()
@@ -1055,6 +1054,7 @@ class TestBatchSnapshot(_BaseTest):
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
             read_timestamp=timestamp, exact_staleness=None, multi_use=True)
+        snapshot.begin.assert_called_once_with()
 
     def test__get_snapshot_w_exact_staleness(self):
         database = self._make_database()
@@ -1065,13 +1065,13 @@ class TestBatchSnapshot(_BaseTest):
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
             read_timestamp=None, exact_staleness=duration, multi_use=True)
+        snapshot.begin.assert_called_once_with()
 
     def test_read(self):
         keyset = self._make_keyset()
         database = self._make_database()
         batch_txn = self._make_one(database)
-        session = batch_txn._session = self._make_session()
-        snapshot = session.snapshot.return_value = self._make_snapshot()
+        snapshot = batch_txn._snapshot = self._make_snapshot()
 
         rows = batch_txn.read(
             self.TABLE, self.COLUMNS, keyset, self.INDEX)
@@ -1089,8 +1089,7 @@ class TestBatchSnapshot(_BaseTest):
         param_types = {'max_age': 'INT64'}
         database = self._make_database()
         batch_txn = self._make_one(database)
-        session = batch_txn._session = self._make_session()
-        snapshot = session.snapshot.return_value = self._make_snapshot()
+        snapshot = batch_txn._snapshot = self._make_snapshot()
 
         rows = batch_txn.execute_sql(sql, params, param_types)
 
