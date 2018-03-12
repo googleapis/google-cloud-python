@@ -417,7 +417,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
 
     def _partition_read_helper(
-            self, multi_use, first,
+            self, multi_use, w_txn,
             size=None, max_partitions=None, index=None):
         from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud.spanner_v1.types import Partition
@@ -445,7 +445,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
-        if not first:
+        if w_txn:
             derived._transaction_id = txn_id
 
         tokens = list(derived.partition_read(
@@ -464,7 +464,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(table, TABLE_NAME)
         self.assertEqual(key_set, keyset._to_pb())
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.begin.read_only.strong)
+        self.assertEqual(transaction.id, txn_id)
+        self.assertFalse(transaction.HasField('begin'))
         self.assertEqual(r_index, index)
         self.assertEqual(columns, COLUMNS)
         self.assertEqual(
@@ -476,11 +477,11 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def test_partition_read_single_use_raises(self):
         with self.assertRaises(ValueError):
-            self._partition_read_helper(multi_use=False, first=True)
+            self._partition_read_helper(multi_use=False, w_txn=True)
 
-    def test_partition_read_existing_transaction_raises(self):
+    def test_partition_read_wo_existing_transaction_raises(self):
         with self.assertRaises(ValueError):
-            self._partition_read_helper(multi_use=True, first=False)
+            self._partition_read_helper(multi_use=True, w_txn=False)
 
     def test_partition_read_other_error(self):
         from google.cloud.spanner_v1.keyset import KeySet
@@ -492,42 +493,23 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
+        derived._transaction_id = b'DEADBEEF'
 
         with self.assertRaises(RuntimeError):
             list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
 
     def test_partition_read_ok_w_index_no_options(self):
-        self._partition_read_helper(multi_use=True, first=True, index='index')
+        self._partition_read_helper(multi_use=True, w_txn=True, index='index')
 
     def test_partition_read_ok_w_size(self):
-        self._partition_read_helper(multi_use=True, first=True, size=2000)
+        self._partition_read_helper(multi_use=True, w_txn=True, size=2000)
 
     def test_partition_read_ok_w_max_partitions(self):
         self._partition_read_helper(
-            multi_use=True, first=True, max_partitions=4)
-
-    def test_partition_query_other_error(self):
-        database = _Database()
-        database.spanner_api = self._make_spanner_api()
-        database.spanner_api.partition_query.side_effect = RuntimeError()
-        session = _Session(database)
-        derived = self._makeDerived(session)
-        derived._multi_use = True
-
-        with self.assertRaises(RuntimeError):
-            list(derived.partition_query(SQL_QUERY))
-
-    def test_partition_query_w_params_wo_param_types(self):
-        database = _Database()
-        session = _Session(database)
-        derived = self._makeDerived(session)
-        derived._multi_use = True
-
-        with self.assertRaises(ValueError):
-            list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
+            multi_use=True, w_txn=True, max_partitions=4)
 
     def _partition_query_helper(
-            self, multi_use, first, size=None, max_partitions=None):
+            self, multi_use, w_txn, size=None, max_partitions=None):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.types import Partition
         from google.cloud.spanner_v1.types import PartitionOptions
@@ -554,7 +536,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
-        if not first:
+        if w_txn:
             derived._transaction_id = txn_id
 
         tokens = list(derived.partition_query(
@@ -571,7 +553,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.begin.read_only.strong)
+        self.assertEqual(transaction.id, txn_id)
+        self.assertFalse(transaction.HasField('begin'))
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
         self.assertEqual(params, expected_params)
@@ -583,23 +566,44 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(
             metadata, [('google-cloud-resource-prefix', database.name)])
 
+    def test_partition_query_other_error(self):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.partition_query.side_effect = RuntimeError()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        derived._multi_use = True
+        derived._transaction_id = b'DEADBEEF'
+
+        with self.assertRaises(RuntimeError):
+            list(derived.partition_query(SQL_QUERY))
+
+    def test_partition_query_w_params_wo_param_types(self):
+        database = _Database()
+        session = _Session(database)
+        derived = self._makeDerived(session)
+        derived._multi_use = True
+
+        with self.assertRaises(ValueError):
+            list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
+
     def test_partition_query_single_use_raises(self):
         with self.assertRaises(ValueError):
-            self._partition_query_helper(multi_use=False, first=True)
+            self._partition_query_helper(multi_use=False, w_txn=True)
 
-    def test_partition_query_existing_transaction_raises(self):
+    def test_partition_query_wo_transaction_raises(self):
         with self.assertRaises(ValueError):
-            self._partition_query_helper(multi_use=True, first=False)
+            self._partition_query_helper(multi_use=True, w_txn=False)
 
     def test_partition_query_ok_w_index_no_options(self):
-        self._partition_query_helper(multi_use=True, first=True)
+        self._partition_query_helper(multi_use=True, w_txn=True)
 
     def test_partition_query_ok_w_size(self):
-        self._partition_query_helper(multi_use=True, first=True, size=2000)
+        self._partition_query_helper(multi_use=True, w_txn=True, size=2000)
 
     def test_partition_query_ok_w_max_partitions(self):
         self._partition_query_helper(
-            multi_use=True, first=True, max_partitions=4)
+            multi_use=True, w_txn=True, max_partitions=4)
 
 
 class TestSnapshot(unittest.TestCase):

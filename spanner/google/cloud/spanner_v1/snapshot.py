@@ -247,8 +247,8 @@ class _SnapshotBase(_SessionWrapper):
         if not self._multi_use:
             raise ValueError("Cannot use single-use snapshot.")
 
-        if self._transaction_id is not None:
-            raise ValueError("Transaction already started.")
+        if self._transaction_id is None:
+            raise ValueError("Transaction not started.")
 
         database = self._session._database
         api = database.spanner_api
@@ -269,7 +269,6 @@ class _SnapshotBase(_SessionWrapper):
             partition_options=partition_options,
             metadata=metadata,
         )
-        self._transaction_id = response.transaction.id
 
         return [partition.partition_token for partition in response.partitions]
 
@@ -310,8 +309,8 @@ class _SnapshotBase(_SessionWrapper):
         if not self._multi_use:
             raise ValueError("Cannot use single-use snapshot.")
 
-        if self._transaction_id is not None:
-            raise ValueError("Transaction already started.")
+        if self._transaction_id is None:
+            raise ValueError("Transaction not started.")
 
         if params is not None:
             if param_types is None:
@@ -340,7 +339,6 @@ class _SnapshotBase(_SessionWrapper):
             partition_options=partition_options,
             metadata=metadata,
         )
-        self._transaction_id = response.transaction.id
 
         return [partition.partition_token for partition in response.partitions]
 
