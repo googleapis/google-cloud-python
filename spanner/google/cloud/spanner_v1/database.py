@@ -491,8 +491,6 @@ class BatchSnapshot(object):
         if self._session is None:
             session = self._session = self._database.session()
             session.create()
-            txn = session.transaction()
-            txn.begin()
         return self._session
 
     def _get_snapshot(self):
