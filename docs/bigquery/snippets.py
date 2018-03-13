@@ -107,14 +107,18 @@ def test_create_dataset(client, to_delete):
 
     # [START bigquery_create_dataset]
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'  # must be unique within your project
+    # dataset_id = 'my_dataset'
 
     # Create a DatasetReference using a chosen dataset ID.
     # The project defaults to the Client's project if not specified.
     dataset_ref = client.dataset(dataset_id)
-    # Construct a full Dataset object to send to the API
+
+    # Construct a full Dataset object to send to the API.
     dataset = bigquery.Dataset(dataset_ref)
 
+    # Send the dataset to the API for creation.
+    # Raises google.api_core.exceptions.AlreadyExists if the Dataset already
+    # exists within the project.
     dataset = client.create_dataset(dataset)  # API request
     # [END bigquery_create_dataset]
 
