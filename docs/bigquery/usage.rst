@@ -85,32 +85,32 @@ Dataset operations
 List datasets for the client's project:
 
 .. literalinclude:: snippets.py
-   :start-after: [START client_list_datasets]
-   :end-before: [END client_list_datasets]
+   :start-after: [START bigquery_list_datasets]
+   :end-before: [END bigquery_list_datasets]
 
 Create a new dataset for the client's project:
 
 .. literalinclude:: snippets.py
-   :start-after: [START create_dataset]
-   :end-before: [END create_dataset]
+   :start-after: [START bigquery_create_dataset]
+   :end-before: [END bigquery_create_dataset]
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
 .. literalinclude:: snippets.py
-   :start-after: [START get_dataset]
-   :end-before: [END get_dataset]
+   :start-after: [START bigquery_get_dataset]
+   :end-before: [END bigquery_get_dataset]
 
 Update a property in a dataset's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_dataset_simple]
-   :end-before: [END update_dataset_simple]
+   :start-after: [START bigquery_update_dataset_description]
+   :end-before: [END bigquery_update_dataset_description]
 
 Update multiple properties in a dataset's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_dataset_multiple_properties]
-   :end-before: [END update_dataset_multiple_properties]
+   :start-after: [START bigquery_update_dataset_multiple_properties]
+   :end-before: [END bigquery_update_dataset_multiple_properties]
 
 Modify user permissions on a dataset:
 
@@ -121,8 +121,8 @@ Modify user permissions on a dataset:
 Delete a dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START delete_dataset]
-   :end-before: [END delete_dataset]
+   :start-after: [START bigquery_delete_dataset]
+   :end-before: [END bigquery_delete_dataset]
 
 
 Tables

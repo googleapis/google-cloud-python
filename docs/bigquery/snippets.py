@@ -85,49 +85,83 @@ class _CloseOnDelete(object):
         self._wrapped.close()
 
 
-def test_client_list_datasets(client):
+def test_list_datasets(client):
     """List datasets for a project."""
+    # [START bigquery_list_datasets]
+    # client = bigquery.Client()
+    datasets = list(client.list_datasets())
+    project = client.project
 
-    def do_something_with(_):
-        pass
-
-    # [START client_list_datasets]
-    for dataset in client.list_datasets():  # API request(s)
-        do_something_with(dataset)
-    # [END client_list_datasets]
+    if datasets:
+        print('Datasets in project {}:'.format(project))
+        for dataset in datasets:  # API request(s)
+            print('\t{}'.format(dataset.dataset_id))
+    else:
+        print('{} project does not contain any datasets.'.format(project))
+    # [END bigquery_list_datasets]
 
 
 def test_create_dataset(client, to_delete):
     """Create a dataset."""
-    DATASET_ID = 'create_dataset_{}'.format(_millis())
+    dataset_id = 'create_dataset_{}'.format(_millis())
 
-    # [START create_dataset]
-    # DATASET_ID = 'dataset_ids_are_strings'
-    dataset_ref = client.dataset(DATASET_ID)
+    # [START bigquery_create_dataset]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    # Create a DatasetReference using a chosen dataset ID.
+    # The project defaults to the Client's project if not specified.
+    dataset_ref = client.dataset(dataset_id)
+
+    # Construct a full Dataset object to send to the API.
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.description = 'my dataset'
+
+    # Send the dataset to the API for creation.
+    # Raises google.api_core.exceptions.AlreadyExists if the Dataset already
+    # exists within the project.
     dataset = client.create_dataset(dataset)  # API request
-    # [END create_dataset]
+    # [END bigquery_create_dataset]
 
     to_delete.append(dataset)
 
 
-def test_get_dataset(client, to_delete):
-    """Reload a dataset's metadata."""
-    DATASET_ID = 'get_dataset_{}'.format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
+def test_get_dataset_information(client, to_delete):
+    """View information about a dataset."""
+    dataset_id = 'get_dataset_{}'.format(_millis())
+    dataset_labels = {'color': 'green'}
+    dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     dataset.description = ORIGINAL_DESCRIPTION
+    dataset.labels = dataset_labels
     dataset = client.create_dataset(dataset)  # API request
     to_delete.append(dataset)
 
-    # [START get_dataset]
+    # [START bigquery_get_dataset]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.get_dataset(dataset_ref)  # API request
+
+    # View dataset properties
+    print('Dataset ID: '.format(dataset_id))
+    print('Description: '.format(dataset.description))
+    print('Labels:')
+    for label, value in dataset.labels.items():
+        print('\t{}: {}'.format(label, value))
+    # View tables in dataset
+    print('Tables:')
+    tables = list(client.list_tables(dataset_ref))  # API request(s)
+    if tables:
+        for table in tables:
+            print('\t{}'.format(table.table_id))
+    else:
+        print('\tThis dataset does not contain any tables.')
+    # [END bigquery_get_dataset]
+
     assert dataset.description == ORIGINAL_DESCRIPTION
-    dataset.description = LOCALLY_CHANGED_DESCRIPTION
-    assert dataset.description == LOCALLY_CHANGED_DESCRIPTION
-    dataset = client.get_dataset(dataset)  # API request
-    assert dataset.description == ORIGINAL_DESCRIPTION
-    # [END get_dataset]
+    assert dataset.labels == dataset_labels
+    assert tables == []
 
 
 # [START bigquery_dataset_exists]
@@ -165,57 +199,91 @@ def test_dataset_exists(client, to_delete):
     assert not dataset_exists(client, client.dataset('i_dont_exist'))
 
 
-def test_update_dataset_simple(client, to_delete):
-    """Update a dataset's metadata."""
-    DATASET_ID = 'update_dataset_simple_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset.description = ORIGINAL_DESCRIPTION
+def test_update_dataset_description(client, to_delete):
+    """Update a dataset's description."""
+    dataset_id = 'update_dataset_description_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.description = 'Original description.'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    # [START update_dataset_simple]
-    assert dataset.description == ORIGINAL_DESCRIPTION
-    dataset.description = UPDATED_DESCRIPTION
+    # [START bigquery_update_dataset_description]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # dataset = client.get_dataset(dataset_ref)  # API request
+
+    assert dataset.description == 'Original description.'
+    dataset.description = 'Updated description.'
 
     dataset = client.update_dataset(dataset, ['description'])  # API request
 
-    assert dataset.description == UPDATED_DESCRIPTION
-    # [END update_dataset_simple]
+    assert dataset.description == 'Updated description.'
+    # [END bigquery_update_dataset_description]
+
+
+def test_update_dataset_default_table_expiration(client, to_delete):
+    """Update a dataset's default table expiration."""
+    dataset_id = 'update_dataset_default_expiration_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_update_dataset_expiration]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # dataset = client.get_dataset(dataset_ref)  # API request
+
+    assert dataset.default_table_expiration_ms is None
+    one_day_ms = 24 * 60 * 60 * 1000  # in milliseconds
+    dataset.default_table_expiration_ms = one_day_ms
+
+    dataset = client.update_dataset(
+        dataset, ['default_table_expiration_ms'])  # API request
+
+    assert dataset.default_table_expiration_ms == one_day_ms
+    # [END bigquery_update_dataset_expiration]
 
 
 def test_update_dataset_multiple_properties(client, to_delete):
     """Update a dataset's metadata."""
-    DATASET_ID = 'update_dataset_multiple_properties_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset.description = ORIGINAL_DESCRIPTION
+    dataset_id = 'update_dataset_multiple_properties_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    # [START update_dataset_multiple_properties]
-    assert dataset.description == ORIGINAL_DESCRIPTION
+    # [START bigquery_update_dataset_multiple_properties]
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # dataset = client.get_dataset(dataset_ref)  # API request
+
     assert dataset.default_table_expiration_ms is None
-    ONE_DAY_MS = 24 * 60 * 60 * 1000  # in milliseconds
-    dataset.description = UPDATED_DESCRIPTION
-    dataset.default_table_expiration_ms = ONE_DAY_MS
+    assert dataset.labels == {}
+    one_day_ms = 24 * 60 * 60 * 1000  # in milliseconds
+    labels = {'color': 'green'}
+    dataset.labels = labels
+    dataset.default_table_expiration_ms = one_day_ms
 
     dataset = client.update_dataset(
         dataset,
-        ['description', 'default_table_expiration_ms']
+        ['labels', 'default_table_expiration_ms']
     )  # API request
 
-    assert dataset.description == UPDATED_DESCRIPTION
-    assert dataset.default_table_expiration_ms == ONE_DAY_MS
-    # [END update_dataset_multiple_properties]
+    assert dataset.default_table_expiration_ms == one_day_ms
+    assert dataset.labels == labels
+    # [END bigquery_update_dataset_multiple_properties]
 
 
 def test_update_dataset_access(client, to_delete):
-    """Update a dataset's metadata."""
-    DATASET_ID = 'update_dataset_access_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    """Update a dataset's access controls."""
+    dataset_id = 'update_dataset_access_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
     # [START bigquery_update_dataset_access]
+    # client = bigquery.Client()
+    # dataset = client.get_dataset(client.dataset('my_dataset'))
+
     entry = bigquery.AccessEntry(
         role='READER',
         entity_type='userByEmail',
@@ -233,18 +301,24 @@ def test_update_dataset_access(client, to_delete):
 
 def test_delete_dataset(client):
     """Delete a dataset."""
-    DATASET_ID = 'delete_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    client.create_dataset(dataset)
-
-    # [START delete_dataset]
     from google.cloud.exceptions import NotFound
 
-    client.delete_dataset(dataset)  # API request
+    dataset_id = 'delete_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+
+    # [START bigquery_delete_dataset]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    client.delete_dataset(dataset_ref)  # API request
+
+    print('Dataset {} deleted.'.format(dataset_id))
+    # [END bigquery_delete_dataset]
 
     with pytest.raises(NotFound):
         client.get_dataset(dataset)  # API request
-    # [END delete_dataset]
 
 
 def test_list_tables(client, to_delete):
