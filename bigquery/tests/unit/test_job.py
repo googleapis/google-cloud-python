@@ -253,8 +253,10 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'load': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -265,7 +267,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'load': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 
@@ -409,7 +413,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID))
-        self.assertEqual(job.schema, [])
 
         self._verifyInitialReadonlyProperties(job)
 
@@ -420,6 +423,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
+        self.assertIsNone(job.schema)
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
         self.assertIsNone(job.autodetect)
@@ -767,8 +771,18 @@ class TestLoadJob(unittest.TestCase, _Base):
             'sourceFormat': 'CSV',
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+                {
+                    'name': 'full_name',
+                    'type': 'STRING',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
+                {
+                    'name': 'age',
+                    'type': 'INTEGER',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
             ]}
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
