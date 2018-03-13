@@ -97,6 +97,9 @@ class BasePolicy(object):
     _RETRYABLE_STREAM_ERRORS = (
         exceptions.DeadlineExceeded,
         exceptions.ServiceUnavailable,
+        exceptions.InternalServerError,
+        exceptions.Unknown,
+        exceptions.GatewayTimeout,
     )
 
     def __init__(self, client, subscription,
