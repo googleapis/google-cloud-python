@@ -54,7 +54,8 @@ BatchSettings.__new__.__defaults__ = (
 FlowControl = collections.namedtuple(
     'FlowControl',
     ['max_bytes', 'max_messages', 'resume_threshold', 'max_requests',
-     'max_request_batch_size', 'max_request_batch_latency'],
+     'max_request_batch_size', 'max_request_batch_latency',
+     'max_lease_duration'],
 )
 FlowControl.__new__.__defaults__ = (
     psutil.virtual_memory().total * 0.2,  # max_bytes: 20% of total RAM
@@ -63,6 +64,7 @@ FlowControl.__new__.__defaults__ = (
     100,                                  # max_requests: 100
     100,                                  # max_request_batch_size: 100
     0.01,                                 # max_request_batch_latency: 0.01s
+    2 * 60 * 60,                          # max_lease_duration: 2 hours.
 )
 
 

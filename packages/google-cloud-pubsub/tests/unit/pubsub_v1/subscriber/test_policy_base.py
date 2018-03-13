@@ -67,15 +67,15 @@ def test_get_initial_request():
     assert initial_request.stream_ack_deadline_seconds == 10
 
 
-def test_managed_ack_ids():
+def test_leased_messagess():
     policy = create_policy()
 
     # Ensure we always get a set back, even if the property is not yet set.
-    managed_ack_ids = policy.managed_ack_ids
-    assert isinstance(managed_ack_ids, set)
+    leased_messages = policy.leased_messages
+    assert isinstance(leased_messages, dict)
 
     # Ensure that multiple calls give the same actual object back.
-    assert managed_ack_ids is policy.managed_ack_ids
+    assert leased_messages is policy.leased_messages
 
 
 def test_subscription():
@@ -130,25 +130,25 @@ def test_call_rpc():
 
 def test_drop():
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     policy._bytes = 20
     policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
-    assert len(policy.managed_ack_ids) == 0
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
 
     # Do this again to establish idempotency.
     policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
-    assert len(policy.managed_ack_ids) == 0
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
 
 
 @mock.patch.object(base, '_LOGGER', spec=logging.Logger)
 def test_drop_unexpected_negative(_LOGGER):
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     policy._bytes = 0
     policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
-    assert len(policy.managed_ack_ids) == 0
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
     _LOGGER.debug.assert_called_once_with(
         'Bytes was unexpectedly negative: %d', -20)
@@ -161,7 +161,7 @@ def test_drop_below_threshold():
     the flow control thresholds, it should resume.
     """
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     num_bytes = 20
     policy._bytes = num_bytes
     consumer = policy._consumer
@@ -290,15 +290,55 @@ def test_maintain_leases_no_ack_ids():
         sleep.assert_called()
 
 
+@mock.patch.object(time, 'time', autospec=True)
+@mock.patch.object(time, 'sleep', autospec=True)
+def test_maintain_leases_outdated_items(sleep, time):
+    policy = create_policy()
+    policy._consumer._stopped.clear()
+
+    # Add these items at the beginning of the timeline
+    time.return_value = 0
+    policy.lease([
+        base.LeaseRequest(ack_id='ack1', byte_size=50)])
+
+    # Add another item at towards end of the timeline
+    time.return_value = policy.flow_control.max_lease_duration - 1
+    policy.lease([
+        base.LeaseRequest(ack_id='ack2', byte_size=50)])
+
+    # Now make sure time reports that we are at the end of our timeline.
+    time.return_value = policy.flow_control.max_lease_duration + 1
+
+    # Mock the sleep object.
+    def trigger_inactive(seconds):
+        assert 0 < seconds < 10
+        policy._consumer._stopped.set()
+
+    sleep.side_effect = trigger_inactive
+
+    # Also mock the consumer, which sends the request.
+    with mock.patch.object(policy._consumer, 'send_request') as send:
+        policy.maintain_leases()
+
+    # Only ack2 should be renewed. ack1 should've been dropped
+    send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack2'],
+        modify_deadline_seconds=[10],
+    ))
+    assert len(policy.leased_messages) == 1
+
+    sleep.assert_called()
+
+
 def test_lease():
     policy = create_policy()
     policy.lease([base.LeaseRequest(ack_id='ack_id_string', byte_size=20)])
-    assert len(policy.managed_ack_ids) == 1
+    assert len(policy.leased_messages) == 1
     assert policy._bytes == 20
 
     # Do this again to prove idempotency.
     policy.lease([base.LeaseRequest(ack_id='ack_id_string', byte_size=20)])
-    assert len(policy.managed_ack_ids) == 1
+    assert len(policy.leased_messages) == 1
     assert policy._bytes == 20
 
 
