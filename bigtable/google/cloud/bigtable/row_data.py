@@ -252,6 +252,18 @@ class YieldRowsData(object):
     :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
+
+    :type request_pb: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param request_pb: (Optional) The ``ReadRowsRequest`` protobuf for
+                    the iterator. If present, used to enable retry by
+                    setting a new start_key for the request equal to the
+                    last_scanned_row_key. A new iterator is created, allowing
+                    the scan to continue from the point just beyond the last
+                    successfully read row, identified by last_scanned_row_key.
+
+    :type client: :class:`Client <google.cloud.bigtable.client.Client>`
+    :param client: (Optional) The client that owns the instance. Used for
+                    retry to create a new iterator.
     """
 
     START = 'Start'  # No responses yet processed.
