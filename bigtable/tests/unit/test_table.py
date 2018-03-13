@@ -1242,8 +1242,7 @@ class _MockReadRowsIterator(object):
     def next(self):
         return next(self.iter_values)
 
-    def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
+    __next__ = next
 
 
 class _MockFailureIterator(object):
@@ -1260,8 +1259,7 @@ class _MockFailureIterator(object):
 
         raise DeadlineExceeded()
 
-    def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
+    __next__ = next
 
 
 class _ReadRowsResponseV2(object):
