@@ -36,6 +36,7 @@ from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
@@ -182,17 +183,6 @@ class WriteDisposition(_EnumApiResourceProperty):
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
-
-
-class AutoDetectSchema(_TypedApiResourceProperty):
-    """Property for ``autodetect`` properties.
-
-    :raises ValueError: on ``set`` operation if ``instance.schema``
-                        is already defined.
-    """
-    def __set__(self, instance, value):
-        self._validate(value)
-        instance._properties[self.resource_name] = value
 
 
 class _AsyncJob(google.api_core.future.polling.PollingFuture):
@@ -386,7 +376,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._properties.clear()
         self._properties.update(cleaned)
         configuration = cleaned['configuration'][self._JOB_TYPE]
-        self._copy_configuration_properties(configuration)
+        # TODO: FIXME: remove hack for load jobs
+        if self._JOB_TYPE == 'load':
+            self._copy_configuration_properties(cleaned['configuration'])
+        else:
+            self._copy_configuration_properties(configuration)
 
         # For Future interface
         self._set_future_result()
@@ -413,6 +407,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 cls._JOB_TYPE not in resource['configuration']):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
+        # TODO: FIXME: remove temporary hack for load jobs
+        if cls._JOB_TYPE == 'load':
+            return job_id, resource['configuration']
         config = resource['configuration'][cls._JOB_TYPE]
         return job_id, config
 
@@ -589,7 +586,49 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 and self.error_result.get('reason') == _STOPPED_REASON)
 
 
-class LoadJobConfig(object):
+class _JobConfig(object):
+    """Abstract base class for job configuration objects.
+
+    Arguments:
+        job_type (str): The key to use for the job configuration.
+    """
+
+    def __init__(self, job_type):
+        self._job_type = job_type
+        self._properties = {job_type: {}}
+
+    def _get_sub_prop(self, key):
+        return _helpers.get_sub_prop(self._properties, [self._job_type, key])
+
+    def _set_sub_prop(self, key, value):
+        _helpers.set_sub_prop(self._properties, [self._job_type, key], value)
+
+    def to_api_repr(self):
+        """Build an API representation of the job config.
+
+        :rtype: dict
+        :returns: A dictionary in the format used by the BigQuery API.
+        """
+        return copy.deepcopy(self._properties)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct a job configuration given its API representation
+
+        :type resource: dict
+        :param resource:
+            An extract job configuration in the same representation as is
+            returned from the API.
+
+        :rtype: :class:`google.cloud.bigquery.job._JobConfig`
+        :returns: Configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+
+class LoadJobConfig(_JobConfig):
     """Configuration options for load jobs.
 
     All properties in this class are optional. Values which are ``None`` ->
@@ -597,96 +636,203 @@ class LoadJobConfig(object):
     """
 
     def __init__(self):
-        self._properties = {}
-        self._schema = ()
+        super(LoadJobConfig, self).__init__('load')
 
-    allow_jagged_rows = _TypedApiResourceProperty(
-        'allow_jagged_rows', 'allowJaggedRows', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
-    """
+    @property
+    def allow_jagged_rows(self):
+        """bool: Allow missing trailing optional columns (CSV only).
 
-    allow_quoted_newlines = _TypedApiResourceProperty(
-        'allow_quoted_newlines', 'allowQuotedNewlines', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
+        """
+        return self._get_sub_prop('allowJaggedRows')
 
-    autodetect = AutoDetectSchema('autodetect', 'autodetect', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
-    """
+    @allow_jagged_rows.setter
+    def allow_jagged_rows(self, value):
+        self._set_sub_prop('allowJaggedRows', value)
 
-    create_disposition = CreateDisposition('create_disposition',
-                                           'createDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
-    """
+    @property
+    def allow_quoted_newlines(self):
+        """bool: Allow quoted data containing newline characters (CSV only).
 
-    encoding = Encoding('encoding', 'encoding')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
+        """
+        return self._get_sub_prop('allowQuotedNewlines')
 
-    field_delimiter = _TypedApiResourceProperty(
-        'field_delimiter', 'fieldDelimiter', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
-    """
+    @allow_quoted_newlines.setter
+    def allow_quoted_newlines(self, value):
+        self._set_sub_prop('allowQuotedNewlines', value)
 
-    ignore_unknown_values = _TypedApiResourceProperty(
-        'ignore_unknown_values', 'ignoreUnknownValues', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
-    """
+    @property
+    def autodetect(self):
+        """bool: Automatically infer the schema from a sample of the data.
 
-    max_bad_records = _TypedApiResourceProperty(
-        'max_bad_records', 'maxBadRecords', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
+        """
+        return self._get_sub_prop('autodetect')
 
-    null_marker = _TypedApiResourceProperty(
-        'null_marker', 'nullMarker', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
-    """
+    @autodetect.setter
+    def autodetect(self, value):
+        self._set_sub_prop('autodetect', value)
 
-    quote_character = _TypedApiResourceProperty(
-        'quote_character', 'quote', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
-    """
+    @property
+    def create_disposition(self):
+        """google.cloud.bigquery.job.CreateDisposition: Specifies behavior
+        for creating tables.
 
-    skip_leading_rows = _TypedApiResourceProperty(
-        'skip_leading_rows', 'skipLeadingRows', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
+        """
+        return self._get_sub_prop('createDisposition')
 
-    source_format = SourceFormat('source_format', 'sourceFormat')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
-    """
+    @create_disposition.setter
+    def create_disposition(self, value):
+        self._set_sub_prop('createDisposition', value)
 
-    write_disposition = WriteDisposition('write_disposition',
-                                         'writeDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
-    """
+    @property
+    def encoding(self):
+        """google.cloud.bigquery.job.Encoding: The character encoding of the
+        data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
+        """
+        return self._get_sub_prop('encoding')
+
+    @encoding.setter
+    def encoding(self, value):
+        self._set_sub_prop('encoding', value)
+
+    @property
+    def field_delimiter(self):
+        """str: The separator for fields in a CSV file.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
+        """
+        return self._get_sub_prop('fieldDelimiter')
+
+    @field_delimiter.setter
+    def field_delimiter(self, value):
+        self._set_sub_prop('fieldDelimiter', value)
+
+    @property
+    def ignore_unknown_values(self):
+        """bool: Ignore extra values not represented in the table schema.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
+        """
+        return self._get_sub_prop('ignoreUnknownValues')
+
+    @ignore_unknown_values.setter
+    def ignore_unknown_values(self, value):
+        self._set_sub_prop('ignoreUnknownValues', value)
+
+    @property
+    def max_bad_records(self):
+        """int: Number of invalid rows to ignore.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
+        """
+        return self._get_sub_prop('maxBadRecords')
+
+    @max_bad_records.setter
+    def max_bad_records(self, value):
+        self._set_sub_prop('maxBadRecords', value)
+
+    @property
+    def null_marker(self):
+        """str: Represents a null value (CSV only).
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
+        """
+        return self._get_sub_prop('nullMarker')
+
+    @null_marker.setter
+    def null_marker(self, value):
+        self._set_sub_prop('nullMarker', value)
+
+    @property
+    def quote_character(self):
+        """str: Character used to quote data sections (CSV only).
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
+        """
+        return self._get_sub_prop('quote')
+
+    @quote_character.setter
+    def quote_character(self, value):
+        self._set_sub_prop('quote', value)
+
+    @property
+    def skip_leading_rows(self):
+        """int: Number of rows to skip when reading data (CSV only).
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
+        """
+        value = self._get_sub_prop('skipLeadingRows')
+        if value is None:
+            return
+        return int(value)
+
+    @skip_leading_rows.setter
+    def skip_leading_rows(self, value):
+        self._set_sub_prop('skipLeadingRows', str(value))
+
+    @property
+    def source_format(self):
+        """google.cloud.bigquery.job.SourceFormat: File format of the data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
+        """
+        return self._get_sub_prop('sourceFormat')
+
+    @source_format.setter
+    def source_format(self, value):
+        self._set_sub_prop('sourceFormat', value)
+
+    @property
+    def write_disposition(self):
+        """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
+        the destination table already exists.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
+        """
+        return self._get_sub_prop('writeDisposition')
+
+    @write_disposition.setter
+    def write_disposition(self, value):
+        self._set_sub_prop('writeDisposition', value)
 
     @property
     def schema(self):
-        """See
+        """List[google.cloud.bigquery.schema.SchemaField]: Schema of the
+        destination table.
+
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
         """
-        return list(self._schema)
+        schema = _helpers.get_sub_prop(
+            self._properties, ['load', 'schema', 'fields'])
+        if schema is None:
+            return
+        return [SchemaField.from_api_repr(field) for field in schema]
 
     @schema.setter
     def schema(self, value):
-        if not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError('Schema items must be fields')
-        self._schema = tuple(value)
+        _helpers.set_sub_prop(
+            self._properties,
+            ['load', 'schema', 'fields'],
+            [field.to_api_repr() for field in value])
 
     @property
     def destination_encryption_configuration(self):
@@ -699,7 +845,7 @@ class LoadJobConfig(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
         """
-        prop = self._properties.get('destinationEncryptionConfiguration')
+        prop = self._get_sub_prop('destinationEncryptionConfiguration')
         if prop is not None:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
@@ -709,45 +855,7 @@ class LoadJobConfig(object):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties['destinationEncryptionConfiguration'] = api_repr
-
-    def to_api_repr(self):
-        """Build an API representation of the load job config.
-
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
-        """
-        config = copy.deepcopy(self._properties)
-        if len(self.schema) > 0:
-            config['schema'] = {'fields': _build_schema_resource(self.schema)}
-        # skipLeadingRows is a string because it's defined as an int64, which
-        # can't be represented as a JSON number.
-        slr = config.get('skipLeadingRows')
-        if slr is not None:
-            config['skipLeadingRows'] = str(slr)
-        return config
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct a job configuration given its API representation
-
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
-
-        :rtype: :class:`google.cloud.bigquery.job.LoadJobConfig`
-        :returns: Configuration parsed from ``resource``.
-        """
-        schema = resource.pop('schema', {'fields': ()})
-        slr = resource.pop('skipLeadingRows', None)
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        config.schema = _parse_schema_resource(schema)
-        config.skip_leading_rows = _int_or_none(slr)
-        if config.skip_leading_rows is None:
-            del config.skip_leading_rows
-        return config
+        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
 
 
 class LoadJob(_AsyncJob):
@@ -945,17 +1053,19 @@ class LoadJob(_AsyncJob):
         """Generate a resource for :meth:`begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
-            configuration['sourceUris'] = self.source_uris
-        configuration['destinationTable'] = self.destination.to_api_repr()
+            _helpers.set_sub_prop(
+                configuration, ['load', 'sourceUris'], self.source_uris)
+        _helpers.set_sub_prop(
+            configuration,
+            ['load', 'destinationTable'],
+            self.destination.to_api_repr())
 
         return {
             'jobReference': {
                 'projectId': self.project,
                 'jobId': self.job_id,
             },
-            'configuration': {
-                self._JOB_TYPE: configuration,
-            },
+            'configuration': configuration,
         }
 
     def _copy_configuration_properties(self, configuration):
@@ -983,12 +1093,14 @@ class LoadJob(_AsyncJob):
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = LoadJobConfig.from_api_repr(config_resource)
-        dest_config = config_resource['destinationTable']
+        dest_config = _helpers.get_sub_prop(
+            config_resource, ['load', 'destinationTable'])
         ds_ref = DatasetReference(dest_config['projectId'],
                                   dest_config['datasetId'],)
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
-        source_uris = config_resource.get('sourceUris')
+        source_uris = _helpers.get_sub_prop(
+            config_resource, ['load', 'sourceUris'])
         job = cls(job_id, source_uris, destination, client, config)
         job._set_properties(resource)
         return job

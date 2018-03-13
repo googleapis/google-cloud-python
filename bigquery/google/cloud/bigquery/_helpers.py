@@ -486,6 +486,24 @@ def _should_retry(exc):
     return reason == 'backendError' or reason == 'rateLimitExceeded'
 
 
+def get_sub_prop(container, keys):
+    sub_val = container
+    for key in keys:
+        if key not in sub_val:
+            return
+        sub_val = sub_val[key]
+    return sub_val
+
+
+def set_sub_prop(container, keys, value):
+    sub_val = container
+    for key in keys[:-1]:
+        if key not in sub_val:
+            sub_val[key] = {}
+        sub_val = sub_val[key]
+    sub_val[keys[-1]] = value
+
+
 DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
 """The default retry object.
 
