@@ -247,11 +247,10 @@ class BasePolicy(object):
         # Remove the ack ID from lease management, and decrement the
         # byte counter.
         for item in items:
-            try:
-                del self.leased_messages[item.ack_id]
+            if self.leased_messages.pop(item.ack_id, None) is not None:
                 self._bytes -= item.byte_size
-            except KeyError:
-                _LOGGER.debug('Item %s wasn\'t managed', item.ack_id)
+            else:
+                _LOGGER.debug('Item %s was not managed.', item.ack_id)
 
         if self._bytes < 0:
             _LOGGER.debug(
