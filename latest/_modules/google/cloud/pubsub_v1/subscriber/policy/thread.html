@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 813b154 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 1ffec8e documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../../../_static/documentation_options.js"></script>
@@ -49,6 +49,7 @@
 
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="k">import</span> <span class="n">futures</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">threading</span>
@@ -64,29 +65,25 @@
 
 <span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_CALLBACK_WORKER_NAME</span> <span class="o">=</span> <span class="s1">&#39;Thread-Consumer-CallbackRequestsWorker&#39;</span>
-<span class="n">_VALID_ACTIONS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
-    <span class="s1">&#39;ack&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;drop&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lease&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;modify_ack_deadline&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;nack&#39;</span><span class="p">,</span>
-<span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">_do_nothing_callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Default callback for messages received by subscriber.</span>
-
-<span class="sd">    Does nothing with the message and returns :data:`None`.</span>
+<span class="k">def</span> <span class="nf">_wrap_callback_errors</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wraps a user callback so that if an exception occurs the message is</span>
+<span class="sd">    nacked.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        message (~google.cloud.pubsub_v1.subscriber.message.Message): A</span>
-<span class="sd">            protobuf message returned by the backend and parsed into</span>
-<span class="sd">            our high level message type.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        NoneType: Always.</span>
+<span class="sd">        callback (Callable[None, Message]): The user callback.</span>
+<span class="sd">        message (~Message): The Pub/Sub message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># Note: the likelihood of this failing is extremely low. This just adds</span>
+        <span class="c1"># a message to a queue, so if this doesn&#39;t work the world is in an</span>
+        <span class="c1"># unrecoverable state and this thread should just bail.</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">nack</span><span class="p">()</span>
+        <span class="c1"># Re-raise the exception so that the executor can deal with it.</span>
+        <span class="k">raise</span>
 
 
 <div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">BasePolicy</span><span class="p">):</span>
@@ -118,9 +115,8 @@
             <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span>
             <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># Default the callback to a no-op; the **actual** callback is</span>
-        <span class="c1"># provided by ``.open()``.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">_do_nothing_callback</span>
+        <span class="c1"># The **actual** callback is provided by ``.open()``.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Create a queue for keeping track of shared state.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_queue</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
         <span class="c1"># Also maintain an executor.</span>
@@ -295,7 +291,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="n">Future</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">completed</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">())</span>
 
         <span class="c1"># Start the thread to pass the requests.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_wrap_callback_errors</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_dispatch</span><span class="p">()</span>
         <span class="c1"># Actually start consuming messages.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">start_consuming</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
