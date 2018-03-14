@@ -81,6 +81,16 @@ config = {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
+                },
+                "PartitionQuery": {
+                    "timeout_millis": 3600000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "PartitionRead": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
                 }
             }
         }
