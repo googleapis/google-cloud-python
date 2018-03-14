@@ -951,9 +951,11 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
-                }
+                'copy': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
+                },
             })
 
     def test_to_api_repr_with_encryption_none(self):
@@ -963,7 +965,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'copy': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 

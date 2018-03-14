@@ -34,8 +34,6 @@ from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import _build_schema_resource
-from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
@@ -377,7 +375,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._properties.update(cleaned)
         configuration = cleaned['configuration'][self._JOB_TYPE]
         # TODO: FIXME: remove hack for load jobs
-        if self._JOB_TYPE == 'load':
+        if self._JOB_TYPE in ('load', 'copy'):
             self._copy_configuration_properties(cleaned['configuration'])
         else:
             self._copy_configuration_properties(configuration)
@@ -408,7 +406,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         # TODO: FIXME: remove temporary hack for load jobs
-        if cls._JOB_TYPE == 'load':
+        if cls._JOB_TYPE in ('load', 'copy'):
             return job_id, resource['configuration']
         config = resource['configuration'][cls._JOB_TYPE]
         return job_id, config
@@ -777,10 +775,7 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
         """
-        value = self._get_sub_prop('skipLeadingRows')
-        if value is None:
-            return
-        return int(value)
+        return _int_or_none(self._get_sub_prop('skipLeadingRows'))
 
     @skip_leading_rows.setter
     def skip_leading_rows(self, value):
@@ -1108,7 +1103,7 @@ class LoadJob(_AsyncJob):
         return job
 
 
-class CopyJobConfig(object):
+class CopyJobConfig(_JobConfig):
     """Configuration options for copy jobs.
 
     All properties in this class are optional. Values which are ``None`` ->
@@ -1116,19 +1111,35 @@ class CopyJobConfig(object):
     """
 
     def __init__(self):
-        self._properties = {}
+        super(CopyJobConfig, self).__init__('copy')
 
-    create_disposition = CreateDisposition('create_disposition',
-                                           'createDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition
-    """
+    @property
+    def create_disposition(self):
+        """google.cloud.bigquery.job.CreateDisposition: Specifies behavior
+        for creating tables.
 
-    write_disposition = WriteDisposition('write_disposition',
-                                         'writeDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition
+        """
+        return self._get_sub_prop('createDisposition')
+
+    @create_disposition.setter
+    def create_disposition(self, value):
+        self._set_sub_prop('createDisposition', value)
+
+    @property
+    def write_disposition(self):
+        """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
+        the destination table already exists.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
+        """
+        return self._get_sub_prop('writeDisposition')
+
+    @write_disposition.setter
+    def write_disposition(self, value):
+        self._set_sub_prop('writeDisposition', value)
 
     @property
     def destination_encryption_configuration(self):
@@ -1141,7 +1152,7 @@ class CopyJobConfig(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration
         """
-        prop = self._properties.get('destinationEncryptionConfiguration')
+        prop = self._get_sub_prop('destinationEncryptionConfiguration')
         if prop is not None:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
@@ -1151,31 +1162,7 @@ class CopyJobConfig(object):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties['destinationEncryptionConfiguration'] = api_repr
-
-    def to_api_repr(self):
-        """Build an API representation of the copy job config.
-
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
-        """
-        return copy.deepcopy(self._properties)
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct a job configuration given its API representation
-
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
-
-        :rtype: :class:`google.cloud.bigquery.job.CopyJobConfig`
-        :returns: Configuration parsed from ``resource``.
-        """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
+        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
 
 
 class CopyJob(_AsyncJob):
@@ -1247,21 +1234,23 @@ class CopyJob(_AsyncJob):
         } for table in self.sources]
 
         configuration = self._configuration.to_api_repr()
-        configuration['sourceTables'] = source_refs
-        configuration['destinationTable'] = {
-            'projectId': self.destination.project,
-            'datasetId': self.destination.dataset_id,
-            'tableId': self.destination.table_id,
-        }
+        _helpers.set_sub_prop(
+            configuration, ['copy', 'sourceTables'], source_refs)
+        _helpers.set_sub_prop(
+            configuration,
+            ['copy', 'destinationTable'],
+            {
+                'projectId': self.destination.project,
+                'datasetId': self.destination.dataset_id,
+                'tableId': self.destination.table_id,
+            })
 
         return {
             'jobReference': {
                 'projectId': self.project,
                 'jobId': self.job_id,
             },
-            'configuration': {
-                self._JOB_TYPE: configuration,
-            },
+            'configuration': configuration,
         }
 
     def _copy_configuration_properties(self, configuration):
@@ -1289,12 +1278,14 @@ class CopyJob(_AsyncJob):
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = CopyJobConfig.from_api_repr(config_resource)
+        # Copy required fields to the job.
+        copy_resource = config_resource['copy']
         destination = TableReference.from_api_repr(
-            config_resource['destinationTable'])
+            copy_resource['destinationTable'])
         sources = []
-        source_configs = config_resource.get('sourceTables')
+        source_configs = copy_resource.get('sourceTables')
         if source_configs is None:
-            single = config_resource.get('sourceTable')
+            single = copy_resource.get('sourceTable')
             if single is None:
                 raise KeyError(
                     "Resource missing 'sourceTables' / 'sourceTable'")
