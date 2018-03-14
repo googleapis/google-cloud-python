@@ -202,9 +202,8 @@ class PartialRowsData(object):
     ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
 
-    def __init__(self, response_iterator):
-        self._response_iterator = response_iterator
-        self._generator = YieldRowsData(response_iterator)
+    def __init__(self, read_method, request):
+        self._generator = YieldRowsData(read_method, request)
 
         # Fully-processed rows, keyed by `row_key`
         self.rows = {}
@@ -271,8 +270,7 @@ class YieldRowsData(object):
     ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
 
-    def __init__(self, response_iterator, request_pb=None, client=None):
-        self._response_iterator = response_iterator
+    def __init__(self, read_method, request):
         # Counter for responses pulled from iterator
         self._counter = 0
         # In-progress row, unset until first response, after commit/reset
@@ -283,10 +281,13 @@ class YieldRowsData(object):
         self._cell = None
         # Last complete cell, unset until first completion, after new row
         self._previous_cell = None
+
         # May be cached from previous response
         self.last_scanned_row_key = None
-        self.request_pb = request_pb
-        self.client = client
+        self.read_method = read_method
+        self.request = request
+        self.response_iterator = read_method(request)
+
 
     @property
     def state(self):
@@ -310,28 +311,26 @@ class YieldRowsData(object):
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
-        self._response_iterator.cancel()
+        self.response_iterator.cancel()
 
     def _create_retry_request(self):
         """Helper for :meth:`_retry_read_rows`."""
-        row_range = self.request_pb.rows.row_ranges.pop()
+        row_range = self.request.rows.row_ranges.pop()
         range_kwargs = {}
         # start AFTER the row_key of the last successfully read row
         range_kwargs['start_key_open'] = self.last_scanned_row_key
         range_kwargs['end_key_open'] = row_range.end_key_open
-        self.request_pb.rows.row_ranges.add(**range_kwargs)
+        self.request.rows.row_ranges.add(**range_kwargs)
 
     def _retry_read_rows(self):
         """Helper for :meth:`read_rows`."""
         # restart the read scan from AFTER the last successfully read row
-        # the original request_pb must have been provided
-        if (self.last_scanned_row_key and self.request_pb is not None):
+        if (self.last_scanned_row_key):
             self._create_retry_request()
 
-            self._response_iterator = self.client._data_stub.ReadRows(
-                self.request_pb)
+            self.response_iterator = self.read_method(self.request)
 
-        return six.next(self._response_iterator)
+        return six.next(self.response_iterator)
 
     def _read_next_response(self):
         """Helper for :meth:`read_rows`."""

@@ -495,10 +495,13 @@ class TestTable(unittest.TestCase):
         response_iterator = object()
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub(response_iterator)
+        # client._data_stub = stub = _FakeStub(response_iterator)
+        client._data_stub = stub = mock.MagicMock()
+        # client._data_stub.ReadRows.return_value = response_iterator
 
         # Create expected_result.
-        expected_result = PartialRowsData(response_iterator)
+        expected_result = PartialRowsData(client._data_stub.ReadRows,
+                                          request_pb)
 
         # Perform the method and check the result.
         start_key = b'start-key'
@@ -510,7 +513,7 @@ class TestTable(unittest.TestCase):
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)
 
-        self.assertEqual(result, expected_result)
+        self.assertEqual(result.rows, expected_result.rows)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
             (request_pb,),

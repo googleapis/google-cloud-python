@@ -309,13 +309,12 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
-        request_pb = _create_row_request(
+        request = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
-        return PartialRowsData(response_iterator)
+
+        return PartialRowsData(client._data_stub.ReadRows, request)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -345,12 +344,12 @@ class Table(object):
         :returns: A :class:`.PartialRowData` for each row returned
         """
 
-        request_pb = _create_row_request(
+        request = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        generator = YieldRowsData(response_iterator, request_pb, client)
+
+        generator = YieldRowsData(client._data_stub.ReadRows, request)
         for row in generator.read_rows():
             yield row
 
