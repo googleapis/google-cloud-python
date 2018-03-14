@@ -568,7 +568,7 @@ def test_update_table_expiration(client, to_delete):
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START bigquery_update_table_description]
+    # [START bigquery_update_table_expiration]
     import datetime
     import pytz
 
@@ -586,7 +586,7 @@ def test_update_table_expiration(client, to_delete):
     # expiration is stored in milliseconds
     margin = datetime.timedelta(microseconds=1000)
     assert expiration - margin <= table.expires <= expiration + margin
-    # [END bigquery_update_table_description]
+    # [END bigquery_update_table_expiration]
 
 
 def test_add_empty_column(client, to_delete):
