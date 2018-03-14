@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.2.0
+
+### New features
+
+- Added batch query support (#4938)
+
+### Implementation changes
+
+- Removed custom timestamp class in favor of the one in google-api-core. (#4980)
+
+### Dependencies
+
+- Update minimum version for google-api-core to 1.1.0 (#5030)
+
+### Documentation
+
+- Update package metadata release status to 'Stable' (#5031)
+
 ## 1.1.0
 
 ### Dependencies
