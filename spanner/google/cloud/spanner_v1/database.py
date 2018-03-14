@@ -372,7 +372,7 @@ class BatchCheckout(object):
     Caller must *not* use the batch to perform API requests outside the scope
     of the context manager.
 
-    :type database: :class:`~google.cloud.spannder.database.Database`
+    :type database: :class:`~google.cloud.spanner.database.Database`
     :param database: database to use
     """
     def __init__(self, database):
@@ -403,7 +403,7 @@ class SnapshotCheckout(object):
     Caller must *not* use the snapshot to perform API requests outside the
     scope of the context manager.
 
-    :type database: :class:`~google.cloud.spannder.database.Database`
+    :type database: :class:`~google.cloud.spanner.database.Database`
     :param database: database to use
 
     :type kw: dict
@@ -429,7 +429,7 @@ class SnapshotCheckout(object):
 class BatchSnapshot(object):
     """Wrapper for generating and processing read / query batches.
 
-    :type database: :class:`~google.cloud.spannder.database.Database`
+    :type database: :class:`~google.cloud.spanner.database.Database`
     :param database: database to use
 
     :type read_timestamp: :class:`datetime.datetime`
@@ -450,7 +450,7 @@ class BatchSnapshot(object):
     def from_dict(cls, database, mapping):
         """Reconstruct an instance from a mapping.
 
-        :type database: :class:`~google.cloud.spannder.database.Database`
+        :type database: :class:`~google.cloud.spanner.database.Database`
         :param database: database to use
 
         :type mapping: mapping
