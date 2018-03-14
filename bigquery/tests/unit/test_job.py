@@ -1754,7 +1754,7 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_ctor(self):
         config = self._make_one()
-        self.assertEqual(config._properties, {})
+        self.assertEqual(config._properties, {'query': {}})
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -1767,13 +1767,16 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_from_api_repr_normal(self):
         resource = {
-            'useLegacySql': True,
-            'query': 'no property for me',
-            'defaultDataset': {
-                'projectId': 'someproject',
-                'datasetId': 'somedataset',
+            'query': {
+                'useLegacySql': True,
+                'query': 'no property for me',
+                'defaultDataset': {
+                    'projectId': 'someproject',
+                    'datasetId': 'somedataset',
+                },
+                'someNewProperty': 'I should be saved, too.',
             },
-            'someNewProperty': 'I should be saved, too.',
+            'dryRun': True,
         }
         klass = self._get_target_class()
 
@@ -1783,28 +1786,33 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config.default_dataset,
             DatasetReference('someproject', 'somedataset'))
+        self.assertTrue(config.dry_run)
         # Make sure unknown properties propagate.
-        self.assertEqual(config._properties['query'], 'no property for me')
         self.assertEqual(
-            config._properties['someNewProperty'], 'I should be saved, too.')
+            config._properties['query']['query'], 'no property for me')
+        self.assertEqual(
+            config._properties['query']['someNewProperty'],
+            'I should be saved, too.')
 
     def test_to_api_repr_normal(self):
         config = self._make_one()
         config.use_legacy_sql = True
         config.default_dataset = DatasetReference(
             'someproject', 'somedataset')
+        config.dry_run = False
         config._properties['someNewProperty'] = 'Woohoo, alpha stuff.'
 
         resource = config.to_api_repr()
 
-        self.assertTrue(resource['useLegacySql'])
+        self.assertFalse(resource['dryRun'])
+        self.assertTrue(resource['query']['useLegacySql'])
         self.assertEqual(
-            resource['defaultDataset']['projectId'], 'someproject')
+            resource['query']['defaultDataset']['projectId'], 'someproject')
         self.assertEqual(
-            resource['defaultDataset']['datasetId'], 'somedataset')
+            resource['query']['defaultDataset']['datasetId'], 'somedataset')
         # Make sure unknown properties propagate.
         self.assertEqual(
-            config._properties['someNewProperty'], 'Woohoo, alpha stuff.')
+            resource['someNewProperty'], 'Woohoo, alpha stuff.')
 
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
@@ -1813,8 +1821,10 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         resource = config.to_api_repr()
         self.assertEqual(
             resource, {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'query': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -1825,14 +1835,18 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'query': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
     def test_from_api_repr_with_encryption(self):
         resource = {
-            'destinationEncryptionConfiguration': {
-                'kmsKeyName': self.KMS_KEY_NAME
-            }
+            'query': {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            },
         }
         klass = self._get_target_class()
         config = klass.from_api_repr(resource)

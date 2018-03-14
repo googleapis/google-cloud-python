@@ -486,11 +486,11 @@ def _should_retry(exc):
     return reason == 'backendError' or reason == 'rateLimitExceeded'
 
 
-def get_sub_prop(container, keys):
+def get_sub_prop(container, keys, default=None):
     sub_val = container
     for key in keys:
         if key not in sub_val:
-            return
+            return default
         sub_val = sub_val[key]
     return sub_val
 

@@ -35,7 +35,6 @@ from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
-from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
 
@@ -376,12 +375,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         self._properties.clear()
         self._properties.update(cleaned)
-        configuration = cleaned['configuration'][self._JOB_TYPE]
-        # TODO: FIXME: remove hack for load jobs
-        if self._JOB_TYPE in ('load', 'copy', 'extract'):
-            self._copy_configuration_properties(cleaned['configuration'])
-        else:
-            self._copy_configuration_properties(configuration)
+        self._copy_configuration_properties(cleaned['configuration'])
 
         # For Future interface
         self._set_future_result()
@@ -408,11 +402,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 cls._JOB_TYPE not in resource['configuration']):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
-        # TODO: FIXME: remove temporary hack for load jobs
-        if cls._JOB_TYPE in ('load', 'copy', 'extract'):
-            return job_id, resource['configuration']
-        config = resource['configuration'][cls._JOB_TYPE]
-        return job_id, config
+        return job_id, resource['configuration']
 
     def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
@@ -598,8 +588,9 @@ class _JobConfig(object):
         self._job_type = job_type
         self._properties = {job_type: {}}
 
-    def _get_sub_prop(self, key):
-        return _helpers.get_sub_prop(self._properties, [self._job_type, key])
+    def _get_sub_prop(self, key, default=None):
+        return _helpers.get_sub_prop(
+            self._properties, [self._job_type, key], default=default)
 
     def _set_sub_prop(self, key, value):
         _helpers.set_sub_prop(self._properties, [self._job_type, key], value)
@@ -1548,7 +1539,7 @@ def _to_api_repr_table_defs(value):
     return {k: ExternalConfig.to_api_repr(v) for k, v in value.items()}
 
 
-class QueryJobConfig(object):
+class QueryJobConfig(_JobConfig):
     """Configuration options for query jobs.
 
     All properties in this class are optional. Values which are ``None`` ->
@@ -1556,7 +1547,7 @@ class QueryJobConfig(object):
     """
 
     def __init__(self):
-        self._properties = {}
+        super(QueryJobConfig, self).__init__('query')
 
     @property
     def destination_encryption_configuration(self):
@@ -1569,7 +1560,7 @@ class QueryJobConfig(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration
         """
-        prop = self._properties.get('destinationEncryptionConfiguration')
+        prop = self._get_sub_prop('destinationEncryptionConfiguration')
         if prop is not None:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
@@ -1579,58 +1570,34 @@ class QueryJobConfig(object):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties['destinationEncryptionConfiguration'] = api_repr
+        self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
 
-    def to_api_repr(self):
-        """Build an API representation of the query job config.
+    @property
+    def allow_large_results(self):
+        """bool: Allow large query results tables (legacy SQL, only)
 
-        Returns:
-            dict: A dictionary in the format used by the BigQuery API.
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
         """
-        resource = copy.deepcopy(self._properties)
+        return self._get_sub_prop('allowLargeResults')
 
-        # Query parameters have an addition property associated with them
-        # to indicate if the query is using named or positional parameters.
-        query_parameters = resource.get('queryParameters')
-        if query_parameters:
-            if query_parameters[0].get('name') is None:
-                resource['parameterMode'] = 'POSITIONAL'
-            else:
-                resource['parameterMode'] = 'NAMED'
+    @allow_large_results.setter
+    def allow_large_results(self, value):
+        self._set_sub_prop('allowLargeResults', value)
 
-        return resource
+    @property
+    def create_disposition(self):
+        """google.cloud.bigquery.job.CreateDisposition: Specifies behavior
+        for creating tables.
 
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct a job configuration given its API representation
-
-        Args:
-            resource (dict):
-                A query job configuration in the same representation as is
-                returned from the API.
-
-        Returns:
-            ~google.cloud.bigquery.job.QueryJobConfig:
-                Configuration parsed from ``resource``.
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
         """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
+        return self._get_sub_prop('createDisposition')
 
-        return config
-
-    allow_large_results = _TypedApiResourceProperty(
-        'allow_large_results', 'allowLargeResults', bool)
-    """bool: Allow large query results tables (legacy SQL, only)
-
-    See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
-    """
-
-    create_disposition = CreateDisposition(
-        'create_disposition', 'createDisposition')
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
-    """
+    @create_disposition.setter
+    def create_disposition(self, value):
+        self._set_sub_prop('createDisposition', value)
 
     @property
     def default_dataset(self):
@@ -1640,14 +1607,17 @@ class QueryJobConfig(object):
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
         """
-        prop = self._properties.get('defaultDataset')
+        prop = self._get_sub_prop('defaultDataset')
         if prop is not None:
             prop = DatasetReference.from_api_repr(prop)
         return prop
 
     @default_dataset.setter
     def default_dataset(self, value):
-        self._properties['defaultDataset'] = value.to_api_repr()
+        resource = None
+        if value is not None:
+            resource = value.to_api_repr()
+        self._set_sub_prop('defaultDataset', resource)
 
     @property
     def destination(self):
@@ -1657,34 +1627,58 @@ class QueryJobConfig(object):
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
         """
-        prop = self._properties.get('destinationTable')
+        prop = self._get_sub_prop('destinationTable')
         if prop is not None:
             prop = TableReference.from_api_repr(prop)
         return prop
 
     @destination.setter
     def destination(self, value):
-        self._properties['destinationTable'] = value.to_api_repr()
+        resource = None
+        if value is not None:
+            resource = value.to_api_repr()
+        self._set_sub_prop('destinationTable', resource)
 
-    dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
-    """
-    bool: ``True`` if this query should be a dry run to estimate costs.
+    @property
+    def dry_run(self):
+        """
+        bool: ``True`` if this query should be a dry run to estimate costs.
 
-    See
-    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
-    """
+        See
+        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
+        """
+        return self._properties.get('dryRun')
 
-    flatten_results = _TypedApiResourceProperty(
-        'flatten_results', 'flattenResults', bool)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
-    """
+    @dry_run.setter
+    def dry_run(self, value):
+        self._properties['dryRun'] = value
 
-    maximum_billing_tier = _TypedApiResourceProperty(
-        'maximum_billing_tier', 'maximumBillingTier', int)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
-    """
+    @property
+    def flatten_results(self):
+        """bool: Flatten nested/repeated fields in results. (Legacy SQL only)
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
+        """
+        return self._get_sub_prop('flattenResults')
+
+    @flatten_results.setter
+    def flatten_results(self, value):
+        self._set_sub_prop('flattenResults', value)
+
+    @property
+    def maximum_billing_tier(self):
+        """int: Deprecated: Changes the billing tier to allow high-compute
+        queries.
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
+        """
+        return self._get_sub_prop('maximumBillingTier')
+
+    @maximum_billing_tier.setter
+    def maximum_billing_tier(self, value):
+        self._set_sub_prop('maximumBillingTier', value)
 
     @property
     def maximum_bytes_billed(self):
@@ -1693,19 +1687,24 @@ class QueryJobConfig(object):
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
         """
-        prop = self._properties.get('maximumBytesBilled')
-        if prop is not None:
-            prop = int(prop)
-        return prop
+        return _int_or_none(self._get_sub_prop('maximumBytesBilled'))
 
     @maximum_bytes_billed.setter
     def maximum_bytes_billed(self, value):
-        self._properties['maximumBytesBilled'] = str(value)
+        self._set_sub_prop('maximumBytesBilled', str(value))
 
-    priority = QueryPriority('priority', 'priority')
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
-    """
+    @property
+    def priority(self):
+        """google.cloud.bigquery.job.QueryPriority: Priority of the query.
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
+        """
+        return self._get_sub_prop('priority')
+
+    @priority.setter
+    def priority(self, value):
+        self._set_sub_prop('priority', value)
 
     @property
     def query_parameters(self):
@@ -1717,13 +1716,13 @@ class QueryJobConfig(object):
         See:
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
         """
-        prop = self._properties.get('queryParameters', [])
+        prop = self._get_sub_prop('queryParameters', default=[])
         return _from_api_repr_query_parameters(prop)
 
     @query_parameters.setter
     def query_parameters(self, values):
-        self._properties['queryParameters'] = _to_api_repr_query_parameters(
-            values)
+        self._set_sub_prop(
+            'queryParameters', _to_api_repr_query_parameters(values))
 
     @property
     def udf_resources(self):
@@ -1733,31 +1732,54 @@ class QueryJobConfig(object):
         See:
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
         """
-        prop = self._properties.get('userDefinedFunctionResources', [])
+        prop = self._get_sub_prop('userDefinedFunctionResources', default=[])
         return _from_api_repr_udf_resources(prop)
 
     @udf_resources.setter
     def udf_resources(self, values):
-        self._properties['userDefinedFunctionResources'] = (
+        self._set_sub_prop(
+            'userDefinedFunctionResources',
             _to_api_repr_udf_resources(values))
 
-    use_legacy_sql = _TypedApiResourceProperty(
-        'use_legacy_sql', 'useLegacySql', bool)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql
-    """
+    @property
+    def use_legacy_sql(self):
+        """bool: Use legacy SQL syntax.
 
-    use_query_cache = _TypedApiResourceProperty(
-        'use_query_cache', 'useQueryCache', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
-    """
+        See
+        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql
+        """
+        return self._get_sub_prop('useLegacySql')
 
-    write_disposition = WriteDisposition(
-        'write_disposition', 'writeDisposition')
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
-    """
+    @use_legacy_sql.setter
+    def use_legacy_sql(self, value):
+        self._set_sub_prop('useLegacySql', value)
+
+    @property
+    def use_query_cache(self):
+        """bool: Look for the query result in the cache.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
+        """
+        return self._get_sub_prop('useQueryCache')
+
+    @use_query_cache.setter
+    def use_query_cache(self, value):
+        self._set_sub_prop('useQueryCache', value)
+
+    @property
+    def write_disposition(self):
+        """google.cloud.bigquery.job.WriteDisposition: Action that occurs if
+        the destination table already exists.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
+        """
+        return self._get_sub_prop('writeDisposition')
+
+    @write_disposition.setter
+    def write_disposition(self, value):
+        self._set_sub_prop('writeDisposition', value)
 
     @property
     def table_definitions(self):
@@ -1767,17 +1789,34 @@ class QueryJobConfig(object):
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
         """
-        prop = self._properties.get('tableDefinitions')
+        prop = self._get_sub_prop('tableDefinitions')
         if prop is not None:
             prop = _from_api_repr_table_defs(prop)
         return prop
 
     @table_definitions.setter
     def table_definitions(self, values):
-        self._properties['tableDefinitions'] = _to_api_repr_table_defs(values)
+        self._set_sub_prop(
+            'tableDefinitions',  _to_api_repr_table_defs(values))
 
-    _maximum_billing_tier = None
-    _maximum_bytes_billed = None
+    def to_api_repr(self):
+        """Build an API representation of the query job config.
+
+        Returns:
+            dict: A dictionary in the format used by the BigQuery API.
+        """
+        resource = copy.deepcopy(self._properties)
+
+        # Query parameters have an addition property associated with them
+        # to indicate if the query is using named or positional parameters.
+        query_parameters = resource['query'].get('queryParameters')
+        if query_parameters:
+            if query_parameters[0].get('name') is None:
+                resource['query']['parameterMode'] = 'POSITIONAL'
+            else:
+                resource['query']['parameterMode'] = 'NAMED'
+
+        return resource
 
 
 class QueryJob(_AsyncJob):
@@ -1940,46 +1979,16 @@ class QueryJob(_AsyncJob):
                 'projectId': self.project,
                 'jobId': self.job_id,
             },
-            'configuration': {
-                self._JOB_TYPE: configuration,
-            },
+            'configuration': configuration,
         }
-
-        # The dryRun property only applies to query jobs, but it is defined at
-        # a level higher up. We need to remove it from the query config.
-        if 'dryRun' in configuration:
-            dry_run = configuration['dryRun']
-            del configuration['dryRun']
-            resource['configuration']['dryRun'] = dry_run
-
-        configuration['query'] = self.query
+        configuration['query']['query'] = self.query
 
         return resource
 
-    def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned.
-
-        .. note:
-
-           This method assumes that the project found in the resource matches
-           the client's project.
-        """
-        configuration = cleaned['configuration']['query']
-        self.query = configuration['query']
-
-        # The dryRun property only applies to query jobs, but it is defined at
-        # a level higher up. We need to copy it to the query config.
-        self._configuration.dry_run = cleaned['configuration'].get('dryRun')
-
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
-        # The dryRun property only applies to query jobs, but it is defined at
-        # a level higher up. We need to copy it to the query config.
-        # It should already be correctly set by the _scrub_local_properties()
-        # method.
-        dry_run = self.dry_run
-        self._configuration = QueryJobConfig.from_api_repr(configuration)
-        self._configuration.dry_run = dry_run
+        self._configuration._properties = copy.deepcopy(configuration)
+        self.query = _helpers.get_sub_prop(configuration, ['query', 'query'])
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -1996,7 +2005,7 @@ class QueryJob(_AsyncJob):
         :returns: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
-        query = config['query']
+        query = config['query']['query']
         job = cls(job_id, query, client=client)
         job._set_properties(resource)
         return job
