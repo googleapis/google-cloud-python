@@ -1412,6 +1412,23 @@ class TestToGBQIntegration(object):
         result = result_df['times'].sort_values()
         tm.assert_numpy_array_equal(expected.values, result.values)
 
+    def test_upload_data_with_different_df_and_user_schema(self):
+        df = tm.makeMixedDataFrame()
+        df['A'] = df['A'].astype(str)
+        df['B'] = df['B'].astype(str)
+        test_id = "22"
+        test_schema = [{'name': 'A', 'type': 'FLOAT'},
+                       {'name': 'B', 'type': 'FLOAT'},
+                       {'name': 'C', 'type': 'STRING'},
+                       {'name': 'D', 'type': 'TIMESTAMP'}]
+        destination_table = self.destination_table + test_id
+        gbq.to_gbq(df, destination_table, _get_project_id(),
+                   private_key=self.credentials,
+                   table_schema=test_schema)
+        dataset, table = destination_table.split('.')
+        assert self.table.verify_schema(dataset, table,
+                                        dict(fields=test_schema))
+
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"
         assert dataset_id in self.dataset.datasets()
