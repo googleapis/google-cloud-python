@@ -75,6 +75,16 @@ class SpannerStub(object):
         request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.RollbackRequest.SerializeToString,
         response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+    self.PartitionQuery = channel.unary_unary(
+        '/google.spanner.v1.Spanner/PartitionQuery',
+        request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionQueryRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionResponse.FromString,
+        )
+    self.PartitionRead = channel.unary_unary(
+        '/google.spanner.v1.Spanner/PartitionRead',
+        request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionReadRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionResponse.FromString,
+        )
 
 
 class SpannerServicer(object):
@@ -228,6 +238,34 @@ class SpannerServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def PartitionQuery(self, request, context):
+    """Creates a set of partition tokens that can be used to execute a query
+    operation in parallel.  Each of the returned partition tokens can be used
+    by [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] to specify a subset
+    of the query result to read.  The same session and read-only transaction
+    must be used by the PartitionQueryRequest used to create the
+    partition tokens and the ExecuteSqlRequests that use the partition tokens.
+    Partition tokens become invalid when the session used to create them
+    is deleted or begins a new transaction.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def PartitionRead(self, request, context):
+    """Creates a set of partition tokens that can be used to execute a read
+    operation in parallel.  Each of the returned partition tokens can be used
+    by [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to specify a subset of the read
+    result to read.  The same session and read-only transaction must be used by
+    the PartitionReadRequest used to create the partition tokens and the
+    ReadRequests that use the partition tokens.
+    Partition tokens become invalid when the session used to create them
+    is deleted or begins a new transaction.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_SpannerServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -285,6 +323,16 @@ def add_SpannerServicer_to_server(servicer, server):
           servicer.Rollback,
           request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.RollbackRequest.FromString,
           response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ),
+      'PartitionQuery': grpc.unary_unary_rpc_method_handler(
+          servicer.PartitionQuery,
+          request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionQueryRequest.FromString,
+          response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionResponse.SerializeToString,
+      ),
+      'PartitionRead': grpc.unary_unary_rpc_method_handler(
+          servicer.PartitionRead,
+          request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionReadRequest.FromString,
+          response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.PartitionResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
