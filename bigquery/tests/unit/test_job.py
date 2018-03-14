@@ -1756,6 +1756,13 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         config = self._make_one()
         self.assertEqual(config._properties, {'query': {}})
 
+    def test_ctor_w_none(self):
+        config = self._make_one()
+        config.default_dataset = None
+        config.destination = None
+        self.assertIsNone(config.default_dataset)
+        self.assertIsNone(config.destination)
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})

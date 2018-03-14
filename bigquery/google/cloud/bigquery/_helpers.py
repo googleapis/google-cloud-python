@@ -339,7 +339,7 @@ class _ApiResourceProperty(object):
 
     def _validate(self, value):
         """Subclasses override to impose validation policy."""
-        pass
+        raise NotImplementedError("Abstract")
 
     def __set__(self, instance, value):
         """Descriptor protocol:  mutator"""
@@ -415,17 +415,6 @@ class _ListApiResourceProperty(_ApiResourceProperty):
         if not all(isinstance(item, self.property_type) for item in value):
             raise ValueError(
                 'Required type: list of %s' % (self.property_type,))
-
-
-class _EnumApiResourceProperty(_ApiResourceProperty):
-    """Pseudo-enumeration class.
-
-    :type name: str
-    :param name:  name of the property.
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-    """
 
 
 def _item_to_row(iterator, resource):

@@ -34,7 +34,6 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
 
@@ -86,7 +85,7 @@ def _error_result_to_exception(error_result):
         status_code, error_result.get('message', ''), errors=[error_result])
 
 
-class Compression(_EnumApiResourceProperty):
+class Compression(object):
     """The compression type to use for exported files.
 
     Possible values include `GZIP`, `DEFLATE`, `SNAPPY`, and `NONE`. The
@@ -99,7 +98,7 @@ class Compression(_EnumApiResourceProperty):
     NONE = 'NONE'
 
 
-class CreateDisposition(_EnumApiResourceProperty):
+class CreateDisposition(object):
     """Specifies whether the job is allowed to create new tables.
 
     The following values are supported:
@@ -116,7 +115,7 @@ class CreateDisposition(_EnumApiResourceProperty):
     CREATE_NEVER = 'CREATE_NEVER'
 
 
-class DestinationFormat(_EnumApiResourceProperty):
+class DestinationFormat(object):
     """The exported file format.
 
     Possible values include `CSV`, `NEWLINE_DELIMITED_JSON` and `AVRO`.
@@ -128,7 +127,7 @@ class DestinationFormat(_EnumApiResourceProperty):
     AVRO = 'AVRO'
 
 
-class Encoding(_EnumApiResourceProperty):
+class Encoding(object):
     """The character encoding of the data. The supported values
     are `UTF_8` corresponding to `'UTF-8'` or `ISO_8859_1` corresponding to
     `'ISO-8559-1'`. The default value is `UTF_8`.
@@ -140,7 +139,7 @@ class Encoding(_EnumApiResourceProperty):
     ISO_8559_1 = 'ISO-8559-1'
 
 
-class QueryPriority(_EnumApiResourceProperty):
+class QueryPriority(object):
     """Specifies a priority for the query.
 
     Possible values include `INTERACTIVE` and `BATCH`. The default value
@@ -150,7 +149,7 @@ class QueryPriority(_EnumApiResourceProperty):
     BATCH = 'BATCH'
 
 
-class SourceFormat(_EnumApiResourceProperty):
+class SourceFormat(object):
     """The format of the data files.
 
     For CSV files, specify `CSV`. For datastore backups, specify
@@ -164,7 +163,7 @@ class SourceFormat(_EnumApiResourceProperty):
     AVRO = 'AVRO'
 
 
-class WriteDisposition(_EnumApiResourceProperty):
+class WriteDisposition(object):
     """Specifies the action that occurs if destination table already exists.
 
     The following values are supported:
