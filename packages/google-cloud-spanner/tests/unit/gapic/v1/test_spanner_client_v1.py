@@ -15,7 +15,10 @@
 
 import pytest
 
-import google.cloud.spanner_v1.gapic.spanner_client as spanner_v1
+# Manual edit to auto-generated import because we do not expose the
+# auto-generated client in the `g.c.spanner_v1` namespace (unlike most APIs).
+from google.cloud.spanner_v1.gapic import spanner_client as spanner_v1
+
 from google.cloud.spanner_v1.proto import keys_pb2
 from google.cloud.spanner_v1.proto import result_set_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
@@ -477,3 +480,77 @@ class TestSpannerClient(object):
 
         with pytest.raises(CustomException):
             client.rollback(session, transaction_id)
+
+    def test_partition_query(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = spanner_pb2.PartitionResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_v1.SpannerClient(channel=channel)
+
+        # Setup Request
+        session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
+                                      '[SESSION]')
+        sql = 'sql114126'
+
+        response = client.partition_query(session, sql)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_pb2.PartitionQueryRequest(
+            session=session, sql=sql)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_partition_query_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_v1.SpannerClient(channel=channel)
+
+        # Setup request
+        session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
+                                      '[SESSION]')
+        sql = 'sql114126'
+
+        with pytest.raises(CustomException):
+            client.partition_query(session, sql)
+
+    def test_partition_read(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = spanner_pb2.PartitionResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = spanner_v1.SpannerClient(channel=channel)
+
+        # Setup Request
+        session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
+                                      '[SESSION]')
+        table = 'table110115790'
+        key_set = {}
+
+        response = client.partition_read(session, table, key_set)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_pb2.PartitionReadRequest(
+            session=session, table=table, key_set=key_set)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_partition_read_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = spanner_v1.SpannerClient(channel=channel)
+
+        # Setup request
+        session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]',
+                                      '[SESSION]')
+        table = 'table110115790'
+        key_set = {}
+
+        with pytest.raises(CustomException):
+            client.partition_read(session, table, key_set)

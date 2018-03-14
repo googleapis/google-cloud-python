@@ -18,13 +18,13 @@ import unittest
 
 class TestKeyRange(unittest.TestCase):
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner_v1.keyset import KeyRange
 
         return KeyRange
 
     def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_no_start_no_end(self):
         with self.assertRaises(ValueError):
@@ -92,6 +92,29 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.end_open, KEY_2)
         self.assertEqual(krange.end_closed, None)
 
+    def test___eq___self(self):
+        key_1 = [u'key_1']
+        krange = self._make_one(end_open=key_1)
+        self.assertEqual(krange, krange)
+
+    def test___eq___other_type(self):
+        key_1 = [u'key_1']
+        krange = self._make_one(end_open=key_1)
+        self.assertNotEqual(krange, object())
+
+    def test___eq___other_hit(self):
+        key_1 = [u'key_1']
+        krange = self._make_one(end_open=key_1)
+        other = self._make_one(end_open=key_1)
+        self.assertEqual(krange, other)
+
+    def test___eq___other(self):
+        key_1 = [u'key_1']
+        key_2 = [u'key_2']
+        krange = self._make_one(end_open=key_1)
+        other = self._make_one(start_closed=key_2, end_open=key_1)
+        self.assertNotEqual(krange, other)
+
     def test_to_pb_w_start_closed_and_end_open(self):
         from google.protobuf.struct_pb2 import ListValue
         from google.protobuf.struct_pb2 import Value
@@ -146,16 +169,36 @@ class TestKeyRange(unittest.TestCase):
         )
         self.assertEqual(key_range_pb, expected)
 
+    def test_to_dict_w_start_closed_and_end_open(self):
+        key1 = u'key_1'
+        key2 = u'key_2'
+        key_range = self._make_one(start_closed=[key1], end_open=[key2])
+        expected = {'start_closed': [key1], 'end_open': [key2]}
+        self.assertEqual(key_range._to_dict(), expected)
+
+    def test_to_dict_w_start_open_and_end_closed(self):
+        key1 = u'key_1'
+        key2 = u'key_2'
+        key_range = self._make_one(start_open=[key1], end_closed=[key2])
+        expected = {'start_open': [key1], 'end_closed': [key2]}
+        self.assertEqual(key_range._to_dict(), expected)
+
+    def test_to_dict_w_end_closed(self):
+        key = u'key'
+        key_range = self._make_one(end_closed=[key])
+        expected = {'end_closed': [key]}
+        self.assertEqual(key_range._to_dict(), expected)
+
 
 class TestKeySet(unittest.TestCase):
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner_v1.keyset import KeySet
 
         return KeySet
 
     def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_w_all(self):
         keyset = self._make_one(all_=True)
@@ -198,6 +241,63 @@ class TestKeySet(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._make_one(all_=True, ranges=[range_1, range_2])
+
+    def test___eq___w_self(self):
+        keyset = self._make_one(all_=True)
+        self.assertEqual(keyset, keyset)
+
+    def test___eq___w_other_type(self):
+        keyset = self._make_one(all_=True)
+        self.assertNotEqual(keyset, object())
+
+    def test___eq___w_all_hit(self):
+        keyset = self._make_one(all_=True)
+        other = self._make_one(all_=True)
+        self.assertEqual(keyset, other)
+
+    def test___eq___w_all_miss(self):
+        keys = [[u'key1'], [u'key2']]
+        keyset = self._make_one(all_=True)
+        other = self._make_one(keys=keys)
+        self.assertNotEqual(keyset, other)
+
+    def test___eq___w_keys_hit(self):
+        keys = [[u'key1'], [u'key2']]
+
+        keyset = self._make_one(keys=keys)
+        other = self._make_one(keys=keys)
+
+        self.assertEqual(keyset, other)
+
+    def test___eq___w_keys_miss(self):
+        keys = [[u'key1'], [u'key2']]
+
+        keyset = self._make_one(keys=keys[:1])
+        other = self._make_one(keys=keys[1:])
+
+        self.assertNotEqual(keyset, other)
+
+    def test___eq___w_ranges_hit(self):
+        from google.cloud.spanner_v1.keyset import KeyRange
+
+        range_1 = KeyRange(start_closed=[u'key1'], end_open=[u'key3'])
+        range_2 = KeyRange(start_open=[u'key5'], end_closed=[u'key6'])
+
+        keyset = self._make_one(ranges=[range_1, range_2])
+        other = self._make_one(ranges=[range_1, range_2])
+
+        self.assertEqual(keyset, other)
+
+    def test___eq___w_ranges_miss(self):
+        from google.cloud.spanner_v1.keyset import KeyRange
+
+        range_1 = KeyRange(start_closed=[u'key1'], end_open=[u'key3'])
+        range_2 = KeyRange(start_open=[u'key5'], end_closed=[u'key6'])
+
+        keyset = self._make_one(ranges=[range_1])
+        other = self._make_one(ranges=[range_2])
+
+        self.assertNotEqual(keyset, other)
 
     def test_to_pb_w_all(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
@@ -252,3 +352,89 @@ class TestKeySet(unittest.TestCase):
 
         for found, expected in zip(result.ranges, RANGES):
             self.assertEqual(found, expected._to_pb())
+
+    def test_to_dict_w_all(self):
+        keyset = self._make_one(all_=True)
+        expected = {'all': True}
+        self.assertEqual(keyset._to_dict(), expected)
+
+    def test_to_dict_w_only_keys(self):
+        KEYS = [[u'key1'], [u'key2']]
+        keyset = self._make_one(keys=KEYS)
+
+        expected = {
+            'keys': KEYS,
+            'ranges': [],
+        }
+        self.assertEqual(keyset._to_dict(), expected)
+
+    def test_to_dict_w_only_ranges(self):
+        from google.cloud.spanner_v1.keyset import KeyRange
+
+        key_1 = u'KEY_1'
+        key_2 = u'KEY_2'
+        key_3 = u'KEY_3'
+        key_4 = u'KEY_4'
+        ranges = [
+            KeyRange(start_open=[key_1], end_closed=[key_2]),
+            KeyRange(start_closed=[key_3], end_open=[key_4]),
+        ]
+        keyset = self._make_one(ranges=ranges)
+
+        expected = {
+            'keys': [],
+            'ranges': [
+                {'start_open': [key_1], 'end_closed': [key_2]},
+                {'start_closed': [key_3], 'end_open': [key_4]},
+            ]
+        }
+        self.assertEqual(keyset._to_dict(), expected)
+
+    def test_from_dict_w_all(self):
+        klass = self._get_target_class()
+        mapping = {
+            'all': True,
+        }
+
+        keyset = klass._from_dict(mapping)
+
+        self.assertTrue(keyset.all_)
+        self.assertEqual(keyset.keys, [])
+        self.assertEqual(keyset.ranges, [])
+
+    def test_from_dict_w_keys(self):
+        klass = self._get_target_class()
+        keys = [[u'key1'], [u'key2']]
+        mapping = {
+            'keys': keys,
+        }
+
+        keyset = klass._from_dict(mapping)
+
+        self.assertFalse(keyset.all_)
+        self.assertEqual(keyset.keys, keys)
+        self.assertEqual(keyset.ranges, [])
+
+    def test_from_dict_w_ranges(self):
+        from google.cloud.spanner_v1.keyset import KeyRange
+
+        klass = self._get_target_class()
+        key_1 = u'KEY_1'
+        key_2 = u'KEY_2'
+        key_3 = u'KEY_3'
+        key_4 = u'KEY_4'
+        mapping = {
+            'ranges': [
+                {'start_open': [key_1], 'end_closed': [key_2]},
+                {'start_closed': [key_3], 'end_open': [key_4]},
+            ],
+        }
+
+        keyset = klass._from_dict(mapping)
+
+        range_1 = KeyRange(start_open=[key_1], end_closed=[key_2])
+        range_2 = KeyRange(start_closed=[key_3], end_open=[key_4])
+
+        self.assertFalse(keyset.all_)
+        self.assertEqual(keyset.keys, [])
+        self.assertEqual(keyset.ranges, [range_1, range_2])

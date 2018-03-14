@@ -369,8 +369,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   DESCRIPTOR = _TRANSACTIONOPTIONS,
   __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
   ,
-  __doc__ = """
-
+  __doc__ = """ See :ref:`spanner-txn` for more information about transactions.
 
   Attributes:
       mode:

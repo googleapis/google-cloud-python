@@ -84,20 +84,21 @@ def setUpModule():
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
-    # Defend against back-end returning configs for regions we aren't
-    # actually allowed to use.
-    configs = [config for config in configs if '-us-' in config.name]
-
-    if len(configs) < 1:
-        raise ValueError('List instance configs failed in module set up.')
-
-    Config.INSTANCE_CONFIG = configs[0]
-    config_name = configs[0].name
-
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
 
     if CREATE_INSTANCE:
+
+        # Defend against back-end returning configs for regions we aren't
+        # actually allowed to use.
+        configs = [config for config in configs if '-us-' in config.name]
+
+        if not configs:
+            raise ValueError('List instance configs failed in module set up.')
+
+        Config.INSTANCE_CONFIG = configs[0]
+        config_name = configs[0].name
+
         Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, config_name)
         created_op = Config.INSTANCE.create()
         created_op.result(30)  # block until completion
@@ -134,8 +135,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_reload_instance(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(
-            INSTANCE_ID, Config.INSTANCE_CONFIG.name)
+        instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -1266,6 +1266,24 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected = ([data[keyrow]] + data[start+1:end])
             self.assertEqual(rows, expected)
 
+    def test_partition_read_w_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        committed = self._set_up_table(row_count)
+
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        union = []
+
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
+        batches = batch_txn.generate_read_batches(
+            self.TABLE, columns, KeySet(all_=True), index='name')
+        for batch in batches:
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
+
+        self.assertEqual(union, expected)
+        batch_txn.close()
+
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
         committed = self._set_up_table(ROW_COUNT)
@@ -1509,6 +1527,21 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(float_array[1], float('+inf'))
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
+
+    def test_partition_query(self):
+        row_count = 40
+        sql = 'SELECT * FROM {}'.format(self.TABLE)
+        committed = self._set_up_table(row_count)
+        all_data_rows = list(self._row_data(row_count))
+
+        union = []
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
+        for batch in batch_txn.generate_query_batches(sql):
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
+
+        self.assertEqual(union, all_data_rows)
+        batch_txn.close()
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):
