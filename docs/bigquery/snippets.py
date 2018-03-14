@@ -408,7 +408,7 @@ def test_create_table_then_add_schema(client, to_delete):
     table = client.update_table(table, ['schema'])  # API request
 
     assert table.schema == schema
-    # [START bigquery_add_schema_to_empty]
+    # [END bigquery_add_schema_to_empty]
 
 
 def test_create_table_cmek(client, to_delete):
