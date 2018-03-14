@@ -1667,7 +1667,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def maximum_billing_tier(self):
-        """int: Deprecated: Changes the billing tier to allow high-compute
+        """int: Deprecated. Changes the billing tier to allow high-compute
         queries.
 
         See
