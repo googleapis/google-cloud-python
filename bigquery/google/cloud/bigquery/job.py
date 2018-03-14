@@ -17,7 +17,6 @@
 import copy
 import threading
 
-import six
 from six.moves import http_client
 
 import google.api_core.future.polling
@@ -91,9 +90,13 @@ def _error_result_to_exception(error_result):
 class Compression(_EnumApiResourceProperty):
     """The compression type to use for exported files.
 
-    Possible values include `GZIP` and `NONE`. The default value is `NONE`.
+    Possible values include `GZIP`, `DEFLATE`, `SNAPPY`, and `NONE`. The
+    default value is `NONE`. `DEFLATE` and `SNAPPY` are only supported for
+    Avro.
     """
     GZIP = 'GZIP'
+    DEFLATE = 'DEFLATE'
+    SNAPPY = 'SNAPPY'
     NONE = 'NONE'
 
 
@@ -375,7 +378,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._properties.update(cleaned)
         configuration = cleaned['configuration'][self._JOB_TYPE]
         # TODO: FIXME: remove hack for load jobs
-        if self._JOB_TYPE in ('load', 'copy'):
+        if self._JOB_TYPE in ('load', 'copy', 'extract'):
             self._copy_configuration_properties(cleaned['configuration'])
         else:
             self._copy_configuration_properties(configuration)
@@ -406,7 +409,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         # TODO: FIXME: remove temporary hack for load jobs
-        if cls._JOB_TYPE in ('load', 'copy'):
+        if cls._JOB_TYPE in ('load', 'copy', 'extract'):
             return job_id, resource['configuration']
         config = resource['configuration'][cls._JOB_TYPE]
         return job_id, config
@@ -1299,7 +1302,7 @@ class CopyJob(_AsyncJob):
         return job
 
 
-class ExtractJobConfig(object):
+class ExtractJobConfig(_JobConfig):
     """Configuration options for extract jobs.
 
     All properties in this class are optional. Values which are ``None`` ->
@@ -1307,54 +1310,60 @@ class ExtractJobConfig(object):
     """
 
     def __init__(self):
-        self._properties = {}
+        super(ExtractJobConfig, self).__init__('extract')
 
-    compression = Compression('compression', 'compression')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression
-    """
+    @property
+    def compression(self):
+        """google.cloud.bigquery.job.Compression: Compression type to use for
+        exported files.
 
-    destination_format = DestinationFormat(
-        'destination_format', 'destinationFormat')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat
-    """
-
-    field_delimiter = _TypedApiResourceProperty(
-        'field_delimiter', 'fieldDelimiter', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter
-    """
-
-    print_header = _TypedApiResourceProperty(
-        'print_header', 'printHeader', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
-    """
-
-    def to_api_repr(self):
-        """Build an API representation of the extract job config.
-
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression
         """
-        return copy.deepcopy(self._properties)
+        return self._get_sub_prop('compression')
 
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct a job configuration given its API representation
+    @compression.setter
+    def compression(self, value):
+        self._set_sub_prop('compression', value)
 
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
+    @property
+    def destination_format(self):
+        """google.cloud.bigquery.job.DestinationFormat: Exported file format.
 
-        :rtype: :class:`google.cloud.bigquery.job.ExtractJobConfig`
-        :returns: Configuration parsed from ``resource``.
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat
         """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
+        return self._get_sub_prop('destinationFormat')
+
+    @destination_format.setter
+    def destination_format(self, value):
+        self._set_sub_prop('destinationFormat', value)
+
+    @property
+    def field_delimiter(self):
+        """str: Delimiter to use between fields in the exported data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter
+        """
+        return self._get_sub_prop('fieldDelimiter')
+
+    @field_delimiter.setter
+    def field_delimiter(self, value):
+        self._set_sub_prop('fieldDelimiter', value)
+
+    @property
+    def print_header(self):
+        """bool: Print a header row in the exported data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
+        """
+        return self._get_sub_prop('printHeader')
+
+    @print_header.setter
+    def print_header(self, value):
+        self._set_sub_prop('printHeader', value)
 
 
 class ExtractJob(_AsyncJob):
@@ -1446,17 +1455,19 @@ class ExtractJob(_AsyncJob):
         }
 
         configuration = self._configuration.to_api_repr()
-        configuration['sourceTable'] = source_ref
-        configuration['destinationUris'] = self.destination_uris
+        _helpers.set_sub_prop(
+            configuration, ['extract', 'sourceTable'], source_ref)
+        _helpers.set_sub_prop(
+            configuration,
+            ['extract', 'destinationUris'],
+            self.destination_uris)
 
         resource = {
             'jobReference': {
                 'projectId': self.project,
                 'jobId': self.job_id,
             },
-            'configuration': {
-                self._JOB_TYPE: configuration,
-            },
+            'configuration': configuration,
         }
 
         return resource
@@ -1486,11 +1497,13 @@ class ExtractJob(_AsyncJob):
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = ExtractJobConfig.from_api_repr(config_resource)
-        source_config = config_resource['sourceTable']
+        source_config = _helpers.get_sub_prop(
+            config_resource, ['extract', 'sourceTable'])
         dataset = DatasetReference(
             source_config['projectId'], source_config['datasetId'])
         source = dataset.table(source_config['tableId'])
-        destination_uris = config_resource['destinationUris']
+        destination_uris = _helpers.get_sub_prop(
+            config_resource, ['extract', 'destinationUris'])
 
         job = cls(
             job_id, source, destination_uris, client=client, job_config=config)

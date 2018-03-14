@@ -1371,6 +1371,55 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestExtractJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'extract'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import ExtractJobConfig
+        return ExtractJobConfig
+
+    def test_to_api_repr(self):
+        from google.cloud.bigquery import job
+        config = self._make_one()
+        config.compression = job.Compression.SNAPPY
+        config.destination_format = job.DestinationFormat.AVRO
+        config.field_delimiter = 'ignored for avro'
+        config.print_header = False
+        config._properties['extract']['someNewField'] = 'some-value'
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'extract': {
+                    'compression': 'SNAPPY',
+                    'destinationFormat': 'AVRO',
+                    'fieldDelimiter': 'ignored for avro',
+                    'printHeader': False,
+                    'someNewField': 'some-value',
+                },
+            })
+
+    def test_from_api_repr(self):
+        cls = self._get_target_class()
+        config = cls.from_api_repr(
+            {
+                'extract': {
+                    'compression': 'NONE',
+                    'destinationFormat': 'CSV',
+                    'fieldDelimiter': '\t',
+                    'printHeader': True,
+                    'someNewField': 'some-value',
+                },
+            })
+        self.assertEqual(config.compression, 'NONE')
+        self.assertEqual(config.destination_format, 'CSV')
+        self.assertEqual(config.field_delimiter, '\t')
+        self.assertEqual(config.print_header, True)
+        self.assertEqual(
+            config._properties['extract']['someNewField'], 'some-value')
+
+
 class TestExtractJob(unittest.TestCase, _Base):
     JOB_TYPE = 'extract'
     SOURCE_TABLE = 'source_table'
