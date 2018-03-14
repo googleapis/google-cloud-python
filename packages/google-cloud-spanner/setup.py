@@ -27,7 +27,7 @@ version = '1.1.0'
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Stable'
-release_status = 'Development Status :: 4 - Beta'
+release_status = 'Development Status :: 5 - Stable'
 dependencies = [
     'google-cloud-core<0.29dev,>=0.28.0',
     'google-api-core[grpc]<2.0.0dev,>=1.1.0',
