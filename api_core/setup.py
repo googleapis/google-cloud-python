@@ -26,7 +26,7 @@ version = '1.1.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Stable'
+# 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'googleapis-common-protos<2.0dev,>=1.5.3',
