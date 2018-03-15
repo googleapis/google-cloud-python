@@ -26,7 +26,7 @@ version = '1.6.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Stable'
+# 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
     'google-cloud-core<0.29dev,>=0.28.0',
