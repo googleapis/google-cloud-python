@@ -24,6 +24,7 @@
   monitoring/usage
   logging/usage
   storage/client
+  texttospeech/index
   translate/usage
   vision/index
   videointelligence/index
