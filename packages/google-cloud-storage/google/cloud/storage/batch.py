@@ -250,7 +250,7 @@ class Batch(Connection):
         """
         headers, body = self._prepare_batch_request()
 
-        url = '%s/batch' % self.API_BASE_URL
+        url = '%s/batch/storage/v1' % self.API_BASE_URL
 
         # Use the private ``_base_connection`` rather than the property
         # ``_connection``, since the property may be this
