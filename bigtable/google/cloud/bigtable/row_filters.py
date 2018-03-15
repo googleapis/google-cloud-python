@@ -281,8 +281,10 @@ class TimestampRange(object):
             timestamp_range_kwargs['start_timestamp_micros'] = (
                 _microseconds_from_datetime(self.start) // 1000 * 1000)
         if self.end is not None:
-            timestamp_range_kwargs['end_timestamp_micros'] = (
-                _microseconds_from_datetime(self.end) // 1000 * 1000)
+            end_time = _microseconds_from_datetime(self.end)
+            if end_time % 1000 != 0:
+                end_time = end_time // 1000 * 1000 + 1000
+            timestamp_range_kwargs['end_timestamp_micros'] = end_time
         return data_v2_pb2.TimestampRange(**timestamp_range_kwargs)
 
 
