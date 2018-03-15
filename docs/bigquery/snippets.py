@@ -115,6 +115,8 @@ def test_create_dataset(client, to_delete):
 
     # Construct a full Dataset object to send to the API.
     dataset = bigquery.Dataset(dataset_ref)
+    # Specify the geographic location where the dataset should reside.
+    dataset.location = 'US'
 
     # Send the dataset to the API for creation.
     # Raises google.api_core.exceptions.AlreadyExists if the Dataset already
