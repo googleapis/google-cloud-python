@@ -588,10 +588,53 @@ class _JobConfig(object):
         self._properties = {job_type: {}}
 
     def _get_sub_prop(self, key, default=None):
+        """Get a value in the ``self._properties[self._job_type]`` dictionary.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to access
+        those properties::
+
+            self._get_sub_prop('destinationTable')
+
+        This is equivalent to using the ``_helper.get_sub_prop`` function::
+
+            _helper.get_sub_prop(
+                self._properties, ['query', 'destinationTable'])
+
+        Arguments:
+            key (str):
+                 Key for the value to get in the
+                 ``self._properties[self._job_type]`` dictionary.
+            default (object):
+                (Optional) Default value to return if the key is not found.
+                Defaults to ``None``.
+
+        Returns:
+            object: The value if present or the default.
+        """
         return _helpers.get_sub_prop(
             self._properties, [self._job_type, key], default=default)
 
     def _set_sub_prop(self, key, value):
+        """Set a value in the ``self._properties[self._job_type]`` dictionary.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to set
+        those properties::
+
+            self._set_sub_prop('useLegacySql', False)
+
+        This is equivalent to using the ``_helper.set_sub_prop`` function::
+
+            _helper.set_sub_prop(
+                self._properties, ['query', 'useLegacySql'], False)
+
+        Arguments:
+            key (str):
+                 Key to set in the ``self._properties[self._job_type]``
+                 dictionary.
+            value (object): Value to set.
+        """
         _helpers.set_sub_prop(self._properties, [self._job_type, key], value)
 
     def to_api_repr(self):
@@ -1640,8 +1683,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def dry_run(self):
-        """
-        bool: ``True`` if this query should be a dry run to estimate costs.
+        """bool: ``True`` if this query should be a dry run to estimate costs.
 
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun

@@ -476,6 +476,42 @@ def _should_retry(exc):
 
 
 def get_sub_prop(container, keys, default=None):
+    """Get a nested value from a dictionary.
+
+    This method works like ``dict.get(key)``, but for nested values.
+
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to get the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        default (object):
+            (Optional) Value to returned if any of the keys are not found.
+            Defaults to ``None``.
+
+    Examples:
+        Get a top-level value (equivalent to ``container.get('key')``).
+
+        >>> get_sub_prop({'key': 'value'}, ['key'])
+        'value'
+
+        Get a top-level value, providing a default (equivalent to
+        ``container.get('key', default='default')``).
+
+        >>> get_sub_prop({'nothere': 123}, ['key'], default='not found')
+        'not found'
+
+        Get a nested value.
+
+        >>> get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
+        'value'
+
+    Returns:
+        object: The value if present or the default.
+    """
     sub_val = container
     for key in keys:
         if key not in sub_val:
@@ -485,6 +521,40 @@ def get_sub_prop(container, keys, default=None):
 
 
 def set_sub_prop(container, keys, value):
+    """Set a nested value in a dictionary.
+
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to set the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        value (object): Value to set within the container.
+
+    Examples:
+        Set a top-level value (equivalent to ``container['key'] = 'value'``).
+
+        >>> container = {}
+        >>> set_sub_prop(container, ['key'], 'value')
+        >>> container
+        {'key': 'value'}
+
+        Set a nested value.
+
+        >>> container = {}
+        >>> set_sub_prop(container, ['key', 'subkey'], 'value')
+        >>> container
+        {'key': {'subkey': 'value'}}
+
+        Replace a nested value.
+
+        >>> container = {'key': {'subkey': 'prev'}}
+        >>> set_sub_prop(container, ['key', 'subkey'], 'new')
+        >>> container
+        {'key': {'subkey': 'new'}}
+    """
     sub_val = container
     for key in keys[:-1]:
         if key not in sub_val:
