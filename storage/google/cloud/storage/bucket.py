@@ -1076,8 +1076,6 @@ class Bucket(_PropertyMixin):
     def requester_pays(self):
         """Does the requester pay for API requests for this bucket?
 
-        .. note::
-
         See https://cloud.google.com/storage/docs/requester-pays for
         details.
 
