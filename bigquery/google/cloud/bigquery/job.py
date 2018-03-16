@@ -1194,10 +1194,10 @@ class LoadJob(_AsyncJob):
         """
         config_resource = resource.get('configuration', {})
         config = LoadJobConfig.from_api_repr(config_resource)
-        dest_config = _helpers.get_sub_prop(
-            config_resource, ['load', 'destinationTable'])
-        ds_ref = DatasetReference(dest_config['projectId'],
-                                  dest_config['datasetId'],)
+        # A load job requires a destination table.
+        dest_config = config_resource['load']['destinationTable']
+        ds_ref = DatasetReference(
+            dest_config['projectId'], dest_config['datasetId'])
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
         source_uris = _helpers.get_sub_prop(
