@@ -1078,7 +1078,8 @@ class Bucket(_PropertyMixin):
 
         .. note::
 
-           No public docs exist yet for the "requester pays" feature.
+        See https://cloud.google.com/storage/docs/requester-pays for
+        details.
 
         :setter: Update whether requester pays for this bucket.
         :getter: Query whether requester pays for this bucket.
