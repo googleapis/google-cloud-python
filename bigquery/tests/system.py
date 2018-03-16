@@ -134,7 +134,8 @@ class TestBigQuery(unittest.TestCase):
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
             elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
-                retry_in_use(Config.CLIENT.delete_dataset)(doomed)
+                retry_in_use(Config.CLIENT.delete_dataset)(
+                    doomed, delete_contents=True)
             elif isinstance(doomed, (Table, bigquery.TableReference)):
                 retry_in_use(Config.CLIENT.delete_table)(doomed)
             else:
@@ -551,6 +552,41 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
+
+    def test_load_table_from_file_w_explicit_location(self):
+        table_bytes = six.BytesIO(b'a,3\nb,2\nc,1\n')
+        client = Config.CLIENT
+        dataset = self.temp_dataset(
+            _make_dataset_id('eu_load_file'), location='EU')
+        table_ref = dataset.table('letters')
+        job_config = bigquery.LoadJobConfig()
+        job_config.skip_leading_rows = 0
+        job_config.schema = [
+            bigquery.SchemaField('letter', 'STRING'),
+            bigquery.SchemaField('value', 'INTEGER'),
+        ]
+
+        # Load the file to an EU dataset with an EU load job.
+        load_job = client.load_table_from_file(
+            table_bytes, table_ref, location='EU', job_config=job_config)
+        load_job.result()
+
+        # Can list the table rows.
+        table = client.get_table(table_ref)
+        self.assertEqual(table.num_rows, 3)
+        rows = [(row.letter, row.value) for row in client.list_rows(table)]
+        self.assertEqual(
+            list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
+
+        # Can query from EU.
+        query_string = 'SELECT MAX(value) FROM `{}.letters`'.format(
+            dataset.dataset_id)
+        max_value = list(client.query(query_string, location='EU'))[0][0]
+        self.assertEqual(max_value, 3)
+
+        # Cannot query from US.
+        with self.assertRaises(NotFound):
+            list(client.query(query_string, location='US'))
 
     def _create_storage(self, bucket_name, blob_name):
         from google.cloud.storage import Client as StorageClient
@@ -1586,9 +1622,11 @@ class TestBigQuery(unittest.TestCase):
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
 
-    def temp_dataset(self, dataset_id):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id)))
+    def temp_dataset(self, dataset_id, location=None):
+        dataset = Dataset(Config.CLIENT.dataset(dataset_id))
+        if location:
+            dataset.location = location
+        dataset = retry_403(Config.CLIENT.create_dataset)(dataset)
         self.to_delete.append(dataset)
         return dataset
 

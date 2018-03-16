@@ -703,10 +703,10 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params)
 
-    def load_table_from_uri(self, source_uris, destination,
-                            job_id=None, job_id_prefix=None,
-                            location=None, project=None,
-                            job_config=None, retry=DEFAULT_RETRY):
+    def load_table_from_uri(
+            self, source_uris, destination, job_id=None, job_id_prefix=None,
+            location=None, project=None, job_config=None,
+            retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
@@ -1015,39 +1015,45 @@ class Client(ClientWithProject):
         job._begin(retry=retry)
         return job
 
-    def query(self, query, job_config=None, job_id=None, job_id_prefix=None,
-              retry=DEFAULT_RETRY):
-        """Start a job that runs a SQL query.
+    def query(
+            self, query, job_config=None, job_id=None, job_id_prefix=None,
+            location=None, project=None, retry=DEFAULT_RETRY):
+        """Run a SQL query.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
-        :type query: str
-        :param query:
-            SQL query to be executed. Defaults to the standard SQL dialect.
-            Use the ``job_config`` parameter to change dialects.
+        Arguments:
+            query (str):
+                SQL query to be executed. Defaults to the standard SQL
+                dialect. Use the ``job_config`` parameter to change dialects.
 
-        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
-        :param job_config: (Optional) Extra configuration options for the job.
+        Keyword Arguments:
+            job_config (google.cloud.bigquery.job.QueryJobConfig):
+                (Optional) Extra configuration options for the job.
+            job_id (str): (Optional) ID to use for the query job.
+            job_id_prefix (str):
+                (Optional) The prefix to use for a randomly generated job ID.
+                This parameter will be ignored if a ``job_id`` is also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                any table used in the query as well as the destination table.
+            project (str):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
 
-        :type job_id: str
-        :param job_id: (Optional) ID to use for the query job.
-
-        :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided prefix for a
-                              randomly generated job ID. This parameter will be
-                              ignored if a ``job_id`` is also given.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.job.QueryJob`
-        :returns: a new :class:`google.cloud.bigquery.job.QueryJob` instance
+        Returns:
+            google.cloud.bigquery.job.QueryJob: A new query job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
-        job = QueryJob(job_id, query, client=self, job_config=job_config)
-        job._begin(retry=retry)
-        return job
+        if project is None:
+            project = self.project
+        job_ref = job._JobReference(job_id, project=project, location=location)
+        query_job = QueryJob(job_ref, query, client=self, job_config=job_config)
+        query_job._begin(retry=retry)
+        return query_job
 
     def insert_rows(self, table, rows, selected_fields=None, **kwargs):
         """Insert rows into a table via the streaming API.

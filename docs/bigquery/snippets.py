@@ -1045,7 +1045,8 @@ def test_copy_table_multiple_source(client, to_delete):
         client.load_table_from_file(
             body,
             table_ref,
-            location='US',  # Location must match that of the destination dataset.
+            # Location must match that of the destination dataset.
+            location='US',
             job_config=job_config).result()
 
     # [START bigquery_copy_table_multiple_source]
@@ -1224,9 +1225,12 @@ def test_client_simple_query(client):
         'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
         'WHERE state = "TX" '
         'LIMIT 100')
-    query_job = client.query(QUERY)
+    query_job = client.query(
+        QUERY,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US')  # API request - starts the query
 
-    for row in query_job:  # API request
+    for row in query_job:  # API request - fetches results
         # Row values can be accessed by field name or index
         assert row[0] == row.name == row['name']
     # [END client_simple_query]
@@ -1236,15 +1240,18 @@ def test_client_query(client):
     """Run a query"""
 
     # [START client_query]
-    QUERY = (
+    query_str = (
         'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
         'WHERE state = "TX" '
         'LIMIT 100')
-    TIMEOUT = 30  # in seconds
-    query_job = client.query(QUERY)  # API request - starts the query
+    query_job = client.query(
+        query_str,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US')  # API request - starts the query
 
     # Waits for the query to finish
-    iterator = query_job.result(timeout=TIMEOUT)
+    timeout = 30  # in seconds
+    iterator = query_job.result(timeout=timeout)
     rows = list(iterator)
 
     assert query_job.state == 'DONE'
@@ -1259,7 +1266,9 @@ def test_client_query_destination_table(client, to_delete):
     dataset_id = 'query_destination_table_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
-    client.create_dataset(bigquery.Dataset(dataset_ref))
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    client.create_dataset(dataset)
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
@@ -1278,7 +1287,11 @@ def test_client_query_destination_table(client, to_delete):
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        'SELECT 17 AS my_col;', job_config=job_config)
+        'SELECT 17 AS my_col;',
+        # Location must match that of the dataset(s) referenced in the query
+        # and of the destination table.
+        location='US',
+        job_config=job_config)  # API request - starts the query
 
     rows = list(query_job)  # Waits for the query to finish
     assert len(rows) == 1
@@ -1302,7 +1315,9 @@ def test_client_query_destination_table_cmek(client, to_delete):
     dataset_id = 'query_destination_table_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
-    client.create_dataset(bigquery.Dataset(dataset_ref))
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    client.create_dataset(dataset)
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table_cmek]
@@ -1323,7 +1338,11 @@ def test_client_query_destination_table_cmek(client, to_delete):
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        'SELECT 17 AS my_col;', job_config=job_config)
+        'SELECT 17 AS my_col;',
+        # Location must match that of the dataset(s) referenced in the query
+        # and of the destination table.
+        location='US',
+        job_config=job_config)  # API request - starts the query
     query_job.result()
 
     # The destination table is written using the encryption configuration.
@@ -1336,20 +1355,23 @@ def test_client_query_w_param(client):
     """Run a query using a query parameter"""
 
     # [START client_query_w_param]
-    QUERY_W_PARAM = (
+    query_w_param = (
         'SELECT name, state '
         'FROM `bigquery-public-data.usa_names.usa_1910_2013` '
         'WHERE state = @state '
         'LIMIT 100')
-    TIMEOUT = 30  # in seconds
     param = bigquery.ScalarQueryParameter('state', 'STRING', 'TX')
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = [param]
     query_job = client.query(
-        QUERY_W_PARAM, job_config=job_config)  # API request - starts the query
+        query_w_param,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
 
     # Waits for the query to finish
-    iterator = query_job.result(timeout=TIMEOUT)
+    timeout = 30  # in seconds
+    iterator = query_job.result(timeout=timeout)
     rows = list(iterator)
 
     assert query_job.state == 'DONE'
