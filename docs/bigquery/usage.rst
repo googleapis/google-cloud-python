@@ -223,6 +223,12 @@ Load a JSON file from Cloud Storage:
    :start-after: [START bigquery_load_table_gcs_json]
    :end-before: [END bigquery_load_table_gcs_json]
 
+Load a Parquet file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet]
+   :end-before: [END bigquery_load_table_gcs_parquet]
+
 Load a JSON file from Cloud Storage, using an autodetected schema:
 
 .. literalinclude:: snippets.py
@@ -235,11 +241,23 @@ Append a JSON file from Cloud Storage to an existing table:
    :start-after: [START bigquery_load_table_gcs_json_append]
    :end-before: [END bigquery_load_table_gcs_json_append]
 
+Append a Parquet file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_append]
+   :end-before: [END bigquery_load_table_gcs_parquet_append]
+
 Overwrite / replace an existing table with a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_json_truncate]
    :end-before: [END bigquery_load_table_gcs_json_truncate]
+
+Overwrite / replace an existing table with a Parquet file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_truncate]
+   :end-before: [END bigquery_load_table_gcs_parquet_truncate]
 
 Customer Managed Encryption Keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
