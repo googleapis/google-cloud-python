@@ -170,6 +170,97 @@ class TestPartialRowData(unittest.TestCase):
         }
         self.assertEqual(result, expected_result)
 
+    def test_cell_value(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+        cell = _make_cell(b'value-bytes')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qualifier: [cell],
+            },
+        }
+
+        result = partial_row_data.cell_value(family_name, qualifier)
+        self.assertEqual(result, cell.value)
+
+    def test_cell_value_invalid_index(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+        cell = _make_cell(b'')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qualifier: [cell],
+            },
+        }
+
+        with self.assertRaises(IndexError):
+            partial_row_data.cell_value(family_name, qualifier, index=None)
+
+    def test_cell_value_invalid_column_family_key(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+
+        partial_row_data = self._make_one(None)
+
+        with self.assertRaises(KeyError):
+            partial_row_data.cell_value(family_name, qualifier)
+
+    def test_cell_value_invalid_column_key(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {},
+        }
+
+        with self.assertRaises(KeyError):
+            partial_row_data.cell_value(family_name, qualifier)
+
+    def test_cell_values(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+        cell = _make_cell(b'value-bytes')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qualifier: [cell],
+            },
+        }
+
+        values = []
+        for value, timestamp_micros in partial_row_data.cell_values(
+                family_name, qualifier):
+            values.append(value)
+
+        self.assertEqual(values[0], cell.value)
+
+    def test_cell_values_with_max_count(self):
+        family_name = u'name1'
+        qualifier = b'col1'
+        cell_1 = _make_cell(b'value-bytes-1')
+        cell_2 = _make_cell(b'value-bytes-2')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qualifier: [cell_1, cell_2],
+            },
+        }
+
+        values = []
+        for value, timestamp_micros in partial_row_data.cell_values(
+                family_name, qualifier, max_count=1):
+            values.append(value)
+
+        self.assertEqual(1, len(values))
+        self.assertEqual(values[0], cell_1.value)
+
     def test_cells_property(self):
         partial_row_data = self._make_one(None)
         cells = {1: 2}
@@ -732,3 +823,9 @@ def _ReadRowsResponseCellChunkPB(*args, **kw):
     message.family_name.value = family_name
     message.qualifier.value = qualifier
     return message
+
+
+def _make_cell(value):
+    from google.cloud.bigtable import row_data
+
+    return row_data.Cell(value, TestCell.timestamp_micros)
