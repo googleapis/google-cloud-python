@@ -305,22 +305,38 @@ def test_delete_dataset(client):
     """Delete a dataset."""
     from google.cloud.exceptions import NotFound
 
-    dataset_id = 'delete_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
+    dataset1_id = 'delete_dataset_{}'.format(_millis())
+    dataset1 = bigquery.Dataset(client.dataset(dataset1_id))
+    client.create_dataset(dataset1)
+
+    dataset2_id = 'delete_dataset_with_tables{}'.format(_millis())
+    dataset2 = bigquery.Dataset(client.dataset(dataset2_id))
+    client.create_dataset(dataset2)
+
+    table = bigquery.Table(dataset2.table('new_table'))
+    client.create_table(table)
 
     # [START bigquery_delete_dataset]
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
 
-    dataset_ref = client.dataset(dataset_id)
-    client.delete_dataset(dataset_ref)  # API request
+    # Delete a dataset that does not contain any tables
+    # dataset1_id = 'my_empty_dataset'
+    dataset1_ref = client.dataset(dataset1_id)
+    client.delete_dataset(dataset1_ref)  # API request
 
-    print('Dataset {} deleted.'.format(dataset_id))
+    print('Dataset {} deleted.'.format(dataset1_id))
+
+    # Use the delete_contents parameter to delete a dataset and its contents
+    # dataset2_id = 'my_dataset_with_tables'
+    dataset2_ref = client.dataset(dataset2_id)
+    client.delete_dataset(dataset2_ref, delete_contents=True)  # API request
+
+    print('Dataset {} deleted.'.format(dataset2_id))
     # [END bigquery_delete_dataset]
 
-    with pytest.raises(NotFound):
-        client.get_dataset(dataset)  # API request
+    for dataset in [dataset1, dataset2]:
+        with pytest.raises(NotFound):
+            client.get_dataset(dataset)  # API request
 
 
 def test_list_tables(client, to_delete):
