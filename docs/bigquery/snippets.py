@@ -998,7 +998,7 @@ def test_load_table_from_uri_append(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
@@ -1036,7 +1036,7 @@ def test_load_table_from_uri_parquet_append(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
@@ -1075,7 +1075,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
@@ -1115,7 +1115,7 @@ def test_load_table_from_uri_parquet_truncate(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
@@ -1209,14 +1209,14 @@ def test_copy_table_multiple_source(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
 
-    table_data = {'table1': 'Washington,WA', 'table2': 'California,CA'}
+    table_data = {'table1': b'Washington,WA', 'table2': b'California,CA'}
     for table_id, data in table_data.items():
         table_ref = source_dataset.table(table_id)
         table = bigquery.Table(table_ref, schema=schema)
         to_delete.insert(0, table)
         job_config = bigquery.LoadJobConfig()
         job_config.schema = schema
-        body = six.StringIO(data)
+        body = six.BytesIO(data)
         client.load_table_from_file(
             body, table_ref, job_config=job_config).result()  # API request
 
