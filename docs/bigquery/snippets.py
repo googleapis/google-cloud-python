@@ -27,6 +27,10 @@ import time
 
 import pytest
 import six
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 from google.cloud import bigquery
 
@@ -940,6 +944,33 @@ def test_load_table_from_uri_cmek(client, to_delete):
     # [END bigquery_load_table_gcs_json_cmek]
 
 
+def test_load_table_from_uri_parquet(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_parquet]
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.PARQUET
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    # [END bigquery_load_table_gcs_parquet]
+
+
 def test_load_table_from_uri_autodetect(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -983,7 +1014,7 @@ def test_load_table_from_uri_append(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body,
         table_ref,
@@ -1013,6 +1044,45 @@ def test_load_table_from_uri_append(client, to_delete):
     # [END bigquery_load_table_gcs_json_append]
 
 
+def test_load_table_from_uri_parquet_append(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.BytesIO(b'Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_parquet_append]
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.PARQUET
+    # The schema of the parquet file must match the table schema in an append
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == previous_rows + 50
+    # [END bigquery_load_table_gcs_parquet_append]
+
+
 def test_load_table_from_uri_truncate(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -1026,7 +1096,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     table_ref = dataset.table('us_states')
-    body = six.StringIO('Washington,WA')
+    body = six.BytesIO(b'Washington,WA')
     client.load_table_from_file(
         body,
         table_ref,
@@ -1056,6 +1126,46 @@ def test_load_table_from_uri_truncate(client, to_delete):
     assert load_job.state == 'DONE'
     assert client.get_table(table_ref).num_rows == 50
     # [END bigquery_load_table_gcs_json_truncate]
+
+
+def test_load_table_from_uri_parquet_truncate(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.BytesIO(b'Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_parquet_truncate]
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    assert previous_rows > 0
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.PARQUET
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == 50
+    # [END bigquery_load_table_gcs_parquet_truncate]
 
 
 def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
@@ -1512,6 +1622,40 @@ def test_client_list_jobs(client):
     for job in job_iterator:
         do_something_with(job)
     # [END client_list_jobs]
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_query_results_as_dataframe(client):
+    # [START bigquery_query_results_dataframe]
+    # client = bigquery.Client()
+    sql = """
+        SELECT name, SUM(number) as count
+        FROM `bigquery-public-data.usa_names.usa_1910_current`
+        GROUP BY name
+        ORDER BY count DESC
+        LIMIT 10
+    """
+
+    df = client.query(sql).to_dataframe()
+    # [END bigquery_query_results_dataframe]
+    assert isinstance(df, pandas.DataFrame)
+    assert len(list(df)) == 2  # verify the number of columns
+    assert len(df) == 10       # verify the number of rows
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_list_rows_as_dataframe(client):
+    # [START bigquery_list_rows_dataframe]
+    # client = bigquery.Client()
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+    table = client.get_table(table_ref)
+
+    df = client.list_rows(table).to_dataframe()
+    # [END bigquery_list_rows_dataframe]
+    assert isinstance(df, pandas.DataFrame)
+    assert len(list(df)) == 2  # verify the number of columns
+    assert len(df) == 10       # verify the number of rows
 
 
 if __name__ == '__main__':

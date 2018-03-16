@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.2.0
+
+### Interface additions
+
+- Add DLP v2 (#5059)
+
 ## 0.1.1
 
 ### Dependencies
