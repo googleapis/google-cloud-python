@@ -264,7 +264,7 @@ class Table(object):
                  chunk is never encountered.
         """
         request = _create_row_request(self.name, row_key=row_key,
-                                         filter_=filter_)
+                                      filter_=filter_)
         client = self._instance._client
         rows_data = PartialRowsData(client._data_stub.ReadRows, request)
         rows_data.consume_all()

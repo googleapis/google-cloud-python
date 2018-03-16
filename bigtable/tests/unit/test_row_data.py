@@ -257,7 +257,7 @@ class TestPartialRowsData(unittest.TestCase):
         client._data_stub = mock.MagicMock()
         request = object()
         partial_rows_data = self._make_one(client._data_stub.ReadRows,
-                                            request)
+                                           request)
         partial_rows_data.rows = value = object()
         self.assertIs(partial_rows_data.rows, value)
 

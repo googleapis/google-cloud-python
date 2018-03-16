@@ -294,7 +294,6 @@ class YieldRowsData(object):
         self.request = request
         self.response_iterator = read_method(request)
 
-
     @property
     def state(self):
         """State machine state.
