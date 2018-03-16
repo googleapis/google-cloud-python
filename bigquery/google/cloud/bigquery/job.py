@@ -154,13 +154,14 @@ class SourceFormat(_EnumApiResourceProperty):
 
     For CSV files, specify `CSV`. For datastore backups, specify
     `DATASTORE_BACKUP`. For newline-delimited json, specify
-    `NEWLINE_DELIMITED_JSON`. For Avro, specify `AVRO`. The default
-    value is `CSV`.
+    `NEWLINE_DELIMITED_JSON`. For Avro, specify `AVRO`. For Parquet, specify
+    `PARQUET`. The default value is `CSV`.
     """
     CSV = 'CSV'
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
+    PARQUET = 'PARQUET'
 
 
 class WriteDisposition(_EnumApiResourceProperty):
