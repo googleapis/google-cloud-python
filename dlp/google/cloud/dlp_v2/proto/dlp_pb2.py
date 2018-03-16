@@ -6659,7 +6659,8 @@ InspectConfig = _reflection.GeneratedProtocolMessageType('InspectConfig', (_mess
     DESCRIPTOR = _INSPECTCONFIG_FINDINGLIMITS,
     __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """Attributes:
+    __doc__ = """
+    Attributes:
         max_findings_per_item:
             Max number of findings that will be returned for each item
             scanned. When set within ``InspectDataSourceRequest``, the
@@ -7293,7 +7294,8 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
     DESCRIPTOR = _INSPECTDATASOURCEDETAILS_REQUESTEDOPTIONS,
     __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """Attributes:
+    __doc__ = """
+    Attributes:
         snapshot_inspect_template:
             If run with an inspect template, a snapshot of it's state at
             the time of this run.
@@ -7306,7 +7308,8 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
     DESCRIPTOR = _INSPECTDATASOURCEDETAILS_RESULT,
     __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """Attributes:
+    __doc__ = """
+    Attributes:
         processed_bytes:
             Total size in bytes that were processed.
         total_estimated_bytes:
@@ -7633,7 +7636,8 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT_CATEGORICALSTATSHISTOGRAMBUCKET,
       __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """Attributes:
+      __doc__ = """
+      Attributes:
           value_frequency_lower_bound:
               Lower bound on the value frequency of the values in this
               bucket.
@@ -7691,7 +7695,8 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYHISTOGRAMBUCKET,
       __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """Attributes:
+      __doc__ = """
+      Attributes:
           equivalence_class_size_lower_bound:
               Lower bound on the size of the equivalence classes in this
               bucket.
@@ -7751,7 +7756,8 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYHISTOGRAMBUCKET,
       __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """Attributes:
+      __doc__ = """
+      Attributes:
           sensitive_value_frequency_lower_bound:
               Lower bound on the sensitive value frequencies of the
               equivalence classes in this bucket.
@@ -7936,7 +7942,8 @@ DateTime = _reflection.GeneratedProtocolMessageType('DateTime', (_message.Messag
     DESCRIPTOR = _DATETIME_TIMEZONE,
     __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """Attributes:
+    __doc__ = """
+    Attributes:
         offset_minutes:
             Set only if the offset can be determined. Positive for time
             ahead of UTC. E.g. For "UTC-9", this value is -540.
@@ -8699,8 +8706,7 @@ DeidentifyTemplate = _reflection.GeneratedProtocolMessageType('DeidentifyTemplat
           The last update timestamp of a inspectTemplate, output only
           field.
       deidentify_config:
-          ///////////// // The core content of the template //
-          ///////////////
+          The core content of the template
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DeidentifyTemplate)
   ))
@@ -9102,7 +9108,8 @@ InspectJobConfig = _reflection.GeneratedProtocolMessageType('InspectJobConfig', 
   DESCRIPTOR = _INSPECTJOBCONFIG,
   __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """Attributes:
+  __doc__ = """
+  Attributes:
       storage_config:
           The data to scan.
       inspect_config:
