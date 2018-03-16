@@ -22,6 +22,8 @@ LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
     os.path.join('..', 'core'),
 )
+
+
 @nox.session
 def default(session):
     """Run the unit test suite.
@@ -45,6 +47,7 @@ def default(session):
         os.path.join('tests', 'unit'),
         *session.posargs
     )
+
 
 @nox.session
 @nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
@@ -91,7 +94,7 @@ def lint(session):
     session.install('.')
     session.run('flake8', 'google', 'tests')
 
-    
+
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
