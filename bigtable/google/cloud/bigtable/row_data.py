@@ -333,7 +333,7 @@ class YieldRowsData(object):
         if self.last_scanned_row_key:
             self._create_retry_request()
 
-            self.response_iterator = self.read_method(self.request)
+        self.response_iterator = self.read_method(self.request)
 
     def _read_next(self):
         """Helper for :meth:`read_rows`."""

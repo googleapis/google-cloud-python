@@ -543,12 +543,14 @@ class TestTable(unittest.TestCase):
 
         response_1 = _ReadRowsResponseV2([chunk_1])
         response_2 = _ReadRowsResponseV2([chunk_2])
-        response_failure_iterator = _MockFailureIterator([response_1])
+        response_failure_iterator_1 = _MockFailureIterator_1()
+        response_failure_iterator_2 = _MockFailureIterator_2([response_1])
         response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_failure_iterator,
+        client._data_stub.ReadRows.side_effect = [response_failure_iterator_1,
+                                                  response_failure_iterator_2,
                                                   response_iterator]
 
         rows = []
@@ -1233,7 +1235,24 @@ class _MockReadRowsIterator(object):
     __next__ = next
 
 
-class _MockFailureIterator(object):
+class _MockFailureIterator_1(object):
+
+    def next(self):
+        class DeadlineExceeded(grpc.RpcError, grpc.Call):
+            """ErrorDeadlineExceeded exception"""
+
+            def code(self):
+                return grpc.StatusCode.DEADLINE_EXCEEDED
+
+            def details(self):
+                return "Failed to read from server"
+
+        raise DeadlineExceeded()
+
+    __next__ = next
+
+
+class _MockFailureIterator_2(object):
 
     def __init__(self, *values):
         self.iter_values = values[0]
@@ -1251,8 +1270,6 @@ class _MockFailureIterator(object):
 
         self.calls += 1
         if self.calls == 1:
-            raise DeadlineExceeded()
-        elif self.calls == 2:
             return self.iter_values[0]
         else:
             raise DeadlineExceeded()
