@@ -18,10 +18,13 @@ from google.auth import credentials
 
 import mock
 import pytest
+import sys
 
-from google.cloud.pubsub_v1.gapic import publisher_client
+
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import publisher_client
+from google.cloud.pubsub_v1.publisher.batch import thread
 
 
 def test_init():
@@ -93,6 +96,7 @@ def test_publish():
     # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
     # Set the mock up to claim indiscriminately that it accepts all messages.
+    batch.settings.max_bytes = sys.maxsize
     batch.will_accept.return_value = True
     batch.publish.side_effect = (
         mock.sentinel.future1,
@@ -135,13 +139,30 @@ def test_publish_data_too_large():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
     topic = 'topic/path'
-    client.batch_settings = types.BatchSettings(
-        0,
-        client.batch_settings.max_latency,
-        client.batch_settings.max_messages
-    )
-    with pytest.raises(ValueError):
-        client.publish(topic, b'This is a text string.')
+    to_send = b'This is a text string.'
+
+    original_batch = mock.create_autospec(thread.Batch)
+    original_batch.settings.max_bytes = 0
+    new_batch = mock.create_autospec(thread.Batch)
+    new_batch.settings.max_bytes = len(to_send)
+
+    client._batches[topic] = original_batch
+    original_batch._commit.assert_not_called()
+    batch_class = 'google.cloud.pubsub_v1.publisher.client.Client._batch'
+    with mock.patch(batch_class) as batch:
+        batch.return_value = new_batch
+        client.publish(topic, to_send)
+        new_batch.publish.assert_called_once()
+        original_batch._commit.assert_not_called()
+
+
+def test__batch():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+    topic = 'topic/path'
+    batch_settings = types.BatchSettings(1, 2, 3)
+    batch = client._batch(topic, batch_settings=batch_settings)
+    assert batch._settings == batch_settings
 
 
 def test_publish_attrs_bytestring():
@@ -151,6 +172,7 @@ def test_publish_attrs_bytestring():
     # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
     # Set the mock up to claim indiscriminately that it accepts all messages.
+    batch.settings.max_bytes = sys.maxsize
     batch.will_accept.return_value = True
 
     topic = 'topic/path'
@@ -180,7 +202,9 @@ def test_publish_new_batch_needed():
     # Set the first mock up to claim indiscriminately that it rejects all
     # messages and the second accepts all.
     batch1.publish.return_value = None
+    batch1.settings.max_bytes = sys.maxsize
     batch2.publish.return_value = mock.sentinel.future
+    batch2.settings.max_bytes = sys.maxsize
 
     topic = 'topic/path'
     client._batches[topic] = batch1

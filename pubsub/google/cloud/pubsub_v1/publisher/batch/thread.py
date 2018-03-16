@@ -97,7 +97,7 @@ class Batch(base.Batch):
         Returns:
             _thread.Lock: A newly created lock.
         """
-        return threading.Lock()
+        return threading.RLock()
 
     @property
     def client(self):
@@ -204,6 +204,8 @@ class Batch(base.Batch):
                 self._messages,
             )
             end = time.time()
+            self._client._publish_count += len(self._messages)
+            self._client._commit_count += 1
             _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
 
             if len(response.message_ids) == len(self._futures):
@@ -234,9 +236,10 @@ class Batch(base.Batch):
 
         # Sleep for however long we should be waiting.
         time.sleep(self._settings.max_latency)
-
         _LOGGER.debug('Monitor is waking up')
-        return self._commit()
+
+        if self._size:
+            return self._commit()
 
     def publish(self, message):
         """Publish a single message.
@@ -278,7 +281,8 @@ class Batch(base.Batch):
 
         # Try to commit, but it must be **without** the lock held, since
         # ``commit()`` will try to obtain the lock.
-        if num_messages >= self._settings.max_messages:
+        if (num_messages >= self._settings.max_messages
+                or self._size >= self._settings.max_bytes):
             self.commit()
 
         return future
