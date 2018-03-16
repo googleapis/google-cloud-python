@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.1.0
+
+### Interface additions
+
+- Added video v1p1beta1 (#5048)
+
 ## 1.0.1
 
 ### Dependencies
