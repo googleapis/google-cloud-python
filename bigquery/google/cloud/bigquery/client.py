@@ -40,10 +40,6 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
-from google.cloud.bigquery.job import CopyJob
-from google.cloud.bigquery.job import ExtractJob
-from google.cloud.bigquery.job import LoadJob
-from google.cloud.bigquery.job import QueryJob, QueryJobConfig
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
@@ -565,13 +561,13 @@ class Client(ClientWithProject):
         """
         config = resource['configuration']
         if 'load' in config:
-            return LoadJob.from_api_repr(resource, self)
+            return job.LoadJob.from_api_repr(resource, self)
         elif 'copy' in config:
-            return CopyJob.from_api_repr(resource, self)
+            return job.CopyJob.from_api_repr(resource, self)
         elif 'extract' in config:
-            return ExtractJob.from_api_repr(resource, self)
+            return job.ExtractJob.from_api_repr(resource, self)
         elif 'query' in config:
-            return QueryJob.from_api_repr(resource, self)
+            return job.QueryJob.from_api_repr(resource, self)
         raise ValueError('Cannot parse job resource')
 
     def get_job(self, job_id, project=None, retry=DEFAULT_RETRY):
@@ -745,7 +741,8 @@ class Client(ClientWithProject):
         job_ref = job._JobReference(job_id, project=project, location=location)
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
-        load_job = LoadJob(job_ref, source_uris, destination, self, job_config)
+        load_job = job.LoadJob(
+            job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
         return load_job
 
@@ -800,7 +797,7 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         job_ref = job._JobReference(job_id, project=project, location=location)
-        load_job = LoadJob(job_ref, None, destination, self, job_config)
+        load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job._build_resource()
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
@@ -923,97 +920,108 @@ class Client(ClientWithProject):
 
         return response
 
-    def copy_table(self, sources, destination, job_id=None, job_id_prefix=None,
-                   job_config=None, retry=DEFAULT_RETRY):
-        """Start a job for copying one or more tables into another table.
+    def copy_table(
+            self, sources, destination, job_id=None, job_id_prefix=None,
+            location=None, project=None, job_config=None,
+            retry=DEFAULT_RETRY):
+        """Copy one or more tables to another table.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
-        :type sources: One of:
-                       :class:`~google.cloud.bigquery.table.TableReference`
-                       sequence of
-                       :class:`~google.cloud.bigquery.table.TableReference`
-        :param sources: Table or tables to be copied.
+        Arguments:
+            sources (Union[google.cloud.bigquery.table.TableReference, \
+            Sequence[google.cloud.bigquery.table.TableReference]]):
+                Table or tables to be copied.
+            destination (google.cloud.bigquery.table.TableReference):
+                Table into which data is to be copied.
 
+        Keyword Arguments:
+            job_id (str): (Optional) The ID of the job.
+            job_id_prefix (str)
+                (Optional) the user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of any
+                source table as well as the destination table.
+            project (str):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.CopyJobConfig):
+                (Optional) Extra configuration options for the job.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
 
-        :type destination: :class:`google.cloud.bigquery.table.TableReference`
-        :param destination: Table into which data is to be copied.
-
-        :type job_id: str
-        :param job_id: (Optional) The ID of the job.
-
-        :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided prefix for a
-                              randomly generated job ID. This parameter will be
-                              ignored if a ``job_id`` is also given.
-
-        :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
-        :param job_config: (Optional) Extra configuration options for the job.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.job.copyjob`
-        :returns: a new :class:`google.cloud.bigquery.job.copyjob` instance
+        Returns:
+            google.cloud.bigquery.job.CopyJob: A new copy job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+        if project is None:
+            project = self.project
+        job_ref = job._JobReference(job_id, project=project, location=location)
 
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
-        job = CopyJob(job_id, sources, destination, client=self,
-                      job_config=job_config)
-        job._begin(retry=retry)
-        return job
+        copy_job = job.CopyJob(
+            job_ref, sources, destination, client=self,
+            job_config=job_config)
+        copy_job._begin(retry=retry)
+        return copy_job
 
     def extract_table(
-            self, source, destination_uris, job_config=None, job_id=None,
-            job_id_prefix=None, retry=DEFAULT_RETRY):
+            self, source, destination_uris, job_id=None, job_id_prefix=None,
+            location=None, project=None, job_config=None,
+            retry=DEFAULT_RETRY):
         """Start a job to extract a table into Cloud Storage files.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
+        Arguments:
+            source (google.cloud.bigquery.table.TableReference):
+                Table to be extracted.
+            destination_uris (Union[str, Sequence[str]]):
+                URIs of Cloud Storage file(s) into which table data is to be
+                extracted; in format
+                ``gs://<bucket_name>/<object_name_or_glob>``.
+
+        Keyword Arguments:
+            job_id (str): (Optional) The ID of the job.
+            job_id_prefix (str)
+                (Optional) the user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                source table.
+            project (str):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.ExtractJobConfig):
+                (Optional) Extra configuration options for the job.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
         :type source: :class:`google.cloud.bigquery.table.TableReference`
         :param source: table to be extracted.
 
-        :type destination_uris: One of:
-                                str or
-                                sequence of str
-        :param destination_uris:
-            URIs of Cloud Storage file(s) into which table data is to be
-            extracted; in format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :type kwargs: dict
-        :param kwargs: Additional keyword arguments.
-
-        :type job_id: str
-        :param job_id: (Optional) The ID of the job.
-
-        :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided prefix for a
-                              randomly generated job ID. This parameter will be
-                              ignored if a ``job_id`` is also given.
-
-        :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
-        :param job_config: (Optional) Extra configuration options for the job.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
-        :returns: a new :class:`google.cloud.bigquery.job.ExtractJob` instance
+        Returns:
+            google.cloud.bigquery.job.ExtractJob: A new extract job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+        if project is None:
+            project = self.project
+        job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
 
-        job = ExtractJob(
-            job_id, source, destination_uris, client=self,
+        extract_job = job.ExtractJob(
+            job_ref, source, destination_uris, client=self,
             job_config=job_config)
-        job._begin(retry=retry)
-        return job
+        extract_job._begin(retry=retry)
+        return extract_job
 
     def query(
             self, query, job_config=None, job_id=None, job_id_prefix=None,
@@ -1051,7 +1059,8 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         job_ref = job._JobReference(job_id, project=project, location=location)
-        query_job = QueryJob(job_ref, query, client=self, job_config=job_config)
+        query_job = job.QueryJob(
+            job_ref, query, client=self, job_config=job_config)
         query_job._begin(retry=retry)
         return query_job
 
@@ -1327,7 +1336,7 @@ class Client(ClientWithProject):
         :rtype: list
         :returns: a list of time partitions
         """
-        config = QueryJobConfig()
+        config = job.QueryJobConfig()
         config.use_legacy_sql = True  # required for '$' syntax
         query_job = self.query(
             'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %

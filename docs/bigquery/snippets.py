@@ -1086,6 +1086,7 @@ def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
 def test_copy_table(client, to_delete):
     dataset_id = 'copy_table_dataset_{}'.format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset.location = 'US'
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
@@ -1097,7 +1098,12 @@ def test_copy_table(client, to_delete):
     # dataset_id = 'my_dataset'
     dest_table_ref = client.dataset(dataset_id).table('destination_table')
 
-    job = client.copy_table(source_table_ref, dest_table_ref)  # API request
+    job = client.copy_table(
+        source_table_ref,
+        dest_table_ref,
+        # Location must match that of the source and destination tables.
+        location='US')  # API request
+
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
@@ -1126,14 +1132,14 @@ def test_copy_table_multiple_source(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
 
-    table_data = {'table1': 'Washington,WA', 'table2': 'California,CA'}
+    table_data = {'table1': b'Washington,WA', 'table2': b'California,CA'}
     for table_id, data in table_data.items():
         table_ref = source_dataset.table(table_id)
         table = bigquery.Table(table_ref, schema=schema)
         to_delete.insert(0, table)
         job_config = bigquery.LoadJobConfig()
         job_config.schema = schema
-        body = six.StringIO(data)
+        body = six.BytesIO(data)
         client.load_table_from_file(
             body,
             table_ref,
@@ -1150,7 +1156,10 @@ def test_copy_table_multiple_source(client, to_delete):
     dest_table_ref = client.dataset(dest_dataset_id).table('destination_table')
 
     job = client.copy_table(
-        [table1_ref, table2_ref], dest_table_ref)  # API request
+        [table1_ref, table2_ref],
+        dest_table_ref,
+        # Location must match that of the source and destination tables.
+        location='US')  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
@@ -1165,6 +1174,7 @@ def test_copy_table_multiple_source(client, to_delete):
 def test_copy_table_cmek(client, to_delete):
     dataset_id = 'copy_table_cmek_{}'.format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dest_dataset.location = 'US'
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
@@ -1187,7 +1197,11 @@ def test_copy_table_cmek(client, to_delete):
     job_config.destination_encryption_configuration = encryption_config
 
     job = client.copy_table(
-        source_table_ref, dest_table_ref, job_config=job_config)  # API request
+        source_table_ref,
+        dest_table_ref,
+        # Location must match that of the source and destination tables.
+        location='US',
+        job_config=job_config)  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == 'DONE'
@@ -1214,7 +1228,10 @@ def test_extract_table(client, to_delete):
     table_ref = dataset_ref.table('shakespeare')
 
     extract_job = client.extract_table(
-        table_ref, destination_uri)  # API request
+        table_ref,
+        destination_uri,
+        # Location must match that of the source table.
+        location='US')  # API request
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table]
 
@@ -1243,7 +1260,11 @@ def test_extract_table_json(client, to_delete):
         bigquery.DestinationFormat.NEWLINE_DELIMITED_JSON)
 
     extract_job = client.extract_table(
-        table_ref, destination_uri, job_config=job_config)  # API request
+        table_ref,
+        destination_uri,
+        job_config=job_config,
+        # Location must match that of the source table.
+        location='US')  # API request
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_json]
 
@@ -1271,7 +1292,11 @@ def test_extract_table_compressed(client, to_delete):
     job_config.compression = bigquery.Compression.GZIP
 
     extract_job = client.extract_table(
-        table_ref, destination_uri, job_config=job_config)  # API request
+        table_ref,
+        destination_uri,
+        # Location must match that of the source table.
+        location='US',
+        job_config=job_config)  # API request
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_compressed]
 
@@ -1288,7 +1313,9 @@ def test_delete_table(client, to_delete):
     dataset_id = 'delete_table_dataset_{}'.format(_millis())
     table_id = 'delete_table_table_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
-    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
     table_ref = dataset.table(table_id)
