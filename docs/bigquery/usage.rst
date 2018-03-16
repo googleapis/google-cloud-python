@@ -346,3 +346,36 @@ Jobs describe actions performed on data in BigQuery tables:
 .. literalinclude:: snippets.py
    :start-after: [START client_list_jobs]
    :end-before: [END client_list_jobs]
+
+
+Using BigQuery with Pandas
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As of version 0.29.0, you can use the
+:func:`~google.cloud.bigquery.table.RowIterator.to_dataframe` function to
+retrieve query results or table rows as a :class:`pandas.DataFrame`.
+
+First, ensure that the :mod:`pandas` library is installed by running:
+
+.. code-block:: bash
+
+   pip install --upgrade pandas
+
+Alternatively, you can install the BigQuery python client library with
+:mod:`pandas` by running:
+
+.. code-block:: bash
+
+   pip install --upgrade google-cloud-bigquery[pandas]
+
+To retrieve query results as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_results_dataframe]
+   :end-before: [END bigquery_query_results_dataframe]
+
+To retrieve table rows as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_list_rows_dataframe]
+   :end-before: [END bigquery_list_rows_dataframe]

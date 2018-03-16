@@ -27,6 +27,10 @@ import time
 
 import pytest
 import six
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 from google.cloud import bigquery
 
@@ -1419,6 +1423,40 @@ def test_client_list_jobs(client):
     for job in job_iterator:
         do_something_with(job)
     # [END client_list_jobs]
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_query_results_as_dataframe(client):
+    # [START bigquery_query_results_dataframe]
+    # client = bigquery.Client()
+    sql = """
+        SELECT name, SUM(number) as count
+        FROM `bigquery-public-data.usa_names.usa_1910_current`
+        GROUP BY name
+        ORDER BY count DESC
+        LIMIT 10
+    """
+
+    df = client.query(sql).to_dataframe()
+    # [END bigquery_query_results_dataframe]
+    assert isinstance(df, pandas.DataFrame)
+    assert len(list(df)) == 2  # verify the number of columns
+    assert len(df) == 10       # verify the number of rows
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+def test_list_rows_as_dataframe(client):
+    # [START bigquery_list_rows_dataframe]
+    # client = bigquery.Client()
+    dataset_ref = client.dataset('samples', project='bigquery-public-data')
+    table_ref = dataset_ref.table('shakespeare')
+    table = client.get_table(table_ref)
+
+    df = client.list_rows(table).to_dataframe()
+    # [END bigquery_list_rows_dataframe]
+    assert isinstance(df, pandas.DataFrame)
+    assert len(list(df)) == 2  # verify the number of columns
+    assert len(df) == 10       # verify the number of rows
 
 
 if __name__ == '__main__':
