@@ -851,12 +851,26 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_begin_w_job_reference(self):
         from google.cloud.bigquery import job
 
-        client = _make_client(project=self.PROJECT)
+        resource = self._make_resource()
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
         job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
         load_job = self._make_one(
             job_ref, [self.SOURCE1], self.TABLE_REF, client)
-        self.assertEqual(load_job.project, 'alternative-project')
-        self.assertEqual(load_job.location, 'US')
+
+        load_job._begin()
+
+        request = conn.api_request.call_args[1]
+        self.assertEqual(request['method'], 'POST')
+        self.assertEqual(
+            request['path'], '/projects/alternative-project/jobs')
+        self.assertEqual(
+            request['data']['jobReference']['projectId'],
+            'alternative-project')
+        self.assertEqual(request['data']['jobReference']['location'], 'US')
+        self.assertEqual(request['data']['jobReference']['jobId'], self.JOB_ID)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -926,6 +940,28 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(req[1]['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_reload_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.reload()
+
+        request = conn.api_request.call_args[1]
+        self.assertEqual(request['method'], 'GET')
+        self.assertEqual(
+            request['path'],
+            '/projects/alternative-project/jobs/{}'.format(self.JOB_ID))
+        self.assertEqual(
+            request['query_params']['location'], 'US')
+
     def test_cancel_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource(ended=True)
@@ -962,6 +998,28 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(req[1]['method'], 'POST')
         self.assertEqual(req[1]['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_cancel_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection({'job': resource})
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.cancel()
+
+        request = conn.api_request.call_args[1]
+        self.assertEqual(request['method'], 'POST')
+        self.assertEqual(
+            request['path'],
+            '/projects/alternative-project/jobs/{}/cancel'.format(self.JOB_ID))
+        self.assertEqual(
+            request['query_params']['location'], 'US')
 
 
 class TestCopyJobConfig(unittest.TestCase, _Base):
