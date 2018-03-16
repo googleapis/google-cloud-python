@@ -699,6 +699,7 @@ def test_table_insert_rows(client, to_delete):
     table_id = 'table_insert_rows_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
+    dataset.location = 'US'
     to_delete.append(dataset)
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
@@ -722,6 +723,7 @@ def test_load_table_from_file(client, to_delete):
     DATASET_ID = 'table_upload_from_file_dataset_{}'.format(_millis())
     TABLE_ID = 'table_upload_from_file_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -737,7 +739,10 @@ Wylma Phlyntstone,29
     job_config.skip_leading_rows = 1
     job_config.autodetect = True
     job = client.load_table_from_file(
-        csv_file, table_ref, job_config=job_config)  # API request
+        csv_file,
+        table_ref,
+        location='US',  # Location must match that of the destination dataset.
+        job_config=job_config)  # API request
     job.result()  # Waits for table load to complete.
     # [END load_table_from_file]
 
@@ -775,6 +780,7 @@ Wylma Phlyntstone,29
 def test_load_table_from_uri(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -792,6 +798,7 @@ def test_load_table_from_uri(client, to_delete):
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
         dataset_ref.table('us_states'),
+        location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
 
     assert load_job.job_type == 'load'
@@ -806,6 +813,7 @@ def test_load_table_from_uri(client, to_delete):
 def test_load_table_from_uri_cmek(client, to_delete):
     dataset_id = 'load_table_from_uri_cmek_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -827,6 +835,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
         dataset_ref.table('us_states'),
+        location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
 
     assert load_job.job_type == 'load'
@@ -842,6 +851,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
 def test_load_table_from_uri_autodetect(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -856,6 +866,7 @@ def test_load_table_from_uri_autodetect(client, to_delete):
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
         dataset_ref.table('us_states'),
+        location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
 
     assert load_job.job_type == 'load'
@@ -870,6 +881,7 @@ def test_load_table_from_uri_autodetect(client, to_delete):
 def test_load_table_from_uri_append(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -881,7 +893,10 @@ def test_load_table_from_uri_append(client, to_delete):
     table_ref = dataset.table('us_states')
     body = six.StringIO('Washington,WA')
     client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
+        body,
+        table_ref,
+        location='US',  # Location must match that of the destination dataset.
+        job_config=job_config).result()
 
     # [START bigquery_load_table_gcs_json_append]
     # client = bigquery.Client()
@@ -894,6 +909,7 @@ def test_load_table_from_uri_append(client, to_delete):
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
         table_ref,
+        location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
 
     assert load_job.job_type == 'load'
@@ -908,6 +924,7 @@ def test_load_table_from_uri_append(client, to_delete):
 def test_load_table_from_uri_truncate(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -919,7 +936,10 @@ def test_load_table_from_uri_truncate(client, to_delete):
     table_ref = dataset.table('us_states')
     body = six.StringIO('Washington,WA')
     client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
+        body,
+        table_ref,
+        location='US',  # Location must match that of the destination dataset.
+        job_config=job_config).result()
 
     # [START bigquery_load_table_gcs_json_truncate]
     # client = bigquery.Client()
@@ -934,6 +954,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
         table_ref,
+        location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
 
     assert load_job.job_type == 'load'
@@ -998,11 +1019,13 @@ def test_copy_table(client, to_delete):
 def test_copy_table_multiple_source(client, to_delete):
     dest_dataset_id = 'dest_dataset_{}'.format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dest_dataset_id))
+    dest_dataset.location = 'US'
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
     source_dataset_id = 'source_dataset_{}'.format(_millis())
     source_dataset = bigquery.Dataset(client.dataset(source_dataset_id))
+    source_dataset.location = 'US'
     source_dataset = client.create_dataset(source_dataset)
     to_delete.append(source_dataset)
 
@@ -1020,7 +1043,10 @@ def test_copy_table_multiple_source(client, to_delete):
         job_config.schema = schema
         body = six.StringIO(data)
         client.load_table_from_file(
-            body, table_ref, job_config=job_config).result()  # API request
+            body,
+            table_ref,
+            location='US',  # Location must match that of the destination dataset.
+            job_config=job_config).result()
 
     # [START bigquery_copy_table_multiple_source]
     # client = bigquery.Client()
