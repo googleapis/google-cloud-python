@@ -263,11 +263,10 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request_pb = _create_row_request(self.name, row_key=row_key,
+        request = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        rows_data = PartialRowsData(response_iterator)
+        rows_data = PartialRowsData(client._data_stub.ReadRows, request)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')

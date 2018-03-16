@@ -475,7 +475,6 @@ class TestTable(unittest.TestCase):
 
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT
 
@@ -484,24 +483,19 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
-        request_pb = object()  # Returned by our mock.
+        request = object()  # Returned by our mock.
         mock_created = []
 
         def mock_create_row_request(table_name, **kwargs):
             mock_created.append((table_name, kwargs))
-            return request_pb
-
-        # Create response_iterator
-        response_iterator = object()
+            return request
 
         # Patch the stub used by the API method.
-        # client._data_stub = stub = _FakeStub(response_iterator)
-        client._data_stub = stub = mock.MagicMock()
-        # client._data_stub.ReadRows.return_value = response_iterator
+        client._data_stub = mock.MagicMock()
 
         # Create expected_result.
         expected_result = PartialRowsData(client._data_stub.ReadRows,
-                                          request_pb)
+                                          request)
 
         # Perform the method and check the result.
         start_key = b'start-key'
@@ -514,11 +508,6 @@ class TestTable(unittest.TestCase):
                 limit=limit)
 
         self.assertEqual(result.rows, expected_result.rows)
-        self.assertEqual(stub.method_calls, [(
-            'ReadRows',
-            (request_pb,),
-            {},
-        )])
         created_kwargs = {
             'start_key': start_key,
             'end_key': end_key,
@@ -553,18 +542,14 @@ class TestTable(unittest.TestCase):
         )
 
         response_1 = _ReadRowsResponseV2([chunk_1])
-        response_iterator_1 = _MockReadRowsIterator(response_1)
-
-        response_failure_iterator = _MockFailureIterator()
-
         response_2 = _ReadRowsResponseV2([chunk_2])
-        response_iterator_2 = _MockReadRowsIterator(response_2)
+        response_failure_iterator = _MockFailureIterator([response_1])
+        response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_iterator_1,
-                                                  response_failure_iterator,
-                                                  response_iterator_2]
+        client._data_stub.ReadRows.side_effect = [response_failure_iterator,
+                                                  response_iterator]
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY_1,
@@ -1250,9 +1235,13 @@ class _MockReadRowsIterator(object):
 
 class _MockFailureIterator(object):
 
+    def __init__(self, *values):
+        self.iter_values = values[0]
+        self.calls = 0
+
     def next(self):
         class DeadlineExceeded(grpc.RpcError, grpc.Call):
-            """ErrorUnavailable exception"""
+            """ErrorDeadlineExceeded exception"""
 
             def code(self):
                 return grpc.StatusCode.DEADLINE_EXCEEDED
@@ -1260,7 +1249,13 @@ class _MockFailureIterator(object):
             def details(self):
                 return "Failed to read from server"
 
-        raise DeadlineExceeded()
+        self.calls += 1
+        if self.calls == 1:
+            raise DeadlineExceeded()
+        elif self.calls == 2:
+            return self.iter_values[0]
+        else:
+            raise DeadlineExceeded()
 
     __next__ = next
 

@@ -192,9 +192,16 @@ class InvalidChunk(RuntimeError):
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
-    :param response_iterator: A streaming iterator returned from a
-                              ``ReadRows`` request.
+    :type read_method: :class:`client._data_stub.ReadRows`
+    :param read_method: ``ReadRows`` method.
+
+    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param request: (Optional) The ``ReadRowsRequest`` protobuf for
+                    the iterator. If present, used to enable retry by
+                    setting a new start_key for the request equal to the
+                    last_scanned_row_key. A new iterator is created, allowing
+                    the scan to continue from the point just beyond the last
+                    successfully read row, identified by last_scanned_row_key.
     """
 
     START = 'Start'                         # No responses yet processed.
@@ -211,7 +218,7 @@ class PartialRowsData(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return other._response_iterator == self._response_iterator
+        return other._generator == self._generator
 
     def __ne__(self, other):
         return not self == other
@@ -248,12 +255,11 @@ def _retry_read_rows_exception(exc):
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
-    :param response_iterator: A streaming iterator returned from a
-                              ``ReadRows`` request.
+    :type read_method: :class:`client._data_stub.ReadRows`
+    :param read_method: ``ReadRows`` method.
 
-    :type request_pb: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :param request_pb: (Optional) The ``ReadRowsRequest`` protobuf for
+    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param request: (Optional) The ``ReadRowsRequest`` protobuf for
                     the iterator. If present, used to enable retry by
                     setting a new start_key for the request equal to the
                     last_scanned_row_key. A new iterator is created, allowing
@@ -314,7 +320,7 @@ class YieldRowsData(object):
         self.response_iterator.cancel()
 
     def _create_retry_request(self):
-        """Helper for :meth:`_retry_read_rows`."""
+        """Helper for :meth:`read_rows`."""
         row_range = self.request.rows.row_ranges.pop()
         range_kwargs = {}
         # start AFTER the row_key of the last successfully read row
@@ -322,23 +328,25 @@ class YieldRowsData(object):
         range_kwargs['end_key_open'] = row_range.end_key_open
         self.request.rows.row_ranges.add(**range_kwargs)
 
-    def _retry_read_rows(self):
+    def _on_error(self, exc):
         """Helper for :meth:`read_rows`."""
         # restart the read scan from AFTER the last successfully read row
-        if (self.last_scanned_row_key):
+        if self.last_scanned_row_key:
             self._create_retry_request()
 
             self.response_iterator = self.read_method(self.request)
 
+    def _read_next(self):
+        """Helper for :meth:`read_rows`."""
         return six.next(self.response_iterator)
 
     def _read_next_response(self):
         """Helper for :meth:`read_rows`."""
-        next_response = functools.partial(self._retry_read_rows)
+        next_response = functools.partial(self._read_next)
         retry_ = retry.Retry(
             predicate=_retry_read_rows_exception,
             deadline=60)
-        return retry_(next_response)()
+        return retry_(next_response, on_error=self._on_error)()
 
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
