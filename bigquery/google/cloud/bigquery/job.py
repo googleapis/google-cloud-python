@@ -1352,10 +1352,7 @@ class CopyJob(_AsyncJob):
             })
 
         return {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
 
@@ -1565,15 +1562,10 @@ class ExtractJob(_AsyncJob):
             ['extract', 'destinationUris'],
             self.destination_uris)
 
-        resource = {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+        return {
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
-
-        return resource
 
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
@@ -2086,10 +2078,7 @@ class QueryJob(_AsyncJob):
         configuration = self._configuration.to_api_repr()
 
         resource = {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
         configuration['query']['query'] = self.query

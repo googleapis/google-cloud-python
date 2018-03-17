@@ -44,7 +44,7 @@ from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import Forbidden, NotFound
+from google.cloud.exceptions import BadRequest, Forbidden, NotFound
 from google.cloud import storage
 
 from test_utils.retry import RetryErrors
@@ -557,24 +557,17 @@ class TestBigQuery(unittest.TestCase):
     def test_load_table_from_file_w_explicit_location(self):
         # Create a temporary bucket for extract files.
         storage_client = storage.Client()
-        eu_bucket_name = 'bq_load_table_eu_extract_test' + unique_resource_id()
-        eu_bucket = storage_client.bucket(eu_bucket_name)
-        eu_bucket.location = 'eu'
-        self.to_delete.append(eu_bucket)
-        eu_bucket.create()
-        us_bucket_name = 'bq_load_table_us_extract_test' + unique_resource_id()
-        us_bucket = storage_client.bucket(us_bucket_name)
-        us_bucket.location = 'us'
-        self.to_delete.append(us_bucket)
-        us_bucket.create()
+        bucket_name = 'bq_load_table_eu_extract_test' + unique_resource_id()
+        bucket = storage_client.bucket(bucket_name)
+        bucket.location = 'eu'
+        self.to_delete.append(bucket)
+        bucket.create()
 
         # Create a temporary dataset & table in the EU.
         table_bytes = six.BytesIO(b'a,3\nb,2\nc,1\n')
         client = Config.CLIENT
         dataset = self.temp_dataset(
             _make_dataset_id('eu_load_file'), location='EU')
-        us_dataset = self.temp_dataset(
-            _make_dataset_id('us_load_file'), location='US')
         table_ref = dataset.table('letters')
         job_config = bigquery.LoadJobConfig()
         job_config.skip_leading_rows = 0
@@ -602,31 +595,31 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(max_value, 3)
 
         # Cannot query from US.
-        with self.assertRaises(NotFound):
+        with self.assertRaises(BadRequest):
             list(client.query(query_string, location='US'))
 
-        # Can copy to EU.
+        # Can copy from EU.
         copy_job = client.copy_table(
             table_ref, dataset.table('letters2'), location='EU')
         copy_job.result()
 
-        # Cannot copy to US.
-        with self.assertRaises(NotFound):
+        # Cannot copy from US.
+        with self.assertRaises(BadRequest):
             client.copy_table(
-                table_ref, us_dataset.table('letters'), location='EU').result()
+                table_ref, dataset.table('letters2_us'), location='US').result()
 
         # Can extract from EU.
         extract_job = client.extract_table(
             table_ref,
-            'gs://{}/letters.csv'.format(eu_bucket_name),
+            'gs://{}/letters.csv'.format(bucket_name),
             location='EU')
         extract_job.result()
 
         # Cannot extract from US.
-        with self.assertRaises(NotFound):
+        with self.assertRaises(BadRequest):
             client.extract_table(
                 table_ref,
-                'gs://{}/letters.csv'.format(us_bucket_name),
+                'gs://{}/letters-us.csv'.format(bucket_name),
                 location='US').result()
 
     def _create_storage(self, bucket_name, blob_name):
