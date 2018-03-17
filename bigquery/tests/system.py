@@ -606,7 +606,8 @@ class TestBigQuery(unittest.TestCase):
         # Cannot copy from US.
         with self.assertRaises(BadRequest):
             client.copy_table(
-                table_ref, dataset.table('letters2_us'), location='US').result()
+                table_ref, dataset.table('letters2_us'),
+                location='US').result()
 
         # Can extract from EU.
         extract_job = client.extract_table(
