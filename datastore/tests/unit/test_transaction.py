@@ -175,6 +175,74 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(entity.key.path, [{'kind': kind, 'id': id1}])
         ds_api.begin_transaction.assert_called_once_with(project)
 
+    def test_transaction_id_same_on_retry(self):
+        project = 'PROJECT'
+        kind = 'KIND'
+        id1 = 123
+        key = _make_key(kind, id1, project)
+        txn_pb = mock.Mock(
+            transaction=id1, spec=['transaction'])
+        begin_txn = mock.Mock(return_value=txn_pb, spec=[])
+        commit_method = mock.Mock(spec=[])
+        commit_method.side_effect = [_make_gax_error("UNAVAILABLE", "none"),
+                                     _make_gax_error("UNAVAILABLE", "none"),
+                                     _make_commit_response(key)]
+        ds_api =  mock.Mock(
+            commit=commit_method, begin_transaction=begin_txn,
+            spec=['begin_transaction', 'commit'])
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client)
+        xact.begin()
+        xact.commit()
+        self.assertEqual(len(ds_api.commit.mock_calls), 3)
+        for call in ds_api.commit.mock_calls:
+            #assert transaction id is same on subsequent calls
+            self.assertEqual(call[2]['transaction'], id1)
+
+    def test_transaction_id_fail_on_read_only(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        project = 'PROJECT'
+        kind = 'KIND'
+        id1 = 123
+        key = _make_key(kind, id1, project)
+        txn_pb = mock.Mock(
+            transaction=id1, spec=['transaction'])
+        begin_txn = mock.Mock(return_value=txn_pb, spec=[])
+        commit_method = mock.Mock(spec=[])
+        commit_method.side_effect = _make_gax_error("UNAVAILABLE", "none")
+        ds_api =  mock.Mock(
+            commit=commit_method, begin_transaction=begin_txn,
+            spec=['begin_transaction', 'commit'])
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client, read_only=True)
+        xact.begin()
+        with self.assertRaises(ServiceUnavailable):
+            xact.commit()
+
+    def test_transaction_raise_gax_error(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.api_core.exceptions import InternalServerError
+
+        project = 'PROJECT'
+        kind = 'KIND'
+        id1 = 123
+        key = _make_key(kind, id1, project)
+        txn_pb = mock.Mock(
+            transaction=id1, spec=['transaction'])
+        begin_txn = mock.Mock(return_value=txn_pb, spec=[])
+        commit_method = mock.Mock(
+             return_value=_make_commit_response(key), spec=[])
+        commit_method.side_effect = _make_gax_error("INTERNAL", "none")
+        ds_api =  mock.Mock(
+            commit=commit_method, begin_transaction=begin_txn,
+            spec=['begin_transaction', 'commit'])
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client)
+        xact.begin()
+        with self.assertRaises(InternalServerError):
+            xact.commit()
+
     def test_context_manager_no_raise(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
@@ -317,3 +385,22 @@ def _make_datastore_api(*keys, **kwargs):
     return mock.Mock(
         commit=commit_method, begin_transaction=begin_txn,
         spec=['begin_transaction', 'commit', 'rollback'])
+
+
+def _make_rendezvous(status_code, details):
+    from grpc import _channel
+    from google.cloud import exceptions
+
+    exc_state = _channel._RPCState((), None, None, status_code, details)
+    return exceptions.GrpcRendezvous(exc_state, None, None, None)
+
+
+def _make_gax_error(err_name, details):
+    from google.gax import errors
+    import grpc
+
+    # First, create low-level GrpcRendezvous exception.
+    status_code = getattr(grpc.StatusCode, err_name)
+    cause = _make_rendezvous(status_code, details)
+    # Then put it into a high-level GaxError.
+    return errors.GaxError(err_name, cause=cause)
