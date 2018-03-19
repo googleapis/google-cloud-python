@@ -195,12 +195,8 @@ class PartialRowsData(object):
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :param request: (Optional) The ``ReadRowsRequest`` protobuf for
-                    the iterator. If present, used to enable retry by
-                    setting a new start_key for the request equal to the
-                    last_scanned_row_key. A new iterator is created, allowing
-                    the scan to continue from the point just beyond the last
-                    successfully read row, identified by last_scanned_row_key.
+    :param request: The ``ReadRowsRequest`` message used to create a
+                    ReadRowsResponse iterator.
     """
 
     START = 'Start'                         # No responses yet processed.
@@ -258,16 +254,13 @@ class YieldRowsData(object):
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
-    :param request: (Optional) The ``ReadRowsRequest`` protobuf for
-                    the iterator. If present, used to enable retry by
-                    setting a new start_key for the request equal to the
-                    last_scanned_row_key. A new iterator is created, allowing
-                    the scan to continue from the point just beyond the last
-                    successfully read row, identified by last_scanned_row_key.
-
-    :type client: :class:`Client <google.cloud.bigtable.client.Client>`
-    :param client: (Optional) The client that owns the instance. Used for
-                    retry to create a new iterator.
+    :param request: The ``ReadRowsRequest`` message used to create a
+                    ReadRowsResponse iterator. If the iterator fails, a new
+                    iterator is created, allowing the scan to continue from
+                    the point just beyond the last successfully read row,
+                    identified by self.last_scanned_row_key. The retry happens
+                    inside of the Retry class, using a predicate for the
+                    expected exceptions during iteration.
     """
 
     START = 'Start'  # No responses yet processed.
