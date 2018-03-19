@@ -16,7 +16,6 @@
 
 
 import copy
-import functools
 import six
 
 import grpc
@@ -341,11 +340,10 @@ class YieldRowsData(object):
 
     def _read_next_response(self):
         """Helper for :meth:`read_rows`."""
-        next_response = functools.partial(self._read_next)
         retry_ = retry.Retry(
             predicate=_retry_read_rows_exception,
             deadline=60)
-        return retry_(next_response, on_error=self._on_error)()
+        return retry_(self._read_next, on_error=self._on_error)()
 
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
