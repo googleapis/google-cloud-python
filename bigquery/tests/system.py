@@ -892,6 +892,18 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(BadRequest):
             Config.CLIENT.query('invalid syntax;').result()
 
+    def test_query_w_wrong_config(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        good_query = 'SELECT 1;'
+        rows = list(Config.CLIENT.query('SELECT 1;').result())
+        assert rows[0][0] == 1
+
+        bad_config = LoadJobConfig()
+        bad_config.destination = Config.CLIENT.dataset('dset').table('tbl')
+        with self.assertRaises(Exception):
+            Config.CLIENT.query(good_query, job_config=bad_config).result()
+
     def test_query_w_timeout(self):
         query_job = Config.CLIENT.query(
             'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
