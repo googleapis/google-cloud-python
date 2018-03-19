@@ -684,7 +684,6 @@ class TestLoadJob(unittest.TestCase, _Base):
             job._begin()
 
     def test_begin_w_bound_client(self):
-        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -698,27 +697,25 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'load': {
-                    'sourceUris': [self.SOURCE1],
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.TABLE_ID,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/jobs'.format(self.PROJECT),
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'load': {
+                        'sourceUris': [self.SOURCE1],
+                        'destinationTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.TABLE_ID,
+                        },
                     },
                 },
-            },
-        }
-        self.assertEqual(req[1]['data'], SENT)
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_autodetect(self):
@@ -755,12 +752,10 @@ class TestLoadJob(unittest.TestCase, _Base):
                 },
             },
         }
-        expected_request = {
-            'method': 'POST',
-            'path': path,
-            'data': sent,
-        }
-        self.assertEqual(conn.api_request.call_args[1], expected_request)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data=sent)
         self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
@@ -830,7 +825,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
+        conn1.api_request.assert_not_called()
         self.assertEqual(len(conn2.api_request.call_args_list), 1)
         req = conn2.api_request.call_args_list[0]
         self.assertEqual(req[1]['method'], 'POST')
@@ -881,11 +876,10 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -898,12 +892,11 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -915,10 +908,9 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -933,11 +925,10 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_job_reference(self):
@@ -973,10 +964,9 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job.cancel()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_alternate_client(self):
@@ -992,11 +982,10 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job.cancel(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_job_reference(self):
@@ -1307,31 +1296,29 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'copy': {
-                    'sourceTables': [{
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.SOURCE_TABLE
-                    }],
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.DESTINATION_TABLE,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'copy': {
+                        'sourceTables': [{
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.SOURCE_TABLE
+                        }],
+                        'destinationTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.DESTINATION_TABLE,
+                        },
                     },
                 },
-            },
-        }
-        self.assertEqual(req[1]['data'], SENT)
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
@@ -1367,21 +1354,19 @@ class TestCopyJob(unittest.TestCase, _Base):
                              config)
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'copy': COPY_CONFIGURATION,
-            },
-        }
-        self.assertEqual(req[1]['data'], SENT)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'copy': COPY_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
@@ -1395,11 +1380,10 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -1413,12 +1397,11 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -1431,10 +1414,9 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1450,11 +1432,10 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1679,27 +1660,25 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'extract': {
-                    'sourceTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.SOURCE_TABLE
-                    },
-                    'destinationUris': [self.DESTINATION_URI],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
-        self.assertEqual(req[1]['data'], SENT)
+                'configuration': {
+                    'extract': {
+                        'sourceTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.SOURCE_TABLE
+                        },
+                        'destinationUris': [self.DESTINATION_URI],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
@@ -1737,21 +1716,19 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'extract': EXTRACT_CONFIGURATION,
-            },
-        }
-        self.assertEqual(req[1]['data'], SENT)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'extract': EXTRACT_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
@@ -1764,11 +1741,10 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -1782,12 +1758,11 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -1801,10 +1776,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn.api_request.assert_called_once_with(method='GET', path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1821,11 +1793,8 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -2650,28 +2619,26 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'defaultDataset': {
-                        'projectId': self.PROJECT,
-                        'datasetId': DS_ID,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'defaultDataset': {
+                            'projectId': self.PROJECT,
+                            'datasetId': DS_ID,
+                        },
                     },
                 },
-            },
-        }
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -2732,23 +2699,21 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'dryRun': True,
-                'query': QUERY_CONFIGURATION,
-            },
-        }
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'dryRun': True,
+                    'query': QUERY_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_begin_w_udf(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2781,29 +2746,27 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
         self.assertEqual(job.udf_resources, udf_resources)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': True,
-                    'userDefinedFunctionResources': [
-                        {'resourceUri': RESOURCE_URI},
-                        {'inlineCode': INLINE_UDF_CODE},
-                    ]
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': True,
+                        'userDefinedFunctionResources': [
+                            {'resourceUri': RESOURCE_URI},
+                            {'inlineCode': INLINE_UDF_CODE},
+                        ]
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_begin_w_named_query_parameter(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2839,27 +2802,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'parameterMode': 'NAMED',
-                    'queryParameters': config['queryParameters'],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'parameterMode': 'NAMED',
+                        'queryParameters': config['queryParameters'],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_begin_w_positional_query_parameter(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2894,27 +2855,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'parameterMode': 'POSITIONAL',
-                    'queryParameters': config['queryParameters'],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'parameterMode': 'POSITIONAL',
+                        'queryParameters': config['queryParameters'],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_begin_w_table_defs(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2980,28 +2939,26 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': True,
-                    'tableDefinitions': {
-                        bt_table: BT_CONFIG_RESOURCE,
-                        csv_table: CSV_CONFIG_RESOURCE,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': True,
+                        'tableDefinitions': {
+                            bt_table: BT_CONFIG_RESOURCE,
+                            csv_table: CSV_CONFIG_RESOURCE,
+                        },
                     },
                 },
-            },
-        }
+            })
         self._verifyResourceProperties(job, want_resource)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_dry_run_query(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -3023,25 +2980,23 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
         self.assertEqual(job.udf_resources, [])
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-                'dryRun': True,
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                    },
+                    'dryRun': True,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req[1]['data'], SENT)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -3051,11 +3006,10 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
@@ -3067,12 +3021,11 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
-        self.assertEqual(req[1]['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -3094,10 +3047,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertNotEqual(job.destination, table_ref)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn.api_request.assert_called_once_with(method='GET', path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -3119,11 +3069,8 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1.api_request.call_args_list), 0)
-        self.assertEqual(len(conn2.api_request.call_args_list), 1)
-        req = conn2.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')

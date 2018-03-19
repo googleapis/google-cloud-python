@@ -82,14 +82,10 @@ class TestClient(unittest.TestCase):
                 'nothere', None, project='other-project', location='US',
                 timeout_ms=500)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(
-            req[1]['path'], '/projects/other-project/queries/nothere')
-        self.assertEqual(
-            req[1]['query_params'],
-            {'maxResults': 0, 'timeoutMs': 500, 'location': 'US'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/queries/nothere',
+            query_params={'maxResults': 0, 'timeoutMs': 500, 'location': 'US'})
 
     def test__get_query_results_hit(self):
         job_id = 'query_job'
@@ -133,7 +129,6 @@ class TestClient(unittest.TestCase):
 
         PROJECT_1 = 'PROJECT_ONE'
         PROJECT_2 = 'PROJECT_TWO'
-        PATH = 'projects'
         TOKEN = 'TOKEN'
         DATA = {
             'nextPageToken': TOKEN,
@@ -167,13 +162,10 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/projects', query_params={})
 
     def test_list_projects_explicit_response_missing_projects_key(self):
-        PATH = 'projects'
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _make_credentials()
@@ -188,12 +180,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(projects), 0)
         self.assertIsNone(token)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'],
-                         {'maxResults': 3, 'pageToken': TOKEN})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects',
+            query_params={'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_datasets_defaults(self):
         from google.cloud.bigquery.dataset import DatasetListItem
@@ -233,10 +223,8 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/%s' % PATH, query_params={})
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
@@ -257,13 +245,15 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(datasets), 0)
         self.assertIsNone(token)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'],
-                         {'all': True, 'filter': FILTER,
-                          'maxResults': 3, 'pageToken': TOKEN})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={
+                'all': True,
+                'filter': FILTER,
+                'maxResults': 3,
+                'pageToken': TOKEN,
+            })
 
     def test_dataset_with_specified_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -309,10 +299,8 @@ class TestClient(unittest.TestCase):
 
         dataset = client.get_dataset(dataset_ref)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % path)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/%s' % path)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
         # Test retry.
@@ -362,16 +350,14 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(RESOURCE)
         ds = client.create_dataset(Dataset(client.dataset(self.DS_ID)))
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        SENT = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
-            'labels': {},
-        }
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference':
+                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'labels': {},
+            })
         self.assertEqual(ds.dataset_id, self.DS_ID)
         self.assertEqual(ds.project, self.PROJECT)
         self.assertEqual(ds.etag, RESOURCE['etag'])
@@ -418,23 +404,21 @@ class TestClient(unittest.TestCase):
         ds_arg.location = LOCATION
         ds_arg.labels = LABELS
         ds = client.create_dataset(ds_arg)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        SENT = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
-            'description': DESCRIPTION,
-            'friendlyName': FRIENDLY_NAME,
-            'location': LOCATION,
-            'defaultTableExpirationMs': 3600,
-            'access': [
-                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'view': VIEW}],
-            'labels': LABELS,
-        }
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference':
+                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'description': DESCRIPTION,
+                'friendlyName': FRIENDLY_NAME,
+                'location': LOCATION,
+                'defaultTableExpirationMs': 3600,
+                'access': [
+                    {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                    {'view': VIEW}],
+                'labels': LABELS,
+            })
         self.assertEqual(ds.dataset_id, self.DS_ID)
         self.assertEqual(ds.project, self.PROJECT)
         self.assertEqual(ds.etag, RESOURCE['etag'])
@@ -466,20 +450,18 @@ class TestClient(unittest.TestCase):
 
         got = client.create_table(table)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'timePartitioning': {'type': 'DAY'},
-            'labels': {},
-        }
-        self.assertEqual(req[1]['data'], sent)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'timePartitioning': {'type': 'DAY'},
+                'labels': {},
+            })
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -506,20 +488,18 @@ class TestClient(unittest.TestCase):
 
         got = client.create_table(table)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'labels': {},
-            'encryptionConfiguration': {'kmsKeyName': self.KMS_KEY_NAME},
-        }
-        self.assertEqual(req[1]['data'], sent)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'labels': {},
+                'encryptionConfiguration': {'kmsKeyName': self.KMS_KEY_NAME},
+            })
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_day_partition_and_expire(self):
@@ -544,20 +524,18 @@ class TestClient(unittest.TestCase):
 
         got = client.create_table(table)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
-            'labels': {},
-        }
-        self.assertEqual(req[1]['data'], sent)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
+                'labels': {},
+            })
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -583,13 +561,13 @@ class TestClient(unittest.TestCase):
                         'name': 'full_name',
                         'type': 'STRING',
                         'mode': 'REQUIRED',
-                        'description': None
+                        'description': None,
                     },
                     {
                         'name': 'age',
                         'type': 'INTEGER',
                         'mode': 'REQUIRED',
-                        'description': None
+                        'description': None,
                     },
                 ],
             },
@@ -605,36 +583,34 @@ class TestClient(unittest.TestCase):
 
         got = client.create_table(table)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID,
-            },
-            'schema': {
-                'fields': [
-                    {
-                        'name': 'full_name',
-                        'type': 'STRING',
-                        'mode': 'REQUIRED',
-                        'description': None
-                    },
-                    {
-                        'name': 'age',
-                        'type': 'INTEGER',
-                        'mode': 'REQUIRED',
-                        'description': None
-                    },
-                ],
-            },
-            'view': {'query': query, 'useLegacySql': False},
-            'labels': {},
-        }
-        self.assertEqual(req[1]['data'], sent)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID,
+                },
+                'schema': {
+                    'fields': [
+                        {
+                            'name': 'full_name',
+                            'type': 'STRING',
+                            'mode': 'REQUIRED',
+                            'description': None,
+                        },
+                        {
+                            'name': 'age',
+                            'type': 'INTEGER',
+                            'mode': 'REQUIRED',
+                            'description': None,
+                        },
+                    ],
+                },
+                'view': {'query': query, 'useLegacySql': False},
+                'labels': {},
+            })
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
         self.assertEqual(got.dataset_id, self.DS_ID)
@@ -670,23 +646,21 @@ class TestClient(unittest.TestCase):
 
         got = client.create_table(table)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID,
-            },
-            'externalDataConfiguration': {
-                'sourceFormat': SourceFormat.CSV,
-                'autodetect': True,
-            },
-            'labels': {},
-        }
-        self.assertEqual(req[1]['data'], sent)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID,
+                },
+                'externalDataConfiguration': {
+                    'sourceFormat': SourceFormat.CSV,
+                    'autodetect': True,
+                },
+                'labels': {},
+            })
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
         self.assertEqual(got.dataset_id, self.DS_ID)
@@ -712,10 +686,8 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection(resource)
         table = client.get_table(self.TABLE_REF)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % path)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/%s' % path)
         self.assertEqual(table.table_id, self.TABLE_ID)
 
     def test_update_dataset_w_invalid_field(self):
@@ -763,19 +735,17 @@ class TestClient(unittest.TestCase):
         ds2 = client.update_dataset(
             ds, ['description', 'friendly_name', 'location', 'labels',
                  'access_entries'])
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'PATCH')
-        SENT = {
-            'description': DESCRIPTION,
-            'friendlyName': FRIENDLY_NAME,
-            'location': LOCATION,
-            'labels': LABELS,
-            'access': ACCESS,
-        }
-        self.assertEqual(req[1]['data'], SENT)
-        self.assertEqual(req[1]['path'], '/' + PATH)
-        self.assertIsNone(req[1]['headers'])
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            data={
+                'description': DESCRIPTION,
+                'friendlyName': FRIENDLY_NAME,
+                'location': LOCATION,
+                'labels': LABELS,
+                'access': ACCESS,
+            },
+            path='/' + PATH,
+            headers=None)
         self.assertEqual(ds2.description, ds.description)
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
         self.assertEqual(ds2.location, ds.location)
@@ -785,7 +755,7 @@ class TestClient(unittest.TestCase):
         # ETag becomes If-Match header.
         ds._properties['etag'] = 'etag'
         client.update_dataset(ds, [])
-        req = conn.api_request.call_args_list[1]
+        req = conn.api_request.call_args
         self.assertEqual(req[1]['headers']['If-Match'], 'etag')
 
     def test_update_table(self):
@@ -864,12 +834,11 @@ class TestClient(unittest.TestCase):
             'friendlyName': title,
             'labels': {'x': 'y'},
         }
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'PATCH')
-        self.assertEqual(req[1]['data'], sent)
-        self.assertEqual(req[1]['path'], '/' + path)
-        self.assertIsNone(req[1]['headers'])
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            data=sent,
+            path='/' + path,
+            headers=None)
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
         self.assertEqual(updated_table.schema, table.schema)
@@ -878,7 +847,7 @@ class TestClient(unittest.TestCase):
         # ETag becomes If-Match header.
         table._properties['etag'] = 'etag'
         client.update_table(table, [])
-        req = conn.api_request.call_args_list[1]
+        req = conn.api_request.call_args
         self.assertEqual(req[1]['headers']['If-Match'], 'etag')
 
     def test_update_table_only_use_legacy_sql(self):
@@ -903,19 +872,18 @@ class TestClient(unittest.TestCase):
 
         updated_table = client.update_table(table, ['view_use_legacy_sql'])
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'PATCH')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'view': {'useLegacySql': True}
             },
-            'view': {'useLegacySql': True}
-        }
-        self.assertEqual(req[1]['data'], sent)
+            headers=None)
         self.assertEqual(
             updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
 
@@ -975,22 +943,21 @@ class TestClient(unittest.TestCase):
 
         updated_table = client.update_table(table, updated_properties)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'PATCH')
-        self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'view': {'query': query, 'useLegacySql': True},
+                'location': location,
+                'expirationTime': _millis(exp_time),
+                'schema': schema_resource,
             },
-            'view': {'query': query, 'useLegacySql': True},
-            'location': location,
-            'expirationTime': _millis(exp_time),
-            'schema': schema_resource,
-        }
-        self.assertEqual(req[1]['data'], sent)
+            headers=None)
         self.assertEqual(updated_table.schema, table.schema)
         self.assertEqual(updated_table.view_query, table.view_query)
         self.assertEqual(updated_table.location, table.location)
@@ -1097,6 +1064,8 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(table3.description)
 
     def test_list_dataset_tables_empty(self):
+        path = '/projects/{}/datasets/{}/tables'.format(
+            self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection({})
@@ -1110,11 +1079,8 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(tables, [])
         self.assertIsNone(token)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=path, query_params={})
 
     def test_list_dataset_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
@@ -1159,10 +1125,8 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/%s' % PATH, query_params={})
 
     def test_list_dataset_tables_explicit(self):
         from google.cloud.bigquery.table import TableListItem
@@ -1207,12 +1171,10 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.table_type, expected['type'])
         self.assertIsNone(token)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'],
-                         {'maxResults': 3, 'pageToken': TOKEN})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_dataset_tables_wrong_type(self):
         creds = _make_credentials()
@@ -1230,10 +1192,10 @@ class TestClient(unittest.TestCase):
         ds_ref = client.dataset(self.DS_ID)
         for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg)
-            req = conn.api_request.call_args_list[0]
-            self.assertEqual(req[1]['method'], 'DELETE')
-            self.assertEqual(req[1]['path'], '/%s' % PATH)
-            self.assertEqual(req[1]['query_params'], {})
+            conn.api_request.assert_called_with(
+                method='DELETE',
+                path='/%s' % PATH,
+                query_params={})
 
     def test_delete_dataset_delete_contents(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -1245,10 +1207,10 @@ class TestClient(unittest.TestCase):
         ds_ref = client.dataset(self.DS_ID)
         for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg, delete_contents=True)
-            req = conn.api_request.call_args_list[0][1]
-            self.assertEqual(req['method'], 'DELETE')
-            self.assertEqual(req['path'], '/%s' % PATH)
-            self.assertEqual(req['query_params'], {'deleteContents': 'true'})
+            conn.api_request.assert_called_with(
+                method='DELETE',
+                path='/%s' % PATH,
+                query_params={'deleteContents': 'true'})
 
     def test_delete_dataset_wrong_type(self):
         creds = _make_credentials()
@@ -1269,9 +1231,8 @@ class TestClient(unittest.TestCase):
 
         for arg in (self.TABLE_REF, Table(self.TABLE_REF)):
             client.delete_table(arg)
-            req = conn.api_request.call_args_list[0]
-            self.assertEqual(req[1]['method'], 'DELETE')
-            self.assertEqual(req[1]['path'], '/%s' % path)
+            conn.api_request.assert_called_with(
+                method='DELETE', path='/%s' % path)
 
     def test_delete_table_w_wrong_type(self):
         creds = _make_credentials()
@@ -1297,11 +1258,10 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(NotFound):
             client.get_job(JOB_ID, project=OTHER_PROJECT)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0][1]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/OTHER_PROJECT/jobs/NONESUCH')
-        self.assertEqual(req['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/OTHER_PROJECT/jobs/NONESUCH',
+            query_params={'projection': 'full'})
 
     def test_get_job_hit(self):
         from google.cloud.bigquery.job import CreateDisposition
@@ -1344,11 +1304,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.write_disposition,
                          WriteDisposition.WRITE_TRUNCATE)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs/query_job')
-        self.assertEqual(req[1]['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/PROJECT/jobs/query_job',
+            query_params={'projection': 'full'})
 
     def test_cancel_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound
@@ -1362,12 +1321,10 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(NotFound):
             client.cancel_job(JOB_ID, project=OTHER_PROJECT)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(
-            req[1]['path'], '/projects/OTHER_PROJECT/jobs/NONESUCH/cancel')
-        self.assertEqual(req[1]['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
+            query_params={'projection': 'full'})
 
     def test_cancel_job_hit(self):
         from google.cloud.bigquery.job import QueryJob
@@ -1400,12 +1357,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.job_id, JOB_ID)
         self.assertEqual(job.query, QUERY)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(
-            req[1]['path'], '/projects/PROJECT/jobs/query_job/cancel')
-        self.assertEqual(req[1]['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/PROJECT/jobs/query_job/cancel',
+            query_params={'projection': 'full'})
 
     def test_list_jobs_defaults(self):
         from google.cloud.bigquery.job import CopyJob
@@ -1532,11 +1487,10 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.job_id, name)
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={'projection': 'full'})
 
     def test_list_jobs_load_job_wo_sourceUris(self):
         from google.cloud.bigquery.job import LoadJob
@@ -1586,11 +1540,10 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.job_id, name)
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'], {'projection': 'full'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={'projection': 'full'})
 
     def test_list_jobs_explicit_missing(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
@@ -1609,16 +1562,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(jobs), 0)
         self.assertIsNone(token)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'],
-                         {'projection': 'full',
-                          'maxResults': 1000,
-                          'pageToken': TOKEN,
-                          'allUsers': True,
-                          'stateFilter': 'done'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={
+                'projection': 'full',
+                'maxResults': 1000,
+                'pageToken': TOKEN,
+                'allUsers': True,
+                'stateFilter': 'done'
+            })
 
     def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob
@@ -1652,10 +1605,10 @@ class TestClient(unittest.TestCase):
         job = client.load_table_from_uri(SOURCE_URI, destination, job_id=JOB)
 
         # Check that load_table_from_uri actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/%s/jobs' % self.PROJECT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/%s/jobs' % self.PROJECT,
+            data=RESOURCE)
 
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
@@ -1869,11 +1822,13 @@ class TestClient(unittest.TestCase):
             },
             'configuration': {
                 'copy': {
-                    'sourceTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': SOURCE,
-                    },
+                    'sourceTables': [
+                        {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': SOURCE,
+                        },
+                    ],
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_ID,
@@ -1894,10 +1849,10 @@ class TestClient(unittest.TestCase):
         job = client.copy_table(source, destination, job_id=JOB)
 
         # Check that copy_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/%s/jobs' % self.PROJECT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/%s/jobs' % self.PROJECT,
+            data=RESOURCE)
 
         self.assertIsInstance(job, CopyJob)
         self.assertIs(job._client, client)
@@ -1995,10 +1950,10 @@ class TestClient(unittest.TestCase):
         job = client.extract_table(source, DESTINATION, job_id=JOB)
 
         # Check that extract_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/PROJECT/jobs',
+            data=RESOURCE)
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -2089,12 +2044,12 @@ class TestClient(unittest.TestCase):
         job = client.extract_table(source, DESTINATION, job_config=job_config)
 
         # Check that extract_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
         self.assertIsInstance(
-            req[1]['data']['jobReference']['jobId'], six.string_types)
+            req['data']['jobReference']['jobId'], six.string_types)
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -2140,10 +2095,10 @@ class TestClient(unittest.TestCase):
             source, [DESTINATION1, DESTINATION2], job_id=JOB)
 
         # Check that extract_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -2185,11 +2140,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.query_parameters, [])
 
         # Check that query actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
-        sent = req[1]['data']
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
         self.assertIsInstance(
             sent['jobReference']['jobId'], six.string_types)
         sent_config = sent['configuration']['query']
@@ -2274,11 +2229,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.query_parameters, [])
 
         # Check that query actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
-        sent = req[1]['data']
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
         self.assertIsInstance(
             sent['jobReference']['jobId'], six.string_types)
         sent_config = sent['configuration']['query']
@@ -2333,11 +2288,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.query_parameters, query_parameters)
 
         # Check that query actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/projects/PROJECT/jobs')
-        sent = req[1]['data']
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
         self.assertEqual(sent['jobReference']['jobId'], JOB)
         sent_config = sent['configuration']['query']
         self.assertEqual(sent_config['query'], QUERY)
@@ -2419,11 +2374,11 @@ class TestClient(unittest.TestCase):
             errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
 
     def test_create_rows_w_list_of_dictionaries(self):
         import datetime
@@ -2484,11 +2439,10 @@ class TestClient(unittest.TestCase):
             errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_create_rows_w_list_of_Rows(self):
         from google.cloud.bigquery.table import Table
@@ -2529,11 +2483,10 @@ class TestClient(unittest.TestCase):
             errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -2597,11 +2550,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(errors[0]['errors']), 1)
         self.assertEqual(errors[0]['errors'][0],
                          RESPONSE['insertErrors'][0]['errors'][0])
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_create_rows_w_repeated_fields(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -2638,11 +2590,10 @@ class TestClient(unittest.TestCase):
             errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_create_rows_w_record_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -2686,11 +2637,10 @@ class TestClient(unittest.TestCase):
                                         selected_fields=[full_name, phone])
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_create_rows_errors(self):
         from google.cloud.bigquery.table import Table
@@ -2767,11 +2717,10 @@ class TestClient(unittest.TestCase):
             errors = client.create_rows_json(table, ROWS)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'POST')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['data'], SENT)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data=SENT)
 
     def test_list_rows(self):
         import datetime
@@ -2845,11 +2794,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
-        self.assertEqual(req[1]['query_params'], {})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={})
 
     def test_list_rows_query_params(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -2923,10 +2871,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/%s' % PATH,
+            query_params={'selectedFields': 'color,struct'})
 
     def test_list_rows_w_record_schema(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -2986,10 +2934,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0]
-        self.assertEqual(req[1]['method'], 'GET')
-        self.assertEqual(req[1]['path'], '/%s' % PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path='/%s' % PATH, query_params={})
 
     def test_list_rows_errors(self):
         from google.cloud.bigquery.table import Table
