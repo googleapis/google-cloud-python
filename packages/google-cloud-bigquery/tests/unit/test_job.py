@@ -262,8 +262,10 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'load': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -274,7 +276,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'load': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 
@@ -418,7 +422,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID))
-        self.assertEqual(job.schema, [])
 
         self._verifyInitialReadonlyProperties(job)
 
@@ -429,6 +432,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
+        self.assertIsNone(job.schema)
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
         self.assertIsNone(job.autodetect)
@@ -771,8 +775,18 @@ class TestLoadJob(unittest.TestCase, _Base):
             'sourceFormat': 'CSV',
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+                {
+                    'name': 'full_name',
+                    'type': 'STRING',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
+                {
+                    'name': 'age',
+                    'type': 'INTEGER',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
             ]}
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
@@ -935,9 +949,11 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
-                }
+                'copy': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
+                },
             })
 
     def test_to_api_repr_with_encryption_none(self):
@@ -947,7 +963,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'copy': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 
@@ -1343,6 +1361,55 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestExtractJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'extract'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import ExtractJobConfig
+        return ExtractJobConfig
+
+    def test_to_api_repr(self):
+        from google.cloud.bigquery import job
+        config = self._make_one()
+        config.compression = job.Compression.SNAPPY
+        config.destination_format = job.DestinationFormat.AVRO
+        config.field_delimiter = 'ignored for avro'
+        config.print_header = False
+        config._properties['extract']['someNewField'] = 'some-value'
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'extract': {
+                    'compression': 'SNAPPY',
+                    'destinationFormat': 'AVRO',
+                    'fieldDelimiter': 'ignored for avro',
+                    'printHeader': False,
+                    'someNewField': 'some-value',
+                },
+            })
+
+    def test_from_api_repr(self):
+        cls = self._get_target_class()
+        config = cls.from_api_repr(
+            {
+                'extract': {
+                    'compression': 'NONE',
+                    'destinationFormat': 'CSV',
+                    'fieldDelimiter': '\t',
+                    'printHeader': True,
+                    'someNewField': 'some-value',
+                },
+            })
+        self.assertEqual(config.compression, 'NONE')
+        self.assertEqual(config.destination_format, 'CSV')
+        self.assertEqual(config.field_delimiter, '\t')
+        self.assertEqual(config.print_header, True)
+        self.assertEqual(
+            config._properties['extract']['someNewField'], 'some-value')
+
+
 class TestExtractJob(unittest.TestCase, _Base):
     JOB_TYPE = 'extract'
     SOURCE_TABLE = 'source_table'
@@ -1665,7 +1732,14 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_ctor(self):
         config = self._make_one()
-        self.assertEqual(config._properties, {})
+        self.assertEqual(config._properties, {'query': {}})
+
+    def test_ctor_w_none(self):
+        config = self._make_one()
+        config.default_dataset = None
+        config.destination = None
+        self.assertIsNone(config.default_dataset)
+        self.assertIsNone(config.destination)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -1678,13 +1752,16 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_from_api_repr_normal(self):
         resource = {
-            'useLegacySql': True,
-            'query': 'no property for me',
-            'defaultDataset': {
-                'projectId': 'someproject',
-                'datasetId': 'somedataset',
+            'query': {
+                'useLegacySql': True,
+                'query': 'no property for me',
+                'defaultDataset': {
+                    'projectId': 'someproject',
+                    'datasetId': 'somedataset',
+                },
+                'someNewProperty': 'I should be saved, too.',
             },
-            'someNewProperty': 'I should be saved, too.',
+            'dryRun': True,
         }
         klass = self._get_target_class()
 
@@ -1694,28 +1771,33 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config.default_dataset,
             DatasetReference('someproject', 'somedataset'))
+        self.assertTrue(config.dry_run)
         # Make sure unknown properties propagate.
-        self.assertEqual(config._properties['query'], 'no property for me')
         self.assertEqual(
-            config._properties['someNewProperty'], 'I should be saved, too.')
+            config._properties['query']['query'], 'no property for me')
+        self.assertEqual(
+            config._properties['query']['someNewProperty'],
+            'I should be saved, too.')
 
     def test_to_api_repr_normal(self):
         config = self._make_one()
         config.use_legacy_sql = True
         config.default_dataset = DatasetReference(
             'someproject', 'somedataset')
+        config.dry_run = False
         config._properties['someNewProperty'] = 'Woohoo, alpha stuff.'
 
         resource = config.to_api_repr()
 
-        self.assertTrue(resource['useLegacySql'])
+        self.assertFalse(resource['dryRun'])
+        self.assertTrue(resource['query']['useLegacySql'])
         self.assertEqual(
-            resource['defaultDataset']['projectId'], 'someproject')
+            resource['query']['defaultDataset']['projectId'], 'someproject')
         self.assertEqual(
-            resource['defaultDataset']['datasetId'], 'somedataset')
+            resource['query']['defaultDataset']['datasetId'], 'somedataset')
         # Make sure unknown properties propagate.
         self.assertEqual(
-            config._properties['someNewProperty'], 'Woohoo, alpha stuff.')
+            resource['someNewProperty'], 'Woohoo, alpha stuff.')
 
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
@@ -1724,8 +1806,10 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         resource = config.to_api_repr()
         self.assertEqual(
             resource, {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'query': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -1736,14 +1820,18 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'query': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
     def test_from_api_repr_with_encryption(self):
         resource = {
-            'destinationEncryptionConfiguration': {
-                'kmsKeyName': self.KMS_KEY_NAME
-            }
+            'query': {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            },
         }
         klass = self._get_target_class()
         config = klass.from_api_repr(resource)

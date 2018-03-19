@@ -554,9 +554,21 @@ class TestClient(unittest.TestCase):
                 'datasetId': self.DS_ID,
                 'tableId': self.TABLE_ID
             },
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
+            'schema': {
+                'fields': [
+                    {
+                        'name': 'full_name',
+                        'type': 'STRING',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                    {
+                        'name': 'age',
+                        'type': 'INTEGER',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                ],
             },
             'view': {'query': query},
         }
@@ -585,11 +597,13 @@ class TestClient(unittest.TestCase):
                             'name': 'full_name',
                             'type': 'STRING',
                             'mode': 'REQUIRED',
+                            'description': None,
                         },
                         {
                             'name': 'age',
                             'type': 'INTEGER',
                             'mode': 'REQUIRED',
+                            'description': None,
                         },
                     ],
                 },
@@ -757,9 +771,21 @@ class TestClient(unittest.TestCase):
                 'datasetId': self.DS_ID,
                 'tableId': self.TABLE_ID
             },
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
+            'schema': {
+                'fields': [
+                    {
+                        'name': 'full_name',
+                        'type': 'STRING',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                    {
+                        'name': 'age',
+                        'type': 'INTEGER',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                ],
             },
             'etag': 'etag',
             'description': description,
@@ -787,9 +813,22 @@ class TestClient(unittest.TestCase):
                 'datasetId': self.DS_ID,
                 'tableId': self.TABLE_ID
             },
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'schema': {
+                'fields': [
+                    {
+                        'name': 'full_name',
+                        'type': 'STRING',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                    {
+                        'name': 'age',
+                        'type': 'INTEGER',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                ],
+            },
             'description': description,
             'friendlyName': title,
             'labels': {'x': 'y'},
@@ -858,9 +897,22 @@ class TestClient(unittest.TestCase):
         query = 'select fullname, age from person_ages'
         location = 'EU'
         exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
-        schema_resource = {'fields': [
-            {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-            {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
+        schema_resource = {
+                'fields': [
+                    {
+                        'name': 'full_name',
+                        'type': 'STRING',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                    {
+                        'name': 'age',
+                        'type': 'INTEGER',
+                        'mode': 'REQUIRED',
+                        'description': None
+                    },
+                ],
+        }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
             SchemaField('age', 'INTEGER', mode='REQUIRED')
