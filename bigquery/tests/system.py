@@ -586,12 +586,29 @@ class TestBigQuery(unittest.TestCase):
         load_job = client.get_job(job_id, location='EU')
         self.assertEqual(job_id, load_job.job_id)
         self.assertEqual('EU', load_job.location)
+        self.assertTrue(load_job.exists())
+
+        # Cannot get the job from the US.
+        with self.assertRaises(NotFound):
+            client.get_job(job_id, location='US')
+
+        load_job_us = client.get_job(job_id)
+        load_job_us._job_ref._properties['location'] = 'US'
+        self.assertFalse(load_job_us.exists())
+        with self.assertRaises(NotFound):
+            load_job_us.reload()
 
         # Can cancel the job from the EU.
         self.assertTrue(load_job.cancel())
         load_job = client.cancel_job(job_id, location='EU')
         self.assertEqual(job_id, load_job.job_id)
         self.assertEqual('EU', load_job.location)
+
+        # Cannot cancel the job from the US.
+        with self.assertRaises(NotFound):
+            client.cancel_job(job_id, location='US')
+        with self.assertRaises(NotFound):
+            load_job_us.cancel()
 
         # Can list the table rows.
         table = client.get_table(table_ref)

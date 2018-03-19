@@ -600,7 +600,7 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         if location is not None:
-            extra_params['location']: location
+            extra_params['location'] = location
 
         path = '/projects/{}/jobs/{}'.format(project, job_id)
 
