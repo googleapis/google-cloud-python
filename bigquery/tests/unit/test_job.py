@@ -899,6 +899,22 @@ class TestLoadJob(unittest.TestCase, _Base):
             path=PATH,
             query_params={'fields': 'id'})
 
+    def test_exists_miss_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        job_ref = job._JobReference('my-job-id', 'other-project', 'US')
+        conn = _make_connection()
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        self.assertFalse(load_job.exists())
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/jobs/my-job-id',
+            query_params={'fields': 'id', 'location': 'US'})
+
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()

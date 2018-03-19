@@ -1256,12 +1256,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.get_job(JOB_ID, project=OTHER_PROJECT)
+            client.get_job(JOB_ID, project=OTHER_PROJECT, location='EU')
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH',
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full', 'location': 'EU'})
 
     def test_get_job_hit(self):
         from google.cloud.bigquery.job import CreateDisposition
@@ -1319,12 +1319,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.cancel_job(JOB_ID, project=OTHER_PROJECT)
+            client.cancel_job(JOB_ID, project=OTHER_PROJECT, location='EU')
 
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full', 'location': 'EU'})
 
     def test_cancel_job_hit(self):
         from google.cloud.bigquery.job import QueryJob
@@ -1658,14 +1658,10 @@ class TestClient(unittest.TestCase):
             location='US')
 
         # Check that load_table_from_uri actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0][1]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/other-project/jobs')
-        job_ref = req['data']['jobReference']
-        self.assertEqual(job_ref['location'], 'US')
-        self.assertEqual(job_ref['projectId'], 'other-project')
-        self.assertEqual(job_ref['jobId'], job_id)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b''):
@@ -1881,11 +1877,13 @@ class TestClient(unittest.TestCase):
             },
             'configuration': {
                 'copy': {
-                    'sourceTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': source_id,
-                    },
+                    'sourceTables': [
+                        {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': source_id,
+                        },
+                    ],
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_ID,
@@ -1908,14 +1906,10 @@ class TestClient(unittest.TestCase):
             location='US')
 
         # Check that copy_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0][1]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/other-project/jobs')
-        job_ref = req['data']['jobReference']
-        self.assertEqual(job_ref['projectId'], 'other-project')
-        self.assertEqual(job_ref['jobId'], job_id)
-        self.assertEqual(job_ref['location'], 'US')
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -1968,7 +1962,7 @@ class TestClient(unittest.TestCase):
         destination = 'gs://bucket_name/object_name'
         resource = {
             'jobReference': {
-                'projectId': self.PROJECT,
+                'projectId': 'other-project',
                 'location': 'US',
                 'jobId': job_id,
             },
@@ -1996,14 +1990,10 @@ class TestClient(unittest.TestCase):
             location='US')
 
         # Check that extract_table actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0][1]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/other-project/jobs')
-        job_ref = req['data']['jobReference']
-        self.assertEqual(job_ref['projectId'], 'other-project')
-        self.assertEqual(job_ref['jobId'], job_id)
-        self.assertEqual(job_ref['location'], 'US')
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     def test_extract_table_generated_job_id(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -2177,14 +2167,10 @@ class TestClient(unittest.TestCase):
             query, job_id=job_id, project='other-project', location='US')
 
         # Check that query actually starts the job.
-        self.assertEqual(len(conn.api_request.call_args_list), 1)
-        req = conn.api_request.call_args_list[0][1]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/other-project/jobs')
-        job_ref = req['data']['jobReference']
-        self.assertEqual(job_ref['projectId'], 'other-project')
-        self.assertEqual(job_ref['jobId'], job_id)
-        self.assertEqual(job_ref['location'], 'US')
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     def test_query_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJob
