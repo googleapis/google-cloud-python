@@ -167,6 +167,16 @@ class _RequestQueueGenerator(object):
         for response in rpc:
             print(response)
             q.put(...)
+
+    Args:
+        queue (queue.Queue): The request queue.
+        period (float): The number of seconds to wait for items from the queue
+            before checking if the RPC is cancelled. In practice, this
+            determines the maximum amount of time the request consumption
+            thread will live after the RPC is cancelled.
+        initial_request (protobuf.Message): The initial request to yield. This
+            is done independently of the request queue to allow for easily
+            restarting streams that require some initial configuration request.
     """
     def __init__(self, queue, period=1, initial_request=None):
         self._queue = queue
