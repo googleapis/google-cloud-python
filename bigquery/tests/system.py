@@ -580,6 +580,18 @@ class TestBigQuery(unittest.TestCase):
         load_job = client.load_table_from_file(
             table_bytes, table_ref, location='EU', job_config=job_config)
         load_job.result()
+        job_id = load_job.job_id
+
+        # Can get the job from the EU.
+        load_job = client.get_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+
+        # Can cancel the job from the EU.
+        self.assertTrue(load_job.cancel())
+        load_job = client.cancel_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
 
         # Can list the table rows.
         table = client.get_table(table_ref)

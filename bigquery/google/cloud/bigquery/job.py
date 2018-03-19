@@ -513,10 +513,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         client = self._require_client(client)
 
+        extra_params = {'fields': 'id'}
+        if self.location:
+            extra_params['location'] = self.location
+
         try:
             client._call_api(retry,
                              method='GET', path=self.path,
-                             query_params={'fields': 'id'})
+                             query_params=extra_params)
         except NotFound:
             return False
         else:

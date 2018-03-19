@@ -570,34 +570,37 @@ class Client(ClientWithProject):
             return job.QueryJob.from_api_repr(resource, self)
         raise ValueError('Cannot parse job resource')
 
-    def get_job(self, job_id, project=None, retry=DEFAULT_RETRY):
+    def get_job(
+            self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
         """Fetch a job for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-        :type job_id: str
-        :param job_id: Name of the job.
+        Arguments:
+            job_id (str): Unique job identifier.
 
-        :type project: str
-        :param project:
-            project ID owning the job (defaults to the client's project)
+        Keyword Arguments:
+            project (str):
+                (Optional) ID of the project which ownsthe job (defaults to
+                the client's project).
+            location (str): Location where the job was run.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: One of:
-                :class:`google.cloud.bigquery.job.LoadJob`,
-                :class:`google.cloud.bigquery.job.CopyJob`,
-                :class:`google.cloud.bigquery.job.ExtractJob`,
-                or :class:`google.cloud.bigquery.job.QueryJob`
-        :returns:
-            Concrete job instance, based on the resource returned by the API.
+        Returns:
+            Union[google.cloud.bigquery.job.LoadJob, \
+                  google.cloud.bigquery.job.CopyJob,
+                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.QueryJob]:
+            Job instance, based on the resource returned by the API.
         """
         extra_params = {'projection': 'full'}
 
         if project is None:
             project = self.project
+        if location is not None:
+            extra_params['location']: location
 
         path = '/projects/{}/jobs/{}'.format(project, job_id)
 
@@ -606,34 +609,37 @@ class Client(ClientWithProject):
 
         return self.job_from_resource(resource)
 
-    def cancel_job(self, job_id, project=None, retry=DEFAULT_RETRY):
+    def cancel_job(
+            self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
         """Attempt to cancel a job from a job ID.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
-        :type job_id: str
-        :param job_id: Name of the job.
+        Arguments:
+            job_id (str): Unique job identifier.
 
-        :type project: str
-        :param project:
-            project ID owning the job (defaults to the client's project)
+        Keyword Arguments:
+            project (str):
+                (Optional) ID of the project which ownsthe job (defaults to
+                the client's project).
+            location (str): Location where the job was run.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: One of:
-                :class:`google.cloud.bigquery.job.LoadJob`,
-                :class:`google.cloud.bigquery.job.CopyJob`,
-                :class:`google.cloud.bigquery.job.ExtractJob`,
-                or :class:`google.cloud.bigquery.job.QueryJob`
-        :returns:
-            Concrete job instance, based on the resource returned by the API.
+        Returns:
+            Union[google.cloud.bigquery.job.LoadJob, \
+                  google.cloud.bigquery.job.CopyJob,
+                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.QueryJob]:
+            Job instance, based on the resource returned by the API.
         """
         extra_params = {'projection': 'full'}
 
         if project is None:
             project = self.project
+        if location is not None:
+            extra_params['location'] = location
 
         path = '/projects/{}/jobs/{}/cancel'.format(project, job_id)
 
