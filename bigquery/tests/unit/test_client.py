@@ -849,7 +849,7 @@ class TestClient(unittest.TestCase):
 
     def test_update_table_w_query(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _millis
         from google.cloud.bigquery.table import Table, SchemaField
 
@@ -857,7 +857,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, self.DS_ID, self.TABLE_ID)
         query = 'select fullname, age from person_ages'
         location = 'EU'
-        exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=pytz.UTC)
         schema_resource = {'fields': [
             {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
             {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
@@ -2106,14 +2106,14 @@ class TestClient(unittest.TestCase):
 
     def test_create_rows_w_schema(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
         from google.cloud.bigquery.table import Table, SchemaField
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
@@ -2161,14 +2161,14 @@ class TestClient(unittest.TestCase):
 
     def test_create_rows_w_list_of_dictionaries(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
         from google.cloud.bigquery.table import Table, SchemaField
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
@@ -2503,7 +2503,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_rows(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Row
@@ -2512,7 +2512,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, self.DS_ID, self.TABLE_ID)
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         WHEN_1 = WHEN + datetime.timedelta(seconds=1)
         WHEN_2 = WHEN + datetime.timedelta(seconds=2)
         ROWS = 1234

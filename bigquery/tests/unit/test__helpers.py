@@ -16,6 +16,8 @@ import base64
 import datetime
 import unittest
 
+import pytz
+
 
 class Test_not_null(unittest.TestCase):
 
@@ -167,40 +169,42 @@ class Test_timestamp_query_param_from_json(unittest.TestCase):
         self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
 
     def test_w_timestamp_valid(self):
-        from google.cloud._helpers import UTC
-
         samples = [
             (
                 '2016-12-20 15:58:27.339328+00:00',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+                datetime.datetime(
+                    2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20 15:58:27+00:00',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20T15:58:27.339328+00:00',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+                datetime.datetime(
+                    2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20T15:58:27+00:00',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20 15:58:27.339328Z',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+                datetime.datetime(
+                    2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20 15:58:27Z',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20T15:58:27.339328Z',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+                datetime.datetime(
+                    2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
             ),
             (
                 '2016-12-20T15:58:27Z',
-                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=pytz.UTC)
             ),
         ]
         for timestamp_str, expected_result in samples:
@@ -651,10 +655,9 @@ class Test_timestamp_to_json_parameter(unittest.TestCase):
         self.assertEqual(self._call_fut(when), ZULU)
 
     def test_w_datetime_w_utc_zone(self):
-        from google.cloud._helpers import UTC
-
         ZULU = '2016-12-20 15:58:27.339328+00:00'
-        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+        when = datetime.datetime(
+            2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
         self.assertEqual(self._call_fut(when), ZULU)
 
 
@@ -692,9 +695,8 @@ class Test_datetime_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(RFC3339), RFC3339)
 
     def test_w_datetime(self):
-        from google.cloud._helpers import UTC
-
-        when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
+        when = datetime.datetime(
+            2016, 12, 3, 14, 11, 27, 123456, tzinfo=pytz.UTC)
         self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456')
 
 

@@ -1114,10 +1114,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertTrue('storageClass' in bucket._changes)
 
     def test_time_created(self):
+        import pytz
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._helpers import UTC
 
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=pytz.UTC)
         TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeCreated': TIME_CREATED}
         bucket = self._make_one(properties=properties)

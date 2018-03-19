@@ -16,7 +16,7 @@ import datetime
 import logging
 import unittest
 
-from google.cloud._helpers import UTC
+import pytz
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import TooManyRequests
@@ -159,7 +159,7 @@ class TestLogging(unittest.TestCase):
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, text_payload)
-        self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
+        self.assertEqual(entries[0].timestamp, now.replace(tzinfo=pytz.UTC))
 
     def test_log_text_with_resource(self):
         text_payload = 'System test: test_log_text_with_timestamp'

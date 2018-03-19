@@ -215,11 +215,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def _setUpConstants(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         self.ETAG = 'ETAG'
         self.TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
@@ -464,11 +464,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_props_set_by_server(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _millis
 
-        CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
-        MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
+        CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=pytz.UTC)
+        MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=pytz.UTC)
         TABLE_FULL_ID = '%s:%s.%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
@@ -517,9 +517,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_expires_setter(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
-        WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=UTC)
+        WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=pytz.UTC)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
@@ -636,14 +636,15 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_from_api_repr_w_properties(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _millis
 
         RESOURCE = self._make_resource()
         RESOURCE['view'] = {'query': 'select fullname, age from person_ages'}
         RESOURCE['type'] = 'VIEW'
         RESOURCE['location'] = 'EU'
-        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        self.EXP_TIME = datetime.datetime(
+            2015, 8, 1, 23, 59, 59, tzinfo=pytz.UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE)

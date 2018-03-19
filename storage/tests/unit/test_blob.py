@@ -1302,7 +1302,7 @@ class Test_Blob(unittest.TestCase):
         self._do_upload_helper(num_retries=20)
 
     def _upload_from_file_helper(self, side_effect=None, **kwargs):
-        from google.cloud._helpers import UTC
+        import pytz
 
         blob = self._make_one('blob-name', bucket=None)
         # Mock low-level upload helper on blob (it is tested elsewhere).
@@ -1326,7 +1326,7 @@ class Test_Blob(unittest.TestCase):
         # Check the response and side-effects.
         self.assertIsNone(ret_val)
         new_updated = datetime.datetime(
-            2017, 1, 1, 9, 9, 9, 81000, tzinfo=UTC)
+            2017, 1, 1, 9, 9, 9, 81000, tzinfo=pytz.UTC)
         self.assertEqual(blob.updated, new_updated)
 
         # Check the mock.
@@ -2429,12 +2429,12 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob._properties, {'storageClass': storage_class})
 
     def test_time_deleted(self):
+        import pytz
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._helpers import UTC
 
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=pytz.UTC)
         TIME_DELETED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeDeleted': TIME_DELETED}
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
@@ -2446,12 +2446,12 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.time_deleted)
 
     def test_time_created(self):
+        import pytz
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._helpers import UTC
 
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=pytz.UTC)
         TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeCreated': TIME_CREATED}
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
@@ -2463,12 +2463,12 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.time_created)
 
     def test_updated(self):
+        import pytz
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._helpers import UTC
 
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=pytz.UTC)
         UPDATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'updated': UPDATED}
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)

@@ -16,6 +16,7 @@
 import base64
 import datetime
 
+import pytz
 import six
 
 import google.auth.credentials
@@ -85,7 +86,7 @@ def get_expiration_seconds(expiration):
     """
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
-        now = NOW().replace(tzinfo=_helpers.UTC)
+        now = NOW().replace(tzinfo=pytz.UTC)
         expiration = now + expiration
 
     # If it's a datetime, convert to a timestamp.

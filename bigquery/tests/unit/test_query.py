@@ -186,10 +186,11 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_timestamp_datetime(self):
-        from google.cloud._helpers import UTC
+        import pytz
 
         STAMP = '2016-12-20 15:58:27.339328+00:00'
-        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+        when = datetime.datetime(
+            2016, 12, 20, 15, 58, 27, 339328, tzinfo=pytz.UTC)
         EXPECTED = {
             'parameterType': {
                 'type': 'TIMESTAMP',
@@ -1165,7 +1166,7 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(parameter.value, 123)
 
     def test_w_scalar_timestamp(self):
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud.bigquery.query import ScalarQueryParameter
 
         RESOURCE = {
@@ -1181,10 +1182,10 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(parameter.type_, 'TIMESTAMP')
         self.assertEqual(
             parameter.value,
-            datetime.datetime(2012, 3, 4, 5, 6, 7, tzinfo=UTC))
+            datetime.datetime(2012, 3, 4, 5, 6, 7, tzinfo=pytz.UTC))
 
     def test_w_scalar_timestamp_micros(self):
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud.bigquery.query import ScalarQueryParameter
 
         RESOURCE = {
@@ -1200,7 +1201,7 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(parameter.type_, 'TIMESTAMP')
         self.assertEqual(
             parameter.value,
-            datetime.datetime(2012, 3, 4, 5, 6, 7, 250000, tzinfo=UTC))
+            datetime.datetime(2012, 3, 4, 5, 6, 7, 250000, tzinfo=pytz.UTC))
 
     def test_w_array(self):
         from google.cloud.bigquery.query import ArrayQueryParameter

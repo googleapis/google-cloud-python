@@ -54,24 +54,30 @@ class Test_get_expiration_seconds(unittest.TestCase):
         self.assertEqual(self._call_fut(expiration_no_tz), utc_seconds)
 
     def test_w_utc_datetime(self):
-        from google.cloud._helpers import UTC
+        import pytz
 
-        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
+        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, pytz.UTC)
         utc_seconds = self._utc_seconds(expiration_utc)
         self.assertEqual(self._call_fut(expiration_utc), utc_seconds)
 
     def test_w_other_zone_datetime(self):
-        from google.cloud._helpers import _UTC
+        import datetime
 
-        class CET(_UTC):
+        class CET(datetime.tzinfo):
             _tzname = 'CET'
-            _utcoffset = datetime.timedelta(hours=1)
+
+            def utcoffset(self, dt):
+                return datetime.timedelta(hours=1)
+
+            def dst(self, dt):
+                return datetime.timedelta(0)
 
         zone = CET()
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = self._utc_seconds(expiration_other)
         cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC
         self.assertEqual(self._call_fut(expiration_other), cet_seconds)
+        self.assertEqual(zone.dst(0), datetime.timedelta(0))
 
     def test_w_timedelta_seconds(self):
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)

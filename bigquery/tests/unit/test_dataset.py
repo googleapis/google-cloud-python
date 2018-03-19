@@ -197,11 +197,11 @@ class TestDataset(unittest.TestCase):
 
     def _setUpConstants(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=UTC)
+            tzinfo=pytz.UTC)
         self.ETAG = 'ETAG'
         self.DS_FULL_ID = '%s:%s' % (self.PROJECT, self.DS_ID)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'

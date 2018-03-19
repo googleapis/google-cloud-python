@@ -208,13 +208,13 @@ class TestBatch(_BaseTest):
 
     def test_commit_ok(self):
         import datetime
+        import pytz
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -239,9 +239,9 @@ class TestBatch(_BaseTest):
 
     def test_context_mgr_already_committed(self):
         import datetime
-        from google.cloud._helpers import UTC
+        import pytz
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI()
         session = _Session(database)
@@ -256,13 +256,13 @@ class TestBatch(_BaseTest):
 
     def test_context_mgr_success(self):
         import datetime
+        import pytz
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -286,11 +286,11 @@ class TestBatch(_BaseTest):
 
     def test_context_mgr_failure(self):
         import datetime
-        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud._helpers import UTC
+        import pytz
         from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()

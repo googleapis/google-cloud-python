@@ -16,7 +16,7 @@ import datetime
 import math
 import unittest
 
-import google.cloud._helpers
+import pytz
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 
@@ -37,7 +37,7 @@ class TestQueryParameters(unittest.TestCase):
             (datetime.datetime(2012, 3, 4, 5, 6, 7), 'DATETIME'),
             (
                 datetime.datetime(
-                    2012, 3, 4, 5, 6, 7, tzinfo=google.cloud._helpers.UTC),
+                    2012, 3, 4, 5, 6, 7, tzinfo=pytz.UTC),
                 'TIMESTAMP',
             ),
         ]

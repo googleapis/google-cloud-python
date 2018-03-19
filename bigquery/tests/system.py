@@ -24,6 +24,7 @@ import unittest
 import uuid
 import re
 
+import pytz
 import six
 import pytest
 try:
@@ -42,7 +43,7 @@ from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
-from google.cloud._helpers import UTC
+
 from google.cloud.bigquery import dbapi
 from google.cloud.exceptions import Forbidden, NotFound
 
@@ -364,7 +365,7 @@ class TestBigQuery(unittest.TestCase):
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
-            NOW_SECONDS).replace(tzinfo=UTC)
+            NOW_SECONDS).replace(tzinfo=pytz.UTC)
         ROWS = [
             ('Phred Phlyntstone', 32, NOW),
             ('Bharney Rhubble', 33, NOW + datetime.timedelta(seconds=10)),
@@ -748,7 +749,7 @@ class TestBigQuery(unittest.TestCase):
     def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
-        zoned = naive.replace(tzinfo=UTC)
+        zoned = naive.replace(tzinfo=pytz.UTC)
         examples = [
             {
                 'sql': 'SELECT 1',
@@ -789,8 +790,8 @@ class TestBigQuery(unittest.TestCase):
         naive_microseconds = datetime.datetime(2016, 12, 5, 12, 41, 9, 250000)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         stamp_microseconds = stamp + '.250000'
-        zoned = naive.replace(tzinfo=UTC)
-        zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
+        zoned = naive.replace(tzinfo=pytz.UTC)
+        zoned_microseconds = naive_microseconds.replace(tzinfo=pytz.UTC)
         return [
             {
                 'sql': 'SELECT 1',
@@ -1014,7 +1015,7 @@ class TestBigQuery(unittest.TestCase):
             name='naive_date', type_='DATE', value=naive.date())
         naive_time_param = ScalarQueryParameter(
             name='naive_time', type_='TIME', value=naive.time())
-        zoned = naive.replace(tzinfo=UTC)
+        zoned = naive.replace(tzinfo=pytz.UTC)
         zoned_param = ScalarQueryParameter(
             name='zoned', type_='TIMESTAMP', value=zoned)
         array_param = ArrayQueryParameter(
@@ -1241,17 +1242,19 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT TIMESTAMP_TRUNC(%(zoned)s, MINUTE)',
                 'query_parameters': {
                     'zoned': datetime.datetime(
-                        2012, 3, 4, 5, 6, 7, tzinfo=UTC),
+                        2012, 3, 4, 5, 6, 7, tzinfo=pytz.UTC),
                 },
-                'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
+                'expected': datetime.datetime(
+                    2012, 3, 4, 5, 6, 0, tzinfo=pytz.UTC),
             },
             {
                 'sql': 'SELECT TIMESTAMP_TRUNC(%(zoned)s, MINUTE)',
                 'query_parameters': {
                     'zoned': datetime.datetime(
-                        2012, 3, 4, 5, 6, 7, 250000, tzinfo=UTC),
+                        2012, 3, 4, 5, 6, 7, 250000, tzinfo=pytz.UTC),
                 },
-                'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
+                'expected': datetime.datetime(
+                    2012, 3, 4, 5, 6, 0, tzinfo=pytz.UTC),
             },
         ]
         for example in examples:
@@ -1493,7 +1496,7 @@ class TestBigQuery(unittest.TestCase):
                 self.assertEqual(f_spell['Name'], e_spell['Name'])
                 parts = time.strptime(
                     e_spell['LastUsed'], '%Y-%m-%d %H:%M:%S UTC')
-                e_used = datetime.datetime(*parts[0:6], tzinfo=UTC)
+                e_used = datetime.datetime(*parts[0:6], tzinfo=pytz.UTC)
                 self.assertEqual(f_spell['LastUsed'], e_used)
                 self.assertEqual(f_spell['DiscoveredBy'],
                                  e_spell['DiscoveredBy'])
