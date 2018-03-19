@@ -857,7 +857,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         load_job._begin()
 
-        request = conn.api_request.call_args[1]
+        conn.api_request.assert_called_once()
+        _, request = conn.api_request.call_args
         self.assertEqual(request['method'], 'POST')
         self.assertEqual(
             request['path'], '/projects/alternative-project/jobs')
@@ -910,7 +911,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -928,7 +930,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_job_reference(self):
@@ -945,13 +948,11 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         load_job.reload()
 
-        request = conn.api_request.call_args[1]
-        self.assertEqual(request['method'], 'GET')
-        self.assertEqual(
-            request['path'],
-            '/projects/alternative-project/jobs/{}'.format(self.JOB_ID))
-        self.assertEqual(
-            request['query_params']['location'], 'US')
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/alternative-project/jobs/{}'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
     def test_cancel_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
@@ -966,7 +967,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='POST',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_alternate_client(self):
@@ -985,7 +987,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='POST',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_job_reference(self):
@@ -1002,13 +1005,11 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         load_job.cancel()
 
-        request = conn.api_request.call_args[1]
-        self.assertEqual(request['method'], 'POST')
-        self.assertEqual(
-            request['path'],
-            '/projects/alternative-project/jobs/{}/cancel'.format(self.JOB_ID))
-        self.assertEqual(
-            request['query_params']['location'], 'US')
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/alternative-project/jobs/{}/cancel'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
 
 class TestCopyJobConfig(unittest.TestCase, _Base):
@@ -1416,7 +1417,8 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1435,7 +1437,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1776,7 +1779,8 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        conn.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1794,7 +1798,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         job.reload(client=client2)
 
         conn1.api_request.assert_not_called()
-        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -3047,7 +3052,8 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertNotEqual(job.destination, table_ref)
 
-        conn.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -3070,7 +3076,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.reload(client=client2)
 
         conn1.api_request.assert_not_called()
-        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
