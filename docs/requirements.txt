@@ -24,6 +24,7 @@ resource_manager/
 runtimeconfig/
 spanner/
 speech/
+texttospeech/
 trace/
 translate/
 videointelligence/

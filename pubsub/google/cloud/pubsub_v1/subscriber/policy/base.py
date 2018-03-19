@@ -18,6 +18,7 @@ from __future__ import absolute_import, division
 
 import abc
 import collections
+import copy
 import logging
 import random
 import time
@@ -360,6 +361,11 @@ class BasePolicy(object):
             p99 = self.histogram.percentile(99)
             _LOGGER.debug('The current p99 value is %d seconds.', p99)
 
+            # Make a copy of the leased messages. This is needed because it's
+            # possible for another thread to modify the dictionary while
+            # we're iterating over it.
+            leased_messages = copy.copy(self.leased_messages)
+
             # Drop any leases that are well beyond max lease time. This
             # ensures that in the event of a badly behaving actor, we can
             # drop messages and allow Pub/Sub to resend them.
@@ -367,7 +373,7 @@ class BasePolicy(object):
             to_drop = [
                 DropRequest(ack_id, item.size)
                 for ack_id, item
-                in six.iteritems(self.leased_messages)
+                in six.iteritems(leased_messages)
                 if item.added_time < cutoff]
 
             if to_drop:
@@ -376,10 +382,15 @@ class BasePolicy(object):
                     len(to_drop))
                 self.drop(to_drop)
 
+            # Remove dropped items from our copy of the leased messages (they
+            # have already been removed from the real one by self.drop).
+            for item in to_drop:
+                leased_messages.pop(item.ack_id)
+
             # Create a streaming pull request.
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
-            ack_ids = list(self.leased_messages.keys())
+            ack_ids = list(leased_messages.keys())
             if ack_ids:
                 _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
 

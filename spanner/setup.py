@@ -22,15 +22,15 @@ import setuptools
 
 name = 'google-cloud-spanner'
 description = 'Cloud Spanner API client library'
-version = '1.1.0'
+version = '1.2.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Stable'
-release_status = 'Development Status :: 4 - Beta'
+# 'Development Status :: 5 - Production/Stable'
+release_status = 'Development Status :: 5 - Production/Stable'
 dependencies = [
     'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core[grpc]<2.0.0dev,>=1.0.0',
+    'google-api-core[grpc]<2.0.0dev,>=1.1.0',
     'grpc-google-iam-v1<0.12dev,>=0.11.4',
 ]
 extras = {

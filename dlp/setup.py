@@ -22,11 +22,11 @@ import setuptools
 
 name = 'google-cloud-dlp'
 description = 'Google Cloud DLP API client library'
-version = '0.1.1'
+version = '0.2.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Stable'
+# 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core[grpc]<2.0.0dev,>=0.1.4',
