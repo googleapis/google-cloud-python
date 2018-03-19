@@ -51,6 +51,7 @@ class TestExternalConfig(unittest.TestCase):
                         'name': 'full_name',
                         'type': 'STRING',
                         'mode': 'REQUIRED',
+                        'description': None,
                     },
                 ],
             },
