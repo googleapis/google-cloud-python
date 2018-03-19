@@ -1579,8 +1579,8 @@ def test_list_rows_as_dataframe(client):
     df = client.list_rows(table).to_dataframe()
     # [END bigquery_list_rows_dataframe]
     assert isinstance(df, pandas.DataFrame)
-    assert len(list(df)) == 2  # verify the number of columns
-    assert len(df) == 10       # verify the number of rows
+    assert len(list(df)) == len(table.schema)  # verify the number of columns
+    assert len(df) == table.num_rows           # verify the number of rows
 
 
 if __name__ == '__main__':
