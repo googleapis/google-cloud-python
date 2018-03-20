@@ -1,30 +1,45 @@
-from google.cloud.bigtable_v2.types import (
+from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable_v2.types import bigtable_pb2
+from google.cloud.bigtable_v2.proto.bigtable_pb2 import MutateRowsRequest
 
 
-class MutateRows(object):
-    def __init__(self, table_name, client):
-        super(MutateRows, self).__init__()
+class RowMutations():
+
+    def __init__(self, row_key, table_name):
+        self.row_key = row_key
         self.table_name = table_name
-        self.client = client
-        self.row_mutations = {}
+        self.mutations = []
 
     def set_cell(self, row_key, family_name, column_id, value, timestamp=None):
-        row_mutations = self.row_mutations.setdefault(row_key, [])
-        set_cell = SetCellMutation(family_name, column_id, value, timestamp)
-        row_mutations.append(set_cell.mutation_request)
+        # create the SetCellMutation
+        # add the mutation to list
+        mutation = SetCellMutation(family_name, column_id, value, timestamp)
+        self.mutations.append(mutation.mutation_request)
 
-    def mutate(self):
-        entries = []
-        for row_key, mutations in self.row_mutations.items():
-            entry = bigtable_pb2.MutateRowsRequest.Entry(
-                row_key=row_key,
-                mutations=mutations
-            )
-            entries.append(entry)
+    def create_entry(self):
+        # create the Entry for the mutations
+        entry = MutateRowsRequest.Entry(row_key=self.row_key)
+        for mutation in self.mutations:
+            # create Mutation
+            entry.mutations.add().CopyFrom(mutation)
+        return entry
 
-        return self.client.mutate_rows(self.table_name, entries, retry=None)
+
+class MutateRows():
+    def __init__(self, table_name, client):
+        self.table_name = table_name
+        self.client = client
+        self.entries = []
+
+    def add_row_mutations(self, row_mutations):
+        # turn the row_mutations into an Entry
+        entry = row_mutations.create_entry()
+        self.entries.append(entry)
+
+    def create_request(self):
+        request = MutateRowsRequest(table_name=self.table_name,
+                                    entries=self.entries)
+        return self.client._mutate_rows(request, retry=None, timeout=0)
 
 
 class SetCellMutation(object):
@@ -44,3 +59,21 @@ class SetCellMutation(object):
             value=self.value,
         )
         return data_v2_pb2.Mutation(set_cell=set_cell_mutation)
+
+
+class DeleteFromColumnMutation(object):
+    def __init__(self, family_name, column_id, time_range):
+        super(DeleteFromColumnMutation, self).__init__()
+        self.family_name = family_name
+        self.column_id = column_id
+        self.time_range = time_range
+
+    @property
+    def mutation_request(self):
+        delete_from_column_mutation = data_v2_pb2.Mutation.DeleteFromColumn(
+            family_name=self.family_name,
+            column_qualifier=self.column_id,
+            time_range=self.time_range
+        )
+        return data_v2_pb2.Mutation(
+            delete_from_column=delete_from_column_mutation)
