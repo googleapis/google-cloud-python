@@ -4,22 +4,6 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
-## 0.33.0
-
-### Implementation changes
-
-- Use the rpc's status to determine when to exit the request generator thread (#5054)
-- Drop leased messages after flow_control.max_lease_duration has passed. (#5020)
-- Fix mantain leases to not modack messages it just dropped (#5045)
-- Avoid race condition in maintain_leases by copying leased_messages (#5035)
-- Retry subscription stream on InternalServerError, Unknown, and GatewayTimeout (#5021)
-- Nack messages when the subscriber callback errors (#5019)
-
-### Testing
-
-- pubsub nox.py cleanup (#5056)
-- Fix test that checks for retryable exceptions (#5034)
-
 ## 0.32.1
 
 ### Dependencies
