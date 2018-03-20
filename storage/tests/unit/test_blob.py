@@ -536,6 +536,35 @@ class Test_Blob(unittest.TestCase):
         transport.request.assert_called_once_with(
             'GET', download_url, data=None, headers=headers, stream=True)
 
+    def test__do_download_simple_with_range(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Make sure this will not be chunked.
+        self.assertIsNone(blob.chunk_size)
+
+        transport = mock.Mock(spec=['request'])
+        transport.request.return_value = self._mock_requests_response(
+            http_client.OK,
+            {'content-length': '2', 'content-range': 'bytes 1-3'},
+            content=b'bc',
+            stream=True,
+        )
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(transport, file_obj, download_url, headers, start=1, end=3)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'bc')
+        self.assertEqual(headers['range'], 'bytes=1-3')
+
+        transport.request.assert_called_once_with(
+            'GET', download_url, data=None, headers=headers, stream=True)
+
     def test__do_download_chunked(self):
         blob_name = 'blob-name'
         # Create a fake client/bucket and use them in the Blob() constructor.
@@ -560,6 +589,34 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(transport.request.call_count, 2)
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {'range': 'bytes=3-5'})
+        call = mock.call(
+            'GET', download_url, data=None, headers=headers)
+        self.assertEqual(transport.request.mock_calls, [call, call])
+
+    def test__do_download_chunked_with_range(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Modify the blob so there there will be 2 chunks of size 3.
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
+
+        transport = self._mock_download_transport()
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(transport, file_obj, download_url, headers, start=10, end=20)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'abcdef')
+
+        # Check that the transport was called exactly twice.
+        self.assertEqual(transport.request.call_count, 2)
+        # ``headers`` was modified (in place) once for each API call.
+        self.assertEqual(headers, {'range': 'bytes=13-5'})
         call = mock.call(
             'GET', download_url, data=None, headers=headers)
         self.assertEqual(transport.request.mock_calls, [call, call])
