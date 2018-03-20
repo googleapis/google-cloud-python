@@ -16,6 +16,13 @@ class RowMutations():
         mutation = SetCellMutation(family_name, column_id, value, timestamp)
         self.mutations.append(mutation.mutation_request)
 
+    def delete_from_column(self, row_key, family_name, column_id,
+                           time_range=None):
+        # create the DeleteFromColumnMutation
+        # add the mutation to list
+        mutation = DeleteFromColumnMutation(family_name, column_id, time_range)
+        self.mutations.append(mutation.mutation_request)
+
     def create_entry(self):
         # create the Entry for the mutations
         entry = MutateRowsRequest.Entry(row_key=self.row_key)
@@ -39,7 +46,7 @@ class MutateRows():
     def create_request(self):
         request = MutateRowsRequest(table_name=self.table_name,
                                     entries=self.entries)
-        return self.client._mutate_rows(request, retry=None, timeout=0)
+        return self.client._mutate_rows(request)
 
 
 class SetCellMutation(object):
