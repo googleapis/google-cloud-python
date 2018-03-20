@@ -2424,6 +2424,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         connection = _make_connection(query_resource, query_resource)
         client = _make_client(self.PROJECT, connection=connection)
@@ -2442,6 +2443,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         query_resource = copy.deepcopy(incomplete_resource)
         query_resource['jobComplete'] = True
@@ -2471,6 +2473,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
@@ -3040,6 +3043,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
