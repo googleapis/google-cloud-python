@@ -79,12 +79,13 @@ class TestClient(unittest.TestCase):
 
         with self.assertRaises(NotFound):
             client._get_query_results(
-                'nothere', None, project='other-project', timeout_ms=500)
+                'nothere', None, project='other-project', location='US',
+                timeout_ms=500)
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/other-project/queries/nothere',
-            query_params={'maxResults': 0, 'timeoutMs': 500})
+            query_params={'maxResults': 0, 'timeoutMs': 500, 'location': 'US'})
 
     def test__get_query_results_hit(self):
         job_id = 'query_job'
@@ -560,13 +561,13 @@ class TestClient(unittest.TestCase):
                         'name': 'full_name',
                         'type': 'STRING',
                         'mode': 'REQUIRED',
-                        'description': None
+                        'description': None,
                     },
                     {
                         'name': 'age',
                         'type': 'INTEGER',
                         'mode': 'REQUIRED',
-                        'description': None
+                        'description': None,
                     },
                 ],
             },
@@ -1255,12 +1256,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.get_job(JOB_ID, project=OTHER_PROJECT)
+            client.get_job(JOB_ID, project=OTHER_PROJECT, location='EU')
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH',
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full', 'location': 'EU'})
 
     def test_get_job_hit(self):
         from google.cloud.bigquery.job import CreateDisposition
@@ -1318,12 +1319,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.cancel_job(JOB_ID, project=OTHER_PROJECT)
+            client.cancel_job(JOB_ID, project=OTHER_PROJECT, location='EU')
 
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full', 'location': 'EU'})
 
     def test_cancel_job_hit(self):
         from google.cloud.bigquery.job import QueryJob
@@ -1624,6 +1625,44 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
         self.assertIs(job.destination, destination)
 
+    def test_load_table_from_uri_w_explicit_project(self):
+        job_id = 'this-is-a-job-id'
+        destination_id = 'destination_table'
+        source_uri = 'gs://example/source.csv'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': 'US',
+                'jobId': job_id,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [source_uri],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(resource)
+        destination = client.dataset(self.DS_ID).table(destination_id)
+
+        client.load_table_from_uri(
+            source_uri, destination, job_id=job_id, project='other-project',
+            location='US')
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
+
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b''):
         return mock.Mock(
@@ -1826,6 +1865,52 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.sources), [source, source2])
         self.assertIs(job.destination, destination)
 
+    def test_copy_table_w_explicit_project(self):
+        job_id = 'this-is-a-job-id'
+        source_id = 'source_table'
+        destination_id = 'destination_table'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': 'US',
+                'jobId': job_id,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [
+                        {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': source_id,
+                        },
+                    ],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+        destination = dataset.table(destination_id)
+
+        client.copy_table(
+            source, destination, job_id=job_id, project='other-project',
+            location='US')
+
+        # Check that copy_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
+
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
 
@@ -1870,6 +1955,45 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
+
+    def test_extract_table_w_explicit_project(self):
+        job_id = 'job_id'
+        source_id = 'source_table'
+        destination = 'gs://bucket_name/object_name'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': 'US',
+                'jobId': job_id,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': source_id,
+                    },
+                    'destinationUris': [destination],
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+
+        client.extract_table(
+            source, destination, job_id=job_id, project='other-project',
+            location='US')
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     def test_extract_table_generated_job_id(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -2016,6 +2140,37 @@ class TestClient(unittest.TestCase):
         sent_config = sent['configuration']['query']
         self.assertEqual(sent_config['query'], QUERY)
         self.assertFalse(sent_config['useLegacySql'])
+
+    def test_query_w_explicit_project(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': 'US',
+                'jobId': job_id,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _make_connection(resource)
+
+        client.query(
+            query, job_id=job_id, project='other-project', location='US')
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
 
     def test_query_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJob
@@ -2953,6 +3108,28 @@ class TestClientUpload(object):
         do_upload.assert_called_once_with(
             file_obj,
             self.EXPECTED_CONFIGURATION,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_w_explicit_project(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, job_id='job_id',
+                project='other-project', location='US',
+                job_config=self._make_config())
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource['jobReference']['location'] = 'US'
+        expected_resource['jobReference']['projectId'] = 'other-project'
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
             _DEFAULT_NUM_RETRIES)
 
     def test_load_table_from_file_resumable_metadata(self):

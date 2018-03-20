@@ -185,22 +185,78 @@ class WriteDisposition(object):
     WRITE_EMPTY = 'WRITE_EMPTY'
 
 
+class _JobReference(object):
+    """A reference to a job.
+
+    Arguments:
+        job_id (str): ID of the job to run.
+        project (str): ID of the project where the job runs.
+        location (str): Location of where the job runs.
+    """
+
+    def __init__(self, job_id, project, location):
+        self._properties = {
+            'jobId': job_id,
+            'projectId': project,
+        }
+        # The location field must not be populated if it is None.
+        if location:
+            self._properties['location'] = location
+
+    @property
+    def job_id(self):
+        """str: ID of the job."""
+        return self._properties.get('jobId')
+
+    @property
+    def project(self):
+        """str: ID of the project where the job runs."""
+        return self._properties.get('projectId')
+
+    @property
+    def location(self):
+        """str: Location where the job runs."""
+        return self._properties.get('location')
+
+    def _to_api_repr(self):
+        """Returns the API resource representation of the job reference."""
+        return copy.deepcopy(self._properties)
+
+    @classmethod
+    def _from_api_repr(cls, resource):
+        """Returns a job reference for an API resource representation."""
+        job_id = resource.get('jobId')
+        project = resource.get('projectId')
+        location = resource.get('location')
+        job_ref = cls(job_id, project, location)
+        return job_ref
+
+
 class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
-    :type job_id: str
-    :param job_id: the job's ID in the project associated with the client.
-
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration.
+    Arguments:
+        job_id (Union[str, _JobReference]):
+            Job's ID in the project associated with the client or a
+            fully-qualified job reference.
+        client (google.cloud.bigquery.client.Client):
+            Client which holds credentials and project configuration.
     """
     def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
-        self.job_id = job_id
+        job_ref = job_id
+        if not isinstance(job_id, _JobReference):
+            job_ref = _JobReference(job_id, client.project, None)
+        self._job_ref = job_ref
         self._client = client
         self._properties = {}
         self._result_set = False
         self._completion_lock = threading.Lock()
+
+    @property
+    def job_id(self):
+        """str: ID of the job."""
+        return self._job_ref.job_id
 
     @property
     def project(self):
@@ -209,7 +265,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return self._client.project
+        return self._job_ref.project
+
+    @property
+    def location(self):
+        """str: Location where the job runs."""
+        return self._job_ref.location
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -452,10 +513,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         client = self._require_client(client)
 
+        extra_params = {'fields': 'id'}
+        if self.location:
+            extra_params['location'] = self.location
+
         try:
             client._call_api(retry,
                              method='GET', path=self.path,
-                             query_params={'fields': 'id'})
+                             query_params=extra_params)
         except NotFound:
             return False
         else:
@@ -477,7 +542,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         client = self._require_client(client)
 
-        api_response = client._call_api(retry, method='GET', path=self.path)
+        extra_params = {}
+        if self.location:
+            extra_params['location'] = self.location
+
+        api_response = client._call_api(
+            retry, method='GET', path=self.path, query_params=extra_params)
         self._set_properties(api_response)
 
     def cancel(self, client=None):
@@ -496,8 +566,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         client = self._require_client(client)
 
+        extra_params = {}
+        if self.location:
+            extra_params['location'] = self.location
+
         api_response = client._connection.api_request(
-            method='POST', path='%s/cancel' % (self.path,))
+            method='POST', path='%s/cancel' % (self.path,),
+            query_params=extra_params)
         self._set_properties(api_response['job'])
         # The Future interface requires that we return True if the *attempt*
         # to cancel was successful.
@@ -1095,10 +1170,7 @@ class LoadJob(_AsyncJob):
             self.destination.to_api_repr())
 
         return {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
 
@@ -1125,17 +1197,18 @@ class LoadJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: Job parsed from ``resource``.
         """
-        job_id, config_resource = cls._get_resource_config(resource)
+        config_resource = resource.get('configuration', {})
         config = LoadJobConfig.from_api_repr(config_resource)
-        dest_config = _helpers.get_sub_prop(
-            config_resource, ['load', 'destinationTable'])
-        ds_ref = DatasetReference(dest_config['projectId'],
-                                  dest_config['datasetId'],)
+        # A load job requires a destination table.
+        dest_config = config_resource['load']['destinationTable']
+        ds_ref = DatasetReference(
+            dest_config['projectId'], dest_config['datasetId'])
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
         source_uris = _helpers.get_sub_prop(
             config_resource, ['load', 'sourceUris'])
-        job = cls(job_id, source_uris, destination, client, config)
+        job_ref = _JobReference._from_api_repr(resource['jobReference'])
+        job = cls(job_ref, source_uris, destination, client, config)
         job._set_properties(resource)
         return job
 
@@ -1283,10 +1356,7 @@ class CopyJob(_AsyncJob):
             })
 
         return {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
 
@@ -1496,15 +1566,10 @@ class ExtractJob(_AsyncJob):
             ['extract', 'destinationUris'],
             self.destination_uris)
 
-        resource = {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+        return {
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
-
-        return resource
 
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
@@ -2017,10 +2082,7 @@ class QueryJob(_AsyncJob):
         configuration = self._configuration.to_api_repr()
 
         resource = {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.job_id,
-            },
+            'jobReference': self._job_ref._to_api_repr(),
             'configuration': configuration,
         }
         configuration['query']['query'] = self.query
@@ -2239,7 +2301,8 @@ class QueryJob(_AsyncJob):
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(
                 self.job_id, retry,
-                project=self.project, timeout_ms=timeout_ms)
+                project=self.project, timeout_ms=timeout_ms,
+                location=self.location)
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
@@ -2281,7 +2344,8 @@ class QueryJob(_AsyncJob):
         # Return an iterator instead of returning the job.
         if not self._query_results:
             self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project)
+                self.job_id, retry, project=self.project,
+                location=self.location)
         schema = self._query_results.schema
         dest_table = self.destination
         return self._client.list_rows(dest_table, selected_fields=schema,
