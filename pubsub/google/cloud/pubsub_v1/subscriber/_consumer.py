@@ -320,7 +320,7 @@ class Consumer(object):
             initial_request = policy.get_initial_request()
             request_generator = _RequestQueueGenerator(
                 self._request_queue, initial_request=initial_request)
-            rpc = policy.call_rpc(request_generator)
+            rpc = policy.call_rpc(iter(request_generator))
             request_generator.rpc = rpc
             responses = _pausable_iterator(rpc, self._can_consume)
             try:
