@@ -44,7 +44,8 @@ from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import Forbidden, NotFound
+from google.cloud.exceptions import BadRequest, Forbidden, NotFound
+from google.cloud import storage
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -134,7 +135,8 @@ class TestBigQuery(unittest.TestCase):
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
             elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
-                retry_in_use(Config.CLIENT.delete_dataset)(doomed)
+                retry_in_use(Config.CLIENT.delete_dataset)(
+                    doomed, delete_contents=True)
             elif isinstance(doomed, (Table, bigquery.TableReference)):
                 retry_in_use(Config.CLIENT.delete_table)(doomed)
             else:
@@ -552,10 +554,106 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def _create_storage(self, bucket_name, blob_name):
-        from google.cloud.storage import Client as StorageClient
+    def test_load_table_from_file_w_explicit_location(self):
+        # Create a temporary bucket for extract files.
+        storage_client = storage.Client()
+        bucket_name = 'bq_load_table_eu_extract_test' + unique_resource_id()
+        bucket = storage_client.bucket(bucket_name)
+        bucket.location = 'eu'
+        self.to_delete.append(bucket)
+        bucket.create()
 
-        storage_client = StorageClient()
+        # Create a temporary dataset & table in the EU.
+        table_bytes = six.BytesIO(b'a,3\nb,2\nc,1\n')
+        client = Config.CLIENT
+        dataset = self.temp_dataset(
+            _make_dataset_id('eu_load_file'), location='EU')
+        table_ref = dataset.table('letters')
+        job_config = bigquery.LoadJobConfig()
+        job_config.skip_leading_rows = 0
+        job_config.schema = [
+            bigquery.SchemaField('letter', 'STRING'),
+            bigquery.SchemaField('value', 'INTEGER'),
+        ]
+
+        # Load the file to an EU dataset with an EU load job.
+        load_job = client.load_table_from_file(
+            table_bytes, table_ref, location='EU', job_config=job_config)
+        load_job.result()
+        job_id = load_job.job_id
+
+        # Can get the job from the EU.
+        load_job = client.get_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+        self.assertTrue(load_job.exists())
+
+        # Cannot get the job from the US.
+        with self.assertRaises(NotFound):
+            client.get_job(job_id, location='US')
+
+        load_job_us = client.get_job(job_id)
+        load_job_us._job_ref._properties['location'] = 'US'
+        self.assertFalse(load_job_us.exists())
+        with self.assertRaises(NotFound):
+            load_job_us.reload()
+
+        # Can cancel the job from the EU.
+        self.assertTrue(load_job.cancel())
+        load_job = client.cancel_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+
+        # Cannot cancel the job from the US.
+        with self.assertRaises(NotFound):
+            client.cancel_job(job_id, location='US')
+        with self.assertRaises(NotFound):
+            load_job_us.cancel()
+
+        # Can list the table rows.
+        table = client.get_table(table_ref)
+        self.assertEqual(table.num_rows, 3)
+        rows = [(row.letter, row.value) for row in client.list_rows(table)]
+        self.assertEqual(
+            list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
+
+        # Can query from EU.
+        query_string = 'SELECT MAX(value) FROM `{}.letters`'.format(
+            dataset.dataset_id)
+        max_value = list(client.query(query_string, location='EU'))[0][0]
+        self.assertEqual(max_value, 3)
+
+        # Cannot query from US.
+        with self.assertRaises(BadRequest):
+            list(client.query(query_string, location='US'))
+
+        # Can copy from EU.
+        copy_job = client.copy_table(
+            table_ref, dataset.table('letters2'), location='EU')
+        copy_job.result()
+
+        # Cannot copy from US.
+        with self.assertRaises(BadRequest):
+            client.copy_table(
+                table_ref, dataset.table('letters2_us'),
+                location='US').result()
+
+        # Can extract from EU.
+        extract_job = client.extract_table(
+            table_ref,
+            'gs://{}/letters.csv'.format(bucket_name),
+            location='EU')
+        extract_job.result()
+
+        # Cannot extract from US.
+        with self.assertRaises(BadRequest):
+            client.extract_table(
+                table_ref,
+                'gs://{}/letters-us.csv'.format(bucket_name),
+                location='US').result()
+
+    def _create_storage(self, bucket_name, blob_name):
+        storage_client = storage.Client()
 
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
@@ -1586,9 +1684,11 @@ class TestBigQuery(unittest.TestCase):
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
 
-    def temp_dataset(self, dataset_id):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id)))
+    def temp_dataset(self, dataset_id, location=None):
+        dataset = Dataset(Config.CLIENT.dataset(dataset_id))
+        if location:
+            dataset.location = location
+        dataset = retry_403(Config.CLIENT.create_dataset)(dataset)
         self.to_delete.append(dataset)
         return dataset
 
