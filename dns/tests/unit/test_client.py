@@ -97,10 +97,12 @@ class TestClient(unittest.TestCase):
                 'rrsetAdditionsPerChange': str(RRSET_ADDITIONS),
                 'rrsetDeletionsPerChange': str(RRSET_DELETIONS),
                 'totalRrdataSizePerChange': str(TOTAL_SIZE),
+		'whitelistedKeySpecs': [{"x":"y","a":"b"},{"x":"y","z":"a"}]
             }
         }
         CONVERTED = {key: int(value)
-                     for key, value in DATA['quota'].items()}
+                     for key, value in DATA['quota'].items()
+		     if type(value) is not list}
         WITH_KIND = {'quota': DATA['quota'].copy()}
         WITH_KIND['quota']['kind'] = 'dns#quota'
         creds = _make_credentials()

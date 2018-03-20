@@ -68,7 +68,7 @@ class Client(ClientWithProject):
 
         return {key: int(value)
                 for key, value in resp['quota'].items()
-                if key != 'kind'}
+                if key != 'kind' and type(value) is not list}
 
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.
