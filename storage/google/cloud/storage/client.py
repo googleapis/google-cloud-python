@@ -242,7 +242,8 @@ class Client(ClientWithProject):
         If the bucket already exists, will raise
         :class:`google.cloud.exceptions.Conflict`.
 
-        See also: :meth:`~.storage.Bucket.create`
+        To set additional properties when creating a bucket such as
+        :attr:`~.storage.Bucket.location`, use :meth:`~.storage.Bucket.create`.
         
         :type bucket_name: str
         :param bucket_name: The bucket name to create.
