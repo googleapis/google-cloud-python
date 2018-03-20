@@ -33,6 +33,7 @@ from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import Table
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
@@ -2283,9 +2284,9 @@ class QueryJob(_AsyncJob):
             self._query_results = self._client._get_query_results(
                 self.job_id, retry, project=self.project)
         schema = self._query_results.schema
-        dest_table = self.destination
-        return self._client.list_rows(dest_table, selected_fields=schema,
-                                      retry=retry)
+        dest_table_ref = self.destination
+        dest_table = Table(dest_table_ref, schema=schema)
+        return self._client.list_rows(dest_table, retry=retry)
 
     def to_dataframe(self):
         """Return a pandas DataFrame from a QueryJob
