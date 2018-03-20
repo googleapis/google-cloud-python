@@ -15,6 +15,7 @@
 
 import unittest
 
+import grpc
 import mock
 
 
@@ -127,6 +128,8 @@ class TestTable(unittest.TestCase):
     TABLE_ID = 'table-id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
     ROW_KEY = b'row-key'
+    ROW_KEY_1 = b'row-key-1'
+    ROW_KEY_2 = b'row-key-2'
     FAMILY_NAME = u'family'
     QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
@@ -472,7 +475,6 @@ class TestTable(unittest.TestCase):
 
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT
 
@@ -481,21 +483,19 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
-        request_pb = object()  # Returned by our mock.
+        request = object()  # Returned by our mock.
         mock_created = []
 
         def mock_create_row_request(table_name, **kwargs):
             mock_created.append((table_name, kwargs))
-            return request_pb
-
-        # Create response_iterator
-        response_iterator = object()
+            return request
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub(response_iterator)
+        client._data_stub = mock.MagicMock()
 
         # Create expected_result.
-        expected_result = PartialRowsData(response_iterator)
+        expected_result = PartialRowsData(client._data_stub.ReadRows,
+                                          request)
 
         # Perform the method and check the result.
         start_key = b'start-key'
@@ -507,12 +507,7 @@ class TestTable(unittest.TestCase):
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)
 
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ReadRows',
-            (request_pb,),
-            {},
-        )])
+        self.assertEqual(result.rows, expected_result.rows)
         created_kwargs = {
             'start_key': start_key,
             'end_key': end_key,
@@ -522,36 +517,49 @@ class TestTable(unittest.TestCase):
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
-    def test_yield_rows(self):
-        from tests.unit._testing import _FakeStub
-
+    def test_yield_retry_rows(self):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create response_iterator
-        chunk = _ReadRowsResponseCellChunkPB(
-            row_key=self.ROW_KEY,
+        chunk_1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_1,
             family_name=self.FAMILY_NAME,
             qualifier=self.QUALIFIER,
             timestamp_micros=self.TIMESTAMP_MICROS,
             value=self.VALUE,
-            commit_row=True,
+            commit_row=True
         )
-        chunks = [chunk]
 
-        response = _ReadRowsResponseV2(chunks)
-        response_iterator = _MockCancellableIterator(response)
+        chunk_2 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_2,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        response_1 = _ReadRowsResponseV2([chunk_1])
+        response_2 = _ReadRowsResponseV2([chunk_2])
+        response_failure_iterator_1 = _MockFailureIterator_1()
+        response_failure_iterator_2 = _MockFailureIterator_2([response_1])
+        response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub(response_iterator)
+        client._data_stub = mock.MagicMock()
+        client._data_stub.ReadRows.side_effect = [response_failure_iterator_1,
+                                                  response_failure_iterator_2,
+                                                  response_iterator]
 
         rows = []
-        for row in table.yield_rows():
+        for row in table.yield_rows(start_key=self.ROW_KEY_1,
+                                    end_key=self.ROW_KEY_2):
             rows.append(row)
-        result = rows[0]
 
-        self.assertEqual(result.row_key, self.ROW_KEY)
+        result = rows[1]
+        self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub
@@ -1217,18 +1225,56 @@ class _Instance(object):
         self._client = client
 
 
-class _MockCancellableIterator(object):
-
-    cancel_calls = 0
-
+class _MockReadRowsIterator(object):
     def __init__(self, *values):
         self.iter_values = iter(values)
 
     def next(self):
         return next(self.iter_values)
 
-    def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
+    __next__ = next
+
+
+class _MockFailureIterator_1(object):
+
+    def next(self):
+        class DeadlineExceeded(grpc.RpcError, grpc.Call):
+            """ErrorDeadlineExceeded exception"""
+
+            def code(self):
+                return grpc.StatusCode.DEADLINE_EXCEEDED
+
+            def details(self):
+                return "Failed to read from server"
+
+        raise DeadlineExceeded()
+
+    __next__ = next
+
+
+class _MockFailureIterator_2(object):
+
+    def __init__(self, *values):
+        self.iter_values = values[0]
+        self.calls = 0
+
+    def next(self):
+        class DeadlineExceeded(grpc.RpcError, grpc.Call):
+            """ErrorDeadlineExceeded exception"""
+
+            def code(self):
+                return grpc.StatusCode.DEADLINE_EXCEEDED
+
+            def details(self):
+                return "Failed to read from server"
+
+        self.calls += 1
+        if self.calls == 1:
+            return self.iter_values[0]
+        else:
+            raise DeadlineExceeded()
+
+    __next__ = next
 
 
 class _ReadRowsResponseV2(object):
