@@ -162,7 +162,8 @@ class FieldPath(object):
         """
         api_repr = []
         for part in self.parts:
-            if re.match(self.simple_field_name, part):
+            match = re.match(self.simple_field_name, part)
+            if match and match.group(0) == part:
                 api_repr.append(part)
             else:
                 replaced = part.replace('\\', '\\\\').replace('`', '\\`')
@@ -281,14 +282,15 @@ class FieldPathHelper(object):
         Returns:
             ValueError: Always.
         """
-        conflict_parts = [field_path]
+        conflict_parts = list(field_path.parts)
         while conflicting_paths is not self.PATH_END:
             # Grab any item, we are just looking for one example.
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
         conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        msg = self.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         return ValueError(msg)
 
     def add_field_path_end(
@@ -340,7 +342,9 @@ class FieldPathHelper(object):
         Raises:
             ValueError: If there is an ambiguity.
         """
-        parts = parse_field_path(field_path)
+        if isinstance(field_path, six.string_types):
+            field_path = FieldPath.from_string(field_path)
+        parts = field_path.parts
         to_update = self.get_update_values(value)
         curr_paths = self.unpacked_field_paths
         for index, part in enumerate(parts[:-1]):
@@ -912,7 +916,7 @@ def canonicalize_field_paths(field_paths):
 
     .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
-    return [FieldPath.from_string(path).to_api_repr() for path in field_paths]
+    return [path.to_api_repr() for path in field_paths]
 
 
 def pbs_for_update(client, document_path, field_updates, option):
