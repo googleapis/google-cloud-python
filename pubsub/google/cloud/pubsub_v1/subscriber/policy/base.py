@@ -263,39 +263,26 @@ class BasePolicy(object):
 
         self._maybe_resume_consumer()
 
-    def get_initial_request(self, ack_queue=False):
+    def get_initial_request(self):
         """Return the initial request.
 
         This defines the initial request that must always be sent to Pub/Sub
         immediately upon opening the subscription.
 
-        Args:
-            ack_queue (bool): Whether to include any acks that were sent
-                while the connection was paused.
-
         Returns:
             google.cloud.pubsub_v1.types.StreamingPullRequest: A request
             suitable for being the first request on the stream (and not
             suitable for any other purpose).
-
-        .. note::
-            If ``ack_queue`` is set to True, this includes the ack_ids, but
-            also clears the internal set.
-
-            This means that calls to :meth:`get_initial_request` with
-            ``ack_queue`` set to True are not idempotent.
         """
         # Any ack IDs that are under lease management and not being acked
         # need to have their deadline extended immediately.
-        ack_ids = set()
         lease_ids = set(self.leased_messages.keys())
-        if ack_queue:
-            ack_ids = self._ack_on_resume
-            lease_ids = lease_ids.difference(ack_ids)
+        # Exclude any IDs that we're about to ack.
+        lease_ids = lease_ids.difference(self._ack_on_resume)
 
         # Put the request together.
         request = types.StreamingPullRequest(
-            ack_ids=list(ack_ids),
+            ack_ids=list(self._ack_on_resume),
             modify_deadline_ack_ids=list(lease_ids),
             modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
             stream_ack_deadline_seconds=self.histogram.percentile(99),
@@ -303,9 +290,7 @@ class BasePolicy(object):
         )
 
         # Clear the ack_ids set.
-        # Note: If `ack_queue` is False, this just ends up being a no-op,
-        # since the set is just an empty set.
-        ack_ids.clear()
+        self._ack_on_resume.clear()
 
         # Return the initial request.
         return request
