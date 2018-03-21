@@ -57,8 +57,8 @@ def get_baseline():
     On a push to master, return None. This will effectively cause everything
     to be considered to be affected.
     """
-    ci_branch = os.environ.get('CIRCLE_BRANCH')
-    ci_pr = os.environ.get('CIRCLE_PR_NUMBER')
+    ci_branch = os.getenv('CIRCLE_BRANCH')
+    ci_pr = os.getenv('CIRCLE_PR_NUMBER')
 
     # If this is a pull request or branch, return the tip for master.
     # We will test only packages which have changed since that point.
