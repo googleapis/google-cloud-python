@@ -480,6 +480,31 @@ class TestExistsOption(unittest.TestCase):
             self.assertEqual(write_pb.current_document, expected_doc)
 
 
+class TestMergeOption(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1.client import MergeOption
+        return MergeOption
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass()
+
+    def test_modify_write(self):
+        from google.cloud.firestore_v1beta1.proto import common_pb2
+        from google.cloud.firestore_v1beta1.proto import write_pb2
+
+        for merge in (True, False):
+            option = self._make_one(merge)
+            write_pb = write_pb2.Write()
+            field_paths = ['a', 'b', 'c']
+            ret_val = option.modify_write(write_pb, field_paths=field_paths)
+            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+            self.assertIsNone(ret_val)
+            self.assertEqual(write_pb.update_mask, mask)
+
+
 class Test__reference_info(unittest.TestCase):
 
     @staticmethod

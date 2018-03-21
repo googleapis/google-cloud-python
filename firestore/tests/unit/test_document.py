@@ -280,7 +280,12 @@ class TestDocumentReference(unittest.TestCase):
         write_pb = self._write_pb_for_set(
             document._document_path, document_data)
         if option is not None:
-            option.modify_write(write_pb)
+            from google.cloud.firestore_v1beta1.client import MergeOption
+            if isinstance(option, MergeOption):
+                option.modify_write(write_pb, field_paths=document_data.keys())
+            else:
+                option.modify_write(write_pb)
+
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
             metadata=client._rpc_metadata)
@@ -288,8 +293,11 @@ class TestDocumentReference(unittest.TestCase):
     def test_set(self):
         self._set_helper()
 
-    def test_set_with_option(self):
+    def test_set_exists(self):
         self._set_helper(exists=True)
+
+    def test_set_merge(self):
+        self._set_helper(merge='abc')
 
     @staticmethod
     def _write_pb_for_update(document_path, update_values, field_paths):

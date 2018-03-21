@@ -34,6 +34,7 @@ from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
 from google.cloud.firestore_v1beta1.transaction import Transaction
+from google.cloud.firestore_v1beta1.proto import common_pb2
 
 
 DEFAULT_DATABASE = '(default)'
@@ -252,12 +253,16 @@ class Client(ClientWithProject):
         One of the following keyword arguments must be provided:
 
         * ``last_update_time`` (:class:`google.protobuf.timestamp_pb2.\
-           Timestamp`): A timestamp. When set, the target document must exist
-           and have been last updated at that time. Protobuf ``update_time``
-           timestamps are typically returned from methods that perform write
-           operations as part of a "write result" protobuf or directly.
+               Timestamp`): A timestamp. When set, the target document must
+               exist and have been last updated at that time. Protobuf
+               ``update_time`` timestamps are typically returned from methods
+               that perform write operations as part of a "write result"
+               protobuf or directly.
         * ``exists`` (:class:`bool`): Indicates if the document being modified
-          should already exist.
+              should already exist.
+        * ``merge`` (Any):
+              Indicates if the document should be merged.
+              **Note**: argument is ignored
 
         Providing no argument would make the option have no effect (so
         it is not allowed). Providing multiple would be an apparent
@@ -281,6 +286,8 @@ class Client(ClientWithProject):
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
+        elif name == 'merge':
+            return MergeOption()
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -416,46 +423,29 @@ class LastUpdateOption(WriteOption):
         write_pb.current_document.CopyFrom(current_doc)
 
 
-class CreateIfMissingOption(WriteOption):
-    """Option used to assert "create if missing" on a write operation.
+class MergeOption(WriteOption):
+    """Option used to merge on a write operation.
 
     This will typically be created by
     :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    Args:
-        create_if_missing (bool): Indicates if the document should be created
-            if it doesn't already exist.
     """
-    def __init__(self, create_if_missing):
-        self._create_if_missing = create_if_missing
-
-    def modify_write(self, write_pb, no_create_msg=None):
+    def modify_write(
+            self, write_pb, field_paths=None, path=None, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
-
-        If:
-
-        * ``create_if_missing=False``, adds a precondition that requires
-          existence
-        * ``create_if_missing=True``, does not add any precondition
-        * ``no_create_msg`` is passed, raises an exception. For example, in a
-          :meth:`~.DocumentReference.delete`, no "create" can occur, so it
-          wouldn't make sense to "create if missing".
 
         Args:
             write_pb (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
-            no_create_msg (Optional[str]): A message to use to indicate that
-                a create operation is not allowed.
-
-        Raises:
-            ValueError: If ``no_create_msg`` is passed.
+            field_paths (dict):
+                The actual field names and values to use for replacing a
+                document.
+            path (str): A fully-qualified document_path
+            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
+                other subclasses that are unused here.
         """
-        if no_create_msg is not None:
-            raise ValueError(no_create_msg)
-        elif not self._create_if_missing:
-            current_doc = types.Precondition(exists=True)
-            write_pb.current_document.CopyFrom(current_doc)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        write_pb.update_mask.CopyFrom(mask)
 
 
 class ExistsOption(WriteOption):
