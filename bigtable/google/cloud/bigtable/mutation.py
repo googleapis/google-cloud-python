@@ -3,7 +3,7 @@ from google.cloud.bigtable_v2.proto import (
 from google.cloud.bigtable_v2.proto.bigtable_pb2 import MutateRowsRequest
 
 
-class RowMutations():
+class MutateRowsEntry():
 
     def __init__(self, row_key, table_name):
         self.row_key = row_key
@@ -46,6 +46,7 @@ class MutateRows():
     def create_request(self):
         request = MutateRowsRequest(table_name=self.table_name,
                                     entries=self.entries)
+
         return self.client._mutate_rows(request)
 
 
