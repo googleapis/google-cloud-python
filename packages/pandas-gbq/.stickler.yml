@@ -2,5 +2,9 @@ linters:
   flake8:
     max-line-length: 79
     fixer: true
+    ignore:
+files:
+  ignore:
+    - doc/**/*.py
 fixers:
   enable: true

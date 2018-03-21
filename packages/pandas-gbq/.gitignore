@@ -46,6 +46,7 @@ coverage_html_report
 *.so
 .build_cache_dir
 MANIFEST
+__pycache__
 
 # Python files #
 ################
