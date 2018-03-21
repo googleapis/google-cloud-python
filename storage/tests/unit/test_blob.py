@@ -615,7 +615,7 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
 
-        # Modify the blob so there there will be 2 chunks of size 3.
+        # Modify the blob so there there will be 2 chunks of size 2.
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 2
 
