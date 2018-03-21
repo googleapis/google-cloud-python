@@ -460,6 +460,16 @@ class TestLoadJob(unittest.TestCase, _Base):
                              client, config)
         self.assertEqual(job.schema, [full_name, age])
 
+    def test_ctor_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        client = _make_client(project=self.PROJECT)
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+        self.assertEqual(load_job.project, 'alternative-project')
+        self.assertEqual(load_job.location, 'US')
+
     def test_done(self):
         client = _make_client(project=self.PROJECT)
         resource = self._make_resource(ended=True)
@@ -833,6 +843,31 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(req[1]['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_begin_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource()
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job._begin()
+
+        conn.api_request.assert_called_once()
+        _, request = conn.api_request.call_args
+        self.assertEqual(request['method'], 'POST')
+        self.assertEqual(
+            request['path'], '/projects/alternative-project/jobs')
+        self.assertEqual(
+            request['data']['jobReference']['projectId'],
+            'alternative-project')
+        self.assertEqual(request['data']['jobReference']['location'], 'US')
+        self.assertEqual(request['data']['jobReference']['jobId'], self.JOB_ID)
+
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _make_connection()
@@ -864,6 +899,22 @@ class TestLoadJob(unittest.TestCase, _Base):
             path=PATH,
             query_params={'fields': 'id'})
 
+    def test_exists_miss_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        job_ref = job._JobReference('my-job-id', 'other-project', 'US')
+        conn = _make_connection()
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        self.assertFalse(load_job.exists())
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/jobs/my-job-id',
+            query_params={'fields': 'id', 'location': 'US'})
+
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
@@ -876,7 +927,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -894,8 +946,29 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.reload()
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/alternative-project/jobs/{}'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
     def test_cancel_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
@@ -910,7 +983,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='POST',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_alternate_client(self):
@@ -929,8 +1003,29 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='POST',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_cancel_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection({'job': resource})
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.cancel()
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/alternative-project/jobs/{}/cancel'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
 
 class TestCopyJobConfig(unittest.TestCase, _Base):
@@ -1338,7 +1433,8 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         conn.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1357,7 +1453,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
             method='GET',
-            path=PATH)
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1698,7 +1795,8 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        conn.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -1716,7 +1814,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         job.reload(client=client2)
 
         conn1.api_request.assert_not_called()
-        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -2969,7 +3068,8 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertNotEqual(job.destination, table_ref)
 
-        conn.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -2992,7 +3092,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.reload(client=client2)
 
         conn1.api_request.assert_not_called()
-        conn2.api_request.assert_called_once_with(method='GET', path=PATH)
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
