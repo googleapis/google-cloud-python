@@ -493,6 +493,20 @@ class Test_Blob(unittest.TestCase):
         fake_transport.request.side_effect = [chunk1_response, chunk2_response]
         return fake_transport
 
+    def _mock_download_transport_range(self):
+        fake_transport = mock.Mock(spec=['request'])
+        # Give the transport two fake responses.
+        chunk1_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '2', 'content-range': 'bytes 1-2/6'},
+            content=b'bc')
+        chunk2_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '2', 'content-range': 'bytes 3-4/6'},
+            content=b'de')
+        fake_transport.request.side_effect = [chunk1_response, chunk2_response]
+        return fake_transport
+
     def _check_session_mocks(self, client, transport,
                              expected_url, headers=None):
         # Check that the transport was called exactly twice.
@@ -550,8 +564,8 @@ class Test_Blob(unittest.TestCase):
         transport = mock.Mock(spec=['request'])
         transport.request.return_value = self._mock_requests_response(
             http_client.OK,
-            {'content-length': '2', 'content-range': 'bytes 1-3'},
-            content=b'bc',
+            {'content-length': '3', 'content-range': 'bytes 1-3'},
+            content=b'bcd',
             stream=True,
         )
         file_obj = io.BytesIO()
@@ -559,7 +573,7 @@ class Test_Blob(unittest.TestCase):
         headers = {}
         blob._do_download(transport, file_obj, download_url, headers, start=1, end=3)
         # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b'bc')
+        self.assertEqual(file_obj.getvalue(), b'bcd')
         self.assertEqual(headers['range'], 'bytes=1-3')
 
         transport.request.assert_called_once_with(
@@ -603,20 +617,20 @@ class Test_Blob(unittest.TestCase):
 
         # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
+        blob.chunk_size = 2
 
-        transport = self._mock_download_transport()
+        transport = self._mock_download_transport_range()
         file_obj = io.BytesIO()
         download_url = 'http://test.invalid'
         headers = {}
-        blob._do_download(transport, file_obj, download_url, headers, start=10, end=20)
+        blob._do_download(transport, file_obj, download_url, headers, start=1, end=4)
         # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b'abcdef')
+        self.assertEqual(file_obj.getvalue(), b'bcde')
 
         # Check that the transport was called exactly twice.
         self.assertEqual(transport.request.call_count, 2)
         # ``headers`` was modified (in place) once for each API call.
-        self.assertEqual(headers, {'range': 'bytes=13-5'})
+        self.assertEqual(headers, {'range': 'bytes=3-4'})
         call = mock.call(
             'GET', download_url, data=None, headers=headers)
         self.assertEqual(transport.request.mock_calls, [call, call])
