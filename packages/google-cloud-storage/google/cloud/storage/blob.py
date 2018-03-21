@@ -424,7 +424,7 @@ class Blob(_PropertyMixin):
 
         return _add_query_parameters(base_url, name_value_pairs)
 
-    def _do_download(self, transport, file_obj, download_url, headers):
+    def _do_download(self, transport, file_obj, download_url, headers, start=None, end=None):
         """Perform a download without any error handling.
 
         This is intended to be called by :meth:`download_to_file` so it can
@@ -443,18 +443,24 @@ class Blob(_PropertyMixin):
 
         :type headers: dict
         :param headers: Optional headers to be sent with the request(s).
+
+        :type start: int 
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int 
+        :param end: Optional, The last byte in a range to be downloaded.
         """
         if self.chunk_size is None:
-            download = Download(download_url, stream=file_obj, headers=headers)
+            download = Download(download_url, stream=file_obj, headers=headers, start=start, end=end)
             download.consume(transport)
         else:
             download = ChunkedDownload(
-                download_url, self.chunk_size, file_obj, headers=headers)
+                download_url, self.chunk_size, file_obj, headers=headers, start=start if start else 0, end=end)
 
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def download_to_file(self, file_obj, client=None):
+    def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -488,6 +494,12 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         download_url = self._get_download_url()
@@ -496,11 +508,11 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._do_download(transport, file_obj, download_url, headers)
+            self._do_download(transport, file_obj, download_url, headers, start, end)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def download_to_filename(self, filename, client=None):
+    def download_to_filename(self, filename, client=None, start=None, end=None):
         """Download the contents of this blob into a named file.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -514,11 +526,17 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         try:
             with open(filename, 'wb') as file_obj:
-                self.download_to_file(file_obj, client=client)
+                self.download_to_file(file_obj, client=client, start=start, end=end)
         except resumable_media.DataCorruption as exc:
             # Delete the corrupt downloaded file.
             os.remove(filename)
@@ -529,7 +547,7 @@ class Blob(_PropertyMixin):
             mtime = time.mktime(updated.timetuple())
             os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, client=None):
+    def download_as_string(self, client=None, start=None, end=None):
         """Download the contents of this blob as a string.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -540,12 +558,18 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type start: int
+        :param start: Optional, the first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: Optional, The last byte in a range to be downloaded.
+
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client)
+        self.download_to_file(string_buffer, client=client, start=start, end=end)
         return string_buffer.getvalue()
 
     def _get_content_type(self, content_type, filename=None):
