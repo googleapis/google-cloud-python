@@ -17,7 +17,6 @@ import threading
 from google.auth import credentials
 import grpc
 import mock
-import pytest
 from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
