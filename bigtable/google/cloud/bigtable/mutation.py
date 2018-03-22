@@ -32,12 +32,11 @@ class MutateRowsEntry(object):
         self.row_key = row_key
         self.mutations = []
 
-    def set_cell(self, row_key, family_name, column_id, value, timestamp=None):
+    def set_cell(self, family_name, column_id, value, timestamp=None):
         """Create the mutation request message for SetCell and add it to the
             list of mutations
 
         Arguments:
-            row_key (bytes): Key of the Row.
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
@@ -57,13 +56,11 @@ class MutateRowsEntry(object):
         mutation = SetCellMutation(family_name, column_id, value, timestamp)
         self.mutations.append(mutation.mutation_request)
 
-    def delete_from_column(self, row_key, family_name, column_id,
-                           time_range=None):
+    def delete_from_column(self, family_name, column_id, time_range=None):
         """Create the mutation request message for DeleteFromColumn and
             add it to the list of mutations
 
         Arguments:
-            row_key (bytes): Key of the Row.
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
@@ -75,6 +72,24 @@ class MutateRowsEntry(object):
                 deleted.
         """
         mutation = DeleteFromColumnMutation(family_name, column_id, time_range)
+        self.mutations.append(mutation.mutation_request)
+
+    def delete_from_family(self, family_name):
+        """Create the mutation request message for DeleteFromFamily and add
+        it to the list of mutations
+
+        Arguments:
+            family_name (str):
+                The name of the family into which new data should be written.
+                Must match ``[-_.a-zA-Z0-9]+``.
+        """
+        mutation = DeleteFromFamilyMutation(family_name)
+        self.mutations.append(mutation.mutation_request)
+
+    def delete_from_row(self):
+        """Create the mutation request message for DeleteFromRow and add it
+        to the list of mutations"""
+        mutation = DeleteFromRowMutation()
         self.mutations.append(mutation.mutation_request)
 
     def create_entry(self):
@@ -139,9 +154,8 @@ class _RetryableMutateRows(object):
     def __init__(self, table_name, client, entries):
         self.table_name = table_name
         self.client = client
-        self.entries = entries
-        self.responses_statuses = [None] * len(self.entries)
-        self.retryable_entries = []
+        self.responses_statuses = [None] * len(entries)
+        self.retryable_entries = entries
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -184,34 +198,33 @@ class _RetryableMutateRows(object):
 
     def _do_mutate_retryable_mutate_rows(self):
 
-        if not self.entries:
-            return self.responses_statuses
-        else:
-            if not self.retryable_entries:
-                responses = self.client.mutate_rows(table_name=self.table_name,
-                                                    entries=self.entries)
-            else:
-                responses = self.client.mutate_rows(
-                    table_name=self.table_name, entries=self.retryable_entries)
+        retryable_entries = []
+        index_into_all_entries = []
+        for index, status in enumerate(self.responses_statuses):
+            if self._is_retryable(status):
+                retryable_entries.append(self.retryable_entries[index])
+                index_into_all_entries.append(index)
 
-            num_responses = 0
-            num_retryable_responses = 0
-            for response in responses:
-                for entry in response.entries:
-                    num_responses += 1
-                    index = entry.index
-                    self.responses_statuses[index] = entry.status
-                    if self._is_retryable(entry.status):
-                        self.retryable_entries.append(self.entries[index])
-                        num_retryable_responses += 1
+        responses = self.client.mutate_rows(
+            table_name=self.table_name, entries=retryable_entries)
 
-            if len(self.entries) != num_responses:
-                raise RuntimeError(
-                    'Unexpected number of responses', num_responses,
-                    'Expected', len(self.entries))
+        num_responses = 0
+        num_retryable_responses = 0
+        for response in responses:
+            for entry in response.entries:
+                num_responses += 1
+                index = index_into_all_entries[entry.index]
+                self.responses_statuses[index] = entry.status
+                if self._is_retryable(entry.status):
+                    num_retryable_responses += 1
 
-            if num_retryable_responses:
-                raise _BigtableRetryableError
+        if len(retryable_entries) != num_responses:
+            raise RuntimeError(
+                'Unexpected number of responses', num_responses,
+                'Expected', len(retryable_entries))
+
+        if num_retryable_responses:
+            raise _BigtableRetryableError
 
         return self.responses_statuses
 
@@ -289,3 +302,41 @@ class DeleteFromColumnMutation(object):
         )
         return data_v2_pb2.Mutation(
             delete_from_column=delete_from_column_mutation)
+
+
+class DeleteFromFamilyMutation(object):
+    """Create the mutation request message for DeleteFromFamily and add it to
+        the list of mutations
+
+        Arguments:
+            family_name (str):
+                The name of the family into which new data should be written.
+                Must match ``[-_.a-zA-Z0-9]+``.
+        """
+
+    def __init__(self, family_name):
+        super(DeleteFromFamilyMutation, self).__init__()
+        self.family_name = family_name
+
+    @property
+    def mutation_request(self):
+        """message: Mutation of the DeleteFromFamily."""
+        delete_from_family_mutation = data_v2_pb2.Mutation.DeleteFromFamily(
+            family_name=self.family_name
+        )
+        return data_v2_pb2.Mutation(
+            delete_from_family=delete_from_family_mutation)
+
+
+class DeleteFromRowMutation(object):
+    """Create the mutation request message for DeleteFromRow and add it to
+    the list of mutations"""
+
+    def __init__(self):
+        super(DeleteFromRowMutation, self).__init__()
+
+    @property
+    def mutation_request(self):
+        """message: Mutation of the DeleteFromRow."""
+        delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
+        return data_v2_pb2.Mutation(delete_from_row=delete_from_row_mutation)
