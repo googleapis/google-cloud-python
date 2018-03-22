@@ -36,10 +36,10 @@ dependencies = [
     'setuptools>=34.0.0',
     'six>=1.10.0',
     'pytz',
+    'futures>=3.2.0;python_version<"3.2"'
 ]
 extras = {
-    'grpc': 'grpcio>=1.8.2',
-    ':python_version < "3.2"': 'futures>=3.2.0',
+    'grpc': 'grpcio>=1.8.2'
 }
 
 
