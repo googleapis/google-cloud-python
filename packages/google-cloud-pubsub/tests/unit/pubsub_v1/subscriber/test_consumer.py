@@ -17,7 +17,6 @@ import threading
 from google.auth import credentials
 import grpc
 import mock
-import pytest
 from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
@@ -84,6 +83,19 @@ class Test_RequestQueueGenerator(object):
         q.get.side_effect = queue.Empty()
         rpc = mock.create_autospec(grpc.RpcContext, instance=True)
         rpc.is_active.return_value = False
+
+        generator = _consumer._RequestQueueGenerator(q)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == []
+
+    def test_exit_with_stop(self):
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = [_helper_threads.STOP, queue.Empty()]
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = True
 
         generator = _consumer._RequestQueueGenerator(q)
         generator.rpc = rpc

@@ -210,6 +210,12 @@ class _RequestQueueGenerator(object):
                     # RPC is still active, keep waiting for queue items.
                     continue
 
+            # A call to consumer.close() signaled us to stop generating
+            # requests.
+            if item == _helper_threads.STOP:
+                _LOGGER.debug('Cleanly exiting request generator.')
+                return
+
             if self._should_exit():
                 # We have an item, but the RPC is closed. We should put the
                 # item back on the queue so that the next RPC can consume it.
@@ -416,6 +422,7 @@ class Consumer(object):
         self.resume()  # Make sure we aren't paused.
         self._stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
+        # Signal the request generator RPC to exit cleanly.
         self.send_request(_helper_threads.STOP)
         thread = self._consumer_thread
         self._consumer_thread = None
