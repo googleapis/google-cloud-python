@@ -103,7 +103,7 @@ class TestMutateRows(unittest.TestCase):
 
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows()
+        statuses = mutate_rows.mutate()
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS]
@@ -135,7 +135,7 @@ class TestMutateRows(unittest.TestCase):
         )
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows(retry=False)
+        statuses = mutate_rows.mutate(retry=False)
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS]
@@ -165,7 +165,7 @@ class TestMutateRows(unittest.TestCase):
         )
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows()
+        statuses = mutate_rows.mutate()
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS]
@@ -194,7 +194,7 @@ class TestMutateRows(unittest.TestCase):
         )
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows(retry=False)
+        statuses = mutate_rows.mutate(retry=False)
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS]
@@ -221,7 +221,7 @@ class TestMutateRows(unittest.TestCase):
         mutate_rows_entry.delete_from_row()
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows(retry=False)
+        statuses = mutate_rows.mutate(retry=False)
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS]
@@ -266,7 +266,7 @@ class TestMutateRows(unittest.TestCase):
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
         with self.assertRaises(RuntimeError):
-            mutate_rows.mutate_rows()
+            mutate_rows.mutate()
 
     def test_mutation_retry_error_with_no_retry_strategy(self):
         from google.cloud.bigtable.mutation import MutateRowsEntry
@@ -294,7 +294,7 @@ class TestMutateRows(unittest.TestCase):
 
         mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate_rows(retry=False)
+        statuses = mutate_rows.mutate(retry=False)
 
         result = [status.code for status in statuses]
         expected_result = [self.RETRYABLE]

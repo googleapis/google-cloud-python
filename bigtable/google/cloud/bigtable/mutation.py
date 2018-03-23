@@ -93,11 +93,11 @@ class MutateRowsEntry(object):
         self.mutations.append(mutation.mutation_request)
 
     def create_entry(self):
-        """Create Entry from list of mutations
+        """Create a MutateRowsRequest Entry from the list of mutations
 
         Returns:
             `Entry <google.bigtable.v2.MutateRowsRequest.Entry>`
-            A ``Entry`` message.
+             An ``Entry`` for a MutateRowsRequest message.
         """
         entry = MutateRowsRequest.Entry(row_key=self.row_key)
         for mutation in self.mutations:
@@ -106,13 +106,14 @@ class MutateRowsEntry(object):
 
 
 class MutateRows(object):
-    """Create Entry using list of mutations
+    """Maintain a list of Entry's to mutate
+       Corresponds to the MutateRowsRequest
 
     Arguments:
-        table_name (bytes): Key of the Row in bytes.
+        table_name (str): The name of the table with rows to mutate.
         client (class):
             `Client <google.cloud.bigtable_v2.BigtableClient>`
-            The client class of BigtableClient.
+            The client class for the GAPIC API.
     """
 
     def __init__(self, table_name, client):
@@ -121,7 +122,7 @@ class MutateRows(object):
         self.entries = []
 
     def add_row_mutations_entry(self, mutate_rows_entry):
-        """Create list of entries of ``Entry``
+        """Add an ``Entry`` to the list for the mutate request
 
         Arguments:
             mutate_rows_entry (class): Class of ``MutateRowsEntry``
@@ -129,14 +130,13 @@ class MutateRows(object):
         entry = mutate_rows_entry.create_entry()
         self.entries.append(entry)
 
-    def mutate_rows(self, retry=DEFAULT_RETRY):
-        """Call on GAPIC API for MutateRows
+    def mutate(self, retry=DEFAULT_RETRY):
+        """Call the GAPIC API for MutateRows
 
         Returns:
             List[~google.rpc.status_pb2.Status].
             A list of response statuses (`google.rpc.status_pb2.Status`)
-            corresponding to success or failure of each row mutation
-            sent. These will be in the same order as the ``rows``.
+            corresponding to success or failure of each Entry sent.
         """
         retryable_mutate_rows = _RetryableMutateRows(
             self.table_name, self.client, self.entries)
@@ -144,6 +144,12 @@ class MutateRows(object):
 
 
 class _RetryableMutateRows(object):
+    """A callable worker that can retry to mutate rows with transient errors.
+
+    This class is a callable that can retry mutating rows that result in
+    transient errors. After all rows are successful or none of the rows
+    are retryable, any subsequent call on this callable will be a no-op.
+    """
 
     RETRY_CODES = (
         StatusCode.DEADLINE_EXCEEDED.value[0],
@@ -197,7 +203,22 @@ class _RetryableMutateRows(object):
                 status.code in _RetryableMutateRows.RETRY_CODES)
 
     def _do_mutate_retryable_mutate_rows(self):
+        """Mutate all the rows that are eligible for retry.
 
+        A row is eligible for retry if it has not been tried or if it resulted
+        in a transient error in a previous call.
+        Returns:
+            `List [‘~google.rpc.status_pb2.Status']`
+             The responses statuses, which is a list of
+             Class `~google.rpc.status_pb2.Status`.
+        Raises:
+             One of the following:
+
+                 * (exc) `~.table._BigtableRetryableError` if any
+                   row returned a transient error.
+                 * (exc) `RuntimeError` if the number of responses doesn't
+                   match the number of rows that were retried
+        """
         retryable_entries = []
         index_into_all_entries = []
         for index, status in enumerate(self.responses_statuses):
