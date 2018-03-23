@@ -381,7 +381,7 @@ class TestBigQuery(unittest.TestCase):
         config = bigquery.LoadJobConfig()
         config.schema = schema
         job = Config.CLIENT.load_table_from_file(
-            six.StringIO(body), table_ref, job_config=config)
+            six.BytesIO(body), table_ref, job_config=config)
         job.result()
         return bigquery.Table(table_ref, schema=schema)
 
@@ -1707,7 +1707,7 @@ class TestBigQuery(unittest.TestCase):
             {'string_col': 'Some value', 'record_col': record},
         ]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.StringIO('{}\n'.format('\n'.join(rows)))
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)))
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('nested_df'))
         table = dataset.table(table_id)
