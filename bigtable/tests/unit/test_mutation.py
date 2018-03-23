@@ -73,6 +73,8 @@ class TestMutateRows(unittest.TestCase):
         table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
                                        self.TABLE_ID)
 
+        # First responses will get fail on second response and after retry
+        #     second will get succeed.
         response_1 = self._make_responses([self.SUCCESS, self.RETRYABLE])
         response_2 = self._make_responses([self.SUCCESS])
 
@@ -81,30 +83,24 @@ class TestMutateRows(unittest.TestCase):
 
         mutate_rows = self._make_one(table_name=table_name, client=client)
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY_1)
+        row_keys = [self.ROW_KEY_1, self.ROW_KEY_2]
 
-        mutate_rows_entry.set_cell(
-            self.FAMILY_NAME,
-            self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
-        )
+        for row_key in row_keys:
+            mutate_rows_entry = MutateRowsEntry(row_key=row_key)
 
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
+            mutate_rows_entry.set_cell(
+                self.FAMILY_NAME,
+                self.QUALIFIER,
+                self.VALUE,
+                self.TIMESTAMP_MICROS
+            )
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY_2)
-
-        mutate_rows_entry.set_cell(
-            self.FAMILY_NAME,
-            self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
-        )
-
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
+            mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
         statuses = mutate_rows.mutate()
 
+        # Got two successful responces after retry on second retryable
+        #     response.
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS]
 
