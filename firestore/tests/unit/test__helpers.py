@@ -133,64 +133,90 @@ class TestFieldPath(unittest.TestCase):
         self.assertEqual(field_path.parts, ('一', '二', '三'))
 
     def test_to_api_repr_a(self):
-        parts = 'a'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), 'a')
+        parts = 'a',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, 'a')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_backtick(self):
-        parts = '`'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`\``')
+        parts = '`',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`\``')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_dot(self):
-        parts = '.'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`.`')
+        parts = '.',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`.`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_slash(self):
-        parts = '\\'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), r'`\\`')
+        parts = '\\',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, r'`\\`')
+        self.assertEqual(
+            field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_double_slash(self):
-        parts = r'\\'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), r'`\\\\`')
+        parts = r'\\',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, r'`\\\\`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_underscore(self):
-        parts = '_33132'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '_33132')
+        parts = '_33132',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '_33132')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_unicode_non_simple(self):
-        parts = '一'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`一`')
+        parts = '一',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`一`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_number_non_simple(self):
-        parts = '03'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`03`')
+        parts = '03',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`03`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_simple_with_dot(self):
-        field_path = self._make_one('a.b')
-        self.assertEqual(field_path.to_api_repr(), '`a.b`')
+        parts = 'a.b',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`a.b`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_non_simple_with_dot(self):
-        parts = 'a.一'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), '`a.一`')
+        parts = 'a.一',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, '`a.一`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_simple(self):
-        parts = 'a0332432'
-        field_path = self._make_one(parts)
-        self.assertEqual(field_path.to_api_repr(), 'a0332432')
+        parts = 'a0332432',
+        field_path = self._make_one(*parts)
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr, 'a0332432')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_to_api_repr_chain(self):
         parts = 'a', '`', '\\', '_3', '03', 'a03', '\\\\', 'a0332432', '一'
         field_path = self._make_one(*parts)
-        self.assertEqual(field_path.to_api_repr(),
+        api_repr = field_path.to_api_repr()
+        self.assertEqual(api_repr,
                          r'a.`\``.`\\`._3.`03`.a03.`\\\\`.a0332432.`一`')
+        self.assertEqual(field_path.from_api_repr(api_repr).parts, parts)
 
     def test_from_string(self):
         field_path = self._get_target_class().from_string('a.b.c')

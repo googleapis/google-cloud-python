@@ -131,9 +131,13 @@ class FieldPath(object):
                 raise ValueError(error)
         self.parts = tuple(parts)
 
-    @staticmethod
-    def from_string(string):
+    @classmethod
+    def from_string(cls, string):
         """ Creates a FieldPath from a unicode string representation.
+
+        This method always splits on dots. If the unicode string representation
+        includes dots or other invalid characters `~*/[]`, this method will fail
+        and the constructor must be used to determine nesting.
 
         Args:
             :type string: str
@@ -150,10 +154,72 @@ class FieldPath(object):
             if invalid_character in string:
                 raise ValueError('Invalid characters in string.')
         string = string.split('.')
-        return FieldPath(*string)
+        return cls(*string)
+
+    @classmethod
+    def _parse_field_name(cls, api_repr):
+        """Parses the api_repr into the first field name and the rest
+
+        Args:
+            api_repr (str): The unique Firestore api representation.
+
+        Returns:
+            Tuple[str, str]:
+                A tuple with the first field name and the api_repr
+                of the rest.
+        """
+        if api_repr[0] == '.':
+            api_repr = api_repr[1:]
+        if api_repr[0] != '`':  # first field name is simple
+            field_names = api_repr.split('.')
+            return field_names[0], '.'.join(field_names[1:])
+        else:
+            index = 1
+            while index < len(api_repr):
+                if api_repr[index] == '\\':  # escape character
+                    index += 2
+                    if api_repr[index-1] == '`':  # skips escaped backticks
+                        value = (
+                            api_repr[:index+1],
+                            '.'.join(api_repr[index+1:].split('.')))
+                        index = len(api_repr)  # to please coverage
+                elif api_repr[index] == '`':  # end of unicode field name
+                    value = (
+                        api_repr[:index+1],
+                        '.'.join(api_repr[index+1:].split('.')))
+                    index = len(api_repr)  # to please coverage
+                else:
+                    index += 1
+            return value
+
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Creates a FieldPath from the Firestore api specification.
+
+        Args:
+            api_repr (str):
+                The unique Firestore api representation which consists of
+                either simple or UTF-8 field names. It cannot exceed
+                1500 bytes, and cannot be empty. Simple field names match
+                `'^[_a-zA-Z][_a-zA-Z0-9]*$'`. All other field names are
+                escaped with ```.
+
+        Returns:
+            A :class: `FieldPath` instance created from the api_repr string.
+        """
+        field_names = []
+        while api_repr:
+            field_name, api_repr = cls._parse_field_name(api_repr)
+            # non-simple field name
+            if field_name[0] == '`' and field_name[-1] == '`':
+                field_name = field_name[1:-1]
+                field_name = field_name.replace('\\`', '`')
+                field_name = field_name.replace('\\\\', '\\')
+            field_names.append(field_name)
+        return FieldPath(*field_names)
 
     def to_api_repr(self):
-        """ Returns quoted string representation of the FieldPath
+        """Returns quoted string representation of the FieldPath
 
         Returns: :rtype: str
             Quoted string representation of the path stored
