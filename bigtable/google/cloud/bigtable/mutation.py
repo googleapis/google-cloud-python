@@ -208,7 +208,7 @@ class _RetryableMutateRows(object):
         A row is eligible for retry if it has not been tried or if it resulted
         in a transient error in a previous call.
         Returns:
-            `List [‘~google.rpc.status_pb2.Status']`
+            `List [~google.rpc.status_pb2.Status]`
              The responses statuses, which is a list of
              Class `~google.rpc.status_pb2.Status`.
         Raises:
