@@ -53,8 +53,14 @@ class MutateRowsEntry(object):
                 unspecified. Values must match the granularity of the table
                 (e.g. micros, millis).
         """
-        mutation = SetCellMutation(family_name, column_id, value, timestamp)
-        self.mutations.append(mutation.mutation_request)
+        set_cell_mutation = data_v2_pb2.Mutation.SetCell(
+            family_name=family_name,
+            column_qualifier=column_id,
+            timestamp_micros=timestamp,
+            value=value
+        )
+        mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
+        self.mutations.append(mutation_message)
 
     def delete_from_column(self, family_name, column_id, time_range=None):
         """Create the mutation request message for DeleteFromColumn and
@@ -71,8 +77,14 @@ class MutateRowsEntry(object):
                 (optional) The range of timestamps within which cells should be
                 deleted.
         """
-        mutation = DeleteFromColumnMutation(family_name, column_id, time_range)
-        self.mutations.append(mutation.mutation_request)
+        delete_from_column_mutation = data_v2_pb2.Mutation.DeleteFromColumn(
+            family_name=family_name,
+            column_qualifier=column_id,
+            time_range=time_range
+        )
+        mutation_message = data_v2_pb2.Mutation(
+            delete_from_column=delete_from_column_mutation)
+        self.mutations.append(mutation_message)
 
     def delete_from_family(self, family_name):
         """Create the mutation request message for DeleteFromFamily and add
@@ -83,14 +95,20 @@ class MutateRowsEntry(object):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
         """
-        mutation = DeleteFromFamilyMutation(family_name)
-        self.mutations.append(mutation.mutation_request)
+        delete_from_family_mutation = data_v2_pb2.Mutation.DeleteFromFamily(
+            family_name=family_name
+        )
+        mutation_message = data_v2_pb2.Mutation(
+            delete_from_family=delete_from_family_mutation)
+        self.mutations.append(mutation_message)
 
     def delete_from_row(self):
         """Create the mutation request message for DeleteFromRow and add it
         to the list of mutations"""
-        mutation = DeleteFromRowMutation()
-        self.mutations.append(mutation.mutation_request)
+        delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
+        mutation_message = data_v2_pb2.Mutation(
+            delete_from_row=delete_from_row_mutation)
+        self.mutations.append(mutation_message)
 
     def create_entry(self):
         """Create a MutateRowsRequest Entry from the list of mutations
@@ -248,116 +266,3 @@ class _RetryableMutateRows(object):
             raise _BigtableRetryableError
 
         return self.responses_statuses
-
-
-class SetCellMutation(object):
-    """Create the mutation request message for SetCell and add it to the list
-    of mutations
-
-    Arguments:
-        family_name (str):
-            The name of the family into which new data should be written.
-            Must match ``[-_.a-zA-Z0-9]+``.
-        column_id (bytes):
-            The qualifier of the column into which new data should be
-            written. Can be any byte string, including the empty string.
-        value (bytes):
-            The value to be written into the specified cell.
-        timestamp (int):
-            (optional) The timestamp of the cell into which new data should
-            be written. Use -1 for current Bigtable server time. Otherwise,
-            the client should set this value itself, noting that the
-            default value is a timestamp of zero if the field is left
-            unspecified. Values must match the granularity of the table
-            (e.g. micros, millis).
-    """
-
-    def __init__(self, family_name, column_id, value, timestamp):
-        super(SetCellMutation, self).__init__()
-        self.family_name = family_name
-        self.column_id = column_id
-        self.value = value
-        self.timestamp = timestamp
-
-    @property
-    def mutation_request(self):
-        """message: Mutation of the SetCell."""
-        set_cell_mutation = data_v2_pb2.Mutation.SetCell(
-            family_name=self.family_name,
-            column_qualifier=self.column_id,
-            timestamp_micros=self.timestamp,
-            value=self.value,
-        )
-        return data_v2_pb2.Mutation(set_cell=set_cell_mutation)
-
-
-class DeleteFromColumnMutation(object):
-    """Create the mutation request message for DeleteFromColumn and add it to
-    the list of mutations
-
-    Arguments:
-        family_name (str):
-            The name of the family into which new data should be written.
-            Must match ``[-_.a-zA-Z0-9]+``.
-        column_id (bytes):
-            The qualifier of the column into which new data should be
-            written. Can be any byte string, including the empty string.
-        time_range (TimestampRange):
-            (optional) The range of timestamps within which cells should be
-            deleted.
-    """
-
-    def __init__(self, family_name, column_id, time_range):
-        super(DeleteFromColumnMutation, self).__init__()
-        self.family_name = family_name
-        self.column_id = column_id
-        self.time_range = time_range
-
-    @property
-    def mutation_request(self):
-        """message: Mutation of the DeleteFromColumn."""
-        delete_from_column_mutation = data_v2_pb2.Mutation.DeleteFromColumn(
-            family_name=self.family_name,
-            column_qualifier=self.column_id,
-            time_range=self.time_range
-        )
-        return data_v2_pb2.Mutation(
-            delete_from_column=delete_from_column_mutation)
-
-
-class DeleteFromFamilyMutation(object):
-    """Create the mutation request message for DeleteFromFamily and add it to
-        the list of mutations
-
-        Arguments:
-            family_name (str):
-                The name of the family into which new data should be written.
-                Must match ``[-_.a-zA-Z0-9]+``.
-        """
-
-    def __init__(self, family_name):
-        super(DeleteFromFamilyMutation, self).__init__()
-        self.family_name = family_name
-
-    @property
-    def mutation_request(self):
-        """message: Mutation of the DeleteFromFamily."""
-        delete_from_family_mutation = data_v2_pb2.Mutation.DeleteFromFamily(
-            family_name=self.family_name
-        )
-        return data_v2_pb2.Mutation(
-            delete_from_family=delete_from_family_mutation)
-
-
-class DeleteFromRowMutation(object):
-    """Create the mutation request message for DeleteFromRow and add it to
-    the list of mutations"""
-
-    def __init__(self):
-        super(DeleteFromRowMutation, self).__init__()
-
-    @property
-    def mutation_request(self):
-        """message: Mutation of the DeleteFromRow."""
-        delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
-        return data_v2_pb2.Mutation(delete_from_row=delete_from_row_mutation)
