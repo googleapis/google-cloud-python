@@ -239,27 +239,19 @@ class TestMutateRows(unittest.TestCase):
 
         mutate_rows = self._make_one(table_name=table_name, client=client)
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY_1)
+        row_keys = [self.ROW_KEY_1, self.ROW_KEY_2]
 
-        mutate_rows_entry.set_cell(
-            self.FAMILY_NAME,
-            self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
-        )
+        for row_key in row_keys:
+            mutate_rows_entry = MutateRowsEntry(row_key=row_key)
 
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
+            mutate_rows_entry.set_cell(
+                self.FAMILY_NAME,
+                self.QUALIFIER,
+                self.VALUE,
+                self.TIMESTAMP_MICROS
+            )
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY_2)
-
-        mutate_rows_entry.set_cell(
-            self.FAMILY_NAME,
-            self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
-        )
-
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
+            mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
         with self.assertRaises(RuntimeError):
             mutate_rows.mutate()
