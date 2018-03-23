@@ -22,11 +22,11 @@ import setuptools
 
 name = 'google-api-core'
 description = 'Google API client core library'
-version = '1.0.0'
+version = '1.1.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Stable'
+# 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'googleapis-common-protos<2.0dev,>=1.5.3',
@@ -36,10 +36,10 @@ dependencies = [
     'setuptools>=34.0.0',
     'six>=1.10.0',
     'pytz',
+    'futures>=3.2.0;python_version<"3.2"'
 ]
 extras = {
-    'grpc': 'grpcio>=1.8.2',
-    ':python_version < "3.2"': 'futures>=3.2.0',
+    'grpc': 'grpcio>=1.8.2'
 }
 
 

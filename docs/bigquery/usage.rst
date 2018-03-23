@@ -217,17 +217,35 @@ Load table data from Google Cloud Storage
 See also: `Loading JSON data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
 
+Load a CSV file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv]
+   :end-before: [END bigquery_load_table_gcs_csv]
+
 Load a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_json]
    :end-before: [END bigquery_load_table_gcs_json]
 
-Load a JSON file from Cloud Storage, using an autodetected schema:
+Load a Parquet file from Cloud Storage:
 
 .. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_json_autodetect]
-   :end-before: [END bigquery_load_table_gcs_json_autodetect]
+   :start-after: [START bigquery_load_table_gcs_parquet]
+   :end-before: [END bigquery_load_table_gcs_parquet]
+
+Load a CSV file from Cloud Storage, using an autodetected schema:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_autodetect]
+   :end-before: [END bigquery_load_table_gcs_csv_autodetect]
+
+Append a CSV file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_append]
+   :end-before: [END bigquery_load_table_gcs_csv_append]
 
 Append a JSON file from Cloud Storage to an existing table:
 
@@ -235,11 +253,29 @@ Append a JSON file from Cloud Storage to an existing table:
    :start-after: [START bigquery_load_table_gcs_json_append]
    :end-before: [END bigquery_load_table_gcs_json_append]
 
+Append a Parquet file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_append]
+   :end-before: [END bigquery_load_table_gcs_parquet_append]
+
+Overwrite / replace an existing table with a CSV file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_truncate]
+   :end-before: [END bigquery_load_table_gcs_csv_truncate]
+
 Overwrite / replace an existing table with a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_json_truncate]
    :end-before: [END bigquery_load_table_gcs_json_truncate]
+
+Overwrite / replace an existing table with a Parquet file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_truncate]
+   :end-before: [END bigquery_load_table_gcs_parquet_truncate]
 
 Customer Managed Encryption Keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -346,3 +382,36 @@ Jobs describe actions performed on data in BigQuery tables:
 .. literalinclude:: snippets.py
    :start-after: [START client_list_jobs]
    :end-before: [END client_list_jobs]
+
+
+Using BigQuery with Pandas
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As of version 0.29.0, you can use the
+:func:`~google.cloud.bigquery.table.RowIterator.to_dataframe` function to
+retrieve query results or table rows as a :class:`pandas.DataFrame`.
+
+First, ensure that the :mod:`pandas` library is installed by running:
+
+.. code-block:: bash
+
+   pip install --upgrade pandas
+
+Alternatively, you can install the BigQuery python client library with
+:mod:`pandas` by running:
+
+.. code-block:: bash
+
+   pip install --upgrade google-cloud-bigquery[pandas]
+
+To retrieve query results as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_results_dataframe]
+   :end-before: [END bigquery_query_results_dataframe]
+
+To retrieve table rows as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_list_rows_dataframe]
+   :end-before: [END bigquery_list_rows_dataframe]

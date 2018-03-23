@@ -65,7 +65,7 @@ but you can also use a ``virtualenv`` of your own creation.
 Using ``nox``
 =============
 
-We use `nox <https://https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
+We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 

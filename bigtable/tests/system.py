@@ -337,6 +337,16 @@ class TestDataAPI(unittest.TestCase):
         cell4 = Cell(CELL_VAL4, timestamp4_micros)
         return cell1, cell2, cell3, cell4
 
+    def test_timestamp_filter_millisecond_granularity(self):
+        from google.cloud.bigtable import row_filters
+
+        end = datetime.datetime.now()
+        start = end - datetime.timedelta(minutes=60)
+        timestamp_range = row_filters.TimestampRange(start=start, end=end)
+        timefilter = row_filters.TimestampRangeFilter(timestamp_range)
+        row_data = self._table.read_rows(filter_=timefilter)
+        row_data.consume_all()
+
     def test_mutate_rows(self):
         row1 = self._table.row(ROW_KEY)
         row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)

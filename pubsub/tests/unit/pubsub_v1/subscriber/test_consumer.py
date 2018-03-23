@@ -15,14 +15,94 @@
 import threading
 
 from google.auth import credentials
+import grpc
 import mock
-import pytest
 from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber import _helper_threads
+
+
+class Test_RequestQueueGenerator(object):
+
+    def test_bounded_consume(self):
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = True
+
+        def queue_generator(rpc):
+            yield mock.sentinel.A
+            yield queue.Empty()
+            yield mock.sentinel.B
+            rpc.is_active.return_value = False
+            yield mock.sentinel.C
+
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = queue_generator(rpc)
+
+        generator = _consumer._RequestQueueGenerator(q)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == [mock.sentinel.A, mock.sentinel.B]
+
+    def test_yield_initial_and_exit(self):
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = queue.Empty()
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = False
+
+        generator = _consumer._RequestQueueGenerator(
+            q, initial_request=mock.sentinel.A)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == [mock.sentinel.A]
+
+    def test_exit_when_inactive_with_item(self):
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = [mock.sentinel.A, queue.Empty()]
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = False
+
+        generator = _consumer._RequestQueueGenerator(q)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == []
+        # Make sure it put the item back.
+        q.put.assert_called_once_with(mock.sentinel.A)
+
+    def test_exit_when_inactive_empty(self):
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = queue.Empty()
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = False
+
+        generator = _consumer._RequestQueueGenerator(q)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == []
+
+    def test_exit_with_stop(self):
+        q = mock.create_autospec(queue.Queue, instance=True)
+        q.get.side_effect = [_helper_threads.STOP, queue.Empty()]
+        rpc = mock.create_autospec(grpc.RpcContext, instance=True)
+        rpc.is_active.return_value = True
+
+        generator = _consumer._RequestQueueGenerator(q)
+        generator.rpc = rpc
+
+        items = list(generator)
+
+        assert items == []
 
 
 def test_send_request():
@@ -33,32 +113,8 @@ def test_send_request():
         put.assert_called_once_with(request)
 
 
-def test_request_generator_thread():
-    consumer = _consumer.Consumer()
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    policy = client.subscribe('sub_name_e')
-    generator = consumer._request_generator_thread(policy)
-
-    # The first request that comes from the request generator thread
-    # should always be the initial request.
-    initial_request = next(generator)
-    assert initial_request.subscription == 'sub_name_e'
-    assert initial_request.stream_ack_deadline_seconds == 10
-
-    # Subsequent requests correspond to items placed in the request queue.
-    consumer.send_request(types.StreamingPullRequest(ack_ids=['i']))
-    request = next(generator)
-    assert request.ack_ids == ['i']
-
-    # The poison pill should stop the loop.
-    consumer.send_request(_helper_threads.STOP)
-    with pytest.raises(StopIteration):
-        next(generator)
-
-
 def test_blocking_consume():
-    policy = mock.Mock(spec=('call_rpc', 'on_response'))
+    policy = mock.create_autospec(base.BasePolicy, instance=True)
     policy.call_rpc.return_value = iter((mock.sentinel.A, mock.sentinel.B))
 
     consumer = _consumer.Consumer()
@@ -95,7 +151,7 @@ class OnException(object):
 
 
 def test_blocking_consume_on_exception():
-    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
+    policy = mock.create_autospec(base.BasePolicy, instance=True)
     policy.call_rpc.return_value = iter((mock.sentinel.A, mock.sentinel.B))
     exc = TypeError('Bad things!')
     policy.on_response.side_effect = exc
@@ -122,12 +178,7 @@ class RaisingResponseGenerator(object):
 
     def __init__(self, exception):
         self.exception = exception
-        self.done_calls = 0
         self.next_calls = 0
-
-    def done(self):
-        self.done_calls += 1
-        return True
 
     def __next__(self):
         self.next_calls += 1
@@ -138,7 +189,7 @@ class RaisingResponseGenerator(object):
 
 
 def test_blocking_consume_two_exceptions():
-    policy = mock.Mock(spec=('call_rpc', 'on_exception'))
+    policy = mock.create_autospec(base.BasePolicy, instance=True)
 
     exc1 = NameError('Oh noes.')
     exc2 = ValueError('Something grumble.')
@@ -150,7 +201,8 @@ def test_blocking_consume_two_exceptions():
 
     consumer = _consumer.Consumer()
     consumer.resume()
-    consumer._consumer_thread = mock.Mock(spec=threading.Thread)
+    consumer._consumer_thread = mock.create_autospec(
+        threading.Thread, instance=True)
 
     # Establish that we get responses until we are sent the exiting event.
     assert consumer._blocking_consume(policy) is None
@@ -159,9 +211,7 @@ def test_blocking_consume_two_exceptions():
     # Check mocks.
     assert policy.call_rpc.call_count == 2
     assert response_generator1.next_calls == 1
-    assert response_generator1.done_calls == 1
     assert response_generator2.next_calls == 1
-    assert response_generator2.done_calls == 0
     policy.on_exception.assert_has_calls(
         [mock.call(exc1), mock.call(exc2)])
 
@@ -227,183 +277,3 @@ def test_stop_consuming():
     assert consumer._consumer_thread is None
     # Check mocks.
     thread.join.assert_called_once_with()
-
-
-def basic_queue_generator(queue, received):
-    while True:
-        value = queue.get()
-        received.put(value)
-        yield value
-
-
-def test_stop_request_generator_response_not_done():
-    consumer = _consumer.Consumer()
-
-    response_generator = mock.Mock(spec=('done',))
-    response_generator.done.return_value = False
-    stopped = consumer._stop_request_generator(None, response_generator)
-    assert stopped is False
-
-    # Check mocks.
-    response_generator.done.assert_called_once_with()
-
-
-def test_stop_request_generator_not_running():
-    # Model scenario tested:
-    # - The request generator **is not** running
-    # - The request queue **is not** empty
-    # Expected result:
-    # - ``_stop_request_generator()`` successfully calls ``.close()``
-    consumer = _consumer.Consumer()
-    queue_ = consumer._request_queue
-    received = queue.Queue()
-    request_generator = basic_queue_generator(queue_, received)
-
-    item1 = 'unblock-please'
-    item2 = 'still-here'
-    queue_.put(item1)
-    queue_.put(item2)
-    assert not queue_.empty()
-    assert received.empty()
-    thread = threading.Thread(target=next, args=(request_generator,))
-    thread.start()
-
-    # Make sure the generator is not stuck at the blocked ``.get()``
-    # in the thread.
-    while request_generator.gi_running:
-        pass
-    assert received.get() == item1
-    # Make sure it **isn't** done.
-    assert request_generator.gi_frame is not None
-
-    response_generator = mock.Mock(spec=('done',))
-    response_generator.done.return_value = True
-    stopped = consumer._stop_request_generator(
-        request_generator, response_generator)
-    assert stopped is True
-
-    # Make sure it **is** done.
-    assert not request_generator.gi_running
-    assert request_generator.gi_frame is None
-    assert not queue_.empty()
-    assert queue_.get() == item2
-    assert queue_.empty()
-
-    # Check mocks.
-    response_generator.done.assert_called_once_with()
-
-
-def test_stop_request_generator_close_failure():
-    # Model scenario tested:
-    # - The input isn't actually a generator
-    # Expected result:
-    # - ``_stop_request_generator()`` falls through to the ``LOGGER.error``
-    #   case and returns ``False``
-    consumer = _consumer.Consumer()
-
-    request_generator = mock.Mock(spec=('close',))
-    request_generator.close.side_effect = TypeError('Really, not a generator')
-
-    response_generator = mock.Mock(spec=('done',))
-    response_generator.done.return_value = True
-    stopped = consumer._stop_request_generator(
-        request_generator, response_generator)
-    assert stopped is False
-
-    # Make sure close() was only called once.
-    request_generator.close.assert_called_once_with()
-    response_generator.done.assert_called_once_with()
-
-
-def test_stop_request_generator_queue_non_empty():
-    # Model scenario tested:
-    # - The request generator **is** running
-    # - The request queue **is not** empty
-    # Expected result:
-    # - ``_stop_request_generator()`` can't call ``.close()`` (since
-    #   the generator is running) but then returns with ``False`` because
-    #   the queue **is not** empty
-    consumer = _consumer.Consumer()
-    # Attach a "fake" queue to the request generator so the generator can
-    # block on an empty queue while the consumer's queue is not empty.
-    queue_ = queue.Queue()
-    received = queue.Queue()
-    request_generator = basic_queue_generator(queue_, received)
-    # Make sure the consumer's queue is not empty.
-    item1 = 'not-empty'
-    consumer._request_queue.put(item1)
-
-    thread = threading.Thread(target=next, args=(request_generator,))
-    thread.start()
-
-    # Make sure the generator is stuck at the blocked ``.get()``
-    # in ``thread``.
-    while not request_generator.gi_running:
-        pass
-    assert received.empty()
-    assert request_generator.gi_frame is not None
-
-    response_generator = mock.Mock(spec=('done',))
-    response_generator.done.return_value = True
-    stopped = consumer._stop_request_generator(
-        request_generator, response_generator)
-    assert stopped is False
-
-    # Make sure the generator is **still** not finished.
-    assert request_generator.gi_running
-    assert request_generator.gi_frame is not None
-    assert consumer._request_queue.get() == item1
-    # Allow the generator to exit.
-    item2 = 'just-exit'
-    queue_.put(item2)
-    # Wait until it's actually done.
-    while request_generator.gi_running:
-        pass
-    assert received.get() == item2
-
-    # Check mocks.
-    response_generator.done.assert_called_once_with()
-
-
-def test_stop_request_generator_running():
-    # Model scenario tested:
-    # - The request generator **is** running
-    # - The request queue **is** empty
-    # Expected result:
-    # - ``_stop_request_generator()`` can't call ``.close()`` (since
-    #   the generator is running) but then verifies that the queue is
-    #   empty and sends ``STOP`` into the queue to successfully stop
-    #   the generator
-    consumer = _consumer.Consumer()
-    queue_ = consumer._request_queue
-    received = queue.Queue()
-    request_generator = basic_queue_generator(queue_, received)
-
-    thread = threading.Thread(target=next, args=(request_generator,))
-    thread.start()
-
-    # Make sure the generator is stuck at the blocked ``.get()``
-    # in the thread.
-    while not request_generator.gi_running:
-        pass
-    assert received.empty()
-    assert request_generator.gi_frame is not None
-
-    response_generator = mock.Mock(spec=('done',))
-    response_generator.done.return_value = True
-    stopped = consumer._stop_request_generator(
-        request_generator, response_generator)
-    assert stopped is True
-
-    # Make sure it **is** done, though we may have to wait until
-    # the generator finishes (it has a few instructions between the
-    # ``get()`` and the ``break``).
-    while request_generator.gi_running:
-        pass
-    request_generator.close()
-    assert request_generator.gi_frame is None
-    assert received.get() == _helper_threads.STOP
-    assert queue_.empty()
-
-    # Check mocks.
-    response_generator.done.assert_called_once_with()
