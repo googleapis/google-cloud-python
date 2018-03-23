@@ -1071,6 +1071,29 @@ class TestRowIterator(unittest.TestCase):
         api_request.assert_called_once_with(
             method='GET', path=path, query_params={})
 
+    def test_page_size(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema, page_size=4)
+        row_iterator._get_next_page_response()
+
+        api_request.assert_called_once_with(
+            method='GET', path=path, query_params={
+                'maxResults': row_iterator._page_size})
+
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_to_dataframe(self):
         from google.cloud.bigquery.table import RowIterator
