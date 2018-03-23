@@ -323,7 +323,7 @@ class TestFieldPathHelper(unittest.TestCase):
         field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path.to_api_repr(), key])
+        conflict = _helpers.FieldPath(field_path.to_api_repr(), key).to_api_repr()
         err_msg = helper.FIELD_PATH_CONFLICT.format(
             field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
@@ -346,8 +346,8 @@ class TestFieldPathHelper(unittest.TestCase):
         field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path(
-            [field_path.to_api_repr(), middle_part, end_part])
+        conflict = _helpers.FieldPath(
+            field_path.to_api_repr(), middle_part, end_part).to_api_repr()
         err_msg = helper.FIELD_PATH_CONFLICT.format(
             field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
@@ -1135,18 +1135,6 @@ class Test_decode_dict(unittest.TestCase):
         self.assertEqual(self._call_fut(value_fields), expected)
 
 
-class Test_get_field_path(unittest.TestCase):
-
-    @staticmethod
-    def _call_fut(field_names):
-        from google.cloud.firestore_v1beta1._helpers import get_field_path
-
-        return get_field_path(field_names)
-
-    def test_it(self):
-        self.assertEqual(self._call_fut(['a', 'b', 'c']), 'a.b.c')
-
-
 class Test_parse_field_path(unittest.TestCase):
 
     @staticmethod
@@ -1333,7 +1321,7 @@ class Test_remove_server_timestamp(unittest.TestCase):
             ('f.g', SERVER_TIMESTAMP),
         ))
         field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(field_paths, ['c.d.e', 'f.g'])
+        self.assertEqual(field_paths, ['`c.d`.e', 'f.g'])
         expected_data = {'a': {'b': data['a']['b']}}
         self.assertEqual(actual_data, expected_data)
 

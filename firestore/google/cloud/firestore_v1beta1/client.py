@@ -240,7 +240,7 @@ class Client(ClientWithProject):
         Returns:
             str: The ``.``-delimited field path.
         """
-        return _helpers.get_field_path(field_names)
+        return _helpers.FieldPath(*field_names).to_api_repr()
 
     @staticmethod
     def write_option(**kwargs):
