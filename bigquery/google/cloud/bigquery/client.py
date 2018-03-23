@@ -1247,7 +1247,8 @@ class Client(ClientWithProject):
         return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
-                  page_token=None, start_index=None, retry=DEFAULT_RETRY):
+                  page_token=None, start_index=None, page_size=None,
+                  retry=DEFAULT_RETRY):
         """List the rows of the table.
 
         See
@@ -1287,6 +1288,10 @@ class Client(ClientWithProject):
         :param start_index: (Optional) The zero-based index of the starting
                            row to read.
 
+        :type page_size: int
+        :param page_size: (Optional) The maximum number of items to return
+                          per page in the iterator.
+
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
@@ -1314,7 +1319,6 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             params['selectedFields'] = ','.join(
                 field.name for field in selected_fields)
-
         if start_index is not None:
             params['startIndex'] = start_index
 
@@ -1325,6 +1329,7 @@ class Client(ClientWithProject):
             schema=schema,
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
             extra_params=params)
         return row_iterator
 
