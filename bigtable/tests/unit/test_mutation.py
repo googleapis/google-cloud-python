@@ -73,8 +73,8 @@ class TestMutateRows(unittest.TestCase):
         table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
                                        self.TABLE_ID)
 
-        # First responses will get fail on second response and after retry
-        #     second will get succeed.
+        # In response_1, there is a failure for the second Entry
+        # In response_2, succeed on the retry for this second Entry
         response_1 = self._make_responses([self.SUCCESS, self.RETRYABLE])
         response_2 = self._make_responses([self.SUCCESS])
 
@@ -99,8 +99,8 @@ class TestMutateRows(unittest.TestCase):
 
         statuses = mutate_rows.mutate()
 
-        # Got two successful responces after retry on second retryable
-        #     response.
+        # Result has two successful responses after a retry on the second
+        # Entry (see response_1, which has self.RETRYABLE for this Entry).
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS]
 
