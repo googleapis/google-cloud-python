@@ -1740,7 +1740,7 @@ class TestBigQuery(unittest.TestCase):
     def test_list_rows_page_size(self):
         from google.cloud.bigquery.job import SourceFormat
         from google.cloud.bigquery.job import WriteDisposition
-        
+
         num_items = 7
         page_size = 3
         num_pages, num_last_page = divmod(num_items, page_size)
@@ -1749,8 +1749,8 @@ class TestBigQuery(unittest.TestCase):
         schema = [SF('string_col', 'STRING', mode='NULLABLE')]
         to_insert = [{'string_col': 'item%d' % i} for i in range(num_items)]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.StringIO('{}\n'.format('\n'.join(rows)))
-        
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)))
+
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('nested_df'))
         table = dataset.table(table_id)
