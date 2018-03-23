@@ -12,13 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    import pandas
-except ImportError:
-    HAVE_PANDAS = False
-else:
-    HAVE_PANDAS = True  # pragma: NO COVER
-
+import pandas
 import unittest
 
 
@@ -84,7 +78,6 @@ def generate_query_results():  # pragma: NO COVER
         )
 
 
-@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
 class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _call_fut(self, *args, **kwargs):
@@ -103,11 +96,11 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
     def test_simple_label(self):
         iterable = generate_query_results()
         dataframe = self._call_fut(iterable, label='instance_name')
+        dataframe_columns_list = [i[0] for i in list(dataframe.columns)]
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
-
-        self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
+        self.assertEqual(dataframe_columns_list, INSTANCE_NAMES)
         self.assertIsNone(dataframe.columns.name)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
@@ -137,13 +130,12 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
         iterable = generate_query_results()
         dataframe = self._call_fut(iterable, labels=NAMES)
+        dataframe_columns_list = [i[0] for i in list(dataframe.columns)]
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
-
-        self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
+        self.assertEqual(dataframe_columns_list, INSTANCE_IDS)
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
         self.assertIsNone(dataframe.index.name)
@@ -192,7 +184,6 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
@@ -202,7 +193,6 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         dataframe = self._call_fut([])
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
