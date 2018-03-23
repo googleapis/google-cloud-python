@@ -38,6 +38,7 @@ from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
 from google.cloud.spanner import KeySet
 from google.cloud.spanner import BurstyPool
+from google.cloud.spanner import COMMIT_TIMESTAMP
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -511,6 +512,34 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
             rows = list(snapshot.execute_sql(self.SQL))
         self._check_rows_data(rows)
+
+    def test_batch_insert_w_commit_timestamp(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        table = 'users_history'
+        columns = ['id', 'commit_ts', 'name', 'email', 'deleted']
+        user_id = 1234
+        name = 'phred'
+        email = 'phred@example.com'
+        row_data = [
+            [user_id, COMMIT_TIMESTAMP, name, email, False],
+        ]
+
+        with self._db.batch() as batch:
+            batch.delete(table, self.ALL)
+            batch.insert(table, columns, row_data)
+
+        with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
+            rows = list(snapshot.read(table, columns, self.ALL))
+
+        self.assertEqual(len(rows), 1)
+        r_id, commit_ts, r_name, r_email, deleted = rows[0]
+        self.assertEqual(r_id, user_id)
+        self.assertEqual(commit_ts, batch.committed)
+        self.assertEqual(r_name, name)
+        self.assertEqual(r_email, email)
+        self.assertFalse(deleted)
 
     @RetryErrors(exception=exceptions.ServerError)
     def test_transaction_read_and_insert_then_rollback(self):
