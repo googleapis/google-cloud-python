@@ -47,10 +47,6 @@ For more information about query configuration parameters see
 
 .. note::
 
-   You can toggle the verbose output via the ``verbose`` flag which defaults to ``True``.
-
-.. note::
-
     The ``dialect`` argument can be used to indicate whether to use BigQuery's ``'legacy'`` SQL
     or BigQuery's ``'standard'`` SQL (beta). The default value is ``'legacy'``. For more information
     on BigQuery's standard SQL, see `BigQuery SQL Reference

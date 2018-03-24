@@ -54,24 +54,6 @@ For example, the following writes ``df`` to a BigQuery table in batches of 10000
 
    to_gbq(df, 'my_dataset.my_table', projectid, chunksize=10000)
 
-You can also see the progress of your post via the ``verbose`` flag which defaults to ``True``.
-For example:
-
-.. code-block:: python
-
-   In [8]: to_gbq(df, 'my_dataset.my_table', projectid, chunksize=10000, verbose=True)
-
-           Streaming Insert is 10% Complete
-           Streaming Insert is 20% Complete
-           Streaming Insert is 30% Complete
-           Streaming Insert is 40% Complete
-           Streaming Insert is 50% Complete
-           Streaming Insert is 60% Complete
-           Streaming Insert is 70% Complete
-           Streaming Insert is 80% Complete
-           Streaming Insert is 90% Complete
-           Streaming Insert is 100% Complete
-
 .. note::
 
    If an error occurs while streaming data to BigQuery, see

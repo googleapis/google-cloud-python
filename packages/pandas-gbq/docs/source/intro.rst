@@ -26,6 +26,23 @@ While this trade-off works well for most cases, it breaks down for storing
 values greater than 2**53. Such values in BigQuery can represent identifiers
 and unnoticed precision lost for identifier is what we want to avoid.
 
+Logging
++++++++
+
+Because some requests take some time, this library will log its progress of
+longer queries. IPython & Jupyter by default attach a handler to the logger.
+If you're running in another process and want to see logs, or you want to see
+more verbose logs, you can do something like:
+
+.. code-block:: ipython
+
+   import logging
+   import sys
+   logger = logging.getLogger('pandas_gbq')
+   logger.setLevel(logging.DEBUG)
+   logger.addHandler(logging.StreamHandler(stream=sys.stdout))
+
+
 .. _authentication:
 
 Authentication
@@ -49,8 +66,8 @@ Additional information on service accounts can be found
 `here <https://developers.google.com/identity/protocols/OAuth2#serviceaccount>`__.
 
 Authentication via ``application default credentials`` is also possible, but only valid
-if the parameter ``private_key`` is not provided. This method requires that the 
-credentials can be fetched from the development environment. Otherwise, the OAuth2 
+if the parameter ``private_key`` is not provided. This method requires that the
+credentials can be fetched from the development environment. Otherwise, the OAuth2
 client-side authentication is used. Additional information can be found on
 `application default credentials <https://developers.google.com/identity/protocols/application-default-credentials>`__.
 
