@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.3.0
+
+### Interface additions
+
+- Added `spanner_v1.COMMIT_TIMESTAMP`. (#5102)
+
 ## 1.2.0
 
 ### New features
