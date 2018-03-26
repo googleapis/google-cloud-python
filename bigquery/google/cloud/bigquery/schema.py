@@ -58,11 +58,13 @@ class SchemaField(object):
         """
         # Handle optional properties with default values
         mode = api_repr.get('mode', 'NULLABLE')
+        description = api_repr.get('description')
         fields = api_repr.get('fields', ())
         return cls(
             field_type=api_repr['type'].upper(),
             fields=[cls.from_api_repr(f) for f in fields],
             mode=mode.upper(),
+            description=description,
             name=api_repr['name'],
         )
 
