@@ -241,7 +241,7 @@ def _pausable_response_iterator(iterator, can_continue, period=1):
             types.
         can_continue (threading.Event): An event which determines if we
             can advance to the next iteration. Will be ``wait()``-ed on
-            before
+            before consuming more items from the iterator.
         period (float): The number of seconds to wait to be able to consume
             before checking if the RPC is cancelled. In practice, this
             determines the maximum amount of time that ``next()`` on this
