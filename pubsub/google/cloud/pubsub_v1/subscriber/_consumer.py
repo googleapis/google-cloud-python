@@ -228,6 +228,36 @@ class _RequestQueueGenerator(object):
             yield item
 
 
+def _pausable_response_iterator(iterator, can_continue, period=1):
+    """Converts a gRPC response iterator into one that can be paused.
+
+    The ``can_continue`` event can be used by an independent, concurrent
+    worker to pause and resume the iteration over ``iterator``.
+
+    Args:
+        iterator (grpc.RpcContext, Iterator[protobuf.Message]): A
+            ``grpc.RpcContext`` instance that is also an iterator of responses.
+            This is a typically returned from grpc's streaming response call
+            types.
+        can_continue (threading.Event): An event which determines if we
+            can advance to the next iteration. Will be ``wait()``-ed on
+            before consuming more items from the iterator.
+        period (float): The number of seconds to wait to be able to consume
+            before checking if the RPC is cancelled. In practice, this
+            determines the maximum amount of time that ``next()`` on this
+            iterator will block after the RPC is cancelled.
+
+    Yields:
+        Any: The items yielded from ``iterator``.
+    """
+    while True:
+        can_yield = can_continue.wait(timeout=period)
+        # Calling next() on a cancelled RPC will cause it to raise the
+        # grpc.RpcError associated with the cancellation.
+        if can_yield or not iterator.is_active():
+            yield next(iterator)
+
+
 class Consumer(object):
     """Bi-directional streaming RPC consumer.
 
@@ -328,7 +358,7 @@ class Consumer(object):
                 self._request_queue, initial_request=initial_request)
             rpc = policy.call_rpc(iter(request_generator))
             request_generator.rpc = rpc
-            responses = _pausable_iterator(rpc, self._can_consume)
+            responses = _pausable_response_iterator(rpc, self._can_consume)
             try:
                 for response in responses:
                     _LOGGER.debug('Received response on stream')
@@ -439,23 +469,3 @@ class Consumer(object):
         """
         thread = self._stop_no_join()
         thread.join()
-
-
-def _pausable_iterator(iterator, can_continue):
-    """Converts a standard iterator into one that can be paused.
-
-    The ``can_continue`` event can be used by an independent, concurrent
-    worker to pause and resume the iteration over ``iterator``.
-
-    Args:
-        iterator (Iterator): Any iterator to be iterated over.
-        can_continue (threading.Event): An event which determines if we
-            can advance to the next iteration. Will be ``wait()``-ed on
-            before
-
-    Yields:
-        Any: The items from ``iterator``.
-    """
-    while True:
-        can_continue.wait()
-        yield next(iterator)
