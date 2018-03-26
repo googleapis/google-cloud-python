@@ -346,6 +346,12 @@ Querying data
   - Use of the ``timeout`` parameter is optional. The query will continue to
     run in the background even if it takes longer the timeout allowed.
 
+Run a dry run query
+~~~~~~~~~~~~~~~~~~~
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_dry_run]
+   :end-before: [END bigquery_query_dry_run]
 
 Writing query results to a destination table
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
