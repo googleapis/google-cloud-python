@@ -306,12 +306,18 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertIsNone(ret_val)
 
     def test_check_conflict_failure(self):
+        from google.cloud.firestore_v1beta1 import _helpers
         helper = self._make_one(None)
         with self.assertRaises(ValueError) as exc_info:
             helper.check_conflict(
-                'foo.bar', ['foo', 'bar'], 0, helper.PATH_END)
+                _helpers.FieldPath.from_string('foo.bar'),
+                ('foo', 'bar'),
+                0,
+                helper.PATH_END)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format('foo', 'foo.bar')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            _helpers.FieldPath.from_string('foo'),
+            _helpers.FieldPath.from_string('foo.bar'))
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_path_end_conflict_one_match(self):
@@ -320,12 +326,14 @@ class TestFieldPathHelper(unittest.TestCase):
         helper = self._make_one(None)
         key = 'end'
         conflicting_paths = {key: helper.PATH_END}
-        field_path = _helpers.FieldPath.from_string('start')
-        err_val = helper.path_end_conflict(field_path, conflicting_paths)
+        field_path = 'start'
+        err_val = helper.path_end_conflict(
+            _helpers.FieldPath.from_string(field_path),
+            conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path.to_api_repr(), key])
+        conflict = _helpers.FieldPath(field_path, key)
         err_msg = helper.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), conflict)
+            _helpers.FieldPath.from_string(field_path), conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_path_end_conflict_multiple_matches(self):
@@ -346,10 +354,10 @@ class TestFieldPathHelper(unittest.TestCase):
         field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path(
-            [field_path.to_api_repr(), middle_part, end_part])
+        conflict = _helpers.FieldPath(
+            field_path.to_api_repr(), middle_part, end_part)
         err_msg = helper.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), conflict)
+            field_path, conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_add_field_path_end_success(self):
@@ -386,7 +394,7 @@ class TestFieldPathHelper(unittest.TestCase):
                 field_path, value, final_part, curr_paths, to_update)
 
         err_msg = helper.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), 'a.b.c.d')
+            field_path, helper.field_paths[0])
         self.assertEqual(exc_info.exception.args, (err_msg,))
         self.assertEqual(curr_paths, {'c': {'d': helper.PATH_END}})
         self.assertEqual(to_update, {'c': {'d': 'jewelry'}})
@@ -494,7 +502,8 @@ class TestFieldPathHelper(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format('DD', field_path)
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            _helpers.FieldPath.from_string('DD'), field_path)
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'DD': {'E': 19}})
@@ -511,17 +520,17 @@ class TestFieldPathHelper(unittest.TestCase):
         field_path = _helpers.FieldPath.from_string('x.y')
         value = {'t': False}
         helper.update_values = {'x': {'y': {'z': 104.5}}}
-        helper.field_paths = ['x.y.z']
+        helper.field_paths = _helpers.FieldPath.from_string('x.y.z')
         helper.unpacked_field_paths = {'x': {'y': {'z': helper.PATH_END}}}
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
 
         err_msg = helper.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), 'x.y.z')
+            field_path, _helpers.FieldPath.from_string('x.y.z'))
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'x': {'y': {'z': 104.5}}})
-        self.assertEqual(helper.field_paths, ['x.y.z'])
+        self.assertEqual(helper.field_paths, _helpers.FieldPath('x', 'y', 'z'))
         self.assertEqual(
             helper.unpacked_field_paths, {'x': {'y': {'z': helper.PATH_END}}})
 
@@ -586,6 +595,7 @@ class TestFieldPathHelper(unittest.TestCase):
         )
 
     def test_parse_with_conflict(self):
+        from google.cloud.firestore_v1beta1 import _helpers
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
         field_updates = collections.OrderedDict((
             ('a.b.c', b'\x01\x02'),
@@ -595,7 +605,9 @@ class TestFieldPathHelper(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             helper.parse()
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format('a.b', 'a.b.c')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            _helpers.FieldPath.from_string('a.b'),
+            _helpers.FieldPath.from_string('a.b.c'))
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_to_field_paths(self):
