@@ -544,8 +544,9 @@ class Client(ClientWithProject):
             project=self.project)
         timeseries_dict = [timeseries._to_dict()
                            for timeseries in timeseries_list]
-        self._connection.api_request(method='POST', path=path,
-                                     data={'timeSeries': timeseries_dict})
+        for tserie in timeseries_dict:
+            self._connection.api_request(method='POST', path=path,
+                                     data={'timeSeries': tserie})
 
     def write_point(self, metric, resource, value,
                     end_time=None,
