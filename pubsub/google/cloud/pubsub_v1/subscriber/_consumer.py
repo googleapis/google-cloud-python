@@ -251,7 +251,7 @@ def _pausable_response_iterator(iterator, can_continue, period=1):
         Any: The items yielded from ``iterator``.
     """
     while True:
-        can_yield = can_continue.wait(timeout=1)
+        can_yield = can_continue.wait(timeout=period)
         # Calling next() on a cancelled RPC will cause it to raise the
         # grpc.RpcError associated with the cancellation.
         if can_yield or not iterator.is_active():
