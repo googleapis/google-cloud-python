@@ -127,8 +127,6 @@ def test__pausable_response_iterator_active_but_cant_consume():
     can_consume.wait.side_effect = [False, True]
     iterator = _ResponseIterator([1])
 
-    print(can_consume)
-
     pausable_iter = _consumer._pausable_response_iterator(
         iterator, can_consume)
 
