@@ -1767,8 +1767,9 @@ def test_client_list_jobs(client):
         pass
 
     # [START client_list_jobs]
-    job_iterator = client.list_jobs()  # API request(s)
-    for job in job_iterator:
+    job_iterator = client.list_jobs(
+        max_results=10)  # Optionally, limit the results to 10 jobs.
+    for job in job_iterator:  # API request(s) happen when iterating
         do_something_with(job)
     # [END client_list_jobs]
 
