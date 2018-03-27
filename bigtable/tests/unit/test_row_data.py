@@ -371,7 +371,7 @@ class TestYieldRowsData(unittest.TestCase):
         yrd = self._make_one(iterator)
         yrd.last_scanned_row_key = 'BEFORE'
         self._consume_all(yrd)
-        self.assertEqual(yrd.last_scanned_row_key, 'AFTER')
+        self.assertEqual(yrd._last_scanned_row_key, 'AFTER')
 
     def test_invalid_empty_chunk(self):
         from google.cloud.bigtable.row_data import InvalidChunk
