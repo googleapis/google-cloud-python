@@ -135,9 +135,11 @@ class FieldPath(object):
     def from_string(cls, string):
         """ Creates a FieldPath from a unicode string representation.
 
-        This method always splits on dots. If the unicode string representation
-        includes dots or other invalid characters `~*/[]`, this method will fail
-        and the constructor must be used to determine nesting.
+        The constructor must be used if the unicode string representation
+        consists of invalid characters `~*/[]`. This method always splits
+        on the character `.` for nesting. If any field names in this field
+        path includes the character `.`, the constructor must also be used
+        to determine nesting.
 
         Args:
             :type string: str
@@ -168,11 +170,9 @@ class FieldPath(object):
                 A tuple with the first field name and the api_repr
                 of the rest.
         """
-        if api_repr[0] == '.':
-            api_repr = api_repr[1:]
         if api_repr[0] != '`':  # first field name is simple
-            field_names = api_repr.split('.')
-            return field_names[0], '.'.join(field_names[1:])
+            index = api_repr.index('.')
+            return api_repr[:index], api_repr[index+1:]  # skips delimiter
         else:
             index = 1
             while index < len(api_repr):
@@ -180,13 +180,12 @@ class FieldPath(object):
                     index += 2
                     if api_repr[index-1] == '`':  # skips escaped backticks
                         value = (
-                            api_repr[:index+1],
-                            '.'.join(api_repr[index+1:].split('.')))
+                            api_repr[:index+1], api_repr[index+2:])
                         index = len(api_repr)  # to please coverage
                 elif api_repr[index] == '`':  # end of unicode field name
                     value = (
                         api_repr[:index+1],
-                        '.'.join(api_repr[index+1:].split('.')))
+                        api_repr[index+2:])  # skips delimiter
                     index = len(api_repr)  # to please coverage
                 else:
                     index += 1
