@@ -129,6 +129,8 @@ def test_subscribe_to_messages(
     # Okay, we took too long; fail out.
     assert callback.calls >= 50
 
+    subscription.close()
+
 
 def test_subscribe_to_messages_async_callbacks(
         publisher, topic_path, subscriber, subscription_path, cleanup):
@@ -180,6 +182,8 @@ def test_subscribe_to_messages_async_callbacks(
 
     # Okay, we took too long; fail out.
     assert callback.calls >= 2
+
+    subscription.close()
 
 
 class AckCallback(object):

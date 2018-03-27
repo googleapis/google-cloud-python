@@ -35,7 +35,7 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'pytest-cov', 'ipython', *LOCAL_DEPS)
     if session.interpreter == 'python3.4':
         session.install('-e', '.')
     else:
@@ -87,7 +87,7 @@ def system(session, py):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'ipython', *LOCAL_DEPS)
     session.install(
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
@@ -105,7 +105,7 @@ def system(session, py):
 
 @nox.session
 @nox.parametrize('py', ['2.7', '3.6'])
-def snippets_tests(session, py):
+def snippets(session, py):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.

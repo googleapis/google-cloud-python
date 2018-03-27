@@ -378,7 +378,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(snapshot2._reference, document1)
         self.assertEqual(snapshot2._data, data1)
 
-        self.assertIsNone(snapshots[2])
+        self.assertFalse(snapshots[2].exists)
 
         # Verify the call to the mock.
         doc_paths = [
@@ -669,7 +669,7 @@ class Test__parse_batch_get(unittest.TestCase):
         response_pb = _make_batch_response(missing=ref_string)
 
         snapshot = self._call_fut(response_pb, {})
-        self.assertIsNone(snapshot)
+        self.assertFalse(snapshot.exists)
 
     def test_unset_result_type(self):
         response_pb = _make_batch_response()

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2017 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,6 +87,185 @@ class TestGeoPoint(unittest.TestCase):
         self.assertIs(geo_pt1.__ne__(geo_pt2), NotImplemented)
 
 
+class TestFieldPath(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+        return FieldPath
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_none_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', None, 'b')
+
+    def test_empty_string_in_part_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', '', 'b')
+
+    def test_integer_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', 3, 'b')
+
+    def test_iterable_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', ['a'], 'b')
+
+    def test_invalid_chars_in_constructor(self):
+        parts = '~*/[].'
+        for part in parts:
+            field_path = self._make_one(part)
+            self.assertEqual(field_path.parts, (part, ))
+
+    def test_component(self):
+        field_path = self._make_one('a..b')
+        self.assertEquals(field_path.parts, ('a..b',))
+
+    def test_constructor_iterable(self):
+        field_path = self._make_one('a', 'b', 'c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_unicode(self):
+        field_path = self._make_one('一', '二', '三')
+        self.assertEqual(field_path.parts, ('一', '二', '三'))
+
+    def test_to_api_repr_a(self):
+        parts = 'a'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), 'a')
+
+    def test_to_api_repr_backtick(self):
+        parts = '`'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`\``')
+
+    def test_to_api_repr_dot(self):
+        parts = '.'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`.`')
+
+    def test_to_api_repr_slash(self):
+        parts = '\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), r'`\\`')
+
+    def test_to_api_repr_double_slash(self):
+        parts = r'\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), r'`\\\\`')
+
+    def test_to_api_repr_underscore(self):
+        parts = '_33132'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '_33132')
+
+    def test_to_api_repr_unicode_non_simple(self):
+        parts = '一'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`一`')
+
+    def test_to_api_repr_number_non_simple(self):
+        parts = '03'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`03`')
+
+    def test_to_api_repr_simple_with_dot(self):
+        field_path = self._make_one('a.b')
+        self.assertEqual(field_path.to_api_repr(), '`a.b`')
+
+    def test_to_api_repr_non_simple_with_dot(self):
+        parts = 'a.一'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), '`a.一`')
+
+    def test_to_api_repr_simple(self):
+        parts = 'a0332432'
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.to_api_repr(), 'a0332432')
+
+    def test_to_api_repr_chain(self):
+        parts = 'a', '`', '\\', '_3', '03', 'a03', '\\\\', 'a0332432', '一'
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.to_api_repr(),
+                         r'a.`\``.`\\`._3.`03`.a03.`\\\\`.a0332432.`一`')
+
+    def test_from_string(self):
+        field_path = self._get_target_class().from_string('a.b.c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+        self.assertEqual(field_path.to_api_repr(), 'a.b.c')
+
+    def test_from_string_non_simple(self):
+        field_path = self._get_target_class().from_string('a.一')
+        self.assertEqual(field_path.parts, ('a', '一'))
+        self.assertEqual(field_path.to_api_repr(), 'a.`一`')
+
+    def test_list_splat(self):
+        parts = ['a', 'b', 'c']
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_tuple_splat(self):
+        parts = ('a', 'b', 'c')
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_invalid_chars_from_string_fails(self):
+        parts = '~*/[].'
+        for part in parts:
+            with self.assertRaises(ValueError):
+                self._get_target_class().from_string(part)
+
+    def test_empty_string_fails(self):
+        parts = ''
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_empty_field_name_fails(self):
+        parts = 'a..b'
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_string(parts)
+
+    def test_list_fails(self):
+        parts = ['a', 'b', 'c']
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_tuple_fails(self):
+        parts = ('a', 'b', 'c')
+        with self.assertRaises(ValueError):
+            self._make_one(parts)
+
+    def test_equality(self):
+        field_path = self._make_one('a', 'b')
+        string_path = self._get_target_class().from_string('a.b')
+        self.assertEqual(field_path, string_path)
+
+    def test_non_equal_types(self):
+        import mock
+        mock = mock.Mock()
+        mock.parts = 'a', 'b'
+        field_path = self._make_one('a', 'b')
+        self.assertNotEqual(field_path, mock)
+
+    def test_key(self):
+        field_path = self._make_one('a321', 'b456')
+        field_path_same = self._get_target_class().from_string('a321.b456')
+        field_path_different = self._make_one('a321', 'b457')
+        keys = {
+            field_path: '',
+            field_path_same: '',
+            field_path_different: ''
+        }
+        for key in keys:
+            if key == field_path_different:
+                self.assertNotEqual(key, field_path)
+            else:
+                self.assertEqual(key, field_path)
+
+
 class TestFieldPathHelper(unittest.TestCase):
 
     @staticmethod
@@ -140,11 +320,12 @@ class TestFieldPathHelper(unittest.TestCase):
         helper = self._make_one(None)
         key = 'end'
         conflicting_paths = {key: helper.PATH_END}
-        field_path = 'start'
+        field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path, key])
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        conflict = _helpers.get_field_path([field_path.to_api_repr(), key])
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_path_end_conflict_multiple_matches(self):
@@ -162,18 +343,22 @@ class TestFieldPathHelper(unittest.TestCase):
             ('nope', helper.PATH_END),
         ))
 
-        field_path = 'start'
+        field_path = _helpers.FieldPath.from_string('start')
         err_val = helper.path_end_conflict(field_path, conflicting_paths)
         self.assertIsInstance(err_val, ValueError)
-        conflict = _helpers.get_field_path([field_path, middle_part, end_part])
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        conflict = _helpers.get_field_path(
+            [field_path.to_api_repr(), middle_part, end_part])
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         self.assertEqual(err_val.args, (err_msg,))
 
     def test_add_field_path_end_success(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
         curr_paths = {}
         to_update = {}
-        field_path = 'a.b.c'
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = 1029830
         final_part = 'c'
         ret_val = helper.add_field_path_end(
@@ -186,41 +371,49 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(helper.field_paths, [field_path])
 
     def test_add_field_path_end_failure(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
         curr_paths = {'c': {'d': helper.PATH_END}}
         to_update = {'c': {'d': 'jewelry'}}
-        helper.field_paths = ['a.b.c.d']
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b.c.d')]
 
-        field_path = 'a.b.c'
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = 1029830
         final_part = 'c'
         with self.assertRaises(ValueError) as exc_info:
             helper.add_field_path_end(
                 field_path, value, final_part, curr_paths, to_update)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, 'a.b.c.d')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), 'a.b.c.d')
         self.assertEqual(exc_info.exception.args, (err_msg,))
         self.assertEqual(curr_paths, {'c': {'d': helper.PATH_END}})
         self.assertEqual(to_update, {'c': {'d': 'jewelry'}})
-        self.assertEqual(helper.field_paths, ['a.b.c.d'])
+        self.assertEqual(
+            helper.field_paths, [_helpers.FieldPath.from_string('a.b.c.d')])
 
     def test_add_value_at_field_path_first_with_field(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'zap'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('zap')
         value = 121
         ret_val = helper.add_value_at_field_path(field_path, value)
 
         self.assertIsNone(ret_val)
-        self.assertEqual(helper.update_values, {field_path: value})
+        self.assertEqual(
+            helper.update_values, {field_path.to_api_repr(): value})
         self.assertEqual(helper.field_paths, [field_path])
         self.assertEqual(
-            helper.unpacked_field_paths, {field_path: helper.PATH_END})
+            helper.unpacked_field_paths,
+            {field_path.to_api_repr(): helper.PATH_END})
 
     def test_add_value_at_field_path_first_with_path(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'a.b.c'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.b.c')
         value = b'\x01\x02'
         ret_val = helper.add_value_at_field_path(field_path, value)
 
@@ -231,29 +424,54 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'a': {'b': {'c': helper.PATH_END}}})
 
     def test_add_value_at_field_paths_at_same_level(self):
-        helper = self._make_one(None)
+        from google.cloud.firestore_v1beta1 import _helpers
 
-        field_path = 'a.c'
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.c')
         value = False
         helper.update_values = {'a': {'b': 80}}
-        helper.field_paths = ['a.b']
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b')]
         helper.unpacked_field_paths = {'a': {'b': helper.PATH_END}}
-
         ret_val = helper.add_value_at_field_path(field_path, value)
 
         self.assertIsNone(ret_val)
         self.assertEqual(helper.update_values, {'a': {'b': 80, 'c': value}})
-        self.assertEqual(helper.field_paths, ['a.b', field_path])
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('a.b'), field_path])
         self.assertEqual(
             helper.unpacked_field_paths,
             {'a': {'b': helper.PATH_END, 'c': helper.PATH_END}})
 
+    def test_add_value_at_field_paths_non_simple_field_names(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        helper = self._make_one(None)
+        field_path = _helpers.FieldPath.from_string('a.一')
+        value = [1, 2, 3]
+        helper.update_values = {'a': {'b': 80}}
+        helper.field_paths = [_helpers.FieldPath.from_string('a.b')]
+        helper.unpacked_field_paths = {'a': {'b': helper.PATH_END}}
+        helper.add_value_at_field_path(field_path, value)
+
+        self.assertEqual(helper.update_values, {'a': {'b': 80,
+                                                      '一': value}
+                                                })
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('a.b'), field_path])
+        self.assertEqual(
+            helper.unpacked_field_paths,
+            {'a': {'b': helper.PATH_END,
+                   '一': helper.PATH_END}})
+
     def test_add_value_at_field_path_delete(self):
+        from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
 
         helper = self._make_one(None)
 
-        field_path = 'foo.bar'
+        field_path = _helpers.FieldPath.from_string('foo.bar')
         value = DELETE_FIELD
         ret_val = helper.add_value_at_field_path(field_path, value)
 
@@ -264,12 +482,14 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'foo': {'bar': helper.PATH_END}})
 
     def test_add_value_at_field_path_failure_adding_more_specific_path(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
 
-        field_path = 'DD.F'
+        field_path = _helpers.FieldPath.from_string('DD.F')
         value = 99
         helper.update_values = {'DD': {'E': 19}}
-        helper.field_paths = ['DD']
+        helper.field_paths = [_helpers.FieldPath.from_string('DD')]
         helper.unpacked_field_paths = {'DD': helper.PATH_END}
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
@@ -278,13 +498,17 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'DD': {'E': 19}})
-        self.assertEqual(helper.field_paths, ['DD'])
+        self.assertEqual(
+            helper.field_paths,
+            [_helpers.FieldPath.from_string('DD')])
         self.assertEqual(helper.unpacked_field_paths, {'DD': helper.PATH_END})
 
     def test_add_value_at_field_path_failure_adding_more_generic_path(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
         helper = self._make_one(None)
 
-        field_path = 'x.y'
+        field_path = _helpers.FieldPath.from_string('x.y')
         value = {'t': False}
         helper.update_values = {'x': {'y': {'z': 104.5}}}
         helper.field_paths = ['x.y.z']
@@ -292,7 +516,8 @@ class TestFieldPathHelper(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             helper.add_value_at_field_path(field_path, value)
 
-        err_msg = helper.FIELD_PATH_CONFLICT.format(field_path, 'x.y.z')
+        err_msg = helper.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), 'x.y.z')
         self.assertEqual(exc_info.exception.args, (err_msg,))
         # Make sure inputs are unchanged.
         self.assertEqual(helper.update_values, {'x': {'y': {'z': 104.5}}})
@@ -301,32 +526,48 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'x': {'y': {'z': helper.PATH_END}}})
 
     def test_parse(self):
+        import six
+        from google.cloud.firestore_v1beta1 import _helpers
+
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
         field_updates = collections.OrderedDict((
-            ('a.b.c', 10),
-            ('d', None),
-            ('e.f1', [u'no', b'yes']),
-            ('e.f2', 4.5),
-            ('g', {'key': True}),
+            (_helpers.FieldPath.from_string('a.b.c'), 10),
+            (_helpers.FieldPath.from_string('d'), None),
+            (_helpers.FieldPath.from_string('e.f1'), [u'no', b'yes']),
+            (_helpers.FieldPath.from_string('e.f2'), 4.5),
+            (_helpers.FieldPath.from_string('e.f3'), (3, 1)),
+            (_helpers.FieldPath.from_string('g'), {'key': True}),
+            (_helpers.FieldPath('h', 'i'), '3'),
+            (_helpers.FieldPath('j.k', 'l.m'), set(['2', '3'])),
+            (_helpers.FieldPath('a', '一'), {1: 2}),
+            (_helpers.FieldPath('a.一'), {3: 4}),
         ))
         helper = self._make_one(field_updates)
         update_values, field_paths = helper.parse()
-
         expected_updates = {
             'a': {
                 'b': {
-                    'c': field_updates['a.b.c'],
+                    'c': field_updates[_helpers.FieldPath.from_string('a.b.c')],
                 },
+                '一': field_updates[_helpers.FieldPath('a', '一')]
             },
-            'd': field_updates['d'],
+            'd': field_updates[_helpers.FieldPath.from_string('d')],
             'e': {
-                'f1': field_updates['e.f1'],
-                'f2': field_updates['e.f2'],
+                'f1': field_updates[_helpers.FieldPath.from_string('e.f1')],
+                'f2': field_updates[_helpers.FieldPath.from_string('e.f2')],
+                'f3': field_updates[_helpers.FieldPath.from_string('e.f3')]
             },
-            'g': field_updates['g'],
+            'g': field_updates[_helpers.FieldPath.from_string('g')],
+            'h': {
+                'i': field_updates[_helpers.FieldPath('h', 'i')]
+            },
+            'j.k': {
+                'l.m': field_updates[_helpers.FieldPath('j.k', 'l.m')]
+            },
+            'a.一': field_updates[_helpers.FieldPath('a.一')]
         }
         self.assertEqual(update_values, expected_updates)
-        self.assertEqual(field_paths, list(field_updates.keys()))
+        self.assertEqual(field_paths, list(six.iterkeys(field_updates)))
 
     def test_parse_with_delete(self):
         from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
@@ -336,11 +577,13 @@ class TestFieldPathHelper(unittest.TestCase):
             ('a', 10),
             ('b', DELETE_FIELD),
         ))
-
         helper = self._make_one(field_updates)
         update_values, field_paths = helper.parse()
         self.assertEqual(update_values, {'a': field_updates['a']})
-        self.assertEqual(field_paths, list(field_updates.keys()))
+        self.assertEqual(
+            [field_path.parts[0] for field_path in field_paths],
+            list(field_updates.keys())
+        )
 
     def test_parse_with_conflict(self):
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
@@ -356,7 +599,9 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
     def test_to_field_paths(self):
-        field_path = 'a.b'
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        field_path = _helpers.FieldPath.from_string('a.b')
         field_updates = {field_path: 99}
         klass = self._get_target_class()
 
@@ -364,6 +609,17 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(
             update_values, {'a': {'b': field_updates[field_path]}})
         self.assertEqual(field_paths, [field_path])
+
+    def test_conflict_same_field_paths(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+
+        field_path_from_string = _helpers.FieldPath.from_string('a.b')
+        field_path_class = _helpers.FieldPath('a', 'b')
+        # User error in this case
+        field_updates = {field_path_from_string: '',
+                         field_path_class: ''}
+        self.assertEqual(field_path_from_string, field_path_class)
+        self.assertEqual(len(field_updates), 1)
 
 
 class Test_verify_path(unittest.TestCase):
@@ -827,6 +1083,7 @@ class Test_decode_dict(unittest.TestCase):
             ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
         from google.cloud._helpers import UTC
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
 
         dt_seconds = 1394037350
         dt_nanos = 667285000
@@ -854,6 +1111,8 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': _value_pb(string_value=u'zap'),
                 'thud': _value_pb(boolean_value=False),
             })),
+            FieldPath('a', 'b', 'c').to_api_repr():
+            _value_pb(boolean_value=False)
         }
         expected = {
             'foo': None,
@@ -871,6 +1130,7 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': u'zap',
                 'thud': False,
             },
+            'a.b.c': False
         }
         self.assertEqual(self._call_fut(value_fields), expected)
 
@@ -897,6 +1157,13 @@ class Test_parse_field_path(unittest.TestCase):
 
     def test_it(self):
         self.assertEqual(self._call_fut('a.b.c'), ['a', 'b', 'c'])
+
+    def test_api_repr(self):
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+
+        self.assertEqual(
+            self._call_fut(FieldPath('a', 'b', 'c').to_api_repr()),
+            ['a', 'b', 'c'])
 
 
 class Test_get_nested_value(unittest.TestCase):
@@ -1190,8 +1457,11 @@ class Test_canonicalize_field_paths(unittest.TestCase):
 
     def test_canonicalize_field_paths(self):
         from google.cloud.firestore_v1beta1 import _helpers
+
         field_paths = ['0abc.deq', 'abc.654', '321.0deq._321',
                        u'0abc.deq', u'abc.654', u'321.0deq._321']
+        field_paths = [
+            _helpers.FieldPath.from_string(path) for path in field_paths]
         convert = _helpers.canonicalize_field_paths(field_paths)
         self.assertListEqual(
             convert,

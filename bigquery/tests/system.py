@@ -22,12 +22,21 @@ import os
 import time
 import unittest
 import uuid
+import re
 
 import six
+import pytest
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
     pandas = None
+try:
+    import IPython
+    from IPython.utils import io
+    from IPython.testing import tools
+    from IPython.terminal import interactiveshell
+except ImportError:  # pragma: NO COVER
+    IPython = None
 
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
@@ -35,7 +44,8 @@ from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import Forbidden, NotFound
+from google.cloud.exceptions import BadRequest, Forbidden, NotFound
+from google.cloud import storage
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -125,7 +135,8 @@ class TestBigQuery(unittest.TestCase):
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
             elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
-                retry_in_use(Config.CLIENT.delete_dataset)(doomed)
+                retry_in_use(Config.CLIENT.delete_dataset)(
+                    doomed, delete_contents=True)
             elif isinstance(doomed, (Table, bigquery.TableReference)):
                 retry_in_use(Config.CLIENT.delete_table)(doomed)
             else:
@@ -352,6 +363,59 @@ class TestBigQuery(unittest.TestCase):
         page = six.next(iterator.pages)
         return list(page)
 
+    def _create_table_many_columns(self, rows):
+        # Load a table with many columns
+        dataset = self.temp_dataset(_make_dataset_id('list_rows'))
+        table_id = 'many_columns'
+        table_ref = dataset.table(table_id)
+        self.to_delete.insert(0, table_ref)
+        schema = [
+            bigquery.SchemaField(
+                'column_{}_with_long_name'.format(col_i),
+                'INTEGER')
+            for col_i in range(len(rows[0]))]
+        body = ''
+        for row in rows:
+            body += ','.join([str(item) for item in row])
+            body += '\n'
+        config = bigquery.LoadJobConfig()
+        config.schema = schema
+        job = Config.CLIENT.load_table_from_file(
+            six.StringIO(body), table_ref, job_config=config)
+        job.result()
+        return bigquery.Table(table_ref, schema=schema)
+
+    def test_list_rows_many_columns(self):
+        rows = [[], []]
+        # BigQuery tables can have max 10,000 columns
+        for col_i in range(9999):
+            rows[0].append(col_i)
+            rows[1].append(10000 - col_i)
+        expected_rows = frozenset([tuple(row) for row in rows])
+        table = self._create_table_many_columns(rows)
+
+        rows = list(Config.CLIENT.list_rows(table))
+
+        assert len(rows) == 2
+        rows_set = frozenset([tuple(row.values()) for row in rows])
+        assert rows_set == expected_rows
+
+    def test_query_many_columns(self):
+        rows = [[], []]
+        # BigQuery tables can have max 10,000 columns
+        for col_i in range(9999):
+            rows[0].append(col_i)
+            rows[1].append(10000 - col_i)
+        expected_rows = frozenset([tuple(row) for row in rows])
+        table = self._create_table_many_columns(rows)
+
+        rows = list(Config.CLIENT.query(
+            'SELECT * FROM `{}.many_columns`'.format(table.dataset_id)))
+
+        assert len(rows) == 2
+        rows_set = frozenset([tuple(row.values()) for row in rows])
+        assert rows_set == expected_rows
+
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
@@ -543,54 +607,106 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_uri_w_autodetect_schema_then_get_job(self):
-        from google.cloud.bigquery import SchemaField
-        from google.cloud.bigquery.job import LoadJob
+    def test_load_table_from_file_w_explicit_location(self):
+        # Create a temporary bucket for extract files.
+        storage_client = storage.Client()
+        bucket_name = 'bq_load_table_eu_extract_test' + unique_resource_id()
+        bucket = storage_client.bucket(bucket_name)
+        bucket.location = 'eu'
+        self.to_delete.append(bucket)
+        bucket.create()
 
-        rows = ROWS * 100
-        # BigQuery internally uses the first 100 rows to detect schema
+        # Create a temporary dataset & table in the EU.
+        table_bytes = six.BytesIO(b'a,3\nb,2\nc,1\n')
+        client = Config.CLIENT
+        dataset = self.temp_dataset(
+            _make_dataset_id('eu_load_file'), location='EU')
+        table_ref = dataset.table('letters')
+        job_config = bigquery.LoadJobConfig()
+        job_config.skip_leading_rows = 0
+        job_config.schema = [
+            bigquery.SchemaField('letter', 'STRING'),
+            bigquery.SchemaField('value', 'INTEGER'),
+        ]
 
-        gs_url = self._write_csv_to_storage(
-            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, rows)
-        dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
-        table_ref = dataset.table('test_table')
-        JOB_ID = 'load_table_w_autodetect_{}'.format(str(uuid.uuid4()))
+        # Load the file to an EU dataset with an EU load job.
+        load_job = client.load_table_from_file(
+            table_bytes, table_ref, location='EU', job_config=job_config)
+        load_job.result()
+        job_id = load_job.job_id
 
-        config = bigquery.LoadJobConfig()
-        config.autodetect = True
-        job = Config.CLIENT.load_table_from_uri(
-            gs_url, table_ref, job_config=config, job_id=JOB_ID)
+        # Can get the job from the EU.
+        load_job = client.get_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+        self.assertTrue(load_job.exists())
 
-        # Allow for 90 seconds of "warm up" before rows visible.  See
-        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
+        # Cannot get the job from the US.
+        with self.assertRaises(NotFound):
+            client.get_job(job_id, location='US')
 
-        table = Config.CLIENT.get_table(table_ref)
-        self.to_delete.insert(0, table)
-        field_name = SchemaField(
-            u'Full_Name', u'string', u'NULLABLE', None, ())
-        field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
-        self.assertEqual(table.schema, [field_name, field_age])
+        load_job_us = client.get_job(job_id)
+        load_job_us._job_ref._properties['location'] = 'US'
+        self.assertFalse(load_job_us.exists())
+        with self.assertRaises(NotFound):
+            load_job_us.reload()
 
-        actual_rows = self._fetch_single_page(table)
-        actual_row_tuples = [r.values() for r in actual_rows]
-        by_age = operator.itemgetter(1)
+        # Can cancel the job from the EU.
+        self.assertTrue(load_job.cancel())
+        load_job = client.cancel_job(job_id, location='EU')
+        self.assertEqual(job_id, load_job.job_id)
+        self.assertEqual('EU', load_job.location)
+
+        # Cannot cancel the job from the US.
+        with self.assertRaises(NotFound):
+            client.cancel_job(job_id, location='US')
+        with self.assertRaises(NotFound):
+            load_job_us.cancel()
+
+        # Can list the table rows.
+        table = client.get_table(table_ref)
+        self.assertEqual(table.num_rows, 3)
+        rows = [(row.letter, row.value) for row in client.list_rows(table)]
         self.assertEqual(
-            sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
+            list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
 
-        fetched_job = Config.CLIENT.get_job(JOB_ID)
+        # Can query from EU.
+        query_string = 'SELECT MAX(value) FROM `{}.letters`'.format(
+            dataset.dataset_id)
+        max_value = list(client.query(query_string, location='EU'))[0][0]
+        self.assertEqual(max_value, 3)
 
-        self.assertIsInstance(fetched_job, LoadJob)
-        self.assertEqual(fetched_job.job_id, JOB_ID)
-        self.assertEqual(fetched_job.autodetect, True)
+        # Cannot query from US.
+        with self.assertRaises(BadRequest):
+            list(client.query(query_string, location='US'))
+
+        # Can copy from EU.
+        copy_job = client.copy_table(
+            table_ref, dataset.table('letters2'), location='EU')
+        copy_job.result()
+
+        # Cannot copy from US.
+        with self.assertRaises(BadRequest):
+            client.copy_table(
+                table_ref, dataset.table('letters2_us'),
+                location='US').result()
+
+        # Can extract from EU.
+        extract_job = client.extract_table(
+            table_ref,
+            'gs://{}/letters.csv'.format(bucket_name),
+            location='EU')
+        extract_job.result()
+
+        # Cannot extract from US.
+        with self.assertRaises(BadRequest):
+            client.extract_table(
+                table_ref,
+                'gs://{}/letters-us.csv'.format(bucket_name),
+                location='US').result()
 
     def _create_storage(self, bucket_name, blob_name):
-        from google.cloud.storage import Client as StorageClient
-
-        storage_client = StorageClient()
+        storage_client = storage.Client()
 
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
@@ -926,6 +1042,18 @@ class TestBigQuery(unittest.TestCase):
 
         with self.assertRaises(BadRequest):
             Config.CLIENT.query('invalid syntax;').result()
+
+    def test_query_w_wrong_config(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        good_query = 'SELECT 1;'
+        rows = list(Config.CLIENT.query('SELECT 1;').result())
+        assert rows[0][0] == 1
+
+        bad_config = LoadJobConfig()
+        bad_config.destination = Config.CLIENT.dataset('dset').table('tbl')
+        with self.assertRaises(Exception):
+            Config.CLIENT.query(good_query, job_config=bad_config).result()
 
     def test_query_w_timeout(self):
         query_job = Config.CLIENT.query(
@@ -1609,11 +1737,44 @@ class TestBigQuery(unittest.TestCase):
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
 
-    def temp_dataset(self, dataset_id):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id)))
+    def temp_dataset(self, dataset_id, location=None):
+        dataset = Dataset(Config.CLIENT.dataset(dataset_id))
+        if location:
+            dataset.location = location
+        dataset = retry_403(Config.CLIENT.create_dataset)(dataset)
         self.to_delete.append(dataset)
         return dataset
+
+    @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+    @pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
+    @pytest.mark.usefixtures('ipython_interactive')
+    def test_bigquery_magic(self):
+        ip = IPython.get_ipython()
+        ip.extension_manager.load_extension('google.cloud.bigquery')
+        sql = """
+            SELECT
+              CONCAT(
+                'https://stackoverflow.com/questions/',
+                CAST(id as STRING)) as url,
+              view_count
+            FROM `bigquery-public-data.stackoverflow.posts_questions`
+            WHERE tags like '%google-bigquery%'
+            ORDER BY view_count DESC
+            LIMIT 10
+        """
+        with io.capture_output() as captured:
+            result = ip.run_cell_magic('bigquery', '', sql)
+
+        lines = re.split('\n|\r', captured.stdout)
+        # Removes blanks & terminal code (result of display clearing)
+        updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
+        assert re.match("Executing query with job ID: .*", updates[0])
+        assert all(re.match("Query executing: .*s", line)
+                   for line in updates[1:-1])
+        assert re.match("Query complete after .*s", updates[-1])
+        assert isinstance(result, pandas.DataFrame)
+        assert len(result) == 10                      # verify row count
+        assert list(result) == ['url', 'view_count']  # verify column names
 
 
 def _job_done(instance):
@@ -1635,3 +1796,21 @@ def _table_exists(t):
         return True
     except NotFound:
         return False
+
+
+@pytest.fixture(scope='session')
+def ipython():
+    config = tools.default_config()
+    config.TerminalInteractiveShell.simple_prompt = True
+    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
+    return shell
+
+
+@pytest.fixture()
+def ipython_interactive(request, ipython):
+    """Activate IPython's builtin hooks
+
+    for the duration of the test scope.
+    """
+    with ipython.builtin_trap:
+        yield ipython

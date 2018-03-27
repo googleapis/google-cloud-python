@@ -325,7 +325,7 @@ class Instance(object):
         :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
         """
-        return Table(table_id, self)
+        return Table(table_id, self, None)
 
     def list_tables(self):
         """List the tables in this instance.

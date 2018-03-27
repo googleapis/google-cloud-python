@@ -425,7 +425,7 @@ class DirectRow(_SetDeleteRow):
         )
 
         commit = functools.partial(
-            self._table._instance._client._data_stub.MutateRow,
+            self._table.client.bigtable_stub.MutateRow,
             request_pb)
         retry_ = retry.Retry(
             predicate=_retry_commit_exception,
@@ -547,10 +547,10 @@ class ConditionalRow(_SetDeleteRow):
             false_mutations=false_mutations,
         )
         # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
-        client = self._table._instance._client
-        resp = client._data_stub.CheckAndMutateRow(request_pb)
+        client = self._table.client
+        resp = client.bigtable_stub.CheckAndMutateRow(request_pb)
         self.clear()
-        return resp.predicate_matched
+        return resp[0].predicate_matched
 
     # pylint: disable=arguments-differ
     def set_cell(self, column_family_id, column, value, timestamp=None,

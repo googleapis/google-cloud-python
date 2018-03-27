@@ -63,7 +63,6 @@ _GRPC_ERROR_MAPPING = {
     grpc.StatusCode.ALREADY_EXISTS: exceptions.Conflict,
     grpc.StatusCode.NOT_FOUND: exceptions.NotFound,
 }
-_UNESCAPED_FIELD_NAME_RE = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
 
 
 class GeoPoint(object):
@@ -114,6 +113,70 @@ class GeoPoint(object):
             return NotImplemented
         else:
             return not equality_val
+
+
+class FieldPath(object):
+    """ Field Path object for client use.
+
+    Args:
+        parts: (one or more strings)
+            Indicating path of the key to be used.
+    """
+    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+
+    def __init__(self, *parts):
+        for part in parts:
+            if not isinstance(part, six.string_types) or not part:
+                error = 'One or more components is not a string or is empty.'
+                raise ValueError(error)
+        self.parts = tuple(parts)
+
+    @staticmethod
+    def from_string(string):
+        """ Creates a FieldPath from a unicode string representation.
+
+        Args:
+            :type string: str
+            :param string: A unicode string which cannot contain
+                           `~*/[]` characters, cannot exceed 1500 bytes,
+                           and cannot be empty.
+
+        Returns:
+            A :class: `FieldPath` instance with the string split on "."
+            as arguments to `FieldPath`.
+        """
+        invalid_characters = '~*/[]'
+        for invalid_character in invalid_characters:
+            if invalid_character in string:
+                raise ValueError('Invalid characters in string.')
+        string = string.split('.')
+        return FieldPath(*string)
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        api_repr = []
+        for part in self.parts:
+            match = re.match(self.simple_field_name, part)
+            if match and match.group(0) == part:
+                api_repr.append(part)
+            else:
+                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
+                api_repr.append('`' + replaced + '`')
+        return '.'.join(api_repr)
+
+    def __hash__(self):
+        return hash(self.to_api_repr())
+
+    def __eq__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts == other.parts
+        return NotImplemented
 
 
 class FieldPathHelper(object):
@@ -219,14 +282,15 @@ class FieldPathHelper(object):
         Returns:
             ValueError: Always.
         """
-        conflict_parts = [field_path]
+        conflict_parts = list(field_path.parts)
         while conflicting_paths is not self.PATH_END:
             # Grab any item, we are just looking for one example.
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
         conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        msg = self.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         return ValueError(msg)
 
     def add_field_path_end(
@@ -278,7 +342,9 @@ class FieldPathHelper(object):
         Raises:
             ValueError: If there is an ambiguity.
         """
-        parts = parse_field_path(field_path)
+        if isinstance(field_path, six.string_types):
+            field_path = FieldPath.from_string(field_path)
+        parts = field_path.parts
         to_update = self.get_update_values(value)
         curr_paths = self.unpacked_field_paths
         for index, part in enumerate(parts[:-1]):
@@ -835,7 +901,7 @@ def pbs_for_set(document_path, document_data, option):
 
 
 def canonicalize_field_paths(field_paths):
-    """Converts simple field path with integer beginnings to quoted field path
+    """Converts non-simple field paths to quoted field paths
 
     Args:
         field_paths (Sequence[str]): A list of field paths
@@ -850,20 +916,7 @@ def canonicalize_field_paths(field_paths):
 
     .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
-    canonical_strings = []
-    for field_path in field_paths:
-        escaped_names = []
-        field_names = field_path.split('.')
-        for field_name in field_names:
-            if re.match(_UNESCAPED_FIELD_NAME_RE, field_name):
-                escaped_name = field_name
-            else:
-                escaped_name = u"`{}`".format(
-                    field_name.replace('\\', '\\\\').replace('`', '``'))
-            escaped_names.append(escaped_name)
-        new_field_path = '.'.join(escaped_names)
-        canonical_strings.append(new_field_path)
-    return canonical_strings
+    return [path.to_api_repr() for path in field_paths]
 
 
 def pbs_for_update(client, document_path, field_updates, option):

@@ -18,6 +18,7 @@ from __future__ import absolute_import, division
 
 import abc
 import collections
+import copy
 import logging
 import random
 import time
@@ -59,6 +60,10 @@ NackRequest = collections.namedtuple(
     ['ack_id', 'byte_size'],
 )
 
+_LeasedMessage = collections.namedtuple(
+    '_LeasedMessage',
+    ['added_time', 'size'])
+
 
 @six.add_metaclass(abc.ABCMeta)
 class BasePolicy(object):
@@ -92,11 +97,12 @@ class BasePolicy(object):
                 your own dictionary class, ensure this assumption holds
                 or you will get strange behavior.
     """
-
-    _managed_ack_ids = None
     _RETRYABLE_STREAM_ERRORS = (
         exceptions.DeadlineExceeded,
         exceptions.ServiceUnavailable,
+        exceptions.InternalServerError,
+        exceptions.Unknown,
+        exceptions.GatewayTimeout,
     )
 
     def __init__(self, client, subscription,
@@ -109,6 +115,10 @@ class BasePolicy(object):
         self._future = None
         self.flow_control = flow_control
         self.histogram = _histogram.Histogram(data=histogram_data)
+        """.Histogram: the histogram tracking ack latency."""
+        self.leased_messages = {}
+        """dict[str, float]: A mapping of ack IDs to the local time when the
+            ack ID was initially leased in seconds since the epoch."""
 
         # These are for internal flow control tracking.
         # They should not need to be used by subclasses.
@@ -145,17 +155,6 @@ class BasePolicy(object):
         return self._future
 
     @property
-    def managed_ack_ids(self):
-        """Return the ack IDs currently being managed by the policy.
-
-        Returns:
-            set: The set of ack IDs being managed.
-        """
-        if self._managed_ack_ids is None:
-            self._managed_ack_ids = set()
-        return self._managed_ack_ids
-
-    @property
     def subscription(self):
         """Return the subscription.
 
@@ -182,7 +181,7 @@ class BasePolicy(object):
             float: The load value.
         """
         return max([
-            len(self.managed_ack_ids) / self.flow_control.max_messages,
+            len(self.leased_messages) / self.flow_control.max_messages,
             self._bytes / self.flow_control.max_bytes,
             self._consumer.pending_requests / self.flow_control.max_requests
         ])
@@ -252,11 +251,10 @@ class BasePolicy(object):
         # Remove the ack ID from lease management, and decrement the
         # byte counter.
         for item in items:
-            if item.ack_id in self.managed_ack_ids:
-                self.managed_ack_ids.remove(item.ack_id)
+            if self.leased_messages.pop(item.ack_id, None) is not None:
                 self._bytes -= item.byte_size
             else:
-                _LOGGER.debug('Item %s wasn\'t managed', item.ack_id)
+                _LOGGER.debug('Item %s was not managed.', item.ack_id)
 
         if self._bytes < 0:
             _LOGGER.debug(
@@ -265,39 +263,26 @@ class BasePolicy(object):
 
         self._maybe_resume_consumer()
 
-    def get_initial_request(self, ack_queue=False):
+    def get_initial_request(self):
         """Return the initial request.
 
         This defines the initial request that must always be sent to Pub/Sub
         immediately upon opening the subscription.
 
-        Args:
-            ack_queue (bool): Whether to include any acks that were sent
-                while the connection was paused.
-
         Returns:
             google.cloud.pubsub_v1.types.StreamingPullRequest: A request
             suitable for being the first request on the stream (and not
             suitable for any other purpose).
-
-        .. note::
-            If ``ack_queue`` is set to True, this includes the ack_ids, but
-            also clears the internal set.
-
-            This means that calls to :meth:`get_initial_request` with
-            ``ack_queue`` set to True are not idempotent.
         """
         # Any ack IDs that are under lease management and not being acked
         # need to have their deadline extended immediately.
-        ack_ids = set()
-        lease_ids = self.managed_ack_ids
-        if ack_queue:
-            ack_ids = self._ack_on_resume
-            lease_ids = lease_ids.difference(ack_ids)
+        lease_ids = set(self.leased_messages.keys())
+        # Exclude any IDs that we're about to ack.
+        lease_ids = lease_ids.difference(self._ack_on_resume)
 
         # Put the request together.
         request = types.StreamingPullRequest(
-            ack_ids=list(ack_ids),
+            ack_ids=list(self._ack_on_resume),
             modify_deadline_ack_ids=list(lease_ids),
             modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
             stream_ack_deadline_seconds=self.histogram.percentile(99),
@@ -305,9 +290,7 @@ class BasePolicy(object):
         )
 
         # Clear the ack_ids set.
-        # Note: If `ack_queue` is False, this just ends up being a no-op,
-        # since the set is just an empty set.
-        ack_ids.clear()
+        self._ack_on_resume.clear()
 
         # Return the initial request.
         return request
@@ -321,8 +304,10 @@ class BasePolicy(object):
         for item in items:
             # Add the ack ID to the set of managed ack IDs, and increment
             # the size counter.
-            if item.ack_id not in self.managed_ack_ids:
-                self.managed_ack_ids.add(item.ack_id)
+            if item.ack_id not in self.leased_messages:
+                self.leased_messages[item.ack_id] = _LeasedMessage(
+                    added_time=time.time(),
+                    size=item.byte_size)
                 self._bytes += item.byte_size
             else:
                 _LOGGER.debug(
@@ -361,22 +346,46 @@ class BasePolicy(object):
             p99 = self.histogram.percentile(99)
             _LOGGER.debug('The current p99 value is %d seconds.', p99)
 
+            # Make a copy of the leased messages. This is needed because it's
+            # possible for another thread to modify the dictionary while
+            # we're iterating over it.
+            leased_messages = copy.copy(self.leased_messages)
+
+            # Drop any leases that are well beyond max lease time. This
+            # ensures that in the event of a badly behaving actor, we can
+            # drop messages and allow Pub/Sub to resend them.
+            cutoff = time.time() - self.flow_control.max_lease_duration
+            to_drop = [
+                DropRequest(ack_id, item.size)
+                for ack_id, item
+                in six.iteritems(leased_messages)
+                if item.added_time < cutoff]
+
+            if to_drop:
+                _LOGGER.warning(
+                    'Dropping %s items because they were leased too long.',
+                    len(to_drop))
+                self.drop(to_drop)
+
+            # Remove dropped items from our copy of the leased messages (they
+            # have already been removed from the real one by self.drop).
+            for item in to_drop:
+                leased_messages.pop(item.ack_id)
+
             # Create a streaming pull request.
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
-            ack_ids = list(self.managed_ack_ids)
-            _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
+            ack_ids = list(leased_messages.keys())
             if ack_ids:
-                request = types.StreamingPullRequest(
-                    modify_deadline_ack_ids=ack_ids,
-                    modify_deadline_seconds=[p99] * len(ack_ids),
-                )
+                _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
+
                 # NOTE: This may not work as expected if ``consumer.active``
                 #       has changed since we checked it. An implementation
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
-                self._consumer.send_request(request)
+                self.modify_ack_deadline([
+                    ModAckRequest(ack_id, p99) for ack_id in ack_ids])
 
             # Now wait an appropriate period of time and do this again.
             #

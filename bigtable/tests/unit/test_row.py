@@ -834,25 +834,12 @@ class Test__parse_family_pb(unittest.TestCase):
         self.assertEqual(expected_output, self._call_fut(sample_input))
 
 
-def _CheckAndMutateRowRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import (
-        bigtable_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.CheckAndMutateRowRequest(*args, **kw)
-
 
 def _CheckAndMutateRowResponsePB(*args, **kw):
     from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
 
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
-
-
-def _MutateRowRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import (
-        bigtable_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.MutateRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowRequestPB(*args, **kw):

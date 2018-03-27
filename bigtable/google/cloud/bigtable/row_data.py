@@ -18,16 +18,32 @@
 import copy
 import six
 
+import grpc
+
+from google.api_core import exceptions
+from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
+
+_MISSING_COLUMN_FAMILY = (
+    'Column family {} is not among the cells stored in this row.')
+_MISSING_COLUMN = (
+    'Column {} is not among the cells stored in this row in the '
+    'column family {}.')
+_MISSING_INDEX = (
+    'Index {!r} is not valid for the cells stored in this row for column {} '
+    'in the column family {}. There are {} such cells.')
 
 
 class Cell(object):
     """Representation of a Google Cloud Bigtable Cell.
+
     :type value: bytes
     :param value: The value stored in the cell.
+
     :type timestamp_micros: int
     :param timestamp_micros: The timestamp_micros when the cell was stored.
+
     :type labels: list
     :param labels: (Optional) List of strings. Labels applied to the cell.
     """
@@ -40,8 +56,10 @@ class Cell(object):
     @classmethod
     def from_pb(cls, cell_pb):
         """Create a new cell from a Cell protobuf.
+
         :type cell_pb: :class:`._generated.data_pb2.Cell`
         :param cell_pb: The protobuf to convert.
+
         :rtype: :class:`Cell`
         :returns: The cell corresponding to the protobuf.
         """
@@ -68,19 +86,26 @@ class Cell(object):
 
 class PartialCellData(object):
     """Representation of partial cell in a Google Cloud Bigtable Table.
+
     These are expected to be updated directly from a
     :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) cell.
+
     :type family_name: str
     :param family_name: The family name of the (partial) cell.
+
     :type qualifier: bytes
     :param qualifier: The column qualifier of the (partial) cell.
+
     :type timestamp_micros: int
     :param timestamp_micros: The timestamp (in microsecods) of the
                              (partial) cell.
+
     :type labels: list of str
     :param labels: labels assigned to the (partial) cell
+
     :type value: bytes
     :param value: The (accumulated) value of the (partial) cell.
     """
@@ -95,6 +120,7 @@ class PartialCellData(object):
 
     def append_value(self, value):
         """Append bytes from a new chunk to value.
+
         :type value: bytes
         :param value: bytes to append
         """
@@ -103,8 +129,10 @@ class PartialCellData(object):
 
 class PartialRowData(object):
     """Representation of partial row in a Google Cloud Bigtable Table.
+
     These are expected to be updated directly from a
     :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) data.
     """
@@ -124,8 +152,10 @@ class PartialRowData(object):
 
     def to_dict(self):
         """Convert the cells to a dictionary.
+
         This is intended to be used with HappyBase, so the column family and
         column qualiers are combined (with ``:``).
+
         :rtype: dict
         :returns: Dictionary containing all the data in the cells of this row.
         """
@@ -140,6 +170,7 @@ class PartialRowData(object):
     @property
     def cells(self):
         """Property returning all the cells accumulated on this partial row.
+
         :rtype: dict
         :returns: Dictionary of the :class:`Cell` objects accumulated. This
                   dictionary has two-levels of keys (first for column families
@@ -151,10 +182,108 @@ class PartialRowData(object):
     @property
     def row_key(self):
         """Getter for the current (partial) row's key.
+
         :rtype: bytes
         :returns: The current (partial) row's key.
         """
         return self._row_key
+
+    def find_cells(self, column_family_id, column):
+        """Get a time series of cells stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+
+        Returns:
+            List[~google.cloud.bigtable.row_data.Cell]: The cells stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        try:
+            column_family = self._cells[column_family_id]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
+
+        try:
+            cells = column_family[column]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+
+        return cells
+
+    def cell_value(self, column_family_id, column, index=0):
+        """Get a single cell value stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cell
+                is located.
+            index (Optional[int]): The offset within the series of values. If
+                not specified, will return the first cell.
+
+        Returns:
+            ~google.cloud.bigtable.row_data.Cell value: The cell value stored
+            in the specified column and specified index.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+            IndexError: If ``index`` cannot be found within the cells stored
+                in this row for the given ``column_family_id``, ``column``
+                pair.
+        """
+        cells = self.find_cells(column_family_id, column)
+
+        try:
+            cell = cells[index]
+        except (TypeError, IndexError):
+            num_cells = len(cells)
+            msg = _MISSING_INDEX.format(
+                index, column, column_family_id, num_cells)
+            raise IndexError(msg)
+
+        return cell.value
+
+    def cell_values(self, column_family_id, column, max_count=None):
+        """Get a time series of cells stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+            max_count (int): The maximum number of cells to use.
+
+        Returns:
+            A generator which provides: cell.value, cell.timestamp_micros
+                for each cell in the list of cells
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        cells = self.find_cells(column_family_id, column)
+        if max_count is None:
+            max_count = len(cells)
+
+        for index, cell in enumerate(cells):
+            if index == max_count:
+                break
+
+            yield cell.value, cell.timestamp_micros
 
 
 class InvalidReadRowsResponse(RuntimeError):
@@ -167,9 +296,13 @@ class InvalidChunk(RuntimeError):
 
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
-    :param response_iterator: A streaming iterator returned from a
-                              ``ReadRows`` request.
+
+    :type read_method: :class:`client._data_stub.ReadRows`
+    :param read_method: ``ReadRows`` method.
+
+    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param request: The ``ReadRowsRequest`` message used to create a
+                    ReadRowsResponse iterator.
     """
 
     START = 'Start'                         # No responses yet processed.
@@ -177,9 +310,8 @@ class PartialRowsData(object):
     ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
 
-    def __init__(self, response_iterator):
-        self._response_iterator = response_iterator
-        self._generator = YieldRowsData(response_iterator)
+    def __init__(self, read_method, request):
+        self._generator = YieldRowsData(read_method, request)
 
         # Fully-processed rows, keyed by `row_key`
         self.rows = {}
@@ -187,7 +319,7 @@ class PartialRowsData(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return other._response_iterator == self._response_iterator
+        return other._generator == self._generator
 
     def __ne__(self, other):
         return not self == other
@@ -195,6 +327,7 @@ class PartialRowsData(object):
     @property
     def state(self):
         """State machine state.
+
         :rtype: str
         :returns:  name of state corresponding to currrent row / chunk
                    processing.
@@ -203,6 +336,7 @@ class PartialRowsData(object):
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
+
         :type max_loops: int
         :param max_loops: (Optional) Maximum number of times to try to consume
                           an additional ``ReadRowsResponse``. You can use this
@@ -212,11 +346,27 @@ class PartialRowsData(object):
             self.rows[row.row_key] = row
 
 
+def _retry_read_rows_exception(exc):
+    if isinstance(exc, grpc.RpcError):
+        exc = exceptions.from_grpc_error(exc)
+    return isinstance(exc, (exceptions.ServiceUnavailable,
+                            exceptions.DeadlineExceeded))
+
+
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
-    :type response_iterator: :class:`~google.cloud.exceptions.GrpcRendezvous`
-    :param response_iterator: A streaming iterator returned from a
-                              ``ReadRows`` request.
+
+    :type read_method: :class:`client._data_stub.ReadRows`
+    :param read_method: ``ReadRows`` method.
+
+    :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param request: The ``ReadRowsRequest`` message used to create a
+                    ReadRowsResponse iterator. If the iterator fails, a new
+                    iterator is created, allowing the scan to continue from
+                    the point just beyond the last successfully read row,
+                    identified by self.last_scanned_row_key. The retry happens
+                    inside of the Retry class, using a predicate for the
+                    expected exceptions during iteration.
     """
 
     START = 'Start'  # No responses yet processed.
@@ -224,12 +374,9 @@ class YieldRowsData(object):
     ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
     CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
 
-    def __init__(self, response_iterator):
-        self._response_iterator = response_iterator
+    def __init__(self, read_method, request):
         # Counter for responses pulled from iterator
         self._counter = 0
-        # Maybe cached from previous response
-        self._last_scanned_row_key = None
         # In-progress row, unset until first response, after commit/reset
         self._row = None
         # Last complete row, unset until first commit
@@ -239,14 +386,21 @@ class YieldRowsData(object):
         # Last complete cell, unset until first completion, after new row
         self._previous_cell = None
 
+        # May be cached from previous response
+        self.last_scanned_row_key = None
+        self.read_method = read_method
+        self.request = request
+        self.response_iterator = read_method(request)
+
     @property
     def state(self):
         """State machine state.
+
         :rtype: str
         :returns:  name of state corresponding to current row / chunk
                    processing.
         """
-        if self._last_scanned_row_key is None:
+        if self.last_scanned_row_key is None:
             return self.START
         if self._row is None:
             assert self._cell is None
@@ -260,27 +414,56 @@ class YieldRowsData(object):
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
-        self._response_iterator.cancel()
+        self.response_iterator.cancel()
+
+    def _create_retry_request(self):
+        """Helper for :meth:`read_rows`."""
+        row_range = self.request.rows.row_ranges.pop()
+        range_kwargs = {}
+        # start AFTER the row_key of the last successfully read row
+        range_kwargs['start_key_open'] = self.last_scanned_row_key
+        range_kwargs['end_key_open'] = row_range.end_key_open
+        self.request.rows.row_ranges.add(**range_kwargs)
+
+    def _on_error(self, exc):
+        """Helper for :meth:`read_rows`."""
+        # restart the read scan from AFTER the last successfully read row
+        if self.last_scanned_row_key:
+            self._create_retry_request()
+
+        self.response_iterator = self.read_method(self.request)
+
+    def _read_next(self):
+        """Helper for :meth:`read_rows`."""
+        return six.next(self.response_iterator)
+
+    def _read_next_response(self):
+        """Helper for :meth:`read_rows`."""
+        retry_ = retry.Retry(
+            predicate=_retry_read_rows_exception,
+            deadline=60)
+        return retry_(self._read_next, on_error=self._on_error)()
 
     def read_rows(self):
         """Consume the ``ReadRowsResponse's`` from the stream.
         Read the rows and yield each to the reader
+
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
         while True:
             try:
-                response = six.next(self._response_iterator)
+                response = self._read_next_response()
             except StopIteration:
                 break
 
             self._counter += 1
 
-            if self._last_scanned_row_key is None:  # first response
+            if self.last_scanned_row_key is None:  # first response
                 if response.last_scanned_row_key:
                     raise InvalidReadRowsResponse()
 
-            self._last_scanned_row_key = response.last_scanned_row_key
+            self.last_scanned_row_key = response.last_scanned_row_key
 
             row = self._row
             cell = self._cell
@@ -318,6 +501,7 @@ class YieldRowsData(object):
 
                     yield self._row
 
+                    self.last_scanned_row_key = self._row.row_key
                     self._row, self._previous_row = None, self._row
                     self._previous_cell = None
                     row = cell = None

@@ -22,6 +22,7 @@ import time
 import unittest
 
 from google.api_core import exceptions
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
 from google.cloud.spanner_v1.proto.type_pb2 import BYTES
@@ -33,7 +34,6 @@ from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
 from google.cloud.spanner_v1.proto.type_pb2 import Type
 
 from google.cloud._helpers import UTC
-from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
 from google.cloud.spanner import KeySet
@@ -84,20 +84,21 @@ def setUpModule():
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
-    # Defend against back-end returning configs for regions we aren't
-    # actually allowed to use.
-    configs = [config for config in configs if '-us-' in config.name]
-
-    if len(configs) < 1:
-        raise ValueError('List instance configs failed in module set up.')
-
-    Config.INSTANCE_CONFIG = configs[0]
-    config_name = configs[0].name
-
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
 
     if CREATE_INSTANCE:
+
+        # Defend against back-end returning configs for regions we aren't
+        # actually allowed to use.
+        configs = [config for config in configs if '-us-' in config.name]
+
+        if not configs:
+            raise ValueError('List instance configs failed in module set up.')
+
+        Config.INSTANCE_CONFIG = configs[0]
+        config_name = configs[0].name
+
         Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, config_name)
         created_op = Config.INSTANCE.create()
         created_op.result(30)  # block until completion
@@ -134,8 +135,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_reload_instance(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(
-            INSTANCE_ID, Config.INSTANCE_CONFIG.name)
+        instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -206,7 +206,7 @@ class _TestData(object):
         self.assertEqual(value.minute, nano_value.minute)
         self.assertEqual(value.second, nano_value.second)
         self.assertEqual(value.microsecond, nano_value.microsecond)
-        if isinstance(value, TimestampWithNanoseconds):
+        if isinstance(value, DatetimeWithNanoseconds):
             self.assertEqual(value.nanosecond, nano_value.nanosecond)
         else:
             self.assertEqual(value.microsecond * 1000, nano_value.nanosecond)
@@ -222,7 +222,7 @@ class _TestData(object):
     def _check_row_data(self, row_data, expected):
         self.assertEqual(len(row_data), len(expected))
         for found_cell, expected_cell in zip(row_data, expected):
-            if isinstance(found_cell, TimestampWithNanoseconds):
+            if isinstance(found_cell, DatetimeWithNanoseconds):
                 self._assert_timestamp(expected_cell, found_cell)
             elif isinstance(found_cell, float) and math.isnan(found_cell):
                 self.assertTrue(math.isnan(expected_cell))
@@ -410,7 +410,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     )
     SOME_DATE = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
     OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
     BYTES_1 = b'Ymlu'
     BYTES_2 = b'Ym9vdHM='
@@ -1266,6 +1266,24 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected = ([data[keyrow]] + data[start+1:end])
             self.assertEqual(rows, expected)
 
+    def test_partition_read_w_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        committed = self._set_up_table(row_count)
+
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        union = []
+
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
+        batches = batch_txn.generate_read_batches(
+            self.TABLE, columns, KeySet(all_=True), index='name')
+        for batch in batches:
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
+
+        self.assertEqual(union, expected)
+        batch_txn.close()
+
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
         committed = self._set_up_table(ROW_COUNT)
@@ -1509,6 +1527,21 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(float_array[1], float('+inf'))
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
+
+    def test_partition_query(self):
+        row_count = 40
+        sql = 'SELECT * FROM {}'.format(self.TABLE)
+        committed = self._set_up_table(row_count)
+        all_data_rows = list(self._row_data(row_count))
+
+        union = []
+        batch_txn = self._db.batch_snapshot(read_timestamp=committed)
+        for batch in batch_txn.generate_query_batches(sql):
+            p_results_iter = batch_txn.process(batch)
+            union.extend(list(p_results_iter))
+
+        self.assertEqual(union, all_data_rows)
+        batch_txn.close()
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):
