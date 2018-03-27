@@ -330,11 +330,15 @@ class Instance(object):
         """
         return Table(table_id, self, client)
 
-    def list_tables(self):
+    def list_tables(self, client):
         """List the tables in this instance.
 
         :rtype: list of :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The list of tables owned by the instance.
+
+        :type client: :class:`~google.cloud.bigtable_v2.BigtableClient`
+        :param instance: The client that calls GAPIC API.
+
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
@@ -349,6 +353,6 @@ class Instance(object):
                 raise ValueError('Table name %s not of expected format' % (
                     table_pb.name,))
             table_id = table_pb.name[len(table_prefix):]
-            result.append(self.table(table_id))
+            result.append(self.table(table_id, client))
 
         return result

@@ -18,6 +18,17 @@ import unittest
 import mock
 
 
+@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
+def _make_channel(secure_authorized_channel):
+    from google.api_core import grpc_helpers
+    target = 'example.com:443'
+
+    channel = grpc_helpers.create_channel(
+        target, credentials=mock.sentinel.credentials)
+
+    return channel
+
+
 class TestInstance(unittest.TestCase):
 
     PROJECT = 'project'
@@ -79,10 +90,14 @@ class TestInstance(unittest.TestCase):
 
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        channel = _make_channel()
+        bigtable_client = BigtableClient(channel=channel)
 
         instance = self._make_one(self.INSTANCE_ID, None, self.LOCATION_ID)
 
-        table = instance.table(self.TABLE_ID)
+        table = instance.table(self.TABLE_ID, bigtable_client)
         self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table._instance, instance)
@@ -451,6 +466,10 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        channel = _make_channel()
+        bigtable_client = BigtableClient(channel=channel)
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
@@ -473,11 +492,11 @@ class TestInstance(unittest.TestCase):
         client._table_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_table = instance.table(self.TABLE_ID)
+        expected_table = instance.table(self.TABLE_ID, bigtable_client)
         expected_result = [expected_table]
 
         # Perform the method and check the result.
-        result = instance.list_tables()
+        result = instance.list_tables(bigtable_client)
 
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(

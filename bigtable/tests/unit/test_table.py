@@ -1218,13 +1218,6 @@ def _ReadRowsResponsePB(*args, **kw):
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
-def _SampleRowKeysRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import (
-        bigtable_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
-
-
 def _mutate_rows_request_pb(*args, **kw):
     from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as data_messages_v2_pb2)
