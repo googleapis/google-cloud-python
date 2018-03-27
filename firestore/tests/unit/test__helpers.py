@@ -514,7 +514,8 @@ class TestFieldPathHelper(unittest.TestCase):
         expected_updates = {
             'a': {
                 'b': {
-                    'c': field_updates[_helpers.FieldPath.from_string('a.b.c')],
+                    'c': field_updates[_helpers.FieldPath.from_string(
+                        'a.b.c')],
                 },
                 '一': field_updates[_helpers.FieldPath('a', '一')]
             },
