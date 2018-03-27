@@ -334,7 +334,6 @@ class TestDirectRow(unittest.TestCase):
 
     def test_commit(self):
         from google.protobuf import empty_pb2
-        from tests.unit._testing import _FakeStub
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
@@ -349,14 +348,6 @@ class TestDirectRow(unittest.TestCase):
 
         # Create request_pb
         value = b'bytes-value'
-        mutation = _MutationPB(
-            set_cell=_MutationSetCellPB(
-                family_name=column_family_id,
-                column_qualifier=column,
-                timestamp_micros=-1,  # Default value.
-                value=value,
-            ),
-        )
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -832,7 +823,6 @@ class Test__parse_family_pb(unittest.TestCase):
             ],
         )
         self.assertEqual(expected_output, self._call_fut(sample_input))
-
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):

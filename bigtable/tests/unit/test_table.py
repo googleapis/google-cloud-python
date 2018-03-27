@@ -580,9 +580,6 @@ class TestTable(unittest.TestCase):
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._make_one(self.TABLE_ID, instance, client)
 
-        # Create request_pb
-        request_pb = _SampleRowKeysRequestPB(table_name=self.TABLE_NAME)
-
         # Create response_iterator
         response_iterator = object()  # Just passed to a mock.
 
@@ -749,7 +746,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response_2 = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client.bigtable_stub.MutateRows.side_effect = [[response_1], [response_2]]
+        client.bigtable_stub.MutateRows.side_effect = [
+            [response_1], [response_2]]
 
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])

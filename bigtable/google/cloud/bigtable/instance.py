@@ -316,7 +316,7 @@ class Instance(object):
                     for cluster_pb in list_clusters_response.clusters]
         return clusters, failed_locations
 
-    def table(self, table_id):
+    def table(self, table_id, client):
         """Factory to create a table associated with this instance.
 
         :type table_id: str
@@ -324,8 +324,11 @@ class Instance(object):
 
         :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
+
+        :type client: :class:`~google.cloud.bigtable_v2.BigtableClient`
+        :param instance: The client that calls GAPIC API.
         """
-        return Table(table_id, self, None)
+        return Table(table_id, self, client)
 
     def list_tables(self):
         """List the tables in this instance.
