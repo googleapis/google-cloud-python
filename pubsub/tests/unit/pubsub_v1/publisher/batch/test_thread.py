@@ -211,7 +211,6 @@ def test_block__commmit_api_error():
 
     # Make the API throw an error when publishing.
     error = google.api_core.exceptions.InternalServerError('uh oh')
-    types.PublishResponse(message_ids=['a'])
     patch = mock.patch.object(
         type(batch.client.api), 'publish', side_effect=error)
 
