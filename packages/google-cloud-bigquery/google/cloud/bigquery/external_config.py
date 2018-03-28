@@ -23,16 +23,10 @@ from __future__ import absolute_import
 import base64
 import copy
 
-import six
-
 from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
-from google.cloud.bigquery._helpers import _TypedApiResourceProperty
-from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import _build_schema_resource
-from google.cloud.bigquery.table import _parse_schema_resource
 
 
 class BigtableColumn(object):
@@ -41,49 +35,97 @@ class BigtableColumn(object):
     def __init__(self):
         self._properties = {}
 
-    encoding = _TypedApiResourceProperty(
-        'encoding', 'encoding', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.encoding
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.encoding
-    """
+    @property
+    def encoding(self):
+        """str: The encoding of the values when the type is not `STRING`
 
-    field_name = _TypedApiResourceProperty(
-        'field_name', 'fieldName', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.fieldName
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.fieldName
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.encoding
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.encoding
+        """
+        return self._properties.get('encoding')
 
-    only_read_latest = _TypedApiResourceProperty(
-        'only_read_latest', 'onlyReadLatest', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.onlyReadLatest
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.onlyReadLatest
-    """
+    @encoding.setter
+    def encoding(self, value):
+        self._properties['encoding'] = value
 
-    qualifier_encoded = _TypedApiResourceProperty(
-        'qualifier_encoded', 'qualifierEncoded', six.binary_type)
-    """The qualifier encoded in binary. The type is ``str`` (Python 2.x) or
-       ``bytes`` (Python 3.x). The module will handle base64 encoding for you.
+    @property
+    def field_name(self):
+        """str: An identifier to use if the qualifier is not a valid BigQuery
+        field identifier
 
-    See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierEncoded
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierEncoded
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.fieldName
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.fieldName
+        """
+        return self._properties.get('fieldName')
 
-    qualifier_string = _TypedApiResourceProperty(
-        'qualifier_string', 'qualifierString', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierString
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierString
-    """
+    @field_name.setter
+    def field_name(self, value):
+        self._properties['fieldName'] = value
 
-    type_ = _TypedApiResourceProperty('type_', 'type', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.type
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.type
-    """
+    @property
+    def only_read_latest(self):
+        """bool: If this is set, only the latest version of value in this
+        column are exposed.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.onlyReadLatest
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.onlyReadLatest
+        """
+        return self._properties.get('onlyReadLatest')
+
+    @only_read_latest.setter
+    def only_read_latest(self, value):
+        self._properties['onlyReadLatest'] = value
+
+    @property
+    def qualifier_encoded(self):
+        """Union[str, bytes]: The qualifier encoded in binary.
+
+        The type is ``str`` (Python 2.x) or ``bytes`` (Python 3.x). The module
+        will handle base64 encoding for you.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierEncoded
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierEncoded
+        """
+        prop = self._properties.get('qualifierEncoded')
+        if prop is None:
+            return None
+        return base64.standard_b64decode(_to_bytes(prop))
+
+    @qualifier_encoded.setter
+    def qualifier_encoded(self, value):
+        self._properties['qualifierEncoded'] = _bytes_to_json(value)
+
+    @property
+    def qualifier_string(self):
+        """str: A valid UTF-8 string qualifier
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.qualifierEncoded
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifierEncoded
+        """
+        return self._properties.get('qualifierString')
+
+    @qualifier_string.setter
+    def qualifier_string(self, value):
+        self._properties['qualifierString'] = value
+
+    @property
+    def type_(self):
+        """str: The type to convert the value in cells of this column.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.%28key%29.bigtableOptions.columnFamilies.columns.type
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.type
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value):
+        self._properties['type'] = value
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -91,11 +133,7 @@ class BigtableColumn(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        config = copy.deepcopy(self._properties)
-        qe = config.get('qualifierEncoded')
-        if qe is not None:
-            config['qualifierEncoded'] = _bytes_to_json(qe)
-        return config
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -110,9 +148,6 @@ class BigtableColumn(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-        qe = resource.get('qualifierEncoded')
-        if qe:
-            config.qualifier_encoded = base64.standard_b64decode(_to_bytes(qe))
         return config
 
 
@@ -122,39 +157,78 @@ class BigtableColumnFamily(object):
     def __init__(self):
         self._properties = {}
 
-    encoding = _TypedApiResourceProperty(
-        'encoding', 'encoding', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding
-    """
+    @property
+    def encoding(self):
+        """str: The encoding of the values when the type is not `STRING`
 
-    family_id = _TypedApiResourceProperty(
-        'family_id', 'familyId', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding
+        """
+        return self._properties.get('encoding')
 
-    only_read_latest = _TypedApiResourceProperty(
-        'only_read_latest', 'onlyReadLatest', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest
-    """
+    @encoding.setter
+    def encoding(self, value):
+        self._properties['encoding'] = value
 
-    type_ = _TypedApiResourceProperty('type_', 'type', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type
-    """
+    @property
+    def family_id(self):
+        """str: Identifier of the column family.
 
-    columns = _ListApiResourceProperty(
-        'columns', 'columns', BigtableColumn)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId
+        """
+        return self._properties.get('familyId')
+
+    @family_id.setter
+    def family_id(self, value):
+        self._properties['familyId'] = value
+
+    @property
+    def only_read_latest(self):
+        """bool: If this is set only the latest version of value are exposed
+        for all columns in this column family.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest
+        """
+        return self._properties.get('onlyReadLatest')
+
+    @only_read_latest.setter
+    def only_read_latest(self, value):
+        self._properties['onlyReadLatest'] = value
+
+    @property
+    def type_(self):
+        """str: The type to convert the value in cells of this column family.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value):
+        self._properties['type'] = value
+
+    @property
+    def columns(self):
+        """List[google.cloud.bigquery.external_config.BigtableColumn]: Lists of
+        columns that should be exposed as individual fields
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns
+        """
+        prop = self._properties.get('columns', [])
+        return [BigtableColumn.from_api_repr(col) for col in prop]
+
+    @columns.setter
+    def columns(self, value):
+        self._properties['columns'] = [col.to_api_repr() for col in value]
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -162,9 +236,7 @@ class BigtableColumnFamily(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        config = copy.deepcopy(self._properties)
-        config['columns'] = [c.to_api_repr() for c in config['columns']]
-        return config
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -182,8 +254,6 @@ class BigtableColumnFamily(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-        config.columns = [BigtableColumn.from_api_repr(c)
-                          for c in resource['columns']]
         return config
 
 
@@ -197,27 +267,52 @@ class BigtableOptions(object):
     def __init__(self):
         self._properties = {}
 
-    ignore_unspecified_column_families = _TypedApiResourceProperty(
-        'ignore_unspecified_column_families',
-        'ignoreUnspecifiedColumnFamilies', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.ignoreUnspecifiedColumnFamilies
-    """
+    @property
+    def ignore_unspecified_column_families(self):
+        """bool: If `True`, ignore columns not specified in columnFamilies
+        list. Defaults to `False`.
 
-    read_rowkey_as_string = _TypedApiResourceProperty(
-        'read_rowkey_as_string', 'readRowkeyAsString', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.readRowkeyAsString
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.ignoreUnspecifiedColumnFamilies
+        """
+        return self._properties.get('ignoreUnspecifiedColumnFamilies')
 
-    column_families = _ListApiResourceProperty(
-        'column_families', 'columnFamilies', BigtableColumnFamily)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies
-    """
+    @ignore_unspecified_column_families.setter
+    def ignore_unspecified_column_families(self, value):
+        self._properties['ignoreUnspecifiedColumnFamilies'] = value
+
+    @property
+    def read_rowkey_as_string(self):
+        """bool: If `True`, rowkey column families will be read and converted
+        to string. Defaults to `False`.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.readRowkeyAsString
+        """
+        return self._properties.get('readRowkeyAsString')
+
+    @read_rowkey_as_string.setter
+    def read_rowkey_as_string(self, value):
+        self._properties['readRowkeyAsString'] = value
+
+    @property
+    def column_families(self):
+        """List[google.cloud.bigquery.external_config.BigtableColumnFamily]:
+        List of column families to expose in the table schema along with their
+        types.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies
+        """
+        prop = self._properties.get('columnFamilies', [])
+        return [BigtableColumnFamily.from_api_repr(cf) for cf in prop]
+
+    @column_families.setter
+    def column_families(self, value):
+        self._properties['columnFamilies'] = [cf.to_api_repr() for cf in value]
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -225,10 +320,7 @@ class BigtableOptions(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        config = copy.deepcopy(self._properties)
-        config['columnFamilies'] = [cf.to_api_repr()
-                                    for cf in config['columnFamilies']]
-        return config
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -245,8 +337,6 @@ class BigtableOptions(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-        config.column_families = [BigtableColumnFamily.from_api_repr(cf)
-                                  for cf in resource['columnFamilies']]
         return config
 
 
@@ -259,47 +349,91 @@ class CSVOptions(object):
     def __init__(self):
         self._properties = {}
 
-    allow_jagged_rows = _TypedApiResourceProperty(
-        'allow_jagged_rows', 'allowJaggedRows', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowJaggedRows
-    """
+    @property
+    def allow_jagged_rows(self):
+        """bool: If `True`, BigQuery treats missing trailing columns as null
+        values. Defaults to `False`.
 
-    allow_quoted_newlines = _TypedApiResourceProperty(
-        'allow_quoted_newlines', 'allowQuotedNewlines', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowQuotedNewlines
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowJaggedRows
+        """
+        return self._properties.get('allowJaggedRows')
 
-    encoding = _TypedApiResourceProperty(
-        'encoding', 'encoding', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.encoding
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.encoding
-    """
+    @allow_jagged_rows.setter
+    def allow_jagged_rows(self, value):
+        self._properties['allowJaggedRows'] = value
 
-    field_delimiter = _TypedApiResourceProperty(
-        'field_delimiter', 'fieldDelimiter', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.fieldDelimiter
-    """
+    @property
+    def allow_quoted_newlines(self):
+        """bool: If `True`, quoted data sections that contain newline
+        characters in a CSV file are allowed. Defaults to `False`.
 
-    quote_character = _TypedApiResourceProperty(
-        'quote_character', 'quote', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.quote
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.quote
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowQuotedNewlines
+        """
+        return self._properties.get('allowQuotedNewlines')
 
-    skip_leading_rows = _TypedApiResourceProperty(
-        'skip_leading_rows', 'skipLeadingRows', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.skipLeadingRows
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.skipLeadingRows
-    """
+    @allow_quoted_newlines.setter
+    def allow_quoted_newlines(self, value):
+        self._properties['allowQuotedNewlines'] = value
+
+    @property
+    def encoding(self):
+        """str: The character encoding of the data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.encoding
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.encoding
+        """
+        return self._properties.get('encoding')
+
+    @encoding.setter
+    def encoding(self, value):
+        self._properties['encoding'] = value
+
+    @property
+    def field_delimiter(self):
+        """str: The separator for fields in a CSV file. Defaults a comma (',').
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.fieldDelimiter
+        """
+        return self._properties.get('fieldDelimiter')
+
+    @field_delimiter.setter
+    def field_delimiter(self, value):
+        self._properties['fieldDelimiter'] = value
+
+    @property
+    def quote_character(self):
+        """str: The value that is used to quote data sections in a CSV file.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.quote
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.quote
+        """
+        return self._properties.get('quote')
+
+    @quote_character.setter
+    def quote_character(self, value):
+        self._properties['quote'] = value
+
+    @property
+    def skip_leading_rows(self):
+        """int: The number of rows at the top of a CSV file.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.skipLeadingRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.skipLeadingRows
+        """
+        return _int_or_none(self._properties.get('skipLeadingRows'))
+
+    @skip_leading_rows.setter
+    def skip_leading_rows(self, value):
+        self._properties['skipLeadingRows'] = str(value)
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -307,11 +441,7 @@ class CSVOptions(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        config = copy.deepcopy(self._properties)
-        slr = config.pop('skipLeadingRows', None)
-        if slr is not None:
-            config['skipLeadingRows'] = str(slr)
-        return config
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -325,10 +455,8 @@ class CSVOptions(object):
         :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`
         :returns: Configuration parsed from ``resource``.
         """
-        slr = resource.get('skipLeadingRows')
         config = cls()
         config._properties = copy.deepcopy(resource)
-        config.skip_leading_rows = _int_or_none(slr)
         return config
 
 
@@ -341,12 +469,20 @@ class GoogleSheetsOptions(object):
     def __init__(self):
         self._properties = {}
 
-    skip_leading_rows = _TypedApiResourceProperty(
-        'skip_leading_rows', 'skipLeadingRows', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows
-    """
+    @property
+    def skip_leading_rows(self):
+        """int: The number of rows at the top of a sheet that BigQuery will
+        skip when reading the data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows
+        """
+        return _int_or_none(self._properties.get('skipLeadingRows'))
+
+    @skip_leading_rows.setter
+    def skip_leading_rows(self, value):
+        self._properties['skipLeadingRows'] = str(value)
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -354,11 +490,7 @@ class GoogleSheetsOptions(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        config = copy.deepcopy(self._properties)
-        slr = config.pop('skipLeadingRows', None)
-        if slr is not None:
-            config['skipLeadingRows'] = str(slr)
-        return config
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -373,10 +505,8 @@ class GoogleSheetsOptions(object):
             :class:`~google.cloud.bigquery.external_config.GoogleSheetsOptions`
         :returns: Configuration parsed from ``resource``.
         """
-        slr = resource.get('skipLeadingRows')
         config = cls()
         config._properties = copy.deepcopy(resource)
-        config.skip_leading_rows = _int_or_none(slr)
         return config
 
 
@@ -412,46 +542,98 @@ class ExternalConfig(object):
         """Source-specific options."""
         return self._options
 
-    autodetect = _TypedApiResourceProperty(
-        'autodetect', 'autodetect', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect
-    """
+    @property
+    def autodetect(self):
+        """bool: If `True`, try to detect schema and format options
+        automatically.
 
-    compression = _TypedApiResourceProperty(
-        'compression', 'compression', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect
+        """
+        return self._properties.get('autodetect')
 
-    ignore_unknown_values = _TypedApiResourceProperty(
-        'ignore_unknown_values', 'ignoreUnknownValues', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues
-    """
+    @autodetect.setter
+    def autodetect(self, value):
+        self._properties['autodetect'] = value
 
-    max_bad_records = _TypedApiResourceProperty(
-        'max_bad_records', 'maxBadRecords', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords
-    """
+    @property
+    def compression(self):
+        """str: The compression type of the data source.
 
-    source_uris = _ListApiResourceProperty(
-        'source_uris', 'sourceUris', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris
-    """
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression
+        """
+        return self._properties.get('compression')
 
-    schema = _ListApiResourceProperty('schema', 'schema', SchemaField)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema
-    """
+    @compression.setter
+    def compression(self, value):
+        self._properties['compression'] = value
+
+    @property
+    def ignore_unknown_values(self):
+        """bool: If `True`, extra values that are not represented in the table
+        schema are ignored. Defaults to `False`.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues
+        """
+        return self._properties.get('ignoreUnknownValues')
+
+    @ignore_unknown_values.setter
+    def ignore_unknown_values(self, value):
+        self._properties['ignoreUnknownValues'] = value
+
+    @property
+    def max_bad_records(self):
+        """int: The maximum number of bad records that BigQuery can ignore when
+        reading data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords
+        """
+        return self._properties.get('maxBadRecords')
+
+    @max_bad_records.setter
+    def max_bad_records(self, value):
+        self._properties['maxBadRecords'] = value
+
+    @property
+    def source_uris(self):
+        """List[str]: URIs that point to your data in Google Cloud.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris
+        """
+        return self._properties.get('sourceUris', [])
+
+    @source_uris.setter
+    def source_uris(self, value):
+        self._properties['sourceUris'] = value
+
+    @property
+    def schema(self):
+        """List[google.cloud.bigquery.schema.SchemaField]: The schema for the
+        data.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema
+        """
+        prop = self._properties.get('schema', {})
+        return [SchemaField.from_api_repr(field)
+                for field in prop.get('fields', [])]
+
+    @schema.setter
+    def schema(self, value):
+        prop = value
+        if value is not None:
+            prop = {'fields': [field.to_api_repr() for field in value]}
+        self._properties['schema'] = prop
 
     def to_api_repr(self):
         """Build an API representation of this object.
@@ -460,8 +642,6 @@ class ExternalConfig(object):
         :returns: A dictionary in the format used by the BigQuery API.
         """
         config = copy.deepcopy(self._properties)
-        if self.schema:
-            config['schema'] = {'fields': _build_schema_resource(self.schema)}
         if self.options is not None:
             r = self.options.to_api_repr()
             if r != {}:
@@ -481,13 +661,10 @@ class ExternalConfig(object):
         :returns: Configuration parsed from ``resource``.
         """
         config = cls(resource['sourceFormat'])
-        schema = resource.get('schema')
         for optcls in _OPTION_CLASSES:
             opts = resource.get(optcls._RESOURCE_NAME)
             if opts is not None:
                 config._options = optcls.from_api_repr(opts)
                 break
         config._properties = copy.deepcopy(resource)
-        if schema:
-            config.schema = _parse_schema_resource(schema)
         return config
