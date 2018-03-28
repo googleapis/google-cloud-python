@@ -763,7 +763,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def get_field_paths(update_data):
+def extract_field_paths(update_data):
     field_paths = []
     for field_name, value in six.iteritems(update_data):
         match = re.match(FieldPath.simple_field_name, field_name)
@@ -771,7 +771,7 @@ def get_field_paths(update_data):
             field_name = field_name.replace('\\', '\\\\').replace('`', '\\`')
             field_name = '`' + field_name + '`'
         if isinstance(value, dict):
-            sub_field_paths = get_field_paths(value)
+            sub_field_paths = extract_field_paths(value)
             field_paths.extend(
                 [field_name + "." + sub_path for sub_path in sub_field_paths])
         else:
@@ -898,7 +898,7 @@ def pbs_for_set(document_path, document_data, option):
         ),
     )
     if option is not None:
-        field_paths = get_field_paths(actual_data)
+        field_paths = extract_field_paths(actual_data)
         option.modify_write(
             update_pb, field_paths=field_paths, path=document_path)
 

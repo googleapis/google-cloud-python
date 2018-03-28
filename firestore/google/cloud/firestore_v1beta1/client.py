@@ -40,7 +40,8 @@ from google.cloud.firestore_v1beta1.proto import common_pb2
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
+    'Exactly one of ``last_update_time``, ``merge`` or ``exists`` '
+    'must be provided.')
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'
@@ -444,7 +445,8 @@ class MergeOption(WriteOption):
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
-        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        field_paths = sorted(field_paths)  # for testing purposes
+        mask = common_pb2.DocumentMask(field_paths=field_paths)
         write_pb.update_mask.CopyFrom(mask)
 
 
