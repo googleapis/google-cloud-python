@@ -135,6 +135,10 @@ class FieldPath(object):
     def from_string(string):
         """ Creates a FieldPath from a unicode string representation.
 
+        This method splits on the character `.` and disallows the
+        characters `~*/[]`. To create a FieldPath whose components have
+        those characters, call the constructor.
+
         Args:
             :type string: str
             :param string: A unicode string which cannot contain
