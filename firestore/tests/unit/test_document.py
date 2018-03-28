@@ -297,7 +297,7 @@ class TestDocumentReference(unittest.TestCase):
         self._set_helper(exists=True)
 
     def test_set_merge(self):
-        self._set_helper(merge='abc')
+        self._set_helper(merge=True)
 
     @staticmethod
     def _write_pb_for_update(document_path, update_values, field_paths):

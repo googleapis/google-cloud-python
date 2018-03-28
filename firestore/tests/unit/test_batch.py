@@ -103,7 +103,7 @@ class TestWriteBatch(unittest.TestCase):
         field = 'zapzap'
         value = u'meadows and flowers'
         document_data = {field: value}
-        option = MergeOption()
+        option = MergeOption(True)
         ret_val = batch.set(reference, document_data, option)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(

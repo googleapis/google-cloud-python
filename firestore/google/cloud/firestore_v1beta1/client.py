@@ -288,7 +288,7 @@ class Client(ClientWithProject):
         elif name == 'exists':
             return ExistsOption(value)
         elif name == 'merge':
-            return MergeOption()
+            return MergeOption(value)
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -429,7 +429,15 @@ class MergeOption(WriteOption):
 
     This will typically be created by
     :meth:`~.firestore_v1beta1.client.Client.write_option`.
+
+    Args:
+        merge (bool):
+            The only valid option is True. Any other argument will make this
+            option ignored.
     """
+    def __init__(self, merge):
+        self._merge = merge
+
     def modify_write(
             self, write_pb, field_paths=None, path=None, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
@@ -438,16 +446,16 @@ class MergeOption(WriteOption):
             write_pb (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
-            field_paths (dict):
-                The actual field names and values to use for replacing a
-                document.
+            field_paths (Sequence[str]):
+                The actual field names to use for replacing a document.
             path (str): A fully-qualified document_path
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
-        field_paths = sorted(field_paths)  # for testing purposes
-        mask = common_pb2.DocumentMask(field_paths=field_paths)
-        write_pb.update_mask.CopyFrom(mask)
+        if self._merge is True:
+            field_paths = sorted(field_paths)  # for testing purposes
+            mask = common_pb2.DocumentMask(field_paths=field_paths)
+            write_pb.update_mask.CopyFrom(mask)
 
 
 class ExistsOption(WriteOption):
