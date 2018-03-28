@@ -99,6 +99,13 @@ class TestExternalConfig(unittest.TestCase):
         }
         self.assertEqual(got_resource, exp_resource)
 
+    def test_schema_None(self):
+        ec = external_config.ExternalConfig('')
+        ec.schema = None
+        got = ec.to_api_repr()
+        want = {'sourceFormat': '', 'schema': None}
+        self.assertEqual(got, want)
+
     def _verify_base(self, ec):
         self.assertEqual(ec.autodetect, True)
         self.assertEqual(ec.compression, 'compression')
