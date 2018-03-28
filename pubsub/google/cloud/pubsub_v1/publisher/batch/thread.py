@@ -20,6 +20,7 @@ import time
 
 import six
 
+import google.api_core.exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
@@ -199,10 +200,19 @@ class Batch(base.Batch):
             # Begin the request to publish these messages.
             # Log how long the underlying request takes.
             start = time.time()
-            response = self._client.api.publish(
-                self._topic,
-                self._messages,
-            )
+
+            try:
+                response = self._client.api.publish(
+                    self._topic,
+                    self._messages,
+                )
+            except google.api_core.exceptions.GoogleAPICallError as exc:
+                # We failed to publish, set the exception on all futures and
+                # exit.
+                for future in self._futures:
+                    future.set_exception(exc)
+                return
+
             end = time.time()
             _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
 
