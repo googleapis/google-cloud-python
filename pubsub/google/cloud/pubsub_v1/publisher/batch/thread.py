@@ -209,6 +209,7 @@ class Batch(base.Batch):
             except google.api_core.exceptions.GoogleAPICallError as exc:
                 # We failed to publish, set the exception on all futures and
                 # exit.
+                self._status = base.BatchStatus.ERROR
                 for future in self._futures:
                     future.set_exception(exc)
                 return
