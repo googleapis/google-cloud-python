@@ -210,8 +210,12 @@ class Batch(base.Batch):
                 # We failed to publish, set the exception on all futures and
                 # exit.
                 self._status = base.BatchStatus.ERROR
+
                 for future in self._futures:
                     future.set_exception(exc)
+
+                _LOGGER.exception(
+                    'Failed to publish %s messages.', len(self._futures))
                 return
 
             end = time.time()
@@ -231,8 +235,13 @@ class Batch(base.Batch):
                 self._status = base.BatchStatus.ERROR
                 exception = exceptions.PublishError(
                     'Some messages were not successfully published.')
+
                 for future in self._futures:
                     future.set_exception(exception)
+
+                _LOGGER.error(
+                    'Only %s of %s messages were published.',
+                    len(response.message_ids), len(self._futures))
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
