@@ -631,7 +631,7 @@ class ExternalConfig(object):
     @schema.setter
     def schema(self, value):
         prop = value
-        if value:
+        if value is not None:
             prop = {'fields': [field.to_api_repr() for field in value]}
         self._properties['schema'] = prop
 
