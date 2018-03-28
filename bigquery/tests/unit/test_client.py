@@ -1049,8 +1049,8 @@ class TestClient(unittest.TestCase):
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID},
-            'schema': {'fields': []},
+                'tableId': self.TABLE_ID,
+            },
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -1073,7 +1073,7 @@ class TestClient(unittest.TestCase):
         }
         self.assertEqual(req[1]['data'], sent)
         self.assertEqual(req[1]['path'], '/%s' % path)
-        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(len(updated_table.schema), 0)
 
     def test_update_table_delete_property(self):
         from google.cloud.bigquery.table import Table

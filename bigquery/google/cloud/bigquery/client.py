@@ -272,7 +272,8 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
-        resource = table._build_resource(Table.all_fields)
+        table_fields = Table.property_to_api_field.keys()
+        resource = table._build_resource(table_fields)
         doomed = [field for field in resource if resource[field] is None]
         for field in doomed:
             del resource[field]
@@ -385,6 +386,7 @@ class Client(ClientWithProject):
                 The table resource returned from the API call.
         """
         partial = table._build_resource(fields)
+        print(partial)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
@@ -1111,7 +1113,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1305,7 +1307,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:

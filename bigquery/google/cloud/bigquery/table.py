@@ -32,7 +32,6 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
-from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
@@ -118,7 +117,8 @@ class EncryptionConfiguration(object):
         return config
 
     def to_api_repr(self):
-        """Construct the API resource representation of this
+        """Construct the API resource representation of this encryption
+        configuration.
 
         Returns:
             dict: Encryption configuration as represented as an API resource
@@ -252,21 +252,29 @@ class Table(object):
     :param schema: The table's schema
     """
 
-    _schema = None
+    property_to_api_field = {
+        'description': 'description',
+        'friendly_name': 'friendlyName',
+        'expires': 'expirationTime',
+        'location': 'location',
+        'partitioning_type': 'timePartitioning',
+        'view_use_legacy_sql': 'view',
+        'view_query': 'view',
+        'schema': 'schema',
+        'external_data_configuration': 'externalDataConfiguration',
+        'labels': 'labels',
+        'encryption_configuration': 'encryptionConfiguration'
+    }
 
-    all_fields = [
-        'description', 'friendly_name', 'expires', 'location',
-        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels', 'encryption_configuration'
-    ]
-
-    def __init__(self, table_ref, schema=()):
-        self._project = table_ref.project
-        self._table_id = table_ref.table_id
-        self._dataset_id = table_ref.dataset_id
-        self._external_config = None
+    def __init__(self, table_ref, schema=None):
         self._properties = {'labels': {}}
+        self._properties['tableReference'] = {
+            'projectId': table_ref.project,
+            'tableId': table_ref.table_id,
+            'datasetId': table_ref.dataset_id
+        }
         # Let the @property do validation.
+        self.external_data_configuration = None
         self.schema = schema
 
     @property
@@ -276,7 +284,7 @@ class Table(object):
         :rtype: str
         :returns: the project (derived from the dataset).
         """
-        return self._project
+        return self._properties['tableReference']['projectId']
 
     @property
     def dataset_id(self):
@@ -285,7 +293,7 @@ class Table(object):
         :rtype: str
         :returns: the ID (derived from the dataset).
         """
-        return self._dataset_id
+        return self._properties['tableReference']['datasetId']
 
     @property
     def table_id(self):
@@ -294,7 +302,7 @@ class Table(object):
         :rtype: str
         :returns: the table ID.
         """
-        return self._table_id
+        return self._properties['tableReference']['tableId']
 
     reference = property(_reference_getter)
 
@@ -306,7 +314,7 @@ class Table(object):
         :returns: the path based on project, dataset and table IDs.
         """
         return '/projects/%s/datasets/%s/tables/%s' % (
-            self._project, self._dataset_id, self._table_id)
+            self.project, self.dataset_id, self.table_id)
 
     @property
     def schema(self):
@@ -315,7 +323,11 @@ class Table(object):
         :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`
         :returns: fields describing the schema
         """
-        return list(self._schema)
+        prop = self._properties.get('schema')
+        if not prop:
+            return []
+        else:
+            return _parse_schema_resource(prop)
 
     @schema.setter
     def schema(self, value):
@@ -327,12 +339,14 @@ class Table(object):
         :raises: TypeError if 'value' is not a sequence, or ValueError if
                  any item in the sequence is not a SchemaField
         """
-        if value is None:
-            self._schema = ()
+        if not value:
+            self._properties['schema'] = None
         elif not all(isinstance(field, SchemaField) for field in value):
             raise ValueError('Schema items must be fields')
         else:
-            self._schema = tuple(value)
+            self._properties['schema'] = {
+                'fields': _build_schema_resource(value)
+            }
 
     @property
     def labels(self):
@@ -690,7 +704,10 @@ class Table(object):
         :rtype: :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
         :returns: The external configuration, or None (the default).
         """
-        return self._external_config
+        prop = self._properties['externalDataConfiguration']
+        if prop is not None:
+            prop = ExternalConfig.from_api_repr(prop)
+        return prop
 
     @external_data_configuration.setter
     def external_data_configuration(self, value):
@@ -702,7 +719,10 @@ class Table(object):
         """
         if not (value is None or isinstance(value, ExternalConfig)):
             raise ValueError("Pass an ExternalConfig or None")
-        self._external_config = value
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties['externalDataConfiguration'] = api_repr
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -729,99 +749,18 @@ class Table(object):
         dataset_ref = dataset.DatasetReference(project_id, dataset_id)
 
         table = cls(dataset_ref.table(table_id))
-        table._set_properties(resource)
+        table._properties = resource
 
         return table
-
-    def _set_properties(self, api_response):
-        """Update properties from resource in body of ``api_response``
-
-        :type api_response: dict
-        :param api_response: response returned from an API call
-        """
-        self._properties.clear()
-        cleaned = api_response.copy()
-        schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = _parse_schema_resource(schema)
-        ec = cleaned.pop('externalDataConfiguration', None)
-        if ec:
-            self.external_data_configuration = ExternalConfig.from_api_repr(ec)
-        if 'creationTime' in cleaned:
-            cleaned['creationTime'] = float(cleaned['creationTime'])
-        if 'lastModifiedTime' in cleaned:
-            cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
-        if 'expirationTime' in cleaned:
-            cleaned['expirationTime'] = float(cleaned['expirationTime'])
-        if 'labels' not in cleaned:
-            cleaned['labels'] = {}
-        self._properties.update(cleaned)
-
-    def _populate_expires_resource(self, resource):
-        resource['expirationTime'] = _millis_from_datetime(self.expires)
-
-    def _populate_partitioning_type_resource(self, resource):
-        resource['timePartitioning'] = self._properties.get('timePartitioning')
-
-    def _populate_view_use_legacy_sql_resource(self, resource):
-        if 'view' not in resource:
-            resource['view'] = {}
-        resource['view']['useLegacySql'] = self.view_use_legacy_sql
-
-    def _populate_view_query_resource(self, resource):
-        if self.view_query is None:
-            resource['view'] = None
-            return
-        if 'view' not in resource:
-            resource['view'] = {}
-        resource['view']['query'] = self.view_query
-
-    def _populate_schema_resource(self, resource):
-        if not self._schema:
-            resource['schema'] = None
-        else:
-            resource['schema'] = {
-                'fields': _build_schema_resource(self._schema),
-            }
-
-    def _populate_external_config(self, resource):
-        if not self.external_data_configuration:
-            resource['externalDataConfiguration'] = None
-        else:
-            resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
-                self.external_data_configuration)
-
-    def _populate_encryption_configuration(self, resource):
-        if not self.encryption_configuration:
-            resource['encryptionConfiguration'] = None
-        else:
-            encryptionConfig = EncryptionConfiguration.to_api_repr(
-                self.encryption_configuration)
-            resource['encryptionConfiguration'] = encryptionConfig
-
-    custom_resource_fields = {
-        'expires': _populate_expires_resource,
-        'partitioning_type': _populate_partitioning_type_resource,
-        'view_query': _populate_view_query_resource,
-        'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
-        'schema': _populate_schema_resource,
-        'external_data_configuration': _populate_external_config,
-        'encryption_configuration': _populate_encryption_configuration
-    }
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
-            'tableReference': {
-                'projectId': self._project,
-                'datasetId': self._dataset_id,
-                'tableId': self.table_id},
+            'tableReference': self._properties['tableReference']
         }
         for f in filter_fields:
-            if f in self.custom_resource_fields:
-                self.custom_resource_fields[f](self, resource)
-            else:
-                api_field = _snake_to_camel_case(f)
-                resource[api_field] = getattr(self, f)
+            api_field = self.property_to_api_field[f]
+            resource[api_field] = self._properties.get(api_field)
         return resource
 
 
