@@ -73,10 +73,31 @@ class TestExternalConfig(unittest.TestCase):
         ec.autodetect = True
         ec.ignore_unknown_values = False
         ec.compression = 'compression'
+        ec.schema = [
+            schema.SchemaField('full_name', 'STRING', mode='REQUIRED')
+        ]
 
+        exp_schema = {
+            'fields': [
+                {
+                    'name': 'full_name',
+                    'type': 'STRING',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
+            ]
+        }
         got_resource = ec.to_api_repr()
-
-        self.assertEqual(got_resource, self.BASE_RESOURCE)
+        exp_resource = {
+            'sourceFormat': '',
+            'sourceUris': self.SOURCE_URIS,
+            'maxBadRecords': 17,
+            'autodetect': True,
+            'ignoreUnknownValues': False,
+            'compression': 'compression',
+            'schema': exp_schema
+        }
+        self.assertEqual(got_resource, exp_resource)
 
     def _verify_base(self, ec):
         self.assertEqual(ec.autodetect, True)
@@ -95,7 +116,7 @@ class TestExternalConfig(unittest.TestCase):
         resource = _copy_and_update(self.BASE_RESOURCE, {
             'sourceFormat': 'GOOGLE_SHEETS',
             'googleSheetsOptions': {'skipLeadingRows': '123'},
-            })
+        })
 
         ec = external_config.ExternalConfig.from_api_repr(resource)
 
@@ -246,6 +267,7 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(col1.type_, 'type1')
         self.assertEqual(col1.encoding, 'encoding1')
         self.assertTrue(col1.only_read_latest)
+        self.assertIsNone(col1.qualifier_encoded)
         col2 = ec.options.column_families[0].columns[1]
         self.assertEqual(col2.qualifier_encoded, b'q')
         self.assertEqual(col2.field_name, 'fieldName2')
@@ -261,30 +283,28 @@ class TestExternalConfig(unittest.TestCase):
         options = external_config.BigtableOptions()
         options.ignore_unspecified_column_families = True
         options.read_rowkey_as_string = False
-        options.column_families = [external_config.BigtableColumnFamily()]
-        fam1 = options.column_families[0]
         ec._options = options
 
+        fam1 = external_config.BigtableColumnFamily()
         fam1.family_id = 'familyId'
         fam1.type_ = 'type'
         fam1.encoding = 'encoding'
         fam1.only_read_latest = False
-        fam1.columns = [
-            external_config.BigtableColumn(),
-            external_config.BigtableColumn()
-        ]
-        col1, col2 = fam1.columns
+        col1 = external_config.BigtableColumn()
         col1.qualifier_string = 'q'
         col1.field_name = 'fieldName1'
         col1.type_ = 'type1'
         col1.encoding = 'encoding1'
         col1.only_read_latest = True
+        col2 = external_config.BigtableColumn()
         col2.qualifier_encoded = b'q'
         col2.field_name = 'fieldName2'
         col2.type_ = 'type2'
         col2.encoding = 'encoding2'
-        qualifier_encoded = base64.standard_b64encode(b'q').decode('ascii')
+        fam1.columns = [col1, col2]
+        options.column_families = [fam1]
 
+        qualifier_encoded = base64.standard_b64encode(b'q').decode('ascii')
         exp_resource = {
             'sourceFormat': 'BIGTABLE',
             'bigtableOptions': {
