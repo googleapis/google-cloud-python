@@ -339,7 +339,7 @@ class Table(object):
         :raises: TypeError if 'value' is not a sequence, or ValueError if
                  any item in the sequence is not a SchemaField
         """
-        if not value:
+        if value is None:
             self._properties['schema'] = None
         elif not all(isinstance(field, SchemaField) for field in value):
             raise ValueError('Schema items must be fields')

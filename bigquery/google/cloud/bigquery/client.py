@@ -386,7 +386,6 @@ class Client(ClientWithProject):
                 The table resource returned from the API call.
         """
         partial = table._build_resource(fields)
-        print(partial)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
