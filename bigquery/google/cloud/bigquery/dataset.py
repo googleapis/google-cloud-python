@@ -23,35 +23,51 @@ from google.cloud.bigquery.table import TableReference
 
 
 class AccessEntry(object):
-    """Represent grant of an access role to an entity.
+    """Represents grant of an access role to an entity.
 
-    Every entry in the access list will have exactly one of
-    ``userByEmail``, ``groupByEmail``, ``domain``, ``specialGroup`` or
-    ``view`` set. And if anything but ``view`` is set, it'll also have a
-    ``role`` specified. ``role`` is omitted for a ``view``, since
-    ``view`` s are always read-only.
+    An entry must have exactly one of the allowed :attr:`ENTITY_TYPES`. If
+    anything but ``view`` is set, a ``role`` is also required. ``role`` is
+    omitted for a ``view``, because ``view`` s are always read-only.
 
     See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
 
-    :type role: str
-    :param role: Role granted to the entity. One of
+    Attributes:
+        role (str):
+            Role granted to the entity. The following string values are
+            supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
+            ``None`` if the ``entity_type`` is ``view``.
 
-                 * ``'OWNER'``
-                 * ``'WRITER'``
-                 * ``'READER'``
+        entity_type (str):
+            Type of entity being granted the role. One of :attr:`ENTITY_TYPES`.
 
-                 May also be ``None`` if the ``entity_type`` is ``view``.
+        entity_id (Union[str, dict]):
+            If the ``entity_type`` is not 'view', the ``entity_id`` is the
+            ``str`` ID of the entity being granted the role. If the
+            ``entity_type`` is 'view', the ``entity_id`` is a ``dict``
+            representing the view from a different dataset to grant access to
+            in the following format::
 
-    :type entity_type: str
-    :param entity_type: Type of entity being granted the role. One of
-                        :attr:`ENTITY_TYPES`.
+                {
+                    'projectId': string,
+                    'datasetId': string,
+                    'tableId': string
+                }
 
-    :type entity_id: str
-    :param entity_id: ID of entity being granted the role.
+    Raises:
+        ValueError:
+            If the ``entity_type`` is not among :attr:`ENTITY_TYPES`, or if a
+            ``view`` has ``role`` set, or a non ``view`` **does not** have a
+            ``role`` set.
 
-    :raises: :class:`ValueError` if the ``entity_type`` is not among
-             :attr:`ENTITY_TYPES`, or if a ``view`` has ``role`` set or
-             a non ``view`` **does not** have a ``role`` set.
+    Examples:
+        >>> entry = AccessEntry('OWNER', 'userByEmail', 'user@example.com')
+
+        >>> view = {
+        ...     'projectId': 'my-project',
+        ...     'datasetId': 'my_dataset',
+        ...     'tableId': 'my_table'
+        ... }
+        >>> entry = AccessEntry(None, 'view', view)
     """
 
     ENTITY_TYPES = frozenset(['userByEmail', 'groupByEmail', 'domain',
@@ -90,6 +106,41 @@ class AccessEntry(object):
     def __repr__(self):
         return '<AccessEntry: role=%s, %s=%s>' % (
             self.role, self.entity_type, self.entity_id)
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this access entry
+
+        Returns:
+            dict: Access entry represented as an API resource
+        """
+        resource = {self.entity_type: self.entity_id}
+        if self.role is not None:
+            resource['role'] = self.role
+        return resource
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct an access entry given its API representation
+
+        Args:
+            resource (dict):
+                Access entry resource representation returned from the API
+
+        Returns:
+            google.cloud.bigquery.dataset.AccessEntry:
+                Access entry parsed from ``resource``.
+
+        Raises:
+            ValueError:
+                If the resource has more keys than ``role`` and one additional
+                key.
+        """
+        entry = resource.copy()
+        role = entry.pop('role', None)
+        entity_type, entity_id = entry.popitem()
+        if len(entry) != 0:
+            raise ValueError('Entry has unexpected keys remaining.', entry)
+        return cls(role, entity_type, entity_id)
 
 
 class DatasetReference(object):
@@ -153,11 +204,26 @@ class DatasetReference(object):
 
     @classmethod
     def from_api_repr(cls, resource):
+        """Factory: construct a dataset reference given its API representation
+
+        Args:
+            resource (dict):
+                Dataset reference resource representation returned from the API
+
+        Returns:
+            ~google.cloud.bigquery.dataset.DatasetReference`
+                Dataset reference parsed from ``resource``.
+        """
         project = resource['projectId']
         dataset_id = resource['datasetId']
         return cls(project, dataset_id)
 
     def to_api_repr(self):
+        """Construct the API resource representation of this dataset reference
+
+        Returns:
+            dict: dataset reference represented as an API resource
+        """
         return {
             'projectId': self._project,
             'datasetId': self._dataset_id,
@@ -436,13 +502,15 @@ class Dataset(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory:  construct a dataset given its API representation
+        """Factory: construct a dataset given its API representation
 
-        :type resource: dict
-        :param resource: dataset resource representation returned from the API
+        Args:
+            resource (dict):
+                Dataset resource representation returned from the API
 
-        :rtype: :class:`~google.cloud.bigquery.dataset.Dataset`
-        :returns: Dataset parsed from ``resource``.
+        Returns:
+            ~google.cloud.bigquery.dataset.Dataset`
+                Dataset parsed from ``resource``.
         """
         dsr = resource.get('datasetReference')
         if dsr is None or 'datasetId' not in dsr:
@@ -468,16 +536,7 @@ class Dataset(object):
         :raises: :class:`ValueError` if a entry in ``access`` has more keys
                  than ``role`` and one additional key.
         """
-        result = []
-        for entry in access:
-            entry = entry.copy()
-            role = entry.pop('role', None)
-            entity_type, entity_id = entry.popitem()
-            if len(entry) != 0:
-                raise ValueError('Entry has unexpected keys remaining.', entry)
-            result.append(
-                AccessEntry(role, entity_type, entity_id))
-        return result
+        return [AccessEntry.from_api_repr(entry) for entry in access]
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
@@ -502,13 +561,7 @@ class Dataset(object):
 
     def _build_access_resource(self):
         """Generate a resource fragment for dataset's access entries."""
-        result = []
-        for entry in self.access_entries:
-            info = {entry.entity_type: entry.entity_id}
-            if entry.role is not None:
-                info['role'] = entry.role
-            result.append(info)
-        return result
+        return [entry.to_api_repr() for entry in self.access_entries]
 
     def _build_resource(self):
         """Generate a resource for ``create`` or ``update``."""

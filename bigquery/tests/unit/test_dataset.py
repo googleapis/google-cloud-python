@@ -84,6 +84,44 @@ class TestAccessEntry(unittest.TestCase):
         self.assertNotEqual(entry, object())
         self.assertEqual(entry, mock.ANY)
 
+    def test_to_api_repr(self):
+        entry = self._make_one('OWNER', 'userByEmail', 'salmon@example.com')
+        resource = entry.to_api_repr()
+        exp_resource = {'role': 'OWNER', 'userByEmail': 'salmon@example.com'}
+        self.assertEqual(resource, exp_resource)
+
+    def test_to_api_repr_view(self):
+        view = {
+            'projectId': 'my-project',
+            'datasetId': 'my_dataset',
+            'tableId': 'my_table'
+        }
+        entry = self._make_one(None, 'view', view)
+        resource = entry.to_api_repr()
+        exp_resource = {'view': view}
+        self.assertEqual(resource, exp_resource)
+
+    def test_from_api_repr(self):
+        resource = {'role': 'OWNER', 'userByEmail': 'salmon@example.com'}
+        entry = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(entry.role, 'OWNER')
+        self.assertEqual(entry.entity_type, 'userByEmail')
+        self.assertEqual(entry.entity_id, 'salmon@example.com')
+
+    def test_from_api_repr_w_unknown_entity_type(self):
+        resource = {'role': 'READER', 'unknown': 'UNKNOWN'}
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_api_repr(resource)
+
+    def test_from_api_repr_entries_w_extra_keys(self):
+        resource = {
+            'role': 'READER',
+            'specialGroup': 'projectReaders',
+            'userByEmail': 'salmon@example.com',
+        }
+        with self.assertRaises(ValueError):
+            self._get_target_class().from_api_repr(resource)
+
 
 class TestDatasetReference(unittest.TestCase):
 
