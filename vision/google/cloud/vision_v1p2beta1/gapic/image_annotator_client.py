@@ -25,6 +25,7 @@ import google.api_core.operations_v1
 from google.cloud.vision_v1p2beta1.gapic import enums
 from google.cloud.vision_v1p2beta1.gapic import image_annotator_client_config
 from google.cloud.vision_v1p2beta1.proto import image_annotator_pb2
+from google.cloud.vision_v1p2beta1.proto import image_annotator_pb2_grpc
 from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -93,7 +94,7 @@ class ImageAnnotatorClient(object):
 
         # Create the gRPC stubs.
         self.image_annotator_stub = (
-            image_annotator_pb2.ImageAnnotatorStub(channel))
+            image_annotator_pb2_grpc.ImageAnnotatorStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.
