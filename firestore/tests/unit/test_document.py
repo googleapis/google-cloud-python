@@ -237,6 +237,33 @@ class TestDocumentReference(unittest.TestCase):
             client._database_string, [write_pb], transaction=None,
             metadata=client._rpc_metadata)
 
+    def test_create_empty(self):
+        # Create a minimal fake GAPIC with a dummy response.
+        from google.cloud.firestore_v1beta1.document import DocumentReference
+        from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+        firestore_api = mock.Mock(spec=['commit'])
+        document_reference = mock.create_autospec(DocumentReference)
+        snapshot = mock.create_autospec(DocumentSnapshot)
+        snapshot.exists = True
+        document_reference.get.return_value = snapshot
+        commit_response = mock.Mock(
+            write_results=[document_reference],
+            get=[snapshot],
+            spec=['write_results'])
+        firestore_api.commit.return_value = commit_response
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client('dignity')
+        client._firestore_api_internal = firestore_api
+        client.get_all = mock.MagicMock()
+        client.get_all.exists.return_value = True
+
+        # Actually make a document and call create().
+        document = self._make_one('foo', 'twelve', client=client)
+        document_data = {}
+        write_result = document.create(document_data)
+        self.assertTrue(write_result.get().exists)
+
     @staticmethod
     def _write_pb_for_set(document_path, document_data):
         from google.cloud.firestore_v1beta1.proto import document_pb2
@@ -251,6 +278,8 @@ class TestDocumentReference(unittest.TestCase):
         )
 
     def _set_helper(self, **option_kwargs):
+        from google.cloud.firestore_v1beta1 import _helpers
+        from google.cloud.firestore_v1beta1.client import MergeOption
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])
         commit_response = mock.Mock(
@@ -280,9 +309,9 @@ class TestDocumentReference(unittest.TestCase):
         write_pb = self._write_pb_for_set(
             document._document_path, document_data)
         if option is not None:
-            from google.cloud.firestore_v1beta1.client import MergeOption
             if isinstance(option, MergeOption):
-                option.modify_write(write_pb, field_paths=document_data.keys())
+                field_paths = _helpers.extract_field_paths(document_data)
+                option.modify_write(write_pb, field_paths=field_paths)
             else:
                 option.modify_write(write_pb)
 
@@ -364,8 +393,27 @@ class TestDocumentReference(unittest.TestCase):
     def test_update(self):
         self._update_helper()
 
-    def test_update_with_option(self):
-        self._update_helper(exists=False)
+    def test_update_with_exists(self):
+        self._update_helper(exists=True)
+
+    def test_empty_update(self):
+        # Create a minimal fake GAPIC with a dummy response.
+        firestore_api = mock.Mock(spec=['commit'])
+        commit_response = mock.Mock(
+            write_results=[mock.sentinel.write_result],
+            spec=['write_results'])
+        firestore_api.commit.return_value = commit_response
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client('potato-chip')
+        client._firestore_api_internal = firestore_api
+
+        # Actually make a document and call create().
+        document = self._make_one('baked', 'Alaska', client=client)
+        # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
+        field_updates = {}
+        with self.assertRaises(ValueError):
+            document.update(field_updates)
 
     def _delete_helper(self, **option_kwargs):
         from google.cloud.firestore_v1beta1.proto import write_pb2

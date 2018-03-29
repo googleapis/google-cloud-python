@@ -126,6 +126,13 @@ class FieldPath(object):
                 raise ValueError(error)
         self.parts = tuple(parts)
 
+    def __repr__(self):
+        paths = ""
+        for part in self.parts:
+            paths += "'" + part + "',"
+        paths = paths[:-1]
+        return 'FieldPath({})'.format(paths)
+
     @staticmethod
     def from_string(string):
         """ Creates a FieldPath from a unicode string representation.
@@ -510,6 +517,31 @@ def encode_dict(values_dict):
     }
 
 
+def extract_field_paths(actual_data):
+    """Extract field paths from actual data
+
+    Args:
+       actual_data (dict): The dictionary of the actual set data.
+
+    Returns:
+       List[~.firestore_v1beta1._helpers.FieldPath]:
+           A list of `FieldPath` instances from the actual data.
+    """
+    field_paths = []
+    for field_name, value in six.iteritems(actual_data):
+        if isinstance(value, dict):
+            sub_field_paths = extract_field_paths(value)
+            for sub_path in sub_field_paths:
+                paths = [field_name]
+                paths.extend(sub_path.parts)
+                field_path = FieldPath(*paths)
+                field_paths.append(field_path)
+        else:
+            path = FieldPath(field_name)
+            field_paths.append(path)
+    return field_paths
+
+
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
 
@@ -763,23 +795,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def extract_field_paths(update_data):
-    field_paths = []
-    for field_name, value in six.iteritems(update_data):
-        match = re.match(FieldPath.simple_field_name, field_name)
-        if not (match and match.group(0) == field_name):
-            field_name = field_name.replace('\\', '\\\\').replace('`', '\\`')
-            field_name = '`' + field_name + '`'
-        if isinstance(value, dict):
-            sub_field_paths = extract_field_paths(value)
-            field_paths.extend(
-                [field_name + "." + sub_path for sub_path in sub_field_paths])
-        else:
-            field_paths.append(field_name)
-    return field_paths
-
-
-def remove_server_timestamp(document_data):
+def remove_server_timestamp(document_data, top_level=True):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -827,23 +843,24 @@ def remove_server_timestamp(document_data):
     actual_data = {}
     for field_name, value in six.iteritems(document_data):
         if isinstance(value, dict):
-            sub_field_paths, sub_data = remove_server_timestamp(value)
-            field_paths.extend(
-                get_field_path([field_name, sub_path])
-                for sub_path in sub_field_paths
-            )
+            sub_field_paths, sub_data = remove_server_timestamp(value, False)
+            for sub_path in sub_field_paths:
+                field_path = FieldPath.from_string(field_name)
+                field_path.parts = field_path.parts + sub_path.parts
+                field_paths.extend([field_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
         elif value is constants.SERVER_TIMESTAMP:
-            field_paths.append(field_name)
+            if top_level:
+                field_paths.append(FieldPath(*field_name.split(".")))
+            else:
+                field_paths.append(FieldPath.from_string(field_name))
         else:
             actual_data[field_name] = value
-
-    if field_paths:
-        return field_paths, actual_data
-    else:
-        return field_paths, document_data
+    if not field_paths:
+        actual_data = document_data
+    return field_paths, actual_data
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -860,6 +877,7 @@ def get_transform_pb(document_path, transform_paths):
         google.cloud.firestore_v1beta1.types.Write: A
         ``Write`` protobuf instance for a document transform.
     """
+    transform_paths = canonicalize_field_paths(transform_paths)
     return write_pb2.Write(
         transform=write_pb2.DocumentTransform(
             document=document_path,
@@ -899,14 +917,16 @@ def pbs_for_set(document_path, document_data, option):
     )
     if option is not None:
         field_paths = extract_field_paths(actual_data)
-        option.modify_write(
-            update_pb, field_paths=field_paths, path=document_path)
+        option.modify_write(update_pb, field_paths=field_paths)
 
     write_pbs = [update_pb]
     if transform_paths:
         # NOTE: We **explicitly** don't set any write option on
         #       the ``transform_pb``.
         transform_pb = get_transform_pb(document_path, transform_paths)
+        if not actual_data:
+            write_pbs = [transform_pb]
+            return write_pbs
         write_pbs.append(transform_pb)
 
     return write_pbs
@@ -953,6 +973,8 @@ def pbs_for_update(client, document_path, field_updates, option):
         option = client.write_option(exists=True)
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
+    if not actual_updates:
+        raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
     field_paths = canonicalize_field_paths(field_paths)
 

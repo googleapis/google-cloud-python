@@ -33,8 +33,8 @@ from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
-from google.cloud.firestore_v1beta1.transaction import Transaction
 from google.cloud.firestore_v1beta1.proto import common_pb2
+from google.cloud.firestore_v1beta1.transaction import Transaction
 
 
 DEFAULT_DATABASE = '(default)'
@@ -288,7 +288,7 @@ class Client(ClientWithProject):
         elif name == 'exists':
             return ExistsOption(value)
         elif name == 'merge':
-            return MergeOption(value)
+            return MergeOption()
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -429,17 +429,9 @@ class MergeOption(WriteOption):
 
     This will typically be created by
     :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    Args:
-        merge (bool):
-            The only valid option is True. Any other argument will make this
-            option ignored.
     """
-    def __init__(self, merge):
-        self._merge = merge
-
     def modify_write(
-            self, write_pb, field_paths=None, path=None, **unused_kwargs):
+            self, write_pb, field_paths=None, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         Args:
@@ -448,14 +440,14 @@ class MergeOption(WriteOption):
                 determined by the state of this option.
             field_paths (Sequence[str]):
                 The actual field names to use for replacing a document.
-            path (str): A fully-qualified document_path
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
-        if self._merge is True:
-            field_paths = sorted(field_paths)  # for testing purposes
-            mask = common_pb2.DocumentMask(field_paths=field_paths)
-            write_pb.update_mask.CopyFrom(mask)
+        if field_paths is None:
+            field_paths = []
+        field_paths = _helpers.canonicalize_field_paths(field_paths)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        write_pb.update_mask.CopyFrom(mask)
 
 
 class ExistsOption(WriteOption):

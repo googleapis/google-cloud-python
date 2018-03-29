@@ -25,6 +25,7 @@ from google.cloud.firestore_v1beta1 import enums
 from google.cloud.firestore_v1beta1 import ExistsOption
 from google.cloud.firestore_v1beta1 import GeoPoint
 from google.cloud.firestore_v1beta1 import LastUpdateOption
+from google.cloud.firestore_v1beta1 import MergeOption
 from google.cloud.firestore_v1beta1 import Query
 from google.cloud.firestore_v1beta1 import ReadAfterWriteError
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
@@ -46,6 +47,7 @@ __all__ = [
     'ExistsOption',
     'GeoPoint',
     'LastUpdateOption',
+    'MergeOption',
     'Query',
     'ReadAfterWriteError',
     'SERVER_TIMESTAMP',

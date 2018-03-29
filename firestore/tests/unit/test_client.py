@@ -169,6 +169,14 @@ class TestClient(unittest.TestCase):
         klass = self._get_target_class()
         self.assertEqual(klass.field_path('a', 'b', 'c'), 'a.b.c')
 
+    def test_write_option_merge(self):
+        from google.cloud.firestore_v1beta1.client import MergeOption
+
+        klass = self._get_target_class()
+
+        option1 = klass.write_option(merge='abc')
+        self.assertIsInstance(option1, MergeOption)
+
     def test_write_option_last_update(self):
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1beta1.client import LastUpdateOption
@@ -491,27 +499,17 @@ class TestMergeOption(unittest.TestCase):
         klass = self._get_target_class()
         return klass(*args)
 
-    def test_modify_write_true(self):
+    def test_modify_write(self):
         from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
 
-        option = self._make_one(True)
+        option = self._make_one()
         write_pb = write_pb2.Write()
-        field_paths = ['a', 'b', 'c']
-        ret_val = option.modify_write(write_pb, field_paths=field_paths)
-        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        ret_val = option.modify_write(write_pb)
         self.assertIsNone(ret_val)
-        self.assertEqual(write_pb.update_mask, mask)
-
-    def test_modify_write_false(self):
-        from google.cloud.firestore_v1beta1.proto import write_pb2
-
-        option = self._make_one(False)
-        write_pb = write_pb2.Write()
-        field_paths = ['a', 'b', 'c']
-        ret_val = option.modify_write(write_pb, field_paths=field_paths)
-        self.assertIsNone(ret_val)
-        self.assertEqual(write_pb.update_mask.ByteSize(), 0)
+        self.assertEqual(
+            write_pb.update_mask,
+            common_pb2.DocumentMask(field_paths=[]))
 
 
 class Test__reference_info(unittest.TestCase):

@@ -24,6 +24,7 @@ from google.cloud.firestore_v1beta1.batch import WriteBatch
 from google.cloud.firestore_v1beta1.client import Client
 from google.cloud.firestore_v1beta1.client import ExistsOption
 from google.cloud.firestore_v1beta1.client import LastUpdateOption
+from google.cloud.firestore_v1beta1.client import MergeOption
 from google.cloud.firestore_v1beta1.client import WriteOption
 from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.constants import DELETE_FIELD
@@ -47,6 +48,7 @@ __all__ = [
     'ExistsOption',
     'GeoPoint',
     'LastUpdateOption',
+    'MergeOption',
     'Query',
     'ReadAfterWriteError',
     'SERVER_TIMESTAMP',

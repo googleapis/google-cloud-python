@@ -23,7 +23,7 @@ from google.protobuf import timestamp_pb2
 import pytest
 import six
 
-from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import NotFound
@@ -79,11 +79,8 @@ def test_create_document(client, cleanup):
     # Allow a bit of clock skew, but make sure timestamps are close.
     assert -300.0 < delta.total_seconds() < 300.0
 
-    with pytest.raises(Conflict) as exc_info:
-        document.create({})
-
-    assert exc_info.value.message.startswith(DOCUMENT_EXISTS)
-    assert document_id in exc_info.value.message
+    with pytest.raises(AlreadyExists):
+        document.create(data)
 
     # Verify the server times.
     snapshot = document.get()
@@ -132,9 +129,6 @@ def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
 def test_no_document(client, cleanup):
     document_id = 'no_document' + unique_resource_id('-')
     document = client.document('abcde', document_id)
-    option0 = client.write_option(exists=True)
-    with pytest.raises(NotFound):
-        document.set({'no': 'way'}, option=option0)
     snapshot = document.get()
     assert snapshot.to_dict() is None
 
@@ -145,13 +139,9 @@ def test_document_set(client, cleanup):
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document)
 
-    # 0. Make sure the document doesn't exist yet using an option.
-    option0 = client.write_option(exists=True)
-    with pytest.raises(NotFound) as exc_info:
-        document.set({'no': 'way'}, option=option0)
-
-    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
-    assert document_id in exc_info.value.message
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert snapshot.to_dict() is None
 
     # 1. Use ``set()`` to create the document (using an option).
     data1 = {'foo': 88}
@@ -184,7 +174,7 @@ def test_document_set(client, cleanup):
 
     # 4. Call ``set()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option3._last_update_time, snapshot3.update_time)
-    with pytest.raises(FailedPrecondition) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.set({'bad': 'time-past'}, option=option3)
 
     # 5. Call ``set()`` with invalid (in the future) "last timestamp" option.
@@ -193,7 +183,7 @@ def test_document_set(client, cleanup):
         nanos=snapshot3.update_time.nanos,
     )
     option5 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(FailedPrecondition) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.set({'bad': 'time-future'}, option=option5)
 
 
@@ -214,9 +204,9 @@ def test_document_integer_field(client, cleanup):
     option1 = client.write_option(exists=False)
     document.set(data1, option=option1)
 
-    data2 = {'1a': {'ab': '4d'}, '6f': {'7g': '9h'}}
-    option2 = client.write_option(merge=True)
-    document.set(data2, option=option2)
+    data2 = {'1a.ab': '4d', '6f.7g': '9h'}
+    option2 = client.write_option(exists=True)
+    document.update(data2, option=option2)
     snapshot = document.get()
     expected = {
         '1a': {
