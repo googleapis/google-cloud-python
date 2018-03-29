@@ -349,7 +349,7 @@ class DlpServiceClient(object):
         """
         Finds potentially sensitive info in content.
         This method has limits on input size, processing time, and output size.
-        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`_, [How-to guide for
+        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`__, [How-to guide for
         images](/dlp/docs/inspecting-images)
 
         Example:
@@ -417,7 +417,7 @@ class DlpServiceClient(object):
         """
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time, and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`_
+        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`__
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -483,7 +483,7 @@ class DlpServiceClient(object):
         """
         De-identifies potentially sensitive info from a ContentItem.
         This method has limits on input size and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`_
+        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`__
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -582,9 +582,10 @@ class DlpServiceClient(object):
                 previous de-identification. Re-identification is performed by examining
                 the transformations used to de-identify the items and executing the
                 reverse. This requires that only reversible transformations
-                be provided here. The reversible transformations are:
+                be provided here. The reversible transformations are::
 
                  - ``CryptoReplaceFfxFpeConfig``
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
@@ -1381,18 +1382,18 @@ class DlpServiceClient(object):
 
                 * Filter expressions are made up of one or more restrictions.
                 * Restrictions can be combined by ``AND`` or ``OR`` logical operators. A
-                sequence of restrictions implicitly uses ``AND``.
+                  sequence of restrictions implicitly uses ``AND``.
                 * A restriction has the form of ``<field> <operator> <value>``.
-                * Supported fields/values for inspect jobs:
-                ::
+                * Supported fields/values for inspect jobs::
 
                     - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
                     - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
                     - `trigger_name` - The resource name of the trigger that created job.
-                * Supported fields for risk analysis jobs:
-                ::
+
+                * Supported fields for risk analysis jobs::
 
                     - `state` - RUNNING|CANCELED|FINISHED|FAILED
+
                 * The operator must be ``=`` or ``!=``.
 
                 Examples:
