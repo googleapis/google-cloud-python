@@ -27,6 +27,7 @@ import google.api_core.protobuf_helpers
 from google.cloud.dlp_v2.gapic import dlp_service_client_config
 from google.cloud.dlp_v2.gapic import enums
 from google.cloud.dlp_v2.proto import dlp_pb2
+from google.cloud.dlp_v2.proto import dlp_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -167,7 +168,7 @@ class DlpServiceClient(object):
             )
 
         # Create the gRPC stubs.
-        self.dlp_service_stub = (dlp_pb2.DlpServiceStub(channel))
+        self.dlp_service_stub = (dlp_pb2_grpc.DlpServiceStub(channel))
 
         if client_info is None:
             client_info = (
