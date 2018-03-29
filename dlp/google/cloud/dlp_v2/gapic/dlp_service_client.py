@@ -36,7 +36,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution('google-cloud-dlp',
 
 class DlpServiceClient(object):
     """
-    The DLP API is a service that allows clients
+    The Cloud Data Loss Prevention (DLP) API is a service that allows clients
     to detect the presence of Personally Identifiable Information (PII) and other
     privacy-sensitive data in user-supplied, unstructured data streams, like text
     blocks or images.
@@ -348,7 +348,7 @@ class DlpServiceClient(object):
         """
         Finds potentially sensitive info in content.
         This method has limits on input size, processing time, and output size.
-        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`__, [How-to guide for
+        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`_, [How-to guide for
         images](/dlp/docs/inspecting-images)
 
         Example:
@@ -416,7 +416,7 @@ class DlpServiceClient(object):
         """
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time, and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`__
+        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`_
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -482,7 +482,7 @@ class DlpServiceClient(object):
         """
         De-identifies potentially sensitive info from a ContentItem.
         This method has limits on input size and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`__
+        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`_
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -562,7 +562,7 @@ class DlpServiceClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Re-identify content that has been de-identified.
+        Re-identifies content that has been de-identified.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -581,10 +581,9 @@ class DlpServiceClient(object):
                 previous de-identification. Re-identification is performed by examining
                 the transformations used to de-identify the items and executing the
                 reverse. This requires that only reversible transformations
-                be provided here. The reversible transformations are::
+                be provided here. The reversible transformations are:
 
-                     - ``CryptoReplaceFfxFpeConfig``
-
+                 - ``CryptoReplaceFfxFpeConfig``
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
@@ -644,7 +643,9 @@ class DlpServiceClient(object):
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
         """
-        Returns sensitive information types DLP supports.
+        Returns a list of the sensitive information types that the DLP API
+        supports. For more information, see [Listing supported predefined
+        infoTypes](/dlp/docs/listing-infotypes).
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -940,7 +941,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes inspect templates.
+        Deletes an inspect template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -987,7 +988,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Creates an Deidentify template for re-using frequently used configuration
+        Creates a de-identify template for re-using frequently used configuration
         for Deidentifying content, images, and storage.
 
         Example:
@@ -1048,7 +1049,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Updates the inspect template.
+        Updates the de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1106,7 +1107,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Gets an inspect template.
+        Gets a de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1155,7 +1156,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists inspect templates.
+        Lists de-identify templates.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1234,7 +1235,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes inspect templates.
+        Deletes a de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1281,7 +1282,7 @@ class DlpServiceClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Create a new job to inspect storage or calculate risk metrics [How-to
+        Creates a new job to inspect storage or calculate risk metrics [How-to
         guide](/dlp/docs/compute-risk-analysis).
 
         Example:
@@ -1379,18 +1380,18 @@ class DlpServiceClient(object):
 
                 * Filter expressions are made up of one or more restrictions.
                 * Restrictions can be combined by ``AND`` or ``OR`` logical operators. A
-                  sequence of restrictions implicitly uses ``AND``.
+                sequence of restrictions implicitly uses ``AND``.
                 * A restriction has the form of ``<field> <operator> <value>``.
-                * Supported fields/values for inspect jobs::
+                * Supported fields/values for inspect jobs:
+                ::
 
                     - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
                     - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
                     - `trigger_name` - The resource name of the trigger that created job.
-
-                * Supported fields for risk analysis jobs::
+                * Supported fields for risk analysis jobs:
+                ::
 
                     - `state` - RUNNING|CANCELED|FINISHED|FAILED
-
                 * The operator must be ``=`` or ``!=``.
 
                 Examples:
@@ -1546,7 +1547,7 @@ class DlpServiceClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Starts asynchronous cancellation on a long-running DlpJob.  The server
+        Starts asynchronous cancellation on a long-running DlpJob. The server
         makes a best effort to cancel the DlpJob, but success is not
         guaranteed.
 
@@ -1833,8 +1834,8 @@ class DlpServiceClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Creates a job to run DLP actions such as scanning storage for sensitive
-        information on a set schedule.
+        Creates a job trigger to run DLP actions such as scanning storage for
+        sensitive information on a set schedule.
 
         Example:
             >>> from google.cloud import dlp_v2
