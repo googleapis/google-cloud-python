@@ -472,27 +472,6 @@ class TestDataset(unittest.TestCase):
         dataset = klass.from_api_repr(RESOURCE)
         self._verify_resource_properties(dataset, RESOURCE)
 
-    def test__parse_access_entries_w_unknown_entity_type(self):
-        ACCESS = [
-            {'role': 'READER', 'unknown': 'UNKNOWN'},
-        ]
-        dataset = self._make_one(self.DS_REF)
-        with self.assertRaises(ValueError):
-            dataset._parse_access_entries(ACCESS)
-
-    def test__parse_access_entries_w_extra_keys(self):
-        USER_EMAIL = 'phred@example.com'
-        ACCESS = [
-            {
-                'role': 'READER',
-                'specialGroup': 'projectReaders',
-                'userByEmail': USER_EMAIL,
-            },
-        ]
-        dataset = self._make_one(self.DS_REF)
-        with self.assertRaises(ValueError):
-            dataset._parse_access_entries(ACCESS)
-
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 

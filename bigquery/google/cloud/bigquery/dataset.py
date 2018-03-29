@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import six
+import copy
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.table import TableReference
@@ -149,11 +150,12 @@ class DatasetReference(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type project: str
-    :param project: the ID of the project
+    Args:
+        project (str): The ID of the project
+        dataset_id (str): The ID of the dataset
 
-    :type dataset_id: str
-    :param dataset_id: the ID of the dataset
+    Raises:
+        ValueError: If either argument is not of type ``str``.
     """
 
     def __init__(self, project, dataset_id):
@@ -168,8 +170,8 @@ class DatasetReference(object):
     def project(self):
         """Project ID of the dataset.
 
-        :rtype: str
-        :returns: the project ID.
+        Returns:
+            str: The project ID.
         """
         return self._project
 
@@ -177,8 +179,8 @@ class DatasetReference(object):
     def dataset_id(self):
         """Dataset ID.
 
-        :rtype: str
-        :returns: the dataset ID.
+        Returns:
+            str: The dataset ID.
         """
         return self._dataset_id
 
@@ -186,19 +188,20 @@ class DatasetReference(object):
     def path(self):
         """URL path for the dataset's APIs.
 
-        :rtype: str
-        :returns: the path based on project and dataset name.
+        Returns:
+            str: the path based on project and dataset name.
         """
         return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     def table(self, table_id):
         """Constructs a TableReference.
 
-        :type table_id: str
-        :param table_id: the ID of the table.
+        Args:
+            table_id (str): The ID of the table.
 
-        :rtype: :class:`google.cloud.bigquery.table.TableReference`
-        :returns: a TableReference for a table in this dataset.
+        Returns:
+            google.cloud.bigquery.table.TableReference:
+                A table reference for a table in this dataset.
         """
         return TableReference(self, table_id)
 
@@ -211,7 +214,7 @@ class DatasetReference(object):
                 Dataset reference resource representation returned from the API
 
         Returns:
-            ~google.cloud.bigquery.dataset.DatasetReference`
+            google.cloud.bigquery.dataset.DatasetReference:
                 Dataset reference parsed from ``resource``.
         """
         project = resource['projectId']
@@ -263,31 +266,42 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`
-    :param dataset_ref: a pointer to a dataset
+    Args:
+        dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
+            a pointer to a dataset
     """
 
+    _PROPERTY_TO_API_FIELD = {
+        'access_entries': 'access',
+        'created': 'creationTime',
+        'default_table_expiration_ms': 'defaultTableExpirationMs',
+        'description': 'description',
+        'friendly_name': 'friendlyName',
+        'location': 'location',
+        'labels': 'labels',
+    }
+
     def __init__(self, dataset_ref):
-        self._project = dataset_ref.project
-        self._dataset_id = dataset_ref.dataset_id
-        self._properties = {'labels': {}}
-        self._access_entries = ()
+        self._properties = {
+            'datasetReference': dataset_ref.to_api_repr(),
+            'labels': {},
+        }
 
     @property
     def project(self):
         """Project bound to the dataset.
 
-        :rtype: str
-        :returns: the project.
+        Returns:
+            str: the project ID
         """
-        return self._project
+        return self._properties['datasetReference']['projectId']
 
     @property
     def path(self):
         """URL path for the dataset's APIs.
 
-        :rtype: str
-        :returns: the path based on project and dataset ID.
+        Returns:
+            str: the path based on project and dataset ID.
         """
         return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
@@ -295,32 +309,42 @@ class Dataset(object):
     def access_entries(self):
         """Dataset's access entries.
 
-        :rtype: list of :class:`AccessEntry`
-        :returns: roles granted to entities for this dataset
+        ``role`` augments the entity type and must be present **unless** the
+        entity type is ``view``.
+
+        Returns:
+            List[google.cloud.bigquery.dataset.AccessEntry]:
+                roles granted to entities for this dataset
         """
-        return list(self._access_entries)
+        entries = self._properties.get('access', [])
+        return [AccessEntry.from_api_repr(entry) for entry in entries]
 
     @access_entries.setter
     def access_entries(self, value):
         """Update dataset's access entries
 
-        :type value:
-            list of :class:`~google.cloud.bigquery.dataset.AccessEntry`
-        :param value: roles granted to entities for this dataset
+        Args:
+            value (List[google.cloud.bigquery.dataset.AccessEntry]):
+                Roles granted to entities for this dataset
 
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not an AccessEntry
+        Raises:
+            TypeError: If 'value' is not a sequence
+            ValueError:
+                If any item in the sequence is not an
+                :class:`~google.cloud.bigquery.dataset.AccessEntry`.
         """
         if not all(isinstance(field, AccessEntry) for field in value):
             raise ValueError('Values must be AccessEntry instances')
-        self._access_entries = tuple(value)
+        entries = [entry.to_api_repr() for entry in value]
+        self._properties['access'] = entries
 
     @property
     def created(self):
         """Datetime at which the dataset was created.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the creation time (None until set from the server).
+        Returns:
+            Union[datetime.datetime, None]:
+                the creation time (``None`` until set from the server).
         """
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
@@ -331,17 +355,17 @@ class Dataset(object):
     def dataset_id(self):
         """Dataset ID.
 
-        :rtype: str
-        :returns: the dataset ID.
+        Returns:
+            str: the dataset ID.
         """
-        return self._dataset_id
+        return self._properties['datasetReference']['datasetId']
 
     @property
     def full_dataset_id(self):
-        """ID for the dataset resource, in the form "project_id:dataset_id".
+        """ID for the dataset resource, in the form ``project_id:dataset_id``.
 
-        :rtype: str, or ``NoneType``
-        :returns: the ID (None until set from the server).
+        Returns:
+            Union[str, None]: the ID (``None`` until set from the server).
         """
         return self._properties.get('id')
 
@@ -359,8 +383,8 @@ class Dataset(object):
     def etag(self):
         """ETag for the dataset resource.
 
-        :rtype: str, or ``NoneType``
-        :returns: the ETag (None until set from the server).
+        Returns:
+            Union[str, None]: The ETag (``None`` until set from the server).
         """
         return self._properties.get('etag')
 
@@ -368,8 +392,9 @@ class Dataset(object):
     def modified(self):
         """Datetime at which the dataset was last modified.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the modification time (None until set from the server).
+        Returns:
+            Union[datetime.datetime, None]:
+                The modification time (``None`` until set from the server).
         """
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
@@ -380,8 +405,8 @@ class Dataset(object):
     def self_link(self):
         """URL for the dataset resource.
 
-        :rtype: str, or ``NoneType``
-        :returns: the URL (None until set from the server).
+        Returns:
+            Union[str, None]: the URL (``None`` until set from the server).
         """
         return self._properties.get('selfLink')
 
@@ -389,8 +414,9 @@ class Dataset(object):
     def default_table_expiration_ms(self):
         """Default expiration time for tables in the dataset.
 
-        :rtype: int, or ``NoneType``
-        :returns: The time in milliseconds, or None (the default).
+        Returns:
+            Union[int, None]:
+                The time in milliseconds, or ``None`` (the default).
         """
         return self._properties.get('defaultTableExpirationMs')
 
@@ -398,8 +424,8 @@ class Dataset(object):
     def default_table_expiration_ms(self, value):
         """Update default expiration time for tables in the dataset.
 
-        :type value: int
-        :param value: (Optional) new default time, in milliseconds
+        Args:
+            value (int, optional): new default time, in milliseconds
 
         :raises: ValueError for invalid value types.
         """
@@ -411,8 +437,9 @@ class Dataset(object):
     def description(self):
         """Description of the dataset.
 
-        :rtype: str, or ``NoneType``
-        :returns: The description as set by the user, or None (the default).
+        Returns:
+            Union[str, None]:
+                The description as set by the user, or ``None`` (the default).
         """
         return self._properties.get('description')
 
@@ -420,10 +447,11 @@ class Dataset(object):
     def description(self, value):
         """Update description of the dataset.
 
-        :type value: str
-        :param value: (Optional) new description
+        Args:
+            value (str, optional): new description
 
-        :raises: ValueError for invalid value types.
+        Raises:
+            ValueError: for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -433,8 +461,9 @@ class Dataset(object):
     def friendly_name(self):
         """Title of the dataset.
 
-        :rtype: str, or ``NoneType``
-        :returns: The name as set by the user, or None (the default).
+        Returns:
+            Union[str, None]:
+                The name as set by the user, or ``None`` (the default).
         """
         return self._properties.get('friendlyName')
 
@@ -442,10 +471,11 @@ class Dataset(object):
     def friendly_name(self, value):
         """Update title of the dataset.
 
-        :type value: str
-        :param value: (Optional) new title
+        Args:
+            value (str, optional): new title
 
-        :raises: ValueError for invalid value types.
+        Raises:
+            ValueError: for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -455,8 +485,9 @@ class Dataset(object):
     def location(self):
         """Location in which the dataset is hosted.
 
-        :rtype: str, or ``NoneType``
-        :returns: The location as set by the user, or None (the default).
+        Returns:
+            Union[str, None]:
+                The location as set by the user, or ``None`` (the default).
         """
         return self._properties.get('location')
 
@@ -464,10 +495,11 @@ class Dataset(object):
     def location(self, value):
         """Update location in which the dataset is hosted.
 
-        :type value: str
-        :param value: (Optional) new location
+        Args:
+            value (str, optional): the new location
 
-        :raises: ValueError for invalid value types.
+        Raises:
+            ValueError: for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -482,8 +514,8 @@ class Dataset(object):
         :meth:`google.cloud.bigquery.client.Client.update_dataset`. To delete
         a label, set its value to ``None`` before updating.
 
-        :rtype: dict, {str -> str}
-        :returns: A dict of the the dataset's labels.
+        Returns:
+            Dict[str, str]: A dict of the the dataset's labels.
         """
         return self._properties.get('labels', {})
 
@@ -491,10 +523,11 @@ class Dataset(object):
     def labels(self, value):
         """Update labels for the dataset.
 
-        :type value: dict, {str -> str}
-        :param value: new labels
+        Args:
+            value (Dict[str, str]): new labels
 
-        :raises: ValueError for invalid value types.
+        Raises:
+            ValueError: for invalid value types.
         """
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
@@ -509,94 +542,51 @@ class Dataset(object):
                 Dataset resource representation returned from the API
 
         Returns:
-            ~google.cloud.bigquery.dataset.Dataset`
+            google.cloud.bigquery.dataset.Dataset:
                 Dataset parsed from ``resource``.
         """
-        dsr = resource.get('datasetReference')
-        if dsr is None or 'datasetId' not in dsr:
+        if ('datasetReference' not in resource or
+                'datasetId' not in resource['datasetReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
-        dataset_id = dsr['datasetId']
-        dataset = cls(DatasetReference(dsr['projectId'], dataset_id))
-        dataset._set_properties(resource)
+        project_id = resource['datasetReference']['projectId']
+        dataset_id = resource['datasetReference']['datasetId']
+        dataset = cls(DatasetReference(project_id, dataset_id))
+        dataset._properties = copy.deepcopy(resource)
         return dataset
 
-    @staticmethod
-    def _parse_access_entries(access):
-        """Parse a resource fragment into a set of access entries.
+    def to_api_repr(self):
+        """Construct the API resource representation of this dataset
 
-        ``role`` augments the entity type and present **unless** the entity
-        type is ``view``.
-
-        :type access: list of mappings
-        :param access: each mapping represents a single access entry.
-
-        :rtype: list of :class:`~google.cloud.bigquery.dataset.AccessEntry`
-        :returns: a list of parsed entries.
-        :raises: :class:`ValueError` if a entry in ``access`` has more keys
-                 than ``role`` and one additional key.
+        Returns:
+            dict: The dataset represented as an API resource
         """
-        return [AccessEntry.from_api_repr(entry) for entry in access]
+        return copy.deepcopy(self._properties)
 
-    def _set_properties(self, api_response):
-        """Update properties from resource in body of ``api_response``
-
-        :type api_response: dict
-        :param api_response: response returned from an API call.
-        """
-        self._properties.clear()
-        cleaned = api_response.copy()
-        access = cleaned.pop('access', ())
-        self.access_entries = self._parse_access_entries(access)
-        if 'creationTime' in cleaned:
-            cleaned['creationTime'] = float(cleaned['creationTime'])
-        if 'lastModifiedTime' in cleaned:
-            cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
-        if 'defaultTableExpirationMs' in cleaned:
-            cleaned['defaultTableExpirationMs'] = int(
-                cleaned['defaultTableExpirationMs'])
-        if 'labels' not in cleaned:
-            cleaned['labels'] = {}
-        self._properties.update(cleaned)
-
-    def _build_access_resource(self):
-        """Generate a resource fragment for dataset's access entries."""
-        return [entry.to_api_repr() for entry in self.access_entries]
-
-    def _build_resource(self):
+    def _build_resource(self, filter_fields):
         """Generate a resource for ``create`` or ``update``."""
-        resource = {
-            'datasetReference': {
-                'projectId': self.project, 'datasetId': self.dataset_id},
-        }
-        if self.default_table_expiration_ms is not None:
-            value = self.default_table_expiration_ms
-            resource['defaultTableExpirationMs'] = value
+        partial = {}
+        for f in filter_fields:
+            if not hasattr(self, f) and f not in self._properties:
+                raise ValueError('No Dataset property %s' % f)
+            api_field = self._PROPERTY_TO_API_FIELD.get(f)
+            if api_field:
+                partial[api_field] = self._properties.get(api_field)
+            else:
+                # allows properties that are not defined in the library
+                partial[f] = self._properties[f]
 
-        if self.description is not None:
-            resource['description'] = self.description
-
-        if self.friendly_name is not None:
-            resource['friendlyName'] = self.friendly_name
-
-        if self.location is not None:
-            resource['location'] = self.location
-
-        if len(self.access_entries) > 0:
-            resource['access'] = self._build_access_resource()
-
-        resource['labels'] = self.labels  # labels is never None
-
-        return resource
+        return partial
 
     def table(self, table_id):
         """Constructs a TableReference.
 
-        :type table_id: str
-        :param table_id: the ID of the table.
+        Args:
+            table_id (str): the ID of the table.
 
-        :rtype: :class:`~google.cloud.bigquery.table.TableReference`
-        :returns: a TableReference for a table in this dataset.
+        Returns:
+            google.cloud.bigquery.table.TableReference:
+                A TableReference for a table in this dataset.
         """
         return TableReference(self.reference, table_id)
 
