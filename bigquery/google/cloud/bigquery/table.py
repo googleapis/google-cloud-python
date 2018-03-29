@@ -243,17 +243,13 @@ class Table(object):
     """
 
     _PROPERTY_TO_API_FIELD = {
-        'description': 'description',
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
-        'location': 'location',
         'partitioning_type': 'timePartitioning',
         'view_use_legacy_sql': 'view',
         'view_query': 'view',
-        'schema': 'schema',
         'external_data_configuration': 'externalDataConfiguration',
-        'labels': 'labels',
-        'encryption_configuration': 'encryptionConfiguration'
+        'encryption_configuration': 'encryptionConfiguration',
     }
 
     def __init__(self, table_ref, schema=None):
