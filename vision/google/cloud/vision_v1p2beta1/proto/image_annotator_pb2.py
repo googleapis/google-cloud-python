@@ -2324,7 +2324,7 @@ ImageContext = _reflection.GeneratedProtocolMessageType('ImageContext', (_messag
   
   Attributes:
       lat_long_rect:
-          lat/long rectangle that specifies the location of the image.
+          Not used.
       language_hints:
           List of languages to use for TEXT\_DETECTION. In most cases,
           an empty value yields the best results since it enables
