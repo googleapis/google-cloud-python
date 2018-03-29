@@ -529,9 +529,10 @@ class TestFieldPathHelper(unittest.TestCase):
         import six
         from google.cloud.firestore_v1beta1 import _helpers
 
+        a_b_c = _helpers.FieldPath.from_string('a.b.c')
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
         field_updates = collections.OrderedDict((
-            (_helpers.FieldPath.from_string('a.b.c'), 10),
+            (a_b_c, 10),
             (_helpers.FieldPath.from_string('d'), None),
             (_helpers.FieldPath.from_string('e.f1'), [u'no', b'yes']),
             (_helpers.FieldPath.from_string('e.f2'), 4.5),
@@ -547,7 +548,7 @@ class TestFieldPathHelper(unittest.TestCase):
         expected_updates = {
             'a': {
                 'b': {
-                    'c': field_updates[_helpers.FieldPath.from_string('a.b.c')],
+                    'c': field_updates[a_b_c],
                 },
                 '一': field_updates[_helpers.FieldPath('a', '一')]
             },
