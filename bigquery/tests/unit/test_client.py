@@ -499,6 +499,46 @@ class TestClient(unittest.TestCase):
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(got.table_id, self.TABLE_ID)
 
+    def test_create_table_w_custom_property(self):
+        # The library should handle sending properties to the API that are not
+        # yet part of the library
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'newAlphaProperty': 'unreleased property',
+        }
+        conn = client._connection = _make_connection(resource)
+        table = Table(self.TABLE_REF)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+
+        got = client.create_table(table)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'newAlphaProperty': 'unreleased property',
+                'labels': {},
+            })
+        self.assertEqual(
+            got._properties['newAlphaProperty'], 'unreleased property')
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
     def test_create_table_w_encryption_configuration(self):
         from google.cloud.bigquery.table import EncryptionConfiguration
         from google.cloud.bigquery.table import Table
@@ -913,6 +953,44 @@ class TestClient(unittest.TestCase):
         client.update_table(table, [])
         req = conn.api_request.call_args
         self.assertEqual(req[1]['headers']['If-Match'], 'etag')
+
+    def test_update_table_w_custom_property(self):
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'newAlphaProperty': 'unreleased property',
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(resource)
+        table = Table(self.TABLE_REF)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+
+        updated_table = client.update_table(table, ['newAlphaProperty'])
+
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'newAlphaProperty': 'unreleased property',
+            },
+            headers=None)
+        self.assertEqual(
+            updated_table._properties['newAlphaProperty'],
+            'unreleased property')
 
     def test_update_table_only_use_legacy_sql(self):
         from google.cloud.bigquery.table import Table

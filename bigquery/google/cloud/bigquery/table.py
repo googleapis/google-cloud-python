@@ -252,7 +252,7 @@ class Table(object):
     :param schema: The table's schema
     """
 
-    property_to_api_field = {
+    _PROPERTY_TO_API_FIELD = {
         'description': 'description',
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
@@ -267,15 +267,13 @@ class Table(object):
     }
 
     def __init__(self, table_ref, schema=None):
-        self._properties = {'labels': {}}
-        self._properties['tableReference'] = {
-            'projectId': table_ref.project,
-            'tableId': table_ref.table_id,
-            'datasetId': table_ref.dataset_id
+        self._properties = {
+            'tableReference': table_ref.to_api_repr(),
+            'labels': {},
         }
         # Let the @property do validation.
-        self.external_data_configuration = None
-        self.schema = schema
+        if schema is not None:
+            self.schema = schema
 
     @property
     def project(self):
@@ -704,7 +702,7 @@ class Table(object):
         :rtype: :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
         :returns: The external configuration, or None (the default).
         """
-        prop = self._properties['externalDataConfiguration']
+        prop = self._properties.get('externalDataConfiguration')
         if prop is not None:
             prop = ExternalConfig.from_api_repr(prop)
         return prop
@@ -753,15 +751,30 @@ class Table(object):
 
         return table
 
+    def to_api_repr(self):
+        """Constructs the API resource of this table
+
+        Returns:
+            dict: Table represented as an API resource
+        """
+        return copy.deepcopy(self._properties)
+
     def _build_resource(self, filter_fields):
         """Generate a resource for ``create`` or ``update``."""
-        resource = {
+        partial = {
             'tableReference': self._properties['tableReference']
         }
         for f in filter_fields:
-            api_field = self.property_to_api_field[f]
-            resource[api_field] = self._properties.get(api_field)
-        return resource
+            api_field = self._PROPERTY_TO_API_FIELD.get(f)
+            if api_field is None and f not in self._properties:
+                raise ValueError('No Table property %s' % f)
+            elif api_field is not None:
+                partial[api_field] = self._properties.get(api_field)
+            else:
+                # allows properties that are not defined in the library
+                partial[f] = self._properties[f]
+
+        return partial
 
 
 class TableListItem(object):

@@ -272,13 +272,8 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
-        table_fields = Table.property_to_api_field.keys()
-        resource = table._build_resource(table_fields)
-        doomed = [field for field in resource if resource[field] is None]
-        for field in doomed:
-            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=resource)
+            method='POST', path=path, data=table.to_api_repr())
         return Table.from_api_repr(api_response)
 
     def _call_api(self, retry, **kwargs):
