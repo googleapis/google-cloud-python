@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import six
 import copy
 
+import google.cloud._helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.table import TableReference
 
@@ -314,7 +315,7 @@ class Dataset(object):
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _helpers._datetime_from_microseconds(
+            return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(creation_time))
 
     @property
@@ -353,7 +354,7 @@ class Dataset(object):
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _helpers._datetime_from_microseconds(
+            return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(modified_time))
 
     @property
