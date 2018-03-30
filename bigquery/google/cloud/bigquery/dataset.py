@@ -36,7 +36,7 @@ class AccessEntry(object):
         role (str):
             Role granted to the entity. The following string values are
             supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
-            ``None`` if the ``entity_type`` is ``view``.
+            :data:`None` if the ``entity_type`` is ``view``.
 
         entity_type (str):
             Type of entity being granted the role. One of :attr:`ENTITY_TYPES`.
@@ -168,29 +168,17 @@ class DatasetReference(object):
 
     @property
     def project(self):
-        """Project ID of the dataset.
-
-        Returns:
-            str: The project ID.
-        """
+        """str: Project ID of the dataset."""
         return self._project
 
     @property
     def dataset_id(self):
-        """Dataset ID.
-
-        Returns:
-            str: The dataset ID.
-        """
+        """str: Dataset ID."""
         return self._dataset_id
 
     @property
     def path(self):
-        """URL path for the dataset's APIs.
-
-        Returns:
-            str: the path based on project and dataset name.
-        """
+        """str: URL path for the dataset based on project and dataset ID."""
         return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     def table(self, table_id):
@@ -289,43 +277,21 @@ class Dataset(object):
 
     @property
     def project(self):
-        """Project bound to the dataset.
-
-        Returns:
-            str: the project ID
-        """
+        """str: Project ID of the project bound to the dataset."""
         return self._properties['datasetReference']['projectId']
 
     @property
     def path(self):
-        """URL path for the dataset's APIs.
-
-        Returns:
-            str: the path based on project and dataset ID.
-        """
+        """str: URL path for the dataset based on project and dataset ID."""
         return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     @property
     def access_entries(self):
-        """Dataset's access entries.
+        """List[google.cloud.bigquery.dataset.AccessEntry]: Dataset's access
+        entries.
 
         ``role`` augments the entity type and must be present **unless** the
         entity type is ``view``.
-
-        Returns:
-            List[google.cloud.bigquery.dataset.AccessEntry]:
-                roles granted to entities for this dataset
-        """
-        entries = self._properties.get('access', [])
-        return [AccessEntry.from_api_repr(entry) for entry in entries]
-
-    @access_entries.setter
-    def access_entries(self, value):
-        """Update dataset's access entries
-
-        Args:
-            value (List[google.cloud.bigquery.dataset.AccessEntry]):
-                Roles granted to entities for this dataset
 
         Raises:
             TypeError: If 'value' is not a sequence
@@ -333,6 +299,11 @@ class Dataset(object):
                 If any item in the sequence is not an
                 :class:`~google.cloud.bigquery.dataset.AccessEntry`.
         """
+        entries = self._properties.get('access', [])
+        return [AccessEntry.from_api_repr(entry) for entry in entries]
+
+    @access_entries.setter
+    def access_entries(self, value):
         if not all(isinstance(field, AccessEntry) for field in value):
             raise ValueError('Values must be AccessEntry instances')
         entries = [entry.to_api_repr() for entry in value]
@@ -340,11 +311,8 @@ class Dataset(object):
 
     @property
     def created(self):
-        """Datetime at which the dataset was created.
-
-        Returns:
-            Union[datetime.datetime, None]:
-                the creation time (``None`` until set from the server).
+        """Union[datetime.datetime, None]: Datetime at which the dataset was
+        created (:data:`None` until set from the server).
         """
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
@@ -353,48 +321,36 @@ class Dataset(object):
 
     @property
     def dataset_id(self):
-        """Dataset ID.
-
-        Returns:
-            str: the dataset ID.
-        """
+        """str: Dataset ID."""
         return self._properties['datasetReference']['datasetId']
 
     @property
     def full_dataset_id(self):
-        """ID for the dataset resource, in the form ``project_id:dataset_id``.
+        """Union[str, None]: ID for the dataset resource (:data:`None` until
+        set from the server)
 
-        Returns:
-            Union[str, None]: the ID (``None`` until set from the server).
+        In the format ``project_id:dataset_id``.
         """
         return self._properties.get('id')
 
     @property
     def reference(self):
-        """A reference to this dataset.
-
-        Returns:
-            google.cloud.bigquery.dataset.DatasetReference:
-                A pointer to this dataset
+        """google.cloud.bigquery.dataset.DatasetReference: A reference to this
+        dataset.
         """
         return DatasetReference(self.project, self.dataset_id)
 
     @property
     def etag(self):
-        """ETag for the dataset resource.
-
-        Returns:
-            Union[str, None]: The ETag (``None`` until set from the server).
+        """Union[str, None]: ETag for the dataset resource (:data:`None` until
+        set from the server).
         """
         return self._properties.get('etag')
 
     @property
     def modified(self):
-        """Datetime at which the dataset was last modified.
-
-        Returns:
-            Union[datetime.datetime, None]:
-                The modification time (``None`` until set from the server).
+        """Union[datetime.datetime, None]: Datetime at which the dataset was
+        last modified (:data:`None` until set from the server).
         """
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
@@ -403,132 +359,91 @@ class Dataset(object):
 
     @property
     def self_link(self):
-        """URL for the dataset resource.
-
-        Returns:
-            Union[str, None]: the URL (``None`` until set from the server).
+        """Union[str, None]: URL for the dataset resource (:data:`None` until
+        set from the server).
         """
         return self._properties.get('selfLink')
 
     @property
     def default_table_expiration_ms(self):
-        """Default expiration time for tables in the dataset.
+        """Union[int, None]: Default expiration time for tables in the dataset
+        (defaults to :data:`None`).
 
-        Returns:
-            Union[int, None]:
-                The time in milliseconds, or ``None`` (the default).
+        Raises:
+            ValueError: For invalid value types.
         """
         return self._properties.get('defaultTableExpirationMs')
 
     @default_table_expiration_ms.setter
     def default_table_expiration_ms(self, value):
-        """Update default expiration time for tables in the dataset.
-
-        Args:
-            value (int, optional): new default time, in milliseconds
-
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.integer_types) and value is not None:
             raise ValueError("Pass an integer, or None")
         self._properties['defaultTableExpirationMs'] = value
 
     @property
     def description(self):
-        """Description of the dataset.
+        """Union[str, None]: Description of the dataset as set by the user
+        (defaults to :data:`None`).
 
-        Returns:
-            Union[str, None]:
-                The description as set by the user, or ``None`` (the default).
+        Raises:
+            ValueError: for invalid value types.
         """
         return self._properties.get('description')
 
     @description.setter
     def description(self, value):
-        """Update description of the dataset.
-
-        Args:
-            value (str, optional): new description
-
-        Raises:
-            ValueError: for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['description'] = value
 
     @property
     def friendly_name(self):
-        """Title of the dataset.
+        """Union[str, None]: Title of the dataset as set by the user
+        (defaults to :data:`None`).
 
-        Returns:
-            Union[str, None]:
-                The name as set by the user, or ``None`` (the default).
+        Raises:
+            ValueError: for invalid value types.
         """
         return self._properties.get('friendlyName')
 
     @friendly_name.setter
     def friendly_name(self, value):
-        """Update title of the dataset.
-
-        Args:
-            value (str, optional): new title
-
-        Raises:
-            ValueError: for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['friendlyName'] = value
 
     @property
     def location(self):
-        """Location in which the dataset is hosted.
+        """Union[str, None]: Location in which the dataset is hosted as set by
+        the user (defaults to :data:`None`).
 
-        Returns:
-            Union[str, None]:
-                The location as set by the user, or ``None`` (the default).
+        Raises:
+            ValueError: for invalid value types.
         """
         return self._properties.get('location')
 
     @location.setter
     def location(self, value):
-        """Update location in which the dataset is hosted.
-
-        Args:
-            value (str, optional): the new location
-
-        Raises:
-            ValueError: for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
     @property
     def labels(self):
-        """Labels for the dataset.
+        """Dict[str, str]: Labels for the dataset.
 
         This method always returns a dict. To change a dataset's labels,
         modify the dict, then call
         :meth:`google.cloud.bigquery.client.Client.update_dataset`. To delete
-        a label, set its value to ``None`` before updating.
+        a label, set its value to :data:`None` before updating.
 
-        Returns:
-            Dict[str, str]: A dict of the the dataset's labels.
+        Raises:
+            ValueError: for invalid value types.
         """
         return self._properties.get('labels', {})
 
     @labels.setter
     def labels(self, value):
-        """Update labels for the dataset.
-
-        Args:
-            value (Dict[str, str]): new labels
-
-        Raises:
-            ValueError: for invalid value types.
-        """
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties['labels'] = value
@@ -604,7 +519,7 @@ class DatasetListItem(object):
 
 
     Args:
-        resource (dict):
+        resource (Dict[str, object]):
             A dataset-like resource object from a dataset list response. A
             ``datasetReference`` property is required.
 
@@ -627,66 +542,50 @@ class DatasetListItem(object):
 
     @property
     def project(self):
-        """Project bound to the dataset.
-
-        :rtype: str
-        :returns: the project.
-        """
+        """str: Project bound to the dataset."""
         return self._properties['datasetReference']['projectId']
 
     @property
     def dataset_id(self):
-        """Dataset ID.
-
-        :rtype: str
-        :returns: the dataset ID.
-        """
+        """str: Dataset ID."""
         return self._properties['datasetReference']['datasetId']
 
     @property
     def full_dataset_id(self):
-        """ID for the dataset resource, in the form "project_id:dataset_id".
+        """Union[str, None]: ID for the dataset resource (:data:`None` until
+        set from the server)
 
-        :rtype: str, or ``NoneType``
-        :returns: the ID (None until set from the server).
+        In the format ``project_id:dataset_id``.
         """
         return self._properties.get('id')
 
     @property
     def friendly_name(self):
-        """Title of the dataset.
-
-        :rtype: str, or ``NoneType``
-        :returns: The name as set by the user, or None (the default).
+        """Union[str, None]: Title of the dataset as set by the user
+        (defaults to :data:`None`).
         """
         return self._properties.get('friendlyName')
 
     @property
     def labels(self):
-        """Labels for the dataset.
-
-        :rtype: dict, {str -> str}
-        :returns: A dict of the the dataset's labels.
-        """
+        """Dict[str, str]: Labels for the dataset."""
         return self._properties.get('labels', {})
 
     @property
     def reference(self):
-        """A reference to this dataset.
-
-        Returns:
-            google.cloud.bigquery.dataset.DatasetReference:
-                A pointer to this dataset
+        """google.cloud.bigquery.dataset.DatasetReference: A reference to this
+        dataset.
         """
         return DatasetReference(self.project, self.dataset_id)
 
     def table(self, table_id):
         """Constructs a TableReference.
 
-        :type table_id: str
-        :param table_id: the ID of the table.
+        Args:
+            table_id (str): the ID of the table.
 
-        :rtype: :class:`~google.cloud.bigquery.table.TableReference`
-        :returns: a TableReference for a table in this dataset.
+        Returns:
+            google.cloud.bigquery.table.TableReference:
+                A TableReference for a table in this dataset.
         """
         return TableReference(self.reference, table_id)
