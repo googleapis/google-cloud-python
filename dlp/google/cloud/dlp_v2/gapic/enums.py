@@ -35,6 +35,25 @@ class Likelihood(object):
     VERY_LIKELY = 5
 
 
+class FileType(object):
+    """
+    Definitions of file type groups to scan.
+
+    Attributes:
+      FILE_TYPE_UNSPECIFIED (int): Includes all files.
+      BINARY_FILE (int): Includes all file extensions not covered by other types.
+      TEXT_FILE (int): Included file extensions:
+        c, cc, cpp, cxx, c++, cs, css, dart, eml, go, h, hh, hpp, hxx, h++, hs,
+        html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json, ocaml, md, mkd,
+        markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw, rb, rbw, rs, rc,
+        scala, sh, sql, tex, txt, asc, text, brf, vcard, vcs, wml, xml, xsl, xsd,
+        yml, yaml.
+    """
+    FILE_TYPE_UNSPECIFIED = 0
+    BINARY_FILE = 1
+    TEXT_FILE = 2
+
+
 class DayOfWeek(object):
     """
     Represents a day of week.
@@ -130,6 +149,7 @@ class ByteContentItem(object):
         """
         Attributes:
           BYTES_TYPE_UNSPECIFIED (int)
+          IMAGE (int)
           IMAGE_JPEG (int)
           IMAGE_BMP (int)
           IMAGE_PNG (int)
@@ -137,6 +157,7 @@ class ByteContentItem(object):
           TEXT_UTF8 (int)
         """
         BYTES_TYPE_UNSPECIFIED = 0
+        IMAGE = 6
         IMAGE_JPEG = 1
         IMAGE_BMP = 2
         IMAGE_PNG = 3
