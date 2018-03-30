@@ -712,7 +712,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         resource = table._build_resource(['newAlphaProperty'])
 
         exp_resource = {
-            'tableReference': table_ref.to_api_repr(),
             'newAlphaProperty': 'unreleased property'
         }
         self.assertEqual(resource, exp_resource)

@@ -653,10 +653,8 @@ class Table(object):
         return copy.deepcopy(self._properties)
 
     def _build_resource(self, filter_fields):
-        """Generate a resource for ``create`` or ``update``."""
-        partial = {
-            'tableReference': self._properties['tableReference']
-        }
+        """Generate a resource for ``update``."""
+        partial = {}
         for f in filter_fields:
             api_field = self._PROPERTY_TO_API_FIELD.get(f)
             if api_field is None and f not in self._properties:

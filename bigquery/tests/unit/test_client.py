@@ -913,11 +913,6 @@ class TestClient(unittest.TestCase):
             table, ['schema', 'description', 'friendly_name', 'labels'])
 
         sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
             'schema': {
                 'fields': [
                     {
@@ -979,14 +974,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='PATCH',
             path='/%s' % path,
-            data={
-                'tableReference': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_ID,
-                    'tableId': self.TABLE_ID
-                },
-                'newAlphaProperty': 'unreleased property',
-            },
+            data={'newAlphaProperty': 'unreleased property'},
             headers=None)
         self.assertEqual(
             updated_table._properties['newAlphaProperty'],
@@ -1017,14 +1005,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='PATCH',
             path='/%s' % path,
-            data={
-                'tableReference': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_ID,
-                    'tableId': self.TABLE_ID
-                },
-                'view': {'useLegacySql': True}
-            },
+            data={'view': {'useLegacySql': True}},
             headers=None)
         self.assertEqual(
             updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
@@ -1089,11 +1070,6 @@ class TestClient(unittest.TestCase):
             method='PATCH',
             path='/%s' % path,
             data={
-                'tableReference': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_ID,
-                    'tableId': self.TABLE_ID
-                },
                 'view': {'query': query, 'useLegacySql': True},
                 'location': location,
                 'expirationTime': _millis(exp_time),
@@ -1141,14 +1117,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn.api_request.call_args_list), 2)
         req = conn.api_request.call_args_list[1]
         self.assertEqual(req[1]['method'], 'PATCH')
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'schema': None
-        }
+        sent = {'schema': None}
         self.assertEqual(req[1]['data'], sent)
         self.assertEqual(req[1]['path'], '/%s' % path)
         self.assertEqual(len(updated_table.schema), 0)
@@ -1194,14 +1163,7 @@ class TestClient(unittest.TestCase):
         req = conn.api_request.call_args_list[1]
         self.assertEqual(req[1]['method'], 'PATCH')
         self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'description': None,
-        }
+        sent = {'description': None}
         self.assertEqual(req[1]['data'], sent)
         self.assertIsNone(table3.description)
 
