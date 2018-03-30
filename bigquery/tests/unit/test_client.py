@@ -385,7 +385,7 @@ class TestClient(unittest.TestCase):
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
-            'defaultTableExpirationMs': 3600,
+            'defaultTableExpirationMs': '3600',
             'labels': LABELS,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
@@ -413,7 +413,7 @@ class TestClient(unittest.TestCase):
                 'description': DESCRIPTION,
                 'friendlyName': FRIENDLY_NAME,
                 'location': LOCATION,
-                'defaultTableExpirationMs': 3600,
+                'defaultTableExpirationMs': '3600',
                 'access': [
                     {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                     {'view': VIEW}],

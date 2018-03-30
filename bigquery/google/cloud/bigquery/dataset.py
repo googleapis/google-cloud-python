@@ -19,7 +19,7 @@ from __future__ import absolute_import
 import six
 import copy
 
-from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.table import TableReference
 
 
@@ -314,7 +314,8 @@ class Dataset(object):
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+            return _helpers._datetime_from_microseconds(
+                1000.0 * float(creation_time))
 
     @property
     def dataset_id(self):
@@ -352,7 +353,8 @@ class Dataset(object):
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * modified_time)
+            return _helpers._datetime_from_microseconds(
+                1000.0 * float(modified_time))
 
     @property
     def self_link(self):
@@ -369,13 +371,15 @@ class Dataset(object):
         Raises:
             ValueError: For invalid value types.
         """
-        return self._properties.get('defaultTableExpirationMs')
+        return _helpers._int_or_none(
+            self._properties.get('defaultTableExpirationMs'))
 
     @default_table_expiration_ms.setter
     def default_table_expiration_ms(self, value):
         if not isinstance(value, six.integer_types) and value is not None:
             raise ValueError("Pass an integer, or None")
-        self._properties['defaultTableExpirationMs'] = value
+        self._properties['defaultTableExpirationMs'] = _helpers._str_or_none(
+            value)
 
     @property
     def description(self):
