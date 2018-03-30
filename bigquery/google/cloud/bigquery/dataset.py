@@ -263,10 +263,7 @@ class Dataset(object):
         'access_entries': 'access',
         'created': 'creationTime',
         'default_table_expiration_ms': 'defaultTableExpirationMs',
-        'description': 'description',
         'friendly_name': 'friendlyName',
-        'location': 'location',
-        'labels': 'labels',
     }
 
     def __init__(self, dataset_ref):
