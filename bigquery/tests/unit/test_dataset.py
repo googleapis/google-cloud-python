@@ -472,6 +472,34 @@ class TestDataset(unittest.TestCase):
         dataset = klass.from_api_repr(RESOURCE)
         self._verify_resource_properties(dataset, RESOURCE)
 
+    def test_to_api_repr_w_custom_field(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset._properties['newAlphaProperty'] = 'unreleased property'
+        resource = dataset.to_api_repr()
+
+        exp_resource = {
+            'datasetReference': self.DS_REF.to_api_repr(),
+            'labels': {},
+            'newAlphaProperty': 'unreleased property',
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test__build_resource_w_custom_field(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset._properties['newAlphaProperty'] = 'unreleased property'
+        resource = dataset._build_resource(['newAlphaProperty'])
+
+        exp_resource = {
+            'newAlphaProperty': 'unreleased property'
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test__build_resource_w_custom_field_not_in__properties(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset.bad = 'value'
+        with self.assertRaises(ValueError):
+            dataset._build_resource(['bad'])
+
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 

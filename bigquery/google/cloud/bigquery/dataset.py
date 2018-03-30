@@ -483,10 +483,10 @@ class Dataset(object):
         """Generate a resource for ``create`` or ``update``."""
         partial = {}
         for f in filter_fields:
-            if not hasattr(self, f) and f not in self._properties:
-                raise ValueError('No Dataset property %s' % f)
             api_field = self._PROPERTY_TO_API_FIELD.get(f)
-            if api_field:
+            if api_field is None and f not in self._properties:
+                raise ValueError('No Dataset property %s' % f)
+            elif api_field is not None:
                 partial[api_field] = self._properties.get(api_field)
             else:
                 # allows properties that are not defined in the library
