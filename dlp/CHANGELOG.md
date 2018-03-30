@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.3.0
+
+### Implementation changes
+
+- The library has been regenerated to pick up changes from the API's proto definition. (#5131)
+
 ## 0.2.0
 
 ### Interface additions
