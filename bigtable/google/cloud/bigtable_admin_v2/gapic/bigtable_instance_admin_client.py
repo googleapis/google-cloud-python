@@ -29,6 +29,7 @@ import google.api_core.path_template
 from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client_config
 from google.cloud.bigtable_admin_v2.gapic import enums
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2_grpc
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
@@ -155,7 +156,7 @@ class BigtableInstanceAdminClient(object):
 
         # Create the gRPC stubs.
         self.bigtable_instance_admin_stub = (
-            bigtable_instance_admin_pb2.BigtableInstanceAdminStub(channel))
+            bigtable_instance_admin_pb2_grpc.BigtableInstanceAdminStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.
