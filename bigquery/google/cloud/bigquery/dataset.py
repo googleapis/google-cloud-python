@@ -41,7 +41,7 @@ class AccessEntry(object):
         entity_type (str):
             Type of entity being granted the role. One of :attr:`ENTITY_TYPES`.
 
-        entity_id (Union[str, dict]):
+        entity_id (Union[str, Dict[str, str]]):
             If the ``entity_type`` is not 'view', the ``entity_id`` is the
             ``str`` ID of the entity being granted the role. If the
             ``entity_type`` is 'view', the ``entity_id`` is a ``dict``
@@ -112,7 +112,7 @@ class AccessEntry(object):
         """Construct the API resource representation of this access entry
 
         Returns:
-            dict: Access entry represented as an API resource
+            Dict[str, object]: Access entry represented as an API resource
         """
         resource = {self.entity_type: self.entity_id}
         if self.role is not None:
@@ -124,7 +124,7 @@ class AccessEntry(object):
         """Factory: construct an access entry given its API representation
 
         Args:
-            resource (dict):
+            resource (Dict[str, object]):
                 Access entry resource representation returned from the API
 
         Returns:
@@ -198,7 +198,7 @@ class DatasetReference(object):
         """Factory: construct a dataset reference given its API representation
 
         Args:
-            resource (dict):
+            resource (Dict[str, str]):
                 Dataset reference resource representation returned from the API
 
         Returns:
@@ -213,7 +213,7 @@ class DatasetReference(object):
         """Construct the API resource representation of this dataset reference
 
         Returns:
-            dict: dataset reference represented as an API resource
+            Dict[str, str]: dataset reference represented as an API resource
         """
         return {
             'projectId': self._project,
@@ -226,7 +226,7 @@ class DatasetReference(object):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this :class:`.DatasetReference`.
+            Tuple[str]: The contents of this :class:`.DatasetReference`.
         """
         return (
             self._project,
@@ -454,7 +454,7 @@ class Dataset(object):
         """Factory: construct a dataset given its API representation
 
         Args:
-            resource (dict):
+            resource (Dict[str: object]):
                 Dataset resource representation returned from the API
 
         Returns:
@@ -475,7 +475,7 @@ class Dataset(object):
         """Construct the API resource representation of this dataset
 
         Returns:
-            dict: The dataset represented as an API resource
+            Dict[str, object]: The dataset represented as an API resource
         """
         return copy.deepcopy(self._properties)
 
@@ -520,7 +520,7 @@ class DatasetListItem(object):
 
 
     Args:
-        resource (Dict[str, object]):
+        resource (Dict[str, str]):
             A dataset-like resource object from a dataset list response. A
             ``datasetReference`` property is required.
 
