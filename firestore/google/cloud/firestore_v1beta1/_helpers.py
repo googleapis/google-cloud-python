@@ -257,7 +257,7 @@ class FieldPathHelper(object):
             ValueError: If there is a conflict.
         """
         if curr_paths is self.PATH_END:
-            partial = get_field_path(parts[:index + 1])
+            partial = FieldPath(*parts[:index + 1]).to_api_repr()
             msg = self.FIELD_PATH_CONFLICT.format(partial, field_path)
             raise ValueError(msg)
 
@@ -288,7 +288,7 @@ class FieldPathHelper(object):
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
-        conflict = get_field_path(conflict_parts)
+        conflict = FieldPath(*conflict_parts).to_api_repr()
         msg = self.FIELD_PATH_CONFLICT.format(
             field_path.to_api_repr(), conflict)
         return ValueError(msg)
@@ -622,35 +622,6 @@ def decode_dict(value_fields, client):
     }
 
 
-def get_field_path(field_names):
-    """Create a **field path** from a list of nested field names.
-
-    A **field path** is a ``.``-delimited concatenation of the field
-    names. It is used to represent a nested field. For example,
-    in the data
-
-    .. code-block: python
-
-       data = {
-          'aa': {
-              'bb': {
-                  'cc': 10,
-              },
-          },
-       }
-
-    the field path ``'aa.bb.cc'`` represents that data stored in
-    ``data['aa']['bb']['cc']``.
-
-    Args:
-        field_names (Iterable[str, ...]): The list of field names.
-
-    Returns:
-        str: The ``.``-delimited field path.
-    """
-    return FIELD_PATH_DELIMITER.join(field_names)
-
-
 def parse_field_path(field_path):
     """Parse a **field path** from into a list of nested field names.
 
@@ -731,11 +702,11 @@ def get_nested_value(field_path, data):
                     msg = FIELD_PATH_MISSING_TOP.format(field_name)
                     raise KeyError(msg)
                 else:
-                    partial = get_field_path(field_names[:index])
+                    partial = FieldPath(*field_names[:index]).to_api_repr()
                     msg = FIELD_PATH_MISSING_KEY.format(field_name, partial)
                     raise KeyError(msg)
         else:
-            partial = get_field_path(field_names[:index])
+            partial = FieldPath(*field_names[:index]).to_api_repr()
             msg = FIELD_PATH_WRONG_TYPE.format(partial, field_name)
             raise KeyError(msg)
 
@@ -818,14 +789,16 @@ def remove_server_timestamp(document_data):
         if isinstance(value, dict):
             sub_field_paths, sub_data = remove_server_timestamp(value)
             field_paths.extend(
-                get_field_path([field_name, sub_path])
+                FieldPath(field_name, sub_path).to_api_repr()
                 for sub_path in sub_field_paths
             )
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
         elif value is constants.SERVER_TIMESTAMP:
-            field_paths.append(field_name)
+            if isinstance(field_name, str):
+                field_name = field_name.split(".")
+            field_paths.append(FieldPath(*field_name).to_api_repr())
         else:
             actual_data[field_name] = value
 
