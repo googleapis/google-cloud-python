@@ -239,12 +239,19 @@ class Client(ClientWithProject):
 
         Args:
             dataset (google.cloud.bigquery.dataset.Dataset):
-                A ``Dataset`` populated with the desired initial state. If
-                project is missing, it defaults to the project of the client.
+                A ``Dataset`` populated with the desired initial state.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
                 A new ``Dataset`` returned from the API.
+
+        Example:
+
+            >>> from google.cloud import bigquery
+            >>> client = bigquery.Client()
+            >>> dataset = bigquery.Dataset(client.dataset('my_dataset'))
+            >>> dataset = client.create_dataset(dataset)
+
         """
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
