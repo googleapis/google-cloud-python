@@ -491,6 +491,7 @@ class Dataset(object):
                 partial[api_field] = self._properties.get(api_field)
             else:
                 # allows properties that are not defined in the library
+                # and properties that have the same name as API resource key
                 partial[filter_field] = self._properties[filter_field]
 
         return partial
