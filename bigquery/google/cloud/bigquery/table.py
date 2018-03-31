@@ -28,11 +28,8 @@ except ImportError:  # pragma: NO COVER
 
 from google.api_core.page_iterator import HTTPIterator
 
-from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _millis_from_datetime
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
-from google.cloud.bigquery._helpers import _field_to_index_mapping
+import google.cloud._helpers
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -362,7 +359,8 @@ class Table(object):
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(creation_time))
 
     @property
     def etag(self):
@@ -379,25 +377,22 @@ class Table(object):
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * modified_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(modified_time))
 
     @property
     def num_bytes(self):
         """Union[int, None]: The size of the table in bytes (:data:`None` until
         set from the server).
         """
-        num_bytes_as_str = self._properties.get('numBytes')
-        if num_bytes_as_str is not None:
-            return int(num_bytes_as_str)
+        return _helpers._int_or_none(self._properties.get('numBytes'))
 
     @property
     def num_rows(self):
         """Union[int, None]: The number of rows in the table (:data:`None`
         until set from the server).
         """
-        num_rows_as_str = self._properties.get('numRows')
-        if num_rows_as_str is not None:
-            return int(num_rows_as_str)
+        return _helpers._int_or_none(self._properties.get('numRows'))
 
     @property
     def self_link(self):
@@ -451,23 +446,25 @@ class Table(object):
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
         """
-        return self._properties.get('timePartitioning', {}).get('expirationMs')
+        return _helpers._int_or_none(
+            self._properties.get('timePartitioning', {}).get('expirationMs'))
 
     @partition_expiration.setter
     def partition_expiration(self, value):
         if not isinstance(value, (int, type(None))):
             raise ValueError(
-                "must be an integer representing millisseconds or None")
+                "must be an integer representing milliseconds or None")
 
         if value is None:
             if 'timePartitioning' in self._properties:
                 self._properties['timePartitioning'].pop('expirationMs')
         else:
+            api_repr = str(value)
             try:
-                self._properties['timePartitioning']['expirationMs'] = value
+                self._properties['timePartitioning']['expirationMs'] = api_repr
             except KeyError:
                 self._properties['timePartitioning'] = {'type': 'DAY'}
-                self._properties['timePartitioning']['expirationMs'] = value
+                self._properties['timePartitioning']['expirationMs'] = api_repr
 
     @property
     def description(self):
@@ -496,13 +493,15 @@ class Table(object):
         expiration_time = self._properties.get('expirationTime')
         if expiration_time is not None:
             # expiration_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * expiration_time)
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * float(expiration_time))
 
     @expires.setter
     def expires(self, value):
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
-        self._properties['expirationTime'] = _millis_from_datetime(value)
+        value_ms = google.cloud._helpers._millis_from_datetime(value)
+        self._properties['expirationTime'] = _helpers._str_or_none(value_ms)
 
     @property
     def friendly_name(self):
@@ -664,7 +663,7 @@ class Table(object):
             else:
                 # allows properties that are not defined in the library
                 # and properties that have the same name as API resource key
-                partial[f] = self._properties[filter_field]
+                partial[filter_field] = self._properties[filter_field]
 
         return partial
 
@@ -768,8 +767,7 @@ class TableListItem(object):
         """
         expiration = self._properties.get(
             'timePartitioning', {}).get('expirationMs')
-        if expiration is not None:
-            return int(expiration)
+        return _helpers._int_or_none(expiration)
 
     @property
     def friendly_name(self):
@@ -828,8 +826,9 @@ class StreamingBuffer(object):
         self.estimated_bytes = int(resource['estimatedBytes'])
         self.estimated_rows = int(resource['estimatedRows'])
         # time is in milliseconds since the epoch.
-        self.oldest_entry_time = _datetime_from_microseconds(
-            1000.0 * int(resource['oldestEntryTime']))
+        self.oldest_entry_time = (
+            google.cloud._helpers._datetime_from_microseconds(
+                1000.0 * int(resource['oldestEntryTime'])))
 
 
 class Row(object):
@@ -980,12 +979,12 @@ class RowIterator(HTTPIterator):
     def __init__(self, client, api_request, path, schema, page_token=None,
                  max_results=None, page_size=None, extra_params=None):
         super(RowIterator, self).__init__(
-            client, api_request, path, item_to_value=_item_to_row,
+            client, api_request, path, item_to_value=_helpers._item_to_row,
             items_key='rows', page_token=page_token, max_results=max_results,
-            extra_params=extra_params, page_start=_rows_page_start,
+            extra_params=extra_params, page_start=_helpers._rows_page_start,
             next_token='pageToken')
         self._schema = schema
-        self._field_to_index = _field_to_index_mapping(schema)
+        self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._total_rows = None
         self._page_size = page_size
 

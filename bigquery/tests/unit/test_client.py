@@ -607,7 +607,7 @@ class TestClient(unittest.TestCase):
                     'datasetId': self.DS_ID,
                     'tableId': self.TABLE_ID
                 },
-                'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
+                'timePartitioning': {'type': 'DAY', 'expirationMs': '100'},
                 'labels': {},
             })
         self.assertEqual(table.partitioning_type, "DAY")
@@ -1072,7 +1072,7 @@ class TestClient(unittest.TestCase):
             data={
                 'view': {'query': query, 'useLegacySql': True},
                 'location': location,
-                'expirationTime': _millis(exp_time),
+                'expirationTime': str(_millis(exp_time)),
                 'schema': schema_resource,
             },
             headers=None)
