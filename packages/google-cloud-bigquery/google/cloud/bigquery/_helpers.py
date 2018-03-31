@@ -477,3 +477,9 @@ def _int_or_none(value):
         return value
     if value is not None:
         return int(value)
+
+
+def _str_or_none(value):
+    """Helper: serialize value to JSON string."""
+    if value is not None:
+        return str(value)
