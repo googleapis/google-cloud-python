@@ -744,6 +744,44 @@ class Test_snake_to_camel_case(unittest.TestCase):
         self.assertEqual(self._call_fut('friendlyName'), 'friendlyName')
 
 
+class Test__int_or_none(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _int_or_none
+
+        return _int_or_none(value)
+
+    def test_w_num_string(self):
+        self.assertEqual(self._call_fut('123'), 123)
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), 123)
+
+    def test_w_non_num_string(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('ham')
+
+
+class Test__str_or_none(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _str_or_none
+
+        return _str_or_none(value)
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), '123')
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_str(self):
+        self.assertEqual(self._call_fut('ham'), 'ham')
+
+
 class _Field(object):
 
     def __init__(self, mode, name='unknown', field_type='UNKNOWN', fields=()):
