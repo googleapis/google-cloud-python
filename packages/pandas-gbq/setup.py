@@ -18,8 +18,8 @@ def readme():
 
 INSTALL_REQUIRES = [
     'pandas',
-    'google-auth>=1.0.0',
-    'google-auth-oauthlib>=0.0.1',
+    'google-auth',
+    'google-auth-oauthlib',
     'google-cloud-bigquery>=0.29.0',
 ]
 
