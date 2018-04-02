@@ -597,6 +597,29 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.view_use_legacy_sql, True)
         self.assertEqual(table.view_query, 'select * from foo')
 
+    def test_external_data_configuration_setter(self):
+        from google.cloud.bigquery.external_config import ExternalConfig
+
+        external_config = ExternalConfig('CSV')
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table.external_data_configuration = external_config
+
+        self.assertEqual(
+            table.external_data_configuration.source_format,
+            external_config.source_format)
+
+    def test_external_data_configuration_setter_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table.external_data_configuration = None
+
+        self.assertIsNone(table.external_data_configuration)
+
     def test_external_data_configuration_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -666,6 +689,39 @@ class TestTable(unittest.TestCase, _SchemaBase):
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE)
         self._verifyResourceProperties(table, RESOURCE)
+
+    def test_to_api_repr_w_custom_field(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+        resource = table.to_api_repr()
+
+        exp_resource = {
+            'tableReference': table_ref.to_api_repr(),
+            'labels': {},
+            'newAlphaProperty': 'unreleased property'
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test__build_resource_w_custom_field(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+        resource = table._build_resource(['newAlphaProperty'])
+
+        exp_resource = {
+            'newAlphaProperty': 'unreleased property'
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test__build_resource_w_custom_field_not_in__properties(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table = self._make_one(dataset.table(self.TABLE_NAME))
+        table.bad = 'value'
+        with self.assertRaises(ValueError):
+            table._build_resource(['bad'])
 
     def test_partition_type_setter_bad_type(self):
         from google.cloud.bigquery.table import SchemaField
