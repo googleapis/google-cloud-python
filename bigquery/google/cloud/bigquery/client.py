@@ -272,12 +272,8 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
-        resource = table._build_resource(Table.all_fields)
-        doomed = [field for field in resource if resource[field] is None]
-        for field in doomed:
-            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=resource)
+            method='POST', path=path, data=table.to_api_repr())
         return Table.from_api_repr(api_response)
 
     def _call_api(self, retry, **kwargs):
@@ -1111,7 +1107,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1305,7 +1301,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
