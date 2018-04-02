@@ -243,6 +243,7 @@ class Table(object):
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
         'partitioning_type': 'timePartitioning',
+        'partition_expiration': 'timePartitioning',
         'view_use_legacy_sql': 'view',
         'view_query': 'view',
         'external_data_configuration': 'externalDataConfiguration',
