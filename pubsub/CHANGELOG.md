@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.33.1
+
+### Implementation changes
+
+- Surface publish RPC errors back to the publish futures (#5124)
+- Make the pausable response iterator aware of the RPC state to prevent deadlock (#5108)
+- Properly handle graceful stop in request generator (#5097)
+
 ## 0.33.0
 
 ### Implementation changes
