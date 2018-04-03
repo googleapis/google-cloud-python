@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.32.0
+
+- BigQuery: Moves all Table property conversion logic into properties (#5125)
+- BigQuery: Moves all Dataset property conversion logic into properties (#5130)
+- BigQuery: Remove unnecessary _Table class from test_job.py (#5126)
+- BigQuery: Removes _ApiResourceProperty class (#5107)
+- Use explicit bytes to initialize 'BytesIO'. (#5116)
+- Make SchemaField be able to include description via from_api_repr method (#5114)
+- Bigquery: adds `page_size` parameter for `list_rows` and use in DB-API for `arraysize` (#4931)
+- StringIO to BytesIO (#5101)
+- BigQuery: Add dev version for 0.32.0 release (#5105)
+- shorten snippets test name (#5091)
+- BigQuery: Don't use `selected_fields` for listing query result rows (#5072)
+- Add location property to job classes. (#5071)
+- BigQuery: Use `job.configuration` resource for XXXJobConfig classes (#5036)
+- BigQuery: Use autospec for Connection in tests. (#5066)
+- BigQuery: Adds Parquet SourceFormat and samples (#5057)
+- Fix bad trove classifier
+- Add IPython magics for running queries (#4983)
+- Bigquery: remove test_load_table_from_uri_w_autodetect_schema_then_get_job because of duplicate test in snippets (#5004)
+- Fix encoding variable and strings UTF-8 and ISO-8859-1 difference documentation (#4990)
+- Bigquery: Job string constant parameters in init and snippets documentation (#4987)
+
 ## 0.31.0
 
 ### Interface additions
