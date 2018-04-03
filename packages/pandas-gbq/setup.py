@@ -17,6 +17,7 @@ def readme():
 
 
 INSTALL_REQUIRES = [
+    'setuptools',
     'pandas',
     'google-auth',
     'google-auth-oauthlib',

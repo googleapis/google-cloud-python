@@ -1,9 +1,12 @@
 Changelog
 =========
 
-0.3.2 / [TBD]
+0.4.0 / [TBD]
 ------------------
 - Fix bug with querying for an array of floats (:issue:`123`)
+- Fix bug with integer columns on Windows. Explicitly use 64bit integers when converting from BQ types. (:issue:`119`)
+- Fix bug caused by breaking change the way ``google-cloud-python`` version 0.32.0+ handles additional configuration argument to ``read_gbq``. (:issue:`152`)
+-  **Deprecates** the ``verbose`` parameter. Messages use the logging module instead of printing progress directly to standard output. (:issue:`12`)
 
 0.3.1 / 2018-02-13
 ------------------

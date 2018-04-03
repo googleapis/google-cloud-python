@@ -1266,16 +1266,42 @@ class TestToGBQIntegration(object):
         test_id = "15"
         test_schema = {
             'fields': [
-                {'name': 'A', 'type': 'FLOAT', 'mode': 'NULLABLE'},
-                {'name': 'B', 'type': 'FLOAT', 'mode': 'NULLABLE'},
-                {'name': 'C', 'type': 'STRING', 'mode': 'NULLABLE'},
-                {'name': 'D', 'type': 'TIMESTAMP', 'mode': 'NULLABLE'}
+                {
+                    'name': 'A',
+                    'type': 'FLOAT',
+                    'mode': 'NULLABLE',
+                    'description': None,
+                },
+                {
+                    'name': 'B',
+                    'type': 'FLOAT',
+                    'mode': 'NULLABLE',
+                    'description': None,
+                },
+                {
+                    'name': 'C',
+                    'type': 'STRING',
+                    'mode': 'NULLABLE',
+                    'description': None,
+                },
+                {
+                    'name': 'D',
+                    'type': 'TIMESTAMP',
+                    'mode': 'NULLABLE',
+                    'description': None,
+                },
             ]
         }
 
         self.table.create(TABLE_ID + test_id, test_schema)
-        actual = self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id)
-        expected = test_schema['fields']
+        actual = self.sut._clean_schema_fields(
+            self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id))
+        expected = [
+            {'name': 'A', 'type': 'FLOAT'},
+            {'name': 'B', 'type': 'FLOAT'},
+            {'name': 'C', 'type': 'STRING'},
+            {'name': 'D', 'type': 'TIMESTAMP'},
+        ]
         assert expected == actual, 'Expected schema used to create table'
 
     def test_schema_is_subset_passes_if_subset(self):
