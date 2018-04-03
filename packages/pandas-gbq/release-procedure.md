@@ -8,7 +8,8 @@
 
 *  Build the package
 
-       twine upload dist/*
+        git clean -xfd
+        python setup.py register sdist bdist_wheel --universal
 
 *  Upload to test PyPI
 
