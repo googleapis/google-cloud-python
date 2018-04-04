@@ -93,28 +93,9 @@ class Table(object):
     :param instance: The client that calls GAPIC API.
     """
 
-    def __init__(self, table_id, instance, client):
+    def __init__(self, table_id, client):
         self.table_id = table_id
-        self._instance = instance
         self.client = client
-
-    @property
-    def name(self):
-        """Table name used in requests.
-
-        .. note::
-
-          This property will not change if ``table_id`` does not, but the
-          return value is not cached.
-
-        The table name is of the form
-
-            ``"projects/../instances/../tables/{table_id}"``
-
-        :rtype: str
-        :returns: The table name.
-        """
-        return self._instance.name + '/tables/' + self.table_id
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
@@ -169,87 +150,10 @@ class Table(object):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return (other.table_id == self.table_id and
-                other._instance == self._instance)
+                other.client == self.client)
 
     def __ne__(self, other):
         return not self == other
-
-    def create(self, initial_split_keys=None, column_families=()):
-        """Creates this table.
-
-        .. note::
-
-            A create request returns a
-            :class:`._generated.table_pb2.Table` but we don't use
-            this response.
-
-        :type initial_split_keys: list
-        :param initial_split_keys: (Optional) List of row keys that will be
-                                   used to initially split the table into
-                                   several tablets (Tablets are similar to
-                                   HBase regions). Given two split keys,
-                                   ``"s1"`` and ``"s2"``, three tablets will be
-                                   created, spanning the key ranges:
-                                   ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
-
-        :type column_families: list
-        :param column_families: (Optional) List or other iterable of
-                                :class:`.ColumnFamily` instances.
-        """
-        if initial_split_keys is not None:
-            split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
-            initial_split_keys = [
-                split_pb(key=key) for key in initial_split_keys]
-
-        table_pb = None
-        if column_families:
-            table_pb = table_v2_pb2.Table()
-            for col_fam in column_families:
-                curr_id = col_fam.column_family_id
-                table_pb.column_families[curr_id].CopyFrom(col_fam.to_pb())
-
-        request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
-            initial_splits=initial_split_keys or [],
-            parent=self._instance.name,
-            table_id=self.table_id,
-            table=table_pb,
-        )
-        client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        client._table_stub.CreateTable(request_pb)
-
-    def delete(self):
-        """Delete this table."""
-        request_pb = table_admin_messages_v2_pb2.DeleteTableRequest(
-            name=self.name)
-        client = self._instance._client
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.DeleteTable(request_pb)
-
-    def list_column_families(self):
-        """List the column families owned by this table.
-
-        :rtype: dict
-        :returns: Dictionary of column families attached to this table. Keys
-                  are strings (column family names) and values are
-                  :class:`.ColumnFamily` instances.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the column
-                 family name from the response does not agree with the computed
-                 name from the column family ID.
-        """
-        request_pb = table_admin_messages_v2_pb2.GetTableRequest(
-            name=self.name)
-        client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        table_pb = client._table_stub.GetTable(request_pb)
-
-        result = {}
-        for column_family_id, value_pb in table_pb.column_families.items():
-            gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
-            column_family = self.column_family(column_family_id,
-                                               gc_rule=gc_rule)
-            result[column_family_id] = column_family
-        return result
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
