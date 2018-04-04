@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.31.0
+
+- Vision v1p2beta1: PDF/TIFF OCR (#5127)
+- Use `install_requires` for platform dependencies instead of `extras_require` (#4991)
+- Add vision v1p2beta1 (#4998)
+- Fix bad trove classifier
+- Add max results to feature (#4817)
+
 ## 0.30.1
 
 ### Dependencies
