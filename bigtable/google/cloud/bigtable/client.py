@@ -41,9 +41,11 @@ from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud.bigtable import __version__
-from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_instance_admin_pb2_grpc, bigtable_instance_admin_pb2)
 from google.cloud.bigtable_v2.proto import bigtable_pb2
-from google.cloud.bigtable._generated import bigtable_table_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_table_admin_pb2_grpc, bigtable_table_admin_pb2)
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
@@ -103,17 +105,17 @@ def _make_instance_stub(client):
     :type client: :class:`Client`
     :param client: The client that will hold the stub.
 
-    :rtype: :class:`.bigtable_instance_admin_pb2.BigtableInstanceAdminStub`
+    :rtype: :class:`.bigtable_instance_admin_pb2_grpc.BigtableInstanceAdminStub`
     :returns: A gRPC stub object.
     """
     if client.emulator_host is None:
         return make_secure_stub(
             client.credentials, client.user_agent,
-            bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+            bigtable_instance_admin_pb2_grpc.BigtableInstanceAdminStub,
             INSTANCE_ADMIN_HOST, extra_options=_GRPC_EXTRA_OPTIONS)
     else:
         return make_insecure_stub(
-            bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+            bigtable_instance_admin_pb2_grpc.BigtableInstanceAdminStub,
             client.emulator_host)
 
 
@@ -151,11 +153,11 @@ def _make_table_stub(client):
     if client.emulator_host is None:
         return make_secure_stub(
             client.credentials, client.user_agent,
-            bigtable_table_admin_pb2.BigtableTableAdminStub,
+            bigtable_table_admin_pb2_grpc.BigtableTableAdminStub,
             TABLE_ADMIN_HOST, extra_options=_GRPC_EXTRA_OPTIONS)
     else:
         return make_insecure_stub(
-            bigtable_table_admin_pb2.BigtableTableAdminStub,
+            bigtable_table_admin_pb2_grpc.BigtableTableAdminStub,
             client.emulator_host)
 
 

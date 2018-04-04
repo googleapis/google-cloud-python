@@ -16,9 +16,9 @@
 
 
 from google.cloud import _helpers
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as table_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
 

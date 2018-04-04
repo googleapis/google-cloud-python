@@ -18,9 +18,9 @@
 import re
 
 from google.api_core import operation
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     instance_pb2 as data_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'

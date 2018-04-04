@@ -23,9 +23,9 @@ from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as table_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
