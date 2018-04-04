@@ -265,6 +265,23 @@ class TestFieldPath(unittest.TestCase):
             else:
                 self.assertEqual(key, field_path)
 
+    def test___add__(self):
+        path1 = 'a123', 'b456'
+        path2 = 'c789', 'd012'
+        path3 = 'c789.d012'
+        field_path1 = self._make_one(*path1)
+        field_path1_string = self._make_one(*path1)
+        field_path2 = self._make_one(*path2)
+        field_path1 += field_path2
+        field_path1_string += path3
+        field_path2 = field_path2 + self._make_one(*path1)
+        self.assertEqual(field_path1, self._make_one(*(path1 + path2)))
+        self.assertEqual(field_path2, self._make_one(*(path2 + path1)))
+        self.assertEqual(field_path1_string, field_path1)
+        self.assertNotEqual(field_path1, field_path2)
+        with self.assertRaises(TypeError):
+            field_path1 + 305
+
 
 class TestFieldPathHelper(unittest.TestCase):
 
