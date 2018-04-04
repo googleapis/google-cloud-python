@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.32.0
+
+- Specifies IPython version 5.5 when running Python 2.7 tests (#5145)
+- Use explicit bytes to initialize 'BytesIO'. (#5116)
+- Make SchemaField be able to include description via from_api_repr method (#5114)
+- Bigquery: adds `page_size` parameter for `list_rows` and use in DB-API for `arraysize` (#4931)
+- StringIO to BytesIO (#5101)
+- BigQuery: Don't use `selected_fields` for listing query result rows (#5072)
+- Add location property to job classes. (#5071)
+- BigQuery: Use `job.configuration` resource for XXXJobConfig classes (#5036)
+- BigQuery: Use autospec for Connection in tests. (#5066)
+- BigQuery: Adds Parquet SourceFormat and samples (#5057)
+- Fix bad trove classifier
+- Add IPython magics for running queries (#4983)
+- Fix encoding variable and strings UTF-8 and ISO-8859-1 difference documentation (#4990)
+- Bigquery: Job string constant parameters in init and snippets documentation (#4987)
+
 ## 0.31.0
 
 ### Interface additions
