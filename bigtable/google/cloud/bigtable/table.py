@@ -27,8 +27,6 @@ from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as table_v2_pb2)
-from google.cloud.bigtable.column_family import _gc_rule_from_pb
-from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
@@ -93,25 +91,25 @@ class Table(object):
     :param instance: The client that calls GAPIC API.
     """
 
-    def __init__(self, table_id, client):
+    def __init__(self, project_id, instance_id, table_id, client):
+        self.project_id = project_id
+        self.instance_id = instance_id
         self.table_id = table_id
         self.client = client
 
-    def column_family(self, column_family_id, gc_rule=None):
-        """Factory to create a column family associated with this table.
-
-        :type column_family_id: str
-        :param column_family_id: The ID of the column family. Must be of the
-                                 form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-
-        :type gc_rule: :class:`.GarbageCollectionRule`
-        :param gc_rule: (Optional) The garbage collection settings for this
-                        column family.
-
-        :rtype: :class:`.ColumnFamily`
-        :returns: A column family owned by this table.
+    @property
+    def name(self):
+        """Table name used in requests.
+        .. note::
+          This property will not change if ``table_id`` does not, but the
+          return value is not cached.
+        The table name is of the form
+            ``"projects/../instances/../tables/{table_id}"``
+        :rtype: str
+        :returns: The table name.
         """
-        return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
+        return self.client.table_path(self.project_id, self.instance_id,
+                                      self.table_id)
 
     def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.

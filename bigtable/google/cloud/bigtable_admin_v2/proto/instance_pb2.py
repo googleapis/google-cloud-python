@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.bigtable.admin_v2.proto import common_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_common__pb2
+from google.cloud.bigtable_admin_v2.proto import common_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_common__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(

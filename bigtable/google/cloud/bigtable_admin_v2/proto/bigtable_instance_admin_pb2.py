@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.bigtable.admin_v2.proto import instance_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2
+from google.cloud.bigtable_admin_v2.proto import instance_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_instance__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
