@@ -39,7 +39,7 @@ def default(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud.dlp_v2beta1',
+        '--cov=google.cloud.dlp_v2',
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
