@@ -1047,34 +1047,6 @@ class Test__create_row_request(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
 
-def _CreateTableRequestPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.CreateTableRequest(*args, **kw)
-
-
-def _CreateTableRequestSplitPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.CreateTableRequest.Split(*args, **kw)
-
-
-def _DeleteTableRequestPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.DeleteTableRequest(*args, **kw)
-
-
-def _GetTableRequestPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.GetTableRequest(*args, **kw)
-
-
 def _ReadRowsRequestPB(*args, **kw):
     from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
@@ -1106,21 +1078,6 @@ def _mutate_rows_request_pb(*args, **kw):
         bigtable_pb2 as data_messages_v2_pb2)
 
     return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
-
-
-def _TablePB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
-
-    return table_v2_pb2.Table(*args, **kw)
-
-
-def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        table_pb2 as table_v2_pb2)
-
-    return table_v2_pb2.ColumnFamily(*args, **kw)
-
 
 
 class _MockReadRowsIterator(object):
