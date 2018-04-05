@@ -1,5 +1,6 @@
 setuptools >= 36.4.0
 sphinx >= 1.6.3
+ipython >= 4
 
 api_core/
 core/
@@ -23,6 +24,7 @@ resource_manager/
 runtimeconfig/
 spanner/
 speech/
+texttospeech/
 trace/
 translate/
 videointelligence/

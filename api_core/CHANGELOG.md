@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.1.0
+
+### Interface additions
+
+- Add `datetime_helpers.DatetimeWithNanoSeconds` (#4979)
+
+### Implementation changes
+
+- Use a class to wrap grpc streaming errors instead of monkey-patching (#4995)
+
+## 1.0.0
+
+This is the stable v1.0.0 release of google-api-core for Python. Releases after
+this will not contain breaking changes.
+
+### Interface changes and additions
+
+- Made `api_core.page_iterator.PageIterator.item_to_value` public
+- Added ability to specify retry for `Operation` and `polling.Future`. (#4922)
+
 ## 0.1.4
 
 ### New Features

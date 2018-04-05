@@ -573,8 +573,9 @@ class TestBatch(unittest.TestCase):
             type='gae_app',
             labels={
                 'module_id': 'default',
-                'version_id': 'test',
-        })
+                'version_id': 'test'
+            }
+        )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -632,7 +633,7 @@ class TestBatch(unittest.TestCase):
                          timestamp=TIMESTAMP, resource=RESOURCE)
         self.assertEqual(
             batch.entries,
-            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP ,
+            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
               RESOURCE)])
 
     def test_log_proto_defaults(self):
@@ -732,7 +733,6 @@ class TestBatch(unittest.TestCase):
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
@@ -824,7 +824,6 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.logger import Logger
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
-
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}

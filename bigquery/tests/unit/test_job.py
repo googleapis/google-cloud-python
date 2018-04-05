@@ -39,12 +39,21 @@ def _make_client(project='test-project', connection=None):
     from google.cloud.bigquery.client import Client
 
     if connection is None:
-        connection = _Connection()
+        connection = _make_connection()
 
     client = Client(
         project=project, credentials=_make_credentials(), _http=object())
     client._connection = connection
     return client
+
+
+def _make_connection(*responses):
+    import google.cloud.bigquery._http
+    from google.cloud.exceptions import NotFound
+
+    mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
+    mock_conn.api_request.side_effect = list(responses) + [NotFound('miss')]
+    return mock_conn
 
 
 class Test__int_or_none(unittest.TestCase):
@@ -253,8 +262,10 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'load': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -265,7 +276,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'load': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 
@@ -409,7 +422,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID))
-        self.assertEqual(job.schema, [])
 
         self._verifyInitialReadonlyProperties(job)
 
@@ -420,6 +432,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
+        self.assertIsNone(job.schema)
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
         self.assertIsNone(job.autodetect)
@@ -447,6 +460,16 @@ class TestLoadJob(unittest.TestCase, _Base):
                              client, config)
         self.assertEqual(job.schema, [full_name, age])
 
+    def test_ctor_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        client = _make_client(project=self.PROJECT)
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+        self.assertEqual(load_job.project, 'alternative-project')
+        self.assertEqual(load_job.location, 'US')
+
     def test_done(self):
         client = _make_client(project=self.PROJECT)
         resource = self._make_resource(ended=True)
@@ -466,7 +489,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         begun_resource = self._make_resource()
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(begun_resource, done_resource)
+        connection = _make_connection(begun_resource, done_resource)
         client = _make_client(self.PROJECT)
         client._connection = connection
 
@@ -474,10 +497,10 @@ class TestLoadJob(unittest.TestCase, _Base):
                              client)
         job.result()
 
-        self.assertEqual(len(connection._requested), 2)
-        begin_request,  reload_request = connection._requested
-        self.assertEqual(begin_request['method'], 'POST')
-        self.assertEqual(reload_request['method'], 'GET')
+        self.assertEqual(len(connection.api_request.call_args_list), 2)
+        begin_request, reload_request = connection.api_request.call_args_list
+        self.assertEqual(begin_request[1]['method'], 'POST')
+        self.assertEqual(reload_request[1]['method'], 'GET')
 
     def test_schema_setter_non_list(self):
         config = LoadJobConfig()
@@ -519,8 +542,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                         'reason': 'REASON'}
 
         client = _make_client(project=self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         job._properties['etag'] = 'ETAG'
         job._properties['id'] = FULL_JOB_ID
         job._properties['selfLink'] = URL
@@ -651,7 +674,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_already_running(self):
-        conn = _Connection()
+        conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
@@ -661,41 +684,38 @@ class TestLoadJob(unittest.TestCase, _Base):
             job._begin()
 
     def test_begin_w_bound_client(self):
-        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'load': {
-                    'sourceUris': [self.SOURCE1],
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.TABLE_ID,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/jobs'.format(self.PROJECT),
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'load': {
+                        'sourceUris': [self.SOURCE1],
+                        'destinationTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.TABLE_ID,
+                        },
                     },
                 },
-            },
-        }
-        self.assertEqual(req['data'], SENT)
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_autodetect(self):
@@ -707,7 +727,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         del resource['etag']
         del resource['selfLink']
         del resource['user_email']
-        conn = _Connection(resource)
+        conn = _make_connection(resource)
         client = _make_client(project=self.PROJECT, connection=conn)
         config = LoadJobConfig()
         config.autodetect = True
@@ -732,12 +752,10 @@ class TestLoadJob(unittest.TestCase, _Base):
                 },
             },
         }
-        expected_request = {
-            'method': 'POST',
-            'path': path,
-            'data': sent,
-        }
-        self.assertEqual(conn._requested, [expected_request])
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data=sent)
         self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
@@ -767,14 +785,24 @@ class TestLoadJob(unittest.TestCase, _Base):
             'sourceFormat': 'CSV',
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+                {
+                    'name': 'full_name',
+                    'type': 'STRING',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
+                {
+                    'name': 'age',
+                    'type': 'INTEGER',
+                    'mode': 'REQUIRED',
+                    'description': None,
+                },
             ]}
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -797,11 +825,11 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        self.assertEqual(len(conn2.api_request.call_args_list), 1)
+        req = conn2.api_request.call_args_list[0]
+        self.assertEqual(req[1]['method'], 'POST')
+        self.assertEqual(req[1]['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -812,113 +840,192 @@ class TestLoadJob(unittest.TestCase, _Base):
             },
         }
         self.maxDiff = None
-        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req[1]['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource()
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job._begin()
+
+        conn.api_request.assert_called_once()
+        _, request = conn.api_request.call_args
+        self.assertEqual(request['method'], 'POST')
+        self.assertEqual(
+            request['path'], '/projects/alternative-project/jobs')
+        self.assertEqual(
+            request['data']['jobReference']['projectId'],
+            'alternative-project')
+        self.assertEqual(request['data']['jobReference']['location'], 'US')
+        self.assertEqual(request['data']['jobReference']['jobId'], self.JOB_ID)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn = _Connection()
+        conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
+
+    def test_exists_miss_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        job_ref = job._JobReference('my-job-id', 'other-project', 'US')
+        conn = _make_connection()
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        self.assertFalse(load_job.exists())
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/jobs/my-job-id',
+            query_params={'fields': 'id', 'location': 'US'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.reload()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection(resource)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.reload()
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/alternative-project/jobs/{}'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
     def test_cancel_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource(ended=True)
         RESPONSE = {'job': RESOURCE}
-        conn = _Connection(RESPONSE)
+        conn = _make_connection(RESPONSE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.cancel()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource(ended=True)
         RESPONSE = {'job': RESOURCE}
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESPONSE)
+        conn2 = _make_connection(RESPONSE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.cancel(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_cancel_w_job_reference(self):
+        from google.cloud.bigquery import job
+
+        resource = self._make_resource(ended=True)
+        resource['jobReference']['projectId'] = 'alternative-project'
+        resource['jobReference']['location'] = 'US'
+        job_ref = job._JobReference(self.JOB_ID, 'alternative-project', 'US')
+        conn = _make_connection({'job': resource})
+        client = _make_client(project=self.PROJECT, connection=conn)
+        load_job = self._make_one(
+            job_ref, [self.SOURCE1], self.TABLE_REF, client)
+
+        load_job.cancel()
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/alternative-project/jobs/{}/cancel'.format(
+                self.JOB_ID),
+            query_params={'location': 'US'})
 
 
 class TestCopyJobConfig(unittest.TestCase, _Base):
@@ -937,9 +1044,11 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
-                }
+                'copy': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
+                },
             })
 
     def test_to_api_repr_with_encryption_none(self):
@@ -949,7 +1058,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'copy': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
 
@@ -1194,7 +1305,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         del RESOURCE['etag']
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1202,31 +1313,29 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'copy': {
-                    'sourceTables': [{
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.SOURCE_TABLE
-                    }],
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.DESTINATION_TABLE,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'copy': {
+                        'sourceTables': [{
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.SOURCE_TABLE
+                        }],
+                        'destinationTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.DESTINATION_TABLE,
+                        },
                     },
                 },
-            },
-        }
-        self.assertEqual(req['data'], SENT)
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
@@ -1249,9 +1358,9 @@ class TestCopyJob(unittest.TestCase, _Base):
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
         }
         RESOURCE['configuration']['copy'] = COPY_CONFIGURATION
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1262,26 +1371,24 @@ class TestCopyJob(unittest.TestCase, _Base):
                              config)
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'copy': COPY_CONFIGURATION,
-            },
-        }
-        self.assertEqual(req['data'], SENT)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'copy': COPY_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn = _Connection()
+        conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
 
         source = self._table_ref(self.SOURCE_TABLE)
@@ -1290,17 +1397,16 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1308,17 +1414,16 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1326,18 +1431,18 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1345,12 +1450,61 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={})
         self._verifyResourceProperties(job, RESOURCE)
+
+
+class TestExtractJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'extract'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import ExtractJobConfig
+        return ExtractJobConfig
+
+    def test_to_api_repr(self):
+        from google.cloud.bigquery import job
+        config = self._make_one()
+        config.compression = job.Compression.SNAPPY
+        config.destination_format = job.DestinationFormat.AVRO
+        config.field_delimiter = 'ignored for avro'
+        config.print_header = False
+        config._properties['extract']['someNewField'] = 'some-value'
+        resource = config.to_api_repr()
+        self.assertEqual(
+            resource,
+            {
+                'extract': {
+                    'compression': 'SNAPPY',
+                    'destinationFormat': 'AVRO',
+                    'fieldDelimiter': 'ignored for avro',
+                    'printHeader': False,
+                    'someNewField': 'some-value',
+                },
+            })
+
+    def test_from_api_repr(self):
+        cls = self._get_target_class()
+        config = cls.from_api_repr(
+            {
+                'extract': {
+                    'compression': 'NONE',
+                    'destinationFormat': 'CSV',
+                    'fieldDelimiter': '\t',
+                    'printHeader': True,
+                    'someNewField': 'some-value',
+                },
+            })
+        self.assertEqual(config.compression, 'NONE')
+        self.assertEqual(config.destination_format, 'CSV')
+        self.assertEqual(config.field_delimiter, '\t')
+        self.assertEqual(config.print_header, True)
+        self.assertEqual(
+            config._properties['extract']['someNewField'], 'some-value')
 
 
 class TestExtractJob(unittest.TestCase, _Base):
@@ -1413,11 +1567,15 @@ class TestExtractJob(unittest.TestCase, _Base):
             self.assertIsNone(job.print_header)
 
     def test_ctor(self):
+        from google.cloud.bigquery.table import Table
+
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
-        self.assertEqual(job.source, source)
+        source = Table(self.TABLE_REF)
+        job = self._make_one(
+            self.JOB_ID, source, [self.DESTINATION_URI], client)
+        self.assertEqual(job.source.project, self.PROJECT)
+        self.assertEqual(job.source.dataset_id, self.DS_ID)
+        self.assertEqual(job.source.table_id, self.TABLE_ID)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -1436,9 +1594,8 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_destination_uri_file_counts(self):
         file_counts = 23
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
         self.assertIsNone(job.destination_uri_file_counts)
 
         statistics = job._properties['statistics'] = {}
@@ -1516,7 +1673,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         del RESOURCE['etag']
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -1525,27 +1682,25 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'extract': {
-                    'sourceTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': self.DS_ID,
-                        'tableId': self.SOURCE_TABLE
-                    },
-                    'destinationUris': [self.DESTINATION_URI],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
-        self.assertEqual(req['data'], SENT)
+                'configuration': {
+                    'extract': {
+                        'sourceTable': {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': self.SOURCE_TABLE
+                        },
+                        'destinationUris': [self.DESTINATION_URI],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
@@ -1567,9 +1722,9 @@ class TestExtractJob(unittest.TestCase, _Base):
             'printHeader': False,
         }
         RESOURCE['configuration']['extract'] = EXTRACT_CONFIGURATION
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -1583,62 +1738,56 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'extract': EXTRACT_CONFIGURATION,
-            },
-        }
-        self.assertEqual(req['data'], SENT)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'extract': EXTRACT_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn = _Connection()
+        conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client1)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client1)
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -1647,18 +1796,16 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -1667,11 +1814,9 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1687,7 +1832,14 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_ctor(self):
         config = self._make_one()
-        self.assertEqual(config._properties, {})
+        self.assertEqual(config._properties, {'query': {}})
+
+    def test_ctor_w_none(self):
+        config = self._make_one()
+        config.default_dataset = None
+        config.destination = None
+        self.assertIsNone(config.default_dataset)
+        self.assertIsNone(config.destination)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -1700,13 +1852,16 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
 
     def test_from_api_repr_normal(self):
         resource = {
-            'useLegacySql': True,
-            'query': 'no property for me',
-            'defaultDataset': {
-                'projectId': 'someproject',
-                'datasetId': 'somedataset',
+            'query': {
+                'useLegacySql': True,
+                'query': 'no property for me',
+                'defaultDataset': {
+                    'projectId': 'someproject',
+                    'datasetId': 'somedataset',
+                },
+                'someNewProperty': 'I should be saved, too.',
             },
-            'someNewProperty': 'I should be saved, too.',
+            'dryRun': True,
         }
         klass = self._get_target_class()
 
@@ -1716,28 +1871,33 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config.default_dataset,
             DatasetReference('someproject', 'somedataset'))
+        self.assertTrue(config.dry_run)
         # Make sure unknown properties propagate.
-        self.assertEqual(config._properties['query'], 'no property for me')
         self.assertEqual(
-            config._properties['someNewProperty'], 'I should be saved, too.')
+            config._properties['query']['query'], 'no property for me')
+        self.assertEqual(
+            config._properties['query']['someNewProperty'],
+            'I should be saved, too.')
 
     def test_to_api_repr_normal(self):
         config = self._make_one()
         config.use_legacy_sql = True
         config.default_dataset = DatasetReference(
             'someproject', 'somedataset')
+        config.dry_run = False
         config._properties['someNewProperty'] = 'Woohoo, alpha stuff.'
 
         resource = config.to_api_repr()
 
-        self.assertTrue(resource['useLegacySql'])
+        self.assertFalse(resource['dryRun'])
+        self.assertTrue(resource['query']['useLegacySql'])
         self.assertEqual(
-            resource['defaultDataset']['projectId'], 'someproject')
+            resource['query']['defaultDataset']['projectId'], 'someproject')
         self.assertEqual(
-            resource['defaultDataset']['datasetId'], 'somedataset')
+            resource['query']['defaultDataset']['datasetId'], 'somedataset')
         # Make sure unknown properties propagate.
         self.assertEqual(
-            config._properties['someNewProperty'], 'Woohoo, alpha stuff.')
+            resource['someNewProperty'], 'Woohoo, alpha stuff.')
 
     def test_to_api_repr_with_encryption(self):
         config = self._make_one()
@@ -1746,8 +1906,10 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         resource = config.to_api_repr()
         self.assertEqual(
             resource, {
-                'destinationEncryptionConfiguration': {
-                    'kmsKeyName': self.KMS_KEY_NAME,
+                'query': {
+                    'destinationEncryptionConfiguration': {
+                        'kmsKeyName': self.KMS_KEY_NAME,
+                    },
                 },
             })
 
@@ -1758,14 +1920,18 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             resource,
             {
-                'destinationEncryptionConfiguration': None,
+                'query': {
+                    'destinationEncryptionConfiguration': None,
+                },
             })
 
     def test_from_api_repr_with_encryption(self):
         resource = {
-            'destinationEncryptionConfiguration': {
-                'kmsKeyName': self.KMS_KEY_NAME
-            }
+            'query': {
+                'destinationEncryptionConfiguration': {
+                    'kmsKeyName': self.KMS_KEY_NAME,
+                },
+            },
         }
         klass = self._get_target_class()
         config = klass.from_api_repr(resource)
@@ -2358,8 +2524,9 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
-        connection = _Connection(query_resource, query_resource)
+        connection = _make_connection(query_resource, query_resource)
         client = _make_client(self.PROJECT, connection=connection)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
@@ -2376,12 +2543,13 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         query_resource = copy.deepcopy(incomplete_resource)
         query_resource['jobComplete'] = True
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(
+        connection = _make_connection(
             begun_resource, incomplete_resource, query_resource, done_resource,
             query_resource)
         client = _make_client(project=self.PROJECT, connection=connection)
@@ -2389,11 +2557,13 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job.result()
 
-        self.assertEqual(len(connection._requested), 4)
-        begin_request, _, query_request, reload_request = connection._requested
-        self.assertEqual(begin_request['method'], 'POST')
-        self.assertEqual(query_request['method'], 'GET')
-        self.assertEqual(reload_request['method'], 'GET')
+        self.assertEqual(len(connection.api_request.call_args_list), 4)
+        begin_request = connection.api_request.call_args_list[0]
+        query_request = connection.api_request.call_args_list[2]
+        reload_request = connection.api_request.call_args_list[3]
+        self.assertEqual(begin_request[1]['method'], 'POST')
+        self.assertEqual(query_request[1]['method'], 'GET')
+        self.assertEqual(reload_request[1]['method'], 'GET')
 
     def test_result_w_timeout(self):
         begun_resource = self._make_resource()
@@ -2403,25 +2573,28 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(
+        connection = _make_connection(
             begun_resource, query_resource, done_resource)
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         job.result(timeout=1.0)
 
-        self.assertEqual(len(connection._requested), 3)
-        begin_request, query_request, reload_request = connection._requested
-        self.assertEqual(begin_request['method'], 'POST')
-        self.assertEqual(query_request['method'], 'GET')
+        self.assertEqual(len(connection.api_request.call_args_list), 3)
+        begin_request = connection.api_request.call_args_list[0]
+        query_request = connection.api_request.call_args_list[1]
+        reload_request = connection.api_request.call_args_list[2]
+        self.assertEqual(begin_request[1]['method'], 'POST')
+        self.assertEqual(query_request[1]['method'], 'GET')
         self.assertEqual(
-            query_request['path'],
+            query_request[1]['path'],
             '/projects/{}/queries/{}'.format(self.PROJECT, self.JOB_ID))
-        self.assertEqual(query_request['query_params']['timeoutMs'], 900)
-        self.assertEqual(reload_request['method'], 'GET')
+        self.assertEqual(query_request[1]['query_params']['timeoutMs'], 900)
+        self.assertEqual(reload_request[1]['method'], 'GET')
 
     def test_result_error(self):
         from google.cloud import exceptions
@@ -2459,7 +2632,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['etag']
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
 
         config = QueryJobConfig()
@@ -2471,28 +2644,26 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'defaultDataset': {
-                        'projectId': self.PROJECT,
-                        'datasetId': DS_ID,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'defaultDataset': {
+                            'projectId': self.PROJECT,
+                            'datasetId': DS_ID,
+                        },
                     },
                 },
-            },
-        }
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -2528,9 +2699,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         RESOURCE['configuration']['dryRun'] = True
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         table_ref = dataset_ref.table(TABLE)
@@ -2553,23 +2724,21 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'dryRun': True,
-                'query': QUERY_CONFIGURATION,
-            },
-        }
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'dryRun': True,
+                    'query': QUERY_CONFIGURATION,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_begin_w_udf(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2588,7 +2757,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             {'resourceUri': RESOURCE_URI},
             {'inlineCode': INLINE_UDF_CODE},
         ]
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         udf_resources = [
             UDFResource("resourceUri", RESOURCE_URI),
@@ -2602,29 +2771,27 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.udf_resources, udf_resources)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': True,
-                    'userDefinedFunctionResources': [
-                        {'resourceUri': RESOURCE_URI},
-                        {'inlineCode': INLINE_UDF_CODE},
-                    ]
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': True,
+                        'userDefinedFunctionResources': [
+                            {'resourceUri': RESOURCE_URI},
+                            {'inlineCode': INLINE_UDF_CODE},
+                        ]
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_begin_w_named_query_parameter(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2651,7 +2818,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 },
             },
         ]
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         jconfig = QueryJobConfig()
         jconfig.query_parameters = query_parameters
@@ -2660,27 +2827,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'parameterMode': 'NAMED',
-                    'queryParameters': config['queryParameters'],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'parameterMode': 'NAMED',
+                        'queryParameters': config['queryParameters'],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_begin_w_positional_query_parameter(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2706,7 +2871,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 },
             },
         ]
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         jconfig = QueryJobConfig()
         jconfig.query_parameters = query_parameters
@@ -2715,27 +2880,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
-                    'parameterMode': 'POSITIONAL',
-                    'queryParameters': config['queryParameters'],
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                        'parameterMode': 'POSITIONAL',
+                        'queryParameters': config['queryParameters'],
+                    },
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_begin_w_table_defs(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2788,7 +2951,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             csv_table: CSV_CONFIG_RESOURCE,
         }
         want_resource = copy.deepcopy(RESOURCE)
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         config = QueryJobConfig()
         config.table_definitions = {
@@ -2801,28 +2964,26 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': True,
-                    'tableDefinitions': {
-                        bt_table: BT_CONFIG_RESOURCE,
-                        csv_table: CSV_CONFIG_RESOURCE,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
+                },
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': True,
+                        'tableDefinitions': {
+                            bt_table: BT_CONFIG_RESOURCE,
+                            csv_table: CSV_CONFIG_RESOURCE,
+                        },
                     },
                 },
-            },
-        }
+            })
         self._verifyResourceProperties(job, want_resource)
-        self.assertEqual(req['data'], SENT)
 
     def test_dry_run_query(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2835,7 +2996,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
         RESOURCE['configuration']['dryRun'] = True
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         config = QueryJobConfig()
         config.dry_run = True
@@ -2844,56 +3005,52 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job._begin()
         self.assertEqual(job.udf_resources, [])
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-            'configuration': {
-                'query': {
-                    'query': self.QUERY,
-                    'useLegacySql': False,
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=PATH,
+            data={
+                'jobReference': {
+                    'projectId': self.PROJECT,
+                    'jobId': self.JOB_ID,
                 },
-                'dryRun': True,
-            },
-        }
+                'configuration': {
+                    'query': {
+                        'query': self.QUERY,
+                        'useLegacySql': False,
+                    },
+                    'dryRun': True,
+                },
+            })
         self._verifyResourceProperties(job, RESOURCE)
-        self.assertEqual(req['data'], SENT)
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn = _Connection()
+        conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         self.assertFalse(job.exists())
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, self.QUERY, client1)
 
         self.assertTrue(job.exists(client=client2))
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET',
+            path=PATH,
+            query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -2903,7 +3060,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         DS_ID = 'DATASET'
         DEST_TABLE = 'dest_table'
         RESOURCE = self._make_resource()
-        conn = _Connection(RESOURCE)
+        conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         table_ref = dataset_ref.table(DEST_TABLE)
@@ -2915,10 +3072,8 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertNotEqual(job.destination, table_ref)
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
@@ -2932,19 +3087,17 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': DS_ID,
             'tableId': DEST_TABLE,
         }
-        conn1 = _Connection()
+        conn1 = _make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, self.QUERY, client1)
 
         job.reload(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        conn1.api_request.assert_not_called()
+        conn2.api_request.assert_called_once_with(
+            method='GET', path=PATH, query_params={})
         self._verifyResourceProperties(job, RESOURCE)
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
@@ -2971,7 +3124,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(
+        connection = _make_connection(
             begun_resource, query_resource, done_resource, query_resource)
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
@@ -2992,10 +3145,12 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(begun_resource, query_resource, done_resource)
+        connection = _make_connection(
+            begun_resource, query_resource, done_resource)
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
@@ -3183,40 +3338,3 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
-
-
-class _Table(object):
-
-    def __init__(self, table_id=None):
-        self._table_id = table_id
-
-    @property
-    def table_id(self):
-        return TestLoadJob.TABLE_ID
-
-    @property
-    def project(self):
-        return TestLoadJob.PROJECT
-
-    @property
-    def dataset_id(self):
-        return TestLoadJob.DS_ID
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        from google.cloud.exceptions import NotFound
-
-        self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except IndexError:
-            raise NotFound('miss')
-        else:
-            return response

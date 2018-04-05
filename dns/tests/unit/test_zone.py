@@ -91,10 +91,10 @@ class TestManagedZone(unittest.TestCase):
         self.assertIsNone(zone._client)
 
         with self.assertRaises(AttributeError):
-            _ = zone.project
+            (zone.project)
 
         with self.assertRaises(AttributeError):
-            _ = zone.path
+            (zone.path)
 
         self.assertIsNone(zone.zone_id)
         self.assertIsNone(zone.created)

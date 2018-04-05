@@ -68,14 +68,15 @@ def unit(session, py):
 
 @nox.session
 def lint(session):
-    """Run flake8.
-    Returns a failure if flake8 finds linting errors or sufficiently
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
-    session.run('flake8', 'google/cloud/trace')
+    session.run('flake8', 'google', 'tests')
 
 
 @nox.session

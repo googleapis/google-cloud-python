@@ -180,7 +180,7 @@ class TestStorageBuckets(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_bucket_acls_iam_with_user_project(self):
         new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
+        Config.CLIENT.create_bucket(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -408,6 +408,29 @@ class TestStorageWriteFiles(TestStorageFiles):
         acl.save()
         self.assertFalse(acl.has_entity('allUsers'))
 
+    def test_upload_blob_acl(self):
+        control = self.bucket.blob('logo')
+        control_data = self.FILES['logo']
+
+        blob = self.bucket.blob('SmallFile')
+        file_data = self.FILES['simple']
+
+        try:
+            control.upload_from_filename(control_data['path'])
+            blob.upload_from_filename(file_data['path'],
+                                      predefined_acl='publicRead')
+        finally:
+            self.case_blobs_to_delete.append(blob)
+            self.case_blobs_to_delete.append(control)
+
+        control_acl = control.acl
+        self.assertNotIn('READER', control_acl.all().get_roles())
+        acl = blob.acl
+        self.assertIn('READER', acl.all().get_roles())
+        acl.all().revoke_read()
+        self.assertSequenceEqual(acl.all().get_roles(), set([]))
+        self.assertEqual(control_acl.all().get_roles(), acl.all().get_roles())
+
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
         blob_name = os.path.basename(filename)
@@ -554,19 +577,23 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # Make sure bucket empty before beginning.
         _empty_bucket(cls.bucket)
 
+        cls.suite_blobs_to_delete = []
         simple_path = cls.FILES['simple']['path']
-        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
-        blob.upload_from_filename(simple_path)
-        cls.suite_blobs_to_delete = [blob]
-        for filename in cls.FILENAMES[1:]:
-            new_blob = retry_bad_copy(cls.bucket.copy_blob)(
-                blob, cls.bucket, filename)
-            cls.suite_blobs_to_delete.append(new_blob)
+        for filename in cls.FILENAMES:
+            blob = storage.Blob(filename, bucket=cls.bucket)
+            blob.upload_from_filename(simple_path)
+            cls.suite_blobs_to_delete.append(blob)
 
     @classmethod
     def tearDownClass(cls):
         for blob in cls.suite_blobs_to_delete:
             blob.delete()
+
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_blob_get_w_delimiter(self):
+        for filename in self.FILENAMES:
+            blob = self.bucket.blob(filename)
+            self.assertTrue(blob.exists(), filename)
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
@@ -865,7 +892,6 @@ class TestStorageNotificationCRUD(unittest.TestCase):
                 Config.CLIENT.project))
         self.publisher_client.set_iam_policy(self.topic_path, policy)
 
-
     def setUp(self):
         self.case_buckets_to_delete = []
         self._intialize_topic()
@@ -936,7 +962,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
     @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_notification_w_user_project(self):
         new_bucket_name = 'notification-minimal' + unique_resource_id('-')
-        bucket = retry_429(Config.CLIENT.create_bucket)(
+        retry_429(Config.CLIENT.create_bucket)(
             new_bucket_name, requester_pays=True)
         self.case_buckets_to_delete.append(new_bucket_name)
         with_user_project = Config.CLIENT.bucket(

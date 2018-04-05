@@ -68,11 +68,11 @@ class TestBucketNotification(unittest.TestCase):
         return mock.Mock(project=project, spec=Client)
 
     def _make_bucket(self, client, name=BUCKET_NAME, user_project=None):
-         bucket = mock.Mock(spec=['client', 'name', 'user_project'])
-         bucket.client= client
-         bucket.name = name
-         bucket.user_project = user_project
-         return bucket
+        bucket = mock.Mock(spec=['client', 'name', 'user_project'])
+        bucket.client = client
+        bucket.name = name
+        bucket.user_project = user_project
+        return bucket
 
     def test_ctor_w_missing_project(self):
         client = self._make_client(project=None)
@@ -362,7 +362,6 @@ class TestBucketNotification(unittest.TestCase):
         USER_PROJECT = 'user-project-123'
         client = self._make_client()
         bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
         api_request = client._connection.api_request
@@ -415,7 +414,6 @@ class TestBucketNotification(unittest.TestCase):
         USER_PROJECT = 'user-project-123'
         client = self._make_client()
         bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
         api_request = client._connection.api_request
@@ -474,7 +472,6 @@ class TestBucketNotification(unittest.TestCase):
         USER_PROJECT = 'user-project-123'
         client = self._make_client()
         bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
         api_request = client._connection.api_request

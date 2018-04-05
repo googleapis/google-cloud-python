@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.firestore.admin.v1beta1.FirestoreAdmin": {
+        "google.cloud.texttospeech.v1beta1.TextToSpeech": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []
@@ -17,23 +17,13 @@ config = {
                 }
             },
             "methods": {
-                "CreateIndex": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default"
-                },
-                "ListIndexes": {
-                    "timeout_millis": 60000,
+                "ListVoices": {
+                    "timeout_millis": 10000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
-                "GetIndex": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default"
-                },
-                "DeleteIndex": {
-                    "timeout_millis": 60000,
+                "SynthesizeSpeech": {
+                    "timeout_millis": 20000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }

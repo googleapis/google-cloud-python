@@ -162,7 +162,7 @@ class CollectionReference(object):
             created_document_pb = self._client._firestore_api.create_document(
                 parent_path, collection_id=self.id, document_id=None,
                 document=document_pb, mask=None,
-                options=self._client._call_options)
+                metadata=self._client._rpc_metadata)
 
             new_document_id = _helpers.get_doc_id(
                 created_document_pb, expected_prefix)

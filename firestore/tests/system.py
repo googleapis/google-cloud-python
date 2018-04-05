@@ -18,23 +18,23 @@ import operator
 import os
 import re
 
-from google.auth._default import _load_credentials_from_file
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
+from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2
-from grpc import StatusCode
 import pytest
 import six
 
+from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import FailedPrecondition
+from google.api_core.exceptions import InvalidArgument
+from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud._helpers import UTC
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
 from google.cloud import firestore
 from test_utils.system import unique_resource_id
 
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
+FIRESTORE_PROJECT = os.environ.get('GCLOUD_PROJECT')
 RANDOM_ID_REGEX = re.compile('^[a-zA-Z0-9]{20}$')
 MISSING_DOCUMENT = 'No document to update: '
 DOCUMENT_EXISTS = 'Document already exists: '
@@ -42,7 +42,9 @@ DOCUMENT_EXISTS = 'Document already exists: '
 
 @pytest.fixture(scope=u'module')
 def client():
-    credentials, project = _load_credentials_from_file(FIRESTORE_CREDS)
+    credentials = service_account.Credentials.from_service_account_file(
+        FIRESTORE_CREDS)
+    project = FIRESTORE_PROJECT or credentials.project_id
     yield firestore.Client(project=project, credentials=credentials)
 
 
@@ -117,19 +119,24 @@ def test_cannot_use_foreign_key(client, cleanup):
         database='dee-bee')
     assert other_client._database_string != client._database_string
     fake_doc = other_client.document('foo', 'bar')
-    # NOTE: google-gax **does not** raise a GaxError for INVALID_ARGUMENT.
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(InvalidArgument):
         document.create({'ref': fake_doc})
-
-    assert len(exc_info.value.args) == 1
-    err_msg = exc_info.value.args[0]
-    assert err_msg == 'RPC failed'
 
 
 def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     dt_val1 = _pb_timestamp_to_datetime(timestamp_pb1)
     dt_val2 = _pb_timestamp_to_datetime(timestamp_pb2)
     assert dt_val1 < dt_val2
+
+
+def test_no_document(client, cleanup):
+    document_id = 'no_document' + unique_resource_id('-')
+    document = client.document('abcde', document_id)
+    option0 = client.write_option(create_if_missing=False)
+    with pytest.raises(NotFound):
+        document.set({'no': 'way'}, option=option0)
+    snapshot = document.get()
+    assert snapshot.to_dict() is None
 
 
 def test_document_set(client, cleanup):
@@ -177,10 +184,8 @@ def test_document_set(client, cleanup):
 
     # 4. Call ``set()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option3._last_update_time, snapshot3.update_time)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition) as exc_info:
         document.set({'bad': 'time-past'}, option=option3)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 5. Call ``set()`` with invalid (in the future) "last timestamp" option.
     timestamp_pb = timestamp_pb2.Timestamp(
@@ -188,10 +193,40 @@ def test_document_set(client, cleanup):
         nanos=snapshot3.update_time.nanos,
     )
     option5 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition) as exc_info:
         document.set({'bad': 'time-future'}, option=option5)
 
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
+
+def test_document_integer_field(client, cleanup):
+    document_id = 'for-set' + unique_resource_id('-')
+    document = client.document('i-did-it', document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    data1 = {
+        '1a': {
+            '2b': '3c',
+            'ab': '5e'},
+        '6f': {
+            '7g': '8h',
+            'cd': '0j'}
+    }
+    option1 = client.write_option(exists=False)
+    document.set(data1, option=option1)
+
+    data2 = {'1a.ab': '4d', '6f.7g': '9h'}
+    option2 = client.write_option(create_if_missing=True)
+    document.update(data2, option=option2)
+    snapshot = document.get()
+    expected = {
+        '1a': {
+            '2b': '3c',
+            'ab': '4d'},
+        '6f': {
+            '7g': '9h',
+            'cd': '0j'}
+    }
+    assert snapshot.to_dict() == expected
 
 
 def test_update_document(client, cleanup):
@@ -259,10 +294,8 @@ def test_update_document(client, cleanup):
 
     # 5. Call ``update()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option4._last_update_time, snapshot4.update_time)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition) as exc_info:
         document.update({'bad': 'time-past'}, option=option4)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 6. Call ``update()`` with invalid (in future) "last timestamp" option.
     timestamp_pb = timestamp_pb2.Timestamp(
@@ -270,10 +303,8 @@ def test_update_document(client, cleanup):
         nanos=snapshot4.update_time.nanos,
     )
     option6 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition) as exc_info:
         document.set({'bad': 'time-future'}, option=option6)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
 
 def check_snapshot(snapshot, document, data, write_result):
@@ -292,10 +323,7 @@ def test_document_get(client, cleanup):
     cleanup(document)
 
     # First make sure it doesn't exist.
-    with pytest.raises(NotFound) as exc_info:
-        document.get()
-
-    assert exc_info.value.message == document._document_path
+    assert not document.get().exists
 
     ref_doc = client.document('top', 'middle1', 'middle2', 'bottom')
     data = {
@@ -336,10 +364,8 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option1 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.delete(option=option1)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 2. Call ``delete()`` with invalid (in future) "last timestamp" option.
     timestamp_pb = timestamp_pb2.Timestamp(
@@ -347,10 +373,8 @@ def test_document_delete(client, cleanup):
         nanos=snapshot1.update_time.nanos,
     )
     option2 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(GaxError) as exc_info:
+    with pytest.raises(FailedPrecondition):
         document.delete(option=option2)
-
-    assert exc_to_code(exc_info.value.cause) == StatusCode.FAILED_PRECONDITION
 
     # 3. Actually ``delete()`` the document.
     delete_time3 = document.delete()
@@ -614,8 +638,10 @@ def test_get_all(client, cleanup):
     snapshots = list(client.get_all(
         [document1, document2, document3]))
 
-    assert snapshots.count(None) == 1
-    snapshots.remove(None)
+    assert snapshots[0].exists
+    assert snapshots[1].exists
+    assert not snapshots[2].exists
+    snapshots = [snapshot for snapshot in snapshots if snapshot.exists]
     id_attr = operator.attrgetter('id')
     snapshots.sort(key=id_attr)
 
@@ -699,5 +725,4 @@ def test_batch(client, cleanup):
     assert_timestamp_less(snapshot2.create_time, write_result2.update_time)
     assert snapshot2.update_time == write_result2.update_time
 
-    with pytest.raises(NotFound):
-        document3.get()
+    assert not document3.get().exists

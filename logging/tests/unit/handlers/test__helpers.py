@@ -80,7 +80,6 @@ class _GetTraceId(RequestHandler):
         self.response.out.write(json.dumps(trace_id))
 
 
-
 @unittest.skipIf(six.PY3, 'webapp2 is Python 2 only')
 class Test_get_trace_id_from_webapp2(unittest.TestCase):
 

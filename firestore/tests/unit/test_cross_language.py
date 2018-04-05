@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import glob
 import json
 import os
 import unittest
 
 import mock
-from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.proto import test_pb2
 from google.protobuf import text_format
+
 
 class TestCrossLanguage(unittest.TestCase):
 
@@ -34,9 +35,9 @@ class TestCrossLanguage(unittest.TestCase):
                 test_proto.description,
                 os.path.splitext(os.path.basename(test_filename))[0])
             if test_proto.WhichOneof("test") == "get":
-                pass # The Get tests assume a call to GetDocument, but Python
-                     # calls BatchGetDocuments.
-                     # TODO: make this work.
+                pass  # The Get tests assume a call to GetDocument, but Python
+                # calls BatchGetDocuments.
+                # TODO: make this work.
             else:
                 self.run_write_test(test_proto, desc)
 
@@ -57,7 +58,7 @@ class TestCrossLanguage(unittest.TestCase):
             tp = test_proto.create
             client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
-            call = lambda: doc.create(data)
+            call = functools.partial(doc.create, data)
         elif kind == "set":
             tp = test_proto.set
             client, doc = self.setup(firestore_api, tp)
@@ -71,7 +72,7 @@ class TestCrossLanguage(unittest.TestCase):
                 option = convert_precondition(tp.precondition)
             else:
                 option = None
-            call = lambda: doc.update(data, option)
+            call = functools.partial(doc.update, data, option)
         elif kind == "update_paths":
             # Python client doesn't have a way to call update with
             # a list of field paths.
@@ -84,7 +85,7 @@ class TestCrossLanguage(unittest.TestCase):
                 option = convert_precondition(tp.precondition)
             else:
                 option = None
-            call = lambda: doc.delete(option)
+            call = functools.partial(doc.delete, option)
 
         if call is None:
             # TODO: remove this when we handle all kinds.
@@ -99,8 +100,7 @@ class TestCrossLanguage(unittest.TestCase):
                 client._database_string,
                 list(tp.request.writes),
                 transaction=None,
-                options=client._call_options)
-
+                metadata=client._rpc_metadata)
 
     def setup(self, firestore_api, proto):
         from google.cloud.firestore_v1beta1 import Client
@@ -129,7 +129,7 @@ def convert_data(v):
     elif isinstance(v, list):
         return [convert_data(e) for e in v]
     elif isinstance(v, dict):
-        return {k : convert_data(v2) for k, v2 in v.items()}
+        return {k: convert_data(v2) for k, v2 in v.items()}
     else:
         return v
 

@@ -17,8 +17,6 @@ import unittest
 
 import mock
 
-from google.cloud.spanner_v1 import __version__
-
 
 def _make_credentials():  # pragma: NO COVER
     import google.auth.credentials
@@ -41,14 +39,28 @@ class _BaseTest(unittest.TestCase):
     DATABASE_NAME = INSTANCE_NAME + '/databases/' + DATABASE_ID
     SESSION_ID = 'session_id'
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
+    TRANSACTION_ID = 'transaction_id'
 
     def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
+
+    @staticmethod
+    def _make_timestamp():
+        import datetime
+        from google.cloud._helpers import UTC
+
+        return datetime.datetime.utcnow().replace(tzinfo=UTC)
+
+    @staticmethod
+    def _make_duration(seconds=1, microseconds=0):
+        import datetime
+
+        return datetime.timedelta(seconds=seconds, microseconds=microseconds)
 
 
 class TestDatabase(_BaseTest):
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner_v1.database import Database
 
         return Database
@@ -109,7 +121,7 @@ class TestDatabase(_BaseTest):
 
         database_name = 'INCORRECT_FORMAT'
         database_pb = admin_v1_pb2.Database(name=database_name)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(ValueError):
             klass.from_pb(database_pb, None)
@@ -122,7 +134,7 @@ class TestDatabase(_BaseTest):
         client = _Client(project=ALT_PROJECT)
         instance = _Instance(self.INSTANCE_NAME, client)
         database_pb = admin_v1_pb2.Database(name=self.DATABASE_NAME)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(ValueError):
             klass.from_pb(database_pb, instance)
@@ -136,7 +148,7 @@ class TestDatabase(_BaseTest):
         client = _Client()
         instance = _Instance(ALT_INSTANCE, client)
         database_pb = admin_v1_pb2.Database(name=self.DATABASE_NAME)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(ValueError):
             klass.from_pb(database_pb, instance)
@@ -148,7 +160,7 @@ class TestDatabase(_BaseTest):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
         database_pb = admin_v1_pb2.Database(name=self.DATABASE_NAME)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         pool = _Pool()
 
         database = klass.from_pb(database_pb, instance, pool=pool)
@@ -169,7 +181,7 @@ class TestDatabase(_BaseTest):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
         database_pb = admin_v1_pb2.Database(name=DATABASE_NAME_HYPHEN)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         database = klass.from_pb(database_pb, instance)
 
@@ -647,6 +659,44 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(checkout, BatchCheckout)
         self.assertIs(checkout._database, database)
 
+    def test_batch_snapshot(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+
+        batch_txn = database.batch_snapshot()
+        self.assertIsInstance(batch_txn, BatchSnapshot)
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_snapshot_w_read_timestamp(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        timestamp = self._make_timestamp()
+
+        batch_txn = database.batch_snapshot(read_timestamp=timestamp)
+        self.assertIsInstance(batch_txn, BatchSnapshot)
+        self.assertIs(batch_txn._database, database)
+        self.assertEqual(batch_txn._read_timestamp, timestamp)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_batch_snapshot_w_exact_staleness(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
+
+        database = self._make_one(
+            self.DATABASE_ID, instance=object(), pool=_Pool())
+        duration = self._make_duration()
+
+        batch_txn = database.batch_snapshot(exact_staleness=duration)
+        self.assertIsInstance(batch_txn, BatchSnapshot)
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertEqual(batch_txn._exact_staleness, duration)
+
     def test_run_in_transaction_wo_args(self):
         import datetime
 
@@ -715,7 +765,7 @@ class TestDatabase(_BaseTest):
 
 class TestBatchCheckout(_BaseTest):
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner_v1.database import BatchCheckout
 
         return BatchCheckout
@@ -786,7 +836,7 @@ class TestBatchCheckout(_BaseTest):
 
 class TestSnapshotCheckout(_BaseTest):
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner_v1.database import SnapshotCheckout
 
         return SnapshotCheckout
@@ -859,6 +909,456 @@ class TestSnapshotCheckout(_BaseTest):
         self.assertIs(pool._session, session)
 
 
+class TestBatchSnapshot(_BaseTest):
+    TABLE = 'table_name'
+    COLUMNS = ['column_one', 'column_two']
+    TOKENS = [b'TOKEN1', b'TOKEN2']
+    INDEX = 'index'
+
+    def _get_target_class(self):
+        from google.cloud.spanner_v1.database import BatchSnapshot
+
+        return BatchSnapshot
+
+    @staticmethod
+    def _make_database(**kwargs):
+        from google.cloud.spanner_v1.database import Database
+
+        return mock.create_autospec(Database, instance=True, **kwargs)
+
+    @staticmethod
+    def _make_session(**kwargs):
+        from google.cloud.spanner_v1.session import Session
+
+        return mock.create_autospec(Session, instance=True, **kwargs)
+
+    @staticmethod
+    def _make_snapshot(transaction_id=None, **kwargs):
+        from google.cloud.spanner_v1.snapshot import Snapshot
+
+        snapshot = mock.create_autospec(Snapshot, instance=True, **kwargs)
+        if transaction_id is not None:
+            snapshot._transaction_id = transaction_id
+
+        return snapshot
+
+    @staticmethod
+    def _make_keyset():
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        return KeySet(all_=True)
+
+    def test_ctor_no_staleness(self):
+        database = self._make_database()
+
+        batch_txn = self._make_one(database)
+
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._session)
+        self.assertIsNone(batch_txn._snapshot)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_ctor_w_read_timestamp(self):
+        database = self._make_database()
+        timestamp = self._make_timestamp()
+
+        batch_txn = self._make_one(database, read_timestamp=timestamp)
+
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._session)
+        self.assertIsNone(batch_txn._snapshot)
+        self.assertEqual(batch_txn._read_timestamp, timestamp)
+        self.assertIsNone(batch_txn._exact_staleness)
+
+    def test_ctor_w_exact_staleness(self):
+        database = self._make_database()
+        duration = self._make_duration()
+
+        batch_txn = self._make_one(database, exact_staleness=duration)
+
+        self.assertIs(batch_txn._database, database)
+        self.assertIsNone(batch_txn._session)
+        self.assertIsNone(batch_txn._snapshot)
+        self.assertIsNone(batch_txn._read_timestamp)
+        self.assertEqual(batch_txn._exact_staleness, duration)
+
+    def test_from_dict(self):
+        klass = self._get_target_class()
+        database = self._make_database()
+        session = database.session.return_value = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+        api_repr = {
+            'session_id': self.SESSION_ID,
+            'transaction_id': self.TRANSACTION_ID,
+        }
+
+        batch_txn = klass.from_dict(database, api_repr)
+        self.assertIs(batch_txn._database, database)
+        self.assertIs(batch_txn._session, session)
+        self.assertEqual(session._session_id, self.SESSION_ID)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
+        snapshot.begin.assert_not_called()
+        self.assertIs(batch_txn._snapshot, snapshot)
+
+    def test_to_dict(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        batch_txn._session = self._make_session(
+            _session_id=self.SESSION_ID)
+        batch_txn._snapshot = self._make_snapshot(
+            transaction_id=self.TRANSACTION_ID)
+
+        expected = {
+            'session_id': self.SESSION_ID,
+            'transaction_id': self.TRANSACTION_ID,
+        }
+        self.assertEqual(batch_txn.to_dict(), expected)
+
+    def test__get_session_already(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        already = batch_txn._session = object()
+        self.assertIs(batch_txn._get_session(), already)
+
+    def test__get_session_new(self):
+        database = self._make_database()
+        session = database.session.return_value = self._make_session()
+        batch_txn = self._make_one(database)
+        self.assertIs(batch_txn._get_session(), session)
+        session.create.assert_called_once_with()
+
+    def test__get_snapshot_already(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        already = batch_txn._snapshot = self._make_snapshot()
+        self.assertIs(batch_txn._get_snapshot(), already)
+        already.begin.assert_not_called()
+
+    def test__get_snapshot_new_wo_staleness(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        session = batch_txn._session = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+        self.assertIs(batch_txn._get_snapshot(), snapshot)
+        session.snapshot.assert_called_once_with(
+            read_timestamp=None, exact_staleness=None, multi_use=True)
+        snapshot.begin.assert_called_once_with()
+
+    def test__get_snapshot_w_read_timestamp(self):
+        database = self._make_database()
+        timestamp = self._make_timestamp()
+        batch_txn = self._make_one(database, read_timestamp=timestamp)
+        session = batch_txn._session = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+        self.assertIs(batch_txn._get_snapshot(), snapshot)
+        session.snapshot.assert_called_once_with(
+            read_timestamp=timestamp, exact_staleness=None, multi_use=True)
+        snapshot.begin.assert_called_once_with()
+
+    def test__get_snapshot_w_exact_staleness(self):
+        database = self._make_database()
+        duration = self._make_duration()
+        batch_txn = self._make_one(database, exact_staleness=duration)
+        session = batch_txn._session = self._make_session()
+        snapshot = session.snapshot.return_value = self._make_snapshot()
+        self.assertIs(batch_txn._get_snapshot(), snapshot)
+        session.snapshot.assert_called_once_with(
+            read_timestamp=None, exact_staleness=duration, multi_use=True)
+        snapshot.begin.assert_called_once_with()
+
+    def test_read(self):
+        keyset = self._make_keyset()
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+
+        rows = batch_txn.read(
+            self.TABLE, self.COLUMNS, keyset, self.INDEX)
+
+        self.assertIs(rows, snapshot.read.return_value)
+        snapshot.read.assert_called_once_with(
+            self.TABLE, self.COLUMNS, keyset, self.INDEX)
+
+    def test_execute_sql(self):
+        sql = (
+            "SELECT first_name, last_name, email FROM citizens "
+            "WHERE age <= @max_age"
+        )
+        params = {'max_age': 30}
+        param_types = {'max_age': 'INT64'}
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+
+        rows = batch_txn.execute_sql(sql, params, param_types)
+
+        self.assertIs(rows, snapshot.execute_sql.return_value)
+        snapshot.execute_sql.assert_called_once_with(
+            sql, params, param_types)
+
+    def test_generate_read_batches_w_max_partitions(self):
+        max_partitions = len(self.TOKENS)
+        keyset = self._make_keyset()
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_read.return_value = self.TOKENS
+
+        batches = list(
+            batch_txn.generate_read_batches(
+                self.TABLE, self.COLUMNS, keyset,
+                max_partitions=max_partitions))
+
+        expected_read = {
+            'table': self.TABLE,
+            'columns': self.COLUMNS,
+            'keyset': {'all': True},
+            'index': '',
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch['partition'], token)
+            self.assertEqual(batch['read'], expected_read)
+
+        snapshot.partition_read.assert_called_once_with(
+            table=self.TABLE, columns=self.COLUMNS, keyset=keyset,
+            index='', partition_size_bytes=None, max_partitions=max_partitions)
+
+    def test_generate_read_batches_w_index_w_partition_size_bytes(self):
+        size = 1 << 20
+        keyset = self._make_keyset()
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_read.return_value = self.TOKENS
+
+        batches = list(
+            batch_txn.generate_read_batches(
+                self.TABLE, self.COLUMNS, keyset, index=self.INDEX,
+                partition_size_bytes=size))
+
+        expected_read = {
+            'table': self.TABLE,
+            'columns': self.COLUMNS,
+            'keyset': {'all': True},
+            'index': self.INDEX,
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch['partition'], token)
+            self.assertEqual(batch['read'], expected_read)
+
+        snapshot.partition_read.assert_called_once_with(
+            table=self.TABLE, columns=self.COLUMNS, keyset=keyset,
+            index=self.INDEX, partition_size_bytes=size, max_partitions=None)
+
+    def test_process_read_batch(self):
+        keyset = self._make_keyset()
+        token = b'TOKEN'
+        batch = {
+            'partition': token,
+            'read': {
+                'table': self.TABLE,
+                'columns': self.COLUMNS,
+                'keyset': {'all': True},
+                'index': self.INDEX,
+            },
+        }
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        expected = snapshot.read.return_value = object()
+
+        found = batch_txn.process_read_batch(batch)
+
+        self.assertIs(found, expected)
+
+        snapshot.read.assert_called_once_with(
+            table=self.TABLE,
+            columns=self.COLUMNS,
+            keyset=keyset,
+            index=self.INDEX,
+            partition=token,
+        )
+
+    def test_generate_query_batches_w_max_partitions(self):
+        sql = 'SELECT COUNT(*) FROM table_name'
+        max_partitions = len(self.TOKENS)
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_query.return_value = self.TOKENS
+
+        batches = list(
+            batch_txn.generate_query_batches(
+                sql, max_partitions=max_partitions))
+
+        expected_query = {
+            'sql': sql,
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch['partition'], token)
+            self.assertEqual(batch['query'], expected_query)
+
+        snapshot.partition_query.assert_called_once_with(
+            sql=sql, params=None, param_types=None,
+            partition_size_bytes=None, max_partitions=max_partitions)
+
+    def test_generate_query_batches_w_params_w_partition_size_bytes(self):
+        sql = (
+            "SELECT first_name, last_name, email FROM citizens "
+            "WHERE age <= @max_age"
+        )
+        params = {'max_age': 30}
+        param_types = {'max_age': 'INT64'}
+        size = 1 << 20
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_query.return_value = self.TOKENS
+
+        batches = list(
+            batch_txn.generate_query_batches(
+                sql, params=params, param_types=param_types,
+                partition_size_bytes=size))
+
+        expected_query = {
+            'sql': sql,
+            'params': params,
+            'param_types': param_types,
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch['partition'], token)
+            self.assertEqual(batch['query'], expected_query)
+
+        snapshot.partition_query.assert_called_once_with(
+            sql=sql, params=params, param_types=param_types,
+            partition_size_bytes=size, max_partitions=None)
+
+    def test_process_query_batch(self):
+        sql = (
+            "SELECT first_name, last_name, email FROM citizens "
+            "WHERE age <= @max_age"
+        )
+        params = {'max_age': 30}
+        param_types = {'max_age': 'INT64'}
+        token = b'TOKEN'
+        batch = {
+            'partition': token,
+            'query': {
+                'sql': sql,
+                'params': params,
+                'param_types': param_types,
+            },
+        }
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        expected = snapshot.execute_sql.return_value = object()
+
+        found = batch_txn.process_query_batch(batch)
+
+        self.assertIs(found, expected)
+
+        snapshot.execute_sql.assert_called_once_with(
+            sql=sql,
+            params=params,
+            param_types=param_types,
+            partition=token,
+        )
+
+    def test_close_wo_session(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+
+        batch_txn.close()  # no raise
+
+    def test_close_w_session(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        session = batch_txn._session = self._make_session()
+
+        batch_txn.close()
+
+        session.delete.assert_called_once_with()
+
+    def test_process_w_invalid_batch(self):
+        token = b'TOKEN'
+        batch = {
+            'partition': token,
+            'bogus': b'BOGUS',
+        }
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+
+        with self.assertRaises(ValueError):
+            batch_txn.process(batch)
+
+    def test_process_w_read_batch(self):
+        keyset = self._make_keyset()
+        token = b'TOKEN'
+        batch = {
+            'partition': token,
+            'read': {
+                'table': self.TABLE,
+                'columns': self.COLUMNS,
+                'keyset': {'all': True},
+                'index': self.INDEX,
+            },
+        }
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        expected = snapshot.read.return_value = object()
+
+        found = batch_txn.process(batch)
+
+        self.assertIs(found, expected)
+
+        snapshot.read.assert_called_once_with(
+            table=self.TABLE,
+            columns=self.COLUMNS,
+            keyset=keyset,
+            index=self.INDEX,
+            partition=token,
+        )
+
+    def test_process_w_query_batch(self):
+        sql = (
+            "SELECT first_name, last_name, email FROM citizens "
+            "WHERE age <= @max_age"
+        )
+        params = {'max_age': 30}
+        param_types = {'max_age': 'INT64'}
+        token = b'TOKEN'
+        batch = {
+            'partition': token,
+            'query': {
+                'sql': sql,
+                'params': params,
+                'param_types': param_types,
+            },
+        }
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        expected = snapshot.execute_sql.return_value = object()
+
+        found = batch_txn.process(batch)
+
+        self.assertIs(found, expected)
+
+        snapshot.execute_sql.assert_called_once_with(
+            sql=sql,
+            params=params,
+            param_types=param_types,
+            partition=token,
+        )
+
+
 class _Client(object):
 
     def __init__(self, project=TestDatabase.PROJECT_ID):
@@ -899,6 +1399,9 @@ class _Pool(object):
 class _Session(object):
 
     _rows = ()
+    _created = False
+    _transaction = None
+    _snapshot = None
 
     def __init__(self, database=None, name=_BaseTest.SESSION_NAME,
                  run_transaction_function=False):

@@ -35,7 +35,7 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'pytest-cov', 'ipython', *LOCAL_DEPS)
     if session.interpreter == 'python3.4':
         session.install('-e', '.')
     else:
@@ -87,7 +87,7 @@ def system(session, py):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'ipython', *LOCAL_DEPS)
     session.install(
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
@@ -105,7 +105,7 @@ def system(session, py):
 
 @nox.session
 @nox.parametrize('py', ['2.7', '3.6'])
-def snippets_tests(session, py):
+def snippets(session, py):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
@@ -145,19 +145,12 @@ def lint(session):
     """
     session.interpreter = 'python3.6'
 
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
+    session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', os.path.join('google', 'cloud', 'bigquery'))
     session.run('flake8', 'tests')
     session.run(
         'flake8', os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'))
-    session.run(
-        'gcp-devrel-py-tools', 'run-pylint',
-        '--config', 'pylint.config.py',
-        '--library-filesets', 'google',
-        '--test-filesets', 'tests',
-        # Temporarily allow this to fail.
-        success_codes=range(0, 100))
 
 
 @nox.session

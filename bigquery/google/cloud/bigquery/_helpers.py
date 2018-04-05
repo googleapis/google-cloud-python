@@ -314,120 +314,6 @@ def _snake_to_camel_case(value):
     return words[0] + ''.join(map(str.capitalize, words[1:]))
 
 
-class _ApiResourceProperty(object):
-    """Base property implementation.
-
-    Values will be stored on a `_properties` helper attribute of the
-    property's job instance.
-
-    :type name: str
-    :param name:  name of the property
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-    """
-
-    def __init__(self, name, resource_name):
-        self.name = name
-        self.resource_name = resource_name
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
-        if instance is None:
-            return self
-        return instance._properties.get(self.resource_name)
-
-    def _validate(self, value):
-        """Subclasses override to impose validation policy."""
-        pass
-
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator"""
-        self._validate(value)
-        instance._properties[self.resource_name] = value
-
-    def __delete__(self, instance):
-        """Descriptor protocol:  deleter"""
-        del instance._properties[self.resource_name]
-
-
-class _TypedApiResourceProperty(_ApiResourceProperty):
-    """Property implementation:  validates based on value type.
-
-    :type name: str
-    :param name:  name of the property
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-
-    :type property_type: type or sequence of types
-    :param property_type: type to be validated
-    """
-    def __init__(self, name, resource_name, property_type):
-        super(_TypedApiResourceProperty, self).__init__(
-            name, resource_name)
-        self.property_type = property_type
-
-    def _validate(self, value):
-        """Ensure that 'value' is of the appropriate type.
-
-        :raises: ValueError on a type mismatch.
-        """
-        if value is None:
-            return
-        if not isinstance(value, self.property_type):
-            raise ValueError('Required type: %s' % (self.property_type,))
-
-
-class _ListApiResourceProperty(_ApiResourceProperty):
-    """Property implementation:  validates based on value type.
-
-    :type name: str
-    :param name:  name of the property
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-
-    :type property_type: type or sequence of types
-    :param property_type: type to be validated
-    """
-    def __init__(self, name, resource_name, property_type):
-        super(_ListApiResourceProperty, self).__init__(
-            name, resource_name)
-        self.property_type = property_type
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
-        if instance is None:
-            return self
-        return instance._properties.get(self.resource_name, [])
-
-    def _validate(self, value):
-        """Ensure that 'value' is of the appropriate type.
-
-        :raises: ValueError on a type mismatch.
-        """
-        if value is None:
-            raise ValueError((
-                'Required type: list of {}. '
-                'To unset, use del or set to empty list').format(
-                    self.property_type,))
-        if not all(isinstance(item, self.property_type) for item in value):
-            raise ValueError(
-                'Required type: list of %s' % (self.property_type,))
-
-
-class _EnumApiResourceProperty(_ApiResourceProperty):
-    """Pseudo-enumeration class.
-
-    :type name: str
-    :param name:  name of the property.
-
-    :type resource_name: str
-    :param resource_name:  name of the property in the resource dictionary
-    """
-
-
 def _item_to_row(iterator, resource):
     """Convert a JSON row to the native object.
 
@@ -486,6 +372,94 @@ def _should_retry(exc):
     return reason == 'backendError' or reason == 'rateLimitExceeded'
 
 
+def get_sub_prop(container, keys, default=None):
+    """Get a nested value from a dictionary.
+
+    This method works like ``dict.get(key)``, but for nested values.
+
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to get the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        default (object):
+            (Optional) Value to returned if any of the keys are not found.
+            Defaults to ``None``.
+
+    Examples:
+        Get a top-level value (equivalent to ``container.get('key')``).
+
+        >>> get_sub_prop({'key': 'value'}, ['key'])
+        'value'
+
+        Get a top-level value, providing a default (equivalent to
+        ``container.get('key', default='default')``).
+
+        >>> get_sub_prop({'nothere': 123}, ['key'], default='not found')
+        'not found'
+
+        Get a nested value.
+
+        >>> get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
+        'value'
+
+    Returns:
+        object: The value if present or the default.
+    """
+    sub_val = container
+    for key in keys:
+        if key not in sub_val:
+            return default
+        sub_val = sub_val[key]
+    return sub_val
+
+
+def set_sub_prop(container, keys, value):
+    """Set a nested value in a dictionary.
+
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to set the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+        value (object): Value to set within the container.
+
+    Examples:
+        Set a top-level value (equivalent to ``container['key'] = 'value'``).
+
+        >>> container = {}
+        >>> set_sub_prop(container, ['key'], 'value')
+        >>> container
+        {'key': 'value'}
+
+        Set a nested value.
+
+        >>> container = {}
+        >>> set_sub_prop(container, ['key', 'subkey'], 'value')
+        >>> container
+        {'key': {'subkey': 'value'}}
+
+        Replace a nested value.
+
+        >>> container = {'key': {'subkey': 'prev'}}
+        >>> set_sub_prop(container, ['key', 'subkey'], 'new')
+        >>> container
+        {'key': {'subkey': 'new'}}
+    """
+    sub_val = container
+    for key in keys[:-1]:
+        if key not in sub_val:
+            sub_val[key] = {}
+        sub_val = sub_val[key]
+    sub_val[keys[-1]] = value
+
+
 DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
 """The default retry object.
 
@@ -503,3 +477,9 @@ def _int_or_none(value):
         return value
     if value is not None:
         return int(value)
+
+
+def _str_or_none(value):
+    """Helper: serialize value to JSON string."""
+    if value is not None:
+        return str(value)

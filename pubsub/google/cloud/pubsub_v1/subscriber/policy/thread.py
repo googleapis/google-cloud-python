@@ -14,7 +14,9 @@
 
 from __future__ import absolute_import
 
+import collections
 from concurrent import futures
+import functools
 import logging
 import sys
 import threading
@@ -32,20 +34,23 @@ _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
 
 
-def _do_nothing_callback(message):
-    """Default callback for messages received by subscriber.
-
-    Does nothing with the message and returns :data:`None`.
+def _wrap_callback_errors(callback, message):
+    """Wraps a user callback so that if an exception occurs the message is
+    nacked.
 
     Args:
-        message (~google.cloud.pubsub_v1.subscriber.message.Message): A
-            protobuf message returned by the backend and parsed into
-            our high level message type.
-
-    Returns:
-        NoneType: Always.
+        callback (Callable[None, Message]): The user callback.
+        message (~Message): The Pub/Sub message.
     """
-    return None
+    try:
+        callback(message)
+    except Exception:
+        # Note: the likelihood of this failing is extremely low. This just adds
+        # a message to a queue, so if this doesn't work the world is in an
+        # unrecoverable state and this thread should just bail.
+        message.nack()
+        # Re-raise the exception so that the executor can deal with it.
+        raise
 
 
 class Policy(base.BasePolicy):
@@ -77,9 +82,8 @@ class Policy(base.BasePolicy):
             flow_control=flow_control,
             subscription=subscription,
         )
-        # Default the callback to a no-op; the **actual** callback is
-        # provided by ``.open()``.
-        self._callback = _do_nothing_callback
+        # The **actual** callback is provided by ``.open()``.
+        self._callback = None
         # Create a queue for keeping track of shared state.
         self._request_queue = self._get_queue(queue)
         # Also maintain an executor.
@@ -185,6 +189,8 @@ class Policy(base.BasePolicy):
         dispatch_worker = _helper_threads.QueueCallbackWorker(
             self._request_queue,
             self.dispatch_callback,
+            max_items=self.flow_control.max_request_batch_size,
+            max_latency=self.flow_control.max_request_batch_latency
         )
         # Create and start the helper thread.
         thread = threading.Thread(
@@ -252,7 +258,7 @@ class Policy(base.BasePolicy):
         self._future = Future(policy=self, completed=threading.Event())
 
         # Start the thread to pass the requests.
-        self._callback = callback
+        self._callback = functools.partial(_wrap_callback_errors, callback)
         self._start_dispatch()
         # Actually start consuming messages.
         self._consumer.start_consuming(self)
@@ -261,7 +267,7 @@ class Policy(base.BasePolicy):
         # Return the future.
         return self._future
 
-    def dispatch_callback(self, action, kwargs):
+    def dispatch_callback(self, items):
         """Map the callback request to the appropriate gRPC request.
 
         Args:
@@ -273,21 +279,26 @@ class Policy(base.BasePolicy):
             ValueError: If ``action`` isn't one of the expected actions
                 "ack", "drop", "lease", "modify_ack_deadline" or "nack".
         """
-        if action == 'ack':
-            self.ack(**kwargs)
-        elif action == 'drop':
-            self.drop(**kwargs)
-        elif action == 'lease':
-            self.lease(**kwargs)
-        elif action == 'modify_ack_deadline':
-            self.modify_ack_deadline(**kwargs)
-        elif action == 'nack':
-            self.nack(**kwargs)
-        else:
-            raise ValueError(
-                'Unexpected action', action,
-                'Must be one of "ack", "drop", "lease", '
-                '"modify_ack_deadline" or "nack".')
+        batched_commands = collections.defaultdict(list)
+
+        for item in items:
+            batched_commands[item.__class__].append(item)
+
+        _LOGGER.debug('Handling %d batched requests', len(items))
+
+        if batched_commands[base.LeaseRequest]:
+            self.lease(batched_commands.pop(base.LeaseRequest))
+        if batched_commands[base.ModAckRequest]:
+            self.modify_ack_deadline(
+                batched_commands.pop(base.ModAckRequest))
+        # Note: Drop and ack *must* be after lease. It's possible to get both
+        # the lease the and ack/drop request in the same batch.
+        if batched_commands[base.AckRequest]:
+            self.ack(batched_commands.pop(base.AckRequest))
+        if batched_commands[base.NackRequest]:
+            self.nack(batched_commands.pop(base.NackRequest))
+        if batched_commands[base.DropRequest]:
+            self.drop(batched_commands.pop(base.DropRequest))
 
     def on_exception(self, exception):
         """Handle the exception.
@@ -314,8 +325,20 @@ class Policy(base.BasePolicy):
     def on_response(self, response):
         """Process all received Pub/Sub messages.
 
-        For each message, schedule a callback with the executor.
+        For each message, send a modified acknowledgement request to the
+        server. This prevents expiration of the message due to buffering by
+        gRPC or proxy/firewall. This makes the server and client expiration
+        timer closer to each other thus preventing the message being
+        redelivered multiple times.
+
+        After the messages have all had their ack deadline updated, execute
+        the callback for each message using the executor.
         """
+        items = [
+            base.ModAckRequest(message.ack_id, self.histogram.percentile(99))
+            for message in response.received_messages
+        ]
+        self.modify_ack_deadline(items)
         for msg in response.received_messages:
             _LOGGER.debug(
                 'Using %s to process message with ack_id %s.',

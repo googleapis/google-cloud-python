@@ -56,7 +56,7 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError) as exc_info:
             batch._add_write_pbs([mock.sentinel.write])
 
-        self.assertEqual(exc_info.exception.args, ( _WRITE_READ_ONLY,))
+        self.assertEqual(exc_info.exception.args, (_WRITE_READ_ONLY,))
         self.assertEqual(batch._write_pbs, [])
 
     def test__add_write_pbs(self):
@@ -75,7 +75,8 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(options_pb, expected_pb)
 
     def test__options_protobuf_read_only_retry(self):
-        from google.cloud.firestore_v1beta1.transaction import _CANT_RETRY_READ_ONLY
+        from google.cloud.firestore_v1beta1.transaction import (
+            _CANT_RETRY_READ_ONLY)
 
         transaction = self._make_one(mock.sentinel.client, read_only=True)
         retry_id = b'illuminate'
@@ -141,7 +142,7 @@ class TestTransaction(unittest.TestCase):
         # Verify the called mock.
         firestore_api.begin_transaction.assert_called_once_with(
             client._database_string, options_=None,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test__begin_failure(self):
         from google.cloud.firestore_v1beta1.transaction import _CANT_BEGIN
@@ -191,7 +192,7 @@ class TestTransaction(unittest.TestCase):
 
         # Verify the called mock.
         firestore_api.rollback.assert_called_once_with(
-            client._database_string, txn_id, options=client._call_options)
+            client._database_string, txn_id, metadata=client._rpc_metadata)
 
     def test__rollback_not_allowed(self):
         from google.cloud.firestore_v1beta1.transaction import _CANT_ROLLBACK
@@ -206,14 +207,13 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (_CANT_ROLLBACK,))
 
     def test__rollback_failure(self):
-        from google.gax import errors
-        from google.protobuf import empty_pb2
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy failure.
         firestore_api = mock.create_autospec(
             firestore_client.FirestoreClient, instance=True)
-        exc = _make_gax_error('INTERNAL', 'Fire during rollback.')
+        exc = exceptions.InternalServerError('Fire during rollback.')
         firestore_api.rollback.side_effect = exc
 
         # Attach the fake GAPIC to a real client.
@@ -225,7 +225,7 @@ class TestTransaction(unittest.TestCase):
         txn_id = b'roll-bad-server'
         transaction._id = txn_id
 
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.InternalServerError) as exc_info:
             transaction._rollback()
 
         self.assertIs(exc_info.exception, exc)
@@ -234,7 +234,7 @@ class TestTransaction(unittest.TestCase):
 
         # Verify the called mock.
         firestore_api.rollback.assert_called_once_with(
-            client._database_string, txn_id, options=client._call_options)
+            client._database_string, txn_id, metadata=client._rpc_metadata)
 
     def test__commit(self):
         from google.cloud.firestore_v1beta1.gapic import firestore_client
@@ -272,7 +272,7 @@ class TestTransaction(unittest.TestCase):
         # Verify the mocks.
         firestore_api.commit.assert_called_once_with(
             client._database_string, write_pbs, transaction=txn_id,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
     def test__commit_not_allowed(self):
         from google.cloud.firestore_v1beta1.transaction import _CANT_COMMIT
@@ -285,15 +285,13 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(exc_info.exception.args, (_CANT_COMMIT,))
 
     def test__commit_failure(self):
-        from google.gax import errors
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.gapic import firestore_client
-        from google.cloud.firestore_v1beta1.proto import firestore_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
 
         # Create a minimal fake GAPIC with a dummy failure.
         firestore_api = mock.create_autospec(
             firestore_client.FirestoreClient, instance=True)
-        exc = _make_gax_error('INTERNAL', 'Fire during commit.')
+        exc = exceptions.InternalServerError('Fire during commit.')
         firestore_api.commit.side_effect = exc
 
         # Attach the fake GAPIC to a real client.
@@ -308,7 +306,7 @@ class TestTransaction(unittest.TestCase):
         transaction.delete(client.document('up', 'left'))
         write_pbs = transaction._write_pbs[::]
 
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.InternalServerError) as exc_info:
             transaction._commit()
 
         self.assertIs(exc_info.exception, exc)
@@ -318,7 +316,7 @@ class TestTransaction(unittest.TestCase):
         # Verify the called mock.
         firestore_api.commit.assert_called_once_with(
             client._database_string, write_pbs, transaction=txn_id,
-            options=client._call_options)
+            metadata=client._rpc_metadata)
 
 
 class Test_Transactional(unittest.TestCase):
@@ -368,7 +366,7 @@ class Test_Transactional(unittest.TestCase):
         firestore_api = transaction._client._firestore_api
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=None,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_not_called()
 
@@ -399,7 +397,7 @@ class Test_Transactional(unittest.TestCase):
         )
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=options_,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_not_called()
 
@@ -423,14 +421,14 @@ class Test_Transactional(unittest.TestCase):
         firestore_api = transaction._client._firestore_api
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=None,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_called_once_with(
             transaction._client._database_string, txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.commit.assert_not_called()
 
     def test__pre_commit_failure_with_rollback_failure(self):
-        from google.gax import errors
+        from google.api_core import exceptions
 
         exc1 = ValueError('I will not be only failure.')
         to_wrap = mock.Mock(side_effect=exc1, spec=[])
@@ -439,12 +437,12 @@ class Test_Transactional(unittest.TestCase):
         txn_id = b'both-will-fail'
         transaction = _make_transaction(txn_id)
         # Actually force the ``rollback`` to fail as well.
-        exc2 = _make_gax_error('INTERNAL', 'Rollback blues.')
+        exc2 = exceptions.InternalServerError('Rollback blues.')
         firestore_api = transaction._client._firestore_api
         firestore_api.rollback.side_effect = exc2
 
         # Try to ``_pre_commit``
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.InternalServerError) as exc_info:
             wrapped._pre_commit(transaction, a='b', c='zebra')
         self.assertIs(exc_info.exception, exc2)
 
@@ -456,10 +454,10 @@ class Test_Transactional(unittest.TestCase):
         to_wrap.assert_called_once_with(transaction, a='b', c='zebra')
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=None,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_called_once_with(
             transaction._client._database_string, txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.commit.assert_not_called()
 
     def test__maybe_commit_success(self):
@@ -480,10 +478,10 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
     def test__maybe_commit_failure_read_only(self):
-        from google.gax import errors
+        from google.api_core import exceptions
 
         wrapped = self._make_one(mock.sentinel.callable_)
 
@@ -495,11 +493,11 @@ class Test_Transactional(unittest.TestCase):
 
         # Actually force the ``commit`` to fail (use ABORTED, but cannot
         # retry since read-only).
-        exc = _make_gax_error('ABORTED', 'Read-only did a bad.')
+        exc = exceptions.Aborted('Read-only did a bad.')
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = exc
 
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.Aborted) as exc_info:
             wrapped._maybe_commit(transaction)
         self.assertIs(exc_info.exception, exc)
 
@@ -512,9 +510,11 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
     def test__maybe_commit_failure_can_retry(self):
+        from google.api_core import exceptions
+
         wrapped = self._make_one(mock.sentinel.callable_)
 
         txn_id = b'failed-but-retry'
@@ -524,7 +524,7 @@ class Test_Transactional(unittest.TestCase):
         wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
 
         # Actually force the ``commit`` to fail.
-        exc = _make_gax_error('ABORTED', 'Read-write did a bad.')
+        exc = exceptions.Aborted('Read-write did a bad.')
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = exc
 
@@ -540,10 +540,10 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
     def test__maybe_commit_failure_cannot_retry(self):
-        from google.gax import errors
+        from google.api_core import exceptions
 
         wrapped = self._make_one(mock.sentinel.callable_)
 
@@ -554,11 +554,11 @@ class Test_Transactional(unittest.TestCase):
         wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
 
         # Actually force the ``commit`` to fail.
-        exc = _make_gax_error('INTERNAL', 'Real bad thing')
+        exc = exceptions.InternalServerError('Real bad thing')
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = exc
 
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.InternalServerError) as exc_info:
             wrapped._maybe_commit(transaction)
         self.assertIs(exc_info.exception, exc)
 
@@ -571,7 +571,7 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
     def test___call__success_first_attempt(self):
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
@@ -591,13 +591,14 @@ class Test_Transactional(unittest.TestCase):
         firestore_api = transaction._client._firestore_api
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=None,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
     def test___call__success_second_attempt(self):
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import firestore_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
@@ -609,7 +610,7 @@ class Test_Transactional(unittest.TestCase):
         transaction = _make_transaction(txn_id)
 
         # Actually force the ``commit`` to fail on first / succeed on second.
-        exc = _make_gax_error('ABORTED', 'Contention junction.')
+        exc = exceptions.Aborted('Contention junction.')
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = [
             exc,
@@ -640,22 +641,27 @@ class Test_Transactional(unittest.TestCase):
                 retry_transaction=txn_id,
             ),
         )
-        call_options = transaction._client._call_options
         self.assertEqual(
             firestore_api.begin_transaction.mock_calls,
             [
-                mock.call(db_str, options_=None, options=call_options),
-                mock.call(db_str, options_=options_, options=call_options),
+                mock.call(
+                    db_str, options_=None,
+                    metadata=transaction._client._rpc_metadata),
+                mock.call(
+                    db_str, options_=options_,
+                    metadata=transaction._client._rpc_metadata),
             ],
         )
         firestore_api.rollback.assert_not_called()
         commit_call = mock.call(
-            db_str, [], transaction=txn_id, options=call_options)
+            db_str, [], transaction=txn_id,
+            metadata=transaction._client._rpc_metadata)
         self.assertEqual(
             firestore_api.commit.mock_calls,
             [commit_call, commit_call])
 
     def test___call__failure(self):
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.transaction import (
             _EXCEED_ATTEMPTS_TEMPLATE)
 
@@ -666,7 +672,7 @@ class Test_Transactional(unittest.TestCase):
         transaction = _make_transaction(txn_id, max_attempts=1)
 
         # Actually force the ``commit`` to fail.
-        exc = _make_gax_error('ABORTED', 'Contention just once.')
+        exc = exceptions.Aborted('Contention just once.')
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = exc
 
@@ -685,13 +691,13 @@ class Test_Transactional(unittest.TestCase):
         to_wrap.assert_called_once_with(transaction, 'here', there=1.5)
         firestore_api.begin_transaction.assert_called_once_with(
             transaction._client._database_string, options_=None,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.rollback.assert_called_once_with(
             transaction._client._database_string, txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
         firestore_api.commit.assert_called_once_with(
             transaction._client._database_string, [], transaction=txn_id,
-            options=transaction._client._call_options)
+            metadata=transaction._client._rpc_metadata)
 
 
 class Test_transactional(unittest.TestCase):
@@ -714,7 +720,8 @@ class Test__commit_with_retry(unittest.TestCase):
 
     @staticmethod
     def _call_fut(client, write_pbs, transaction_id):
-        from google.cloud.firestore_v1beta1.transaction import _commit_with_retry
+        from google.cloud.firestore_v1beta1.transaction import (
+            _commit_with_retry)
 
         return _commit_with_retry(client, write_pbs, transaction_id)
 
@@ -740,11 +747,12 @@ class Test__commit_with_retry(unittest.TestCase):
         _sleep.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             client._database_string, mock.sentinel.write_pbs,
-            transaction=txn_id, options=client._call_options)
+            transaction=txn_id, metadata=client._rpc_metadata)
 
     @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep',
                 side_effect=[2.0, 4.0])
     def test_success_third_attempt(self, _sleep):
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy result.
@@ -752,8 +760,8 @@ class Test__commit_with_retry(unittest.TestCase):
             firestore_client.FirestoreClient, instance=True)
         # Make sure the first two requests fail and the third succeeds.
         firestore_api.commit.side_effect = [
-            _make_gax_error('UNAVAILABLE', 'Server sleepy.'),
-            _make_gax_error('UNAVAILABLE', 'Server groggy.'),
+            exceptions.ServiceUnavailable('Server sleepy.'),
+            exceptions.ServiceUnavailable('Server groggy.'),
             mock.sentinel.commit_response,
         ]
 
@@ -774,21 +782,21 @@ class Test__commit_with_retry(unittest.TestCase):
         # commit() called same way 3 times.
         commit_call = mock.call(
             client._database_string, mock.sentinel.write_pbs,
-            transaction=txn_id, options=client._call_options)
+            transaction=txn_id, metadata=client._rpc_metadata)
         self.assertEqual(
             firestore_api.commit.mock_calls,
             [commit_call, commit_call, commit_call])
 
     @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep')
     def test_failure_first_attempt(self, _sleep):
-        from google.gax import errors
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy result.
         firestore_api = mock.create_autospec(
             firestore_client.FirestoreClient, instance=True)
         # Make sure the first request fails with an un-retryable error.
-        exc =_make_gax_error('RESOURCE_EXHAUSTED', 'We ran out of fries.')
+        exc = exceptions.ResourceExhausted('We ran out of fries.')
         firestore_api.commit.side_effect = exc
 
         # Attach the fake GAPIC to a real client.
@@ -797,7 +805,7 @@ class Test__commit_with_retry(unittest.TestCase):
 
         # Call function and check result.
         txn_id = b'\x08\x06\x07\x05\x03\x00\x09-jenny'
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.ResourceExhausted) as exc_info:
             self._call_fut(
                 client, mock.sentinel.write_pbs, txn_id)
 
@@ -807,12 +815,12 @@ class Test__commit_with_retry(unittest.TestCase):
         _sleep.assert_not_called()
         firestore_api.commit.assert_called_once_with(
             client._database_string, mock.sentinel.write_pbs,
-            transaction=txn_id, options=client._call_options)
+            transaction=txn_id, metadata=client._rpc_metadata)
 
     @mock.patch('google.cloud.firestore_v1beta1.transaction._sleep',
                 return_value=2.0)
     def test_failure_second_attempt(self, _sleep):
-        from google.gax import errors
+        from google.api_core import exceptions
         from google.cloud.firestore_v1beta1.gapic import firestore_client
 
         # Create a minimal fake GAPIC with a dummy result.
@@ -820,8 +828,8 @@ class Test__commit_with_retry(unittest.TestCase):
             firestore_client.FirestoreClient, instance=True)
         # Make sure the first request fails retry-able and second
         # fails non-retryable.
-        exc1 =_make_gax_error('UNAVAILABLE', 'Come back next time.')
-        exc2 =_make_gax_error('INTERNAL', 'Server on fritz.')
+        exc1 = exceptions.ServiceUnavailable('Come back next time.')
+        exc2 = exceptions.InternalServerError('Server on fritz.')
         firestore_api.commit.side_effect = [exc1, exc2]
 
         # Attach the fake GAPIC to a real client.
@@ -830,7 +838,7 @@ class Test__commit_with_retry(unittest.TestCase):
 
         # Call function and check result.
         txn_id = b'the-journey-when-and-where-well-go'
-        with self.assertRaises(errors.GaxError) as exc_info:
+        with self.assertRaises(exceptions.InternalServerError) as exc_info:
             self._call_fut(
                 client, mock.sentinel.write_pbs, txn_id)
 
@@ -841,7 +849,7 @@ class Test__commit_with_retry(unittest.TestCase):
         # commit() called same way 2 times.
         commit_call = mock.call(
             client._database_string, mock.sentinel.write_pbs,
-            transaction=txn_id, options=client._call_options)
+            transaction=txn_id, metadata=client._rpc_metadata)
         self.assertEqual(
             firestore_api.commit.mock_calls, [commit_call, commit_call])
 
@@ -937,22 +945,3 @@ def _make_transaction(txn_id, **txn_kwargs):
     client._firestore_api_internal = firestore_api
 
     return Transaction(client, **txn_kwargs)
-
-
-def _make_rendezvous(status_code, details):
-    from grpc import _channel
-    from google.cloud import exceptions
-
-    exc_state = _channel._RPCState((), None, None, status_code, details)
-    return exceptions.GrpcRendezvous(exc_state, None, None, None)
-
-
-def _make_gax_error(err_name, details):
-    from google.gax import errors
-    import grpc
-
-    # First, create low-level GrpcRendezvous exception.
-    status_code = getattr(grpc.StatusCode, err_name)
-    cause = _make_rendezvous(status_code, details)
-    # Then put it into a high-level GaxError.
-    return errors.GaxError('RPC failed', cause=cause)

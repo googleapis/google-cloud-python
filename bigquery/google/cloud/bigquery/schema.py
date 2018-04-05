@@ -58,11 +58,13 @@ class SchemaField(object):
         """
         # Handle optional properties with default values
         mode = api_repr.get('mode', 'NULLABLE')
+        description = api_repr.get('description')
         fields = api_repr.get('fields', ())
         return cls(
             field_type=api_repr['type'].upper(),
             fields=[cls.from_api_repr(f) for f in fields],
             mode=mode.upper(),
+            description=description,
             name=api_repr['name'],
         )
 
@@ -116,9 +118,10 @@ class SchemaField(object):
         """
         # Put together the basic representation. See http://bit.ly/2hOAT5u.
         answer = {
-            'mode': self.mode.lower(),
+            'mode': self.mode.upper(),
             'name': self.name,
-            'type': self.field_type.lower(),
+            'type': self.field_type.upper(),
+            'description': self.description,
         }
 
         # If this is a RECORD type, then sub-fields are also included,
@@ -140,8 +143,8 @@ class SchemaField(object):
         """
         return (
             self._name,
-            self._field_type.lower(),
-            self._mode,
+            self._field_type.upper(),
+            self._mode.upper(),
             self._description,
             self._fields,
         )
@@ -198,14 +201,4 @@ def _build_schema_resource(fields):
     :rtype: mapping
     :returns: a mapping describing the schema of the supplied fields.
     """
-    infos = []
-    for field in fields:
-        info = {'name': field.name,
-                'type': field.field_type,
-                'mode': field.mode}
-        if field.description is not None:
-            info['description'] = field.description
-        if field.fields:
-            info['fields'] = _build_schema_resource(field.fields)
-        infos.append(info)
-    return infos
+    return [field.to_api_repr() for field in fields]

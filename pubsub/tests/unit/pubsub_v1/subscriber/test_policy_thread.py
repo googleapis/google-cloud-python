@@ -27,6 +27,7 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.futures import Future
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -34,11 +35,6 @@ def create_policy(**kwargs):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_c', **kwargs)
-
-
-def test_init():
-    policy = create_policy()
-    policy._callback(None)
 
 
 def test_init_with_executor():
@@ -113,10 +109,13 @@ def test_open():
         mock.Mock(spec=('name', 'start')),
         mock.Mock(spec=('name', 'start')),
     )
-    with mock.patch.object(threading, 'Thread', side_effect=threads):
-        policy.open(mock.sentinel.CALLBACK)
+    callback = mock.Mock()
 
-    assert policy._callback is mock.sentinel.CALLBACK
+    with mock.patch.object(threading, 'Thread', side_effect=threads):
+        policy.open(callback)
+
+    policy._callback(mock.sentinel.MESSAGE)
+    callback.assert_called_once_with(mock.sentinel.MESSAGE)
 
     assert policy._dispatch_thread is threads[0]
     threads[0].start.assert_called_once_with()
@@ -138,30 +137,19 @@ def test_open_already_open():
     assert exc_info.value.args == ('This policy has already been opened.',)
 
 
-def test_dispatch_callback_valid_actions():
+@pytest.mark.parametrize('item,method', [
+    (base.AckRequest(0, 0, 0), 'ack'),
+    (base.DropRequest(0, 0), 'drop'),
+    (base.LeaseRequest(0, 0), 'lease'),
+    (base.ModAckRequest(0, 0), 'modify_ack_deadline'),
+    (base.NackRequest(0, 0), 'nack')
+])
+def test_dispatch_callback_valid(item, method):
     policy = create_policy()
-    kwargs = {'foo': 10, 'bar': 13.37}
-    actions = (
-        'ack',
-        'drop',
-        'lease',
-        'modify_ack_deadline',
-        'nack',
-    )
-    for action in actions:
-        with mock.patch.object(policy, action) as mocked:
-            policy.dispatch_callback(action, kwargs)
-            mocked.assert_called_once_with(**kwargs)
-
-
-def test_dispatch_callback_invalid_action():
-    policy = create_policy()
-    with pytest.raises(ValueError) as exc_info:
-        policy.dispatch_callback('gecko', {})
-
-    assert len(exc_info.value.args) == 3
-    assert exc_info.value.args[0] == 'Unexpected action'
-    assert exc_info.value.args[1] == 'gecko'
+    with mock.patch.object(policy, method) as mocked:
+        items = [item]
+        policy.dispatch_callback(items)
+        mocked.assert_called_once_with([item])
 
 
 def test_on_exception_deadline_exceeded():
@@ -191,40 +179,95 @@ def test_on_exception_other():
         policy.future.result()
 
 
+def create_and_open_policy(callback, **kwargs):
+    creds = mock.create_autospec(credentials.Credentials, instance=True)
+    client = subscriber.Client(credentials=creds)
+    policy = thread.Policy(client, 'sub_name_c', **kwargs)
+
+    with mock.patch('threading.Thread', autospec=True):
+        policy.open(callback)
+
+    return policy
+
+
 def test_on_response():
+    # Create mock Executor so we can verify calls to executor.submit().
+    executor = mock.create_autospec(futures.Executor, instance=True)
+
     callback = mock.Mock(spec=())
+    policy = create_and_open_policy(callback, executor=executor)
 
-    # Create mock ThreadPoolExecutor, pass into create_policy(), and verify
-    # that both executor.submit() and future.add_done_callback are called
-    # twice.
-    future = mock.Mock()
-    attrs = {'submit.return_value': future}
-    executor = mock.Mock(**attrs)
-
-    # Set up the policy.
-    policy = create_policy(executor=executor)
-    policy._callback = callback
-
-    # Set up the messages to send.
-    messages = (
-        types.PubsubMessage(data=b'foo', message_id='1'),
-        types.PubsubMessage(data=b'bar', message_id='2'),
-    )
-
-    # Set up a valid response.
+    # Set up the messages.
     response = types.StreamingPullResponse(
         received_messages=[
-            {'ack_id': 'fack', 'message': messages[0]},
-            {'ack_id': 'back', 'message': messages[1]},
+            types.ReceivedMessage(
+                ack_id='fack',
+                message=types.PubsubMessage(data=b'foo', message_id='1')
+            ),
+            types.ReceivedMessage(
+                ack_id='back',
+                message=types.PubsubMessage(data=b'bar', message_id='2')
+            ),
         ],
     )
 
-    # Actually run the method and prove that executor.submit and
-    # future.add_done_callback were called in the expected way.
-    policy.on_response(response)
+    # Actually run the method and prove that modack and executor.submit
+    # are called in the expected way.
+    modack_patch = mock.patch.object(
+        policy, 'modify_ack_deadline', autospec=True)
+    with modack_patch as modack:
+        policy.on_response(response)
+
+    modack.assert_called_once_with(
+        [base.ModAckRequest('fack', 10),
+         base.ModAckRequest('back', 10)]
+    )
 
     submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
     assert len(submit_calls) == 2
     for call in submit_calls:
-        assert call[1][0] == callback
+        assert call[1][0] == policy._callback
         assert isinstance(call[1][1], message.Message)
+
+
+def _callback_side_effect(callback, *args, **kwargs):
+    try:
+        return callback(*args, **kwargs)
+    except Exception:
+        pass
+
+
+def test_on_response_nacks_on_error():
+    # Create a callback that always errors.
+    callback = mock.Mock(spec=(), side_effect=ValueError)
+    executor = mock.create_autospec(futures.Executor, instance=True)
+    executor.submit.side_effect = _callback_side_effect
+    policy = create_and_open_policy(callback, executor=executor)
+
+    # Set up the messages.
+    message = types.PubsubMessage(data=b'foo', message_id='1')
+    response = types.StreamingPullResponse(
+        received_messages=[
+            types.ReceivedMessage(
+                ack_id='fack',
+                message=message
+            ),
+        ],
+    )
+
+    # Actually run the method and prove that nack is called because the
+    # callback errored.
+    policy.on_response(response)
+
+    # Make sure the callback was executed.
+    callback.assert_called_once_with(mock.ANY)
+
+    # Process outstanding requests, the callback should've queued a nack
+    # request.
+    nack_patch = mock.patch.object(
+        policy, 'nack', autospec=True)
+    with nack_patch as nack:
+        policy.dispatch_callback(policy._request_queue.queue)
+
+    nack.assert_called_once_with([
+        base.NackRequest('fack', message.ByteSize())])

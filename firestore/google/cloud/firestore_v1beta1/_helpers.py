@@ -16,13 +16,9 @@
 
 
 import collections
-import contextlib
 import datetime
-import sys
+import re
 
-import google.gax
-import google.gax.errors
-import google.gax.grpc
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import grpc
@@ -117,6 +113,70 @@ class GeoPoint(object):
             return NotImplemented
         else:
             return not equality_val
+
+
+class FieldPath(object):
+    """ Field Path object for client use.
+
+    Args:
+        parts: (one or more strings)
+            Indicating path of the key to be used.
+    """
+    simple_field_name = re.compile('^[_a-zA-Z][_a-zA-Z0-9]*$')
+
+    def __init__(self, *parts):
+        for part in parts:
+            if not isinstance(part, six.string_types) or not part:
+                error = 'One or more components is not a string or is empty.'
+                raise ValueError(error)
+        self.parts = tuple(parts)
+
+    @staticmethod
+    def from_string(string):
+        """ Creates a FieldPath from a unicode string representation.
+
+        Args:
+            :type string: str
+            :param string: A unicode string which cannot contain
+                           `~*/[]` characters, cannot exceed 1500 bytes,
+                           and cannot be empty.
+
+        Returns:
+            A :class: `FieldPath` instance with the string split on "."
+            as arguments to `FieldPath`.
+        """
+        invalid_characters = '~*/[]'
+        for invalid_character in invalid_characters:
+            if invalid_character in string:
+                raise ValueError('Invalid characters in string.')
+        string = string.split('.')
+        return FieldPath(*string)
+
+    def to_api_repr(self):
+        """ Returns quoted string representation of the FieldPath
+
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
+        """
+        api_repr = []
+        for part in self.parts:
+            match = re.match(self.simple_field_name, part)
+            if match and match.group(0) == part:
+                api_repr.append(part)
+            else:
+                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
+                api_repr.append('`' + replaced + '`')
+        return '.'.join(api_repr)
+
+    def __hash__(self):
+        return hash(self.to_api_repr())
+
+    def __eq__(self, other):
+        if isinstance(other, FieldPath):
+            return self.parts == other.parts
+        return NotImplemented
 
 
 class FieldPathHelper(object):
@@ -222,14 +282,15 @@ class FieldPathHelper(object):
         Returns:
             ValueError: Always.
         """
-        conflict_parts = [field_path]
+        conflict_parts = list(field_path.parts)
         while conflicting_paths is not self.PATH_END:
             # Grab any item, we are just looking for one example.
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
         conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(field_path, conflict)
+        msg = self.FIELD_PATH_CONFLICT.format(
+            field_path.to_api_repr(), conflict)
         return ValueError(msg)
 
     def add_field_path_end(
@@ -281,7 +342,9 @@ class FieldPathHelper(object):
         Raises:
             ValueError: If there is an ambiguity.
         """
-        parts = parse_field_path(field_path)
+        if isinstance(field_path, six.string_types):
+            field_path = FieldPath.from_string(field_path)
+        parts = field_path.parts
         to_update = self.get_update_values(value)
         curr_paths = self.unpacked_field_paths
         for index, part in enumerate(parts[:-1]):
@@ -837,6 +900,25 @@ def pbs_for_set(document_path, document_data, option):
     return write_pbs
 
 
+def canonicalize_field_paths(field_paths):
+    """Converts non-simple field paths to quoted field paths
+
+    Args:
+        field_paths (Sequence[str]): A list of field paths
+
+    Returns:
+        Sequence[str]:
+            The same list of field paths except non-simple field names
+            in the `.` delimited field path have been converted
+            into quoted unicode field paths. Simple field paths match
+            the regex ^[_a-zA-Z][_a-zA-Z0-9]*$.  See `Document`_ page for
+            more information.
+
+    .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
+    """
+    return [path.to_api_repr() for path in field_paths]
+
+
 def pbs_for_update(client, document_path, field_updates, option):
     """Make ``Write`` protobufs for ``update()`` methods.
 
@@ -860,6 +942,7 @@ def pbs_for_update(client, document_path, field_updates, option):
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
+    field_paths = canonicalize_field_paths(field_paths)
 
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
@@ -932,35 +1015,13 @@ def get_transaction_id(transaction, read_operation=True):
         return transaction.id
 
 
-@contextlib.contextmanager
-def remap_gax_error_on_commit():
-    """Remap GAX exceptions that happen in context.
-
-    Remaps gRPC exceptions that can occur during the ``Comitt`` RPC to
-    the classes defined in :mod:`~google.cloud.exceptions`.
-    """
-    try:
-        yield
-    except google.gax.errors.GaxError as exc:
-        status_code = google.gax.grpc.exc_to_code(exc.cause)
-        error_class = _GRPC_ERROR_MAPPING.get(status_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
-
-
-def options_with_prefix(database_string):
-    """Create GAPIC options w / cloud resource prefix.
+def metadata_with_prefix(prefix, **kw):
+    """Create RPC metadata containing a prefix.
 
     Args:
-        database_string (str): A database string of the form
-            ``projects/{project_id}/databases/{database_id}``.
+        prefix (str): appropriate resource path.
 
     Returns:
-        ~google.gax.CallOptions: GAPIC call options with supplied prefix.
+        List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return google.gax.CallOptions(
-        metadata=[('google-cloud-resource-prefix', database_string)],
-    )
+    return [('google-cloud-resource-prefix', prefix)]

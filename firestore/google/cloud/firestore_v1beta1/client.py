@@ -24,11 +24,8 @@ In the hierarchy of API concepts
   :class:`~.firestore_v1beta1.document.DocumentReference`
 """
 
-from google.cloud._helpers import make_secure_channel
-from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 
-from google.cloud.firestore_v1beta1 import __version__
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.batch import WriteBatch
@@ -78,7 +75,7 @@ class Client(ClientWithProject):
 
     _firestore_api_internal = None
     _database_string_internal = None
-    _call_options_internal = None
+    _rpc_metadata_internal = None
 
     def __init__(self, project=None, credentials=None,
                  database=DEFAULT_DATABASE):
@@ -98,7 +95,8 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            self._firestore_api_internal = _make_firestore_api(self)
+            self._firestore_api_internal = firestore_client.FirestoreClient(
+                credentials=self._credentials)
 
         return self._firestore_api_internal
 
@@ -128,18 +126,18 @@ class Client(ClientWithProject):
         return self._database_string_internal
 
     @property
-    def _call_options(self):
-        """The call options for this client's associated database.
+    def _rpc_metadata(self):
+        """The RPC metadata for this client's associated database.
 
         Returns:
-            ~google.gax.CallOptions: GAPIC call options with a resource prefix
+            Sequence[Tuple(str, str)]: RPC metadata with resource prefix
             for the database associated with this client.
         """
-        if self._call_options_internal is None:
-            self._call_options_internal = _helpers.options_with_prefix(
+        if self._rpc_metadata_internal is None:
+            self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string)
 
-        return self._call_options_internal
+        return self._rpc_metadata_internal
 
     def collection(self, *collection_path):
         """Get a reference to a collection.
@@ -333,7 +331,7 @@ class Client(ClientWithProject):
         response_iterator = self._firestore_api.batch_get_documents(
             self._database_string, document_paths, mask,
             transaction=_helpers.get_transaction_id(transaction),
-            options=self._call_options)
+            metadata=self._rpc_metadata)
 
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
@@ -434,7 +432,6 @@ class CreateIfMissingOption(WriteOption):
         create_if_missing (bool): Indicates if the document should be created
             if it doesn't already exist.
     """
-
     def __init__(self, create_if_missing):
         self._create_if_missing = create_if_missing
 
@@ -518,24 +515,6 @@ class ExistsOption(WriteOption):
         write_pb.current_document.CopyFrom(current_doc)
 
 
-def _make_firestore_api(client):
-    """Create an instance of the GAPIC Firestore client.
-
-    Args:
-        client (~.firestore_v1beta1.client.Client): The client that holds
-            configuration details.
-
-    Returns:
-        ~.gapic.firestore.v1beta1.firestore_client.FirestoreClient: A
-        Firestore GAPIC client instance with the proper credentials.
-    """
-    host = firestore_client.FirestoreClient.SERVICE_ADDRESS
-    channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT, host)
-    return firestore_client.FirestoreClient(
-        channel=channel, lib_name='gccl', lib_version=__version__)
-
-
 def _reference_info(references):
     """Get information about document references.
 
@@ -603,8 +582,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             a document factory.
 
     Returns:
-        Optional[.DocumentSnapshot]: The retrieved snapshot. If the
-        snapshot is :data:`None`, that means the document is ``missing``.
+       [.DocumentSnapshot]: The retrieved snapshot.
 
     Raises:
         ValueError: If the response has a ``result`` field (a oneof) other
@@ -622,13 +600,19 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             read_time=get_doc_response.read_time,
             create_time=get_doc_response.found.create_time,
             update_time=get_doc_response.found.update_time)
-        return snapshot
     elif result_type == 'missing':
-        return None
+        snapshot = DocumentSnapshot(
+            None,
+            None,
+            exists=False,
+            read_time=get_doc_response.read_time,
+            create_time=None,
+            update_time=None)
     else:
         raise ValueError(
             '`BatchGetDocumentsResponse.result` (a oneof) had a field other '
             'than `found` or `missing` set, or was unset')
+    return snapshot
 
 
 def _get_doc_mask(field_paths):

@@ -4,6 +4,45 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.3.0
+
+### Interface additions
+
+- Added `spanner_v1.COMMIT_TIMESTAMP`. (#5102)
+
+## 1.2.0
+
+### New features
+
+- Added batch query support (#4938)
+
+### Implementation changes
+
+- Removed custom timestamp class in favor of the one in google-api-core. (#4980)
+
+### Dependencies
+
+- Update minimum version for google-api-core to 1.1.0 (#5030)
+
+### Documentation
+
+- Update package metadata release status to 'Stable' (#5031)
+
+## 1.1.0
+
+### Dependencies
+
+- The minimum version for `google-api-core` has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)
+
+### Testing and internal changes
+
+- Fix load_keys() in YCSB-like benchmark for cloud spanner. (#4919)
+- Install local dependencies when running lint (#4936)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+- Normalize all setup.py files (#4909)
+- Fix system test util to populate streaming (#4888)
+- Retry conflict errors in system test (#4850)
+
 ## 1.0.0
 
 ### Breaking Changes

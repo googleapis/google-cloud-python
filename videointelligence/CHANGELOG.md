@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.1.0
+
+### Interface additions
+
+- Added video v1p1beta1 (#5048)
+
+## 1.0.1
+
+### Dependencies
+
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+
+### Testing and internal changes
+
+- Normalize all setup.py files (#4909)
+
 ## 1.0.0
 
 [![release level](https://img.shields.io/badge/release%20level-general%20availability%20%28GA%29-brightgreen.svg?style&#x3D;flat)](https://cloud.google.com/terms/launch-stages)

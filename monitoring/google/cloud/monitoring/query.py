@@ -383,7 +383,7 @@ class Query(object):
 
         .. _supported aligners:
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-            projects.timeSeries/list#Aligner
+            projects.alertPolicies#Aligner
         """
         new_query = self.copy()
         new_query._per_series_aligner = per_series_aligner
@@ -420,7 +420,7 @@ class Query(object):
 
         .. _supported reducers:
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-            projects.timeSeries/list#Reducer
+            projects.alertPolicies#Reducer
         """
         new_query = self.copy()
         new_query._cross_series_reducer = cross_series_reducer

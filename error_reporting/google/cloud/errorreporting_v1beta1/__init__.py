@@ -16,9 +16,12 @@ from __future__ import absolute_import
 
 from google.cloud.errorreporting_v1beta1 import types
 from google.cloud.errorreporting_v1beta1.gapic import enums
-from google.cloud.errorreporting_v1beta1.gapic import error_group_service_client
-from google.cloud.errorreporting_v1beta1.gapic import error_stats_service_client
-from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client
+from google.cloud.errorreporting_v1beta1.gapic import (
+    error_group_service_client)
+from google.cloud.errorreporting_v1beta1.gapic import (
+    error_stats_service_client)
+from google.cloud.errorreporting_v1beta1.gapic import (
+    report_errors_service_client)
 
 
 class ErrorGroupServiceClient(

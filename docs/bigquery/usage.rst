@@ -85,32 +85,32 @@ Dataset operations
 List datasets for the client's project:
 
 .. literalinclude:: snippets.py
-   :start-after: [START client_list_datasets]
-   :end-before: [END client_list_datasets]
+   :start-after: [START bigquery_list_datasets]
+   :end-before: [END bigquery_list_datasets]
 
 Create a new dataset for the client's project:
 
 .. literalinclude:: snippets.py
-   :start-after: [START create_dataset]
-   :end-before: [END create_dataset]
+   :start-after: [START bigquery_create_dataset]
+   :end-before: [END bigquery_create_dataset]
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
 .. literalinclude:: snippets.py
-   :start-after: [START get_dataset]
-   :end-before: [END get_dataset]
+   :start-after: [START bigquery_get_dataset]
+   :end-before: [END bigquery_get_dataset]
 
 Update a property in a dataset's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_dataset_simple]
-   :end-before: [END update_dataset_simple]
+   :start-after: [START bigquery_update_dataset_description]
+   :end-before: [END bigquery_update_dataset_description]
 
 Update multiple properties in a dataset's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_dataset_multiple_properties]
-   :end-before: [END update_dataset_multiple_properties]
+   :start-after: [START bigquery_update_dataset_multiple_properties]
+   :end-before: [END bigquery_update_dataset_multiple_properties]
 
 Modify user permissions on a dataset:
 
@@ -121,8 +121,8 @@ Modify user permissions on a dataset:
 Delete a dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START delete_dataset]
-   :end-before: [END delete_dataset]
+   :start-after: [START bigquery_delete_dataset]
+   :end-before: [END bigquery_delete_dataset]
 
 
 Tables
@@ -136,38 +136,44 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START list_tables]
-   :end-before: [END list_tables]
+   :start-after: [START bigquery_list_tables]
+   :end-before: [END bigquery_list_tables]
 
 Create a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START create_table]
-   :end-before: [END create_table]
+   :start-after: [START bigquery_create_table]
+   :end-before: [END bigquery_create_table]
 
 Get a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START get_table]
-   :end-before: [END get_table]
+   :start-after: [START bigquery_get_table]
+   :end-before: [END bigquery_get_table]
 
 Update a property in a table's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_table_simple]
-   :end-before: [END update_table_simple]
+   :start-after: [START bigquery_update_table_description]
+   :end-before: [END bigquery_update_table_description]
 
 Update multiple properties in a table's metadata:
 
 .. literalinclude:: snippets.py
-   :start-after: [START update_table_multiple_properties]
-   :end-before: [END update_table_multiple_properties]
+   :start-after: [START bigquery_update_table_multiple_properties]
+   :end-before: [END bigquery_update_table_multiple_properties]
 
 Get rows from a table's data:
 
 .. literalinclude:: snippets.py
    :start-after: [START table_list_rows]
    :end-before: [END table_list_rows]
+
+Browse selected rows in a table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_browse_table]
+   :end-before: [END bigquery_browse_table]
 
 Utilize iterator properties returned with row data:
 
@@ -178,26 +184,26 @@ Utilize iterator properties returned with row data:
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
-   :start-after: [START table_insert_rows]
-   :end-before: [END table_insert_rows]
+   :start-after: [START bigquery_table_insert_rows]
+   :end-before: [END bigquery_table_insert_rows]
 
 Copy a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START copy_table]
-   :end-before: [END copy_table]
+   :start-after: [START bigquery_copy_table]
+   :end-before: [END bigquery_copy_table]
 
 Extract a table to Google Cloud Storage:
 
 .. literalinclude:: snippets.py
-   :start-after: [START extract_table]
-   :end-before: [END extract_table]
+   :start-after: [START bigquery_extract_table]
+   :end-before: [END bigquery_extract_table]
 
 Delete a table:
 
 .. literalinclude:: snippets.py
-   :start-after: [START delete_table]
-   :end-before: [END delete_table]
+   :start-after: [START bigquery_delete_table]
+   :end-before: [END bigquery_delete_table]
 
 Upload table data from a file:
 
@@ -211,17 +217,35 @@ Load table data from Google Cloud Storage
 See also: `Loading JSON data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
 
+Load a CSV file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv]
+   :end-before: [END bigquery_load_table_gcs_csv]
+
 Load a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_json]
    :end-before: [END bigquery_load_table_gcs_json]
 
-Load a JSON file from Cloud Storage, using an autodetected schema:
+Load a Parquet file from Cloud Storage:
 
 .. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_json_autodetect]
-   :end-before: [END bigquery_load_table_gcs_json_autodetect]
+   :start-after: [START bigquery_load_table_gcs_parquet]
+   :end-before: [END bigquery_load_table_gcs_parquet]
+
+Load a CSV file from Cloud Storage, using an autodetected schema:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_autodetect]
+   :end-before: [END bigquery_load_table_gcs_csv_autodetect]
+
+Append a CSV file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_append]
+   :end-before: [END bigquery_load_table_gcs_csv_append]
 
 Append a JSON file from Cloud Storage to an existing table:
 
@@ -229,11 +253,29 @@ Append a JSON file from Cloud Storage to an existing table:
    :start-after: [START bigquery_load_table_gcs_json_append]
    :end-before: [END bigquery_load_table_gcs_json_append]
 
+Append a Parquet file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_append]
+   :end-before: [END bigquery_load_table_gcs_parquet_append]
+
+Overwrite / replace an existing table with a CSV file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_csv_truncate]
+   :end-before: [END bigquery_load_table_gcs_csv_truncate]
+
 Overwrite / replace an existing table with a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_json_truncate]
    :end-before: [END bigquery_load_table_gcs_json_truncate]
+
+Overwrite / replace an existing table with a Parquet file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_parquet_truncate]
+   :end-before: [END bigquery_load_table_gcs_parquet_truncate]
 
 Customer Managed Encryption Keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -304,6 +346,12 @@ Querying data
   - Use of the ``timeout`` parameter is optional. The query will continue to
     run in the background even if it takes longer the timeout allowed.
 
+Run a dry run query
+~~~~~~~~~~~~~~~~~~~
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_dry_run]
+   :end-before: [END bigquery_query_dry_run]
 
 Writing query results to a destination table
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,3 +388,36 @@ Jobs describe actions performed on data in BigQuery tables:
 .. literalinclude:: snippets.py
    :start-after: [START client_list_jobs]
    :end-before: [END client_list_jobs]
+
+
+Using BigQuery with Pandas
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As of version 0.29.0, you can use the
+:func:`~google.cloud.bigquery.table.RowIterator.to_dataframe` function to
+retrieve query results or table rows as a :class:`pandas.DataFrame`.
+
+First, ensure that the :mod:`pandas` library is installed by running:
+
+.. code-block:: bash
+
+   pip install --upgrade pandas
+
+Alternatively, you can install the BigQuery python client library with
+:mod:`pandas` by running:
+
+.. code-block:: bash
+
+   pip install --upgrade google-cloud-bigquery[pandas]
+
+To retrieve query results as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_query_results_dataframe]
+   :end-before: [END bigquery_query_results_dataframe]
+
+To retrieve table rows as a :class:`pandas.DataFrame`:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_list_rows_dataframe]
+   :end-before: [END bigquery_list_rows_dataframe]

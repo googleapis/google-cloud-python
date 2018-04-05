@@ -37,7 +37,6 @@ TAG_RE = re.compile(r"""
 # As of this writing, the only "real" dependency is that of error_reporting
 # (on logging), the rest are just system test dependencies.
 PKG_DEPENDENCIES = {
-    'core': {'api_core'},
     'bigquery': {'storage'},
     'error_reporting': {'logging'},
     'language': {'storage'},
@@ -58,17 +57,21 @@ def get_baseline():
     On a push to master, return None. This will effectively cause everything
     to be considered to be affected.
     """
+    ci_branch = os.environ.get('CIRCLE_BRANCH')
+    ci_pr = os.environ.get('CIRCLE_PR_NUMBER')
+
     # If this is a pull request or branch, return the tip for master.
     # We will test only packages which have changed since that point.
     ci_non_master = os.environ.get('CI', '') == 'true' and any([
-        os.environ.get('CIRCLE_BRANCH', '') != 'master',
-        os.environ.get('CIRCLE_PR_NUMBER', ''),
+        ci_branch != 'master',
+        ci_pr,
     ])
     if ci_non_master:
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
+        # Can we have a PR but not a branch?
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
@@ -174,7 +177,7 @@ def get_changed_packages(file_list):
 
         # If there is a change in core, short-circuit now and return
         # everything.
-        if package in ('api_core', 'core'):
+        if package in ('core',):
             return all_packages
 
         # Add the package, as well as any dependencies this package has.

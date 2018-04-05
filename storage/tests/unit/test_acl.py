@@ -137,6 +137,14 @@ class Test_ACL(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def test_validate_predefined(self):
+        ACL = self._get_target_class()
+        self.assertIsNone(ACL.validate_predefined(None))
+        self.assertEqual(ACL.validate_predefined('public-read'), 'publicRead')
+        self.assertEqual(ACL.validate_predefined('publicRead'), 'publicRead')
+        with self.assertRaises(ValueError):
+            ACL.validate_predefined('publicread')
+
     def test_ctor(self):
         acl = self._make_one()
         self.assertEqual(acl.entities, {})

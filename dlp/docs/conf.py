@@ -20,7 +20,7 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('..'))
 
-__version__ = '0.15.4'
+__version__ = '0.1.0'
 
 # -- General configuration ------------------------------------------------
 
@@ -276,7 +276,7 @@ man_pages = [(master_doc, 'google-cloud-dlp',
 texinfo_documents = [
     (master_doc, 'google-cloud-dlp', u'google-cloud-dlp Documentation', author,
      'google-cloud-dlp',
-     'GAPIC library for the {metadata.shortName} v2beta1 service', 'APIs'),
+     'GAPIC library for the {metadata.shortName} v2 service', 'APIs'),
 ]
 
 # Documents to append as an appendix to all manuals.

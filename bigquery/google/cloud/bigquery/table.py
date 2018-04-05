@@ -450,7 +450,7 @@ class Table(object):
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+        """ID for the table, in the form ``project_id:dataset_id.table_id``.
 
         :rtype: str, or ``NoneType``
         :returns: the full ID (None until set from the server).
@@ -908,7 +908,7 @@ class TableListItem(object):
 
     @property
     def full_table_id(self):
-        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+        """ID for the table, in the form ``project_id:dataset_id.table_id``.
 
         Returns:
             str: The fully-qualified ID of the table
@@ -1148,14 +1148,15 @@ class RowIterator(HTTPIterator):
         path (str): The method path to query for the list of items.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
-        max_results (int): The maximum number of results to fetch.
+        max_results (int): (Optional) The maximum number of results to fetch.
+        page_size (int): (Optional) The number of items to return per page.
         extra_params (dict): Extra query string parameters for the API call.
 
     .. autoattribute:: pages
     """
 
     def __init__(self, client, api_request, path, schema, page_token=None,
-                 max_results=None, extra_params=None):
+                 max_results=None, page_size=None, extra_params=None):
         super(RowIterator, self).__init__(
             client, api_request, path, item_to_value=_item_to_row,
             items_key='rows', page_token=page_token, max_results=max_results,
@@ -1164,6 +1165,21 @@ class RowIterator(HTTPIterator):
         self._schema = schema
         self._field_to_index = _field_to_index_mapping(schema)
         self._total_rows = None
+        self._page_size = page_size
+
+    def _get_next_page_response(self):
+        """Requests the next page from the path provided.
+
+        Returns:
+            dict: The parsed JSON response of the next page's contents.
+        """
+        params = self._get_query_params()
+        if self._page_size is not None:
+            params['maxResults'] = self._page_size
+        return self.api_request(
+            method=self._HTTP_METHOD,
+            path=self.path,
+            query_params=params)
 
     @property
     def schema(self):

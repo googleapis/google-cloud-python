@@ -71,7 +71,9 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
-        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api', return_value=mock_trace_api)
+        patch = mock.patch(
+            'google.cloud.trace.v1.client.make_trace_api',
+            return_value=mock_trace_api)
 
         with patch:
             client.patch_traces(traces=traces)
@@ -89,7 +91,9 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
-        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api', return_value=mock_trace_api)
+        patch = mock.patch(
+            'google.cloud.trace.v1.client.make_trace_api',
+            return_value=mock_trace_api)
 
         with patch:
             client.patch_traces(
@@ -226,7 +230,6 @@ class TestClient(unittest.TestCase):
         filter_ = '+span:span1'
         order_by = 'traceId'
         page_token = 'TOKEN'
-
 
         with patch:
             list_traces_called_with = client.list_traces(

@@ -17,7 +17,6 @@
 
 from grpc import StatusCode
 
-
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
@@ -264,11 +263,10 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request_pb = _create_row_request(self.name, row_key=row_key,
-                                         filter_=filter_)
+        request = _create_row_request(self.name, row_key=row_key,
+                                      filter_=filter_)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        rows_data = PartialRowsData(response_iterator)
+        rows_data = PartialRowsData(client._data_stub.ReadRows, request)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')
@@ -310,13 +308,12 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
-        request_pb = _create_row_request(
+        request = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
-        return PartialRowsData(response_iterator)
+
+        return PartialRowsData(client._data_stub.ReadRows, request)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -345,13 +342,13 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-        request_pb = _create_row_request(
+
+        request = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
-        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
-        generator = YieldRowsData(response_iterator)
+
+        generator = YieldRowsData(client._data_stub.ReadRows, request)
         for row in generator.read_rows():
             yield row
 

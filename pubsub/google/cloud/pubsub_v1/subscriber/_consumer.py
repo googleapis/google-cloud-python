@@ -133,6 +133,131 @@ _LOGGER = logging.getLogger(__name__)
 _BIDIRECTIONAL_CONSUMER_NAME = 'Thread-ConsumeBidirectionalStream'
 
 
+class _RequestQueueGenerator(object):
+    """A helper for sending requests to a gRPC stream from a Queue.
+
+    This generator takes requests off a given queue and yields them to gRPC.
+
+    This helper is useful when you have an indeterminate, indefinite, or
+    otherwise open-ended set of requests to send through a request-streaming
+    (or bidirectional) RPC.
+
+    The reason this is necessary is because gRPC takes an iterator as the
+    request for request-streaming RPCs. gRPC consumes this iterator in another
+    thread to allow it to block while generating requests for the stream.
+    However, if the generator blocks indefinitely gRPC will not be able to
+    clean up the thread as it'll be blocked on `next(iterator)` and not be able
+    to check the channel status to stop iterating. This helper mitigates that
+    by waiting on the queue with a timeout and checking the RPC state before
+    yielding.
+
+    Finally, it allows for retrying without swapping queues because if it does
+    pull an item off the queue, it'll immediately put it back and then exit.
+    This is necessary because yielding the item in this case will cause gRPC
+    to discard it. In practice, this means that the order of messages is not
+    guaranteed. If such a thing is necessary it would be easy to use a priority
+    queue.
+
+    Example::
+
+        requests = request_queue_generator(q)
+        rpc = stub.StreamingRequest(iter(requests))
+        requests.rpc = rpc
+
+        for response in rpc:
+            print(response)
+            q.put(...)
+
+    Args:
+        queue (queue.Queue): The request queue.
+        period (float): The number of seconds to wait for items from the queue
+            before checking if the RPC is cancelled. In practice, this
+            determines the maximum amount of time the request consumption
+            thread will live after the RPC is cancelled.
+        initial_request (protobuf.Message): The initial request to yield. This
+            is done independently of the request queue to allow for easily
+            restarting streams that require some initial configuration request.
+    """
+    def __init__(self, queue, period=1, initial_request=None):
+        self._queue = queue
+        self._period = period
+        self._initial_request = initial_request
+        self.rpc = None
+
+    def _should_exit(self):
+        # Note: there is a possibility that this starts *before* the rpc
+        # property is set. So we have to check if self.rpc is set before seeing
+        # if it's active.
+        if self.rpc is not None and not self.rpc.is_active():
+            return True
+        else:
+            return False
+
+    def __iter__(self):
+        if self._initial_request is not None:
+            yield self._initial_request
+
+        while True:
+            try:
+                item = self._queue.get(timeout=self._period)
+            except queue.Empty:
+                if self._should_exit():
+                    _LOGGER.debug(
+                        'Empty queue and inactive RPC, exiting request '
+                        'generator.')
+                    return
+                else:
+                    # RPC is still active, keep waiting for queue items.
+                    continue
+
+            # A call to consumer.close() signaled us to stop generating
+            # requests.
+            if item == _helper_threads.STOP:
+                _LOGGER.debug('Cleanly exiting request generator.')
+                return
+
+            if self._should_exit():
+                # We have an item, but the RPC is closed. We should put the
+                # item back on the queue so that the next RPC can consume it.
+                self._queue.put(item)
+                _LOGGER.debug(
+                    'Inactive RPC, replacing item on queue and exiting '
+                    'request generator.')
+                return
+
+            yield item
+
+
+def _pausable_response_iterator(iterator, can_continue, period=1):
+    """Converts a gRPC response iterator into one that can be paused.
+
+    The ``can_continue`` event can be used by an independent, concurrent
+    worker to pause and resume the iteration over ``iterator``.
+
+    Args:
+        iterator (grpc.RpcContext, Iterator[protobuf.Message]): A
+            ``grpc.RpcContext`` instance that is also an iterator of responses.
+            This is a typically returned from grpc's streaming response call
+            types.
+        can_continue (threading.Event): An event which determines if we
+            can advance to the next iteration. Will be ``wait()``-ed on
+            before consuming more items from the iterator.
+        period (float): The number of seconds to wait to be able to consume
+            before checking if the RPC is cancelled. In practice, this
+            determines the maximum amount of time that ``next()`` on this
+            iterator will block after the RPC is cancelled.
+
+    Yields:
+        Any: The items yielded from ``iterator``.
+    """
+    while True:
+        can_yield = can_continue.wait(timeout=period)
+        # Calling next() on a cancelled RPC will cause it to raise the
+        # grpc.RpcError associated with the cancellation.
+        if can_yield or not iterator.is_active():
+            yield next(iterator)
+
+
 class Consumer(object):
     """Bi-directional streaming RPC consumer.
 
@@ -180,7 +305,6 @@ class Consumer(object):
         self._request_queue = queue.Queue()
         self._stopped = threading.Event()
         self._can_consume = threading.Event()
-        self._put_lock = threading.Lock()
         self._consumer_thread = None
 
     @property
@@ -203,8 +327,7 @@ class Consumer(object):
         Args:
             request (Any): The request protobuf.
         """
-        with self._put_lock:
-            self._request_queue.put(request)
+        self._request_queue.put(request)
 
     @property
     def pending_requests(self):
@@ -213,117 +336,6 @@ class Consumer(object):
         This can be used to determine if the consumer should be paused if there
         are too many outstanding requests."""
         return self._request_queue.qsize()
-
-    def _request_generator_thread(self, policy):
-        """Generate requests for the stream.
-
-        This blocks for new requests on the request queue and yields them to
-        gRPC.
-
-        Args:
-            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
-                that owns this consumer. A policy is used to create the
-                initial request used to open the streaming pull bidirectional
-                stream.
-
-        Yields:
-            google.cloud.pubsub_v1.types.StreamingPullRequest: Requests
-        """
-        # First, yield the initial request. This occurs on every new
-        # connection, fundamentally including a resumed connection.
-        initial_request = policy.get_initial_request(ack_queue=True)
-        _LOGGER.debug('Sending initial request:\n%r', initial_request)
-        yield initial_request
-
-        # Now yield each of the items on the request queue, and block if there
-        # are none. This can and must block to keep the stream open.
-        while True:
-            request = self._request_queue.get()
-            if request == _helper_threads.STOP:
-                _LOGGER.debug('Request generator signaled to stop.')
-                break
-
-            _LOGGER.debug('Sending request on stream')
-            yield request
-            policy.on_request(request)
-
-    def _stop_request_generator(self, request_generator, response_generator):
-        """Ensure a request generator is closed.
-
-        This **must** be done when recovering from a retry-able exception.
-        If not, then an inactive request generator (i.e. not attached to any
-        actual RPC) will be trying to access the same request queue as the
-        active request generator.
-
-        In addition, we want the gRPC thread consuming to cleanly exit so
-        that system resources are not wasted.
-
-        Args:
-            request_generator (Generator): A streaming pull request generator
-                returned from :meth:`_request_generator_thread`.
-            response_generator (grpc.Future): The gRPC bidirectional stream
-                object that **was** consuming the ``request_generator``. (It
-                will actually spawn a thread to consume the requests, but
-                that thread will stop once the rendezvous has a status code
-                set.)
-
-        Returns:
-            bool: Indicates if the generator was successfully stopped. Will
-            be :data:`True` unless the queue is not empty and the generator
-            is running.
-        """
-        if not response_generator.done():
-            _LOGGER.debug(
-                'Response generator must be done before stopping '
-                'request generator.')
-            return False
-
-        with self._put_lock:
-            try:
-                request_generator.close()
-            except ValueError:
-                # Should be ``ValueError('generator already executing')``
-                if not self._request_queue.empty():
-                    # This case may be a false negative in **very** rare
-                    # cases. We **assume** that the generator can't be
-                    # ``close()``-ed because it is blocking on ``get()``.
-                    # It's **very unlikely** that the generator was not
-                    # blocking, but instead **in between** the blocking
-                    # ``get()`` and the next ``yield`` / ``break``. However,
-                    # for practical purposes, we only need to stop the request
-                    # generator if the connection has timed out due to
-                    # inactivity, which indicates an empty queue.
-                    _LOGGER.debug(
-                        'Request generator could not be closed but '
-                        'request queue is not empty.')
-                    return False
-                # At this point we know:
-                #   1. The queue is empty and we hold the ``put()`` lock
-                #   2. We **cannot** ``close()`` the request generator.
-                # This means that the request generator is blocking at
-                # ``get()`` from the queue and will continue to block since
-                # we have locked ``.put()``.
-                self._request_queue.put(_helper_threads.STOP)
-                # Wait for the request generator to ``.get()`` the ``STOP``.
-                _LOGGER.debug(
-                    'Waiting for active request generator to receive STOP')
-                while not self._request_queue.empty():
-                    pass
-                # We would **like** to call ``request_generator.close()`` here
-                # but can't guarantee that the generator is paused, since it
-                # has a few instructions to complete between the ``get()``
-                # and the ``break``. However, we are confident that
-                #   1. The queue was empty and we hold the ``put()`` lock
-                #   2. We added ``STOP``
-                #   3. We waited until the request generator consumed ``STOP``
-                # so we know the request generator **will** stop within a
-                # few cycles.
-            except Exception as exc:
-                _LOGGER.error('Failed to close request generator: %r', exc)
-                return False
-
-        _LOGGER.debug('Successfully closed request generator.')
-        return True
 
     def _blocking_consume(self, policy):
         """Consume the stream indefinitely.
@@ -341,10 +353,12 @@ class Consumer(object):
                 _LOGGER.debug('Event signaled consumer exit.')
                 break
 
-            request_generator = self._request_generator_thread(policy)
-            response_generator = policy.call_rpc(request_generator)
-            responses = _pausable_iterator(
-                response_generator, self._can_consume)
+            initial_request = policy.get_initial_request()
+            request_generator = _RequestQueueGenerator(
+                self._request_queue, initial_request=initial_request)
+            rpc = policy.call_rpc(iter(request_generator))
+            request_generator.rpc = rpc
+            responses = _pausable_response_iterator(rpc, self._can_consume)
             try:
                 for response in responses:
                     _LOGGER.debug('Received response on stream')
@@ -358,11 +372,11 @@ class Consumer(object):
                 break
             except Exception as exc:
                 recover = policy.on_exception(exc)
-                if recover:
-                    recover = self._stop_request_generator(
-                        request_generator, response_generator)
                 if not recover:
                     self._stop_no_join()
+                    # No need to raise this exception. The policy should handle
+                    # passing the exception to the code that started the
+                    # consumer via a future.
                     return
 
     @property
@@ -438,6 +452,7 @@ class Consumer(object):
         self.resume()  # Make sure we aren't paused.
         self._stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
+        # Signal the request generator RPC to exit cleanly.
         self.send_request(_helper_threads.STOP)
         thread = self._consumer_thread
         self._consumer_thread = None
@@ -454,23 +469,3 @@ class Consumer(object):
         """
         thread = self._stop_no_join()
         thread.join()
-
-
-def _pausable_iterator(iterator, can_continue):
-    """Converts a standard iterator into one that can be paused.
-
-    The ``can_continue`` event can be used by an independent, concurrent
-    worker to pause and resume the iteration over ``iterator``.
-
-    Args:
-        iterator (Iterator): Any iterator to be iterated over.
-        can_continue (threading.Event): An event which determines if we
-            can advance to the next iteration. Will be ``wait()``-ed on
-            before
-
-    Yields:
-        Any: The items from ``iterator``.
-    """
-    while True:
-        can_continue.wait()
-        yield next(iterator)

@@ -47,7 +47,8 @@ def test_idempotent_retry_codes():
         exceptions.exception_class_for_grpc_status(status_code)
         for status_code in status_codes
     )
-    assert base.BasePolicy._RETRYABLE_STREAM_ERRORS == expected
+    assert set(expected).issubset(
+        set(base.BasePolicy._RETRYABLE_STREAM_ERRORS))
 
 
 def test_ack_deadline():
@@ -67,15 +68,15 @@ def test_get_initial_request():
     assert initial_request.stream_ack_deadline_seconds == 10
 
 
-def test_managed_ack_ids():
+def test_leased_messagess():
     policy = create_policy()
 
     # Ensure we always get a set back, even if the property is not yet set.
-    managed_ack_ids = policy.managed_ack_ids
-    assert isinstance(managed_ack_ids, set)
+    leased_messages = policy.leased_messages
+    assert isinstance(leased_messages, dict)
 
     # Ensure that multiple calls give the same actual object back.
-    assert managed_ack_ids is policy.managed_ack_ids
+    assert leased_messages is policy.leased_messages
 
 
 def test_subscription():
@@ -87,7 +88,9 @@ def test_ack():
     policy = create_policy()
     policy._consumer._stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
-        policy.ack('ack_id_string', 20)
+        policy.ack([
+            base.AckRequest(
+                ack_id='ack_id_string', time_to_ack=20, byte_size=0)])
         send_request.assert_called_once_with(types.StreamingPullRequest(
             ack_ids=['ack_id_string'],
         ))
@@ -99,7 +102,8 @@ def test_ack_no_time():
     policy = create_policy()
     policy._consumer._stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
-        policy.ack('ack_id_string')
+        policy.ack([base.AckRequest(
+            'ack_id_string', time_to_ack=None, byte_size=0)])
         send_request.assert_called_once_with(types.StreamingPullRequest(
             ack_ids=['ack_id_string'],
         ))
@@ -112,7 +116,7 @@ def test_ack_paused():
     consumer._stopped.set()
     assert consumer.paused is True
 
-    policy.ack('ack_id_string')
+    policy.ack([base.AckRequest('ack_id_string', 0, 0)])
 
     assert consumer.paused is False
     assert 'ack_id_string' in policy._ack_on_resume
@@ -127,25 +131,25 @@ def test_call_rpc():
 
 def test_drop():
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     policy._bytes = 20
-    policy.drop('ack_id_string', 20)
-    assert len(policy.managed_ack_ids) == 0
+    policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
 
     # Do this again to establish idempotency.
-    policy.drop('ack_id_string', 20)
-    assert len(policy.managed_ack_ids) == 0
+    policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
 
 
 @mock.patch.object(base, '_LOGGER', spec=logging.Logger)
 def test_drop_unexpected_negative(_LOGGER):
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     policy._bytes = 0
-    policy.drop('ack_id_string', 20)
-    assert len(policy.managed_ack_ids) == 0
+    policy.drop([base.DropRequest(ack_id='ack_id_string', byte_size=20)])
+    assert len(policy.leased_messages) == 0
     assert policy._bytes == 0
     _LOGGER.debug.assert_called_once_with(
         'Bytes was unexpectedly negative: %d', -20)
@@ -158,13 +162,14 @@ def test_drop_below_threshold():
     the flow control thresholds, it should resume.
     """
     policy = create_policy()
-    policy.managed_ack_ids.add('ack_id_string')
+    policy.leased_messages['ack_id_string'] = 0
     num_bytes = 20
     policy._bytes = num_bytes
     consumer = policy._consumer
     assert consumer.paused is True
 
-    policy.drop(ack_id='ack_id_string', byte_size=num_bytes)
+    policy.drop([
+        base.DropRequest(ack_id='ack_id_string', byte_size=num_bytes)])
 
     assert consumer.paused is False
 
@@ -200,16 +205,16 @@ def test_load_w_lease():
     with mock.patch.object(consumer, 'pause') as pause:
         # This should mean that our messages count is at 10%, and our bytes
         # are at 15%; the ._load property should return the higher (0.15).
-        policy.lease(ack_id='one', byte_size=150)
+        policy.lease([base.LeaseRequest(ack_id='one', byte_size=150)])
         assert policy._load == 0.15
         pause.assert_not_called()
         # After this message is added, the messages should be higher at 20%
         # (versus 16% for bytes).
-        policy.lease(ack_id='two', byte_size=10)
+        policy.lease([base.LeaseRequest(ack_id='two', byte_size=10)])
         assert policy._load == 0.2
         pause.assert_not_called()
         # Returning a number above 100% is fine.
-        policy.lease(ack_id='three', byte_size=1000)
+        policy.lease([base.LeaseRequest(ack_id='three', byte_size=1000)])
         assert policy._load == 1.16
         pause.assert_called_once_with()
 
@@ -226,7 +231,6 @@ def test_load_w_requests():
         assert policy._load == 0
 
         pending_requests.return_value = 100
-        print(consumer.pending_requests)
         assert policy._load == 1
 
         # If bytes count is higher, it should return that.
@@ -237,7 +241,8 @@ def test_load_w_requests():
 def test_modify_ack_deadline():
     policy = create_policy()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
-        policy.modify_ack_deadline('ack_id_string', 60)
+        policy.modify_ack_deadline([
+            base.ModAckRequest(ack_id='ack_id_string', seconds=60)])
         send_request.assert_called_once_with(types.StreamingPullRequest(
             modify_deadline_ack_ids=['ack_id_string'],
             modify_deadline_seconds=[60],
@@ -253,7 +258,7 @@ def test_maintain_leases_inactive_consumer():
 def test_maintain_leases_ack_ids():
     policy = create_policy()
     policy._consumer._stopped.clear()
-    policy.lease('my ack id', 50)
+    policy.lease([base.LeaseRequest(ack_id='my ack id', byte_size=50)])
 
     # Mock the sleep object.
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
@@ -286,15 +291,55 @@ def test_maintain_leases_no_ack_ids():
         sleep.assert_called()
 
 
+@mock.patch.object(time, 'time', autospec=True)
+@mock.patch.object(time, 'sleep', autospec=True)
+def test_maintain_leases_outdated_items(sleep, time):
+    policy = create_policy()
+    policy._consumer._stopped.clear()
+
+    # Add these items at the beginning of the timeline
+    time.return_value = 0
+    policy.lease([
+        base.LeaseRequest(ack_id='ack1', byte_size=50)])
+
+    # Add another item at towards end of the timeline
+    time.return_value = policy.flow_control.max_lease_duration - 1
+    policy.lease([
+        base.LeaseRequest(ack_id='ack2', byte_size=50)])
+
+    # Now make sure time reports that we are at the end of our timeline.
+    time.return_value = policy.flow_control.max_lease_duration + 1
+
+    # Mock the sleep object.
+    def trigger_inactive(seconds):
+        assert 0 < seconds < 10
+        policy._consumer._stopped.set()
+
+    sleep.side_effect = trigger_inactive
+
+    # Also mock the consumer, which sends the request.
+    with mock.patch.object(policy._consumer, 'send_request') as send:
+        policy.maintain_leases()
+
+    # Only ack2 should be renewed. ack1 should've been dropped
+    send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack2'],
+        modify_deadline_seconds=[10],
+    ))
+    assert len(policy.leased_messages) == 1
+
+    sleep.assert_called()
+
+
 def test_lease():
     policy = create_policy()
-    policy.lease(ack_id='ack_id_string', byte_size=20)
-    assert len(policy.managed_ack_ids) == 1
+    policy.lease([base.LeaseRequest(ack_id='ack_id_string', byte_size=20)])
+    assert len(policy.leased_messages) == 1
     assert policy._bytes == 20
 
     # Do this again to prove idempotency.
-    policy.lease(ack_id='ack_id_string', byte_size=20)
-    assert len(policy.managed_ack_ids) == 1
+    policy.lease([base.LeaseRequest(ack_id='ack_id_string', byte_size=20)])
+    assert len(policy.leased_messages) == 1
     assert policy._bytes == 20
 
 
@@ -304,9 +349,9 @@ def test_lease_above_threshold():
     consumer = policy._consumer
 
     with mock.patch.object(consumer, 'pause') as pause:
-        policy.lease(ack_id='first_ack_id', byte_size=20)
+        policy.lease([base.LeaseRequest(ack_id='first_ack_id', byte_size=20)])
         pause.assert_not_called()
-        policy.lease(ack_id='second_ack_id', byte_size=25)
+        policy.lease([base.LeaseRequest(ack_id='second_ack_id', byte_size=25)])
         pause.assert_called_once_with()
 
 
@@ -314,6 +359,9 @@ def test_nack():
     policy = create_policy()
     with mock.patch.object(policy, 'modify_ack_deadline') as mad:
         with mock.patch.object(policy, 'drop') as drop:
-            policy.nack(ack_id='ack_id_string', byte_size=10)
-            drop.assert_called_once_with(ack_id='ack_id_string', byte_size=10)
-        mad.assert_called_once_with(ack_id='ack_id_string', seconds=0)
+            items = [base.NackRequest(ack_id='ack_id_string', byte_size=10)]
+            policy.nack(items)
+            drop.assert_called_once_with(
+                [base.DropRequest(ack_id='ack_id_string', byte_size=10)])
+        mad.assert_called_once_with(
+            [base.ModAckRequest(ack_id='ack_id_string', seconds=0)])
