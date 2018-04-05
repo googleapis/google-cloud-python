@@ -795,7 +795,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def process_server_timestamp(document_data, top_level=True):
+def process_server_timestamp(document_data, split_on_dots=True):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -829,8 +829,13 @@ def process_server_timestamp(document_data, top_level=True):
        }
 
     Args:
-        document_data (dict): Property names and values to use for
-            sending a change to a document.
+        document_data (dict):
+            Property names and values to use for sending a change to
+            a document.
+
+        split_on_dots (bool):
+            Whether to split the property names on dots at the top level
+            (for updates only).
 
     Returns:
         Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
@@ -852,7 +857,7 @@ def process_server_timestamp(document_data, top_level=True):
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
         elif value is constants.SERVER_TIMESTAMP:
-            if top_level:
+            if split_on_dots:
                 transform_paths.append(FieldPath(*field_name.split(".")))
             else:
                 transform_paths.append(FieldPath.from_string(field_name))
