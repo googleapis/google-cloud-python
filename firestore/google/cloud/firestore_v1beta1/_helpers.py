@@ -795,7 +795,7 @@ def get_doc_id(document_pb, expected_prefix):
     return document_id
 
 
-def remove_server_timestamp(document_data, top_level=True):
+def process_server_timestamp(document_data, top_level=True):
     """Remove all server timestamp sentinel values from data.
 
     If the data is nested, for example:
@@ -817,7 +817,7 @@ def remove_server_timestamp(document_data, top_level=True):
 
     .. code-block:: python
 
-       >>> field_paths, actual_data = remove_server_timestamp(data)
+       >>> field_paths, actual_data = process_server_timestamp(data)
        >>> field_paths
        ['top1.bottom2', 'top4']
        >>> actual_data
@@ -835,32 +835,32 @@ def remove_server_timestamp(document_data, top_level=True):
     Returns:
         Tuple[List[str, ...], Dict[str, Any]]: A two-tuple of
 
-        * A list of all field paths that use the server timestamp sentinel
+        * A list of all transform paths that use the server timestamp sentinel
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
     """
-    field_paths = []
+    transform_paths = []
     actual_data = {}
     for field_name, value in six.iteritems(document_data):
         if isinstance(value, dict):
-            sub_field_paths, sub_data = remove_server_timestamp(value, False)
+            sub_field_paths, sub_data = process_server_timestamp(value, False)
             for sub_path in sub_field_paths:
                 field_path = FieldPath.from_string(field_name)
                 field_path.parts = field_path.parts + sub_path.parts
-                field_paths.extend([field_path])
+                transform_paths.extend([field_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
                 actual_data[field_name] = sub_data
         elif value is constants.SERVER_TIMESTAMP:
             if top_level:
-                field_paths.append(FieldPath(*field_name.split(".")))
+                transform_paths.append(FieldPath(*field_name.split(".")))
             else:
-                field_paths.append(FieldPath.from_string(field_name))
+                transform_paths.append(FieldPath.from_string(field_name))
         else:
             actual_data[field_name] = value
-    if not field_paths:
+    if not transform_paths:
         actual_data = document_data
-    return field_paths, actual_data
+    return transform_paths, actual_data
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -886,8 +886,7 @@ def get_transform_pb(document_path, transform_paths):
                     field_path=field_path,
                     set_to_server_value=REQUEST_TIME_ENUM,
                 )
-                # Sort transform_paths so test comparision works.
-                for field_path in sorted(transform_paths)
+                for field_path in transform_paths
             ],
         ),
     )
@@ -908,7 +907,8 @@ def pbs_for_set(document_path, document_data, option):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data = remove_server_timestamp(document_data)
+    transform_paths, actual_data = process_server_timestamp(
+        document_data, False)
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
             name=document_path,
@@ -916,7 +916,7 @@ def pbs_for_set(document_path, document_data, option):
         ),
     )
     if option is not None:
-        field_paths = extract_field_paths(actual_data)
+        field_paths = extract_field_paths(document_data)
         option.modify_write(update_pb, field_paths=field_paths)
 
     write_pbs = [update_pb]
@@ -948,7 +948,8 @@ def canonicalize_field_paths(field_paths):
 
     .. _Document: https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.Document  # NOQA
     """
-    return [path.to_api_repr() for path in field_paths]
+    field_paths = [path.to_api_repr() for path in field_paths]
+    return sorted(field_paths)  # for testing purposes
 
 
 def pbs_for_update(client, document_path, field_updates, option):
@@ -972,8 +973,8 @@ def pbs_for_update(client, document_path, field_updates, option):
         # Default uses ``exists=True``.
         option = client.write_option(exists=True)
 
-    transform_paths, actual_updates = remove_server_timestamp(field_updates)
-    if not actual_updates:
+    transform_paths, actual_updates = process_server_timestamp(field_updates)
+    if not (transform_paths or actual_updates):
         raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
     field_paths = canonicalize_field_paths(field_paths)
@@ -983,8 +984,7 @@ def pbs_for_update(client, document_path, field_updates, option):
             name=document_path,
             fields=encode_dict(update_values),
         ),
-        # Sort field_paths just for comparison in tests.
-        update_mask=common_pb2.DocumentMask(field_paths=sorted(field_paths)),
+        update_mask=common_pb2.DocumentMask(field_paths=field_paths),
     )
     # Due to the default, we don't have to check if ``None``.
     option.modify_write(update_pb, field_paths=field_paths)

@@ -1273,14 +1273,14 @@ class Test_get_doc_id(unittest.TestCase):
         self.assertEqual(exc_args[3], wrong_prefix)
 
 
-class Test_remove_server_timestamp(unittest.TestCase):
+class Test_process_server_timestamp(unittest.TestCase):
 
     @staticmethod
     def _call_fut(document_data):
         from google.cloud.firestore_v1beta1._helpers import (
-            remove_server_timestamp)
+            process_server_timestamp)
 
-        return remove_server_timestamp(document_data)
+        return process_server_timestamp(document_data)
 
     def test_no_fields(self):
         import collections
@@ -1489,8 +1489,9 @@ class Test_canonicalize_field_paths(unittest.TestCase):
         convert = _helpers.canonicalize_field_paths(field_paths)
         self.assertListEqual(
             convert,
-            ['`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321',
-             '`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321']
+            sorted([
+                '`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321',
+                '`0abc`.deq', 'abc.`654`', '`321`.`0deq`._321'])
         )
 
 
