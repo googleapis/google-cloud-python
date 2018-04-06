@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-system/gapic/v2beta1/test_system_dlp_service_v2beta1.py
-
 import time
 
 from google.cloud import dlp_v2
