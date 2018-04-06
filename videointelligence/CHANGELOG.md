@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.2.0
+
+### New Features
+
+- Add v1p1beta1 version of videointelligence (#5165)
+
+### Internal / Testing Changes
+
+- Fix v1p1beta1 unit tests (#5064)
+
 ## 1.1.0
 
 ### Interface additions
