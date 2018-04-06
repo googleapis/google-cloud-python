@@ -1284,14 +1284,21 @@ class Test_process_server_timestamp(unittest.TestCase):
 
     def test_no_fields(self):
         import collections
+        from google.cloud.firestore_v1beta1 import _helpers
 
         data = collections.OrderedDict((
             ('one', 1),
             ('two', 2.25),
             ('three', [False, True, True]),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(field_paths, [])
+        expected_field_paths = [
+            _helpers.FieldPath('one'),
+            _helpers.FieldPath('two'),
+            _helpers.FieldPath('three')
+        ]
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(transform_paths, [])
+        self.assertEqual(field_paths, expected_field_paths)
         self.assertIs(actual_data, data)
 
     def test_simple_fields(self):
@@ -1313,17 +1320,26 @@ class Test_process_server_timestamp(unittest.TestCase):
             ('top5', 200),
             ('top6', nested2),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(
-            field_paths, [_helpers.FieldPath('top1', 'bottom2'),
-                          _helpers.FieldPath('top4'),
-                          _helpers.FieldPath('top6', 'bottom7')])
+        expected_transform_paths = [
+            _helpers.FieldPath('top1', 'bottom2'),
+            _helpers.FieldPath('top4'),
+            _helpers.FieldPath('top6', 'bottom7')
+        ]
+        expected_field_paths = [
+            _helpers.FieldPath('top1', 'bottom3'),
+            _helpers.FieldPath('top5')]
         expected_data = {
             'top1': {
                 'bottom3': data['top1']['bottom3'],
             },
             'top5': data['top5'],
         }
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(
+            transform_paths,
+            expected_transform_paths
+        )
+        self.assertEqual(field_paths, expected_field_paths)
         self.assertEqual(actual_data, expected_data)
 
     def test_field_updates(self):
@@ -1337,9 +1353,9 @@ class Test_process_server_timestamp(unittest.TestCase):
             ('c.d', {'e': SERVER_TIMESTAMP}),
             ('f.g', SERVER_TIMESTAMP),
         ))
-        field_paths, actual_data = self._call_fut(data)
-        self.assertEqual(field_paths, [_helpers.FieldPath('c', 'd', 'e'),
-                                       _helpers.FieldPath('f', 'g')])
+        transform_paths, actual_data, field_paths = self._call_fut(data)
+        self.assertEqual(transform_paths, [_helpers.FieldPath('c', 'd', 'e'),
+                                           _helpers.FieldPath('f', 'g')])
 
         expected_data = {'a': {'b': data['a']['b']}}
         self.assertEqual(actual_data, expected_data)

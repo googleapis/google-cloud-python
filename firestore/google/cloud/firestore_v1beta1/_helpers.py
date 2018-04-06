@@ -517,31 +517,6 @@ def encode_dict(values_dict):
     }
 
 
-def extract_field_paths(document_data):
-    """Extract field paths from document data
-
-    Args:
-       document_data (dict): The dictionary of the actual set data.
-
-    Returns:
-       List[~.firestore_v1beta1._helpers.FieldPath]:
-           A list of `FieldPath` instances from the actual data.
-    """
-    field_paths = []
-    for field_name, value in six.iteritems(document_data):
-        if isinstance(value, dict):
-            sub_field_paths = extract_field_paths(value)
-            for sub_path in sub_field_paths:
-                paths = [field_name]
-                paths.extend(sub_path.parts)
-                field_path = FieldPath(*paths)
-                field_paths.append(field_path)
-        else:
-            path = FieldPath(field_name)
-            field_paths.append(path)
-    return field_paths
-
-
 def reference_value_to_document(reference_value, client):
     """Convert a reference value string to a document.
 
@@ -844,18 +819,25 @@ def process_server_timestamp(document_data, split_on_dots=True):
         * The remaining keys in ``document_data`` after removing the
           server timestamp sentinels
     """
+    field_paths = []
     transform_paths = []
     actual_data = {}
     for field_name, value in six.iteritems(document_data):
         if isinstance(value, dict):
-            sub_field_paths, sub_data = process_server_timestamp(value, False)
-            for sub_path in sub_field_paths:
+            sub_transform_paths, sub_data, sub_field_paths = (
+                process_server_timestamp(value, False))
+            for sub_path in sub_transform_paths:
                 field_path = FieldPath.from_string(field_name)
                 field_path.parts = field_path.parts + sub_path.parts
                 transform_paths.extend([field_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
+
                 actual_data[field_name] = sub_data
+                for sub_field_path in sub_field_paths:
+                    field_path = FieldPath.from_string(field_name)
+                    field_path.parts = field_path.parts + sub_field_path.parts
+                    field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
             if split_on_dots:
                 transform_paths.append(FieldPath(*field_name.split(".")))
@@ -863,9 +845,10 @@ def process_server_timestamp(document_data, split_on_dots=True):
                 transform_paths.append(FieldPath.from_string(field_name))
         else:
             actual_data[field_name] = value
+            field_paths.append(FieldPath(field_name))
     if not transform_paths:
         actual_data = document_data
-    return transform_paths, actual_data
+    return transform_paths, actual_data, field_paths
 
 
 def get_transform_pb(document_path, transform_paths):
@@ -912,7 +895,7 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         List[google.cloud.firestore_v1beta1.types.Write]: One
         or two ``Write`` protobuf instances for ``set()``.
     """
-    transform_paths, actual_data = process_server_timestamp(
+    transform_paths, actual_data, field_paths = process_server_timestamp(
         document_data, False)
     update_pb = write_pb2.Write(
         update=document_pb2.Document(
@@ -925,7 +908,6 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
             common_pb2.Precondition(exists=exists))
 
     if merge:
-        field_paths = extract_field_paths(document_data)
         field_paths = canonicalize_field_paths(field_paths)
         mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
         update_pb.update_mask.CopyFrom(mask)
@@ -984,7 +966,8 @@ def pbs_for_update(client, document_path, field_updates, option):
         # Default uses ``exists=True``.
         option = client.write_option(exists=True)
 
-    transform_paths, actual_updates = process_server_timestamp(field_updates)
+    transform_paths, actual_updates, field_paths = (
+        process_server_timestamp(field_updates))
     if not (transform_paths or actual_updates):
         raise ValueError('There are only ServerTimeStamp objects or is empty.')
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
