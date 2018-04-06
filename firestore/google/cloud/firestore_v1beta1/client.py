@@ -39,8 +39,7 @@ from google.cloud.firestore_v1beta1.transaction import Transaction
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``last_update_time``, ``exists`` '
-    'must be provided.')
+    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'

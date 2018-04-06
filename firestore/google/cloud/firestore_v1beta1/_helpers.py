@@ -823,29 +823,30 @@ def process_server_timestamp(document_data, split_on_dots=True):
     transform_paths = []
     actual_data = {}
     for field_name, value in six.iteritems(document_data):
+        if split_on_dots:
+            top_level_path = FieldPath(*field_name.split("."))
+        else:
+            top_level_path = FieldPath.from_string(field_name)
         if isinstance(value, dict):
             sub_transform_paths, sub_data, sub_field_paths = (
                 process_server_timestamp(value, False))
-            for sub_path in sub_transform_paths:
-                field_path = FieldPath.from_string(field_name)
-                field_path.parts = field_path.parts + sub_path.parts
-                transform_paths.extend([field_path])
+            for sub_transform_path in sub_transform_paths:
+                transform_path = FieldPath.from_string(field_name)
+                transform_path.parts = (
+                    transform_path.parts + sub_transform_path.parts)
+                transform_paths.extend([transform_path])
             if sub_data:
                 # Only add a key to ``actual_data`` if there is data.
-
                 actual_data[field_name] = sub_data
                 for sub_field_path in sub_field_paths:
                     field_path = FieldPath.from_string(field_name)
                     field_path.parts = field_path.parts + sub_field_path.parts
                     field_paths.append(field_path)
         elif value is constants.SERVER_TIMESTAMP:
-            if split_on_dots:
-                transform_paths.append(FieldPath(*field_name.split(".")))
-            else:
-                transform_paths.append(FieldPath.from_string(field_name))
+            transform_paths.append(top_level_path)
         else:
             actual_data[field_name] = value
-            field_paths.append(FieldPath(field_name))
+            field_paths.append(top_level_path)
     if not transform_paths:
         actual_data = document_data
     return transform_paths, actual_data, field_paths
@@ -887,9 +888,9 @@ def pbs_for_set(document_path, document_data, merge=False, exists=None):
         document_path (str): A fully-qualified document path.
         document_data (dict): Property names and values to use for
             replacing a document.
-        option (optional[~.firestore_v1beta1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        merge (bool): Whether to merge the fields or replace them
+        exists (bool): If set, a precondition to indicate whether the
+            document should exist or not. Used for create.
 
     Returns:
         List[google.cloud.firestore_v1beta1.types.Write]: One

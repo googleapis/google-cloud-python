@@ -27,7 +27,7 @@ class TestCrossLanguage(unittest.TestCase):
 
     def test_cross_language(self):
         filenames = sorted(glob.glob('tests/unit/testdata/*.textproto'))
-        count = 0
+        failed = 0
         descs = []
         for test_filename in filenames:
             bytes = open(test_filename, 'r').read()
@@ -38,14 +38,14 @@ class TestCrossLanguage(unittest.TestCase):
                 os.path.splitext(os.path.basename(test_filename))[0])
             try:
                 self.run_write_test(test_proto, desc)
-            except (AssertionError, Exception) as error:
-                count += 1
+            except Exception as error:
+                failed += 1
                 # print(desc, test_proto)  # for debugging
                 # print(error.args[0])  # for debugging
                 descs.append(desc)
         # for desc in descs:  # for debugging
             # print(desc)  # for debugging
-        # print(str(count) + "/" + str(len(filenames)))  # for debugging
+        # print(str(failed) + "/" + str(len(filenames)))  # for debugging
 
     def run_write_test(self, test_proto, desc):
         from google.cloud.firestore_v1beta1.proto import firestore_pb2
@@ -78,10 +78,10 @@ class TestCrossLanguage(unittest.TestCase):
             client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
             if tp.HasField("option"):
-                option = True
+                merge = True
             else:
-                option = False
-            call = functools.partial(doc.set, data, option)
+                merge = False
+            call = functools.partial(doc.set, data, merge)
         elif kind == "update":
             tp = test_proto.update
             client, doc = self.setup(firestore_api, tp)

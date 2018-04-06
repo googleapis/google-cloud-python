@@ -143,7 +143,7 @@ def test_document_set(client, cleanup):
     snapshot = document.get()
     assert snapshot.to_dict() is None
 
-    # 1. Use ``create()`` to create the document (using an option).
+    # 1. Use ``create()`` to create the document.
     data1 = {'foo': 88}
     write_result1 = document.create(data1)
     snapshot1 = document.get()
@@ -152,7 +152,7 @@ def test_document_set(client, cleanup):
     assert snapshot1.create_time == snapshot1.update_time
     assert snapshot1.update_time == write_result1.update_time
 
-    # 2. Call ``set()`` again to overwrite (no option).
+    # 2. Call ``set()`` again to overwrite.
     data2 = {'bar': None}
     write_result2 = document.set(data2)
     snapshot2 = document.get()
@@ -203,7 +203,7 @@ def test_document_set_merge(client, cleanup):
     snapshot = document.get()
     assert not snapshot.exists
 
-    # 1. Use ``set()`` to create the document (using an option).
+    # 1. Use ``create()`` to create the document.
     data1 = {'name': 'Sam',
              'address': {'city': 'SF',
                          'state': 'CA'}}
