@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
+import json
+import os
 
 from google.cloud import dlp_v2
 from google.cloud.dlp_v2 import enums
@@ -20,13 +21,26 @@ from google.cloud.dlp_v2.proto import dlp_pb2
 
 
 class TestSystemDlpService(object):
+
+    def _get_project_id(self):
+        env_var_name = 'GOOGLE_APPLICATION_CREDENTIALS'
+        path = os.environ[env_var_name]
+        json_data=open(path).read()
+        data = json.loads(json_data)
+        return data['project_id']
+
     def test_inspect_content(self):
+        # get project id from json file
+        project_id = self._get_project_id()
 
         client = dlp_v2.DlpServiceClient()
         min_likelihood = enums.Likelihood.POSSIBLE
-        inspect_config = {'min_likelihood': min_likelihood}
-        type_ = 'text/plain'
-        value = 'my phone number is 215-512-1212'
-        items_element = {'type': type_, 'value': value}
-        items = [items_element]
-        response = client.inspect_content(inspect_config, items)
+        info_types = [{'name': 'FIRST_NAME'}, {'name': 'LAST_NAME'}]
+        inspect_config = {
+            'info_types': info_types,
+            'min_likelihood': min_likelihood,
+        }
+        item = {'value': 'Robert Frost'}
+        parent = client.project_path(project_id)
+        response = client.inspect_content(parent, inspect_config, item)
+

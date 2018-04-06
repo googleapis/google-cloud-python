@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.4.0
+
+### Implementation Changes
+
+- Remove DLP client version V2Beta1 (#5155)
+
 ## 0.3.0
 
 ### Implementation changes
