@@ -14,10 +14,11 @@ logger = logging.getLogger(__name__)
 
 
 BIGQUERY_INSTALLED_VERSION = None
+SHOW_VERBOSE_DEPRECATION = False
 
 
 def _check_google_client_version():
-    global BIGQUERY_INSTALLED_VERSION
+    global BIGQUERY_INSTALLED_VERSION, SHOW_VERBOSE_DEPRECATION
 
     try:
         import pkg_resources
@@ -35,6 +36,14 @@ def _check_google_client_version():
             'pandas-gbq requires google-cloud-bigquery >= {0}, '
             'current version {1}'.format(
                 bigquery_minimum_version, BIGQUERY_INSTALLED_VERSION))
+
+    # Add check for Pandas version before showing deprecation warning.
+    # https://github.com/pydata/pandas-gbq/issues/157
+    pandas_installed_version = pkg_resources.get_distribution(
+        'pandas').parsed_version
+    pandas_version_wo_verbosity = pkg_resources.parse_version('0.23.0')
+    SHOW_VERBOSE_DEPRECATION = (
+        pandas_installed_version >= pandas_version_wo_verbosity)
 
 
 def _test_google_api_imports():
@@ -791,13 +800,14 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         DataFrame representing results of query
 
     """
-    if verbose is not None:
+
+    _test_google_api_imports()
+
+    if verbose is not None and SHOW_VERBOSE_DEPRECATION:
         warnings.warn(
             "verbose is deprecated and will be removed in "
             "a future version. Set logging level in order to vary "
             "verbosity", FutureWarning, stacklevel=1)
-
-    _test_google_api_imports()
 
     if not project_id:
         raise TypeError("Missing required parameter: project_id")
@@ -920,7 +930,7 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=None,
 
     _test_google_api_imports()
 
-    if verbose is not None:
+    if verbose is not None and SHOW_VERBOSE_DEPRECATION:
         warnings.warn(
             "verbose is deprecated and will be removed in "
             "a future version. Set logging level in order to vary "
