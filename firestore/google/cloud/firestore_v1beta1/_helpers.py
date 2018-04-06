@@ -517,18 +517,18 @@ def encode_dict(values_dict):
     }
 
 
-def extract_field_paths(actual_data):
-    """Extract field paths from actual data
+def extract_field_paths(document_data):
+    """Extract field paths from document data
 
     Args:
-       actual_data (dict): The dictionary of the actual set data.
+       document_data (dict): The dictionary of the actual set data.
 
     Returns:
        List[~.firestore_v1beta1._helpers.FieldPath]:
            A list of `FieldPath` instances from the actual data.
     """
     field_paths = []
-    for field_name, value in six.iteritems(actual_data):
+    for field_name, value in six.iteritems(document_data):
         if isinstance(value, dict):
             sub_field_paths = extract_field_paths(value)
             for sub_path in sub_field_paths:
@@ -897,7 +897,7 @@ def get_transform_pb(document_path, transform_paths):
     )
 
 
-def pbs_for_set(document_path, document_data, option):
+def pbs_for_set(document_path, document_data, merge=False, exists=None):
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
@@ -920,9 +920,15 @@ def pbs_for_set(document_path, document_data, option):
             fields=encode_dict(actual_data),
         ),
     )
-    if option is not None:
+    if exists is not None:
+        update_pb.current_document.CopyFrom(
+            common_pb2.Precondition(exists=exists))
+
+    if merge:
         field_paths = extract_field_paths(document_data)
-        option.modify_write(update_pb, field_paths=field_paths)
+        field_paths = canonicalize_field_paths(field_paths)
+        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+        update_pb.update_mask.CopyFrom(mask)
 
     write_pbs = [update_pb]
     if transform_paths:

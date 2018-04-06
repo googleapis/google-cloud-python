@@ -93,7 +93,6 @@ class TestWriteBatch(unittest.TestCase):
     def test_set_merge(self):
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.client import MergeOption
 
         client = _make_client()
         batch = self._make_one(client)
@@ -103,8 +102,7 @@ class TestWriteBatch(unittest.TestCase):
         field = 'zapzap'
         value = u'meadows and flowers'
         document_data = {field: value}
-        option = MergeOption()
-        ret_val = batch.set(reference, document_data, option)
+        ret_val = batch.set(reference, document_data, merge=True)
         self.assertIsNone(ret_val)
         new_write_pb = write_pb2.Write(
             update=document_pb2.Document(

@@ -192,7 +192,7 @@ class DocumentReference(object):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def set(self, document_data, option=None):
+    def set(self, document_data, merge=False):
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -219,7 +219,7 @@ class DocumentReference(object):
             result contains an ``update_time`` field.
         """
         batch = self._client.batch()
-        batch.set(self, document_data, option=option)
+        batch.set(self, document_data, merge=merge)
         write_results = batch.commit()
         return _first_write_result(write_results)
 

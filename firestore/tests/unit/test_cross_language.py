@@ -78,9 +78,9 @@ class TestCrossLanguage(unittest.TestCase):
             client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
             if tp.HasField("option"):
-                option = convert_set_option(tp.option)
+                option = True
             else:
-                option = None
+                option = False
             call = functools.partial(doc.set, data, option)
         elif kind == "update":
             tp = test_proto.update
@@ -147,16 +147,6 @@ def convert_data(v):
         return {k: convert_data(v2) for k, v2 in v.items()}
     else:
         return v
-
-
-def convert_set_option(option):
-    from google.cloud.firestore_v1beta1.client import MergeOption
-    from google.cloud.firestore_v1beta1 import _helpers
-    fields = []
-    if not option.all:
-        for field in option.fields:
-            fields.append(_helpers.FieldPath(*field.field))
-    return MergeOption(merge=True, field_paths=fields)
 
 
 def convert_precondition(precond):

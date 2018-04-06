@@ -33,14 +33,13 @@ from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.gapic import firestore_client
-from google.cloud.firestore_v1beta1.proto import common_pb2
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
 
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``last_update_time``, ``merge`` or ``exists`` '
+    'Exactly one of ``last_update_time``, ``exists`` '
     'must be provided.')
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
@@ -261,9 +260,6 @@ class Client(ClientWithProject):
                protobuf or directly.
         * ``exists`` (:class:`bool`): Indicates if the document being modified
               should already exist.
-        * ``merge`` (Any):
-              Indicates if the document should be merged.
-              **Note**: argument is ignored
 
         Providing no argument would make the option have no effect (so
         it is not allowed). Providing multiple would be an apparent
@@ -287,8 +283,6 @@ class Client(ClientWithProject):
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
-        elif name == 'merge':
-            return MergeOption()
         else:
             extra = '{!r} was provided'.format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
@@ -422,32 +416,6 @@ class LastUpdateOption(WriteOption):
         current_doc = types.Precondition(
             update_time=self._last_update_time)
         write_pb.current_document.CopyFrom(current_doc)
-
-
-class MergeOption(WriteOption):
-    """Option used to merge on a write operation.
-
-    This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
-    """
-    def modify_write(
-            self, write_pb, field_paths=None, **unused_kwargs):
-        """Modify a ``Write`` protobuf based on the state of this write option.
-
-        Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
-                ``Write`` protobuf instance to be modified with a precondition
-                determined by the state of this option.
-            field_paths (Sequence[str]):
-                The actual field names to use for replacing a document.
-            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
-                other subclasses that are unused here.
-        """
-        if field_paths is None:
-            field_paths = []
-        field_paths = _helpers.canonicalize_field_paths(field_paths)
-        mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
-        write_pb.update_mask.CopyFrom(mask)
 
 
 class ExistsOption(WriteOption):

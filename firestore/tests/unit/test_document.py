@@ -265,21 +265,25 @@ class TestDocumentReference(unittest.TestCase):
         self.assertTrue(write_result.get().exists)
 
     @staticmethod
-    def _write_pb_for_set(document_path, document_data):
+    def _write_pb_for_set(document_path, document_data, merge):
+        from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
         from google.cloud.firestore_v1beta1 import _helpers
-
-        return write_pb2.Write(
+        write_pbs = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
                 fields=_helpers.encode_dict(document_data),
             ),
         )
+        if merge:
+            field_paths = _helpers.extract_field_paths(document_data)
+            field_paths = _helpers.canonicalize_field_paths(field_paths)
+            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+            write_pbs.update_mask.CopyFrom(mask)
+        return write_pbs
 
-    def _set_helper(self, **option_kwargs):
-        from google.cloud.firestore_v1beta1 import _helpers
-        from google.cloud.firestore_v1beta1.client import MergeOption
+    def _set_helper(self, merge=False, **option_kwargs):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=['commit'])
         commit_response = mock.Mock(
@@ -297,23 +301,12 @@ class TestDocumentReference(unittest.TestCase):
             'And': 500,
             'Now': b'\xba\xaa\xaa \xba\xaa\xaa',
         }
-        if option_kwargs:
-            option = client.write_option(**option_kwargs)
-            write_result = document.set(document_data, option=option)
-        else:
-            option = None
-            write_result = document.set(document_data)
+        write_result = document.set(document_data, merge)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
         write_pb = self._write_pb_for_set(
-            document._document_path, document_data)
-        if option is not None:
-            if isinstance(option, MergeOption):
-                field_paths = _helpers.extract_field_paths(document_data)
-                option.modify_write(write_pb, field_paths=field_paths)
-            else:
-                option.modify_write(write_pb)
+            document._document_path, document_data, merge)
 
         firestore_api.commit.assert_called_once_with(
             client._database_string, [write_pb], transaction=None,
@@ -321,9 +314,6 @@ class TestDocumentReference(unittest.TestCase):
 
     def test_set(self):
         self._set_helper()
-
-    def test_set_exists(self):
-        self._set_helper(exists=True)
 
     def test_set_merge(self):
         self._set_helper(merge=True)

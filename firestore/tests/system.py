@@ -143,10 +143,9 @@ def test_document_set(client, cleanup):
     snapshot = document.get()
     assert snapshot.to_dict() is None
 
-    # 1. Use ``set()`` to create the document (using an option).
+    # 1. Use ``create()`` to create the document (using an option).
     data1 = {'foo': 88}
-    option1 = client.write_option(exists=False)
-    write_result1 = document.set(data1, option=option1)
+    write_result1 = document.create(data1)
     snapshot1 = document.get()
     assert snapshot1.to_dict() == data1
     # Make sure the update is what created the document.
@@ -161,30 +160,6 @@ def test_document_set(client, cleanup):
     # Make sure the create time hasn't changed.
     assert snapshot2.create_time == snapshot1.create_time
     assert snapshot2.update_time == write_result2.update_time
-
-    # 3. Call ``set()`` with a valid "last timestamp" option.
-    data3 = {'skates': 88}
-    option3 = client.write_option(last_update_time=snapshot2.update_time)
-    write_result3 = document.set(data3, option=option3)
-    snapshot3 = document.get()
-    assert snapshot3.to_dict() == data3
-    # Make sure the create time hasn't changed.
-    assert snapshot3.create_time == snapshot1.create_time
-    assert snapshot3.update_time == write_result3.update_time
-
-    # 4. Call ``set()`` with invalid (in the past) "last timestamp" option.
-    assert_timestamp_less(option3._last_update_time, snapshot3.update_time)
-    with pytest.raises(FailedPrecondition):
-        document.set({'bad': 'time-past'}, option=option3)
-
-    # 5. Call ``set()`` with invalid (in the future) "last timestamp" option.
-    timestamp_pb = timestamp_pb2.Timestamp(
-        seconds=snapshot3.update_time.nanos + 120,
-        nanos=snapshot3.update_time.nanos,
-    )
-    option5 = client.write_option(last_update_time=timestamp_pb)
-    with pytest.raises(FailedPrecondition):
-        document.set({'bad': 'time-future'}, option=option5)
 
 
 def test_document_integer_field(client, cleanup):
@@ -201,8 +176,7 @@ def test_document_integer_field(client, cleanup):
             '7g': '8h',
             'cd': '0j'}
     }
-    option1 = client.write_option(exists=False)
-    document.set(data1, option=option1)
+    document.create(data1)
 
     data2 = {'1a.ab': '4d', '6f.7g': '9h'}
     option2 = client.write_option(exists=True)
@@ -225,30 +199,24 @@ def test_document_set_merge(client, cleanup):
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document)
 
-    # 0. Make sure the document doesn't exist yet using an option.
-    option0 = client.write_option(exists=True)
-    with pytest.raises(NotFound) as exc_info:
-        document.set({'no': 'way'}, option=option0)
-
-    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
-    assert document_id in exc_info.value.message
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
 
     # 1. Use ``set()`` to create the document (using an option).
     data1 = {'name': 'Sam',
              'address': {'city': 'SF',
                          'state': 'CA'}}
-    option1 = client.write_option(exists=False)
-    write_result1 = document.set(data1, option=option1)
+    write_result1 = document.create(data1)
     snapshot1 = document.get()
     assert snapshot1.to_dict() == data1
     # Make sure the update is what created the document.
     assert snapshot1.create_time == snapshot1.update_time
     assert snapshot1.update_time == write_result1.update_time
 
-    # 2. Call ``set()`` again to overwrite (no option).
+    # 2. Call ``set()`` to merge
     data2 = {'address': {'city': 'LA'}}
-    option2 = client.write_option(merge=True)
-    write_result2 = document.set(data2, option=option2)
+    write_result2 = document.set(data2, merge=True)
     snapshot2 = document.get()
     assert snapshot2.to_dict() == {'name': 'Sam',
                                    'address': {'city': 'LA',
@@ -333,7 +301,7 @@ def test_update_document(client, cleanup):
     )
     option6 = client.write_option(last_update_time=timestamp_pb)
     with pytest.raises(FailedPrecondition) as exc_info:
-        document.set({'bad': 'time-future'}, option=option6)
+        document.update({'bad': 'time-future'}, option=option6)
 
 
 def check_snapshot(snapshot, document, data, write_result):

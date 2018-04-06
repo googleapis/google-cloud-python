@@ -1397,8 +1397,7 @@ class Test_pbs_for_set(unittest.TestCase):
 
         return pbs_for_set(document_path, document_data, option)
 
-    def _helper(self, option=None, do_transform=False, **write_kwargs):
-        from google.cloud.firestore_v1beta1.client import MergeOption
+    def _helper(self, merge=False, do_transform=False, **write_kwargs):
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import common_pb2
@@ -1420,7 +1419,7 @@ class Test_pbs_for_set(unittest.TestCase):
         if do_transform:
             document_data[field_name3] = SERVER_TIMESTAMP
 
-        write_pbs = self._call_fut(document_path, document_data, option)
+        write_pbs = self._call_fut(document_path, document_data, merge)
 
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(
@@ -1434,7 +1433,7 @@ class Test_pbs_for_set(unittest.TestCase):
         )
         expected_pbs = [expected_update_pb]
 
-        if isinstance(option, MergeOption):
+        if merge:
             field_paths = [field_name1, field_name2]
             mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
             expected_pbs[0].update_mask.CopyFrom(mask)
@@ -1459,19 +1458,8 @@ class Test_pbs_for_set(unittest.TestCase):
     def test_without_option(self):
         self._helper()
 
-    def test_with_exists_option(self):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.client import ExistsOption
-
-        option = ExistsOption(True)
-        precondition = common_pb2.Precondition(exists=True)
-        self._helper(option=option, current_document=precondition)
-
     def test_with_merge_option(self):
-        from google.cloud.firestore_v1beta1.client import MergeOption
-
-        option = MergeOption()
-        self._helper(option=option)
+        self._helper(merge=True)
 
     def test_update_and_transform(self):
         self._helper(do_transform=True)
