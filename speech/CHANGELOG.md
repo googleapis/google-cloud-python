@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.33.0
+
+### New Features
+
+- Add Audio Logging and Recognition Metadata. (#5123)
+
+### Internal / Testing Changes
+
+- Fix bad trove classifier
+
 ## 0.32.1
 
 ### Dependencies
