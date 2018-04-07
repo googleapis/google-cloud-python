@@ -1,7 +1,10 @@
 
 import pkg_resources
 
-import mock
+try:
+    import mock
+except ImportError:
+    from unittest import mock
 
 
 @mock.patch('google.cloud.bigquery.QueryJobConfig')

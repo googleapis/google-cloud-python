@@ -268,6 +268,19 @@ Or with one of the following constructs::
 
 For more, see the `pytest <http://doc.pytest.org/en/latest/>`_ documentation.
 
+Testing on multiple Python versions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+pandas-gbq uses `nox <https://nox.readthedocs.io>`__ to automate testing in
+multiple Python environments. First, install nox.
+
+.. code-block:: shell
+
+    $ pip install --upgrade nox-automation
+
+To run tests in all versions of Python, run `nox` from the repository's root
+directory.
+
 .. _contributing.gbq_integration_tests:
 
 Running Google BigQuery Integration Tests

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.0 / TBD
+-----------
+
+- Tests now use `nox` to run in multiple Python environments. (:issue:`52`)
+
 0.4.1 / 2018-04-05
 ------------------
 

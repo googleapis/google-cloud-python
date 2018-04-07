@@ -3,48 +3,50 @@ sudo: false
 language: python
 
 env:
-  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='true'
-  - PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
-  - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='false'
-  - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='true'
+  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='true' PYENV_VERSION=2.7.14
+  - PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false' PYENV_VERSION=3.5.4
+  - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='false' PYENV_VERSION=3.6.1
+  - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='true' PYENV_VERSION=3.6.1
 
 before_install:
   - echo "before_install"
   - source ci/travis_process_gbq_encryption.sh
 
 install:
-  - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda config --add channels pandas
-  - conda config --add channels conda-forge
-  - conda update -q conda
-  - conda info -a
-  - conda create -q -n test-environment python=$PYTHON
-  - source activate test-environment
-  - if [[ "$PANDAS" == "MASTER" ]]; then
-      conda install -q numpy pytz python-dateutil;
-      PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
-      pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
-      pip install -e 'git+https://github.com/GoogleCloudPlatform/google-cloud-python.git#egg=version_subpkg&subdirectory=api_core';
-      pip install -e 'git+https://github.com/GoogleCloudPlatform/google-cloud-python.git#egg=version_subpkg&subdirectory=core';
-      pip install -e 'git+https://github.com/GoogleCloudPlatform/google-cloud-python.git#egg=version_subpkg&subdirectory=bigquery';
+  # work around https://github.com/travis-ci/travis-ci/issues/8363
+  # https://github.com/pre-commit/pre-commit/commit/e3ab8902692e896da9ded42bd4d76ea4e1de359d
+  - pyenv install -s $PYENV_VERSION
+  - pyenv global system $PYENV_VERSION
+  - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
+    if [ -f "$REQ.pip" ]; then
+      pip install --upgrade nox-automation ;
     else
+      wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+      bash miniconda.sh -b -p $HOME/miniconda ;
+      export PATH="$HOME/miniconda/bin:$PATH" ;
+      hash -r ;
+      conda config --set always_yes yes --set changeps1 no ;
+      conda config --add channels pandas ;
+      conda config --add channels conda-forge ;
+      conda update -q conda ;
+      conda info -a ;
+      conda create -q -n test-environment python=$PYTHON ;
+      source activate test-environment ;
       conda install -q pandas=$PANDAS;
-    fi
-  - pip install coverage pytest pytest-cov flake8 codecov
-  - REQ="ci/requirements-${PYTHON}-${PANDAS}"
-  - if [ -f "$REQ.pip" ]; then
-      pip install -r "$REQ.pip";
-    else
+      pip install coverage pytest pytest-cov flake8 codecov ;
       conda install -q --file "$REQ.conda";
+      conda list ;
+      python setup.py install ;
     fi
-  - conda list
-  - python setup.py install
 
 script:
-  - pytest -v --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml pandas_gbq
-  - if [[ $COVERAGE == 'true' ]]; then codecov ; fi
-  - if [[ $LINT == 'true' ]]; then flake8 pandas_gbq -v ; fi
+  - if [[ $PYTHON == '2.7' ]]; then nox -s test27 ; fi
+  - if [[ $PYTHON == '3.5' ]]; then nox -s test35 ; fi
+  - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test36master ; fi
+  - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
+    if [ -f "$REQ.conda" ]; then
+      pip install coverage pytest pytest-cov codecov ;
+      pytest -v --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml pandas_gbq ;
+    fi
+  - if [[ $COVERAGE == 'true' ]]; then nox -s cover ; fi
+  - if [[ $LINT == 'true' ]]; then nox -s lint ; fi
