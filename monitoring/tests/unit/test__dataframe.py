@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
-import unittest
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    HAVE_PANDAS = False
+else:  # pragma: NO COVER
+    HAVE_PANDAS = True
 
+import unittest
 
 PROJECT = 'my-project'
 
@@ -78,6 +83,7 @@ def generate_query_results():  # pragma: NO COVER
         )
 
 
+@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
 class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _call_fut(self, *args, **kwargs):
@@ -197,7 +203,8 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
 
-class Test__sorted_resource_labels(unittest.TestCase):
+@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
+class Test__sorted_resource_labels(unittest.TestCase):  # pragma: NO COVER
 
     def _call_fut(self, labels):
         from google.cloud.monitoring._dataframe import _sorted_resource_labels
