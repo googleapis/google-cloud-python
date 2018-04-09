@@ -81,11 +81,14 @@ class Table(object):
     * :meth:`delete` the table
     * :meth:`list_column_families` in the table
 
+    :type project_id: str
+    :param project_id: The ID of the table.
+
+    :type instance_id: str
+    :param instance_id: The ID of the table.
+
     :type table_id: str
     :param table_id: The ID of the table.
-
-    :type instance: :class:`~google.cloud.bigtable.instance.Instance`
-    :param instance: The instance that owns the table.
 
     :type client: :class:`~google.cloud.bigtable_v2.BigtableClient`
     :param instance: The client that calls GAPIC API.
