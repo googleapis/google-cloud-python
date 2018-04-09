@@ -203,7 +203,6 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
 
-@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
 class Test__sorted_resource_labels(unittest.TestCase):  # pragma: NO COVER
 
     def _call_fut(self, labels):
