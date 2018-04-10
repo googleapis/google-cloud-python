@@ -1087,7 +1087,7 @@ def test_load_table_from_uri_csv_append(client, to_delete):
     assert previous_rows > 0
 
     job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config.write_disposition = bigquery.job.WriteDisposition.WRITE_APPEND
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
     job_config.source_format = bigquery.SourceFormat.CSV
@@ -1134,7 +1134,7 @@ def test_load_table_from_uri_json_append(client, to_delete):
     previous_rows = client.get_table(table_ref).num_rows
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config.write_disposition = bigquery.job.WriteDisposition.WRITE_APPEND
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.json',
@@ -1174,7 +1174,7 @@ def test_load_table_from_uri_parquet_append(client, to_delete):
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.PARQUET
     # The schema of the parquet file must match the table schema in an append
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config.write_disposition = bigquery.job.WriteDisposition.WRITE_APPEND
 
     load_job = client.load_table_from_uri(
         'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
