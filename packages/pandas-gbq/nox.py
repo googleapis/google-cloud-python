@@ -19,9 +19,27 @@ def default(session):
     session.install('-e', '.')
     session.run(
         'pytest',
-        os.path.join('pandas_gbq', 'tests'),
+        os.path.join('.', 'tests', 'unit'),
+        os.path.join('.', 'tests', 'system.py'),
         '--quiet',
         '--cov=pandas_gbq',
+        '--cov=tests.unit',
+        '--cov-report',
+        'xml:/tmp/pytest-cov.xml',
+        *session.posargs
+    )
+
+
+@nox.session
+def unit(session):
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', '.')
+    session.run(
+        'pytest',
+        os.path.join('.', 'tests', 'unit'),
+        '--quiet',
+        '--cov=pandas_gbq',
+        '--cov=tests.unit',
         '--cov-report',
         'xml:/tmp/pytest-cov.xml',
         *session.posargs
@@ -69,7 +87,7 @@ def test36master(session):
 @nox.session
 def lint(session):
     session.install('flake8')
-    session.run('flake8', 'pandas_gbq', '-v')
+    session.run('flake8', 'pandas_gbq', 'tests', '-v')
 
 
 @nox.session

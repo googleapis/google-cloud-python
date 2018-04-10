@@ -45,8 +45,8 @@ script:
   - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test36master ; fi
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.conda" ]; then
-      pip install coverage pytest pytest-cov codecov ;
-      pytest -v --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml pandas_gbq ;
+      pip install pytest ;
+      pytest -v tests ;
     fi
   - if [[ $COVERAGE == 'true' ]]; then nox -s cover ; fi
   - if [[ $LINT == 'true' ]]; then nox -s lint ; fi

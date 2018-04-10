@@ -4,7 +4,7 @@ import datetime
 import pandas
 import pytest
 
-from pandas_gbq import _schema
+import pandas_gbq.schema
 
 
 @pytest.mark.parametrize(
@@ -51,5 +51,5 @@ from pandas_gbq import _schema
         ),
     ])
 def test_generate_bq_schema(dataframe, expected_schema):
-    schema = _schema.generate_bq_schema(dataframe)
+    schema = pandas_gbq.schema.generate_bq_schema(dataframe)
     assert schema == expected_schema

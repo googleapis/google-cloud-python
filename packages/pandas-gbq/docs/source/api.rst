@@ -5,6 +5,11 @@
 API Reference
 *************
 
+.. note::
+
+  Only functions and classes which are members of the ``pandas_gbq`` module
+  are considered public. Submodules and their members are considered private.
+
 .. autosummary::
 
    read_gbq

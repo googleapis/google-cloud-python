@@ -458,7 +458,7 @@ class GbqConnector(object):
     def run_query(self, query, **kwargs):
         from google.auth.exceptions import RefreshError
         from concurrent.futures import TimeoutError
-        from pandas_gbq import _query
+        import pandas_gbq.query
 
         job_config = {
             'query': {
@@ -484,7 +484,7 @@ class GbqConnector(object):
             logger.info('Requesting query... ')
             query_reply = self.client.query(
                 query,
-                job_config=_query.query_config(
+                job_config=pandas_gbq.query.query_config(
                     job_config, BIGQUERY_INSTALLED_VERSION))
             logger.info('ok.\nQuery running...')
         except (RefreshError, ValueError):
@@ -552,13 +552,13 @@ class GbqConnector(object):
     def load_data(
             self, dataframe, dataset_id, table_id, chunksize=None,
             schema=None):
-        from pandas_gbq import _load
+        from pandas_gbq import load
 
         total_rows = len(dataframe)
         logger.info("\n\n")
 
         try:
-            for remaining_rows in _load.load_chunks(
+            for remaining_rows in load.load_chunks(
                     self.client, dataframe, dataset_id, table_id,
                     chunksize=chunksize, schema=schema):
                 logger.info("\rLoad is {0}% Complete".format(
@@ -1000,8 +1000,8 @@ def generate_bq_schema(df, default_type='STRING'):
 
 
 def _generate_bq_schema(df, default_type='STRING'):
-    from pandas_gbq import _schema
-    return _schema.generate_bq_schema(df, default_type=default_type)
+    from pandas_gbq import schema
+    return schema.generate_bq_schema(df, default_type=default_type)
 
 
 class _Table(GbqConnector):

@@ -3,7 +3,7 @@
 import six
 from google.cloud import bigquery
 
-from pandas_gbq import _schema
+import pandas_gbq.schema
 
 
 def encode_chunk(dataframe):
@@ -51,7 +51,7 @@ def load_chunks(
     job_config.source_format = 'CSV'
 
     if schema is None:
-        schema = _schema.generate_bq_schema(dataframe)
+        schema = pandas_gbq.schema.generate_bq_schema(dataframe)
 
     # Manually create the schema objects, adding NULLABLE mode
     # as a workaround for

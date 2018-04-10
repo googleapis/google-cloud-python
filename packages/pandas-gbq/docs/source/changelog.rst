@@ -5,6 +5,7 @@ Changelog
 -----------
 
 - Tests now use `nox` to run in multiple Python environments. (:issue:`52`)
+- Renamed internal modules. (:issue:`154`)
 
 0.4.1 / 2018-04-05
 ------------------
