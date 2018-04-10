@@ -68,30 +68,17 @@ class TooManyMutationsError(ValueError):
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
 
-    .. note::
-
-        We don't define any properties on a table other than the name.
-        The only other fields are ``column_families`` and ``granularity``,
-        The ``column_families`` are not stored locally and
-        ``granularity`` is an enum with only one value.
-
-    We can use a :class:`Table` to:
-
-    * :meth:`create` the table
-    * :meth:`delete` the table
-    * :meth:`list_column_families` in the table
-
     :type project_id: str
-    :param project_id: The ID of the table.
+    :param project_id: The ID of the project.
 
     :type instance_id: str
-    :param instance_id: The ID of the table.
+    :param instance_id: The ID of the instance.
 
     :type table_id: str
     :param table_id: The ID of the table.
 
     :type client: :class:`~google.cloud.bigtable_v2.BigtableClient`
-    :param instance: The client that calls GAPIC API.
+    :param instance: The client that calls the GAPIC API.
     """
 
     def __init__(self, project_id, instance_id, table_id, client):
