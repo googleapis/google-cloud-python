@@ -186,11 +186,11 @@ class FieldPath(object):
                 The field path to add to the end of this `FieldPath`.
         """
         if isinstance(other, FieldPath):
-            self.parts = self.parts + other.parts
-            return self
+            parts = self.parts + other.parts
+            return FieldPath(*parts)
         elif isinstance(other, six.string_types):
-            self.parts = self.parts + FieldPath.from_string(other).parts
-            return self
+            parts = self.parts + FieldPath.from_string(other).parts
+            return FieldPath(*parts)
         else:
             return NotImplemented
 
