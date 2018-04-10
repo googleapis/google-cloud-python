@@ -250,7 +250,8 @@ Running the test suite
 The tests can then be run directly inside your Git clone (without having to
 install *pandas-gbq*) by typing::
 
-    pytest pandas_gbq
+    pytest tests/unit
+    pytest tests/system.py
 
 The tests suite is exhaustive and takes around 20 minutes to run.  Often it is
 worth running only a subset of tests first around your changes before running the
@@ -258,13 +259,13 @@ entire suite.
 
 The easiest way to do this is with::
 
-    pytest pandas_gbq/path/to/test.py -k regex_matching_test_name
+    pytest tests/path/to/test.py -k regex_matching_test_name
 
 Or with one of the following constructs::
 
-    pytest pandas_gbq/tests/[test-module].py
-    pytest pandas_gbq/tests/[test-module].py::[TestClass]
-    pytest pandas_gbq/tests/[test-module].py::[TestClass]::[test_method]
+    pytest tests/[test-module].py
+    pytest tests/[test-module].py::[TestClass]
+    pytest tests/[test-module].py::[TestClass]::[test_method]
 
 For more, see the `pytest <http://doc.pytest.org/en/latest/>`_ documentation.
 
