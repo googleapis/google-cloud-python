@@ -259,7 +259,7 @@ class FieldPathHelper(object):
             ValueError: If there is a conflict.
         """
         if curr_paths is self.PATH_END:
-            partial = get_field_path(parts[:index + 1])
+            partial = FieldPath(*parts[:index + 1])
             msg = self.FIELD_PATH_CONFLICT.format(partial, field_path)
             raise ValueError(msg)
 
@@ -290,9 +290,8 @@ class FieldPathHelper(object):
             part, conflicting_paths = next(six.iteritems(conflicting_paths))
             conflict_parts.append(part)
 
-        conflict = get_field_path(conflict_parts)
-        msg = self.FIELD_PATH_CONFLICT.format(
-            field_path.to_api_repr(), conflict)
+        conflict = FieldPath(*conflict_parts)
+        msg = self.FIELD_PATH_CONFLICT.format(field_path, conflict)
         return ValueError(msg)
 
     def add_field_path_end(
