@@ -1327,7 +1327,7 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl='private')
 
     def _do_upload_helper(
-            self, chunk_size=None, num_retries=None, predefined_acl=None):
+            self, chunk_size=None, num_retries=None, predefined_acl=None, size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1346,14 +1346,14 @@ class Test_Blob(unittest.TestCase):
         client = mock.sentinel.client
         stream = mock.sentinel.stream
         content_type = u'video/mp4'
-        size = 12345654321
+        if size is None:
+            size = 12345654321
         # Make the request and check the mocks.
         created_json = blob._do_upload(
             client, stream, content_type, size, num_retries, predefined_acl)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
-        if chunk_size is None:
-
+        if size is not None and size < 1024*1024*5:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
@@ -1364,8 +1364,8 @@ class Test_Blob(unittest.TestCase):
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
 
-    def test__do_upload_without_chunk_size(self):
-        self._do_upload_helper()
+    def test__do_upload_small_file(self):
+        self._do_upload_helper(size=100)
 
     def test__do_upload_with_chunk_size(self):
         chunk_size = 1024 * 1024 * 1024  # 1GB
