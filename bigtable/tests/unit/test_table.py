@@ -170,7 +170,6 @@ class TestTable(unittest.TestCase):
     def test_row_factory_direct(self):
         from google.cloud.bigtable.row import DirectRow
 
-        table_id = 'table-id'
         table = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
                                self.TABLE_ID, None)
         row_key = b'row_key'
@@ -183,7 +182,6 @@ class TestTable(unittest.TestCase):
     def test_row_factory_conditional(self):
         from google.cloud.bigtable.row import ConditionalRow
 
-        table_id = 'table-id'
         table = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
                                self.TABLE_ID, None)
         row_key = b'row_key'
@@ -197,7 +195,6 @@ class TestTable(unittest.TestCase):
     def test_row_factory_append(self):
         from google.cloud.bigtable.row import AppendRow
 
-        table_id = 'table-id'
         table = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
                                self.TABLE_ID, None)
         row_key = b'row_key'
@@ -219,9 +216,9 @@ class TestTable(unittest.TestCase):
         channel = self._make_channel()
         client = BigtableClient(channel=channel)
         table1 = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
-                               self.TABLE_ID, client)
+                                self.TABLE_ID, client)
         table2 = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
-                               self.TABLE_ID, client)
+                                self.TABLE_ID, client)
         self.assertEqual(table1, table2)
 
     def test___eq__type_differ(self):
@@ -236,9 +233,9 @@ class TestTable(unittest.TestCase):
         channel = self._make_channel()
         client = BigtableClient(channel=channel)
         table1 = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
-                               self.TABLE_ID, client)
+                                self.TABLE_ID, client)
         table2 = self._make_one(self.PROJECT_ID, self.INSTANCE_ID,
-                               self.TABLE_ID, client)
+                                self.TABLE_ID, client)
         comparison_val = (table1 != table2)
         self.assertFalse(comparison_val)
 
