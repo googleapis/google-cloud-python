@@ -379,7 +379,7 @@ class BigtableInstanceAdminClient(object):
             clusters=clusters,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -436,7 +436,7 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = bigtable_instance_admin_pb2.GetInstanceRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -492,7 +492,7 @@ class BigtableInstanceAdminClient(object):
             page_token=page_token,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -581,7 +581,7 @@ class BigtableInstanceAdminClient(object):
             state=state,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -655,7 +655,7 @@ class BigtableInstanceAdminClient(object):
             update_mask=update_mask,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('instance.name', instance.name)], )
         metadata.append(routing_header)
 
@@ -710,7 +710,7 @@ class BigtableInstanceAdminClient(object):
         request = bigtable_instance_admin_pb2.DeleteInstanceRequest(
             name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -790,7 +790,7 @@ class BigtableInstanceAdminClient(object):
             cluster=cluster,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -847,7 +847,7 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = bigtable_instance_admin_pb2.GetClusterRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -905,7 +905,7 @@ class BigtableInstanceAdminClient(object):
             page_token=page_token,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -994,7 +994,7 @@ class BigtableInstanceAdminClient(object):
             default_storage_type=default_storage_type,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1048,7 +1048,7 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = bigtable_instance_admin_pb2.DeleteClusterRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1127,7 +1127,7 @@ class BigtableInstanceAdminClient(object):
             ignore_warnings=ignore_warnings,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -1183,7 +1183,7 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = bigtable_instance_admin_pb2.GetAppProfileRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1254,7 +1254,7 @@ class BigtableInstanceAdminClient(object):
         request = bigtable_instance_admin_pb2.ListAppProfilesRequest(
             parent=parent, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -1346,7 +1346,7 @@ class BigtableInstanceAdminClient(object):
             ignore_warnings=ignore_warnings,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('app_profile.name', app_profile.name)], )
         metadata.append(routing_header)
 
@@ -1413,7 +1413,7 @@ class BigtableInstanceAdminClient(object):
             ignore_warnings=ignore_warnings,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1472,7 +1472,7 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 
@@ -1544,7 +1544,7 @@ class BigtableInstanceAdminClient(object):
             policy=policy,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 
@@ -1613,7 +1613,7 @@ class BigtableInstanceAdminClient(object):
             permissions=permissions,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 

@@ -347,7 +347,7 @@ class BigtableTableAdminClient(object):
             initial_splits=initial_splits,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -432,7 +432,7 @@ class BigtableTableAdminClient(object):
             source_snapshot=source_snapshot,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -509,7 +509,7 @@ class BigtableTableAdminClient(object):
             view=view,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -578,7 +578,7 @@ class BigtableTableAdminClient(object):
             view=view,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -627,7 +627,7 @@ class BigtableTableAdminClient(object):
         metadata = list(metadata)
         request = bigtable_table_admin_pb2.DeleteTableRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -695,7 +695,7 @@ class BigtableTableAdminClient(object):
             modifications=modifications,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -762,7 +762,7 @@ class BigtableTableAdminClient(object):
             delete_all_data_from_table=delete_all_data_from_table,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -824,7 +824,7 @@ class BigtableTableAdminClient(object):
         request = bigtable_table_admin_pb2.GenerateConsistencyTokenRequest(
             name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -891,7 +891,7 @@ class BigtableTableAdminClient(object):
             consistency_token=consistency_token,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -991,7 +991,7 @@ class BigtableTableAdminClient(object):
             ttl=ttl,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1054,7 +1054,7 @@ class BigtableTableAdminClient(object):
         metadata = list(metadata)
         request = bigtable_table_admin_pb2.GetSnapshotRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1135,7 +1135,7 @@ class BigtableTableAdminClient(object):
             page_size=page_size,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -1200,7 +1200,7 @@ class BigtableTableAdminClient(object):
         metadata = list(metadata)
         request = bigtable_table_admin_pb2.DeleteSnapshotRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
