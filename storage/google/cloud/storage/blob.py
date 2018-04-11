@@ -1183,8 +1183,13 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1215,8 +1220,13 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1253,8 +1263,13 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
