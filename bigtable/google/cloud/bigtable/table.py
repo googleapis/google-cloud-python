@@ -86,11 +86,13 @@ class Table(object):
     @property
     def name(self):
         """Table name used in requests.
+
         .. note::
-          This property will not change if ``table_id`` does not, but the
-          return value is not cached.
-        The table name is of the form
-            ``"projects/../instances/../tables/{table_id}"``
+
+           This property will not change if ``table_id`` does not, but the
+           return value is not cached. The table name is of the form
+           ``"projects/../instances/../tables/{table_id}"``.
+
         :rtype: str
         :returns: The table name.
         """

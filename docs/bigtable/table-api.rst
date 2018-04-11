@@ -9,8 +9,7 @@ To create a :class:`Table <google.cloud.bigtable.table.Table>` object:
 
 Even if this :class:`Table <google.cloud.bigtable.table.Table>` already
 has been created with the API, you'll want this object to use as a
-parent of a :class:`ColumnFamily <google.cloud.bigtable.column_family.ColumnFamily>`
-or :class:`Row <google.cloud.bigtable.row.Row>`.
+:class:`Row <google.cloud.bigtable.row.Row>`.
 
 Next Step
 ---------
