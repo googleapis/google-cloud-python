@@ -273,7 +273,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        instance = {}
+        instance = instance_pb2.Instance()
         update_mask = {}
 
         response = client.partial_update_instance(instance, update_mask)
@@ -687,7 +687,7 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        app_profile = {}
+        app_profile = instance_pb2.AppProfile()
         update_mask = {}
 
         response = client.update_app_profile(app_profile, update_mask)
