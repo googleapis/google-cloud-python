@@ -20,7 +20,6 @@ import collections
 import functools
 import os
 import uuid
-import warnings
 
 import six
 
@@ -436,16 +435,6 @@ class Client(ClientWithProject):
             max_results=max_results)
         result.dataset = dataset
         return result
-
-    def list_dataset_tables(self, *args, **kwargs):
-        """DEPRECATED: List tables in the dataset.
-
-        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.
-        """
-        warnings.warn(
-            'list_dataset_tables is deprecated, use list_tables instead.',
-            DeprecationWarning)
-        return self.list_tables(*args, **kwargs)
 
     def delete_dataset(self, dataset, delete_contents=False,
                        retry=DEFAULT_RETRY):
@@ -1093,7 +1082,7 @@ class Client(ClientWithProject):
         :type kwargs: dict
         :param kwargs:
             Keyword arguments to
-            :meth:`~google.cloud.bigquery.client.Client.create_rows_json`
+            :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`
 
         :rtype: list of mappings
         :returns: One mapping per row with insert errors:  the "index" key
@@ -1216,27 +1205,6 @@ class Client(ClientWithProject):
                            'errors': error['errors']})
 
         return errors
-
-    def create_rows(self, *args, **kwargs):
-        """DEPRECATED: Insert rows into a table via the streaming API.
-
-        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.
-        """
-        warnings.warn(
-            'create_rows is deprecated, use insert_rows instead.',
-            DeprecationWarning)
-        return self.insert_rows(*args, **kwargs)
-
-    def create_rows_json(self, *args, **kwargs):
-        """DEPRECATED: Insert rows into a table without type conversions.
-
-        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`
-        instead.
-        """
-        warnings.warn(
-            'create_rows_json is deprecated, use insert_rows_json instead.',
-            DeprecationWarning)
-        return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, page_size=None,
