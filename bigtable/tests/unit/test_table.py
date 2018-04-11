@@ -240,9 +240,9 @@ class TestTable(unittest.TestCase):
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        table1 = self._make_one('project_id1','instance_id1', 'table_id1',
+        table1 = self._make_one('project_id1', 'instance_id1', 'table_id1',
                                 None)
-        table2 = self._make_one('project_id2','instance_id2', 'table_id2',
+        table2 = self._make_one('project_id2', 'instance_id2', 'table_id2',
                                 None)
         self.assertNotEqual(table1, table2)
 
