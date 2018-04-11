@@ -233,6 +233,7 @@ class TestBigtableInstanceAdminClient(object):
             client.update_instance(name, display_name, type_, labels)
 
     def test_partial_update_instance(self):
+        from google.protobuf import field_mask_pb2
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
@@ -247,8 +248,8 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        instance = {}
-        update_mask = {}
+        instance = instance_pb2.Instance()
+        update_mask = field_mask_pb2.FieldMask()
 
         response = client.partial_update_instance(instance, update_mask)
         result = response.result()
@@ -643,6 +644,8 @@ class TestBigtableInstanceAdminClient(object):
             list(paged_list_response)
 
     def test_update_app_profile(self):
+        from google.protobuf import field_mask_pb2
+
         # Setup Expected Response
         name = 'name3373707'
         etag = 'etag3123477'
@@ -662,8 +665,8 @@ class TestBigtableInstanceAdminClient(object):
         client = bigtable_admin_v2.BigtableInstanceAdminClient(channel=channel)
 
         # Setup Request
-        app_profile = {}
-        update_mask = {}
+        app_profile = instance_pb2.AppProfile()
+        update_mask = field_mask_pb2.FieldMask()
 
         response = client.update_app_profile(app_profile, update_mask)
         result = response.result()
