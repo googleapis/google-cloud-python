@@ -184,6 +184,22 @@ class FieldPath(object):
             return self.parts == other.parts
         return NotImplemented
 
+    def __add__(self, other):
+        """Adds `other` field path to end of this field path.
+
+        Args:
+            other (~google.cloud.firestore_v1beta1._helpers.FieldPath, str):
+                The field path to add to the end of this `FieldPath`.
+        """
+        if isinstance(other, FieldPath):
+            parts = self.parts + other.parts
+            return FieldPath(*parts)
+        elif isinstance(other, six.string_types):
+            parts = self.parts + FieldPath.from_string(other).parts
+            return FieldPath(*parts)
+        else:
+            return NotImplemented
+
 
 class FieldPathHelper(object):
     """Helper to convert field names and paths for usage in a request.
