@@ -571,7 +571,8 @@ class Test_Blob(unittest.TestCase):
         file_obj = io.BytesIO()
         download_url = 'http://test.invalid'
         headers = {}
-        blob._do_download(transport, file_obj, download_url, headers, start=1, end=3)
+        blob._do_download(
+            transport, file_obj, download_url, headers, start=1, end=3)
         # Make sure the download was as expected.
         self.assertEqual(file_obj.getvalue(), b'bcd')
         self.assertEqual(headers['range'], 'bytes=1-3')
@@ -623,7 +624,8 @@ class Test_Blob(unittest.TestCase):
         file_obj = io.BytesIO()
         download_url = 'http://test.invalid'
         headers = {}
-        blob._do_download(transport, file_obj, download_url, headers, start=1, end=4)
+        blob._do_download(
+            transport, file_obj, download_url, headers, start=1, end=4)
         # Make sure the download was as expected.
         self.assertEqual(file_obj.getvalue(), b'bcde')
 
