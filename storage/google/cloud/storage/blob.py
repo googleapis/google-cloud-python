@@ -93,6 +93,8 @@ _NUM_RETRIES_MESSAGE = (
 _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
+_DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
+_MAX_MULTIPART_SIZE = 5 * 1024 * 1024 # 5 MB
 
 
 class Blob(_PropertyMixin):
@@ -119,8 +121,7 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
-    _chunk_size = None  # Default value for each instance.
-
+    _chunk_size = _DEFAULT_CHUNKSIZE  # Default value for each instance.
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
@@ -175,7 +176,9 @@ class Blob(_PropertyMixin):
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
                  multiple of 256 KB.
         """
-        if value is not None and value % self._CHUNK_SIZE_MULTIPLE != 0:
+        if value is not None and \
+            value > 0 and \
+            value % self._CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError('Chunk size must be a multiple of %d.' % (
                 self._CHUNK_SIZE_MULTIPLE,))
         self._chunk_size = value
@@ -669,8 +672,6 @@ class Blob(_PropertyMixin):
                              size, num_retries, predefined_acl):
         """Perform a multipart upload.
 
-        Assumes ``chunk_size`` is :data:`None` on the current blob.
-
         The content type of the upload will be determined in order
         of precedence:
 
@@ -795,6 +796,8 @@ class Blob(_PropertyMixin):
         """
         if chunk_size is None:
             chunk_size = self.chunk_size
+            if chunk_size is None:
+                chunk_size = _DEFAULT_CHUNKSIZE
 
         transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
@@ -876,9 +879,9 @@ class Blob(_PropertyMixin):
                    size, num_retries, predefined_acl):
         """Determine an upload strategy and then perform the upload.
 
-        If the current blob has a ``chunk_size`` set, then a resumable upload
-        will be used, otherwise the content and the metadata will be uploaded
-        in a single multipart upload request.
+        If the size of the data to be uploaded exceeds 5 MB, or the size is
+        unknown, a resumable media request will be used, otherwise the content
+        and the metadata will be uploaded in a single multipart upload request.
 
         The content type of the upload will be determined in order
         of precedence:
@@ -914,7 +917,7 @@ class Blob(_PropertyMixin):
                   **only** response in the multipart case and it will be the
                   **final** response in the resumable case.
         """
-        if self.chunk_size is None:
+        if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type,
                 size, num_retries, predefined_acl)
