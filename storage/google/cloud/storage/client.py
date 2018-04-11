@@ -244,7 +244,7 @@ class Client(ClientWithProject):
 
         To set additional properties when creating a bucket such as
         :attr:`~.Bucket.location`, use :meth:`~.Bucket.create`.
-        
+
         :type bucket_name: str
         :param bucket_name: The bucket name to create.
 
