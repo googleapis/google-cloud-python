@@ -105,6 +105,36 @@ class Test_RequestQueueGenerator(object):
         assert items == []
 
 
+class _ResponseIterator(object):
+    def __init__(self, items, active=True):
+        self._items = iter(items)
+        self._active = active
+
+    def is_active(self):
+        return self._active
+
+    def __next__(self):
+        return next(self._items)
+
+    next = __next__
+
+
+def test__pausable_response_iterator_active_but_cant_consume():
+    # Note: we can't autospec threading.Event because it's goofy on Python 2.
+    can_consume = mock.Mock(spec=['wait'])
+    # First call will return false, indicating the loop should try again.
+    # second call will allow it to consume the first (and only) item.
+    can_consume.wait.side_effect = [False, True]
+    iterator = _ResponseIterator([1])
+
+    pausable_iter = _consumer._pausable_response_iterator(
+        iterator, can_consume)
+
+    items = list(pausable_iter)
+
+    assert items == [1]
+
+
 def test_send_request():
     consumer = _consumer.Consumer()
     request = types.StreamingPullRequest(subscription='foo')
@@ -176,9 +206,10 @@ class RaisingResponseGenerator(object):
     #       rather than the **class** will not be iterable in Python 2.
     #       This is problematic since a `Mock` just sets members.
 
-    def __init__(self, exception):
+    def __init__(self, exception, active=True):
         self.exception = exception
         self.next_calls = 0
+        self._active = active
 
     def __next__(self):
         self.next_calls += 1
@@ -186,6 +217,32 @@ class RaisingResponseGenerator(object):
 
     def next(self):
         return self.__next__()  # Python 2
+
+    def is_active(self):
+        return self._active
+
+
+def test_blocking_consume_iter_exception_while_paused():
+    policy = mock.create_autospec(base.BasePolicy, instance=True)
+    exc = TypeError('Bad things!')
+    policy.call_rpc.return_value = RaisingResponseGenerator(
+        exc, active=False)
+
+    consumer = _consumer.Consumer()
+    # Ensure the consume is paused.
+    consumer.pause()
+    consumer._consumer_thread = mock.Mock(spec=threading.Thread)
+    policy.on_exception.side_effect = OnException()
+
+    # Start the thread. It should not block forever but should notice the rpc
+    # is inactive and raise the exception from the stream and then exit
+    # because on_exception returns false.
+    consumer._blocking_consume(policy)
+    assert consumer._consumer_thread is None
+
+    # Check mocks.
+    policy.call_rpc.assert_called_once()
+    policy.on_exception.assert_called_once_with(exc)
 
 
 def test_blocking_consume_two_exceptions():

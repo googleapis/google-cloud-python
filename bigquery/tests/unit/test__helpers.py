@@ -744,135 +744,42 @@ class Test_snake_to_camel_case(unittest.TestCase):
         self.assertEqual(self._call_fut('friendlyName'), 'friendlyName')
 
 
-class Test_TypedApiResourceProperty(unittest.TestCase):
+class Test__int_or_none(unittest.TestCase):
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _TypedApiResourceProperty
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _int_or_none
 
-        return _TypedApiResourceProperty
+        return _int_or_none(value)
 
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+    def test_w_num_string(self):
+        self.assertEqual(self._call_fut('123'), 123)
 
-    def test_it(self):
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
 
-        class Wrapper(object):
-            attr = self._make_one('attr', 'back', int)
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), 123)
 
-            def __init__(self):
-                self._properties = {}
-
-        self.assertIsNotNone(Wrapper.attr)
-
-        wrapper = Wrapper()
+    def test_w_non_num_string(self):
         with self.assertRaises(ValueError):
-            wrapper.attr = 'BOGUS'
-
-        wrapper.attr = 42
-        self.assertEqual(wrapper.attr, 42)
-        self.assertEqual(wrapper._properties['back'], 42)
-
-        wrapper.attr = None
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._properties['back'])
-
-        wrapper.attr = 23
-        self.assertEqual(wrapper.attr, 23)
-        self.assertEqual(wrapper._properties['back'], 23)
-
-        del wrapper.attr
-        self.assertIsNone(wrapper.attr)
-        with self.assertRaises(KeyError):
-            wrapper._properties['back']
+            self._call_fut('ham')
 
 
-class Test_ListApiResourceProperty(unittest.TestCase):
+class Test__str_or_none(unittest.TestCase):
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _ListApiResourceProperty
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _str_or_none
 
-        return _ListApiResourceProperty
+        return _str_or_none(value)
 
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), '123')
 
-    def _descriptor_and_klass(self):
-        from google.cloud.bigquery.query import _AbstractQueryParameter
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
 
-        descriptor = self._make_one(
-            'query_parameters', 'queryParameters', _AbstractQueryParameter)
-
-        class _Test(object):
-            def __init__(self):
-                self._properties = {}
-
-            query_parameters = descriptor
-
-        return descriptor, _Test
-
-    def test_class_getter(self):
-        descriptor, klass = self._descriptor_and_klass()
-        self.assertIs(klass.query_parameters, descriptor)
-
-    def test_instance_getter_empty(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        self.assertEqual(instance.query_parameters, [])
-
-    def test_instance_getter_w_non_empty_list(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._properties['queryParameters'] = query_parameters
-
-        self.assertEqual(instance.query_parameters, query_parameters)
-
-    def test_instance_setter_w_empty_list(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._query_parameters = query_parameters
-
-        instance.query_parameters = []
-
-        self.assertEqual(instance.query_parameters, [])
-
-    def test_instance_setter_w_none(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._query_parameters = query_parameters
-
-        with self.assertRaises(ValueError):
-            instance.query_parameters = None
-
-    def test_instance_setter_w_valid_udf(self):
-        from google.cloud.bigquery.query import ScalarQueryParameter
-
-        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        instance.query_parameters = query_parameters
-
-        self.assertEqual(instance.query_parameters, query_parameters)
-
-    def test_instance_setter_w_bad_udfs(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        with self.assertRaises(ValueError):
-            instance.query_parameters = ["foo"]
-
-        self.assertEqual(instance.query_parameters, [])
+    def test_w_str(self):
+        self.assertEqual(self._call_fut('ham'), 'ham')
 
 
 class _Field(object):

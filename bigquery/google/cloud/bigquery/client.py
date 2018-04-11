@@ -34,7 +34,6 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -233,22 +232,30 @@ class Client(ClientWithProject):
         return DatasetReference(project, dataset_id)
 
     def create_dataset(self, dataset):
-        """API call:  create the dataset via a PUT request.
+        """API call: create the dataset via a POST request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
-        :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
-        :param dataset: A ``Dataset`` populated with the desired initial state.
-                        If project is missing, it defaults to the project of
-                        the client.
+        Args:
+            dataset (google.cloud.bigquery.dataset.Dataset):
+                A ``Dataset`` populated with the desired initial state.
 
-        :rtype: ":class:`~google.cloud.bigquery.dataset.Dataset`"
-        :returns: a new ``Dataset`` returned from the service.
+        Returns:
+            google.cloud.bigquery.dataset.Dataset:
+                A new ``Dataset`` returned from the API.
+
+        Example:
+
+            >>> from google.cloud import bigquery
+            >>> client = bigquery.Client()
+            >>> dataset = bigquery.Dataset(client.dataset('my_dataset'))
+            >>> dataset = client.create_dataset(dataset)
+
         """
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
-            method='POST', path=path, data=dataset._build_resource())
+            method='POST', path=path, data=dataset.to_api_repr())
         return Dataset.from_api_repr(api_response)
 
     def create_table(self, table):
@@ -265,12 +272,8 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
-        resource = table._build_resource(Table.all_fields)
-        doomed = [field for field in resource if resource[field] is None]
-        for field in doomed:
-            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=resource)
+            method='POST', path=path, data=table.to_api_repr())
         return Table.from_api_repr(api_response)
 
     def _call_api(self, retry, **kwargs):
@@ -327,40 +330,29 @@ class Client(ClientWithProject):
         will only be saved if no modifications to the dataset occurred
         since the read.
 
-        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
-        :param dataset: the dataset to update.
+        Args:
+            dataset (google.cloud.bigquery.dataset.Dataset):
+                The dataset to update.
+            fields (Sequence[str]):
+                The properties of ``dataset`` to change (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry, optional):
+                How to retry the RPC.
 
-        :type fields: sequence of string
-        :param fields: the fields of ``dataset`` to change, spelled as the
-                       Dataset properties (e.g. "friendly_name").
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
-        :returns: the modified ``Dataset`` instance
+        Returns:
+            google.cloud.bigquery.dataset.Dataset:
+                The modified ``Dataset`` instance.
         """
-        path = '/projects/%s/datasets/%s' % (dataset.project,
-                                             dataset.dataset_id)
-        partial = {}
-        for f in fields:
-            if not hasattr(dataset, f):
-                raise ValueError('No Dataset field %s' % f)
-            # All dataset attributes are trivially convertible to JSON except
-            # for access entries.
-            if f == 'access_entries':
-                attr = dataset._build_access_resource()
-                api_field = 'access'
-            else:
-                attr = getattr(dataset, f)
-                api_field = _snake_to_camel_case(f)
-            partial[api_field] = attr
+        partial = dataset._build_resource(fields)
         if dataset.etag is not None:
             headers = {'If-Match': dataset.etag}
         else:
             headers = None
         api_response = self._call_api(
-            retry, method='PATCH', path=path, data=partial, headers=headers)
+            retry,
+            method='PATCH',
+            path=dataset.path,
+            data=partial,
+            headers=headers)
         return Dataset.from_api_repr(api_response)
 
     def update_table(self, table, fields, retry=DEFAULT_RETRY):
@@ -1115,7 +1107,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1247,7 +1239,8 @@ class Client(ClientWithProject):
         return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
-                  page_token=None, start_index=None, retry=DEFAULT_RETRY):
+                  page_token=None, start_index=None, page_size=None,
+                  retry=DEFAULT_RETRY):
         """List the rows of the table.
 
         See
@@ -1287,6 +1280,10 @@ class Client(ClientWithProject):
         :param start_index: (Optional) The zero-based index of the starting
                            row to read.
 
+        :type page_size: int
+        :param page_size: (Optional) The maximum number of items to return
+                          per page in the iterator.
+
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
@@ -1304,7 +1301,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table._schema) == 0:
+            if len(table.schema) == 0:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
@@ -1314,7 +1311,6 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             params['selectedFields'] = ','.join(
                 field.name for field in selected_fields)
-
         if start_index is not None:
             params['startIndex'] = start_index
 
@@ -1325,6 +1321,7 @@ class Client(ClientWithProject):
             schema=schema,
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
             extra_params=params)
         return row_iterator
 

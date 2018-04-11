@@ -1760,6 +1760,35 @@ def test_client_query_w_param(client):
     # [END client_query_w_param]
 
 
+def test_client_query_dry_run(client):
+    """Run a dry run query"""
+
+    # [START bigquery_query_dry_run]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    job_config = bigquery.QueryJobConfig()
+    job_config.dry_run = True
+    job_config.use_query_cache = False
+    query_job = client.query(
+        ('SELECT name, COUNT(*) as name_count '
+         'FROM `bigquery-public-data.usa_names.usa_1910_2013` '
+         "WHERE state = 'WA' "
+         'GROUP BY name'),
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request
+
+    # A dry run query completes immediately.
+    assert query_job.state == 'DONE'
+    assert query_job.dry_run
+
+    print("This query will process {} bytes.".format(
+        query_job.total_bytes_processed))
+    # [END bigquery_query_dry_run]
+
+    assert query_job.total_bytes_processed > 0
+
+
 def test_client_list_jobs(client):
     """List jobs for a project."""
 
@@ -1767,8 +1796,9 @@ def test_client_list_jobs(client):
         pass
 
     # [START client_list_jobs]
-    job_iterator = client.list_jobs()  # API request(s)
-    for job in job_iterator:
+    job_iterator = client.list_jobs(
+        max_results=10)  # Optionally, limit the results to 10 jobs.
+    for job in job_iterator:  # API request(s) happen when iterating
         do_something_with(job)
     # [END client_list_jobs]
 

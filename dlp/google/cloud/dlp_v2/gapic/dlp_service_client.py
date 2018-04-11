@@ -27,6 +27,7 @@ import google.api_core.protobuf_helpers
 from google.cloud.dlp_v2.gapic import dlp_service_client_config
 from google.cloud.dlp_v2.gapic import enums
 from google.cloud.dlp_v2.proto import dlp_pb2
+from google.cloud.dlp_v2.proto import dlp_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -36,7 +37,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution('google-cloud-dlp',
 
 class DlpServiceClient(object):
     """
-    The DLP API is a service that allows clients
+    The Cloud Data Loss Prevention (DLP) API is a service that allows clients
     to detect the presence of Personally Identifiable Information (PII) and other
     privacy-sensitive data in user-supplied, unstructured data streams, like text
     blocks or images.
@@ -167,7 +168,7 @@ class DlpServiceClient(object):
             )
 
         # Create the gRPC stubs.
-        self.dlp_service_stub = (dlp_pb2.DlpServiceStub(channel))
+        self.dlp_service_stub = (dlp_pb2_grpc.DlpServiceStub(channel))
 
         if client_info is None:
             client_info = (
@@ -562,7 +563,7 @@ class DlpServiceClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Re-identify content that has been de-identified.
+        Re-identifies content that has been de-identified.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -583,7 +584,7 @@ class DlpServiceClient(object):
                 reverse. This requires that only reversible transformations
                 be provided here. The reversible transformations are::
 
-                     - ``CryptoReplaceFfxFpeConfig``
+                 - ``CryptoReplaceFfxFpeConfig``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
@@ -644,7 +645,9 @@ class DlpServiceClient(object):
                         timeout=google.api_core.gapic_v1.method.DEFAULT,
                         metadata=None):
         """
-        Returns sensitive information types DLP supports.
+        Returns a list of the sensitive information types that the DLP API
+        supports. For more information, see [Listing supported predefined
+        infoTypes](/dlp/docs/listing-infotypes).
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -940,7 +943,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes inspect templates.
+        Deletes an inspect template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -987,7 +990,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Creates an Deidentify template for re-using frequently used configuration
+        Creates a de-identify template for re-using frequently used configuration
         for Deidentifying content, images, and storage.
 
         Example:
@@ -1048,7 +1051,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Updates the inspect template.
+        Updates the de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1106,7 +1109,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Gets an inspect template.
+        Gets a de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1155,7 +1158,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists inspect templates.
+        Lists de-identify templates.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1234,7 +1237,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes inspect templates.
+        Deletes a de-identify template.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1281,7 +1284,7 @@ class DlpServiceClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Create a new job to inspect storage or calculate risk metrics [How-to
+        Creates a new job to inspect storage or calculate risk metrics [How-to
         guide](/dlp/docs/compute-risk-analysis).
 
         Example:
@@ -1546,7 +1549,7 @@ class DlpServiceClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Starts asynchronous cancellation on a long-running DlpJob.  The server
+        Starts asynchronous cancellation on a long-running DlpJob. The server
         makes a best effort to cancel the DlpJob, but success is not
         guaranteed.
 
@@ -1833,8 +1836,8 @@ class DlpServiceClient(object):
                            timeout=google.api_core.gapic_v1.method.DEFAULT,
                            metadata=None):
         """
-        Creates a job to run DLP actions such as scanning storage for sensitive
-        information on a set schedule.
+        Creates a job trigger to run DLP actions such as scanning storage for
+        sensitive information on a set schedule.
 
         Example:
             >>> from google.cloud import dlp_v2

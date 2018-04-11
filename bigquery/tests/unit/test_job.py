@@ -542,8 +542,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                         'reason': 'REASON'}
 
         client = _make_client(project=self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         job._properties['etag'] = 'ETAG'
         job._properties['id'] = FULL_JOB_ID
         job._properties['selfLink'] = URL
@@ -872,8 +872,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         self.assertFalse(job.exists())
 
@@ -888,8 +888,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -920,8 +920,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESOURCE = self._make_resource()
         conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.reload()
 
@@ -938,8 +938,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.reload(client=client2)
 
@@ -976,8 +976,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESPONSE = {'job': RESOURCE}
         conn = _make_connection(RESPONSE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.cancel()
 
@@ -995,8 +995,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection(RESPONSE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.cancel(client=client2)
 
@@ -1567,11 +1567,15 @@ class TestExtractJob(unittest.TestCase, _Base):
             self.assertIsNone(job.print_header)
 
     def test_ctor(self):
+        from google.cloud.bigquery.table import Table
+
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
-        self.assertEqual(job.source, source)
+        source = Table(self.TABLE_REF)
+        job = self._make_one(
+            self.JOB_ID, source, [self.DESTINATION_URI], client)
+        self.assertEqual(job.source.project, self.PROJECT)
+        self.assertEqual(job.source.dataset_id, self.DS_ID)
+        self.assertEqual(job.source.table_id, self.TABLE_ID)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -1590,9 +1594,8 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_destination_uri_file_counts(self):
         file_counts = 23
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
         self.assertIsNone(job.destination_uri_file_counts)
 
         statistics = job._properties['statistics'] = {}
@@ -1754,9 +1757,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
 
         self.assertFalse(job.exists())
 
@@ -1771,9 +1773,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client1)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -3337,21 +3338,3 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
-
-
-class _Table(object):
-
-    def __init__(self, table_id=None):
-        self._table_id = table_id
-
-    @property
-    def table_id(self):
-        return TestLoadJob.TABLE_ID
-
-    @property
-    def project(self):
-        return TestLoadJob.PROJECT
-
-    @property
-    def dataset_id(self):
-        return TestLoadJob.DS_ID

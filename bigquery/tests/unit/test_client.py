@@ -385,7 +385,7 @@ class TestClient(unittest.TestCase):
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
-            'defaultTableExpirationMs': 3600,
+            'defaultTableExpirationMs': '3600',
             'labels': LABELS,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
@@ -413,7 +413,7 @@ class TestClient(unittest.TestCase):
                 'description': DESCRIPTION,
                 'friendlyName': FRIENDLY_NAME,
                 'location': LOCATION,
-                'defaultTableExpirationMs': 3600,
+                'defaultTableExpirationMs': '3600',
                 'access': [
                     {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                     {'view': VIEW}],
@@ -428,6 +428,40 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.location, LOCATION)
         self.assertEqual(ds.default_table_expiration_ms, 3600)
         self.assertEqual(ds.labels, LABELS)
+
+    def test_create_dataset_w_custom_property(self):
+        # The library should handle sending properties to the API that are not
+        # yet part of the library
+        from google.cloud.bigquery.dataset import Dataset
+
+        path = '/projects/%s/datasets' % self.PROJECT
+        resource = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'newAlphaProperty': 'unreleased property',
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(resource)
+        dataset = Dataset(client.dataset(self.DS_ID))
+        dataset._properties['newAlphaProperty'] = 'unreleased property'
+
+        dataset = client.create_dataset(dataset)
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path=path,
+            data={
+                'datasetReference':
+                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'newAlphaProperty': 'unreleased property',
+                'labels': {},
+            }
+        )
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(
+            dataset._properties['newAlphaProperty'], 'unreleased property')
 
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
@@ -463,6 +497,46 @@ class TestClient(unittest.TestCase):
                 'labels': {},
             })
         self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(got.table_id, self.TABLE_ID)
+
+    def test_create_table_w_custom_property(self):
+        # The library should handle sending properties to the API that are not
+        # yet part of the library
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'newAlphaProperty': 'unreleased property',
+        }
+        conn = client._connection = _make_connection(resource)
+        table = Table(self.TABLE_REF)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+
+        got = client.create_table(table)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % path,
+            data={
+                'tableReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                    'tableId': self.TABLE_ID
+                },
+                'newAlphaProperty': 'unreleased property',
+                'labels': {},
+            })
+        self.assertEqual(
+            got._properties['newAlphaProperty'], 'unreleased property')
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_encryption_configuration(self):
@@ -533,7 +607,7 @@ class TestClient(unittest.TestCase):
                     'datasetId': self.DS_ID,
                     'tableId': self.TABLE_ID
                 },
-                'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
+                'timePartitioning': {'type': 'DAY', 'expirationMs': '100'},
                 'labels': {},
             })
         self.assertEqual(table.partitioning_type, "DAY")
@@ -758,6 +832,36 @@ class TestClient(unittest.TestCase):
         req = conn.api_request.call_args
         self.assertEqual(req[1]['headers']['If-Match'], 'etag')
 
+    def test_update_dataset_w_custom_property(self):
+        # The library should handle sending properties to the API that are not
+        # yet part of the library
+        from google.cloud.bigquery.dataset import Dataset
+
+        path = '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
+        resource = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'newAlphaProperty': 'unreleased property',
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(resource)
+        dataset = Dataset(client.dataset(self.DS_ID))
+        dataset._properties['newAlphaProperty'] = 'unreleased property'
+
+        dataset = client.update_dataset(dataset, ['newAlphaProperty'])
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            data={'newAlphaProperty': 'unreleased property'},
+            path=path,
+            headers=None,
+        )
+
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
+        self.assertEqual(
+            dataset._properties['newAlphaProperty'], 'unreleased property')
+
     def test_update_table(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
@@ -809,11 +913,6 @@ class TestClient(unittest.TestCase):
             table, ['schema', 'description', 'friendly_name', 'labels'])
 
         sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
             'schema': {
                 'fields': [
                     {
@@ -850,6 +949,37 @@ class TestClient(unittest.TestCase):
         req = conn.api_request.call_args
         self.assertEqual(req[1]['headers']['If-Match'], 'etag')
 
+    def test_update_table_w_custom_property(self):
+        from google.cloud.bigquery.table import Table
+
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'newAlphaProperty': 'unreleased property',
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _make_connection(resource)
+        table = Table(self.TABLE_REF)
+        table._properties['newAlphaProperty'] = 'unreleased property'
+
+        updated_table = client.update_table(table, ['newAlphaProperty'])
+
+        conn.api_request.assert_called_once_with(
+            method='PATCH',
+            path='/%s' % path,
+            data={'newAlphaProperty': 'unreleased property'},
+            headers=None)
+        self.assertEqual(
+            updated_table._properties['newAlphaProperty'],
+            'unreleased property')
+
     def test_update_table_only_use_legacy_sql(self):
         from google.cloud.bigquery.table import Table
 
@@ -875,14 +1005,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='PATCH',
             path='/%s' % path,
-            data={
-                'tableReference': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_ID,
-                    'tableId': self.TABLE_ID
-                },
-                'view': {'useLegacySql': True}
-            },
+            data={'view': {'useLegacySql': True}},
             headers=None)
         self.assertEqual(
             updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
@@ -947,14 +1070,9 @@ class TestClient(unittest.TestCase):
             method='PATCH',
             path='/%s' % path,
             data={
-                'tableReference': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_ID,
-                    'tableId': self.TABLE_ID
-                },
                 'view': {'query': query, 'useLegacySql': True},
                 'location': location,
-                'expirationTime': _millis(exp_time),
+                'expirationTime': str(_millis(exp_time)),
                 'schema': schema_resource,
             },
             headers=None)
@@ -985,8 +1103,8 @@ class TestClient(unittest.TestCase):
             'tableReference': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID},
-            'schema': {'fields': []},
+                'tableId': self.TABLE_ID,
+            },
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -999,17 +1117,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn.api_request.call_args_list), 2)
         req = conn.api_request.call_args_list[1]
         self.assertEqual(req[1]['method'], 'PATCH')
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'schema': None
-        }
+        sent = {'schema': None}
         self.assertEqual(req[1]['data'], sent)
         self.assertEqual(req[1]['path'], '/%s' % path)
-        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(len(updated_table.schema), 0)
 
     def test_update_table_delete_property(self):
         from google.cloud.bigquery.table import Table
@@ -1052,14 +1163,7 @@ class TestClient(unittest.TestCase):
         req = conn.api_request.call_args_list[1]
         self.assertEqual(req[1]['method'], 'PATCH')
         self.assertEqual(req[1]['path'], '/%s' % path)
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'description': None,
-        }
+        sent = {'description': None}
         self.assertEqual(req[1]['data'], sent)
         self.assertIsNone(table3.description)
 
