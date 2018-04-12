@@ -94,7 +94,7 @@ _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
-_MAX_MULTIPART_SIZE = 5 * 1024 * 1024 # 5 MB
+_MAX_MULTIPART_SIZE = 5242880  # 5 MB
 
 
 class Blob(_PropertyMixin):
@@ -177,8 +177,8 @@ class Blob(_PropertyMixin):
                  multiple of 256 KB.
         """
         if value is not None and \
-            value > 0 and \
-            value % self._CHUNK_SIZE_MULTIPLE != 0:
+                value > 0 and \
+                value % self._CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError('Chunk size must be a multiple of %d.' % (
                 self._CHUNK_SIZE_MULTIPLE,))
         self._chunk_size = value

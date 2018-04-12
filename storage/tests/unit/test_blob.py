@@ -21,6 +21,7 @@ import os
 import tempfile
 import unittest
 
+import google.cloud.storage.blob
 import mock
 import six
 from six.moves import http_client
@@ -1327,7 +1328,8 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl='private')
 
     def _do_upload_helper(
-            self, chunk_size=None, num_retries=None, predefined_acl=None, size=None):
+            self, chunk_size=None, num_retries=None, predefined_acl=None, 
+            size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1353,7 +1355,8 @@ class Test_Blob(unittest.TestCase):
             client, stream, content_type, size, num_retries, predefined_acl)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
-        if size is not None and size < 1024*1024*5:
+        if size is not None and \
+                size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE :
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
@@ -1364,8 +1367,9 @@ class Test_Blob(unittest.TestCase):
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
 
-    def test__do_upload_small_file(self):
-        self._do_upload_helper(size=100)
+    def test__do_upload_uses_multipart(self):
+        self._do_upload_helper(
+            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE)
 
     def test__do_upload_with_chunk_size(self):
         chunk_size = 1024 * 1024 * 1024  # 1GB
