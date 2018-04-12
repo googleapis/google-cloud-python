@@ -1142,7 +1142,7 @@ class Test_Blob(unittest.TestCase):
         if chunk_size is None:
             if blob_chunk_size is None:
                 self.assertEqual(upload._chunk_size,
-                    google.cloud.storage.blob._DEFAULT_CHUNKSIZE)
+                                 google.cloud.storage.blob._DEFAULT_CHUNKSIZE)
             else:
                 self.assertEqual(upload._chunk_size, blob.chunk_size)
         else:

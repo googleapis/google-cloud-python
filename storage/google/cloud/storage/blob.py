@@ -879,7 +879,7 @@ class Blob(_PropertyMixin):
                    size, num_retries, predefined_acl):
         """Determine an upload strategy and then perform the upload.
 
-        If the size of the data to be uploaded exceeds 5 MB a resumable media 
+        If the size of the data to be uploaded exceeds 5 MB a resumable media
         request will be used, otherwise the content and the metadata will be
         uploaded in a single multipart upload request.
 
