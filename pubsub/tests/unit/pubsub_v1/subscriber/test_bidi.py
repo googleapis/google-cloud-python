@@ -460,7 +460,8 @@ class TestBackgroundConsumer(object):
             mock.sentinel.response_1: threading.Event(),
             mock.sentinel.response_2: threading.Event()
         }
-        bidi_rpc.recv.side_effect = responses_and_events.keys()
+        bidi_rpc.recv.side_effect = [
+            mock.sentinel.response_1, mock.sentinel.response_2]
 
         recved_responses = []
         consumer = None
