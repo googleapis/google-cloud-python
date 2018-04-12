@@ -455,6 +455,7 @@ class TestBackgroundConsumer(object):
 
         # These are used to coordinate the two threads to ensure deterministic
         # execution.
+        should_continue = threading.Event()
         responses_and_events = {
             mock.sentinel.response_1: threading.Event(),
             mock.sentinel.response_2: threading.Event()
@@ -470,6 +471,7 @@ class TestBackgroundConsumer(object):
 
             recved_responses.append(response)
             responses_and_events[response].set()
+            should_continue.wait()
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, on_response)
 
@@ -485,6 +487,7 @@ class TestBackgroundConsumer(object):
 
         # Unpause the consumer, wait for the second item, then close the
         # consumer.
+        should_continue.set()
         consumer.resume()
         responses_and_events[mock.sentinel.response_2].wait()
         assert recved_responses == list(responses_and_events.keys())
