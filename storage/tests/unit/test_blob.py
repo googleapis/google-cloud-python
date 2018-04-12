@@ -1328,7 +1328,7 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl='private')
 
     def _do_upload_helper(
-            self, chunk_size=None, num_retries=None, predefined_acl=None, 
+            self, chunk_size=None, num_retries=None, predefined_acl=None,
             size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
@@ -1356,7 +1356,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
         if size is not None and \
-                size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE :
+                size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
