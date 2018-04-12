@@ -1088,14 +1088,18 @@ class Test_Blob(unittest.TestCase):
 
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
-            num_retries=None, user_project=None, predefined_acl=None):
+            num_retries=None, user_project=None, predefined_acl=None,
+            blob_chunk_size=786432):
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.metadata = {'rook': 'takes knight'}
-        blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
-        self.assertIsNotNone(blob.chunk_size)
+        blob.chunk_size = blob_chunk_size
+        if blob_chunk_size is not None:
+            self.assertIsNotNone(blob.chunk_size)
+        else:
+            self.assertIsNone(blob.chunk_size)
 
         # Need to make sure **same** dict is used because ``json.dumps()``
         # will depend on the hash order.
@@ -1136,7 +1140,11 @@ class Test_Blob(unittest.TestCase):
             self.assertIsNot(upload._headers, extra_headers)
         self.assertFalse(upload.finished)
         if chunk_size is None:
-            self.assertEqual(upload._chunk_size, blob.chunk_size)
+            if blob_chunk_size is None:
+                self.assertEqual(upload._chunk_size,
+                    google.cloud.storage.blob._DEFAULT_CHUNKSIZE)
+            else:
+                self.assertEqual(upload._chunk_size, blob.chunk_size)
         else:
             self.assertNotEqual(blob.chunk_size, chunk_size)
             self.assertEqual(upload._chunk_size, chunk_size)
@@ -1182,6 +1190,9 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_user_project(self):
         user_project = 'user-project-123'
         self._initiate_resumable_helper(user_project=user_project)
+
+    def test__initiate_resumable_upload_without_chunk_size(self):
+        self._initiate_resumable_helper(blob_chunk_size=None)
 
     def test__initiate_resumable_upload_with_chunk_size(self):
         one_mb = 1048576
@@ -1371,7 +1382,7 @@ class Test_Blob(unittest.TestCase):
         self._do_upload_helper(
             size=google.cloud.storage.blob._MAX_MULTIPART_SIZE)
 
-    def test__do_upload_with_chunk_size(self):
+    def test__do_upload_uses_resumable(self):
         chunk_size = 1024 * 1024 * 1024  # 1GB
         self._do_upload_helper(chunk_size=chunk_size)
 

@@ -121,7 +121,7 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
-    _chunk_size = _DEFAULT_CHUNKSIZE  # Default value for each instance.
+    _chunk_size = None  # Default value for each instance.
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
