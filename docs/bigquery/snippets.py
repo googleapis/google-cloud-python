@@ -1723,8 +1723,8 @@ def test_client_query_w_params(client):
         AND word_count >= @min_word_count
         ORDER BY word_count DESC;
     """
-    corpus = 'hamlet'
-    min_word_count = 100
+    corpus = 'romeoandjuliet'
+    min_word_count = 250
     query_params = [
         bigquery.ScalarQueryParameter('corpus', 'STRING', corpus),
         bigquery.ScalarQueryParameter(
