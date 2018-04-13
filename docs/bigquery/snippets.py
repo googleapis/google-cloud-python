@@ -1709,10 +1709,10 @@ def test_client_query_destination_table_cmek(client, to_delete):
     # [END bigquery_query_destination_table_cmek]
 
 
-def test_client_query_w_params(client):
-    """Run a query using a query parameter"""
+def test_client_query_w_named_params(client, capsys):
+    """Run a query using named query parameters"""
 
-    # [START bigquery_query_params]
+    # [START bigquery_query_params_named]
     # from google.cloud import bigquery
     # client = bigquery.Client()
 
@@ -1723,12 +1723,9 @@ def test_client_query_w_params(client):
         AND word_count >= @min_word_count
         ORDER BY word_count DESC;
     """
-    corpus = 'romeoandjuliet'
-    min_word_count = 250
     query_params = [
-        bigquery.ScalarQueryParameter('corpus', 'STRING', corpus),
-        bigquery.ScalarQueryParameter(
-            'min_word_count', 'INT64', min_word_count)
+        bigquery.ScalarQueryParameter('corpus', 'STRING', 'romeoandjuliet'),
+        bigquery.ScalarQueryParameter('min_word_count', 'INT64', 250)
     ]
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
@@ -1738,14 +1735,163 @@ def test_client_query_w_params(client):
         location='US',
         job_config=job_config)  # API request - starts the query
 
-    # Waits for the query to finish
-    timeout = 30  # in seconds
-    iterator = query_job.result(timeout=timeout)
-    rows = list(iterator)
+    # Print the results
+    for row in query_job:
+        print('{}: \t{}'.format(row.word, row.word_count))
 
     assert query_job.state == 'DONE'
-    assert len(rows) > 0
-    # [END bigquery_query_params]
+    # [END bigquery_query_params_named]
+
+    out, _ = capsys.readouterr()
+    assert 'the' in out
+
+
+def test_client_query_w_positional_params(client, capsys):
+    """Run a query using query parameters"""
+
+    # [START bigquery_query_params_positional]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = """
+        SELECT word, word_count
+        FROM `bigquery-public-data.samples.shakespeare`
+        WHERE corpus = ?
+        AND word_count >= ?
+        ORDER BY word_count DESC;
+    """
+    # Set the name to None to use positional parameters.
+    # Note that you cannot mix named and positional parameters.
+    query_params = [
+        bigquery.ScalarQueryParameter(None, 'STRING', 'romeoandjuliet'),
+        bigquery.ScalarQueryParameter(None, 'INT64', 250)
+    ]
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = query_params
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results
+    for row in query_job:
+        print('{}: \t{}'.format(row.word, row.word_count))
+
+    assert query_job.state == 'DONE'
+    # [END bigquery_query_params_positional]
+
+    out, _ = capsys.readouterr()
+    assert 'the' in out
+
+
+def test_client_query_w_timestamp_params(client, capsys):
+    """Run a query using query parameters"""
+
+    # [START bigquery_query_params_timestamps]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    import datetime
+    import pytz
+
+    query = 'SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);'
+    query_params = [
+        bigquery.ScalarQueryParameter(
+            'ts_value',
+            'TIMESTAMP',
+            datetime.datetime(2016, 12, 7, 8, 0, tzinfo=pytz.UTC))
+    ]
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = query_params
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results
+    for row in query_job:
+        print(row)
+
+    assert query_job.state == 'DONE'
+    # [END bigquery_query_params_timestamps]
+
+    out, _ = capsys.readouterr()
+    assert '2016, 12, 7, 9, 0' in out
+
+
+def test_client_query_w_array_params(client, capsys):
+    """Run a query using array query parameters"""
+    # [START bigquery_query_params_arrays]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = """
+        SELECT name, sum(number) as count
+        FROM `bigquery-public-data.usa_names.usa_1910_2013`
+        WHERE gender = @gender
+        AND state IN UNNEST(@states)
+        GROUP BY name
+        ORDER BY count DESC
+        LIMIT 10;
+    """
+    query_params = [
+        bigquery.ScalarQueryParameter('gender', 'STRING', 'M'),
+        bigquery.ArrayQueryParameter(
+            'states', 'STRING', ['WA', 'WI', 'WV', 'WY'])
+    ]
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = query_params
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results
+    for row in query_job:
+        print('{}: \t{}'.format(row.name, row.count))
+
+    assert query_job.state == 'DONE'
+    # [END bigquery_query_params_arrays]
+
+    out, _ = capsys.readouterr()
+    assert 'James' in out
+
+
+def test_client_query_w_struct_params(client, capsys):
+    """Run a query using struct query parameters"""
+    # [START bigquery_query_params_structs]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = 'SELECT @struct_value AS s;'
+    query_params = [
+        bigquery.StructQueryParameter(
+            'struct_value',
+            bigquery.ScalarQueryParameter('x', 'INT64', 1),
+            bigquery.ScalarQueryParameter('y', 'STRING', 'foo')
+        )
+    ]
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = query_params
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results
+    for row in query_job:
+        print(row.s)
+
+    assert query_job.state == 'DONE'
+    # [END bigquery_query_params_structs]
+
+    out, _ = capsys.readouterr()
+    assert '1' in out
+    assert 'foo' in out
 
 
 def test_client_query_dry_run(client):
