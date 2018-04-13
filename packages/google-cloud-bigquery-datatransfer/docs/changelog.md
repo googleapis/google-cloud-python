@@ -1,0 +1,1 @@
+../../bigquery_datatransfer/CHANGELOG.md
