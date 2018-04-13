@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.0.0
+
+### Implementation Changes
+- Remove deprecated Client methods (#5182)
+
 ## 0.32.0
 
 ### :warning: Interface changes

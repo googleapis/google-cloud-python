@@ -1167,7 +1167,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]['data'], sent)
         self.assertIsNone(table3.description)
 
-    def test_list_dataset_tables_empty(self):
+    def test_list_tables_empty(self):
         path = '/projects/{}/datasets/{}/tables'.format(
             self.PROJECT, self.DS_ID)
         creds = _make_credentials()
@@ -1175,7 +1175,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection({})
 
         dataset = client.dataset(self.DS_ID)
-        iterator = client.list_dataset_tables(dataset)
+        iterator = client.list_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
         page = six.next(iterator.pages)
         tables = list(page)
@@ -1186,7 +1186,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='GET', path=path, query_params={})
 
-    def test_list_dataset_tables_defaults(self):
+    def test_list_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
@@ -1216,7 +1216,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection(DATA)
         dataset = client.dataset(self.DS_ID)
 
-        iterator = client.list_dataset_tables(dataset)
+        iterator = client.list_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
         page = six.next(iterator.pages)
         tables = list(page)
@@ -1232,7 +1232,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='GET', path='/%s' % PATH, query_params={})
 
-    def test_list_dataset_tables_explicit(self):
+    def test_list_tables_explicit(self):
         from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
@@ -1261,7 +1261,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection(DATA)
         dataset = client.dataset(self.DS_ID)
 
-        iterator = client.list_dataset_tables(
+        iterator = client.list_tables(
             dataset, max_results=3, page_token=TOKEN)
         self.assertIs(iterator.dataset, dataset)
         page = six.next(iterator.pages)
@@ -1280,11 +1280,11 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             query_params={'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_list_dataset_tables_wrong_type(self):
+    def test_list_tables_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.list_dataset_tables(client.dataset(self.DS_ID).table("foo"))
+            client.list_tables(client.dataset(self.DS_ID).table("foo"))
 
     def test_delete_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -2395,7 +2395,7 @@ class TestClient(unittest.TestCase):
                 'parameterValue': {'value': '123'}
             })
 
-    def test_create_rows_wo_schema(self):
+    def test_insert_rows_wo_schema(self):
         from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
 
         creds = _make_credentials()
@@ -2411,11 +2411,11 @@ class TestClient(unittest.TestCase):
         ]
 
         with self.assertRaises(ValueError) as exc:
-            client.create_rows(table, ROWS)
+            client.insert_rows(table, ROWS)
 
         self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
-    def test_create_rows_w_schema(self):
+    def test_insert_rows_w_schema(self):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
@@ -2461,7 +2461,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows(table, ROWS)
+            errors = client.insert_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once()
@@ -2470,7 +2470,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
-    def test_create_rows_w_list_of_dictionaries(self):
+    def test_insert_rows_w_list_of_dictionaries(self):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
@@ -2526,7 +2526,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows(table, ROWS)
+            errors = client.insert_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
@@ -2534,7 +2534,7 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
-    def test_create_rows_w_list_of_Rows(self):
+    def test_insert_rows_w_list_of_Rows(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Row
@@ -2570,7 +2570,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows(table, ROWS)
+            errors = client.insert_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
@@ -2578,7 +2578,7 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
-    def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
+    def test_insert_rows_w_skip_invalid_and_ignore_unknown(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
@@ -2626,7 +2626,7 @@ class TestClient(unittest.TestCase):
                      for index, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(
+        errors = client.insert_rows(
             table,
             ROWS,
             row_ids=[index for index, _ in enumerate(ROWS)],
@@ -2645,7 +2645,7 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
-    def test_create_rows_w_repeated_fields(self):
+    def test_insert_rows_w_repeated_fields(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
@@ -2677,7 +2677,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows(table, ROWS)
+            errors = client.insert_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
@@ -2685,7 +2685,7 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
-    def test_create_rows_w_record_schema(self):
+    def test_insert_rows_w_record_schema(self):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
@@ -2723,7 +2723,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows(self.TABLE_REF, ROWS,
+            errors = client.insert_rows(self.TABLE_REF, ROWS,
                                         selected_fields=[full_name, phone])
 
         self.assertEqual(len(errors), 0)
@@ -2732,7 +2732,7 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
-    def test_create_rows_errors(self):
+    def test_insert_rows_errors(self):
         from google.cloud.bigquery.table import Table
 
         ROWS = [
@@ -2748,17 +2748,17 @@ class TestClient(unittest.TestCase):
 
         # table ref with no selected fields
         with self.assertRaises(ValueError):
-            client.create_rows(self.TABLE_REF, ROWS)
+            client.insert_rows(self.TABLE_REF, ROWS)
 
         # table with no schema
         with self.assertRaises(ValueError):
-            client.create_rows(Table(self.TABLE_REF), ROWS)
+            client.insert_rows(Table(self.TABLE_REF), ROWS)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
-            client.create_rows(1, ROWS)
+            client.insert_rows(1, ROWS)
 
-    def test_create_rows_json(self):
+    def test_insert_rows_json(self):
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference
 
@@ -2804,7 +2804,7 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
-            errors = client.create_rows_json(table, ROWS)
+            errors = client.insert_rows_json(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
