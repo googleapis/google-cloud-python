@@ -582,13 +582,13 @@ def test_update_table_expiration(client, to_delete):
     to_delete.insert(0, table)
 
     # [START bigquery_update_table_expiration]
+    import datetime
+    import pytz
+
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('my_table')
     # table = client.get_table(table_ref)  # API request
-
-    import datetime
-    import pytz
 
     assert table.expires is None
 
@@ -789,9 +789,9 @@ def test_load_table_from_file(client, to_delete):
     dataset.location = 'US'
     client.create_dataset(dataset)
     to_delete.append(dataset)
-    snippets_directory = os.path.abspath(os.path.dirname(__file__))
+    snippets_dir = os.path.abspath(os.path.dirname(__file__))
     filename = os.path.join(
-        snippets_directory, '../../bigquery/tests/data', 'people.csv')
+        snippets_dir, '..', '..', 'bigquery', 'tests', 'data', 'people.csv')
 
     # [START bigquery_load_from_file]
     # from google.cloud import bigquery
