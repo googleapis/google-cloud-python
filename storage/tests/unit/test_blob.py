@@ -1384,7 +1384,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__do_upload_uses_resumable(self):
         self._do_upload_helper(
-            chunk_size=256 * 1024, # 256KB 
+            chunk_size=256 * 1024,  # 256KB
             size=google.cloud.storage.blob._MAX_MULTIPART_SIZE + 1)
 
     def test__do_upload_with_retry(self):
