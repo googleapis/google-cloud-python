@@ -6,12 +6,10 @@ Stackdriver Monitoring
   :hidden:
 
   client
-  metric
-  resource
   group
   query
-  timeseries
-  label
+  types
+  enums
 
 Introduction
 ------------

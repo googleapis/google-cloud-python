@@ -21,62 +21,24 @@
 
 import copy
 import datetime
-import itertools
 
 import six
 
-from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.monitoring._dataframe import _build_dataframe
-from google.cloud.monitoring.timeseries import TimeSeries
+from google.cloud.monitoring_v3 import types
+from google.cloud.monitoring_v3.gapic import enums
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
-
-
-class Aligner(object):
-    """Allowed values for the `supported aligners`_."""
-
-    ALIGN_NONE = 'ALIGN_NONE'
-    ALIGN_DELTA = 'ALIGN_DELTA'
-    ALIGN_RATE = 'ALIGN_RATE'
-    ALIGN_INTERPOLATE = 'ALIGN_INTERPOLATE'
-    ALIGN_NEXT_OLDER = 'ALIGN_NEXT_OLDER'
-    ALIGN_MIN = 'ALIGN_MIN'
-    ALIGN_MAX = 'ALIGN_MAX'
-    ALIGN_MEAN = 'ALIGN_MEAN'
-    ALIGN_COUNT = 'ALIGN_COUNT'
-    ALIGN_SUM = 'ALIGN_SUM'
-    ALIGN_STDDEV = 'ALIGN_STDDEV'
-    ALIGN_COUNT_TRUE = 'ALIGN_COUNT_TRUE'
-    ALIGN_FRACTION_TRUE = 'ALIGN_FRACTION_TRUE'
-
-
-class Reducer(object):
-    """Allowed values for the `supported reducers`_."""
-
-    REDUCE_NONE = 'REDUCE_NONE'
-    REDUCE_MEAN = 'REDUCE_MEAN'
-    REDUCE_MIN = 'REDUCE_MIN'
-    REDUCE_MAX = 'REDUCE_MAX'
-    REDUCE_SUM = 'REDUCE_SUM'
-    REDUCE_STDDEV = 'REDUCE_STDDEV'
-    REDUCE_COUNT = 'REDUCE_COUNT'
-    REDUCE_COUNT_TRUE = 'REDUCE_COUNT_TRUE'
-    REDUCE_FRACTION_TRUE = 'REDUCE_FRACTION_TRUE'
-    REDUCE_PERCENTILE_99 = 'REDUCE_PERCENTILE_99'
-    REDUCE_PERCENTILE_95 = 'REDUCE_PERCENTILE_95'
-    REDUCE_PERCENTILE_50 = 'REDUCE_PERCENTILE_50'
-    REDUCE_PERCENTILE_05 = 'REDUCE_PERCENTILE_05'
 
 
 class Query(object):
     """Query object for retrieving metric data.
 
-    The preferred way to construct a query object is using the
-    :meth:`~google.cloud.monitoring.client.Client.query` method
-    of the :class:`~google.cloud.monitoring.client.Client` class.
-
-    :type client: :class:`google.cloud.monitoring.client.Client`
+    :type client: :class:`google.cloud.monitoring_v3.gapic.metric_service_client.MetricServiceClient`
     :param client: The client to use.
+
+    :type project: str
+    :param project: The project ID or number.
 
     :type metric_type: str
     :param metric_type: The metric type name. The default value is
@@ -119,7 +81,7 @@ class Query(object):
 
     DEFAULT_METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
 
-    def __init__(self, client,
+    def __init__(self, client, project,
                  metric_type=DEFAULT_METRIC_TYPE,
                  end_time=None, days=0, hours=0, minutes=0):
         start_time = None
@@ -133,13 +95,14 @@ class Query(object):
             raise ValueError('Non-zero duration required for time interval.')
 
         self._client = client
+        self._project_path = self._client.project_path(project)
         self._end_time = end_time
         self._start_time = start_time
         self._filter = _Filter(metric_type)
 
-        self._per_series_aligner = None
-        self._alignment_period_seconds = None
-        self._cross_series_reducer = None
+        self._per_series_aligner = 0
+        self._alignment_period_seconds = 0
+        self._cross_series_reducer = 0
         self._group_by_fields = ()
 
     def __iter__(self):
@@ -188,7 +151,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._end_time = end_time
         new_query._start_time = start_time
         return new_query
@@ -206,7 +169,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.group_id = group_id
         return new_query
 
@@ -228,7 +191,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.projects = args
         return new_query
 
@@ -286,7 +249,7 @@ class Query(object):
         .. _defined resource types:
             https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.select_resources(*args, **kwargs)
         return new_query
 
@@ -345,7 +308,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.select_metrics(*args, **kwargs)
         return new_query
 
@@ -357,17 +320,19 @@ class Query(object):
 
         Example::
 
-            query = query.align(Aligner.ALIGN_MEAN, minutes=5)
+            from google.cloud.monitoring import enums
+            query = query.align(enums.Aggregation.Aligner.ALIGN_MEAN, minutes=5)
 
         It is also possible to specify the aligner as a literal string::
 
             query = query.align('ALIGN_MEAN', minutes=5)
 
-        :type per_series_aligner: str
+        :type per_series_aligner: str or
+            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
         :param per_series_aligner: The approach to be used to align
-            individual time series. For example: :data:`Aligner.ALIGN_MEAN`.
-            See :class:`Aligner` and the descriptions of the `supported
-            aligners`_.
+            individual time series. For example: :data:`Aligner.ALIGN_MEAN`. See
+            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
+            and the descriptions of the `supported aligners`_.
 
         :type seconds: int
         :param seconds: The number of seconds in the alignment period.
@@ -383,9 +348,9 @@ class Query(object):
 
         .. _supported aligners:
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-            projects.alertPolicies#Aligner
+            projects.timeSeries/list#Aligner
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._per_series_aligner = per_series_aligner
         new_query._alignment_period_seconds = seconds + 60 * (minutes +
                                                               60 * hours)
@@ -400,14 +365,17 @@ class Query(object):
         For example, you could request an aggregated time series for each
         combination of project and zone as follows::
 
-            query = query.reduce(Reducer.REDUCE_MEAN,
+            from google.cloud.monitoring import enums
+            query = query.reduce(enums.Aggregation.Reducer.REDUCE_MEAN,
                                  'resource.project_id', 'resource.zone')
 
-        :type cross_series_reducer: str
+        :type cross_series_reducer: str or
+            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Reducer`
         :param cross_series_reducer:
             The approach to be used to combine time series. For example:
-            :data:`Reducer.REDUCE_MEAN`. See :class:`Reducer` and the
-            descriptions of the `supported reducers`_.
+            :data:`Reducer.REDUCE_MEAN`. See
+            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Reducer`
+            and the descriptions of the `supported reducers`_.
 
         :type group_by_fields: strs
         :param group_by_fields:
@@ -420,9 +388,9 @@ class Query(object):
 
         .. _supported reducers:
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
-            projects.alertPolicies#Reducer
+            projects.timeSeries/list#Reducer
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._cross_series_reducer = cross_series_reducer
         new_query._group_by_fields = group_by_fields
         return new_query
@@ -431,7 +399,7 @@ class Query(object):
         """Yield all time series objects selected by the query.
 
         The generator returned iterates over
-        :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
+        :class:`~google.cloud.monitoring_v3.types.TimeSeries` objects
         containing points ordered from oldest to newest.
 
         Note that the :class:`Query` object itself is an iterable, such that
@@ -456,100 +424,50 @@ class Query(object):
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
         """
-        # The following use of groupby() relies on equality comparison
-        # of time series as (named) tuples.
-        for timeseries, fragments in itertools.groupby(
-                self._iter_fragments(headers_only, page_size),
-                lambda fragment: fragment.header()):
-            points = list(itertools.chain.from_iterable(
-                fragment.points for fragment in fragments))
-            points.reverse()  # Order from oldest to newest.
-            yield timeseries.header(points=points)
-
-    def _iter_fragments(self, headers_only=False, page_size=None):
-        """Yield all time series fragments selected by the query.
-
-        There may be multiple fragments per time series. These will be
-        contiguous.
-
-        The parameters and return value are as for :meth:`Query.iter`.
-        """
         if self._end_time is None:
             raise ValueError('Query time interval not specified.')
 
-        path = '/projects/{project}/timeSeries/'.format(
-            project=self._client.project)
+        params = self._build_query_params(headers_only, page_size)
+        for ts in self._client.list_time_series(**params):
+            yield ts
 
-        page_token = None
-        while True:
-            params = list(self._build_query_params(
-                headers_only=headers_only,
-                page_size=page_size,
-                page_token=page_token,
-            ))
-            response = self._client._connection.api_request(
-                method='GET',
-                path=path,
-                query_params=params,
-            )
-            for info in response.get('timeSeries', ()):
-                yield TimeSeries._from_dict(info)
-
-            page_token = response.get('nextPageToken')
-            if not page_token:
-                break
-
-    def _build_query_params(self, headers_only=False,
-                            page_size=None, page_token=None):
-        """Yield key-value pairs for the URL query string.
-
-        We use a series of key-value pairs (suitable for passing to
-        ``urlencode``) instead of a ``dict`` to allow for repeated fields.
+    def _build_query_params(self, headers_only=False, page_size=None):
+        """Return key-value pairs for the list_time_series API call.
 
         :type headers_only: bool
         :param headers_only:
              Whether to omit the point data from the
-             :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
+             :class:`~google.cloud.monitoring_v3.types.TimeSeries` objects.
 
         :type page_size: int
         :param page_size:
             (Optional) A limit on the number of points to return per page.
-
-        :type page_token: str
-        :param page_token: (Optional) A token to continue the retrieval.
         """
-        yield 'filter', self.filter
+        params = {'name': self._project_path, 'filter_': self.filter}
 
-        yield 'interval.endTime', _datetime_to_rfc3339(
-            self._end_time, ignore_zone=False)
+        params['interval'] = types.TimeInterval()
+        params['interval'].end_time.FromDatetime(self._end_time)
+        if self._start_time:
+          params['interval'].start_time.FromDatetime(self._start_time)
 
-        if self._start_time is not None:
-            yield 'interval.startTime', _datetime_to_rfc3339(
-                self._start_time, ignore_zone=False)
-
-        if self._per_series_aligner is not None:
-            yield 'aggregation.perSeriesAligner', self._per_series_aligner
-
-        if self._alignment_period_seconds is not None:
-            alignment_period = '{period}s'.format(
-                period=self._alignment_period_seconds)
-            yield 'aggregation.alignmentPeriod', alignment_period
-
-        if self._cross_series_reducer is not None:
-            yield ('aggregation.crossSeriesReducer',
-                   self._cross_series_reducer)
-
-        for field in self._group_by_fields:
-            yield 'aggregation.groupByFields', field
+        if (self._per_series_aligner or self._alignment_period_seconds or
+                self._cross_series_reducer or self._group_by_fields):
+            params['aggregation'] = types.Aggregation(
+                per_series_aligner=self._per_series_aligner,
+                cross_series_reducer=self._cross_series_reducer,
+                group_by_fields=self._group_by_fields,
+                alignment_period={'seconds': self._alignment_period_seconds},
+            )
 
         if headers_only:
-            yield 'view', 'HEADERS'
+            params['view'] = enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+        else:
+            params['view'] = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
 
         if page_size is not None:
-            yield 'pageSize', page_size
+            params['page_size'] = page_size
 
-        if page_token is not None:
-            yield 'pageToken', page_token
+        return params
 
     def as_dataframe(self, label=None, labels=None):
         """Return all the selected time series as a :mod:`pandas` dataframe.
@@ -594,16 +512,20 @@ class Query(object):
         """
         return _build_dataframe(self, label, labels)  # pragma: NO COVER
 
-    def copy(self):
-        """Copy the query object.
+    def __deepcopy__(self, memo):
+        """Create a deepcopy of the query object.
+
+        The `client` attribute is copied by reference only.
+
+        :type memo: dict
+        :param memo: the memo dict to avoid excess copying in case  the object
+            is referenced from its member.
 
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        # Using copy.deepcopy() would be appropriate, except that we want
-        # to copy self._client only as a reference.
         new_query = copy.copy(self)
-        new_query._filter = copy.copy(self._filter)
+        new_query._filter = copy.deepcopy(self._filter, memo)
         return new_query
 
 
