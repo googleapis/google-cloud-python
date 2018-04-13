@@ -52,8 +52,14 @@ extensions = [
 # Add any paths that contain templates here, relative to this directory.
 templates_path = []
 
+# Allow markdown includes (so releases.md can include CHANGLEOG.md)
+# http://www.sphinx-doc.org/en/master/markdown.html
+source_parsers = {
+   '.md': 'recommonmark.parser.CommonMarkParser',
+}
+
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'

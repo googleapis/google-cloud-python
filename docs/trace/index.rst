@@ -29,10 +29,10 @@ Contents
 
 .. toctree::
 
-   releases
    self
    starting
    apis
+   changelog
 
 
 Indices and tables

@@ -122,4 +122,15 @@ Learn More
   publisher/index
   subscriber/index
   types
-  releases
+
+*********
+Changelog
+*********
+
+For a list of all ``google-cloud-pubsub`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

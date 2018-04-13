@@ -5,7 +5,6 @@ Stackdriver Monitoring
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   metric
   resource
@@ -419,3 +418,13 @@ All timezone-naive Python ``datetime`` objects are assumed to be UTC.
 .. _Metrics: https://cloud.google.com/monitoring/api/v3/metrics
 .. _Monitored resource types:
     https://cloud.google.com/monitoring/api/resources
+
+Changelog
+---------
+
+For a list of all ``google-cloud-monitoring`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

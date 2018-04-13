@@ -5,11 +5,11 @@ Storage
   :maxdepth: 2
   :hidden:
 
-  releases
   blobs
   buckets
   acl
   batch
+  changelog
 
 
 .. automodule:: google.cloud.storage.client

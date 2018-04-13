@@ -5,11 +5,19 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
-  releases
   reference
   dbapi
 
 .. contents:: :local:
+
+.. note::
+
+    This library changed significantly before the 1.0.0 release, especially
+    between version 0.27 and 0.28. See `Migrating from the BigQuery Python
+    client library version 0.27
+    <https://cloud.google.com/bigquery/docs/python-client-migration>`__ for
+    instructions on how to migrated your code to the most recent version of
+    this library.
 
 Authentication / Configuration
 ------------------------------
@@ -421,3 +429,14 @@ To retrieve table rows as a :class:`pandas.DataFrame`:
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_list_rows_dataframe]
    :end-before: [END bigquery_list_rows_dataframe]
+
+Changelog
+---------
+
+For a list of all ``google-cloud-bigquery`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

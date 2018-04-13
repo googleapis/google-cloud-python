@@ -82,4 +82,5 @@ Api Reference
 
     gapic/v2/api
     gapic/v2/types
+    changelog
 

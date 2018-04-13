@@ -148,12 +148,13 @@ An API and type reference is provided for this beta:
     gapic/v1p2beta1/api
     gapic/v1p2beta1/types
 
-********
-Releases
-********
+*********
+Changelog
+*********
 
 For a list of all ``google-cloud-vision`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-  releases
+  changelog

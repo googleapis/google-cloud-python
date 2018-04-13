@@ -104,6 +104,6 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    releases
     gapic/v1/api
     gapic/v1/types
+    changelog
