@@ -42,3 +42,13 @@ In the hierarchy of API concepts
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
 .. _gRPC: http://www.grpc.io/
 .. _grpcio: https://pypi.org/project/grpcio/
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+``google-cloud-happybase``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to the core ``google-cloud-bigtable``, we provide a
+``google-cloud-happybase`` library with the same interface as the
+popular `HappyBase <https://happybase.readthedocs.io/en/latest/>`__
+library. Unlike HappyBase, ``google-cloud-happybase`` uses
+``google-cloud-bigtable`` under the covers, rather than Apache HBase.

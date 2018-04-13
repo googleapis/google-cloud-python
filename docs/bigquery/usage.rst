@@ -11,6 +11,15 @@ BigQuery
 
 .. contents:: :local:
 
+.. note::
+
+    This library changed significantly before the 1.0.0 release, especially
+    between version 0.27 and 0.28. See `Migrating from the BigQuery Python
+    client library version 0.27
+    <https://cloud.google.com/bigquery/docs/python-client-migration>`__ for
+    instructions on how to migrated your code to the most recent version of
+    this library.
+
 Authentication / Configuration
 ------------------------------
 
