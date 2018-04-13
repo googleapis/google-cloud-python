@@ -1,7 +1,7 @@
 setuptools >= 36.4.0
 sphinx >= 1.6.3
 ipython >= 4
-m2r
+recommonmark >= 0.4.0
 
 api_core/
 core/
