@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_admin_database_v1.gapic.database_admin_client &#8212; google-cloud 1ffec8e documentation</title>
+    <title>google.cloud.spanner_admin_database_v1.gapic.database_admin_client &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
@@ -98,8 +98,8 @@
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instances/</span><span class="si">{instance}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span></div>
-        <span class="p">)</span>
+            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.database_path"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.database_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">database_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
@@ -108,8 +108,8 @@
             <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instances/</span><span class="si">{instance}</span><span class="s1">/databases/</span><span class="si">{database}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
-            <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span></div>
-        <span class="p">)</span>
+            <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -300,8 +300,8 @@
             <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;databases&#39;</span><span class="p">,</span>
             <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
             <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
-        <span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">iterator</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.create_database"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database">[docs]</a>    <span class="k">def</span> <span class="nf">create_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">parent</span><span class="p">,</span>
@@ -379,8 +379,8 @@
             <span class="n">operation</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
             <span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">Database</span><span class="p">,</span>
-            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">CreateDatabaseMetadata</span><span class="p">,</span></div>
-        <span class="p">)</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">CreateDatabaseMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.get_database"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database">[docs]</a>    <span class="k">def</span> <span class="nf">get_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                      <span class="n">name</span><span class="p">,</span>
@@ -420,8 +420,8 @@
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">GetDatabaseRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_database</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_database</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.update_database_ddl"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.update_database_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                             <span class="n">database</span><span class="p">,</span>
@@ -508,8 +508,8 @@
             <span class="n">operation</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
             <span class="n">empty_pb2</span><span class="o">.</span><span class="n">Empty</span><span class="p">,</span>
-            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">UpdateDatabaseDdlMetadata</span><span class="p">,</span></div>
-        <span class="p">)</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">UpdateDatabaseDdlMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.drop_database"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.drop_database">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">database</span><span class="p">,</span>
@@ -546,8 +546,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">DropDatabaseRequest</span><span class="p">(</span>
             <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_drop_database</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_drop_database</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.get_database_ddl"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">get_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">database</span><span class="p">,</span>
@@ -589,8 +589,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_database_admin_pb2</span><span class="o">.</span><span class="n">GetDatabaseDdlRequest</span><span class="p">(</span>
             <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_database_ddl</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_database_ddl</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.set_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">resource</span><span class="p">,</span>
@@ -646,8 +646,8 @@
             <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
             <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.get_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">resource</span><span class="p">,</span>
@@ -692,8 +692,8 @@
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatabaseAdminClient.test_iam_permissions"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_database_api.html#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                              <span class="n">resource</span><span class="p">,</span>
@@ -748,8 +748,8 @@
             <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
             <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span><span class="p">(</span></div>
-            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -785,7 +785,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
@@ -799,6 +799,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
@@ -835,7 +836,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

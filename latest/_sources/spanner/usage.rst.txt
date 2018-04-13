@@ -16,7 +16,6 @@ workloads.
   :titlesonly:
   :hidden:
 
-  releases
   instance-usage
   database-usage
   batch-usage
@@ -106,3 +105,13 @@ Next, learn about the :doc:`instance-usage`.
 
 .. _Instance Admin: https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1
 .. _Database Admin: https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1
+
+Changelog
+=========
+
+For a list of all ``google-cloud-spanner`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

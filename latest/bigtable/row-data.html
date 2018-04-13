@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Row Data &#8212; google-cloud 1ffec8e documentation</title>
+    <title>Row Data &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -142,6 +142,86 @@
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigtable.row_data.PartialRowData.cell_value">
+<code class="descname">cell_value</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowData.cell_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.cell_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a single cell value stored on this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the column family. Must be of the
+form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cell
+is located.</li>
+<li><strong>index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – The offset within the series of values. If
+not specified, will return the first cell.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The cell value stored
+in the specified column and specified index.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Cell value</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code> is not among the cells stored
+in this row.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column</span></code> is not among the cells stored in this row
+for the given <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IndexError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">IndexError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">index</span></code> cannot be found within the cells stored
+in this row for the given <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>, <code class="docutils literal notranslate"><span class="pre">column</span></code>
+pair.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.row_data.PartialRowData.cell_values">
+<code class="descname">cell_values</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>max_count=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowData.cell_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.cell_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a time series of cells stored on this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the column family. Must be of the
+form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cells
+are located.</li>
+<li><strong>max_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of cells to use.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>cell.value, cell.timestamp_micros</dt>
+<dd><p class="first last">for each cell in the list of cells</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">A generator which provides</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code> is not among the cells stored
+in this row.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column</span></code> is not among the cells stored in this row
+for the given <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.bigtable.row_data.PartialRowData.cells">
 <code class="descname">cells</code><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.cells" title="Permalink to this definition">#</a></dt>
@@ -156,6 +236,41 @@
 dictionary has two-levels of keys (first for column families
 and second for column names/qualifiers within a family). For
 a given column, a list of <a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a> objects is stored.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.row_data.PartialRowData.find_cells">
+<code class="descname">find_cells</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowData.find_cells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.find_cells" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a time series of cells stored on this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the column family. Must be of the
+form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The column within the column family where the cells
+are located.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The cells stored in the
+specified column.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">List[<a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell">Cell</a>]</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code> is not among the cells stored
+in this row.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">column</span></code> is not among the cells stored in this row
+for the given <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -199,15 +314,19 @@ column qualiers are combined (with <code class="docutils literal notranslate"><s
 
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialRowsData">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowsData</code><span class="sig-paren">(</span><em>response_iterator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowsData" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialRowsData</code><span class="sig-paren">(</span><em>read_method</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#PartialRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowsData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Convenience wrapper for consuming a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> streaming response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
-<code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>read_method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">client._data_stub.ReadRows</span></code>) – <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> method.</li>
+<li><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">data_messages_v2_pb2.ReadRowsRequest</span></code>) – The <code class="docutils literal notranslate"><span class="pre">ReadRowsRequest</span></code> message used to create a
+ReadRowsResponse iterator.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -248,15 +367,24 @@ processing.</td>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.YieldRowsData">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">YieldRowsData</code><span class="sig-paren">(</span><em>response_iterator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#YieldRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.YieldRowsData" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">YieldRowsData</code><span class="sig-paren">(</span><em>read_method</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/row_data.html#YieldRowsData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.YieldRowsData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Convenience wrapper for consuming a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> streaming response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">GrpcRendezvous</span></code>) – A streaming iterator returned from a
-<code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>read_method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">client._data_stub.ReadRows</span></code>) – <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> method.</li>
+<li><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">data_messages_v2_pb2.ReadRowsRequest</span></code>) – The <code class="docutils literal notranslate"><span class="pre">ReadRowsRequest</span></code> message used to create a
+ReadRowsResponse iterator. If the iterator fails, a new
+iterator is created, allowing the scan to continue from
+the point just beyond the last successfully read row,
+identified by self.last_scanned_row_key. The retry happens
+inside of the Retry class, using a predicate for the
+expected exceptions during iteration.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -327,7 +455,6 @@ processing.</td>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud-bigtable</span></code> Releases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
@@ -340,12 +467,14 @@ processing.</td>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Row Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-api.html">Data API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#google-cloud-happybase"><code class="docutils literal notranslate"><span class="pre">google-cloud-happybase</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -359,6 +488,7 @@ processing.</td>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
@@ -395,7 +525,7 @@ processing.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

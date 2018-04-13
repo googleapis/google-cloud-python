@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Speech Client Types &#8212; google-cloud 1ffec8e documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="google-cloud-speech Releases" href="../../releases.html" />
-    <link rel="prev" title="Speech Client API" href="api.html" />
+    <link rel="next" title="Changelog" href="../../changelog.html" />
+    <link rel="prev" title="Client for Cloud Speech API" href="api.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
           <div class="body" role="main">
             
   <div class="section" id="module-google.cloud.speech_v1p1beta1.types">
-<span id="speech-client-types"></span><h1>Speech Client Types<a class="headerlink" href="#module-google.cloud.speech_v1p1beta1.types" title="Permalink to this headline">#</a></h1>
+<span id="types-for-cloud-speech-api-client"></span><h1>Types for Cloud Speech API Client<a class="headerlink" href="#module-google.cloud.speech_v1p1beta1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.speech_v1p1beta1.types.Any">
 <em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Any" title="Permalink to this definition">#</a></dt>
@@ -150,6 +150,12 @@
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.speech_v1p1beta1.types.GoogleDataCollectionConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">GoogleDataCollectionConfig</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.GoogleDataCollectionConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Google data collection opt-in settings.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.speech_v1p1beta1.types.Http">
 <em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Http" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -230,7 +236,7 @@ service.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.LongRunningRecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.LongRunningRecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Sequential list of transcription results
+<dd><p>Output only. Sequential list of transcription results
 corresponding to sequential portions of audio.</p>
 </dd></dl>
 
@@ -312,19 +318,25 @@ request.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.encoding">
 <code class="descname">encoding</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.encoding" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Required</em> Encoding of audio data sent in all
-<code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code> messages.</p>
+<dd><p>Encoding of audio data sent in all <code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code>
+messages. This field is optional for <code class="docutils literal notranslate"><span class="pre">FLAC</span></code> and <code class="docutils literal notranslate"><span class="pre">WAV</span></code>
+audio files and required for all other audio formats. For
+details, see [AudioEncoding][google.cloud.speech.v1p1beta1.Rec
+ognitionConfig.AudioEncoding].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.sample_rate_hertz">
 <code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Required</em> Sample rate in Hertz of the audio data sent in all
+<dd><p>Sample rate in Hertz of the audio data sent in all
 <code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code> messages. Valid values are: 8000-48000.
 16000 is optimal. For best results, set the sampling rate of
 the audio source to 16000 Hz. If that’s not possible, use the
 native sample rate of the audio source (instead of re-
-sampling).</p>
+sampling). This field is optional for <code class="docutils literal notranslate"><span class="pre">FLAC</span></code> and <code class="docutils literal notranslate"><span class="pre">WAV</span></code>
+audio files and required for all other audio formats. For
+details, see [AudioEncoding][google.cloud.speech.v1p1beta1.Rec
+ognitionConfig.AudioEncoding].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -374,12 +386,153 @@ information is returned. The default is <code class="docutils literal notranslat
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_automatic_punctuation">
+<code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
+hypotheses. This feature is only available in select
+languages. Setting this for requests in other languages has no
+effect at all. The default ‘false’ value does not add
+punctuation to result hypotheses. NOTE: “This is currently
+offered as an experimental service, complimentary to all
+users. In the future this may be exclusively available as a
+premium feature.”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Metadata regarding this request.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.model">
 <code class="descname">model</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> Which model to select for the given request. Select
 the model best suited to your domain to get best results. If a
 model is not explicitly specified, then we auto-select a model
-based on the parameters in the RecognitionConfig.</p>
+based on the parameters in the RecognitionConfig.  .. raw::
+html     &lt;table&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;b&gt;Model&lt;/b&gt;&lt;/td&gt;     &lt;td&gt;&lt;b&gt;Description&lt;/b&gt;&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;command_and_search&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for
+short queries such as voice commands or voice search.&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;phone_call&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for audio that
+originated from a phone call (typically     recorded at an
+8khz sampling rate).&lt;/td&gt;  .. raw:: html     &lt;/tr&gt;  .. raw::
+html     &lt;tr&gt;  ::      &lt;td&gt;&lt;code&gt;video&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Best for audio that originated from from video or includes
+multiple         speakers. Ideally the audio is recorded at a
+16khz or greater         sampling rate. This is a premium
+model that costs more than the         standard rate.&lt;/td&gt;  ..
+raw:: html     &lt;/tr&gt;  .. raw:: html     &lt;tr&gt;  ::
+&lt;td&gt;&lt;code&gt;default&lt;/code&gt;&lt;/td&gt;     &lt;td&gt;Best for audio that is
+not one of the specific audio models.         For example,
+long-form audio. Ideally the audio is high-fidelity,
+recorded at a 16khz or greater sampling rate.&lt;/td&gt;  .. raw::
+html     &lt;/tr&gt;  .. raw:: html     &lt;/table&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.use_enhanced">
+<code class="descname">use_enhanced</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.use_enhanced" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Set to true to use an enhanced model for speech
+recognition. You must also set the <code class="docutils literal notranslate"><span class="pre">model</span></code> field to a valid,
+enhanced model. If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is set to true and the
+<code class="docutils literal notranslate"><span class="pre">model</span></code> field is not set, then <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is ignored.
+If <code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> is true and an enhanced version of the
+specified model does not exist, then the speech is recognized
+using the standard version of the specified model.  Enhanced
+speech models require that you enable audio logging for your
+request. To enable audio logging, set the
+<code class="docutils literal notranslate"><span class="pre">loggingConsentState</span></code> field to ENABLED in the [GoogleDataCol
+lectionConfig][google.cloud.speech.v1p1beta1.GoogleDataCollect
+ionConfig] section of your request. You must also opt-in to
+the audio logging alpha using the instructions in the <a class="reference external" href="/speech/data-sharing">alpha
+documentation</a>. If you set
+<code class="docutils literal notranslate"><span class="pre">use_enhanced</span></code> to true and you have not enabled audio
+logging, then you will receive an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.google_data_collection_opt_in">
+<code class="descname">google_data_collection_opt_in</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.google_data_collection_opt_in" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Contains settings to opt-in to allow Google to
+collect and use data from this request to improve Google’s
+products and services.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">RecognitionMetadata</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of audio data to be recognized.</p>
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.interaction_type">
+<code class="descname">interaction_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.interaction_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The use case most closely describing the audio content to be
+recognized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.industry_naics_code_of_audio">
+<code class="descname">industry_naics_code_of_audio</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.industry_naics_code_of_audio" title="Permalink to this definition">#</a></dt>
+<dd><p>The industry vertical to which this speech recognition request
+most closely applies. This is most indicative of the topics
+contained in the audio. Use the 6-digit NAICS code to identify
+the industry vertical - see <a class="reference external" href="https://www.naics.com/search/">https://www.naics.com/search/</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.microphone_distance">
+<code class="descname">microphone_distance</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.microphone_distance" title="Permalink to this definition">#</a></dt>
+<dd><p>The audio type that most closely describes the audio being
+recognized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.original_media_type">
+<code class="descname">original_media_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.original_media_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The original media the speech was recorded on.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.recording_device_type">
+<code class="descname">recording_device_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.recording_device_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of device the speech was recorded with.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.recording_device_name">
+<code class="descname">recording_device_name</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.recording_device_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The device used to make the recording. Examples ‘Nexus 5X’ or
+‘Polycom SoundStation IP 6000’ or ‘POTS’ or ‘VoIP’ or
+‘Cardioid Microphone’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.original_mime_type">
+<code class="descname">original_mime_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.original_mime_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Mime type of the original audio file. For example
+<code class="docutils literal notranslate"><span class="pre">audio/m4a</span></code>, <code class="docutils literal notranslate"><span class="pre">audio/x-alaw-basic</span></code>, <code class="docutils literal notranslate"><span class="pre">audio/mp3</span></code>,
+<code class="docutils literal notranslate"><span class="pre">audio/3gpp</span></code>. A list of possible audio mime types is
+maintained at <a class="reference external" href="http://www.iana.org/assignments/media">http://www.iana.org/assignments/media</a>-
+types/media-types.xhtml#audio</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.obfuscated_id">
+<code class="descname">obfuscated_id</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.obfuscated_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Obfuscated (privacy-protected) ID of the user, to identify
+number of unique users using the service.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionMetadata.audio_topic">
+<code class="descname">audio_topic</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionMetadata.audio_topic" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the content. Eg. “Recordings of federal supreme
+court hearings from 2012”.</p>
 </dd></dl>
 
 </dd></dl>
@@ -412,7 +565,7 @@ contains the result as zero or more sequential
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Sequential list of transcription results
+<dd><p>Output only. Sequential list of transcription results
 corresponding to sequential portions of audio.</p>
 </dd></dl>
 
@@ -464,14 +617,14 @@ additional words to the vocabulary of the recognizer. See
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.transcript">
 <code class="descname">transcript</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.transcript" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Transcript text representing the words that the
+<dd><p>Output only. Transcript text representing the words that the
 user spoke.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.confidence">
 <code class="descname">confidence</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.confidence" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> The confidence estimate between 0.0 and 1.0. A
+<dd><p>Output only. The confidence estimate between 0.0 and 1.0. A
 higher number indicates an estimated greater likelihood that
 the recognized words are correct. This field is set only for
 the top alternative of a non-streaming result or, of a
@@ -484,7 +637,7 @@ indicating <code class="docutils literal notranslate"><span class="pre">confiden
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.words">
 <code class="descname">words</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> A list of word-specific information for each
+<dd><p>Output only. A list of word-specific information for each
 recognized word.</p>
 </dd></dl>
 
@@ -497,7 +650,7 @@ recognized word.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.alternatives">
 <code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.alternatives" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> May contain one or more recognition hypotheses
+<dd><p>Output only. May contain one or more recognition hypotheses
 (up to the maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These
 alternatives are ordered in terms of accuracy, with the top
 (first) alternative being the most probable, as ranked by the
@@ -560,7 +713,7 @@ audio that is currently being processed.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.alternatives">
 <code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.alternatives" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> May contain one or more recognition hypotheses
+<dd><p>Output only. May contain one or more recognition hypotheses
 (up to the maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These
 alternatives are ordered in terms of accuracy, with the top
 (first) alternative being the most probable, as ranked by the
@@ -570,24 +723,23 @@ recognizer.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.is_final">
 <code class="descname">is_final</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.is_final" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> If <code class="docutils literal notranslate"><span class="pre">false</span></code>, this
-<code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code> represents an interim result
-that may change. If <code class="docutils literal notranslate"><span class="pre">true</span></code>, this is the final time the
-speech service will return this particular
-<code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>, the recognizer will not return
-any further hypotheses for this portion of the transcript and
-corresponding audio.</p>
+<dd><p>Output only. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, this <code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>
+represents an interim result that may change. If <code class="docutils literal notranslate"><span class="pre">true</span></code>,
+this is the final time the speech service will return this
+particular <code class="docutils literal notranslate"><span class="pre">StreamingRecognitionResult</span></code>, the recognizer will
+not return any further hypotheses for this portion of the
+transcript and corresponding audio.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.stability">
 <code class="descname">stability</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.stability" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> An estimate of the likelihood that the
-recognizer will not change its guess about this interim
-result. Values range from 0.0 (completely unstable) to 1.0
-(completely stable). This field is only provided for interim
-results (<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>). The default of 0.0 is a sentinel
-value indicating <code class="docutils literal notranslate"><span class="pre">stability</span></code> was not set.</p>
+<dd><p>Output only. An estimate of the likelihood that the recognizer
+will not change its guess about this interim result. Values
+range from 0.0 (completely unstable) to 1.0 (completely
+stable). This field is only provided for interim results
+(<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>). The default of 0.0 is a sentinel value
+indicating <code class="docutils literal notranslate"><span class="pre">stability</span></code> was not set.</p>
 </dd></dl>
 
 </dd></dl>
@@ -677,7 +829,7 @@ only for illustrative purposes. Actual values may vary.</li>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.error" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> If set, returns a
+<dd><p>Output only. If set, returns a
 [google.rpc.Status][google.rpc.Status] message that specifies
 the error for the operation.</p>
 </dd></dl>
@@ -685,7 +837,7 @@ the error for the operation.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.results">
 <code class="descname">results</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> This repeated list contains zero or more results
+<dd><p>Output only. This repeated list contains zero or more results
 that correspond to consecutive portions of the audio currently
 being processed. It contains zero or one <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code>
 result (the newly settled portion), followed by zero or more
@@ -695,7 +847,7 @@ result (the newly settled portion), followed by zero or more
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.speech_event_type">
 <code class="descname">speech_event_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse.speech_event_type" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Indicates the type of speech event.</p>
+<dd><p>Output only. Indicates the type of speech event.</p>
 </dd></dl>
 
 </dd></dl>
@@ -722,7 +874,7 @@ result (the newly settled portion), followed by zero or more
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.WordInfo.start_time">
 <code class="descname">start_time</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+<dd><p>Output only. Time offset relative to the beginning of the
 audio, and corresponding to the start of the spoken word. This
 field is only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and
 only in the top hypothesis. This is an experimental feature
@@ -732,7 +884,7 @@ and the accuracy of the time offset can vary.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.WordInfo.end_time">
 <code class="descname">end_time</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+<dd><p>Output only. Time offset relative to the beginning of the
 audio, and corresponding to the end of the spoken word. This
 field is only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and
 only in the top hypothesis. This is an experimental feature
@@ -742,7 +894,7 @@ and the accuracy of the time offset can vary.</p>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.WordInfo.word">
 <code class="descname">word</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> The word corresponding to this set of
+<dd><p>Output only. The word corresponding to this set of
 information.</p>
 </dd></dl>
 
@@ -784,7 +936,7 @@ information.</p>
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
@@ -799,13 +951,14 @@ information.</p>
 <li class="toctree-l2"><a class="reference internal" href="../../index.html#synchronous-recognition">Synchronous Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../index.html#streaming-recognition">Streaming Recognition</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">API Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../index.html#releases">Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#changelog">Changelog</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
@@ -816,8 +969,8 @@ information.</p>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Speech</a><ul>
-      <li>Previous: <a href="api.html" title="previous chapter">Speech Client API</a></li>
-      <li>Next: <a href="../../releases.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-speech</span></code> Releases</a></li>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Speech API</a></li>
+      <li>Next: <a href="../../changelog.html" title="next chapter">Changelog</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -842,7 +995,7 @@ information.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

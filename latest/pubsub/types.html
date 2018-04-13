@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud 1ffec8e documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="google-cloud-pubsub Releases" href="releases.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
     <link rel="prev" title="Messages" href="subscriber/api/message.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -410,12 +410,18 @@ completion of the CreateSnapshot request. Format is
 
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.FlowControl">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">FlowControl</code><span class="sig-paren">(</span><em>max_bytes</em>, <em>max_messages</em>, <em>resume_threshold</em>, <em>max_requests</em>, <em>max_request_batch_size</em>, <em>max_request_batch_latency</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.types.FlowControl" title="Permalink to this definition">#</a></dt>
-<dd><p>Create new instance of FlowControl(max_bytes, max_messages, resume_threshold, max_requests, max_request_batch_size, max_request_batch_latency)</p>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">FlowControl</code><span class="sig-paren">(</span><em>max_bytes</em>, <em>max_messages</em>, <em>resume_threshold</em>, <em>max_requests</em>, <em>max_request_batch_size</em>, <em>max_request_batch_latency</em>, <em>max_lease_duration</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.types.FlowControl" title="Permalink to this definition">#</a></dt>
+<dd><p>Create new instance of FlowControl(max_bytes, max_messages, resume_threshold, max_requests, max_request_batch_size, max_request_batch_latency, max_lease_duration)</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.FlowControl.max_bytes">
 <code class="descname">max_bytes</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.FlowControl.max_bytes" title="Permalink to this definition">#</a></dt>
 <dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.FlowControl.max_lease_duration">
+<code class="descname">max_lease_duration</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.FlowControl.max_lease_duration" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias for field number 6</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2316,7 +2322,7 @@ be specified and non-empty.</p>
 <li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
@@ -2325,6 +2331,7 @@ be specified and non-empty.</p>
 <li class="toctree-l2"><a class="reference internal" href="index.html#publishing">Publishing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#subscribing">Subscribing</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#learn-more">Learn More</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#changelog">Changelog</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
@@ -2336,6 +2343,7 @@ be specified and non-empty.</p>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
@@ -2347,7 +2355,7 @@ be specified and non-empty.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Pub/Sub</a><ul>
       <li>Previous: <a href="subscriber/api/message.html" title="previous chapter">Messages</a></li>
-      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">google-cloud-pubsub</span></code> Releases</a></li>
+      <li>Next: <a href="changelog.html" title="next chapter">Changelog</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -2372,7 +2380,7 @@ be specified and non-empty.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

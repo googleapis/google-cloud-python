@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 1ffec8e documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -225,8 +225,8 @@
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The relative URL path for ``blob_name``.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">bucket_path</span> <span class="o">+</span> <span class="s1">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">_quote</span><span class="p">(</span><span class="n">blob_name</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">bucket_path</span> <span class="o">+</span> <span class="s1">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">_quote</span><span class="p">(</span><span class="n">blob_name</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -361,8 +361,8 @@
             <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
             <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
             <span class="n">response_type</span><span class="o">=</span><span class="n">response_type</span><span class="p">,</span>
-            <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span></div>
-            <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span>
+            <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span>
+            <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
@@ -396,8 +396,8 @@
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span></div>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from Cloud Storage.</span>
@@ -415,8 +415,8 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">                 (propagated from</span>
 <span class="sd">                 :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the client&#39;s transport.</span>
@@ -457,7 +457,8 @@
 
         <span class="k">return</span> <span class="n">_add_query_parameters</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">name_value_pairs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_do_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
+                     <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a download without any error handling.</span>
 
 <span class="sd">        This is intended to be called by :meth:`download_to_file` so it can</span>
@@ -476,18 +477,27 @@
 
 <span class="sd">        :type headers: dict</span>
 <span class="sd">        :param headers: Optional headers to be sent with the request(s).</span>
+
+<span class="sd">        :type start: int</span>
+<span class="sd">        :param start: Optional, the first byte in a range to be downloaded.</span>
+
+<span class="sd">        :type end: int</span>
+<span class="sd">        :param end: Optional, The last byte in a range to be downloaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span>
+                <span class="n">download_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
             <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">download</span> <span class="o">=</span> <span class="n">ChunkedDownload</span><span class="p">(</span>
-                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
 
             <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
                 <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
 <span class="sd">        .. note::</span>
@@ -521,6 +531,12 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
+<span class="sd">        :type start: int</span>
+<span class="sd">        :param start: Optional, the first byte in a range to be downloaded.</span>
+
+<span class="sd">        :type end: int</span>
+<span class="sd">        :param end: Optional, The last byte in a range to be downloaded.</span>
+
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_download_url</span><span class="p">()</span>
@@ -529,11 +545,13 @@
 
         <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span></div>
-            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span>
+                <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
@@ -547,11 +565,18 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
+<span class="sd">        :type start: int</span>
+<span class="sd">        :param start: Optional, the first byte in a range to be downloaded.</span>
+
+<span class="sd">        :type end: int</span>
+<span class="sd">        :param end: Optional, The last byte in a range to be downloaded.</span>
+
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span>
+                    <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">DataCorruption</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="c1"># Delete the corrupt downloaded file.</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -559,10 +584,10 @@
 
         <span class="n">updated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated</span>
         <span class="k">if</span> <span class="n">updated</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span></div>
-            <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span>
+            <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
@@ -573,13 +598,20 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
+<span class="sd">        :type start: int</span>
+<span class="sd">        :param start: Optional, the first byte in a range to be downloaded.</span>
+
+<span class="sd">        :type end: int</span>
+<span class="sd">        :param end: Optional, The last byte in a range to be downloaded.</span>
+
 <span class="sd">        :rtype: bytes</span>
 <span class="sd">        :returns: The data stored in this blob.</span>
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span>
+            <span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_get_content_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine the content type from the current object.</span>
@@ -1007,8 +1039,8 @@
                 <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
                 <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span></div>
-            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1054,8 +1086,8 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
-                <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span></div>
-                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
+                <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">predefined_acl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1095,8 +1127,8 @@
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
             <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
-            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span></div>
-            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">predefined_acl</span><span class="o">=</span><span class="n">predefined_acl</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -1186,14 +1218,19 @@
                 <span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">upload</span><span class="o">.</span><span class="n">resumable_url</span>
-        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span></div>
-            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.get_iam_policy"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the IAM policy for the object.</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</span>
+<span class="sd">        .. note:</span>
+
+<span class="sd">           Blob- / object-level IAM support does not yet exist and methods</span>
+<span class="sd">           currently call an internal ACL backend not providing any utility</span>
+<span class="sd">           beyond the blob&#39;s :attr:`acl` at this time. The API may be enhanced</span>
+<span class="sd">           in the future and is currently undocumented. Use :attr:`acl` for</span>
+<span class="sd">           managing object access control.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
 <span class="sd">        to that project.</span>
@@ -1218,14 +1255,19 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.set_iam_policy"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the bucket.</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</span>
+<span class="sd">        .. note:</span>
+
+<span class="sd">           Blob- / object-level IAM support does not yet exist and methods</span>
+<span class="sd">           currently call an internal ACL backend not providing any utility</span>
+<span class="sd">           beyond the blob&#39;s :attr:`acl` at this time. The API may be enhanced</span>
+<span class="sd">           in the future and is currently undocumented. Use :attr:`acl` for</span>
+<span class="sd">           managing object access control.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
 <span class="sd">        to that project.</span>
@@ -1256,14 +1298,19 @@
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.test_iam_permissions"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test permissions</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</span>
+<span class="sd">        .. note:</span>
+
+<span class="sd">           Blob- / object-level IAM support does not yet exist and methods</span>
+<span class="sd">           currently call an internal ACL backend not providing any utility</span>
+<span class="sd">           beyond the blob&#39;s :attr:`acl` at this time. The API may be enhanced</span>
+<span class="sd">           in the future and is currently undocumented. Use :attr:`acl` for</span>
+<span class="sd">           managing object access control.</span>
 
 <span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
 <span class="sd">        to that project.</span>
@@ -1291,8 +1338,8 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-</div>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
@@ -1302,8 +1349,8 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.compose"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.compose">[docs]</a>    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Concatenate source blobs into this one.</span>
@@ -1340,8 +1387,8 @@
             <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/compose&#39;</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rewrite source blob into this one.</span>
@@ -1398,8 +1445,8 @@
         <span class="k">if</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
-</div>
-        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
+
+        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
 
 <div class="viewcode-block" id="Blob.update_storage_class"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.update_storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">update_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update blob&#39;s storage class via a rewrite-in-place.</span>
@@ -1437,8 +1484,8 @@
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;storageClass&#39;</span><span class="p">:</span> <span class="n">new_class</span><span class="p">},</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span></div>
 
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
@@ -1726,8 +1773,8 @@
 <span class="sd">                  ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;updated&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span></div>
-            <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_get_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1861,7 +1908,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -1875,6 +1922,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
@@ -1909,7 +1957,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

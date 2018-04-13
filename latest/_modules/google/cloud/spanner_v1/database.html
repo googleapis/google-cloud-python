@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.database &#8212; google-cloud 1ffec8e documentation</title>
+    <title>google.cloud.spanner_v1.database &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -60,6 +60,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.gapic.spanner_client</span> <span class="k">import</span> <span class="n">SpannerClient</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.keyset</span> <span class="k">import</span> <span class="n">KeySet</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">SessionCheckout</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.session</span> <span class="k">import</span> <span class="n">Session</span>
@@ -155,8 +156,8 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance ID on database does not match the &#39;</span>
                              <span class="s1">&#39;Instance ID on the instance&#39;</span><span class="p">)</span>
         <span class="n">database_id</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;database_id&#39;</span><span class="p">)</span>
-</div>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -234,8 +235,8 @@
             <span class="n">create_statement</span><span class="o">=</span><span class="s1">&#39;CREATE DATABASE </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">db_name</span><span class="p">,),</span>
             <span class="n">extra_statements</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span><span class="p">),</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-        <span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">future</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">future</span></div>
 
 <div class="viewcode-block" id="Database.exists"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test whether this database exists.</span>
@@ -252,8 +253,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">api</span><span class="o">.</span><span class="n">get_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
-        <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Database.reload"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload this database.</span>
@@ -267,8 +268,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">statements</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_database_ddl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">statements</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.update_ddl"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.update_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update DDL for this database.</span>
@@ -290,8 +291,8 @@
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">future</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">update_database_ddl</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">future</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">future</span></div>
 
 <div class="viewcode-block" id="Database.drop"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Drop this database.</span>
@@ -300,16 +301,16 @@
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
-        <span class="n">api</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.session"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a session for this database.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :returns: a session bound to this database.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an object which wraps a snapshot.</span>
@@ -327,8 +328,8 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.SnapshotCheckout`</span>
 <span class="sd">        :returns: new wrapper</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an object which wraps a batch.</span>
@@ -338,8 +339,27 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.BatchCheckout`</span>
 <span class="sd">        :returns: new wrapper</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Database.batch_snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.batch_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">batch_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an object which wraps a batch read / query.</span>
+
+<span class="sd">        :type read_timestamp: :class:`datetime.datetime`</span>
+<span class="sd">        :param read_timestamp: Execute all reads at the given timestamp.</span>
+
+<span class="sd">        :type exact_staleness: :class:`datetime.timedelta`</span>
+<span class="sd">        :param exact_staleness: Execute all reads at a timestamp that is</span>
+<span class="sd">                                ``exact_staleness`` old.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.BatchSnapshot`</span>
+<span class="sd">        :returns: new wrapper</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BatchSnapshot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">read_timestamp</span><span class="o">=</span><span class="n">read_timestamp</span><span class="p">,</span>
+            <span class="n">exact_staleness</span><span class="o">=</span><span class="n">exact_staleness</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a unit of work in a transaction, retrying on abort.</span>
@@ -372,8 +392,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-        <span class="k">finally</span><span class="p">:</span></div></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">transaction_running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">transaction_running</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
 <div class="viewcode-block" id="BatchCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchCheckout">[docs]</a><span class="k">class</span> <span class="nc">BatchCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -385,7 +405,7 @@
 <span class="sd">    Caller must *not* use the batch to perform API requests outside the scope</span>
 <span class="sd">    of the context manager.</span>
 
-<span class="sd">    :type database: :class:`~google.cloud.spannder.database.Database`</span>
+<span class="sd">    :type database: :class:`~google.cloud.spanner.database.Database`</span>
 <span class="sd">    :param database: database to use</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
@@ -403,8 +423,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-        <span class="k">finally</span><span class="p">:</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SnapshotCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.SnapshotCheckout">[docs]</a><span class="k">class</span> <span class="nc">SnapshotCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -416,7 +436,7 @@
 <span class="sd">    Caller must *not* use the snapshot to perform API requests outside the</span>
 <span class="sd">    scope of the context manager.</span>
 
-<span class="sd">    :type database: :class:`~google.cloud.spannder.database.Database`</span>
+<span class="sd">    :type database: :class:`~google.cloud.spanner.database.Database`</span>
 <span class="sd">    :param database: database to use</span>
 
 <span class="sd">    :type kw: dict</span>
@@ -435,8 +455,269 @@
         <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kw</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;End ``with`` block.&quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;End ``with`` block.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BatchSnapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot">[docs]</a><span class="k">class</span> <span class="nc">BatchSnapshot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for generating and processing read / query batches.</span>
+
+<span class="sd">    :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">    :param database: database to use</span>
+
+<span class="sd">    :type read_timestamp: :class:`datetime.datetime`</span>
+<span class="sd">    :param read_timestamp: Execute all reads at the given timestamp.</span>
+
+<span class="sd">    :type exact_staleness: :class:`datetime.timedelta`</span>
+<span class="sd">    :param exact_staleness: Execute all reads at a timestamp that is</span>
+<span class="sd">                            ``exact_staleness`` old.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span> <span class="o">=</span> <span class="n">read_timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exact_staleness</span> <span class="o">=</span> <span class="n">exact_staleness</span>
+
+<div class="viewcode-block" id="BatchSnapshot.from_dict"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reconstruct an instance from a mapping.</span>
+
+<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :param database: database to use</span>
+
+<span class="sd">        :type mapping: mapping</span>
+<span class="sd">        :param mapping: serialized state of the instance</span>
+
+<span class="sd">        :rtype: :class:`BatchSnapshot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">_session_id</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="s1">&#39;session_id&#39;</span><span class="p">]</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_snapshot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
+        <span class="n">snapshot</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="s1">&#39;transaction_id&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.to_dict"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return state as a dictionary.</span>
+
+<span class="sd">        Result can be used to serialize the instance and reconstitute</span>
+<span class="sd">        it later using :meth:`from_dict`.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_session</span><span class="p">()</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">_session_id</span><span class="p">,</span>
+            <span class="s1">&#39;transaction_id&#39;</span><span class="p">:</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create session as needed.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           Caller is responsible for cleaning up the session after</span>
+<span class="sd">           all partitions have been processed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
+
+    <span class="k">def</span> <span class="nf">_get_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create snapshot if needed.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_session</span><span class="p">()</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span>
+                <span class="n">read_timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span><span class="p">,</span>
+                <span class="n">exact_staleness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_exact_staleness</span><span class="p">,</span>
+                <span class="n">multi_use</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span>
+
+<div class="viewcode-block" id="BatchSnapshot.read"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience method:  perform read operation via snapshot.</span>
+
+<span class="sd">        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.read`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.execute_sql"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.execute_sql">[docs]</a>    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience method:  perform query operation via snapshot.</span>
+
+<span class="sd">        See :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.execute_sql`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.generate_read_batches"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.generate_read_batches">[docs]</a>    <span class="k">def</span> <span class="nf">generate_read_batches</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">partition_size_bytes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_partitions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a partitioned batch read operation.</span>
+
+<span class="sd">        Uses the ``PartitionRead`` API request to initiate the partitioned</span>
+<span class="sd">        read.  Returns a list of batch information needed to perform the</span>
+<span class="sd">        actual reads.</span>
+
+<span class="sd">        :type table: str</span>
+<span class="sd">        :param table: name of the table from which to fetch data</span>
+
+<span class="sd">        :type columns: list of str</span>
+<span class="sd">        :param columns: names of columns to be retrieved</span>
+
+<span class="sd">        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`</span>
+<span class="sd">        :param keyset: keys / ranges identifying rows to be retrieved</span>
+
+<span class="sd">        :type index: str</span>
+<span class="sd">        :param index: (Optional) name of index to use, rather than the</span>
+<span class="sd">                      table&#39;s primary key</span>
+
+<span class="sd">        :type partition_size_bytes: int</span>
+<span class="sd">        :param partition_size_bytes:</span>
+<span class="sd">            (Optional) desired size for each partition generated.  The service</span>
+<span class="sd">            uses this as a hint, the actual partition size may differ.</span>
+
+<span class="sd">        :type max_partitions: int</span>
+<span class="sd">        :param max_partitions:</span>
+<span class="sd">            (Optional) desired maximum number of partitions generated. The</span>
+<span class="sd">            service uses this as a hint, the actual number of partitions may</span>
+<span class="sd">            differ.</span>
+
+<span class="sd">        :rtype: iterable of dict</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            mappings of information used peform actual partitioned reads via</span>
+<span class="sd">            :meth:`process_read_batch`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">partition_read</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="o">=</span><span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">partition_size_bytes</span><span class="o">=</span><span class="n">partition_size_bytes</span><span class="p">,</span>
+            <span class="n">max_partitions</span><span class="o">=</span><span class="n">max_partitions</span><span class="p">)</span>
+
+        <span class="n">read_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="n">table</span><span class="p">,</span>
+            <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
+            <span class="s1">&#39;keyset&#39;</span><span class="p">:</span> <span class="n">keyset</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">partition</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="n">partition</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="n">read_info</span><span class="o">.</span><span class="n">copy</span><span class="p">()}</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.process_read_batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.process_read_batch">[docs]</a>    <span class="k">def</span> <span class="nf">process_read_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process a single, partitioned read.</span>
+
+<span class="sd">        :type batch: mapping</span>
+<span class="sd">        :param batch:</span>
+<span class="sd">            one of the mappings returned from an earlier call to</span>
+<span class="sd">            :meth:`generate_read_batches`.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
+<span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;read&#39;</span><span class="p">]</span>
+        <span class="n">keyset_dict</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;keyset&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keyset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">KeySet</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">keyset_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+            <span class="n">partition</span><span class="o">=</span><span class="n">batch</span><span class="p">[</span><span class="s1">&#39;partition&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.generate_query_batches"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.generate_query_batches">[docs]</a>    <span class="k">def</span> <span class="nf">generate_query_batches</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">partition_size_bytes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_partitions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a partitioned query operation.</span>
+
+<span class="sd">        Uses the ``PartitionQuery`` API request to start a partitioned</span>
+<span class="sd">        query operation.  Returns a list of batch information needed to</span>
+<span class="sd">        peform the actual queries.</span>
+
+<span class="sd">        :type sql: str</span>
+<span class="sd">        :param sql: SQL query statement</span>
+
+<span class="sd">        :type params: dict, {str -&gt; column value}</span>
+<span class="sd">        :param params: values for parameter replacement.  Keys must match</span>
+<span class="sd">                       the names used in ``sql``.</span>
+
+<span class="sd">        :type param_types: dict[str -&gt; Union[dict, .types.Type]]</span>
+<span class="sd">        :param param_types:</span>
+<span class="sd">            (Optional) maps explicit types for one or more param values;</span>
+<span class="sd">            required if parameters are passed.</span>
+
+<span class="sd">        :type partition_size_bytes: int</span>
+<span class="sd">        :param partition_size_bytes:</span>
+<span class="sd">            (Optional) desired size for each partition generated.  The service</span>
+<span class="sd">            uses this as a hint, the actual partition size may differ.</span>
+
+<span class="sd">        :type partition_size_bytes: int</span>
+<span class="sd">        :param partition_size_bytes:</span>
+<span class="sd">            (Optional) desired size for each partition generated.  The service</span>
+<span class="sd">            uses this as a hint, the actual partition size may differ.</span>
+
+<span class="sd">        :type max_partitions: int</span>
+<span class="sd">        :param max_partitions:</span>
+<span class="sd">            (Optional) desired maximum number of partitions generated. The</span>
+<span class="sd">            service uses this as a hint, the actual number of partitions may</span>
+<span class="sd">            differ.</span>
+
+<span class="sd">        :rtype: iterable of dict</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            mappings of information used peform actual partitioned reads via</span>
+<span class="sd">            :meth:`process_read_batch`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">partition_query</span><span class="p">(</span>
+            <span class="n">sql</span><span class="o">=</span><span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="n">param_types</span><span class="p">,</span>
+            <span class="n">partition_size_bytes</span><span class="o">=</span><span class="n">partition_size_bytes</span><span class="p">,</span>
+            <span class="n">max_partitions</span><span class="o">=</span><span class="n">max_partitions</span><span class="p">)</span>
+
+        <span class="n">query_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sql&#39;</span><span class="p">:</span> <span class="n">sql</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">query_info</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span>
+            <span class="n">query_info</span><span class="p">[</span><span class="s1">&#39;param_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_types</span>
+
+        <span class="k">for</span> <span class="n">partition</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="n">partition</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query_info</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.process_query_batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.process_query_batch">[docs]</a>    <span class="k">def</span> <span class="nf">process_query_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process a single, partitioned query.</span>
+
+<span class="sd">        :type batch: mapping</span>
+<span class="sd">        :param batch:</span>
+<span class="sd">            one of the mappings returned from an earlier call to</span>
+<span class="sd">            :meth:`generate_query_batches`.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
+<span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
+            <span class="n">partition</span><span class="o">=</span><span class="n">batch</span><span class="p">[</span><span class="s1">&#39;partition&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">batch</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.process"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process a single, partitioned query or read.</span>
+
+<span class="sd">        :type batch: mapping</span>
+<span class="sd">        :param batch:</span>
+<span class="sd">            one of the mappings returned from an earlier call to</span>
+<span class="sd">            :meth:`generate_query_batches`.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
+<span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        :raises ValueError: if batch does not contain either &#39;read&#39; or &#39;query&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;query&#39;</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_query_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;read&#39;</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_read_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid batch&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BatchSnapshot.close"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchSnapshot.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clean up underlying session.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           If the transaction has been shared across multiple machines,</span>
+<span class="sd">           calling this on any machine would invalidate the transaction</span>
+<span class="sd">           everywhere. Ideally this would be called when data has been read</span>
+<span class="sd">           from all the partitions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_check_ddl_statements</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -496,7 +777,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -510,6 +791,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
@@ -544,7 +826,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

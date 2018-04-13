@@ -1,0 +1,527 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Cloud Text-to-Speech API Client &#8212; google-cloud b9c3dc0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Changelog" href="../../changelog.html" />
+    <link rel="prev" title="Client for Cloud Text-to-Speech API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.texttospeech_v1beta1.types">
+<span id="types-for-cloud-text-to-speech-api-client"></span><h1>Types for Cloud Text-to-Speech API Client<a class="headerlink" href="#module-google.cloud.texttospeech_v1beta1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">AudioConfig</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of audio data to be synthesized.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.audio_encoding">
+<code class="descname">audio_encoding</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.audio_encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The format of the requested audio byte stream.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.speaking_rate">
+<code class="descname">speaking_rate</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.speaking_rate" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional speaking rate/speed, in the range [0.25, 4.0]. 1.0 is
+the normal native speed supported by the specific voice. 2.0
+is twice as fast, and 0.5 is half as fast. If unset(0.0),
+defaults to the native 1.0 speed. Any other values &lt; 0.25 or &gt;
+4.0 will return an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.pitch">
+<code class="descname">pitch</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.pitch" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional speaking pitch, in the range [-20.0, 20.0]. 20 means
+increase 20 semitones from the original pitch. -20 means
+decrease 20 semitones from the original pitch.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.volume_gain_db">
+<code class="descname">volume_gain_db</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.volume_gain_db" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional volume gain (in dB) of the normal native volume
+supported by the specific voice, in the range [-96.0, 16.0].
+If unset, or set to a value of 0.0 (dB), will play at normal
+native signal amplitude. A value of -6.0 (dB) will play at
+approximately half the amplitude of the normal native signal
+amplitude. A value of +6.0 (dB) will play at approximately
+twice the amplitude of the normal native signal amplitude.
+Strongly recommend not to exceed +10 (dB) as there’s usually
+no effective increase in loudness for any value greater than
+that.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.sample_rate_hertz">
+<code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
+<dd><p>The synthesis sample rate (in hertz) for this audio. Optional.
+If this is different from the voice’s natural sample rate,
+then the synthesizer will honor this request by converting to
+the desired sample rate (which might result in worse audio
+quality), unless the specified sample rate is not supported
+for the encoding chosen, in which case it will fail the
+request and return [google.rpc.Code.INVALID_ARGUMENT][].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ListVoicesRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The top-level message sent by the client for the <code class="docutils literal notranslate"><span class="pre">ListVoices</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesRequest.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional (but recommended) <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag. If specified,
+the ListVoices call will only return voices that can be used
+to synthesize this language_code. E.g. when specifying “en-
+NZ”, you will get supported “en-<em>” voices; when specifying
+“no”, you will get supported “no-</em>” (Norwegian) and “nb-<em>”
+(Norwegian Bokmal) voices; specifying “zh” will also get
+supported “cmn-</em>” voices; specifying “zh-hk” will also get
+supported “yue-*” voices.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ListVoicesResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The message returned to the client by the <code class="docutils literal notranslate"><span class="pre">ListVoices</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesResponse.voices">
+<code class="descname">voices</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse.voices" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of voices.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesisInput</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains text input to be synthesized. Either <code class="docutils literal notranslate"><span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">ssml</span></code> must
+be supplied. Supplying both or neither returns
+[google.rpc.Code.INVALID_ARGUMENT][]. The input size is limited to 5000
+characters.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.input_source">
+<code class="descname">input_source</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.input_source" title="Permalink to this definition">#</a></dt>
+<dd><p>The input source, which is either plain text or SSML.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.text">
+<code class="descname">text</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.text" title="Permalink to this definition">#</a></dt>
+<dd><p>The raw text to be synthesized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.ssml">
+<code class="descname">ssml</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.ssml" title="Permalink to this definition">#</a></dt>
+<dd><p>The SSML document to be synthesized. The SSML document must be
+valid and well-formed. Otherwise the RPC will fail and return
+[google.rpc.Code.INVALID_ARGUMENT][]. For more information,
+see <a class="reference external" href="/speech/text-to-speech/docs/ssml">SSML</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesizeSpeechRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The top-level message sent by the client for the <code class="docutils literal notranslate"><span class="pre">SynthesizeSpeech</span></code>
+method.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.input">
+<code class="descname">input</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.input" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The Synthesizer requires either plain text or SSML
+as input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.voice">
+<code class="descname">voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.voice" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The desired voice of the synthesized audio.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.audio_config">
+<code class="descname">audio_config</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.audio_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The configuration of the synthesized audio.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesizeSpeechResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The message returned to the client by the <code class="docutils literal notranslate"><span class="pre">SynthesizeSpeech</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse.audio_content">
+<code class="descname">audio_content</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse.audio_content" title="Permalink to this definition">#</a></dt>
+<dd><p>The audio data bytes encoded as specified in the request,
+including the header (For LINEAR16 audio, we include the WAV
+header). Note: as with all bytes fields, protobuffers use a
+pure binary representation, whereas JSON representations use
+base64.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.Voice">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">Voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of a voice supported by the TTS service.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.Voice.language_codes">
+<code class="descname">language_codes</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.language_codes" title="Permalink to this definition">#</a></dt>
+<dd><p>The languages that this voice supports, expressed as <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
+tags (e.g. “en-US”, “es-419”, “cmn-tw”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.Voice.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of this voice. Each distinct voice has a unique name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.Voice.ssml_gender">
+<code class="descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.ssml_gender" title="Permalink to this definition">#</a></dt>
+<dd><p>The gender of this voice.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.Voice.natural_sample_rate_hertz">
+<code class="descname">natural_sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.natural_sample_rate_hertz" title="Permalink to this definition">#</a></dt>
+<dd><p>The natural sample rate (in hertz) for this voice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams">
+<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">VoiceSelectionParams</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of which voice to use for a synthesis request.</p>
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The language (and optionally also the region) of the voice
+expressed as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag, e.g. “en-US”.
+Required. This should not include a script tag (e.g. use “cmn-
+cn” rather than “cmn-Hant-cn”), because the script will be
+inferred from the input provided in the SynthesisInput. The
+TTS service will use this parameter to help choose an
+appropriate voice. Note that the TTS service may choose a
+voice with a slightly different language code than the one
+selected; it may substitute a different region (e.g. using en-
+US rather than en-CA if there isn’t a Canadian voice
+available), or even a different language, e.g. using “nb”
+(Norwegian Bokmal) instead of “no” (Norwegian)”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the voice. Optional; if not set, the service will
+choose a voice based on the other parameters such as
+language_code and gender.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.ssml_gender">
+<code class="descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.ssml_gender" title="Permalink to this definition">#</a></dt>
+<dd><p>The preferred gender of the voice. Optional; if not set, the
+service will choose a voice based on the other parameters such
+as language_code and name. Note that this is only a
+preference, not requirement; if a voice of the appropriate
+gender is not available, the synthesizer should substitute a
+voice with a different gender rather than failing the request.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Text-to-Speech API</a></li>
+      <li>Next: <a href="../../changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/texttospeech/gapic/v1beta1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

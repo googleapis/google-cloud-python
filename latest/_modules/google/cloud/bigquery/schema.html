@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud 1ffec8e documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud b9c3dc0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -91,13 +91,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Handle optional properties with default values</span>
         <span class="n">mode</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">,</span> <span class="p">())</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">field_type</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
             <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">],</span>
             <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span></div>
-        <span class="p">)</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+        <span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -149,9 +151,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Put together the basic representation. See http://bit.ly/2hOAT5u.</span>
         <span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+            <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c1"># If this is a RECORD type, then sub-fields are also included,</span>
@@ -159,8 +162,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span>
             <span class="n">answer</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">]</span>
 
-        <span class="c1"># Done; return the serialized dictionary.</span></div>
-        <span class="k">return</span> <span class="n">answer</span>
+        <span class="c1"># Done; return the serialized dictionary.</span>
+        <span class="k">return</span> <span class="n">answer</span></div>
 
     <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
@@ -173,8 +176,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span>
         <span class="p">)</span>
@@ -190,8 +193,8 @@
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="k">return</span> <span class="s1">&#39;SchemaField</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;SchemaField</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
 
 
 <span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
@@ -231,17 +234,7 @@
 <span class="sd">    :rtype: mapping</span>
 <span class="sd">    :returns: a mapping describing the schema of the supplied fields.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
-                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
-        <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">infos</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">]</span>
 </pre></div>
 
           </div>
@@ -277,7 +270,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for DLP API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
@@ -291,6 +284,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
@@ -325,7 +319,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

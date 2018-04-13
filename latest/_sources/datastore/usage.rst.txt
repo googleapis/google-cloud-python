@@ -5,7 +5,6 @@ Datastore
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   entities
   keys
@@ -20,3 +19,13 @@ Modules
 .. automodule:: google.cloud.datastore
   :members:
   :show-inheritance:
+
+Changelog
+---------
+
+For a list of all ``google-cloud-datastore`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
