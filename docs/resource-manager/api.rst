@@ -5,7 +5,6 @@ Resource Manager
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   project
 
@@ -104,3 +103,13 @@ And then simply create a client:
 
     >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()
+
+Changelog
+~~~~~~~~~
+
+For a list of all ``google-cloud-resource-manager`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

@@ -1,0 +1,1 @@
+../../videointelligence/CHANGELOG.md
