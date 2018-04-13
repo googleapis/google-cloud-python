@@ -5,7 +5,6 @@ Bigtable
   :maxdepth: 2
   :hidden:
 
-  releases
   client-intro
   client
   cluster
@@ -18,6 +17,7 @@ Bigtable
   row-data
   row-filters
   data-api
+  changelog
 
 API requests are sent to the `Google Cloud Bigtable`_ API via RPC over HTTP/2.
 In order to support this, we'll rely on `gRPC`_. We are working with the gRPC
@@ -48,7 +48,9 @@ In the hierarchy of API concepts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In addition to the core ``google-cloud-bigtable``, we provide a
-``google-cloud-happybase`` library with the same interface as the
-popular `HappyBase <https://happybase.readthedocs.io/en/latest/>`__
-library. Unlike HappyBase, ``google-cloud-happybase`` uses
-``google-cloud-bigtable`` under the covers, rather than Apache HBase.
+`google-cloud-happybase
+<http://google-cloud-python-happybase.readthedocs.io/en/latest/>`__ library
+with the same interface as the popular `HappyBase
+<https://happybase.readthedocs.io/en/latest/>`__ library. Unlike HappyBase,
+``google-cloud-happybase`` uses ``google-cloud-bigtable`` under the covers,
+rather than Apache HBase.

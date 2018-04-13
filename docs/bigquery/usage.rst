@@ -5,7 +5,6 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
-  releases
   reference
   dbapi
 
@@ -430,3 +429,14 @@ To retrieve table rows as a :class:`pandas.DataFrame`:
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_list_rows_dataframe]
    :end-before: [END bigquery_list_rows_dataframe]
+
+Changelog
+---------
+
+For a list of all ``google-cloud-bigquery`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

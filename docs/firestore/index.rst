@@ -5,7 +5,6 @@ Firestore
   :maxdepth: 2
   :hidden:
 
-  releases
   constants
   client
   collection
@@ -14,6 +13,7 @@ Firestore
   batch
   transaction
   types
+  changelog
 
 .. automodule:: google.cloud.firestore_v1beta1
 .. autoclass:: google.cloud.firestore_v1beta1.GeoPoint

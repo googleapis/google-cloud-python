@@ -5,7 +5,6 @@ Stackdriver Error Reporting
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   util
 
@@ -122,3 +121,13 @@ Similarly to reporting an exception, the user and HTTP context can be provided:
    ...     referrer='example.com', response_status_code=500,
    ...     remote_ip='1.2.3.4')
    >>> error_reporting.report("Found an error!", http_context=http_context, user=user))
+
+Changelog
+---------
+
+For a list of all ``google-cloud-error-reporting`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

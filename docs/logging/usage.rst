@@ -5,7 +5,6 @@ Stackdriver Logging
   :maxdepth: 2
   :hidden:
 
-  releases
   client
   logger
   entries
@@ -389,3 +388,13 @@ In both cases, the fluentd agent is configured to automatically parse log files
 in an expected format and forward them to Stackdriver logging. The handlers
 provided help set the correct metadata such as log level so that logs can be
 filtered accordingly.
+
+Changelog
+~~~~~~~~~
+
+For a list of all ``google-cloud-logging`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

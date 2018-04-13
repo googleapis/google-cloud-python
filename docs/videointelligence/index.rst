@@ -114,5 +114,6 @@ An API and type reference is provided the these betas also:
 For a list of all ``google-cloud-videointelligence`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-    releases
+  changelog
