@@ -422,7 +422,7 @@ All timezone-naive Python ``datetime`` objects are assumed to be UTC.
 Changelog
 ---------
 
-For a list of all ``google-cloud-error-monitoring`` releases:
+For a list of all ``google-cloud-monitoring`` releases:
 
 .. toctree::
   :maxdepth: 2
