@@ -851,7 +851,8 @@ def test_load_table_from_file(client, to_delete):
 
     job.result()  # Waits for table load to complete.
 
-    print('Job {} completed.'.format(job.job_id))
+    print('Loaded {} rows into {}:{}.'.format(
+        job.output_rows, dataset_id, table_id))
     # [END bigquery_load_from_file]
 
     table = client.get_table(table_ref)
@@ -1508,10 +1509,13 @@ def test_extract_table(client, to_delete):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # bucket_name = 'my-bucket'
+    project = 'bigquery-public-data'
+    dataset_id = 'samples'
+    table_id = 'shakespeare'
 
     destination_uri = 'gs://{}/{}'.format(bucket_name, 'shakespeare.csv')
-    dataset_ref = client.dataset('samples', project='bigquery-public-data')
-    table_ref = dataset_ref.table('shakespeare')
+    dataset_ref = client.dataset(dataset_id, project=project)
+    table_ref = dataset_ref.table(table_id)
 
     extract_job = client.extract_table(
         table_ref,
@@ -1519,6 +1523,9 @@ def test_extract_table(client, to_delete):
         # Location must match that of the source table.
         location='US')  # API request
     extract_job.result()  # Waits for job to complete.
+
+    print('Exported {}:{}.{} to {}'.format(
+        project, dataset_id, table_id, destination_uri))
     # [END bigquery_extract_table]
 
     blob = bucket.get_blob('shakespeare.csv')
