@@ -513,8 +513,12 @@ class TestBackgroundConsumer(object):
         assert consumer.is_active is False
 
     def test_wake_on_error(self):
+        should_continue = threading.Event()
+
         bidi_rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
         bidi_rpc.is_active = True
+        bidi_rpc.add_done_callback.side_effect = (
+            lambda _: should_continue.set())
 
         consumer = bidi.BackgroundConsumer(bidi_rpc, mock.sentinel.on_response)
 
@@ -523,11 +527,14 @@ class TestBackgroundConsumer(object):
         consumer.pause()
         consumer.start()
 
+        # Wait for add_done_callback to be called
+        should_continue.wait()
+        bidi_rpc.add_done_callback.assert_called_once_with(
+            consumer._on_call_done)
+
         # The consumer should now be blocked on waiting to be unpaused.
         assert consumer.is_active
         assert consumer.is_paused
-        bidi_rpc.add_done_callback.assert_called_once_with(
-            consumer._on_call_done)
 
         # Trigger the done callback, it should unpause the consumer and cause
         # it to exit.
