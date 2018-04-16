@@ -93,8 +93,9 @@ _NUM_RETRIES_MESSAGE = (
 _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
-_DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
-_MAX_MULTIPART_SIZE = 5242880  # 5 MB
+
+_DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
+_MAX_MULTIPART_SIZE = 8388608  # 8 MB
 
 
 class Blob(_PropertyMixin):
