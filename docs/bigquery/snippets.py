@@ -26,6 +26,7 @@ need to be deleted during teardown.
 import os
 import time
 
+import mock
 import pytest
 import six
 try:
@@ -88,6 +89,40 @@ class _CloseOnDelete(object):
 
     def delete(self):
         self._wrapped.close()
+
+
+def test_create_client_default_credentials():
+    """Create a BigQuery client with Application Default Credentials"""
+
+    # [START bigquery_client_default_credentials]
+    from google.cloud import bigquery
+
+    # If you don't specify credentials when constructing the client, the
+    # client library will look for credentials in the environment.
+    client = bigquery.Client()
+    # [END bigquery_client_default_credentials]
+
+    assert client is not None
+
+
+def test_create_client_json_credentials():
+    """Create a BigQuery client with Application Default Credentials"""
+    with open(os.environ['GOOGLE_APPLICATION_CREDENTIALS']) as creds_file:
+        creds_file_data = creds_file.read()
+
+    open_mock = mock.mock_open(read_data=creds_file_data)
+
+    with mock.patch('io.open', open_mock):
+        # [START bigquery_client_json_credentials]
+        from google.cloud import bigquery
+
+        # Explicitly use service account credentials by specifying the private
+        # key file. All clients in google-cloud-python have this helper.
+        client = bigquery.Client.from_service_account_json(
+            'path/to/service_account.json')
+        # [END bigquery_client_json_credentials]
+
+    assert client is not None
 
 
 def test_list_datasets(client):
