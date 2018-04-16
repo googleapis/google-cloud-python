@@ -1653,7 +1653,37 @@ def test_client_query(client):
     for row in query_job:  # API request - fetches results
         # Row values can be accessed by field name or index
         assert row[0] == row.name == row['name']
+        print(row)
     # [END bigquery_query]
+
+
+def test_client_query_standard_sql(client):
+    """Run a query with Standard SQL explicitly set"""
+    # [START bigquery_query_standard]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = (
+        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
+        'WHERE state = "TX" '
+        'LIMIT 100')
+
+    # Set use_legacy_sql to False to use standard SQL syntax.
+    # Note that queries run through the Python Client Library are set to use
+    # standard SQL by default.
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_legacy_sql = False
+
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results.
+    for row in query_job:  # API request - fetches results
+        print(row)
+    # [END bigquery_query_standard]
 
 
 def test_client_query_destination_table(client, to_delete):
@@ -1680,7 +1710,7 @@ def test_client_query_destination_table(client, to_delete):
     # The write_disposition specifies the behavior when writing query results
     # to a table that already exists. With WRITE_TRUNCATE, any existing rows
     # in the table are overwritten by the query results.
-    job_config.write_disposition = 'WRITE_TRUNCATE'
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
