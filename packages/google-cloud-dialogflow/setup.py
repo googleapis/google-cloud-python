@@ -20,7 +20,7 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 setup(
     name='dialogflow',
-    version='0.1.0',
+    version='0.2.0',
     author='Google LLC',
     author_email='googleapis-packages@google.com',
     classifiers=[
