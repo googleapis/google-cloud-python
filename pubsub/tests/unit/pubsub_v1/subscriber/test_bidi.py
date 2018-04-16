@@ -505,7 +505,8 @@ class TestBackgroundConsumer(object):
         should_continue.set()
         consumer.resume()
         responses_and_events[mock.sentinel.response_2].wait()
-        assert recved_responses == list(responses_and_events.keys())
+        assert recved_responses == [
+            mock.sentinel.response_1, mock.sentinel.response_2]
 
         consumer.stop()
 
