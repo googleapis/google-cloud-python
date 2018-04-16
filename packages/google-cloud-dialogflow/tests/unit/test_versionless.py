@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import dialogflow
-import dialogflow_v2beta1
+import dialogflow_v2
 
 
 def test_versionless():
@@ -22,4 +22,4 @@ def test_versionless():
     for key in dir(dialogflow):
         if key.startswith('_'):
             continue
-        assert getattr(dialogflow_v2beta1, key) is getattr(dialogflow, key)
+        assert getattr(dialogflow_v2, key) is getattr(dialogflow, key)

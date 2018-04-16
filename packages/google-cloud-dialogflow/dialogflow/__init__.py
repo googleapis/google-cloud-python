@@ -14,14 +14,14 @@
 
 from __future__ import absolute_import
 
-from dialogflow_v2beta1 import AgentsClient
-from dialogflow_v2beta1 import ContextsClient
-from dialogflow_v2beta1 import EntityTypesClient
-from dialogflow_v2beta1 import IntentsClient
-from dialogflow_v2beta1 import SessionEntityTypesClient
-from dialogflow_v2beta1 import SessionsClient
-from dialogflow_v2beta1 import enums
-from dialogflow_v2beta1 import types
+from dialogflow_v2 import AgentsClient
+from dialogflow_v2 import ContextsClient
+from dialogflow_v2 import EntityTypesClient
+from dialogflow_v2 import IntentsClient
+from dialogflow_v2 import SessionEntityTypesClient
+from dialogflow_v2 import SessionsClient
+from dialogflow_v2 import enums
+from dialogflow_v2 import types
 
 __all__ = (
     'enums',
