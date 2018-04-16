@@ -220,6 +220,13 @@ class TestBidiRpc(object):
         assert bidi_rpc.pending_requests == 1
         assert bidi_rpc._request_queue.get() is mock.sentinel.request
 
+    def test_send_not_open(self):
+        rpc, call = make_rpc()
+        bidi_rpc = bidi.BidiRpc(rpc)
+
+        with pytest.raises(ValueError):
+            bidi_rpc.send(mock.sentinel.request)
+
     def test_send_dead_rpc(self):
         error = ValueError()
         bidi_rpc = bidi.BidiRpc(None)
@@ -237,6 +244,13 @@ class TestBidiRpc(object):
         response = bidi_rpc.recv()
 
         assert response == mock.sentinel.response
+
+    def test_recv_not_open(self):
+        rpc, call = make_rpc()
+        bidi_rpc = bidi.BidiRpc(rpc)
+
+        with pytest.raises(ValueError):
+            bidi_rpc.recv()
 
 
 class CallStub(object):

@@ -90,9 +90,9 @@ class _RequestQueueGenerator(object):
         # property is set. So we have to check if self.call is set before
         # seeing if it's active.
         if self.call is not None and not self.call.is_active():
-            return True
-        else:
             return False
+        else:
+            return True
 
     def __iter__(self):
         if self._initial_request is not None:
@@ -105,7 +105,7 @@ class _RequestQueueGenerator(object):
             try:
                 item = self._queue.get(timeout=self._period)
             except queue.Empty:
-                if self._is_active():
+                if not self._is_active():
                     _LOGGER.debug(
                         'Empty queue and inactive call, exiting request '
                         'generator.')
@@ -120,7 +120,7 @@ class _RequestQueueGenerator(object):
                 _LOGGER.debug('Cleanly exiting request generator.')
                 return
 
-            if self._is_active():
+            if not self._is_active():
                 # We have an item, but the call is closed. We should put the
                 # item back on the queue so that the next call can consume it.
                 self._queue.put(item)
@@ -231,6 +231,10 @@ class BidiRpc(object):
         Args:
             request (protobuf.Message): The request to send.
         """
+        if self.call is None:
+            raise ValueError(
+                'Can not send() on an RPC that has never been open()ed.')
+
         if self.is_active:
             self._request_queue.put(request)
         else:
@@ -247,6 +251,10 @@ class BidiRpc(object):
         Returns:
             protobuf.Message: The received message.
         """
+        if self.call is None:
+            raise ValueError(
+                'Can not recv() on an RPC that has never been open()ed.')
+
         return next(self.call)
 
     @property
