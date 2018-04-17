@@ -142,6 +142,14 @@ class TestBigQuery(unittest.TestCase):
             else:
                 doomed.delete()
 
+    def test_get_service_account_email(self):
+        client = Config.CLIENT
+
+        got = client.get_service_account_email()
+
+        self.assertIsInstance(got, six.text_type)
+        self.assertIn('@', got)
+
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id('create_dataset')
         dataset = self.temp_dataset(DATASET_ID)

@@ -121,6 +121,35 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
 
+    def get_service_account_email(self, project=None):
+        """Get the email address of the project's BigQuery service account
+
+        Note:
+            This is the service account that BigQuery uses to manage tables
+            encrypted by a key in KMS.
+
+        Args:
+            project (str, optional):
+                Project ID to use for retreiving service account email.
+                Defaults to the client's project.
+
+        Returns:
+            str: service account email address
+
+        Example:
+
+            >>> from google.cloud import bigquery
+            >>> client = bigquery.Client()
+            >>> client.get_service_account_email()
+            my_service_account@my-project.iam.gserviceaccount.com
+
+        """
+        if project is None:
+            project = self.project
+        path = '/projects/%s/serviceAccount' % (project,)
+        api_response = self._connection.api_request(method='GET', path=path)
+        return api_response['email']
+
     def list_projects(self, max_results=None, page_token=None,
                       retry=DEFAULT_RETRY):
         """List projects for the project associated with this client.
