@@ -344,8 +344,8 @@ See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
 
 .. literalinclude:: snippets.py
-  :start-after: [START bigquery_query_params]
-  :end-before: [END bigquery_query_params]
+  :start-after: [START bigquery_query_params_named]
+  :end-before: [END bigquery_query_params_named]
 
 
 List jobs for a project
