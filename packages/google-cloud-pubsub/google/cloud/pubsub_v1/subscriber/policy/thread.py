@@ -24,7 +24,7 @@ import threading
 from six.moves import queue as queue_mod
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import _helper_threads
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
@@ -158,7 +158,7 @@ class Policy(base.BasePolicy):
             raise ValueError('This policy has not been opened yet.')
 
         # Stop consuming messages.
-        self._request_queue.put(_helper_threads.STOP)
+        self._request_queue.put(helper_threads.STOP)
         self._dispatch_thread.join()  # Wait until stopped.
         self._dispatch_thread = None
         self._consumer.stop_consuming()
@@ -186,7 +186,7 @@ class Policy(base.BasePolicy):
         "dispatch thread" member on the current policy.
         """
         _LOGGER.debug('Starting callback requests worker.')
-        dispatch_worker = _helper_threads.QueueCallbackWorker(
+        dispatch_worker = helper_threads.QueueCallbackWorker(
             self._request_queue,
             self.dispatch_callback,
             max_items=self.flow_control.max_request_batch_size,
