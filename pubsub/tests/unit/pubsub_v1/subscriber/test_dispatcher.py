@@ -79,7 +79,6 @@ def test_start_already_started(thread):
 
 
 def test_stop():
-    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
     queue_ = queue.Queue()
     dispatcher_ = dispatcher.Dispatcher(queue_, mock.sentinel.subscriber)
     thread = mock.create_autospec(threading.Thread, instance=True)
