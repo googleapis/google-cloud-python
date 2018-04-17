@@ -23,6 +23,8 @@ from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable.column_family import _gc_rule_from_pb
+from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
@@ -64,24 +66,29 @@ class TooManyMutationsError(ValueError):
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
 
-    :type project_id: str
-    :param project_id: The ID of the project.
+    .. note::
 
-    :type instance_id: str
-    :param instance_id: The ID of the instance.
+        We don't define any properties on a table other than the name.
+        The only other fields are ``column_families`` and ``granularity``,
+        The ``column_families`` are not stored locally and
+        ``granularity`` is an enum with only one value.
+
+    We can use a :class:`Table` to:
+
+    * :meth:`create` the table
+    * :meth:`delete` the table
+    * :meth:`list_column_families` in the table
 
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type client: :class:`~google.cloud.bigtable_v2.BigtableClient`
-    :param instance: The client that calls the GAPIC API.
+    :type instance: :class:`~google.cloud.bigtable.instance.Instance`
+    :param instance: The instance that owns the table.
     """
 
-    def __init__(self, project_id, instance_id, table_id, client):
-        self.project_id = project_id
-        self.instance_id = instance_id
+    def __init__(self, table_id, instance):
         self.table_id = table_id
-        self.client = client
+        self._instance = instance
 
     @property
     def name(self):
@@ -89,15 +96,36 @@ class Table(object):
 
         .. note::
 
-           This property will not change if ``table_id`` does not, but the
-           return value is not cached. The table name is of the form
-           ``"projects/../instances/../tables/{table_id}"``.
+          This property will not change if ``table_id`` does not, but the
+          return value is not cached.
+
+        The table name is of the form
+
+            ``"projects/../instances/../tables/{table_id}"``
 
         :rtype: str
         :returns: The table name.
         """
-        return self.client.table_path(self.project_id, self.instance_id,
-                                      self.table_id)
+        project = self._instance._client.project
+        instance_id = self._instance.instance_id
+        return self._instance._client._table_admin_client.table_path(
+            project=project, instance=instance_id, table=self.table_id)
+
+    def column_family(self, column_family_id, gc_rule=None):
+        """Factory to create a column family associated with this table.
+
+        :type column_family_id: str
+        :param column_family_id: The ID of the column family. Must be of the
+                                 form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type gc_rule: :class:`.GarbageCollectionRule`
+        :param gc_rule: (Optional) The garbage collection settings for this
+                        column family.
+
+        :rtype: :class:`.ColumnFamily`
+        :returns: A column family owned by this table.
+        """
+        return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
 
     def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
@@ -136,10 +164,52 @@ class Table(object):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return (other.table_id == self.table_id and
-                other.client == self.client)
+                other._instance == self._instance)
 
     def __ne__(self, other):
         return not self == other
+
+    def create(self):
+        """Creates this table.
+
+        .. note::
+
+            A create request returns a
+            :class:`._generated.table_pb2.Table` but we don't use
+            this response.
+        """
+        client = self._instance._client
+        instance_name = self._instance.name
+        client._table_admin_client.create_table(parent=instance_name,
+                                                table_id=self.table_id,
+                                                table={})
+
+    def delete(self):
+        """Delete this table."""
+        client = self._instance._client
+        client._table_admin_client.delete_table(name=self.name)
+
+    def list_column_families(self):
+        """List the column families owned by this table.
+
+        :rtype: dict
+        :returns: Dictionary of column families attached to this table. Keys
+                  are strings (column family names) and values are
+                  :class:`.ColumnFamily` instances.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the column
+                 family name from the response does not agree with the computed
+                 name from the column family ID.
+        """
+        client = self._instance._client
+        table_pb = client._table_admin_client.get_table(self.name)
+
+        result = {}
+        for column_family_id, value_pb in table_pb.column_families.items():
+            gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
+            column_family = self.column_family(column_family_id,
+                                               gc_rule=gc_rule)
+            result[column_family_id] = column_family
+        return result
 
     def read_row(self, row_key, filter_=None):
         """Read a single row from this table.
@@ -157,11 +227,10 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request = _create_row_request(self.name, row_key=row_key,
-                                      filter_=filter_)
-
-        client = self.client
-        rows_data = PartialRowsData(client.bigtable_stub.ReadRows, request)
+        request_pb = _create_row_request(self.name, row_key=row_key,
+                                         filter_=filter_)
+        client = self._instance._client
+        rows_data = PartialRowsData(client._data_stub.ReadRows, request_pb)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')
@@ -203,12 +272,11 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
-        request = _create_row_request(
+        request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
-        client = self.client
-
-        return PartialRowsData(client.bigtable_stub.ReadRows, request)
+        client = self._instance._client
+        return PartialRowsData(client._data_stub.ReadRows, request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -237,13 +305,11 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-
-        request = _create_row_request(
+        request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
-        client = self.client
-
-        generator = YieldRowsData(client.bigtable_stub.ReadRows, request)
+        client = self._instance._client
+        generator = YieldRowsData(client._data_stub.ReadRows, request_pb)
         for row in generator.read_rows():
             yield row
 
@@ -276,9 +342,8 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        client = self.client
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            client, self.name, rows)
+            self._instance._client, self.name, rows)
         return retryable_mutate_rows(retry=retry)
 
     def sample_row_keys(self):
@@ -314,9 +379,8 @@ class Table(object):
         """
         request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
-        client = self.client
-
-        response_iterator = client.bigtable_stub.SampleRowKeys(request_pb)
+        client = self._instance._client
+        response_iterator = client._data_stub.SampleRowKeys(request_pb)
         return response_iterator
 
 
@@ -402,7 +466,8 @@ class _RetryableMutateRowsWorker(object):
 
         mutate_rows_request = _mutate_rows_request(
             self.table_name, retryable_rows)
-        responses = self.client._mutate_rows(mutate_rows_request, retry=None)
+        responses = self.client._table_data_client._mutate_rows(
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0

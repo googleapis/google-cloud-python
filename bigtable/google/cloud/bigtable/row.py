@@ -425,7 +425,7 @@ class DirectRow(_SetDeleteRow):
         )
 
         commit = functools.partial(
-            self._table.client.bigtable_stub.MutateRow,
+            self._table._instance._client._data_stub.MutateRow,
             request_pb)
         retry_ = retry.Retry(
             predicate=_retry_commit_exception,
@@ -547,8 +547,9 @@ class ConditionalRow(_SetDeleteRow):
             false_mutations=false_mutations,
         )
         # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
-        client = self._table.client
-        resp = client.bigtable_stub.CheckAndMutateRow(request_pb)
+        client = self._table._instance._client
+        resp = client._table_data_client._check_and_mutate_row(request_pb,
+                                                               retry=None)
         self.clear()
         return resp[0].predicate_matched
 
@@ -835,7 +836,8 @@ class AppendRow(Row):
         )
         # We expect a `.data_v2_pb2.Row`
         client = self._table._instance._client
-        row_response = client._data_stub.ReadModifyWriteRow(request_pb)
+        row_response = client._table_data_client._read_modify_write_row(
+            request_pb, retry=None)
 
         # Reset modifications after commit-ing request.
         self.clear()
