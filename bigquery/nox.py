@@ -144,7 +144,6 @@ def snippets(session, py):
     # Run py.test against the system tests.
     session.run(
         'py.test',
-        '--quiet',
         os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'),
         *session.posargs
     )
