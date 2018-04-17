@@ -22,8 +22,8 @@ from six.moves import queue
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import base
-from google.cloud.pubsub_v1.subscriber import _helper_threads
 
 
 class Test_RequestQueueGenerator(object):
@@ -93,7 +93,7 @@ class Test_RequestQueueGenerator(object):
 
     def test_exit_with_stop(self):
         q = mock.create_autospec(queue.Queue, instance=True)
-        q.get.side_effect = [_helper_threads.STOP, queue.Empty()]
+        q.get.side_effect = [helper_threads.STOP, queue.Empty()]
         rpc = mock.create_autospec(grpc.RpcContext, instance=True)
         rpc.is_active.return_value = True
 

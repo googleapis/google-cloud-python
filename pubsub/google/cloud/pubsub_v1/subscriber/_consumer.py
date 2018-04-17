@@ -126,7 +126,7 @@ import threading
 
 from six.moves import queue
 
-from google.cloud.pubsub_v1.subscriber import _helper_threads
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -212,7 +212,7 @@ class _RequestQueueGenerator(object):
 
             # A call to consumer.close() signaled us to stop generating
             # requests.
-            if item == _helper_threads.STOP:
+            if item == helper_threads.STOP:
                 _LOGGER.debug('Cleanly exiting request generator.')
                 return
 
@@ -453,7 +453,7 @@ class Consumer(object):
         self._stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         # Signal the request generator RPC to exit cleanly.
-        self.send_request(_helper_threads.STOP)
+        self.send_request(helper_threads.STOP)
         thread = self._consumer_thread
         self._consumer_thread = None
         return thread
