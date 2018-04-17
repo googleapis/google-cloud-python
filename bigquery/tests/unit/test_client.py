@@ -124,6 +124,44 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
 
+    def test_get_service_account_email(self):
+        path = '/projects/%s/serviceAccount' % (self.PROJECT,)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        email = 'bq-123@bigquery-encryption.iam.gserviceaccount.com'
+        resource = {
+            'kind': 'bigquery#getServiceAccountResponse',
+            'email': email,
+        }
+        conn = client._connection = _make_connection(resource)
+
+        service_account_email = client.get_service_account_email()
+
+        conn.api_request.assert_called_once_with(method='GET', path=path)
+        self.assertEqual(service_account_email, email)
+
+    def test_get_service_account_email_w_alternate_project(self):
+        project = 'my-alternate-project'
+        path = '/projects/%s/serviceAccount' % (project,)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        email = 'bq-123@bigquery-encryption.iam.gserviceaccount.com'
+        resource = {
+            'kind': 'bigquery#getServiceAccountResponse',
+            'email': email,
+        }
+        conn = client._connection = _make_connection(resource)
+
+        service_account_email = client.get_service_account_email(
+            project=project)
+
+        conn.api_request.assert_called_once_with(method='GET', path=path)
+        self.assertEqual(service_account_email, email)
+
     def test_list_projects_defaults(self):
         from google.cloud.bigquery.client import Project
 
