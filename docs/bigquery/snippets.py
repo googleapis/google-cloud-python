@@ -2003,9 +2003,8 @@ def test_client_list_jobs(client):
     # from google.cloud import bigquery
     # client = bigquery.Client(project='my_project')
 
-    # List all accessible jobs in a project.
-    # Listing all jobs can take a long time, so this sample uses the optional
-    # max_results parameter to list only 10 jobs.
+    # List the 10 most recent jobs in reverse chronological order.
+    # Omit the max_results parameter to list jobs from the past 6 months.
     for job in client.list_jobs(max_results=10):  # API request(s)
         print(job.job_id)
     # [END bigquery_list_jobs]
