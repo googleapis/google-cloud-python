@@ -2003,11 +2003,8 @@ def test_client_list_jobs(client):
     # from google.cloud import bigquery
     # client = bigquery.Client(project='my_project')
 
-    # List all accessible jobs in a project
-    for job in client.list_jobs():  # API request(s)
-        print(job.job_id)
-
-    # Optionally, limit the results to 10 jobs
+    # List all accessible jobs in a project.
+    # This can take a long time, so this snippet limit the results to 10 jobs.
     for job in client.list_jobs(max_results=10):  # API request(s)
         print(job.job_id)
     # [END bigquery_list_jobs]
