@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.1.0
+
+### New Features
+- Add client.get_service_account_email (#5203)
+
+### Documentation
+- Update samples and standardize region tags (#5195)
+
+### Internal / Testing Changes
+- Fix trove classifier to be Production/Stable
+- Don't suppress 'dots' output on test (#5202)
+
 ## 1.0.1
 
 Mark with trove classifier for Production/Stable
