@@ -228,7 +228,7 @@ class ColumnFamily(object):
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._tabel_admin_client.modify_column_families(
+        client._table_admin_client.modify_column_families(
             self._table.name, [modification])
 
     def update(self):
@@ -247,7 +247,7 @@ class ColumnFamily(object):
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._tabel_admin_client.modify_column_families(
+        client._table_admin_client.modify_column_families(
             self._table.name, [modification])
 
     def delete(self):
@@ -259,7 +259,7 @@ class ColumnFamily(object):
         client = self._table._instance._client
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._tabel_admin_client.modify_column_families(
+        client._table_admin_client.modify_column_families(
             self._table.name, [modification])
 
 

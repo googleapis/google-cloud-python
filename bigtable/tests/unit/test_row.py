@@ -77,6 +77,15 @@ class TestDirectRow(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
@@ -335,14 +344,15 @@ class TestDirectRow(unittest.TestCase):
     def test_commit(self):
         from google.protobuf import empty_pb2
 
+        project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
-        from google.cloud.bigtable_v2 import BigtableClient
 
         channel = _make_channel()
-        client = BigtableClient(channel=channel)
+        client = self._make_client(project=project_id, channel=channel,
+                                   admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
 
@@ -353,7 +363,8 @@ class TestDirectRow(unittest.TestCase):
         response_pb = empty_pb2.Empty()
 
         # Patch the stub used by the API method.
-        client.bigtable_stub.MutateRow.side_effect = [response_pb]
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRow.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # commit() has no return value when no filter.
@@ -430,6 +441,15 @@ class TestConditionalRow(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
@@ -456,6 +476,7 @@ class TestConditionalRow(unittest.TestCase):
     def test_commit(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
 
+        project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
         column_family_id1 = u'column_family_id1'
@@ -463,10 +484,10 @@ class TestConditionalRow(unittest.TestCase):
         column_family_id3 = u'column_family_id3'
         column1 = b'column1'
         column2 = b'column2'
-        from google.cloud.bigtable_v2 import BigtableClient
 
         channel = _make_channel()
-        client = BigtableClient(channel=channel)
+        client = self._make_client(project=project_id, channel=channel,
+                                   admin=True)
         table = _Table(table_name, client=client)
         row_filter = RowSampleFilter(0.33)
         row = self._make_one(row_key, table, filter_=row_filter)
@@ -480,7 +501,8 @@ class TestConditionalRow(unittest.TestCase):
             predicate_matched=predicate_matched)
 
         # Patch the stub used by the API method.
-        client.bigtable_stub.CheckAndMutateRow.side_effect = [[response_pb]]
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.CheckAndMutateRow.side_effect = [[response_pb]]
 
         # Create expected_result.
         expected_result = predicate_matched
@@ -544,6 +566,15 @@ class TestAppendRow(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
@@ -593,37 +624,21 @@ class TestAppendRow(unittest.TestCase):
 
     def test_commit(self):
         from google.cloud._testing import _Monkey
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable import row as MUT
 
+        project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
-        client = _Client()
+        channel = _make_channel()
+        client = self._make_client(project=project_id, channel=channel,
+                                   admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
 
         # Create request_pb
         value = b'bytes-value'
-        # We will call row.append_cell_value(COLUMN_FAMILY_ID, COLUMN, value).
-        request_pb = _ReadModifyWriteRowRequestPB(
-            table_name=table_name,
-            row_key=row_key,
-            rules=[
-                _ReadModifyWriteRulePB(
-                    family_name=column_family_id,
-                    column_qualifier=column,
-                    append_value=value,
-                ),
-            ],
-        )
-
-        # Create response_pb
-        response_pb = object()
-
-        # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         row_responses = []
@@ -639,25 +654,22 @@ class TestAppendRow(unittest.TestCase):
             result = row.commit()
 
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ReadModifyWriteRow',
-            (request_pb,),
-            {},
-        )])
-        self.assertEqual(row_responses, [response_pb])
         self.assertEqual(row._rule_pb_list, [])
 
     def test_commit_no_rules(self):
         from tests.unit._testing import _FakeStub
 
+        project_id = 'project-id'
         row_key = b'row_key'
-        client = _Client()
+        channel = _make_channel()
+        client = self._make_client(project=project_id, channel=channel,
+                                   admin=True)
         table = _Table(None, client=client)
         row = self._make_one(row_key, table)
         self.assertEqual(row._rule_pb_list, [])
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub()
+        stub = _FakeStub()
 
         # Perform the method and check the result.
         result = row.commit()
@@ -832,13 +844,6 @@ def _CheckAndMutateRowResponsePB(*args, **kw):
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
 
 
-def _ReadModifyWriteRowRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import (
-        bigtable_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.ReadModifyWriteRowRequest(*args, **kw)
-
-
 def _ReadModifyWriteRowResponsePB(*args, **kw):
     from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
@@ -919,6 +924,8 @@ def _ReadModifyWriteRulePB(*args, **kw):
 class _Client(object):
 
     data_stub = None
+    _table_data_client = None
+    _table_admin_client = None
 
 
 class _Instance(object):

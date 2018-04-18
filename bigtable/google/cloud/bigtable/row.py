@@ -418,15 +418,10 @@ class DirectRow(_SetDeleteRow):
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total mutations exceed the maximum allowable '
                              '%d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_v2_pb2.MutateRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            mutations=mutations_list,
-        )
 
         commit = functools.partial(
-            self._table._instance._client._data_stub.MutateRow,
-            request_pb)
+            self._table._instance._client._table_data_client.mutate_row,
+            self._table.name, self._row_key, mutations_list)
         retry_ = retry.Retry(
             predicate=_retry_commit_exception,
             deadline=30)
@@ -539,17 +534,9 @@ class ConditionalRow(_SetDeleteRow):
                 'mutations and %d false mutations.' % (
                     MAX_MUTATIONS, num_true_mutations, num_false_mutations))
 
-        request_pb = messages_v2_pb2.CheckAndMutateRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            predicate_filter=self._filter.to_pb(),
-            true_mutations=true_mutations,
-            false_mutations=false_mutations,
-        )
-        # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
         client = self._table._instance._client
-        resp = client._table_data_client._check_and_mutate_row(request_pb,
-                                                               retry=None)
+        resp = client._table_data_client.check_and_mutate_row(
+            table_name=self._table.name, row_key=self._row_key,)
         self.clear()
         return resp[0].predicate_matched
 
@@ -829,15 +816,11 @@ class AppendRow(Row):
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total append mutations exceed the maximum '
                              'allowable %d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_v2_pb2.ReadModifyWriteRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            rules=self._rule_pb_list,
-        )
-        # We expect a `.data_v2_pb2.Row`
+
         client = self._table._instance._client
-        row_response = client._table_data_client._read_modify_write_row(
-            request_pb, retry=None)
+        row_response = client._table_data_client.read_modify_write_row(
+            table_name=self._table.name, row_key=self._row_key,
+            rules=self._rule_pb_list)
 
         # Reset modifications after commit-ing request.
         self.clear()

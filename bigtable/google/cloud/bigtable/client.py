@@ -74,17 +74,18 @@ class Client(ClientWithProject):
                   interact with the Instance Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
+    :type project: :instance: grpc.Channel
+    :param channel (grpc.Channel): (Optional) A ``Channel`` instance
+            through which to make calls. This argument is mutually
+            exclusive with ``credentials``; providing both will raise an
+            exception.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
 
-    _instance_stub_internal = None
-    _operations_stub_internal = None
-    _table_stub_internal = None
-    _SET_PROJECT = True  # Used by from_service_account_json()
-
     def __init__(self, project=None, credentials=None,
-                 read_only=False, admin=False):
+                 read_only=False, admin=False, channel=None):
         if read_only and admin:
             raise ValueError('A read-only client cannot also perform'
                              'administrative actions.')
@@ -93,6 +94,7 @@ class Client(ClientWithProject):
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
         self._admin = bool(admin)
+        self.channel = channel
         self.SCOPE = self._get_scopes()
 
         # NOTE: This API has no use for the _http argument, but sending it
@@ -102,7 +104,11 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None)
 
         # Create gRPC stubs for making requests.
-        self._data_stub = bigtable_v2.BigtableClient().bigtable_stub
+        self._data_stub = bigtable_v2.BigtableClient(
+            credentials=self._credentials).bigtable_stub
+
+        if self.channel is not None:
+            self._credentials = None
 
     def _get_scopes(self):
         """Get the scopes corresponding to admin / read-only state.
@@ -146,7 +152,8 @@ class Client(ClientWithProject):
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
-        return bigtable_v2.BigtableClient()
+        return bigtable_v2.BigtableClient(channel=self.channel,
+                                          credentials=self._credentials)
 
     @property
     def _table_admin_client(self):
@@ -160,7 +167,8 @@ class Client(ClientWithProject):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        return bigtable_admin_v2.BigtableTableAdminClient()
+        return bigtable_admin_v2.BigtableTableAdminClient(
+            channel=self.channel, credentials=self._credentials)
 
     @property
     def _instance_admin_client(self):
@@ -174,7 +182,8 @@ class Client(ClientWithProject):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        return bigtable_admin_v2.BigtableInstanceAdminClient()
+        return bigtable_admin_v2.BigtableInstanceAdminClient(
+            channel=self.channel, credentials=self._credentials)
 
     def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None):

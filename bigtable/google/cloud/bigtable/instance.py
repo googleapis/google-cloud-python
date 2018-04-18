@@ -99,6 +99,14 @@ class Instance(object):
         result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
         return result
 
+    def _update_from_pb(self, instance_pb):
+        """Refresh self from the server-provided protobuf.
+        Helper for :meth:`from_pb` and :meth:`reload`.
+        """
+        if not instance_pb.display_name:  # Simple field (string)
+            raise ValueError('Instance protobuf does not contain display_name')
+        self.display_name = instance_pb.display_name
+
     @property
     def name(self):
         """Instance name used in requests.
@@ -158,7 +166,7 @@ class Instance(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        parent =  self._client._instance_admin_client.project_path
+        parent =  self._client.project_path
         return self._client._instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance={},
             clusters={})
@@ -180,7 +188,7 @@ class Instance(object):
         type = enums.Instance.Type.TYPE_UNSPECIFIED
         self._client._instance_admin_client.update_instance(
             name=self.name, display_name=self.display_name, type_=type,
-            lables={})
+            labels={})
 
     def delete(self):
         """Delete this instance.
@@ -228,7 +236,7 @@ class Instance(object):
         table_list_pb = self._client._table_admin_client.list_tables(self.name)
 
         result = []
-        for table_pb in table_list_pb.tables:
+        for table_pb in table_list_pb:
             table_prefix = self.name + '/tables/'
             if not table_pb.name.startswith(table_prefix):
                 raise ValueError('Table name %s not of expected format' % (

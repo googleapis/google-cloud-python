@@ -230,7 +230,8 @@ class Table(object):
         request_pb = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
         client = self._instance._client
-        rows_data = PartialRowsData(client._data_stub.ReadRows, request_pb)
+        rows_data = PartialRowsData(client._table_data_client._read_rows,
+                                  request_pb)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')
@@ -276,7 +277,8 @@ class Table(object):
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
-        return PartialRowsData(client._data_stub.ReadRows, request_pb)
+        return PartialRowsData(client._table_data_client._read_rows,
+                                  request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -309,7 +311,8 @@ class Table(object):
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-        generator = YieldRowsData(client._data_stub.ReadRows, request_pb)
+        generator = YieldRowsData(client._table_data_client._read_rows,
+                                  request_pb)
         for row in generator.read_rows():
             yield row
 
@@ -380,7 +383,8 @@ class Table(object):
         request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
         client = self._instance._client
-        response_iterator = client._data_stub.SampleRowKeys(request_pb)
+        response_iterator = client._table_data_client.sample_row_keys(
+            self.name)
         return response_iterator
 
 
