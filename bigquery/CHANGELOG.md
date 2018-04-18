@@ -16,10 +16,6 @@
 - Fix trove classifier to be Production/Stable
 - Don't suppress 'dots' output on test (#5202)
 
-## 1.0.1
-
-Mark with trove classifier for Production/Stable
-
 ## 1.0.0
 
 ### Implementation Changes
