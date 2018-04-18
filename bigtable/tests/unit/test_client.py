@@ -93,8 +93,7 @@ class TestClient(unittest.TestCase):
         project = 'PROJECT'
         client = self._make_one(
             project=project, credentials=credentials)
-        self.assertIs(client._credentials,
-                      credentials.with_scopes.return_value)
+        self.assertIs(client._credentials, credentials)
 
     def test_project_name_property(self):
         credentials = _make_credentials()
@@ -146,11 +145,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, channel=channel)
 
         with self.assertRaises(ValueError):
-            table_admin_client = client._table_admin_client
+            client._table_admin_client()
 
         with self.assertRaises(ValueError):
-            table_admin_client = client._instance_admin_client
-
+            client._instance_admin_client()
 
     def test_list_instances(self):
         from google.cloud.bigtable_admin_v2.proto import (

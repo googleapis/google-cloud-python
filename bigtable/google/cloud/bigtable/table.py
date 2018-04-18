@@ -231,7 +231,8 @@ class Table(object):
                                          filter_=filter_)
         client = self._instance._client
         rows_data = PartialRowsData(client._table_data_client._read_rows,
-                                  request_pb)
+                                    request_pb)
+
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')
@@ -278,7 +279,7 @@ class Table(object):
             limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
         return PartialRowsData(client._table_data_client._read_rows,
-                                  request_pb)
+                               request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -380,8 +381,6 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
-            table_name=self.name)
         client = self._instance._client
         response_iterator = client._table_data_client.sample_row_keys(
             self.name)

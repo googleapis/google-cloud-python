@@ -206,7 +206,7 @@ class TestInstance(unittest.TestCase):
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         channel = _make_channel()
-        client = self._make_client(project=self.PROJECT, channel=channel, 
+        client = self._make_client(project=self.PROJECT, channel=channel,
                                    admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
                                   display_name=self.DISPLAY_NAME)
@@ -238,11 +238,7 @@ class TestInstance(unittest.TestCase):
     def test_create_w_explicit_serve_nodes(self):
         from google.api_core import operation
         from google.longrunning import operations_pb2
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
         from tests.unit._testing import _FakeStub
-
-        SERVE_NODES = 5
 
         channel = _make_channel()
         client = self._make_client(project=self.PROJECT, channel=channel,

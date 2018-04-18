@@ -166,7 +166,7 @@ class Instance(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        parent =  self._client.project_path
+        parent = self._client.project_path
         return self._client._instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance={},
             clusters={})

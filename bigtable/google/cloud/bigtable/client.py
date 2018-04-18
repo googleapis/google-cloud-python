@@ -46,7 +46,7 @@ READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 
-class Client(ClientWithProject):
+class Client(object):
     """Client for interacting with Google Cloud Bigtable API.
 
     .. note::
@@ -92,16 +92,17 @@ class Client(ClientWithProject):
 
         # NOTE: We set the scopes **before** calling the parent constructor.
         #       It **may** use those scopes in ``with_scopes_if_required``.
+        self.project = project
         self._read_only = bool(read_only)
         self._admin = bool(admin)
         self.channel = channel
+        self._credentials = credentials
         self.SCOPE = self._get_scopes()
 
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
-        super(Client, self).__init__(
-            project=project, credentials=credentials, _http=None)
+        super(Client, self).__init__()
 
         # Create gRPC stubs for making requests.
         self._data_stub = bigtable_v2.BigtableClient(
