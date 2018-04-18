@@ -104,10 +104,6 @@ class Client(object):
         #       creates a working HTTP object.
         super(Client, self).__init__()
 
-        # Create gRPC stubs for making requests.
-        self._data_stub = bigtable_v2.BigtableClient(
-            credentials=self._credentials).bigtable_stub
-
         if self.channel is not None:
             self._credentials = None
 
