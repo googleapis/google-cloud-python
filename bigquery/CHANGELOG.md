@@ -4,6 +4,10 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.0.1
+
+Mark with trove classifier for Production/Stable
+
 ## 1.0.0
 
 ### Implementation Changes
