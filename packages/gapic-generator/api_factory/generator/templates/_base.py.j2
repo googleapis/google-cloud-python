@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+{%- if api.copyright %}
+# Copyright {{ api.copyright.year }} {{ api.copyright.label }}
+{%- if api.copyright.license %}
+#
+# {{ api.copyright.license.boilerplate_notice|subsequent_indent('# ') }}
+{%- endif %}{% endif %}
+{% block content %}
+{% endblock %}

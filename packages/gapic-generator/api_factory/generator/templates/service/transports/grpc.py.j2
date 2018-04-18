@@ -1,0 +1,99 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+from typing import Sequence, Tuple
+
+from google.api_core import grpc_helpers
+from google.auth import credentials
+
+import grpc
+
+{% for package, pb2_module in service.pb2_modules -%}
+from {{ package }} import {{ pb2_module }}
+{% endfor %}
+from .base import {{ service.name }}Transport
+
+
+class {{ service.name }}GrpcTransport({{ service.name }}Transport):
+    """gRPC backend transport for {{ service.name }}.
+
+    {{ service.meta.doc|wrap(width=72, subsequent_indent='    ') }}
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends protocol buffers over the wire using gRPC (which is built on
+    top of HTTP/2); the ``grpcio`` package must be installed.
+    """
+    def __init__(self, *, credentials: credentials.Credentials = None) -> None:
+        """Instantiate the transport.
+
+        Args:
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+        """
+        super().__init__(credentials=credentials)
+        self._stubs = {}
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Sanity check: Only create a new channel if we do not already
+        # have one.
+        if 'grpc_channel' not in self.__dict__:
+            self.__dict__['grpc_channel'] = grpc_helpers.create_channel(
+                '{0}:443'.format(self.SERVICE_ADDRESS),
+                credentials=self._credentials,
+                scopes=self.AUTH_SCOPES,
+            )
+
+        # Return the channel from cache.
+        return self.__dict__['grpc_channel']
+
+    {% for method in service.methods.values() -%}
+    def {{ method.name|snake_case }}(self,
+            request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
+        """Call the {{ (method.name|snake_case).replace('_',' ')|wrap(width=70,
+        initial_width=25, subsequent_indent="        ") }} method over gRPC.
+
+        {{ method.meta.doc|wrap(width=72, subsequent_indent=' ' * 8) }}
+
+        Args:
+            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}:
+                The request object. {{ method.input.meta.doc|wrap(width=72,
+                initial_width=36, subsequent_indent=' ' * 16) }}
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent alont with the request as metadata.
+
+        Returns:
+            ~.{{ method.output.pb2_module }}.{{ method.output.name }}:
+                {{ method.output.meta.doc|wrap(width=72, initial_width=56,
+                                               subsequent_indent=' ' * 16) }}
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if '{{ method.name|snake_case }}' not in self._stubs:
+            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.unary_unary(
+                '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
+                request_serializer={{ method.input.pb2_module }}.{{ method.input.name }}.SerializeToString,
+                response_deserializer={{ method.output.pb2_module }}.{{ method.output.name }}.FromString,
+            )
+        stub = self._stubs['{{ method.name|snake_case }}']
+
+        # Return the response.
+        return stub(request, metadata=metadata)
+
+    {% endfor -%}
+{%- endblock -%}

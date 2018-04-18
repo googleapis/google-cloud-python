@@ -1,0 +1,54 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import abc
+import typing
+
+from google import auth
+from google.auth import credentials
+
+{% for package, pb2_module in service.pb2_modules -%}
+from {{ package }} import {{ pb2_module }}
+{% endfor %}
+
+class {{ service.name }}Transport(metaclass=abc.ABCMeta):
+    """Abstract transport class for {{ service.name }}."""
+
+    SERVICE_ADDRESS: str = '{{ service.host }}'
+
+    AUTH_SCOPES: typing.Tuple[str] = (
+        {%- for scope in service.oauth_scopes %}
+        '{{ scope }}',
+        {%- endfor %}
+    )
+
+    def __init__(
+            self, *,
+            credentials: credentials.Credentials = None,
+            ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+        """
+        # If no credentials are provided, then determine the appropriate
+        # defaults.
+        if credentials is None:
+            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+
+        # Save the credentials.
+        self._credentials = credentials
+
+    {% for method in service.methods.values() -%}
+    @abc.abstractmethod
+    def {{ method.name|snake_case }}(
+            self,
+            request: {{ method.input.pb2_module }}.{{ method.input.name }},
+            ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
+        raise NotImplementedError
+    {% endfor -%}
+{% endblock %}

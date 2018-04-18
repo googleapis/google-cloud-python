@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+grpcio = "*"
+protobuf = "*"
+"jinja2" = "*"
+dataclasses = "*"
+click = "*"
+googleapis-common-protos = "*"
+
+
+[dev-packages]
+
+
+
+[requires]
+
+python_version = "3.6"

@@ -1,0 +1,52 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import collections
+import typing
+
+from .base import {{ service.name }}Transport
+from .http import {{ service.name }}HttpTransport
+
+# Compile a registry of transports.
+_registry = collections.OrderedDict()
+
+# gRPC is not guaranteed to be available, because `grpcio` may or may not
+# be installed. If it is available, however, it should be the "first in"
+# (default).
+try:
+    from .grpc import {{ service.name }}GrpcTransport
+    _registry['grpc'] = {{ service.name }}GrpcTransport
+except ImportError:
+    pass
+
+# Always provide an HTTP/1.1 transport.
+_registry['http'] = {{ service.name }}HttpTransport
+
+
+# Provide a function for the client to get the appropriate transport.
+def get_transport_class(
+        label: str = None,
+        ) -> typing.Type[{{ service.name }}Transport]:
+    """Return an appropriate transport class.
+
+    Args:
+        label (str): The name of the desired transport. If none is provided,
+            then the first transport in the registry is used.
+
+    Returns:
+        Type[{{ service.label }}Transport]: The transport class to use.
+    """
+    # If a specific transport is requested, return that one.
+    if label:
+        return _registry[label]
+
+    # No transport is requested; return the default (that is, the first one
+    # in the dictionary).
+    return next(iter(_registry.values()))
+
+
+__all__ = (
+    '{{ service.name }}Transport',
+    'get_transport_class',
+)
+{% endblock %}

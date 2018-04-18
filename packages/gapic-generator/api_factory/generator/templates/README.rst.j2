@@ -1,0 +1,29 @@
+{{ api.long_name }}
+{{ '=' * api.long_name|length }}
+
+{% if api.client.documentation.summary -%}
+*{{ api.client.documentation.summary }}*
+{%- endif %}
+
+{% if api.client.documentation.overview -%}
+{{ api.client.documentation.overview|wrap(72) }}
+{%- endif %}
+
+{% if api.client.documentation.documentation_root_url -%}
+- `API Documentation <{{ api.client.documentation.documentation_root_url }}>`_
+{%- endif %}
+
+Installing
+----------
+
+The recommended way to use the {{ api.client.name }} API is by installing
+this client library; do so using `pip`_:
+
+.. code-block:: shell
+
+    $ pip install {{ api.warehouse_package_name }}
+
+.. note::
+
+    If you are doing local development, we recommend installing this package
+    inside a `virtualenv`_.
