@@ -29,8 +29,6 @@ In the hierarchy of API concepts
 """
 
 
-from google.cloud.client import ClientWithProject
-
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 
