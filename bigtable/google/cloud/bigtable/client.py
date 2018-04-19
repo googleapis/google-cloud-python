@@ -211,6 +211,7 @@ class Client(object):
             A :class:
             `~google.cloud.bigtable_admin_v2.types.ListInstancesResponse`
             instance..
+
         :raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                     failed for any reason.
