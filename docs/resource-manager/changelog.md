@@ -1,0 +1,1 @@
+../../resource_manager/CHANGELOG.md

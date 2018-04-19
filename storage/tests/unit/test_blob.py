@@ -21,6 +21,7 @@ import os
 import tempfile
 import unittest
 
+import google.cloud.storage.blob
 import mock
 import six
 from six.moves import http_client
@@ -1087,14 +1088,18 @@ class Test_Blob(unittest.TestCase):
 
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
-            num_retries=None, user_project=None, predefined_acl=None):
+            num_retries=None, user_project=None, predefined_acl=None,
+            blob_chunk_size=786432):
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.metadata = {'rook': 'takes knight'}
-        blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
-        self.assertIsNotNone(blob.chunk_size)
+        blob.chunk_size = blob_chunk_size
+        if blob_chunk_size is not None:
+            self.assertIsNotNone(blob.chunk_size)
+        else:
+            self.assertIsNone(blob.chunk_size)
 
         # Need to make sure **same** dict is used because ``json.dumps()``
         # will depend on the hash order.
@@ -1135,7 +1140,11 @@ class Test_Blob(unittest.TestCase):
             self.assertIsNot(upload._headers, extra_headers)
         self.assertFalse(upload.finished)
         if chunk_size is None:
-            self.assertEqual(upload._chunk_size, blob.chunk_size)
+            if blob_chunk_size is None:
+                self.assertEqual(upload._chunk_size,
+                                 google.cloud.storage.blob._DEFAULT_CHUNKSIZE)
+            else:
+                self.assertEqual(upload._chunk_size, blob.chunk_size)
         else:
             self.assertNotEqual(blob.chunk_size, chunk_size)
             self.assertEqual(upload._chunk_size, chunk_size)
@@ -1181,6 +1190,9 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_user_project(self):
         user_project = 'user-project-123'
         self._initiate_resumable_helper(user_project=user_project)
+
+    def test__initiate_resumable_upload_without_chunk_size(self):
+        self._initiate_resumable_helper(blob_chunk_size=None)
 
     def test__initiate_resumable_upload_with_chunk_size(self):
         one_mb = 1048576
@@ -1327,7 +1339,8 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl='private')
 
     def _do_upload_helper(
-            self, chunk_size=None, num_retries=None, predefined_acl=None):
+            self, chunk_size=None, num_retries=None, predefined_acl=None,
+            size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1346,14 +1359,15 @@ class Test_Blob(unittest.TestCase):
         client = mock.sentinel.client
         stream = mock.sentinel.stream
         content_type = u'video/mp4'
-        size = 12345654321
+        if size is None:
+            size = 12345654321
         # Make the request and check the mocks.
         created_json = blob._do_upload(
             client, stream, content_type, size, num_retries, predefined_acl)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
-        if chunk_size is None:
-
+        if size is not None and \
+                size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
@@ -1364,12 +1378,14 @@ class Test_Blob(unittest.TestCase):
                 client, stream, content_type, size, num_retries,
                 predefined_acl)
 
-    def test__do_upload_without_chunk_size(self):
-        self._do_upload_helper()
+    def test__do_upload_uses_multipart(self):
+        self._do_upload_helper(
+            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE)
 
-    def test__do_upload_with_chunk_size(self):
-        chunk_size = 1024 * 1024 * 1024  # 1GB
-        self._do_upload_helper(chunk_size=chunk_size)
+    def test__do_upload_uses_resumable(self):
+        self._do_upload_helper(
+            chunk_size=256 * 1024,  # 256KB
+            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE + 1)
 
     def test__do_upload_with_retry(self):
         self._do_upload_helper(num_retries=20)

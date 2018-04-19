@@ -65,7 +65,7 @@ def _get_many(queue_, max_items=None, max_latency=0):
 
 
 class QueueCallbackWorker(object):
-    """A helper that executes a callback for every item in the queue.
+    """A helper that executes a callback for items sent in a queue.
 
     Calls a blocking ``get()`` on the ``queue`` until it encounters
     :attr:`STOP`.
