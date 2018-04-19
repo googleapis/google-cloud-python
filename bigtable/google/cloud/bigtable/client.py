@@ -207,12 +207,6 @@ class Client(object):
         """List instances owned by the project.
 
         :rtype: :class:`~google.gax.PageIterator`
-        :returns: A Instance instances.
-        :raises: :class: google.api_core.exceptions.GoogleAPICallError: If the
-                    request failed for any reason.
-                :class: google.api_core.exceptions.RetryError: If the request
-                    failed due to a retryable error and retry attempts failed.
-                :class:`ValueError <exceptions.ValueError>` If the parameters
-                    are invalid.
+        :returns: A list of Instance.
         """
         return self._instance_admin_client.list_instances(self.project_path)
