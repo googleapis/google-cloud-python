@@ -21,7 +21,7 @@
   spanner/usage
   speech/index
   error-reporting/usage
-  monitoring/usage
+  monitoring/index
   logging/usage
   storage/client
   texttospeech/index

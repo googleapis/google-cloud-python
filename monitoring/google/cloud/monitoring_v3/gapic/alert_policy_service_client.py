@@ -490,16 +490,13 @@ class AlertPolicyServiceClient(object):
                 adding the supplied policy, except for the following:
 
                 +   The new policy will have the same ``[ALERT_POLICY_ID]`` as the former
-                ::
-
                     policy. This gives you continuity with the former policy in your
                     notifications and incidents.
                 +   Conditions in the new policy will keep their former ``[CONDITION_ID]`` if
-                ::
-
                     the supplied condition includes the `name` field with that
                     `[CONDITION_ID]`. If the supplied condition omits the `name` field,
                     then a new `[CONDITION_ID]` is created.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
