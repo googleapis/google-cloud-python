@@ -7,7 +7,6 @@ Bigtable
 
   client-intro
   client
-  cluster
   instance
   instance-api
   table
