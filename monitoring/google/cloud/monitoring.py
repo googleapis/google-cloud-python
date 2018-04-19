@@ -14,7 +14,7 @@
 
 from __future__ import absolute_import
 
-from google.cloud.monitoring.query import Query
+from google.cloud.monitoring_v3.query import Query
 from google.cloud.monitoring_v3 import GroupServiceClient
 from google.cloud.monitoring_v3 import MetricServiceClient
 from google.cloud.monitoring_v3 import enums

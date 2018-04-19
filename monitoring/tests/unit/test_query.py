@@ -90,7 +90,7 @@ class TestQuery(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.monitoring.query import Query
+        from google.cloud.monitoring_v3.query import Query
 
         return Query
 
@@ -104,7 +104,7 @@ class TestQuery(unittest.TestCase):
         interval = types.TimeInterval()
         interval.end_time.FromDatetime(end_time)
         if start_time is not None:
-          interval.start_time.FromDatetime(start_time)
+            interval.start_time.FromDatetime(start_time)
         return interval
 
     def test_constructor_minimal(self):
@@ -164,7 +164,7 @@ class TestQuery(unittest.TestCase):
 
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
-        with mock.patch('google.cloud.monitoring.query._UTCNOW',
+        with mock.patch('google.cloud.monitoring_v3.query._UTCNOW',
                         new=lambda: NOW):
             query = self._make_one(
                 client, PROJECT, METRIC_TYPE, minutes=MINUTES)
@@ -182,6 +182,8 @@ class TestQuery(unittest.TestCase):
             self._make_one(client, PROJECT, METRIC_TYPE, end_time=T1)
 
     def test_execution_without_interval_illegal(self):
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
@@ -468,7 +470,7 @@ class Test_Filter(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.monitoring.query import _Filter
+        from google.cloud.monitoring_v3.query import _Filter
 
         return _Filter
 
@@ -503,7 +505,7 @@ class Test_Filter(unittest.TestCase):
 class Test__build_label_filter(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
-        from google.cloud.monitoring.query import _build_label_filter
+        from google.cloud.monitoring_v3.query import _build_label_filter
 
         return _build_label_filter(*args, **kwargs)
 

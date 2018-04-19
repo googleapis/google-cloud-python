@@ -50,9 +50,9 @@ def _extract_labels(time_series):
 
 
 def _extract_value(typed_value):
-     """Extract the value from a TypedValue."""
-     value_type = typed_value.WhichOneof('value')
-     return typed_value.__getattribute__(value_type)
+    """Extract the value from a TypedValue."""
+    value_type = typed_value.WhichOneof('value')
+    return typed_value.__getattribute__(value_type)
 
 
 def _build_dataframe(time_series_iterable,

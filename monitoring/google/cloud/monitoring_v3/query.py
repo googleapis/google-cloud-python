@@ -24,7 +24,7 @@ import datetime
 
 import six
 
-from google.cloud.monitoring._dataframe import _build_dataframe
+from google.cloud.monitoring_v3 import _dataframe
 from google.cloud.monitoring_v3 import types
 from google.cloud.monitoring_v3.gapic import enums
 
@@ -34,7 +34,8 @@ _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 class Query(object):
     """Query object for retrieving metric data.
 
-    :type client: :class:`google.cloud.monitoring_v3.gapic.metric_service_client.MetricServiceClient`
+    :type client: :class:`google.cloud.monitoring_v3.gapic.
+        metric_service_client.MetricServiceClient`
     :param client: The client to use.
 
     :type project: str
@@ -321,7 +322,8 @@ class Query(object):
         Example::
 
             from google.cloud.monitoring import enums
-            query = query.align(enums.Aggregation.Aligner.ALIGN_MEAN, minutes=5)
+            query = query.align(
+                enums.Aggregation.Aligner.ALIGN_MEAN, minutes=5)
 
         It is also possible to specify the aligner as a literal string::
 
@@ -330,7 +332,8 @@ class Query(object):
         :type per_series_aligner: str or
             :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
         :param per_series_aligner: The approach to be used to align
-            individual time series. For example: :data:`Aligner.ALIGN_MEAN`. See
+            individual time series. For example: :data:`Aligner.ALIGN_MEAN`.
+            See
             :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
             and the descriptions of the `supported aligners`_.
 
@@ -448,7 +451,7 @@ class Query(object):
         params['interval'] = types.TimeInterval()
         params['interval'].end_time.FromDatetime(self._end_time)
         if self._start_time:
-          params['interval'].start_time.FromDatetime(self._start_time)
+            params['interval'].start_time.FromDatetime(self._start_time)
 
         if (self._per_series_aligner or self._alignment_period_seconds or
                 self._cross_series_reducer or self._group_by_fields):
@@ -510,7 +513,8 @@ class Query(object):
         :rtype: :class:`pandas.DataFrame`
         :returns: A dataframe where each column represents one time series.
         """
-        return _build_dataframe(self, label, labels)  # pragma: NO COVER
+        return _dataframe._build_dataframe(
+            self, label, labels)
 
     def __deepcopy__(self, memo):
         """Create a deepcopy of the query object.

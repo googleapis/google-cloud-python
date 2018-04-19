@@ -33,6 +33,7 @@ dependencies = [
     'google-api-core[grpc]<2.0.0dev,>=0.1.1',
 ]
 extras = {
+    'pandas': 'pandas>=0.17.1',
 }
 
 

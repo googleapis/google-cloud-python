@@ -52,7 +52,7 @@ VALUES = list(0.1 * i for i in range(DIMENSIONS[1]))
 ARRAY = [VALUES] * DIMENSIONS[0]
 
 
-def parse_timestamps():  # pragma: NO COVER
+def parse_timestamps():
     import datetime
     from google.cloud._helpers import _RFC3339_MICROS
 
@@ -60,8 +60,8 @@ def parse_timestamps():  # pragma: NO COVER
             for t in TIMESTAMPS]
 
 
-def generate_query_results():  # pragma: NO COVER
-    from google.cloud.monitoring import types
+def generate_query_results():
+    from google.cloud.monitoring_v3 import types
 
     def P(timestamp, value):
         interval = types.TimeInterval()
@@ -82,10 +82,10 @@ def generate_query_results():  # pragma: NO COVER
 
 
 @unittest.skipUnless(HAVE_PANDAS, 'No pandas')
-class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
+class Test__build_dataframe(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
-        from google.cloud.monitoring._dataframe import _build_dataframe
+        from google.cloud.monitoring_v3._dataframe import _build_dataframe
 
         return _build_dataframe(*args, **kwargs)
 
@@ -207,7 +207,8 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 class Test__sorted_resource_labels(unittest.TestCase):
 
     def _call_fut(self, labels):
-        from google.cloud.monitoring._dataframe import _sorted_resource_labels
+        from google.cloud.monitoring_v3._dataframe import (
+            _sorted_resource_labels)
 
         return _sorted_resource_labels(labels)
 
@@ -215,13 +216,13 @@ class Test__sorted_resource_labels(unittest.TestCase):
         self.assertEqual(self._call_fut([]), [])
 
     def test_sorted(self):
-        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         self.assertSequenceEqual(self._call_fut(EXPECTED), EXPECTED)
 
     def test_reversed(self):
-        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring_v3._dataframe import TOP_RESOURCE_LABELS
 
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))
