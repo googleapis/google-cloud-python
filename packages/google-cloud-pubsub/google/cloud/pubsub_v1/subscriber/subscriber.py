@@ -50,6 +50,10 @@ class Subscriber(object):
         raise NotImplementedError
 
     @property
+    def ack_histogram(self):
+        raise NotImplementedError
+
+    @property
     def future(self):
         raise NotImplementedError
 
