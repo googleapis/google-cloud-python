@@ -206,17 +206,13 @@ class Client(object):
     def list_instances(self):
         """List instances owned by the project.
 
-        :rtype: tuple
-        :returns:
-            A :class:
-            `~google.cloud.bigtable_admin_v2.types.ListInstancesResponse`
-            instance..
-
-        :raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
+        :rtype: :class:`~google.gax.PageIterator`
+        :returns: A Instance instances.
+        :raises: :class: google.api_core.exceptions.GoogleAPICallError: If the
+                    request failed for any reason.
+                :class: google.api_core.exceptions.RetryError: If the request
+                    failed due to a retryable error and retry attempts failed.
+                :class:`ValueError <exceptions.ValueError>` If the parameters
+                    are invalid.
         """
         return self._instance_admin_client.list_instances(self.project_path)
