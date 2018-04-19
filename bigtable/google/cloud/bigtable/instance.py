@@ -157,14 +157,8 @@ class Instance(object):
             before calling :meth:`create`.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types._OperationFuture`
-        :returns: The long-running operation corresponding to the
-            create operation.
-        :raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
+        :returns: The long-running operation corresponding to the create
+                    operation.
         """
         parent = self._client.project_path
         return self._client._instance_admin_client.create_instance(
