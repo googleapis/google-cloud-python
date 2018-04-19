@@ -130,14 +130,15 @@ class Leaser(object):
                 self._subscriber.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
-            # have already been removed from the real one by self.drop).
+            # have already been removed from the real one by
+            # self._subscriber.drop(), which calls self.remove()).
             for item in to_drop:
                 leased_messages.pop(item.ack_id)
 
             # Create a streaming pull request.
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
-            ack_ids = list(leased_messages.keys())
+            ack_ids = leased_messages.keys()
             if ack_ids:
                 _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
 
