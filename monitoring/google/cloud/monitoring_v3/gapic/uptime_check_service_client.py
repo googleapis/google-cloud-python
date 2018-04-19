@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.monitoring.v3 GroupService API."""
+"""Accesses the google.monitoring.v3 UptimeCheckService API."""
 
 import functools
 import pkg_resources
@@ -22,16 +22,23 @@ import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
-import google.api_core.protobuf_helpers
 
+from google.api import metric_pb2 as api_metric_pb2
+from google.api import monitored_resource_pb2
 from google.cloud.monitoring_v3.gapic import enums
-from google.cloud.monitoring_v3.gapic import group_service_client_config
+from google.cloud.monitoring_v3.gapic import uptime_check_service_client_config
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
 from google.cloud.monitoring_v3.proto import common_pb2
 from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
-from google.cloud.monitoring_v3.proto import group_service_pb2_grpc
+from google.cloud.monitoring_v3.proto import metric_pb2 as proto_metric_pb2
+from google.cloud.monitoring_v3.proto import metric_service_pb2
+from google.cloud.monitoring_v3.proto import notification_pb2
+from google.cloud.monitoring_v3.proto import notification_service_pb2
+from google.cloud.monitoring_v3.proto import uptime_pb2
+from google.cloud.monitoring_v3.proto import uptime_service_pb2
+from google.cloud.monitoring_v3.proto import uptime_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -39,20 +46,16 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-monitoring', ).version
 
 
-class GroupServiceClient(object):
+class UptimeCheckServiceClient(object):
     """
-    The Group API lets you inspect and manage your
-    `groups <https://cloud.google.comgoogle.monitoring.v3.Group>`_.
-
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
+    The UptimeCheckService API is used to manage (list, create, delete, edit)
+    uptime check configurations in the Stackdriver Monitoring product. An uptime
+    check is a piece of configuration that determines which resources and
+    services to monitor for availability. These configurations can also be
+    configured interactively by navigating to the [Cloud Console]
+    (http://console.cloud.google.com), selecting the appropriate project,
+    clicking on \"Monitoring\" on the left-hand side to navigate to Stackdriver,
+    and then clicking on \"Uptime\".
     """
 
     SERVICE_ADDRESS = 'monitoring.googleapis.com:443'
@@ -69,7 +72,7 @@ class GroupServiceClient(object):
 
     # The name of the interface for this client. This is the key used to find
     # method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.monitoring.v3.GroupService'
+    _INTERFACE_NAME = 'google.monitoring.v3.UptimeCheckService'
 
     @classmethod
     def project_path(cls, project):
@@ -80,18 +83,18 @@ class GroupServiceClient(object):
         )
 
     @classmethod
-    def group_path(cls, project, group):
-        """Return a fully-qualified group string."""
+    def uptime_check_config_path(cls, project, uptime_check_config):
+        """Return a fully-qualified uptime_check_config string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/groups/{group}',
+            'projects/{project}/uptimeCheckConfigs/{uptime_check_config}',
             project=project,
-            group=group,
+            uptime_check_config=uptime_check_config,
         )
 
     def __init__(self,
                  channel=None,
                  credentials=None,
-                 client_config=group_service_client_config.config,
+                 client_config=uptime_check_service_client_config.config,
                  client_info=None):
         """Constructor.
 
@@ -128,8 +131,8 @@ class GroupServiceClient(object):
             )
 
         # Create the gRPC stubs.
-        self.group_service_stub = (
-            group_service_pb2_grpc.GroupServiceStub(channel))
+        self.uptime_check_service_stub = (
+            uptime_service_pb2_grpc.UptimeCheckServiceStub(channel))
 
         if client_info is None:
             client_info = (
@@ -147,90 +150,78 @@ class GroupServiceClient(object):
         # These are wrapped versions of the gRPC stub methods, with retry and
         # timeout configuration applied, called by the public methods on
         # this class.
-        self._list_groups = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.ListGroups,
-            default_retry=method_configs['ListGroups'].retry,
-            default_timeout=method_configs['ListGroups'].timeout,
+        self._list_uptime_check_configs = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.ListUptimeCheckConfigs,
+            default_retry=method_configs['ListUptimeCheckConfigs'].retry,
+            default_timeout=method_configs['ListUptimeCheckConfigs'].timeout,
             client_info=client_info,
         )
-        self._get_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.GetGroup,
-            default_retry=method_configs['GetGroup'].retry,
-            default_timeout=method_configs['GetGroup'].timeout,
+        self._get_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.GetUptimeCheckConfig,
+            default_retry=method_configs['GetUptimeCheckConfig'].retry,
+            default_timeout=method_configs['GetUptimeCheckConfig'].timeout,
             client_info=client_info,
         )
-        self._create_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.CreateGroup,
-            default_retry=method_configs['CreateGroup'].retry,
-            default_timeout=method_configs['CreateGroup'].timeout,
+        self._create_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.CreateUptimeCheckConfig,
+            default_retry=method_configs['CreateUptimeCheckConfig'].retry,
+            default_timeout=method_configs['CreateUptimeCheckConfig'].timeout,
             client_info=client_info,
         )
-        self._update_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.UpdateGroup,
-            default_retry=method_configs['UpdateGroup'].retry,
-            default_timeout=method_configs['UpdateGroup'].timeout,
+        self._update_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.UpdateUptimeCheckConfig,
+            default_retry=method_configs['UpdateUptimeCheckConfig'].retry,
+            default_timeout=method_configs['UpdateUptimeCheckConfig'].timeout,
             client_info=client_info,
         )
-        self._delete_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.DeleteGroup,
-            default_retry=method_configs['DeleteGroup'].retry,
-            default_timeout=method_configs['DeleteGroup'].timeout,
+        self._delete_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.DeleteUptimeCheckConfig,
+            default_retry=method_configs['DeleteUptimeCheckConfig'].retry,
+            default_timeout=method_configs['DeleteUptimeCheckConfig'].timeout,
             client_info=client_info,
         )
-        self._list_group_members = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.ListGroupMembers,
-            default_retry=method_configs['ListGroupMembers'].retry,
-            default_timeout=method_configs['ListGroupMembers'].timeout,
+        self._list_uptime_check_ips = google.api_core.gapic_v1.method.wrap_method(
+            self.uptime_check_service_stub.ListUptimeCheckIps,
+            default_retry=method_configs['ListUptimeCheckIps'].retry,
+            default_timeout=method_configs['ListUptimeCheckIps'].timeout,
             client_info=client_info,
         )
 
     # Service calls
-    def list_groups(self,
-                    name,
-                    children_of_group=None,
-                    ancestors_of_group=None,
-                    descendants_of_group=None,
-                    page_size=None,
-                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=None):
+    def list_uptime_check_configs(
+            self,
+            parent,
+            page_size=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Lists the existing groups.
+        Lists the existing valid uptime check configurations for the project,
+        leaving out any invalid configurations.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>> name = client.project_path('[PROJECT]')
+            >>> parent = client.project_path('[PROJECT]')
             >>>
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_groups(name):
+            >>> for element in client.list_uptime_check_configs(parent):
             ...     # process element
             ...     pass
             >>>
             >>> # Or iterate over results one page at a time
-            >>> for page in client.list_groups(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_uptime_check_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            name (str): The project whose groups are to be listed. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            children_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns groups whose ``parentName`` field contains the group
-                name.  If no groups have this parent, the results are empty.
-            ancestors_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns groups that are ancestors of the specified group.
-                The groups are returned in order, starting with the immediate parent and
-                ending with the most distant ancestor.  If the specified group has no
-                immediate parent, the results are empty.
-            descendants_of_group (str): A group name: ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
-                Returns the descendants of the specified group.  This is a superset of
-                the results returned by the ``childrenOfGroup`` filter, and includes
-                children-of-children, and so forth.
+            parent (str): The project whose uptime check configurations are listed. The format is
+
+                  ``projects/[PROJECT_ID]``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -247,7 +238,7 @@ class GroupServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.Group` instances.
+            is an iterable of :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -261,55 +252,46 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        # Sanity check: We have some fields which are mutually exclusive;
-        # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(
-            children_of_group=children_of_group,
-            ancestors_of_group=ancestors_of_group,
-            descendants_of_group=descendants_of_group,
-        )
-
-        request = group_service_pb2.ListGroupsRequest(
-            name=name,
-            children_of_group=children_of_group,
-            ancestors_of_group=ancestors_of_group,
-            descendants_of_group=descendants_of_group,
+        request = uptime_service_pb2.ListUptimeCheckConfigsRequest(
+            parent=parent,
             page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_groups,
+                self._list_uptime_check_configs,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
             request=request,
-            items_field='group',
+            items_field='uptime_check_configs',
             request_token_field='page_token',
             response_token_field='next_page_token',
         )
         return iterator
 
-    def get_group(self,
-                  name,
-                  retry=google.api_core.gapic_v1.method.DEFAULT,
-                  timeout=google.api_core.gapic_v1.method.DEFAULT,
-                  metadata=None):
+    def get_uptime_check_config(
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Gets a single group.
+        Gets a single uptime check configuration.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>> name = client.group_path('[PROJECT]', '[GROUP]')
+            >>> name = client.uptime_check_config_path('[PROJECT]', '[UPTIME_CHECK_CONFIG]')
             >>>
-            >>> response = client.get_group(name)
+            >>> response = client.get_uptime_check_config(name)
 
         Args:
-            name (str): The group to retrieve. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
+            name (str): The uptime check configuration to retrieve. The format is
+
+                  ``projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -320,7 +302,7 @@ class GroupServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.Group` instance.
+            A :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -332,40 +314,39 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = group_service_pb2.GetGroupRequest(name=name, )
-        return self._get_group(
+        request = uptime_service_pb2.GetUptimeCheckConfigRequest(name=name, )
+        return self._get_uptime_check_config(
             request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def create_group(self,
-                     name,
-                     group,
-                     validate_only=None,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def create_uptime_check_config(
+            self,
+            parent,
+            uptime_check_config,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Creates a new group.
+        Creates a new uptime check configuration.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>> name = client.project_path('[PROJECT]')
+            >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``group``:
-            >>> group = {}
+            >>> # TODO: Initialize ``uptime_check_config``:
+            >>> uptime_check_config = {}
             >>>
-            >>> response = client.create_group(name, group)
+            >>> response = client.create_uptime_check_config(parent, uptime_check_config)
 
         Args:
-            name (str): The project in which to create the group. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): A group definition. It is an error to define the ``name`` field because
-                the system assigns the name.
+            parent (str): The project in which to create the uptime check. The format is:
+
+                  ``projects/[PROJECT_ID]``.
+            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): The new uptime check configuration.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.Group`
-            validate_only (bool): If true, validate this request but do not create the group.
+                message :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -376,7 +357,7 @@ class GroupServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.Group` instance.
+            A :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -388,40 +369,52 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = group_service_pb2.CreateGroupRequest(
-            name=name,
-            group=group,
-            validate_only=validate_only,
+        request = uptime_service_pb2.CreateUptimeCheckConfigRequest(
+            parent=parent,
+            uptime_check_config=uptime_check_config,
         )
-        return self._create_group(
+        return self._create_uptime_check_config(
             request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def update_group(self,
-                     group,
-                     validate_only=None,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def update_uptime_check_config(
+            self,
+            uptime_check_config,
+            update_mask=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Updates an existing group.
-        You can change any group attributes except ``name``.
+        Updates an uptime check configuration. You can either replace the entire
+        configuration with a new one or replace only certain fields in the current
+        configuration by specifying the fields to be updated via ``\"updateMask\"``.
+        Returns the updated configuration.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>> # TODO: Initialize ``group``:
-            >>> group = {}
+            >>> # TODO: Initialize ``uptime_check_config``:
+            >>> uptime_check_config = {}
             >>>
-            >>> response = client.update_group(group)
+            >>> response = client.update_uptime_check_config(uptime_check_config)
 
         Args:
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group.  All fields of the existing group,
-                excepting ``name``, are replaced with the corresponding fields of this group.
+            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): Required. If an ``\"updateMask\"`` has been specified, this field gives
+                the values for the set of fields mentioned in the ``\"updateMask\"``. If an
+                ``\"updateMask\"`` has not been given, this uptime check configuration replaces
+                the current configuration. If a field is mentioned in ``\"updateMask``\" but
+                the corresonding field is omitted in this partial uptime check
+                configuration, it has the effect of deleting/clearing the field from the
+                configuration on the server.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.Group`
-            validate_only (bool): If true, validate this request but do not update the existing group.
+                message :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig`
+            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): Optional. If present, only the listed fields in the current uptime check
+                configuration are updated with values from the new configuration. If this
+                field is empty, then the current configuration is completely replaced with
+                the new configuration.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -432,7 +425,7 @@ class GroupServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.Group` instance.
+            A :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -444,33 +437,37 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = group_service_pb2.UpdateGroupRequest(
-            group=group,
-            validate_only=validate_only,
+        request = uptime_service_pb2.UpdateUptimeCheckConfigRequest(
+            uptime_check_config=uptime_check_config,
+            update_mask=update_mask,
         )
-        return self._update_group(
+        return self._update_uptime_check_config(
             request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def delete_group(self,
-                     name,
-                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                     metadata=None):
+    def delete_uptime_check_config(
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Deletes an existing group.
+        Deletes an uptime check configuration. Note that this method will fail
+        if the uptime check configuration is referenced by an alert policy or
+        other dependent configs that would be rendered invalid by the deletion.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>> name = client.group_path('[PROJECT]', '[GROUP]')
+            >>> name = client.uptime_check_config_path('[PROJECT]', '[UPTIME_CHECK_CONFIG]')
             >>>
-            >>> client.delete_group(name)
+            >>> client.delete_uptime_check_config(name)
 
         Args:
-            name (str): The group to delete. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
+            name (str): The uptime check configuration to delete. The format is
+
+                  ``projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -490,63 +487,42 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = group_service_pb2.DeleteGroupRequest(name=name, )
-        self._delete_group(
+        request = uptime_service_pb2.DeleteUptimeCheckConfigRequest(
+            name=name, )
+        self._delete_uptime_check_config(
             request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_group_members(self,
-                           name,
-                           page_size=None,
-                           filter_=None,
-                           interval=None,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def list_uptime_check_ips(self,
+                              page_size=None,
+                              retry=google.api_core.gapic_v1.method.DEFAULT,
+                              timeout=google.api_core.gapic_v1.method.DEFAULT,
+                              metadata=None):
         """
-        Lists the monitored resources that are members of a group.
+        Returns the list of IPs that checkers run from
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.GroupServiceClient()
-            >>>
-            >>> name = client.group_path('[PROJECT]', '[GROUP]')
+            >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_group_members(name):
+            >>> for element in client.list_uptime_check_ips():
             ...     # process element
             ...     pass
             >>>
             >>> # Or iterate over results one page at a time
-            >>> for page in client.list_group_members(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_uptime_check_ips(options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            name (str): The group whose members are listed. The format is
-                ``\"projects/{project_id_or_number}/groups/{group_id}\"``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            filter_ (str): An optional `list filter <https://cloud.google.com/monitoring/api/learn_more#filtering>`_ describing
-                the members to be returned.  The filter may reference the type, labels, and
-                metadata of monitored resources that comprise the group.
-                For example, to return only resources representing Compute Engine VM
-                instances, use this filter:
-
-                ::
-
-                    resource.type = \"gce_instance\"
-            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): An optional time interval for which results should be returned. Only
-                members that were part of the group during the specified interval are
-                included in the response.  If no interval is provided then the group
-                membership over the last minute is returned.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -558,7 +534,7 @@ class GroupServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.MonitoredResource` instances.
+            is an iterable of :class:`~google.cloud.monitoring_v3.types.UptimeCheckIp` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -572,21 +548,17 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = group_service_pb2.ListGroupMembersRequest(
-            name=name,
-            page_size=page_size,
-            filter=filter_,
-            interval=interval,
-        )
+        request = uptime_service_pb2.ListUptimeCheckIpsRequest(
+            page_size=page_size, )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_group_members,
+                self._list_uptime_check_ips,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
             request=request,
-            items_field='members',
+            items_field='uptime_check_ips',
             request_token_field='page_token',
             response_token_field='next_page_token',
         )

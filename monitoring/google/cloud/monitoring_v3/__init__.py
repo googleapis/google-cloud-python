@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,18 @@
 from __future__ import absolute_import
 
 from google.cloud.monitoring_v3 import types
+from google.cloud.monitoring_v3.gapic import alert_policy_service_client
 from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import group_service_client
 from google.cloud.monitoring_v3.gapic import metric_service_client
+from google.cloud.monitoring_v3.gapic import notification_channel_service_client
+from google.cloud.monitoring_v3.gapic import uptime_check_service_client
+
+
+class AlertPolicyServiceClient(
+        alert_policy_service_client.AlertPolicyServiceClient):
+    __doc__ = alert_policy_service_client.AlertPolicyServiceClient.__doc__
+    enums = enums
 
 
 class GroupServiceClient(group_service_client.GroupServiceClient):
@@ -30,8 +39,24 @@ class MetricServiceClient(metric_service_client.MetricServiceClient):
     enums = enums
 
 
+class NotificationChannelServiceClient(
+        notification_channel_service_client.NotificationChannelServiceClient):
+    __doc__ = notification_channel_service_client.NotificationChannelServiceClient.__doc__
+    enums = enums
+
+
+class UptimeCheckServiceClient(
+        uptime_check_service_client.UptimeCheckServiceClient):
+    __doc__ = uptime_check_service_client.UptimeCheckServiceClient.__doc__
+    enums = enums
+
+
 __all__ = (
     'enums',
     'types',
+    'AlertPolicyServiceClient',
     'GroupServiceClient',
-    'MetricServiceClient', )
+    'MetricServiceClient',
+    'NotificationChannelServiceClient',
+    'UptimeCheckServiceClient',
+)

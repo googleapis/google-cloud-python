@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/metric_service.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n5google/cloud/monitoring_v3/proto/metric_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a-google/cloud/monitoring_v3/proto/metric.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/rpc/status.proto\"n\n\'ListMonitoredResourceDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"5\n%GetMonitoredResourceDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"c\n\x1cListMetricDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"r\n\x1dListMetricDescriptorsResponse\x12\x38\n\x12metric_descriptors\x18\x01 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"*\n\x1aGetMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"f\n\x1d\x43reateMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x02 \x01(\x0b\x32\x1c.google.api.MetricDescriptor\"-\n\x1d\x44\x65leteMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\xcf\x02\n\x15ListTimeSeriesRequest\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x34\n\x08interval\x18\x04 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\x12\x36\n\x0b\x61ggregation\x18\x05 \x01(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12H\n\x04view\x18\x07 \x01(\x0e\x32:.google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView\x12\x11\n\tpage_size\x18\x08 \x01(\x05\x12\x12\n\npage_token\x18\t \x01(\t\"\'\n\x0eTimeSeriesView\x12\x08\n\x04\x46ULL\x10\x00\x12\x0b\n\x07HEADERS\x10\x01\"h\n\x16ListTimeSeriesResponse\x12\x35\n\x0btime_series\x18\x01 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"^\n\x17\x43reateTimeSeriesRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x35\n\x0btime_series\x18\x02 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\"r\n\x15\x43reateTimeSeriesError\x12\x35\n\x0btime_series\x18\x01 \x01(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status2\xf5\n\n\rMetricService\x12\xdd\x01\n ListMonitoredResourceDescriptors\x12=.google.monitoring.v3.ListMonitoredResourceDescriptorsRequest\x1a>.google.monitoring.v3.ListMonitoredResourceDescriptorsResponse\":\x82\xd3\xe4\x93\x02\x34\x12\x32/v3/{name=projects/*}/monitoredResourceDescriptors\x12\xc4\x01\n\x1eGetMonitoredResourceDescriptor\x12;.google.monitoring.v3.GetMonitoredResourceDescriptorRequest\x1a\'.google.api.MonitoredResourceDescriptor\"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*/monitoredResourceDescriptors/*}\x12\xb1\x01\n\x15ListMetricDescriptors\x12\x32.google.monitoring.v3.ListMetricDescriptorsRequest\x1a\x33.google.monitoring.v3.ListMetricDescriptorsResponse\"/\x82\xd3\xe4\x93\x02)\x12\'/v3/{name=projects/*}/metricDescriptors\x12\x99\x01\n\x13GetMetricDescriptor\x12\x30.google.monitoring.v3.GetMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/metricDescriptors/**}\x12\xaf\x01\n\x16\x43reateMetricDescriptor\x12\x33.google.monitoring.v3.CreateMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor\"B\x82\xd3\xe4\x93\x02<\"\'/v3/{name=projects/*}/metricDescriptors:\x11metric_descriptor\x12\x99\x01\n\x16\x44\x65leteMetricDescriptor\x12\x33.google.monitoring.v3.DeleteMetricDescriptorRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/metricDescriptors/**}\x12\x95\x01\n\x0eListTimeSeries\x12+.google.monitoring.v3.ListTimeSeriesRequest\x1a,.google.monitoring.v3.ListTimeSeriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v3/{name=projects/*}/timeSeries\x12\x86\x01\n\x10\x43reateTimeSeries\x12-.google.monitoring.v3.CreateTimeSeriesRequest\x1a\x16.google.protobuf.Empty\"+\x82\xd3\xe4\x93\x02%\" /v3/{name=projects/*}/timeSeries:\x01*B\x8d\x01\n\x18\x63om.google.monitoring.v3B\x12MetricServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3b\x06proto3')
+  serialized_pb=_b('\n5google/cloud/monitoring_v3/proto/metric_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a-google/cloud/monitoring_v3/proto/metric.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/rpc/status.proto\"n\n\'ListMonitoredResourceDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"5\n%GetMonitoredResourceDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"c\n\x1cListMetricDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"r\n\x1dListMetricDescriptorsResponse\x12\x38\n\x12metric_descriptors\x18\x01 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"*\n\x1aGetMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"f\n\x1d\x43reateMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x02 \x01(\x0b\x32\x1c.google.api.MetricDescriptor\"-\n\x1d\x44\x65leteMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\xcf\x02\n\x15ListTimeSeriesRequest\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x34\n\x08interval\x18\x04 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\x12\x36\n\x0b\x61ggregation\x18\x05 \x01(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12H\n\x04view\x18\x07 \x01(\x0e\x32:.google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView\x12\x11\n\tpage_size\x18\x08 \x01(\x05\x12\x12\n\npage_token\x18\t \x01(\t\"\'\n\x0eTimeSeriesView\x12\x08\n\x04\x46ULL\x10\x00\x12\x0b\n\x07HEADERS\x10\x01\"h\n\x16ListTimeSeriesResponse\x12\x35\n\x0btime_series\x18\x01 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"^\n\x17\x43reateTimeSeriesRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x35\n\x0btime_series\x18\x02 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\"r\n\x15\x43reateTimeSeriesError\x12\x35\n\x0btime_series\x18\x01 \x01(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status2\xf5\n\n\rMetricService\x12\xdd\x01\n ListMonitoredResourceDescriptors\x12=.google.monitoring.v3.ListMonitoredResourceDescriptorsRequest\x1a>.google.monitoring.v3.ListMonitoredResourceDescriptorsResponse\":\x82\xd3\xe4\x93\x02\x34\x12\x32/v3/{name=projects/*}/monitoredResourceDescriptors\x12\xc4\x01\n\x1eGetMonitoredResourceDescriptor\x12;.google.monitoring.v3.GetMonitoredResourceDescriptorRequest\x1a\'.google.api.MonitoredResourceDescriptor\"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*/monitoredResourceDescriptors/*}\x12\xb1\x01\n\x15ListMetricDescriptors\x12\x32.google.monitoring.v3.ListMetricDescriptorsRequest\x1a\x33.google.monitoring.v3.ListMetricDescriptorsResponse\"/\x82\xd3\xe4\x93\x02)\x12\'/v3/{name=projects/*}/metricDescriptors\x12\x99\x01\n\x13GetMetricDescriptor\x12\x30.google.monitoring.v3.GetMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor\"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/metricDescriptors/**}\x12\xaf\x01\n\x16\x43reateMetricDescriptor\x12\x33.google.monitoring.v3.CreateMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor\"B\x82\xd3\xe4\x93\x02<\"\'/v3/{name=projects/*}/metricDescriptors:\x11metric_descriptor\x12\x99\x01\n\x16\x44\x65leteMetricDescriptor\x12\x33.google.monitoring.v3.DeleteMetricDescriptorRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/metricDescriptors/**}\x12\x95\x01\n\x0eListTimeSeries\x12+.google.monitoring.v3.ListTimeSeriesRequest\x1a,.google.monitoring.v3.ListTimeSeriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v3/{name=projects/*}/timeSeries\x12\x86\x01\n\x10\x43reateTimeSeries\x12-.google.monitoring.v3.CreateTimeSeriesRequest\x1a\x16.google.protobuf.Empty\"+\x82\xd3\xe4\x93\x02%\" /v3/{name=projects/*}/timeSeries:\x01*B\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12MetricServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_metric__pb2.DESCRIPTOR,google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_metric__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
 
@@ -68,28 +68,28 @@ _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.monitoring.v3.ListMonitoredResourceDescriptorsRequest.filter', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.monitoring.v3.ListMonitoredResourceDescriptorsRequest.page_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.monitoring.v3.ListMonitoredResourceDescriptorsRequest.page_token', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -120,14 +120,14 @@ _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.monitoring.v3.ListMonitoredResourceDescriptorsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -158,7 +158,7 @@ _GETMONITOREDRESOURCEDESCRIPTORREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -189,28 +189,28 @@ _LISTMETRICDESCRIPTORSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.monitoring.v3.ListMetricDescriptorsRequest.filter', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.monitoring.v3.ListMetricDescriptorsRequest.page_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.monitoring.v3.ListMetricDescriptorsRequest.page_token', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -241,14 +241,14 @@ _LISTMETRICDESCRIPTORSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.monitoring.v3.ListMetricDescriptorsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -279,7 +279,7 @@ _GETMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -310,14 +310,14 @@ _CREATEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='metric_descriptor', full_name='google.monitoring.v3.CreateMetricDescriptorRequest.metric_descriptor', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -348,7 +348,7 @@ _DELETEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -379,56 +379,56 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.monitoring.v3.ListTimeSeriesRequest.filter', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='interval', full_name='google.monitoring.v3.ListTimeSeriesRequest.interval', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='aggregation', full_name='google.monitoring.v3.ListTimeSeriesRequest.aggregation', index=3,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='order_by', full_name='google.monitoring.v3.ListTimeSeriesRequest.order_by', index=4,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='view', full_name='google.monitoring.v3.ListTimeSeriesRequest.view', index=5,
       number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.monitoring.v3.ListTimeSeriesRequest.page_size', index=6,
       number=8, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.monitoring.v3.ListTimeSeriesRequest.page_token', index=7,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -460,14 +460,14 @@ _LISTTIMESERIESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.monitoring.v3.ListTimeSeriesResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -498,14 +498,14 @@ _CREATETIMESERIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_series', full_name='google.monitoring.v3.CreateTimeSeriesRequest.time_series', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -536,14 +536,14 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='status', full_name='google.monitoring.v3.CreateTimeSeriesError.status', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -877,370 +877,92 @@ _sym_db.RegisterMessage(CreateTimeSeriesError)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\022MetricServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\022MetricServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
 
+_METRICSERVICE = _descriptor.ServiceDescriptor(
+  name='MetricService',
+  full_name='google.monitoring.v3.MetricService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1696,
+  serialized_end=3093,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListMonitoredResourceDescriptors',
+    full_name='google.monitoring.v3.MetricService.ListMonitoredResourceDescriptors',
+    index=0,
+    containing_service=None,
+    input_type=_LISTMONITOREDRESOURCEDESCRIPTORSREQUEST,
+    output_type=_LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0024\0222/v3/{name=projects/*}/monitoredResourceDescriptors')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetMonitoredResourceDescriptor',
+    full_name='google.monitoring.v3.MetricService.GetMonitoredResourceDescriptor',
+    index=1,
+    containing_service=None,
+    input_type=_GETMONITOREDRESOURCEDESCRIPTORREQUEST,
+    output_type=google_dot_api_dot_monitored__resource__pb2._MONITOREDRESOURCEDESCRIPTOR,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0026\0224/v3/{name=projects/*/monitoredResourceDescriptors/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListMetricDescriptors',
+    full_name='google.monitoring.v3.MetricService.ListMetricDescriptors',
+    index=2,
+    containing_service=None,
+    input_type=_LISTMETRICDESCRIPTORSREQUEST,
+    output_type=_LISTMETRICDESCRIPTORSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\022\'/v3/{name=projects/*}/metricDescriptors')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetMetricDescriptor',
+    full_name='google.monitoring.v3.MetricService.GetMetricDescriptor',
+    index=3,
+    containing_service=None,
+    input_type=_GETMETRICDESCRIPTORREQUEST,
+    output_type=google_dot_api_dot_metric__pb2._METRICDESCRIPTOR,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002,\022*/v3/{name=projects/*/metricDescriptors/**}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateMetricDescriptor',
+    full_name='google.monitoring.v3.MetricService.CreateMetricDescriptor',
+    index=4,
+    containing_service=None,
+    input_type=_CREATEMETRICDESCRIPTORREQUEST,
+    output_type=google_dot_api_dot_metric__pb2._METRICDESCRIPTOR,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002<\"\'/v3/{name=projects/*}/metricDescriptors:\021metric_descriptor')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteMetricDescriptor',
+    full_name='google.monitoring.v3.MetricService.DeleteMetricDescriptor',
+    index=5,
+    containing_service=None,
+    input_type=_DELETEMETRICDESCRIPTORREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002,**/v3/{name=projects/*/metricDescriptors/**}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListTimeSeries',
+    full_name='google.monitoring.v3.MetricService.ListTimeSeries',
+    index=6,
+    containing_service=None,
+    input_type=_LISTTIMESERIESREQUEST,
+    output_type=_LISTTIMESERIESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\"\022 /v3/{name=projects/*}/timeSeries')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateTimeSeries',
+    full_name='google.monitoring.v3.MetricService.CreateTimeSeries',
+    index=7,
+    containing_service=None,
+    input_type=_CREATETIMESERIESREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\" /v3/{name=projects/*}/timeSeries:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_METRICSERVICE)
 
-  class MetricServiceStub(object):
-    """Manages metric descriptors, monitored resource descriptors, and
-    time series data.
-    """
+DESCRIPTOR.services_by_name['MetricService'] = _METRICSERVICE
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListMonitoredResourceDescriptors = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/ListMonitoredResourceDescriptors',
-          request_serializer=ListMonitoredResourceDescriptorsRequest.SerializeToString,
-          response_deserializer=ListMonitoredResourceDescriptorsResponse.FromString,
-          )
-      self.GetMonitoredResourceDescriptor = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/GetMonitoredResourceDescriptor',
-          request_serializer=GetMonitoredResourceDescriptorRequest.SerializeToString,
-          response_deserializer=google_dot_api_dot_monitored__resource__pb2.MonitoredResourceDescriptor.FromString,
-          )
-      self.ListMetricDescriptors = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/ListMetricDescriptors',
-          request_serializer=ListMetricDescriptorsRequest.SerializeToString,
-          response_deserializer=ListMetricDescriptorsResponse.FromString,
-          )
-      self.GetMetricDescriptor = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/GetMetricDescriptor',
-          request_serializer=GetMetricDescriptorRequest.SerializeToString,
-          response_deserializer=google_dot_api_dot_metric__pb2.MetricDescriptor.FromString,
-          )
-      self.CreateMetricDescriptor = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/CreateMetricDescriptor',
-          request_serializer=CreateMetricDescriptorRequest.SerializeToString,
-          response_deserializer=google_dot_api_dot_metric__pb2.MetricDescriptor.FromString,
-          )
-      self.DeleteMetricDescriptor = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/DeleteMetricDescriptor',
-          request_serializer=DeleteMetricDescriptorRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ListTimeSeries = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/ListTimeSeries',
-          request_serializer=ListTimeSeriesRequest.SerializeToString,
-          response_deserializer=ListTimeSeriesResponse.FromString,
-          )
-      self.CreateTimeSeries = channel.unary_unary(
-          '/google.monitoring.v3.MetricService/CreateTimeSeries',
-          request_serializer=CreateTimeSeriesRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-
-
-  class MetricServiceServicer(object):
-    """Manages metric descriptors, monitored resource descriptors, and
-    time series data.
-    """
-
-    def ListMonitoredResourceDescriptors(self, request, context):
-      """Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetMonitoredResourceDescriptor(self, request, context):
-      """Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListMetricDescriptors(self, request, context):
-      """Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetMetricDescriptor(self, request, context):
-      """Gets a single metric descriptor. This method does not require a Stackdriver account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateMetricDescriptor(self, request, context):
-      """Creates a new metric descriptor.
-      User-created metric descriptors define
-      [custom metrics](/monitoring/custom-metrics).
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteMetricDescriptor(self, request, context):
-      """Deletes a metric descriptor. Only user-created
-      [custom metrics](/monitoring/custom-metrics) can be deleted.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListTimeSeries(self, request, context):
-      """Lists time series that match a filter. This method does not require a Stackdriver account.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateTimeSeries(self, request, context):
-      """Creates or adds data to one or more time series.
-      The response is empty if all time series in the request were written.
-      If any time series could not be written, a corresponding failure message is
-      included in the error response.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_MetricServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListMonitoredResourceDescriptors': grpc.unary_unary_rpc_method_handler(
-            servicer.ListMonitoredResourceDescriptors,
-            request_deserializer=ListMonitoredResourceDescriptorsRequest.FromString,
-            response_serializer=ListMonitoredResourceDescriptorsResponse.SerializeToString,
-        ),
-        'GetMonitoredResourceDescriptor': grpc.unary_unary_rpc_method_handler(
-            servicer.GetMonitoredResourceDescriptor,
-            request_deserializer=GetMonitoredResourceDescriptorRequest.FromString,
-            response_serializer=google_dot_api_dot_monitored__resource__pb2.MonitoredResourceDescriptor.SerializeToString,
-        ),
-        'ListMetricDescriptors': grpc.unary_unary_rpc_method_handler(
-            servicer.ListMetricDescriptors,
-            request_deserializer=ListMetricDescriptorsRequest.FromString,
-            response_serializer=ListMetricDescriptorsResponse.SerializeToString,
-        ),
-        'GetMetricDescriptor': grpc.unary_unary_rpc_method_handler(
-            servicer.GetMetricDescriptor,
-            request_deserializer=GetMetricDescriptorRequest.FromString,
-            response_serializer=google_dot_api_dot_metric__pb2.MetricDescriptor.SerializeToString,
-        ),
-        'CreateMetricDescriptor': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateMetricDescriptor,
-            request_deserializer=CreateMetricDescriptorRequest.FromString,
-            response_serializer=google_dot_api_dot_metric__pb2.MetricDescriptor.SerializeToString,
-        ),
-        'DeleteMetricDescriptor': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteMetricDescriptor,
-            request_deserializer=DeleteMetricDescriptorRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ListTimeSeries': grpc.unary_unary_rpc_method_handler(
-            servicer.ListTimeSeries,
-            request_deserializer=ListTimeSeriesRequest.FromString,
-            response_serializer=ListTimeSeriesResponse.SerializeToString,
-        ),
-        'CreateTimeSeries': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateTimeSeries,
-            request_deserializer=CreateTimeSeriesRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.monitoring.v3.MetricService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaMetricServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages metric descriptors, monitored resource descriptors, and
-    time series data.
-    """
-    def ListMonitoredResourceDescriptors(self, request, context):
-      """Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetMonitoredResourceDescriptor(self, request, context):
-      """Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListMetricDescriptors(self, request, context):
-      """Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetMetricDescriptor(self, request, context):
-      """Gets a single metric descriptor. This method does not require a Stackdriver account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateMetricDescriptor(self, request, context):
-      """Creates a new metric descriptor.
-      User-created metric descriptors define
-      [custom metrics](/monitoring/custom-metrics).
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteMetricDescriptor(self, request, context):
-      """Deletes a metric descriptor. Only user-created
-      [custom metrics](/monitoring/custom-metrics) can be deleted.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListTimeSeries(self, request, context):
-      """Lists time series that match a filter. This method does not require a Stackdriver account.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateTimeSeries(self, request, context):
-      """Creates or adds data to one or more time series.
-      The response is empty if all time series in the request were written.
-      If any time series could not be written, a corresponding failure message is
-      included in the error response.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaMetricServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages metric descriptors, monitored resource descriptors, and
-    time series data.
-    """
-    def ListMonitoredResourceDescriptors(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      raise NotImplementedError()
-    ListMonitoredResourceDescriptors.future = None
-    def GetMonitoredResourceDescriptor(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
-      """
-      raise NotImplementedError()
-    GetMonitoredResourceDescriptor.future = None
-    def ListMetricDescriptors(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
-      """
-      raise NotImplementedError()
-    ListMetricDescriptors.future = None
-    def GetMetricDescriptor(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets a single metric descriptor. This method does not require a Stackdriver account.
-      """
-      raise NotImplementedError()
-    GetMetricDescriptor.future = None
-    def CreateMetricDescriptor(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new metric descriptor.
-      User-created metric descriptors define
-      [custom metrics](/monitoring/custom-metrics).
-      """
-      raise NotImplementedError()
-    CreateMetricDescriptor.future = None
-    def DeleteMetricDescriptor(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes a metric descriptor. Only user-created
-      [custom metrics](/monitoring/custom-metrics) can be deleted.
-      """
-      raise NotImplementedError()
-    DeleteMetricDescriptor.future = None
-    def ListTimeSeries(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists time series that match a filter. This method does not require a Stackdriver account.
-      """
-      raise NotImplementedError()
-    ListTimeSeries.future = None
-    def CreateTimeSeries(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates or adds data to one or more time series.
-      The response is empty if all time series in the request were written.
-      If any time series could not be written, a corresponding failure message is
-      included in the error response.
-      """
-      raise NotImplementedError()
-    CreateTimeSeries.future = None
-
-
-  def beta_create_MetricService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.monitoring.v3.MetricService', 'CreateMetricDescriptor'): CreateMetricDescriptorRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'CreateTimeSeries'): CreateTimeSeriesRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'DeleteMetricDescriptor'): DeleteMetricDescriptorRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'GetMetricDescriptor'): GetMetricDescriptorRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'GetMonitoredResourceDescriptor'): GetMonitoredResourceDescriptorRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'ListMetricDescriptors'): ListMetricDescriptorsRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'ListMonitoredResourceDescriptors'): ListMonitoredResourceDescriptorsRequest.FromString,
-      ('google.monitoring.v3.MetricService', 'ListTimeSeries'): ListTimeSeriesRequest.FromString,
-    }
-    response_serializers = {
-      ('google.monitoring.v3.MetricService', 'CreateMetricDescriptor'): google_dot_api_dot_metric__pb2.MetricDescriptor.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'CreateTimeSeries'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'DeleteMetricDescriptor'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'GetMetricDescriptor'): google_dot_api_dot_metric__pb2.MetricDescriptor.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'GetMonitoredResourceDescriptor'): google_dot_api_dot_monitored__resource__pb2.MonitoredResourceDescriptor.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListMetricDescriptors'): ListMetricDescriptorsResponse.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListMonitoredResourceDescriptors'): ListMonitoredResourceDescriptorsResponse.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListTimeSeries'): ListTimeSeriesResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.monitoring.v3.MetricService', 'CreateMetricDescriptor'): face_utilities.unary_unary_inline(servicer.CreateMetricDescriptor),
-      ('google.monitoring.v3.MetricService', 'CreateTimeSeries'): face_utilities.unary_unary_inline(servicer.CreateTimeSeries),
-      ('google.monitoring.v3.MetricService', 'DeleteMetricDescriptor'): face_utilities.unary_unary_inline(servicer.DeleteMetricDescriptor),
-      ('google.monitoring.v3.MetricService', 'GetMetricDescriptor'): face_utilities.unary_unary_inline(servicer.GetMetricDescriptor),
-      ('google.monitoring.v3.MetricService', 'GetMonitoredResourceDescriptor'): face_utilities.unary_unary_inline(servicer.GetMonitoredResourceDescriptor),
-      ('google.monitoring.v3.MetricService', 'ListMetricDescriptors'): face_utilities.unary_unary_inline(servicer.ListMetricDescriptors),
-      ('google.monitoring.v3.MetricService', 'ListMonitoredResourceDescriptors'): face_utilities.unary_unary_inline(servicer.ListMonitoredResourceDescriptors),
-      ('google.monitoring.v3.MetricService', 'ListTimeSeries'): face_utilities.unary_unary_inline(servicer.ListTimeSeries),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_MetricService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.monitoring.v3.MetricService', 'CreateMetricDescriptor'): CreateMetricDescriptorRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'CreateTimeSeries'): CreateTimeSeriesRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'DeleteMetricDescriptor'): DeleteMetricDescriptorRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'GetMetricDescriptor'): GetMetricDescriptorRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'GetMonitoredResourceDescriptor'): GetMonitoredResourceDescriptorRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListMetricDescriptors'): ListMetricDescriptorsRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListMonitoredResourceDescriptors'): ListMonitoredResourceDescriptorsRequest.SerializeToString,
-      ('google.monitoring.v3.MetricService', 'ListTimeSeries'): ListTimeSeriesRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.monitoring.v3.MetricService', 'CreateMetricDescriptor'): google_dot_api_dot_metric__pb2.MetricDescriptor.FromString,
-      ('google.monitoring.v3.MetricService', 'CreateTimeSeries'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.monitoring.v3.MetricService', 'DeleteMetricDescriptor'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.monitoring.v3.MetricService', 'GetMetricDescriptor'): google_dot_api_dot_metric__pb2.MetricDescriptor.FromString,
-      ('google.monitoring.v3.MetricService', 'GetMonitoredResourceDescriptor'): google_dot_api_dot_monitored__resource__pb2.MonitoredResourceDescriptor.FromString,
-      ('google.monitoring.v3.MetricService', 'ListMetricDescriptors'): ListMetricDescriptorsResponse.FromString,
-      ('google.monitoring.v3.MetricService', 'ListMonitoredResourceDescriptors'): ListMonitoredResourceDescriptorsResponse.FromString,
-      ('google.monitoring.v3.MetricService', 'ListTimeSeries'): ListTimeSeriesResponse.FromString,
-    }
-    cardinalities = {
-      'CreateMetricDescriptor': cardinality.Cardinality.UNARY_UNARY,
-      'CreateTimeSeries': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteMetricDescriptor': cardinality.Cardinality.UNARY_UNARY,
-      'GetMetricDescriptor': cardinality.Cardinality.UNARY_UNARY,
-      'GetMonitoredResourceDescriptor': cardinality.Cardinality.UNARY_UNARY,
-      'ListMetricDescriptors': cardinality.Cardinality.UNARY_UNARY,
-      'ListMonitoredResourceDescriptors': cardinality.Cardinality.UNARY_UNARY,
-      'ListTimeSeries': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.monitoring.v3.MetricService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.monitoring.v3 MetricService API."""
+"""Accesses the google.monitoring.v3 NotificationChannelService API."""
 
 import functools
 import pkg_resources
@@ -26,7 +26,7 @@ import google.api_core.path_template
 from google.api import metric_pb2 as api_metric_pb2
 from google.api import monitored_resource_pb2
 from google.cloud.monitoring_v3.gapic import enums
-from google.cloud.monitoring_v3.gapic import metric_service_client_config
+from google.cloud.monitoring_v3.gapic import notification_channel_service_client_config
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
 from google.cloud.monitoring_v3.proto import common_pb2
@@ -34,7 +34,9 @@ from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
 from google.cloud.monitoring_v3.proto import metric_pb2 as proto_metric_pb2
 from google.cloud.monitoring_v3.proto import metric_service_pb2
-from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
+from google.cloud.monitoring_v3.proto import notification_pb2
+from google.cloud.monitoring_v3.proto import notification_service_pb2
+from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -42,10 +44,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-monitoring', ).version
 
 
-class MetricServiceClient(object):
+class NotificationChannelServiceClient(object):
     """
-    Manages metric descriptors, monitored resource descriptors, and
-    time series data.
+    The Notification Channel API provides access to configuration that
+    controls how messages related to incidents are sent.
     """
 
     SERVICE_ADDRESS = 'monitoring.googleapis.com:443'
@@ -62,7 +64,7 @@ class MetricServiceClient(object):
 
     # The name of the interface for this client. This is the key used to find
     # method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.monitoring.v3.MetricService'
+    _INTERFACE_NAME = 'google.monitoring.v3.NotificationChannelService'
 
     @classmethod
     def project_path(cls, project):
@@ -73,29 +75,29 @@ class MetricServiceClient(object):
         )
 
     @classmethod
-    def metric_descriptor_path(cls, project, metric_descriptor):
-        """Return a fully-qualified metric_descriptor string."""
+    def notification_channel_path(cls, project, notification_channel):
+        """Return a fully-qualified notification_channel string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/metricDescriptors/{metric_descriptor=**}',
+            'projects/{project}/notificationChannels/{notification_channel}',
             project=project,
-            metric_descriptor=metric_descriptor,
+            notification_channel=notification_channel,
         )
 
     @classmethod
-    def monitored_resource_descriptor_path(cls, project,
-                                           monitored_resource_descriptor):
-        """Return a fully-qualified monitored_resource_descriptor string."""
+    def notification_channel_descriptor_path(cls, project, channel_descriptor):
+        """Return a fully-qualified notification_channel_descriptor string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}',
+            'projects/{project}/notificationChannelDescriptors/{channel_descriptor}',
             project=project,
-            monitored_resource_descriptor=monitored_resource_descriptor,
+            channel_descriptor=channel_descriptor,
         )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 client_config=metric_service_client_config.config,
-                 client_info=None):
+    def __init__(
+            self,
+            channel=None,
+            credentials=None,
+            client_config=notification_channel_service_client_config.config,
+            client_info=None):
         """Constructor.
 
         Args:
@@ -131,8 +133,8 @@ class MetricServiceClient(object):
             )
 
         # Create the gRPC stubs.
-        self.metric_service_stub = (
-            metric_service_pb2_grpc.MetricServiceStub(channel))
+        self.notification_channel_service_stub = (
+            notification_service_pb2_grpc.NotificationChannelServiceStub(channel))
 
         if client_info is None:
             client_info = (
@@ -150,102 +152,101 @@ class MetricServiceClient(object):
         # These are wrapped versions of the gRPC stub methods, with retry and
         # timeout configuration applied, called by the public methods on
         # this class.
-        self._list_monitored_resource_descriptors = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.ListMonitoredResourceDescriptors,
+        self._list_notification_channel_descriptors = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.
+            ListNotificationChannelDescriptors,
             default_retry=method_configs[
-                'ListMonitoredResourceDescriptors'].retry,
-            default_timeout=method_configs['ListMonitoredResourceDescriptors']
+                'ListNotificationChannelDescriptors'].retry,
+            default_timeout=method_configs[
+                'ListNotificationChannelDescriptors'].timeout,
+            client_info=client_info,
+        )
+        self._get_notification_channel_descriptor = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.
+            GetNotificationChannelDescriptor,
+            default_retry=method_configs[
+                'GetNotificationChannelDescriptor'].retry,
+            default_timeout=method_configs[
+                'GetNotificationChannelDescriptor'].timeout,
+            client_info=client_info,
+        )
+        self._list_notification_channels = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.ListNotificationChannels,
+            default_retry=method_configs['ListNotificationChannels'].retry,
+            default_timeout=method_configs['ListNotificationChannels'].timeout,
+            client_info=client_info,
+        )
+        self._get_notification_channel = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.GetNotificationChannel,
+            default_retry=method_configs['GetNotificationChannel'].retry,
+            default_timeout=method_configs['GetNotificationChannel'].timeout,
+            client_info=client_info,
+        )
+        self._create_notification_channel = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.CreateNotificationChannel,
+            default_retry=method_configs['CreateNotificationChannel'].retry,
+            default_timeout=method_configs['CreateNotificationChannel']
             .timeout,
             client_info=client_info,
         )
-        self._get_monitored_resource_descriptor = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.GetMonitoredResourceDescriptor,
-            default_retry=method_configs[
-                'GetMonitoredResourceDescriptor'].retry,
-            default_timeout=method_configs['GetMonitoredResourceDescriptor']
+        self._update_notification_channel = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.UpdateNotificationChannel,
+            default_retry=method_configs['UpdateNotificationChannel'].retry,
+            default_timeout=method_configs['UpdateNotificationChannel']
             .timeout,
             client_info=client_info,
         )
-        self._list_metric_descriptors = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.ListMetricDescriptors,
-            default_retry=method_configs['ListMetricDescriptors'].retry,
-            default_timeout=method_configs['ListMetricDescriptors'].timeout,
-            client_info=client_info,
-        )
-        self._get_metric_descriptor = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.GetMetricDescriptor,
-            default_retry=method_configs['GetMetricDescriptor'].retry,
-            default_timeout=method_configs['GetMetricDescriptor'].timeout,
-            client_info=client_info,
-        )
-        self._create_metric_descriptor = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.CreateMetricDescriptor,
-            default_retry=method_configs['CreateMetricDescriptor'].retry,
-            default_timeout=method_configs['CreateMetricDescriptor'].timeout,
-            client_info=client_info,
-        )
-        self._delete_metric_descriptor = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.DeleteMetricDescriptor,
-            default_retry=method_configs['DeleteMetricDescriptor'].retry,
-            default_timeout=method_configs['DeleteMetricDescriptor'].timeout,
-            client_info=client_info,
-        )
-        self._list_time_series = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.ListTimeSeries,
-            default_retry=method_configs['ListTimeSeries'].retry,
-            default_timeout=method_configs['ListTimeSeries'].timeout,
-            client_info=client_info,
-        )
-        self._create_time_series = google.api_core.gapic_v1.method.wrap_method(
-            self.metric_service_stub.CreateTimeSeries,
-            default_retry=method_configs['CreateTimeSeries'].retry,
-            default_timeout=method_configs['CreateTimeSeries'].timeout,
+        self._delete_notification_channel = google.api_core.gapic_v1.method.wrap_method(
+            self.notification_channel_service_stub.DeleteNotificationChannel,
+            default_retry=method_configs['DeleteNotificationChannel'].retry,
+            default_timeout=method_configs['DeleteNotificationChannel']
+            .timeout,
             client_info=client_info,
         )
 
     # Service calls
-    def list_monitored_resource_descriptors(
+    def list_notification_channel_descriptors(
             self,
             name,
-            filter_=None,
             page_size=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists the descriptors for supported channel types. The use of descriptors
+        makes it possible for new channel types to be dynamically added.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.MetricServiceClient()
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_monitored_resource_descriptors(name):
+            >>> for element in client.list_notification_channel_descriptors(name):
             ...     # process element
             ...     pass
             >>>
             >>> # Or iterate over results one page at a time
-            >>> for page in client.list_monitored_resource_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_notification_channel_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            filter_ (str): An optional `filter <https://cloud.google.com/monitoring/api/v3/filters>`_ describing
-                the descriptors to be returned.  The filter can reference
-                the descriptor's type and labels. For example, the
-                following filter returns only Google Compute Engine descriptors
-                that have an ``id`` label:
+            name (str): The REST resource name of the parent from which to retrieve
+                the notification channel descriptors. The expected syntax is:
 
                 ::
 
-                    resource.type = starts_with(\"gce_\") AND resource.label:id
+                    projects/[PROJECT_ID]
+
+                Note that this names the parent container in which to look for the
+                descriptors; to retrieve a single descriptor by name, use the
+                ``GetNotificationChannelDescriptor``
+                operation, instead.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -262,7 +263,7 @@ class MetricServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.MonitoredResourceDescriptor` instances.
+            is an iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -276,48 +277,46 @@ class MetricServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = metric_service_pb2.ListMonitoredResourceDescriptorsRequest(
+        request = notification_service_pb2.ListNotificationChannelDescriptorsRequest(
             name=name,
-            filter=filter_,
             page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_monitored_resource_descriptors,
+                self._list_notification_channel_descriptors,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
             request=request,
-            items_field='resource_descriptors',
+            items_field='channel_descriptors',
             request_token_field='page_token',
             response_token_field='next_page_token',
         )
         return iterator
 
-    def get_monitored_resource_descriptor(
+    def get_notification_channel_descriptor(
             self,
             name,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
+        Gets a single channel descriptor. The descriptor indicates which fields
+        are expected / permitted for a notification channel of the given type.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.MetricServiceClient()
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
-            >>> name = client.monitored_resource_descriptor_path('[PROJECT]', '[MONITORED_RESOURCE_DESCRIPTOR]')
+            >>> name = client.notification_channel_descriptor_path('[PROJECT]', '[CHANNEL_DESCRIPTOR]')
             >>>
-            >>> response = client.get_monitored_resource_descriptor(name)
+            >>> response = client.get_notification_channel_descriptor(name)
 
         Args:
-            name (str): The monitored resource descriptor to get.  The format is
-                ``\"projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}\"``.
-                The ``{resource_type}`` is a predefined type, such as
-                ``cloudsql_database``.
+            name (str): The channel type for which to execute the request. The format is
+                ``projects/[PROJECT_ID]/notificationChannelDescriptors/{channel_type}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -328,7 +327,7 @@ class MetricServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.MonitoredResourceDescriptor` instance.
+            A :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -340,54 +339,60 @@ class MetricServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = metric_service_pb2.GetMonitoredResourceDescriptorRequest(
+        request = notification_service_pb2.GetNotificationChannelDescriptorRequest(
             name=name, )
-        return self._get_monitored_resource_descriptor(
+        return self._get_notification_channel_descriptor(
             request, retry=retry, timeout=timeout, metadata=metadata)
 
-    def list_metric_descriptors(
+    def list_notification_channels(
             self,
             name,
             filter_=None,
+            order_by=None,
             page_size=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists the notification channels that have been created for the project.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.MetricServiceClient()
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_metric_descriptors(name):
+            >>> for element in client.list_notification_channels(name):
             ...     # process element
             ...     pass
             >>>
             >>> # Or iterate over results one page at a time
-            >>> for page in client.list_metric_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
+            >>> for page in client.list_notification_channels(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
             name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            filter_ (str): If this field is empty, all custom and
-                system-defined metric descriptors are returned.
-                Otherwise, the `filter <https://cloud.google.com/monitoring/api/v3/filters>`_
-                specifies which metric descriptors are to be
-                returned. For example, the following filter matches all
-                `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_:
+                ``projects/[PROJECT_ID]``. That is, this names the container
+                in which to look for the notification channels; it does not name a
+                specific channel. To query a specific channel by REST resource name, use
+                the
+                ````GetNotificationChannel```` operation.
+            filter_ (str): If provided, this field specifies the criteria that must be met by
+                notification channels to be included in the response.
 
-                ::
+                For more details, see [sorting and
+                filtering](/monitoring/api/v3/sorting-and-filtering).
+            order_by (str): A comma-separated list of fields by which to sort the result. Supports
+                the same set of fields as in ``filter``. Entries can be prefixed with
+                a minus sign to sort in descending rather than ascending order.
 
-                    metric.type = starts_with(\"custom.googleapis.com/\")
+                For more details, see [sorting and
+                filtering](/monitoring/api/v3/sorting-and-filtering).
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -404,7 +409,7 @@ class MetricServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.MetricDescriptor` instances.
+            is an iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -418,336 +423,230 @@ class MetricServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = metric_service_pb2.ListMetricDescriptorsRequest(
+        request = notification_service_pb2.ListNotificationChannelsRequest(
             name=name,
             filter=filter_,
-            page_size=page_size,
-        )
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._list_metric_descriptors,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata),
-            request=request,
-            items_field='metric_descriptors',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
-        )
-        return iterator
-
-    def get_metric_descriptor(self,
-                              name,
-                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
-        """
-        Gets a single metric descriptor. This method does not require a Stackdriver account.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.MetricServiceClient()
-            >>>
-            >>> name = client.metric_descriptor_path('[PROJECT]', '[METRIC_DESCRIPTOR]')
-            >>>
-            >>> response = client.get_metric_descriptor(name)
-
-        Args:
-            name (str): The metric descriptor on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}/metricDescriptors/{metric_id}\"``.
-                An example value of ``{metric_id}`` is
-                ``\"compute.googleapis.com/instance/disk/read_bytes_count\"``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.monitoring_v3.types.MetricDescriptor` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        request = metric_service_pb2.GetMetricDescriptorRequest(name=name, )
-        return self._get_metric_descriptor(
-            request, retry=retry, timeout=timeout, metadata=metadata)
-
-    def create_metric_descriptor(
-            self,
-            name,
-            metric_descriptor,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
-        """
-        Creates a new metric descriptor.
-        User-created metric descriptors define
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.MetricServiceClient()
-            >>>
-            >>> name = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize ``metric_descriptor``:
-            >>> metric_descriptor = {}
-            >>>
-            >>> response = client.create_metric_descriptor(name, metric_descriptor)
-
-        Args:
-            name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom metric <https://cloud.google.com/monitoring/custom-metrics>`_
-                descriptor.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.MetricDescriptor`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.monitoring_v3.types.MetricDescriptor` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        request = metric_service_pb2.CreateMetricDescriptorRequest(
-            name=name,
-            metric_descriptor=metric_descriptor,
-        )
-        return self._create_metric_descriptor(
-            request, retry=retry, timeout=timeout, metadata=metadata)
-
-    def delete_metric_descriptor(
-            self,
-            name,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
-        """
-        Deletes a metric descriptor. Only user-created
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`_ can be deleted.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.MetricServiceClient()
-            >>>
-            >>> name = client.metric_descriptor_path('[PROJECT]', '[METRIC_DESCRIPTOR]')
-            >>>
-            >>> client.delete_metric_descriptor(name)
-
-        Args:
-            name (str): The metric descriptor on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}/metricDescriptors/{metric_id}\"``.
-                An example of ``{metric_id}`` is:
-                ``\"custom.googleapis.com/my_test_metric\"``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        request = metric_service_pb2.DeleteMetricDescriptorRequest(name=name, )
-        self._delete_metric_descriptor(
-            request, retry=retry, timeout=timeout, metadata=metadata)
-
-    def list_time_series(self,
-                         name,
-                         filter_,
-                         interval,
-                         view,
-                         aggregation=None,
-                         order_by=None,
-                         page_size=None,
-                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT,
-                         metadata=None):
-        """
-        Lists time series that match a filter. This method does not require a Stackdriver account.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>> from google.cloud.monitoring_v3 import enums
-            >>>
-            >>> client = monitoring_v3.MetricServiceClient()
-            >>>
-            >>> name = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize ``filter_``:
-            >>> filter_ = ''
-            >>>
-            >>> # TODO: Initialize ``interval``:
-            >>> interval = {}
-            >>>
-            >>> # TODO: Initialize ``view``:
-            >>> view = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
-            >>>
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_time_series(name, filter_, interval, view):
-            ...     # process element
-            ...     pass
-            >>>
-            >>> # Or iterate over results one page at a time
-            >>> for page in client.list_time_series(name, filter_, interval, view, options=CallOptions(page_token=INITIAL_PAGE)):
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            name (str): The project on which to execute the request. The format is
-                \"projects/{project_id_or_number}\".
-            filter_ (str): A `monitoring filter <https://cloud.google.com/monitoring/api/v3/filters>`_ that specifies which time
-                series should be returned.  The filter must specify a single metric type,
-                and can additionally specify metric labels and other information. For
-                example:
-
-                ::
-
-                    metric.type = \"compute.googleapis.com/instance/cpu/usage_time\" AND
-                        metric.label.instance_name = \"my-instance-name\"
-            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): The time interval for which results should be returned. Only time series
-                that contain data points in the specified interval are included
-                in the response.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
-            view (~google.cloud.monitoring_v3.types.TimeSeriesView): Specifies which information is returned about the time series.
-            aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): By default, the raw time series data is returned.
-                Use this field to combine multiple time series for different
-                views of the data.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.Aggregation`
-            order_by (str): Specifies the order in which the points of the time series should
-                be returned.  By default, results are not ordered.  Currently,
-                this field must be left blank.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.TimeSeries` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        request = metric_service_pb2.ListTimeSeriesRequest(
-            name=name,
-            filter=filter_,
-            interval=interval,
-            view=view,
-            aggregation=aggregation,
             order_by=order_by,
             page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_time_series,
+                self._list_notification_channels,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
             request=request,
-            items_field='time_series',
+            items_field='notification_channels',
             request_token_field='page_token',
             response_token_field='next_page_token',
         )
         return iterator
 
-    def create_time_series(self,
-                           name,
-                           time_series,
-                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT,
-                           metadata=None):
+    def get_notification_channel(
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
-        Creates or adds data to one or more time series.
-        The response is empty if all time series in the request were written.
-        If any time series could not be written, a corresponding failure message is
-        included in the error response.
+        Gets a single notification channel. The channel includes the relevant
+        configuration details with which the channel was created. However, the
+        response may truncate or omit passwords, API keys, or other private key
+        matter and thus the response may not be 100% identical to the information
+        that was supplied in the call to the create method.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.MetricServiceClient()
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>>
+            >>> response = client.get_notification_channel(name)
+
+        Args:
+            name (str): The channel for which to execute the request. The format is
+                ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = notification_service_pb2.GetNotificationChannelRequest(
+            name=name, )
+        return self._get_notification_channel(
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def create_notification_channel(
+            self,
+            name,
+            notification_channel,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Creates a new notification channel, representing a single notification
+        endpoint such as an email address, SMS number, or pagerduty service.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize ``time_series``:
-            >>> time_series = []
+            >>> # TODO: Initialize ``notification_channel``:
+            >>> notification_channel = {}
             >>>
-            >>> client.create_time_series(name, time_series)
+            >>> response = client.create_notification_channel(name, notification_channel)
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``\"projects/{project_id_or_number}\"``.
-            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series.
-                Adds at most one data point to each of several time series.  The new data
-                point must be more recent than any other point in its time series.  Each
-                ``TimeSeries`` value must fully specify a unique time series by supplying
-                all label values for the metric and the monitored resource.
+            name (str): The project on which to execute the request. The format is:
+
+                ::
+
+                    projects/[PROJECT_ID]
+
+                Note that this names the container into which the channel will be
+                written. This does not name the newly created channel. The resulting
+                channel's name will have a normalized version of this field as a prefix,
+                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the channel.
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): The definition of the ``NotificationChannel`` to create.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.TimeSeries`
+                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = notification_service_pb2.CreateNotificationChannelRequest(
+            name=name,
+            notification_channel=notification_channel,
+        )
+        return self._create_notification_channel(
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def update_notification_channel(
+            self,
+            notification_channel,
+            update_mask=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Updates a notification channel. Fields not specified in the field mask
+        remain unchanged.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> # TODO: Initialize ``notification_channel``:
+            >>> notification_channel = {}
+            >>>
+            >>> response = client.update_notification_channel(notification_channel)
+
+        Args:
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified
+                notification channel. The description must provide a definition for
+                fields to be updated; the names of these fields should also be
+                included in the ``update_mask``.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
+            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): The fields to update.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = notification_service_pb2.UpdateNotificationChannelRequest(
+            notification_channel=notification_channel,
+            update_mask=update_mask,
+        )
+        return self._update_notification_channel(
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def delete_notification_channel(
+            self,
+            name,
+            force=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Deletes a notification channel.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>>
+            >>> client.delete_notification_channel(name)
+
+        Args:
+            name (str): The channel for which to execute the request. The format is
+                ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
+            force (bool): If true, the notification channel will be deleted regardless of its
+                use in alert policies (the policies will be updated to remove the
+                channel). If false, channels that are still referenced by an existing
+                alerting policy will fail to be deleted in a delete operation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -767,9 +666,9 @@ class MetricServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
-        request = metric_service_pb2.CreateTimeSeriesRequest(
+        request = notification_service_pb2.DeleteNotificationChannelRequest(
             name=name,
-            time_series=time_series,
+            force=force,
         )
-        self._create_time_series(
+        self._delete_notification_channel(
             request, retry=retry, timeout=timeout, metadata=metadata)

@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/monitoring_v3/proto/group_service.proto',
   package='google.monitoring.v3',
   syntax='proto3',
-  serialized_pb=_b('\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter\"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"\"\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group\"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"+\x82\xd3\xe4\x93\x02%\"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse\".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\x8c\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3b\x06proto3')
+  serialized_pb=_b('\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter\"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08\"\"\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32\".google.monitoring.v3.TimeInterval\"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group\"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"+\x82\xd3\xe4\x93\x02%\"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group\"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse\".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -44,42 +44,42 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='children_of_group', full_name='google.monitoring.v3.ListGroupsRequest.children_of_group', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ancestors_of_group', full_name='google.monitoring.v3.ListGroupsRequest.ancestors_of_group', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='descendants_of_group', full_name='google.monitoring.v3.ListGroupsRequest.descendants_of_group', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.monitoring.v3.ListGroupsRequest.page_size', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.monitoring.v3.ListGroupsRequest.page_token', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -113,14 +113,14 @@ _LISTGROUPSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.monitoring.v3.ListGroupsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -151,7 +151,7 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -182,21 +182,21 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='group', full_name='google.monitoring.v3.CreateGroupRequest.group', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='validate_only', full_name='google.monitoring.v3.CreateGroupRequest.validate_only', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -227,14 +227,14 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='validate_only', full_name='google.monitoring.v3.UpdateGroupRequest.validate_only', index=1,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -265,7 +265,7 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -296,35 +296,35 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.monitoring.v3.ListGroupMembersRequest.page_size', index=1,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.monitoring.v3.ListGroupMembersRequest.page_token', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='filter', full_name='google.monitoring.v3.ListGroupMembersRequest.filter', index=3,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='interval', full_name='google.monitoring.v3.ListGroupMembersRequest.interval', index=4,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -355,21 +355,21 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.monitoring.v3.ListGroupMembersResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='total_size', full_name='google.monitoring.v3.ListGroupMembersResponse.total_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -614,331 +614,74 @@ _sym_db.RegisterMessage(ListGroupMembersResponse)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3'))
 
+_GROUPSERVICE = _descriptor.ServiceDescriptor(
+  name='GroupService',
+  full_name='google.monitoring.v3.GroupService',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1068,
+  serialized_end=1895,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListGroups',
+    full_name='google.monitoring.v3.GroupService.ListGroups',
+    index=0,
+    containing_service=None,
+    input_type=_LISTGROUPSREQUEST,
+    output_type=_LISTGROUPSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetGroup',
+    full_name='google.monitoring.v3.GroupService.GetGroup',
+    index=1,
+    containing_service=None,
+    input_type=_GETGROUPREQUEST,
+    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateGroup',
+    full_name='google.monitoring.v3.GroupService.CreateGroup',
+    index=2,
+    containing_service=None,
+    input_type=_CREATEGROUPREQUEST,
+    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002%\"\034/v3/{name=projects/*}/groups:\005group')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateGroup',
+    full_name='google.monitoring.v3.GroupService.UpdateGroup',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATEGROUPREQUEST,
+    output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteGroup',
+    full_name='google.monitoring.v3.GroupService.DeleteGroup',
+    index=4,
+    containing_service=None,
+    input_type=_DELETEGROUPREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListGroupMembers',
+    full_name='google.monitoring.v3.GroupService.ListGroupMembers',
+    index=5,
+    containing_service=None,
+    input_type=_LISTGROUPMEMBERSREQUEST,
+    output_type=_LISTGROUPMEMBERSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_GROUPSERVICE)
 
-  class GroupServiceStub(object):
-    """The Group API lets you inspect and manage your
-    [groups](google.monitoring.v3.Group).
+DESCRIPTOR.services_by_name['GroupService'] = _GROUPSERVICE
 
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListGroups = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/ListGroups',
-          request_serializer=ListGroupsRequest.SerializeToString,
-          response_deserializer=ListGroupsResponse.FromString,
-          )
-      self.GetGroup = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/GetGroup',
-          request_serializer=GetGroupRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-          )
-      self.CreateGroup = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/CreateGroup',
-          request_serializer=CreateGroupRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-          )
-      self.UpdateGroup = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/UpdateGroup',
-          request_serializer=UpdateGroupRequest.SerializeToString,
-          response_deserializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-          )
-      self.DeleteGroup = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/DeleteGroup',
-          request_serializer=DeleteGroupRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.ListGroupMembers = channel.unary_unary(
-          '/google.monitoring.v3.GroupService/ListGroupMembers',
-          request_serializer=ListGroupMembersRequest.SerializeToString,
-          response_deserializer=ListGroupMembersResponse.FromString,
-          )
-
-
-  class GroupServiceServicer(object):
-    """The Group API lets you inspect and manage your
-    [groups](google.monitoring.v3.Group).
-
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
-    """
-
-    def ListGroups(self, request, context):
-      """Lists the existing groups.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetGroup(self, request, context):
-      """Gets a single group.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateGroup(self, request, context):
-      """Creates a new group.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateGroup(self, request, context):
-      """Updates an existing group.
-      You can change any group attributes except `name`.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteGroup(self, request, context):
-      """Deletes an existing group.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ListGroupMembers(self, request, context):
-      """Lists the monitored resources that are members of a group.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_GroupServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListGroups': grpc.unary_unary_rpc_method_handler(
-            servicer.ListGroups,
-            request_deserializer=ListGroupsRequest.FromString,
-            response_serializer=ListGroupsResponse.SerializeToString,
-        ),
-        'GetGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.GetGroup,
-            request_deserializer=GetGroupRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-        ),
-        'CreateGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateGroup,
-            request_deserializer=CreateGroupRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-        ),
-        'UpdateGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateGroup,
-            request_deserializer=UpdateGroupRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-        ),
-        'DeleteGroup': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteGroup,
-            request_deserializer=DeleteGroupRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'ListGroupMembers': grpc.unary_unary_rpc_method_handler(
-            servicer.ListGroupMembers,
-            request_deserializer=ListGroupMembersRequest.FromString,
-            response_serializer=ListGroupMembersResponse.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.monitoring.v3.GroupService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaGroupServiceServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The Group API lets you inspect and manage your
-    [groups](google.monitoring.v3.Group).
-
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
-    """
-    def ListGroups(self, request, context):
-      """Lists the existing groups.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetGroup(self, request, context):
-      """Gets a single group.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateGroup(self, request, context):
-      """Creates a new group.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateGroup(self, request, context):
-      """Updates an existing group.
-      You can change any group attributes except `name`.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteGroup(self, request, context):
-      """Deletes an existing group.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ListGroupMembers(self, request, context):
-      """Lists the monitored resources that are members of a group.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaGroupServiceStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """The Group API lets you inspect and manage your
-    [groups](google.monitoring.v3.Group).
-
-    A group is a named filter that is used to identify
-    a collection of monitored resources. Groups are typically used to
-    mirror the physical and/or logical topology of the environment.
-    Because group membership is computed dynamically, monitored
-    resources that are started in the future are automatically placed
-    in matching groups. By using a group to name monitored resources in,
-    for example, an alert policy, the target of that alert policy is
-    updated automatically as monitored resources are added and removed
-    from the infrastructure.
-    """
-    def ListGroups(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the existing groups.
-      """
-      raise NotImplementedError()
-    ListGroups.future = None
-    def GetGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Gets a single group.
-      """
-      raise NotImplementedError()
-    GetGroup.future = None
-    def CreateGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new group.
-      """
-      raise NotImplementedError()
-    CreateGroup.future = None
-    def UpdateGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates an existing group.
-      You can change any group attributes except `name`.
-      """
-      raise NotImplementedError()
-    UpdateGroup.future = None
-    def DeleteGroup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes an existing group.
-      """
-      raise NotImplementedError()
-    DeleteGroup.future = None
-    def ListGroupMembers(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Lists the monitored resources that are members of a group.
-      """
-      raise NotImplementedError()
-    ListGroupMembers.future = None
-
-
-  def beta_create_GroupService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.monitoring.v3.GroupService', 'CreateGroup'): CreateGroupRequest.FromString,
-      ('google.monitoring.v3.GroupService', 'DeleteGroup'): DeleteGroupRequest.FromString,
-      ('google.monitoring.v3.GroupService', 'GetGroup'): GetGroupRequest.FromString,
-      ('google.monitoring.v3.GroupService', 'ListGroupMembers'): ListGroupMembersRequest.FromString,
-      ('google.monitoring.v3.GroupService', 'ListGroups'): ListGroupsRequest.FromString,
-      ('google.monitoring.v3.GroupService', 'UpdateGroup'): UpdateGroupRequest.FromString,
-    }
-    response_serializers = {
-      ('google.monitoring.v3.GroupService', 'CreateGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'DeleteGroup'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'GetGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'ListGroupMembers'): ListGroupMembersResponse.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'ListGroups'): ListGroupsResponse.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'UpdateGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.SerializeToString,
-    }
-    method_implementations = {
-      ('google.monitoring.v3.GroupService', 'CreateGroup'): face_utilities.unary_unary_inline(servicer.CreateGroup),
-      ('google.monitoring.v3.GroupService', 'DeleteGroup'): face_utilities.unary_unary_inline(servicer.DeleteGroup),
-      ('google.monitoring.v3.GroupService', 'GetGroup'): face_utilities.unary_unary_inline(servicer.GetGroup),
-      ('google.monitoring.v3.GroupService', 'ListGroupMembers'): face_utilities.unary_unary_inline(servicer.ListGroupMembers),
-      ('google.monitoring.v3.GroupService', 'ListGroups'): face_utilities.unary_unary_inline(servicer.ListGroups),
-      ('google.monitoring.v3.GroupService', 'UpdateGroup'): face_utilities.unary_unary_inline(servicer.UpdateGroup),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_GroupService_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.monitoring.v3.GroupService', 'CreateGroup'): CreateGroupRequest.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'DeleteGroup'): DeleteGroupRequest.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'GetGroup'): GetGroupRequest.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'ListGroupMembers'): ListGroupMembersRequest.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'ListGroups'): ListGroupsRequest.SerializeToString,
-      ('google.monitoring.v3.GroupService', 'UpdateGroup'): UpdateGroupRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.monitoring.v3.GroupService', 'CreateGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-      ('google.monitoring.v3.GroupService', 'DeleteGroup'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.monitoring.v3.GroupService', 'GetGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-      ('google.monitoring.v3.GroupService', 'ListGroupMembers'): ListGroupMembersResponse.FromString,
-      ('google.monitoring.v3.GroupService', 'ListGroups'): ListGroupsResponse.FromString,
-      ('google.monitoring.v3.GroupService', 'UpdateGroup'): google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.Group.FromString,
-    }
-    cardinalities = {
-      'CreateGroup': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteGroup': cardinality.Cardinality.UNARY_UNARY,
-      'GetGroup': cardinality.Cardinality.UNARY_UNARY,
-      'ListGroupMembers': cardinality.Cardinality.UNARY_UNARY,
-      'ListGroups': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateGroup': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.monitoring.v3.GroupService', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
