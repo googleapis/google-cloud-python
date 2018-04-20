@@ -186,51 +186,53 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results)
 
-    def list_datasets(self, include_all=False, filter=None, max_results=None,
-                      page_token=None, retry=DEFAULT_RETRY):
+    def list_datasets(
+            self, project=None, include_all=False, filter=None,
+            max_results=None, page_token=None, retry=DEFAULT_RETRY):
         """List datasets for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list
 
-        :type include_all: bool
-        :param include_all: True if results include hidden datasets.
+        Args:
+            project (str):
+                Optional. Project ID to use for retreiving datasets. Defaults
+                to the client's project.
+            include_all (bool):
+                Optional. True if results include hidden datasets. Defaults
+                to False.
+            filter (str):
+                Optional. An expression for filtering the results by label.
+                For syntax, see
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
+            max_results (int):
+                Optional. Maximum number of datasets to return.
+            page_token (str):
+                Optional. Token representing a cursor into the datasets. If
+                not passed, the API will return the first page of datasets.
+                The token marks the beginning of the iterator to be returned
+                and the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
-        :type filter: str
-        :param filter: (Optional) an expression for filtering the results by
-                       label. For syntax, see
-                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
-
-        :type max_results: int
-        :param max_results: (Optional) maximum number of datasets to return,
-                            if not passed, defaults to a value set by the API.
-
-        :type page_token: str
-        :param page_token:
-            (Optional) Token representing a cursor into the datasets. If
-            not passed, the API will return the first page of datasets.
-            The token marks the beginning of the iterator to be returned
-            and the value of the ``page_token`` can be accessed at
-            ``next_page_token`` of the
-            :class:`~google.api_core.page_iterator.HTTPIterator`.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns:
-            Iterator of
-            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
-            associated with the client's project.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of
+                :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
+                associated with the project.
         """
         extra_params = {}
+        if project is None:
+            project = self.project
         if include_all:
             extra_params['all'] = True
         if filter:
             # TODO: consider supporting a dict of label -> value for filter,
             # and converting it into a string here.
             extra_params['filter'] = filter
-        path = '/projects/%s/datasets' % (self.project,)
+        path = '/projects/%s/datasets' % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
@@ -658,45 +660,47 @@ class Client(ClientWithProject):
 
         return self.job_from_resource(resource['job'])
 
-    def list_jobs(self, max_results=None, page_token=None, all_users=None,
-                  state_filter=None, retry=DEFAULT_RETRY):
+    def list_jobs(
+            self, project=None, max_results=None, page_token=None,
+            all_users=None, state_filter=None, retry=DEFAULT_RETRY):
         """List jobs for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
-        :type max_results: int
-        :param max_results: maximum number of jobs to return, If not
-                            passed, defaults to a value set by the API.
+        Args:
+            project (str):
+                Optional. Project ID to use for retreiving datasets. Defaults
+                to the client's project.
+            max_results (int):
+                Optional. Maximum number of jobs to return.
+            page_token (str):
+                Optional. Opaque marker for the next "page" of jobs. If not
+                passed, the API will return the first page of jobs. The token
+                marks the beginning of the iterator to be returned and the
+                value of the ``page_token`` can be accessed at
+                ``next_page_token`` of
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            all_users (bool):
+                If true, include jobs owned by all users in the project.
+            state_filter (str):
+                Optional. If set, include only jobs matching the given
+                state. One of
 
-        :type page_token: str
-        :param page_token:
-             (Optional) Opaque marker for the next "page" of jobs. If not
-             passed, the API will return the first page of jobs. The token
-             marks the beginning of the iterator to be returned and the
-             value of the ``page_token`` can be accessed at
-             ``next_page_token`` of
-             :class:`~google.api_core.page_iterator.HTTPIterator`.
+                    * ``"done"``
+                    * ``"pending"``
+                    * ``"running"``
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
-        :type all_users: bool
-        :param all_users: if true, include jobs owned by all users in the
-                          project.
-
-        :type state_filter: str
-        :param state_filter: if passed, include only jobs matching the given
-                             state.  One of
-
-                             * ``"done"``
-                             * ``"pending"``
-                             * ``"running"``
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterable of job instances.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterable of job instances.
         """
         extra_params = {'projection': 'full'}
+
+        if project is None:
+            project = self.project
 
         if all_users is not None:
             extra_params['allUsers'] = all_users
@@ -704,7 +708,7 @@ class Client(ClientWithProject):
         if state_filter is not None:
             extra_params['stateFilter'] = state_filter
 
-        path = '/projects/%s/jobs' % (self.project,)
+        path = '/projects/%s/jobs' % (project,)
         return page_iterator.HTTPIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
