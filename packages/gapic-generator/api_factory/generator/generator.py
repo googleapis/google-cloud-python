@@ -77,7 +77,6 @@ class Generator:
         for service in self._api.services.values():
             output_files += self._render_templates(
                 self._env.loader.service_templates,
-                transform_filename=service.transform_filename,
                 additional_context={'service': service},
             )
 
@@ -94,7 +93,6 @@ class Generator:
     def _render_templates(
             self,
             templates: Iterable[str], *,
-            transform_filename: Callable[[str], str] = lambda fn: fn,
             additional_context: Mapping[str, Any] = None,
             ) -> Sequence[CodeGeneratorResponse.File]:
         """Render the requested templates.
@@ -105,9 +103,6 @@ class Generator:
                 :class:`~.loader.TemplateLoader`, and they should be
                 able to be set to the :meth:`jinja2.Environment.get_template`
                 method.
-            transform_filename (Callable[str, str]): A callable to
-                rename the resulting file from the template name.
-                Note that the `.j2` suffix is stripped automatically.
             additional_context (Mapping[str, Any]): Additional variables
                 to be sent to the templates. The ``api`` variable
                 is always available.
@@ -122,16 +117,16 @@ class Generator:
         # Iterate over the provided templates and generate a File object
         # for each.
         for template_name in templates:
-            # Get the appropriate output filename.
-            output_filename = transform_filename(template_name[:-len('.j2')])
-
             # Generate the File object.
             answer.append(CodeGeneratorResponse.File(
                 content=self._env.get_template(template_name).render(
                     api=self._api,
                     **additional_context
                 ).strip() + '\n',
-                name=output_filename,
+                name=self._get_output_filename(
+                    template_name,
+                    context=additional_context,
+                ),
             ))
 
         # Done; return the File objects based on these templates.
@@ -162,6 +157,51 @@ class Generator:
 
         # Done; return the File objects.
         return answer
+
+    def _get_output_filename(
+            self,
+            template_name: str, *,
+            context: dict = None,
+            ) -> str:
+        """Return the appropriate output filename for this template.
+
+        This entails running the template name through a series of
+        replacements to replace the "filename variables" (``$name``,
+        ``$service``, etc.).
+
+        Additionally, any of these variables may be substituted with an
+        empty value, and we should do the right thing in this case.
+        (The exception to this is ``$service``, which is guaranteed to be
+        set if it is needed.)
+
+        Args:
+            template_name (str): The filename of the template, from the
+                filesystem, relative to ``templates/``.
+            context (Mapping): Additional context being sent to the template.
+
+        Returns:
+            str: The appropriate output filename.
+        """
+        filename = template_name[:-len('.j2')] \
+
+        # Replace the $namespace variable.
+        filename = filename.replace(
+            '$namespace',
+            '/'.join([i.lower() for i in self._api.client.namespace]),
+        ).lstrip('/')
+
+        # Replace the $name and $version variables.
+        filename = filename.replace('$name_$version',
+                                    self._api.versioned_module_name)
+        filename = filename.replace('$name', self._api.module_name)
+
+        # Replace the $service variable if applicable.
+        if context and 'service' in context:
+            filename = filename.replace('$service',
+                                        context['service'].module_name)
+
+        # Done, return the filename.
+        return filename
 
 
 _dirname = os.path.realpath(os.path.dirname(__file__))

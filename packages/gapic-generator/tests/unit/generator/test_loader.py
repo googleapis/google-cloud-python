@@ -22,10 +22,10 @@ def test_service_templates():
     with mock.patch.object(loader, 'list_templates') as list_templates:
         list_templates.return_value = [
             '_base.j2', 'foo.j2', 'bar.j2',
-            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+            '$service/spam.j2', '$service/eggs.j2', '$service/py/spameggs.j2',
         ]
         assert loader.service_templates == {
-            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+            '$service/spam.j2', '$service/eggs.j2', '$service/py/spameggs.j2',
         }
 
 
@@ -34,6 +34,6 @@ def test_api_templates():
     with mock.patch.object(loader, 'list_templates') as list_templates:
         list_templates.return_value = [
             '_base.j2', 'foo.j2', 'bar.j2',
-            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+            '$service/spam.j2', '$service/eggs.j2', '$service/py/spameggs.j2',
         ]
         assert loader.api_templates == {'foo.j2', 'bar.j2'}

@@ -22,9 +22,9 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.compiler import plugin_pb2
 
 from api_factory.generator import generator
-from api_factory.schema.api import API
 from api_factory.schema import wrappers
-from api_factory import utils
+from api_factory.schema.api import API
+from api_factory.schema.pb import client_pb2
 
 
 def test_constructor():
@@ -108,9 +108,6 @@ def test_get_response():
                 continue
             service = kwargs['additional_context']['service']
             assert isinstance(service, wrappers.Service)
-            assert kwargs['transform_filename'](
-                'service/foo',
-            ) == f'{utils.to_snake_case(service.name)}/foo'
 
 
 def test_render_templates():
@@ -153,28 +150,6 @@ def test_render_templates_additional_context():
     assert files[0].content == 'A bird!\n'
 
 
-def test_render_templates_filename_rename():
-    g = make_generator()
-
-    # Determine the templates to be rendered.
-    templates = ('service/foo.py.j2', 'service/bar.py.j2', 'plain.py.j2')
-    with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
-        get_template.return_value = jinja2.Template('Template body.')
-
-        # Render the templates.
-        files = g._render_templates(
-            templates,
-            transform_filename=lambda f: f.replace('service/', 'each/'),
-        )
-
-    # Test that we get back the expected content for each template.
-    assert len(files) == 3
-    assert files[0].name == 'each/foo.py'
-    assert files[1].name == 'each/bar.py'
-    assert files[2].name == 'plain.py'
-    assert all([f.content == 'Template body.\n' for f in files])
-
-
 def test_read_flat_files():
     g = make_generator()
 
@@ -211,5 +186,43 @@ def test_read_flat_files():
         assert files[1].content == 'abc-files/other/bar.ext-r'
 
 
+def test_get_output_filename():
+    g = make_generator(proto_file=[make_proto_file(name='Spam', version='v2')])
+    template_name = '$namespace/$name_$version/foo.py.j2'
+    assert g._get_output_filename(template_name) == 'spam_v2/foo.py'
+
+
+def test_get_output_filename_with_namespace():
+    g = make_generator(proto_file=[make_proto_file(
+        name='Spam',
+        namespace=['Ham', 'Bacon'],
+        version='v2',
+    )])
+    template_name = '$namespace/$name_$version/foo.py.j2'
+    assert g._get_output_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
+
+
+def test_get_output_filename_with_service():
+    g = make_generator(proto_file=[make_proto_file(name='spam', version='v2')])
+    template_name = '$name/$service/foo.py.j2'
+    assert g._get_output_filename(
+        template_name,
+        context={
+            'service': wrappers.Service(
+                methods=[],
+                service_pb=descriptor_pb2.ServiceDescriptorProto(name='Eggs'),
+            ),
+        }
+    ) == 'spam/eggs/foo.py'
+
+
 def make_generator(**kwargs):
     return generator.Generator(plugin_pb2.CodeGeneratorRequest(**kwargs))
+
+
+def make_proto_file(**kwargs):
+    proto_file = descriptor_pb2.FileDescriptorProto()
+    proto_file.options.Extensions[client_pb2.client].MergeFrom(
+        client_pb2.Client(**kwargs),
+    )
+    return proto_file

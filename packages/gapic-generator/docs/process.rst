@@ -82,17 +82,30 @@ of client library files.
 First, it loads every template in the ``generator/templates/`` directory.
 These are `Jinja`_ templates. There is no master list of templates;
 it is assumed that every template in this directory should be rendered
-(unless its name begins with an underscore), and that the name of the
-resulting file should be the same as the template's file name with the
-``.j2`` suffix truncated.
+(unless its name begins with an underscore).
+
+The name of the output file is based on the name of the template, with
+the following string replacements applied:
+
+* The ``.j2`` suffix is removed.
+* ``$namespace`` is replaced with the namespace specified in the client,
+  converted to appropriate Python module case. If there is no namespace,
+  this segment is dropped.
+* ``$name`` is replaced with the client name. This is expected to be
+  present.
+* ``$version`` is replaced with the client version (the version of the API).
+  If there is no specified version, this is dropped.
+* ``$service`` is replaced with the service name, converted to appropriate
+  Python module case. There may be more than one service in an API; read on
+  for more about this.
 
 Every template receives **one** variable, spelled ``api``. It is the
 :class:`~.schema.api.API` object that was pieced together in the parsing step.
 
 There is one caveat to the above, which is that an API can have more than
-one service. Therefore, the ``generator/templates/service/`` directory
-is a special case. These files are rendered *once per service*, with the
-``service`` directory name changed to the name of the service itself
+one service. Therefore, templates with ``$service/`` in their name
+are a special case. These files are rendered *once per service*, with the
+``$service`` directory name changed to the name of the service itself
 (in snake case, because this is Python). Additionally, these templates
 receive two variables: the ``api`` variable discussed above, as well as a
 variable spelled ``service``, which corresponds to the

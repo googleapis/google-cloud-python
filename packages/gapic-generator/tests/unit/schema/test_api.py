@@ -31,6 +31,32 @@ def test_long_name():
     assert api.long_name == 'Agrabah Lamp Genie'
 
 
+def test_module_name():
+    api = make_api(client=make_client(
+        name='Genie',
+        namespace=['Agrabah', 'Lamp'],
+    ))
+    assert api.module_name == 'genie'
+
+
+def test_versioned_module_name_no_version():
+    api = make_api(client=make_client(
+        name='Genie',
+        namespace=['Agrabah', 'Lamp'],
+        version='',
+    ))
+    assert api.versioned_module_name == 'genie'
+
+
+def test_versioned_module_name():
+    api = make_api(client=make_client(
+        name='Genie',
+        namespace=['Agrabah', 'Lamp'],
+        version='v2',
+    ))
+    assert api.versioned_module_name == 'genie_v2'
+
+
 def test_warehouse_package_name_placeholder():
     api = make_api(client=make_client(name=''))
     assert api.warehouse_package_name == '<<< PACKAGE NAME >>>'
@@ -203,8 +229,6 @@ def test_get_fields():
 
 
 def test_get_methods():
-    L = descriptor_pb2.SourceCodeInfo.Location
-
     # Start with an empty API object.
     api = make_api()
 

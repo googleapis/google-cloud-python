@@ -59,14 +59,13 @@ def test_service_pb2_modules():
     ]
 
 
-def test_service_transform_filename():
-    service = make_service()
-    assert service.transform_filename('foobar') == 'foobar'
-    assert service.transform_filename('service/foobar') == 'placeholder/foobar'
+def test_module_name():
+    service = make_service(name='MyService')
+    assert service.module_name == 'my_service'
 
 
 def make_service(name: str = 'Placeholder', host: str = '',
-                scopes: typing.Tuple[str] = ()) -> wrappers.Service:
+                 scopes: typing.Tuple[str] = ()) -> wrappers.Service:
     # Declare a few methods, with messages in distinct packages.
     methods = (
         get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),

@@ -140,6 +140,15 @@ class Service:
         return ()
 
     @property
+    def module_name(self) -> str:
+        """Return the appropriate module name for this service.
+
+        Returns:
+            str: The service name, in snake case.
+        """
+        return utils.to_snake_case(self.name)
+
+    @property
     def pb2_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of pb2 modules, for import.
 
@@ -162,20 +171,3 @@ class Service:
                 method.output.pb2_module,
             ))
         return sorted(answer)
-
-    def transform_filename(self, original: str) -> str:
-        """Transforms a filename to be appropriate for this service.
-
-        This essentially replaces the ``service/`` prefix with the
-        snake-cased directory for the service name.
-
-        Args:
-            original (str): The filename to be transformed.
-
-        Returns:
-            str: The transformed directory name.
-        """
-        return original.replace(
-            'service/',
-            f'{utils.to_snake_case(self.name)}/',
-        )

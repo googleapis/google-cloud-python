@@ -35,7 +35,7 @@ class TemplateLoader(jinja2.FileSystemLoader):
 
         All templates in the ``templates/`` directory are included except:
 
-          * Templates corresponding to services (in the ``service/``
+          * Templates corresponding to services (in a ``$service/``
             subdirectory) are excluded. See :meth:`service_templates`.
           * Templates beginning with ``_`` are excluded.
 
@@ -55,8 +55,8 @@ class TemplateLoader(jinja2.FileSystemLoader):
     def service_templates(self):
         """Return the templates specific to each service.
 
-        This corresponds to all of the templates in the
-        ``templates/service/`` subdirectory (relative to this file).
+        This corresponds to all of the templates in a ``$service/``
+        subdirectory (this does _not_ need to be at the top level).
 
         When these templates are rendered, they are expected to be sent
         two variables: an :class:`~.API` object spelled ``api``, and the
@@ -68,5 +68,5 @@ class TemplateLoader(jinja2.FileSystemLoader):
             Set[str]: A list of service templates.
         """
         return set(
-            [t for t in self.list_templates() if t.startswith('service/')]
+            [t for t in self.list_templates() if '$service/' in t]
         )
