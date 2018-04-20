@@ -264,6 +264,18 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='GET', path='/%s' % PATH, query_params={})
 
+    def test_list_datasets_w_project(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        list(client.list_datasets(project='other-project'))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/datasets',
+            query_params={})
+
     def test_list_datasets_explicit_response_missing_datasets_key(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
         TOKEN = 'TOKEN'
@@ -1713,6 +1725,20 @@ class TestClient(unittest.TestCase):
                 'pageToken': TOKEN,
                 'allUsers': True,
                 'stateFilter': 'done'
+            })
+
+    def test_list_jobs_w_project(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        list(client.list_jobs(project='other-project'))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/other-project/jobs',
+            query_params={
+                'projection': 'full',
             })
 
     def test_load_table_from_uri(self):
