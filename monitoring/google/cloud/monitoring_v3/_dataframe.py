@@ -17,7 +17,7 @@
 import itertools
 try:
     import pandas
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pandas = None
 
 from google.cloud.monitoring_v3.types import TimeSeries

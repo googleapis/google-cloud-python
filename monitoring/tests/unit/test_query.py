@@ -14,7 +14,6 @@
 
 from __future__ import absolute_import
 
-import copy
 import datetime
 import unittest
 import mock
@@ -297,7 +296,6 @@ class TestQuery(unittest.TestCase):
         FIELD1, FIELD2 = 'resource.zone', 'metric.instance_name'
 
         PAGE_SIZE = 100
-        PAGE_TOKEN = 'second-page-please'
 
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)

@@ -104,7 +104,9 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
+        expected_headers = [(instance_name,)
+                            for instance_name in INSTANCE_NAMES]
+        self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertIsNone(dataframe.columns.name)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
@@ -138,9 +140,10 @@ class Test__build_dataframe(unittest.TestCase):
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
 
-        self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
+        expected_headers = [(instance_id,) for instance_id in INSTANCE_IDS]
+        self.assertEqual(list(dataframe.columns), expected_headers)
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
 
         self.assertEqual(list(dataframe.index), parse_timestamps())
         self.assertIsNone(dataframe.index.name)
@@ -189,7 +192,7 @@ class Test__build_dataframe(unittest.TestCase):
         dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
@@ -199,7 +202,7 @@ class Test__build_dataframe(unittest.TestCase):
         dataframe = self._call_fut([])
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
-        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
