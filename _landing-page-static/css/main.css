@@ -379,6 +379,7 @@ a {
     font-family: 'Open Sans', sans-serif;
     font-size: 3.5em;
     font-weight: 300;
+    min-width: 300px;
 }
 
 .hero-banner p {
@@ -1280,7 +1281,7 @@ h2 .headerlink:hover {
     }
 
     .hero-banner h1 {
-        font-size: 5.6em;
+        font-size: 4.7em;
     }
 
     .hero-banner p {
