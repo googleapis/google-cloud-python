@@ -76,3 +76,15 @@ to connect to Stackdriver Monitoring using this Client Library.
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
+
+
+Optional Features/Packages
+--------------------------
+
+**Pandas:**
+
+Pandas is an optional dependency that is needed if *query.as_dataframe* is used.
+
+To install pandas package run:
+
+    $ pip install --upgrade .[pandas]
