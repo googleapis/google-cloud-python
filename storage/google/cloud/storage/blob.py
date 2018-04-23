@@ -439,6 +439,9 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
 
+        if self._kms_encryption_key is not None:
+            name_value_pairs.append(('kmsKeyName', self._kms_encryption_key))
+
         return _add_query_parameters(base_url, name_value_pairs)
 
     def _do_download(self, transport, file_obj, download_url, headers,

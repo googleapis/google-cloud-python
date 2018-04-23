@@ -494,6 +494,28 @@ class Test_Blob(unittest.TestCase):
                 user_project))
         self.assertEqual(download_url, expected_url)
 
+    def test__get_download_url_on_the_fly_with_kms_encryption_key(self):
+        from six.moves.urllib.parse import urlencode
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+            "cryptoKeyVersions/1"
+        )
+        kms_encoded = urlencode([('kmsKeyName', kms_resource)])
+        blob_name = 'bzzz-fly.txt'
+        bucket = _Bucket(name='buhkit')
+        blob = self._make_one(
+            blob_name, bucket=bucket, kms_encryption_key=kms_resource)
+
+        self.assertIsNone(blob.media_link)
+        download_url = blob._get_download_url()
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'buhkit/o/bzzz-fly.txt?alt=media&{}'.format(kms_encoded))
+        self.assertEqual(download_url, expected_url)
+
     @staticmethod
     def _mock_requests_response(
             status_code, headers, content=b'', stream=False):
