@@ -918,6 +918,39 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.cors, [CORS_ENTRY])
         self.assertTrue('cors' in bucket._changes)
 
+    def test_default_kms_encryption_key_getter(self):
+        NAME = 'name'
+        KMS_RESOURCE = (
+            'projects/test-project-123/'
+            'locations/global/'
+            'keyRings/test-ring/'
+            'cryptoKeys/test-key'
+        )
+        ENCRYPTION_CONFIG = {
+            'defaultKmsKeyName': KMS_RESOURCE,
+        }
+        bucket = self._make_one(name=NAME)
+        self.assertIsNone(bucket.default_kms_encryption_key)
+        bucket._properties['encryption'] = ENCRYPTION_CONFIG
+        self.assertEqual(bucket.default_kms_encryption_key, KMS_RESOURCE)
+
+    def test_default_kms_encryption_key_setter(self):
+        NAME = 'name'
+        KMS_RESOURCE = (
+            'projects/test-project-123/'
+            'locations/global/'
+            'keyRings/test-ring/'
+            'cryptoKeys/test-key'
+        )
+        ENCRYPTION_CONFIG = {
+            'defaultKmsKeyName': KMS_RESOURCE,
+        }
+        bucket = self._make_one(name=NAME)
+        bucket.default_kms_encryption_key = KMS_RESOURCE
+        self.assertEqual(
+            bucket._properties['encryption'], ENCRYPTION_CONFIG)
+        self.assertTrue('encryption' in bucket._changes)
+
     def test_labels_getter(self):
         NAME = 'name'
         LABELS = {'color': 'red', 'flavor': 'cherry'}
