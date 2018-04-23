@@ -101,3 +101,12 @@ Next Steps
 
 .. _Stackdriver Monitoring API Product documentation:  https://cloud.google.com/monitoring
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+
+Api Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    query.rst
+    gapic/v3/api
+    gapic/v3/types
