@@ -55,6 +55,7 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
+        self.assertEqual(blob._kms_encryption_key, None)
 
     def test_ctor_with_encoded_unicode(self):
         blob_name = b'wet \xe2\x9b\xb5'
@@ -70,6 +71,40 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
         self.assertEqual(blob._encryption_key, KEY)
+        self.assertEqual(blob._kms_encryption_key, None)
+
+    def test_ctor_w_kms_encryption_key_and_encryption_key(self):
+        KEY = b'01234567890123456789012345678901'  # 32 bytes
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+            "cryptoKeyVersions/1"
+        )
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                BLOB_NAME, bucket=bucket,
+                encryption_key=KEY,
+                kms_encryption_key=KMS_RESOURCE)
+
+    def test_ctor_w_kms_encryption_key(self):
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+            "cryptoKeyVersions/1"
+        )
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._make_one(
+            BLOB_NAME, bucket=bucket, kms_encryption_key=KMS_RESOURCE)
+        self.assertEqual(blob._encryption_key, None)
+        self.assertEqual(blob._kms_encryption_key, KMS_RESOURCE)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob

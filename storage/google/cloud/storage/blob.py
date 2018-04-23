@@ -120,6 +120,12 @@ class Blob(_PropertyMixin):
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
+
+    :type kms_encryption_key: bytes
+    :param kms_encryption_key:
+        Optional esource name of Cloud KMS key used to encrypt the blob's
+        contents.
+        See https://cloud.google.com/storage/docs/encryption#kms.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -149,14 +155,21 @@ class Blob(_PropertyMixin):
        set as their 'storage_class'.
     """
 
-    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+    def __init__(self, name, bucket, chunk_size=None,
+                 encryption_key=None, kms_encryption_key=None):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        if encryption_key is not None and kms_encryption_key is not None:
+            raise ValueError(
+                "Pass at most one of 'encryption_key' "
+                "and 'kms_encryption_key'")
+
         self._encryption_key = encryption_key
+        self._kms_encryption_key = kms_encryption_key
 
     @property
     def chunk_size(self):
