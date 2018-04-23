@@ -1057,9 +1057,11 @@ class Test_Blob(unittest.TestCase):
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
                               num_retries=None, user_project=None,
-                              predefined_acl=None):
+                              predefined_acl=None, kms_encryption_key=None):
+        from six.moves.urllib.parse import urlencode
         bucket = _Bucket(name='w00t', user_project=user_project)
-        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob = self._make_one(
+            u'blob-name', bucket=bucket, kms_encryption_key=kms_encryption_key)
         self.assertIsNone(blob.chunk_size)
 
         # Create mocks to be checked for doing transport.
@@ -1086,12 +1088,20 @@ class Test_Blob(unittest.TestCase):
 
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path +
-            '/o?uploadType=multipart')
+            bucket.path + '/o')
+
+        qs_params = [('uploadType', 'multipart')]
+
         if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
+            qs_params.append(('userProject', user_project))
+
         if predefined_acl is not None:
-            upload_url += '&predefinedAcl={}'.format(predefined_acl)
+            qs_params.append(('predefinedAcl', predefined_acl))
+
+        if kms_encryption_key is not None:
+            qs_params.append(('kmsKeyName', kms_encryption_key))
+
+        upload_url += '?' + urlencode(qs_params)
 
         payload = (
             b'--==0==\r\n' +
@@ -1121,6 +1131,19 @@ class Test_Blob(unittest.TestCase):
         user_project = 'user-project-123'
         self._do_multipart_success(
             mock_get_boundary, user_project=user_project)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_kms(self, mock_get_boundary):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+            "cryptoKeyVersions/1"
+        )
+        self._do_multipart_success(
+            mock_get_boundary, kms_encryption_key=kms_resource)
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
