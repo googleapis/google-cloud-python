@@ -155,11 +155,9 @@ class TestQuery(unittest.TestCase):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
         MINUTES = 5
-        NOW, T0, T1 = [
-            datetime.datetime(2016, 4, 7, 2, 30, 30),
-            datetime.datetime(2016, 4, 7, 2, 25, 0),
-            datetime.datetime(2016, 4, 7, 2, 30, 0),
-        ]
+        NOW = datetime.datetime(2016, 4, 7, 2, 30, 30)
+        T0 = datetime.datetime(2016, 4, 7, 2, 25, 0)
+        T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
         channel = ChannelStub()
         client = MetricServiceClient(channel=channel)
