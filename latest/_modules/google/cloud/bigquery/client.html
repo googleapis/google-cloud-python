@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud b9c3dc0 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 0.28.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -154,6 +154,35 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Client.get_service_account_email"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.get_service_account_email">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_account_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the email address of the project&#39;s BigQuery service account</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This is the service account that BigQuery uses to manage tables</span>
+<span class="sd">            encrypted by a key in KMS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            project (str, optional):</span>
+<span class="sd">                Project ID to use for retreiving service account email.</span>
+<span class="sd">                Defaults to the client&#39;s project.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: service account email address</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">            &gt;&gt;&gt; from google.cloud import bigquery</span>
+<span class="sd">            &gt;&gt;&gt; client = bigquery.Client()</span>
+<span class="sd">            &gt;&gt;&gt; client.get_service_account_email()</span>
+<span class="sd">            my_service_account@my-project.iam.gserviceaccount.com</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/serviceAccount&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List projects for the project associated with this client.</span>
@@ -190,51 +219,53 @@
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List datasets for the project associated with this client.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list</span>
 
-<span class="sd">        :type include_all: bool</span>
-<span class="sd">        :param include_all: True if results include hidden datasets.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Optional. Project ID to use for retreiving datasets. Defaults</span>
+<span class="sd">                to the client&#39;s project.</span>
+<span class="sd">            include_all (bool):</span>
+<span class="sd">                Optional. True if results include hidden datasets. Defaults</span>
+<span class="sd">                to False.</span>
+<span class="sd">            filter (str):</span>
+<span class="sd">                Optional. An expression for filtering the results by label.</span>
+<span class="sd">                For syntax, see</span>
+<span class="sd">                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.</span>
+<span class="sd">            max_results (int):</span>
+<span class="sd">                Optional. Maximum number of datasets to return.</span>
+<span class="sd">            page_token (str):</span>
+<span class="sd">                Optional. Token representing a cursor into the datasets. If</span>
+<span class="sd">                not passed, the API will return the first page of datasets.</span>
+<span class="sd">                The token marks the beginning of the iterator to be returned</span>
+<span class="sd">                and the value of the ``page_token`` can be accessed at</span>
+<span class="sd">                ``next_page_token`` of the</span>
+<span class="sd">                :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
+<span class="sd">            retry (google.api_core.retry.Retry):</span>
+<span class="sd">                Optional. How to retry the RPC.</span>
 
-<span class="sd">        :type filter: str</span>
-<span class="sd">        :param filter: (Optional) an expression for filtering the results by</span>
-<span class="sd">                       label. For syntax, see</span>
-<span class="sd">                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.</span>
-
-<span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: (Optional) maximum number of datasets to return,</span>
-<span class="sd">                            if not passed, defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token:</span>
-<span class="sd">            (Optional) Token representing a cursor into the datasets. If</span>
-<span class="sd">            not passed, the API will return the first page of datasets.</span>
-<span class="sd">            The token marks the beginning of the iterator to be returned</span>
-<span class="sd">            and the value of the ``page_token`` can be accessed at</span>
-<span class="sd">            ``next_page_token`` of the</span>
-<span class="sd">            :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
-
-<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
-<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
-
-<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns:</span>
-<span class="sd">            Iterator of</span>
-<span class="sd">            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.</span>
-<span class="sd">            associated with the client&#39;s project.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            google.api_core.page_iterator.Iterator:</span>
+<span class="sd">                Iterator of</span>
+<span class="sd">                :class:`~google.cloud.bigquery.dataset.DatasetListItem`.</span>
+<span class="sd">                associated with the project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
         <span class="k">if</span> <span class="n">include_all</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="nb">filter</span><span class="p">:</span>
             <span class="c1"># TODO: consider supporting a dict of label -&gt; value for filter,</span>
             <span class="c1"># and converting it into a string here.</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">filter</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
@@ -662,45 +693,47 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_users</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">state_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">all_users</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">state_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List jobs for the project associated with this client.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list</span>
 
-<span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of jobs to return, If not</span>
-<span class="sd">                            passed, defaults to a value set by the API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Optional. Project ID to use for retreiving datasets. Defaults</span>
+<span class="sd">                to the client&#39;s project.</span>
+<span class="sd">            max_results (int):</span>
+<span class="sd">                Optional. Maximum number of jobs to return.</span>
+<span class="sd">            page_token (str):</span>
+<span class="sd">                Optional. Opaque marker for the next &quot;page&quot; of jobs. If not</span>
+<span class="sd">                passed, the API will return the first page of jobs. The token</span>
+<span class="sd">                marks the beginning of the iterator to be returned and the</span>
+<span class="sd">                value of the ``page_token`` can be accessed at</span>
+<span class="sd">                ``next_page_token`` of</span>
+<span class="sd">                :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
+<span class="sd">            all_users (bool):</span>
+<span class="sd">                If true, include jobs owned by all users in the project.</span>
+<span class="sd">            state_filter (str):</span>
+<span class="sd">                Optional. If set, include only jobs matching the given</span>
+<span class="sd">                state. One of</span>
 
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token:</span>
-<span class="sd">             (Optional) Opaque marker for the next &quot;page&quot; of jobs. If not</span>
-<span class="sd">             passed, the API will return the first page of jobs. The token</span>
-<span class="sd">             marks the beginning of the iterator to be returned and the</span>
-<span class="sd">             value of the ``page_token`` can be accessed at</span>
-<span class="sd">             ``next_page_token`` of</span>
-<span class="sd">             :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
+<span class="sd">                    * ``&quot;done&quot;``</span>
+<span class="sd">                    * ``&quot;pending&quot;``</span>
+<span class="sd">                    * ``&quot;running&quot;``</span>
+<span class="sd">            retry (google.api_core.retry.Retry):</span>
+<span class="sd">                Optional. How to retry the RPC.</span>
 
-<span class="sd">        :type all_users: bool</span>
-<span class="sd">        :param all_users: if true, include jobs owned by all users in the</span>
-<span class="sd">                          project.</span>
-
-<span class="sd">        :type state_filter: str</span>
-<span class="sd">        :param state_filter: if passed, include only jobs matching the given</span>
-<span class="sd">                             state.  One of</span>
-
-<span class="sd">                             * ``&quot;done&quot;``</span>
-<span class="sd">                             * ``&quot;pending&quot;``</span>
-<span class="sd">                             * ``&quot;running&quot;``</span>
-
-<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
-<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
-
-<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterable of job instances.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            google.api_core.page_iterator.Iterator:</span>
+<span class="sd">                Iterable of job instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
 
         <span class="k">if</span> <span class="n">all_users</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;allUsers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_users</span>
@@ -708,7 +741,7 @@
         <span class="k">if</span> <span class="n">state_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;stateFilter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_filter</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
@@ -1548,7 +1581,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
