@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.29.0
+
+### Implementation Changes
+- Update monitoring library to use new generated client (#5212)
+- Move aligner and reducer links from timeSeries.list to alertPolicies (#5011)
+
+### Internal / Testing Changes
+- Fix bad trove classifier
+
 ## 0.28.1
 
 ### Implementation changes
