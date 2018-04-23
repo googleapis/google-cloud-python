@@ -53,11 +53,11 @@ ARRAY = [VALUES] * DIMENSIONS[0]
 
 
 def parse_timestamps():
-    import datetime
-    from google.cloud._helpers import _RFC3339_MICROS
+    from google.api_core import datetime_helpers
 
-    return [datetime.datetime.strptime(t, _RFC3339_MICROS)
-            for t in TIMESTAMPS]
+    return [
+        datetime_helpers.from_rfc3339(t).replace(tzinfo=None)
+        for t in TIMESTAMPS]
 
 
 def generate_query_results():

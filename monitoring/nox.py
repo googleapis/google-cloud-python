@@ -21,7 +21,6 @@ import nox
 
 LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
-    os.path.join('..', 'core'),
 )
 
 
@@ -94,7 +93,7 @@ def system(session, py):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', 'tests/system', *session.posargs)
 
 
 @nox.session
