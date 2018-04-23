@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud b9c3dc0 documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 0.28.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
@@ -127,6 +127,9 @@
     <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
     <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
 
+<span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">104857600</span>  <span class="c1"># 1024 * 1024 B * 100 = 100 MB</span>
+<span class="n">_MAX_MULTIPART_SIZE</span> <span class="o">=</span> <span class="mi">8388608</span>  <span class="c1"># 8 MB</span>
+
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.</span>
@@ -153,7 +156,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Default value for each instance.</span>
-
     <span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1024</span>
     <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
 
@@ -208,7 +210,9 @@
 <span class="sd">        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a</span>
 <span class="sd">                 multiple of 256 KB.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
+                <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
+                <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Chunk size must be a multiple of </span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
@@ -702,8 +706,6 @@
                              <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
 
-<span class="sd">        Assumes ``chunk_size`` is :data:`None` on the current blob.</span>
-
 <span class="sd">        The content type of the upload will be determined in order</span>
 <span class="sd">        of precedence:</span>
 
@@ -828,6 +830,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+            <span class="k">if</span> <span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_DEFAULT_CHUNKSIZE</span>
 
         <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_upload_arguments</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
@@ -909,9 +913,9 @@
                    <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
 
-<span class="sd">        If the current blob has a ``chunk_size`` set, then a resumable upload</span>
-<span class="sd">        will be used, otherwise the content and the metadata will be uploaded</span>
-<span class="sd">        in a single multipart upload request.</span>
+<span class="sd">        If the size of the data to be uploaded exceeds 5 MB a resumable media</span>
+<span class="sd">        request will be used, otherwise the content and the metadata will be</span>
+<span class="sd">        uploaded in a single multipart upload request.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
 <span class="sd">        of precedence:</span>
@@ -947,7 +951,7 @@
 <span class="sd">                  **only** response in the multipart case and it will be the</span>
 <span class="sd">                  **final** response in the resumable case.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="n">_MAX_MULTIPART_SIZE</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
                 <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
                 <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">predefined_acl</span><span class="p">)</span>
@@ -1957,7 +1961,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

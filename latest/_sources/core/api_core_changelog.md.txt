@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.1.1
+
+### Internal / Testing Changes
+- Use `install_requires` for platform dependencies instead of `extras_require` (#4991)
+- Update trove classifer to '5 - Production/Stable'
+
 ## 1.1.0
 
 ### Interface additions

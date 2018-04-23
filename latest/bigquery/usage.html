@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud b9c3dc0 documentation</title>
+    <title>BigQuery &#8212; google-cloud 0.28.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -56,16 +56,15 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#queries" id="id12">Queries</a><ul>
-<li><a class="reference internal" href="#run-a-simple-query" id="id13">Run a simple query</a></li>
-<li><a class="reference internal" href="#querying-data" id="id14">Querying data</a></li>
-<li><a class="reference internal" href="#run-a-dry-run-query" id="id15">Run a dry run query</a></li>
-<li><a class="reference internal" href="#writing-query-results-to-a-destination-table" id="id16">Writing query results to a destination table</a></li>
-<li><a class="reference internal" href="#run-a-query-using-a-named-query-parameter" id="id17">Run a query using a named query parameter</a></li>
-<li><a class="reference internal" href="#list-jobs-for-a-project" id="id18">List jobs for a project</a></li>
-<li><a class="reference internal" href="#using-bigquery-with-pandas" id="id19">Using BigQuery with Pandas</a></li>
+<li><a class="reference internal" href="#querying-data" id="id13">Querying data</a></li>
+<li><a class="reference internal" href="#run-a-dry-run-query" id="id14">Run a dry run query</a></li>
+<li><a class="reference internal" href="#writing-query-results-to-a-destination-table" id="id15">Writing query results to a destination table</a></li>
+<li><a class="reference internal" href="#run-a-query-using-a-named-query-parameter" id="id16">Run a query using a named query parameter</a></li>
+<li><a class="reference internal" href="#list-jobs-for-a-project" id="id17">List jobs for a project</a></li>
+<li><a class="reference internal" href="#using-bigquery-with-pandas" id="id18">Using BigQuery with Pandas</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#changelog" id="id20">Changelog</a></li>
+<li><a class="reference internal" href="#changelog" id="id19">Changelog</a></li>
 </ul>
 </div>
 <div class="admonition note">
@@ -137,7 +136,9 @@ dataset will have the value as their expiration period.</li>
 <div class="section" id="dataset-operations">
 <h3><a class="toc-backref" href="#id7">Dataset operations</a><a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
 <p>List datasets for the client’s project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">datasets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">())</span>
     <span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
 
@@ -150,7 +151,8 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Create a new dataset for the client’s project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
 
     <span class="c1"># Create a DatasetReference using a chosen dataset ID.</span>
@@ -169,7 +171,8 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Refresh metadata for a dataset (to pick up changes made by another client):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
 
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
@@ -192,7 +195,8 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Update a property in a dataset’s metadata:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
     <span class="c1"># dataset = client.get_dataset(dataset_ref)  # API request</span>
 
@@ -204,29 +208,9 @@ dataset will have the value as their expiration period.</li>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description.&#39;</span>
 </pre></div>
 </div>
-<p>Update multiple properties in a dataset’s metadata:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
-    <span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
-    <span class="c1"># dataset = client.get_dataset(dataset_ref)  # API request</span>
-
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="p">{}</span>
-    <span class="n">one_day_ms</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># in milliseconds</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">}</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">=</span> <span class="n">one_day_ms</span>
-
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span>
-        <span class="n">dataset</span><span class="p">,</span>
-        <span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="s1">&#39;default_table_expiration_ms&#39;</span><span class="p">]</span>
-    <span class="p">)</span>  <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">==</span> <span class="n">one_day_ms</span>
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="n">labels</span>
-</pre></div>
-</div>
 <p>Modify user permissions on a dataset:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset = client.get_dataset(client.dataset(&#39;my_dataset&#39;))</span>
 
     <span class="n">entry</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">AccessEntry</span><span class="p">(</span>
@@ -244,7 +228,8 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Delete a dataset:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
 
     <span class="c1"># Delete a dataset that does not contain any tables</span>
     <span class="c1"># dataset1_id = &#39;my_empty_dataset&#39;</span>
@@ -270,7 +255,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="section" id="table-operations">
 <h3><a class="toc-backref" href="#id9">Table operations</a><a class="headerlink" href="#table-operations" title="Permalink to this headline">#</a></h3>
 <p>List tables for the dataset:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
 
     <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
@@ -286,7 +272,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Create a table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_ref = client.dataset(&#39;my_dataset&#39;)</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
@@ -301,7 +288,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Get a table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
     <span class="c1"># table_id = &#39;my_table&#39;</span>
 
@@ -316,7 +304,8 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Update a property in a table’s metadata:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;my_table&#39;)</span>
     <span class="c1"># table = client.get_table(table_ref)  # API request</span>
 
@@ -328,32 +317,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description.&#39;</span>
 </pre></div>
 </div>
-<p>Update multiple properties in a table’s metadata:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="s1">&#39;Original friendly name&#39;</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Original description&#39;</span>
-
-    <span class="n">new_schema</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
-    <span class="n">new_schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">))</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">=</span> <span class="s1">&#39;Updated friendly name&#39;</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Updated description&#39;</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">new_schema</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span>
-        <span class="n">table</span><span class="p">,</span>
-        <span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;friendly_name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">]</span>
-    <span class="p">)</span>  <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="s1">&#39;Updated friendly name&#39;</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;Updated description&#39;</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">==</span> <span class="n">new_schema</span>
-</pre></div>
-</div>
-<p>Get rows from a table’s data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>  <span class="c1"># API request</span>
-        <span class="n">do_something</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Browse selected rows in a table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
     <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>  <span class="c1"># API call</span>
@@ -383,16 +350,11 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
         <span class="nb">print</span><span class="p">(</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">))</span>      <span class="c1"># prints row data</span>
 </pre></div>
 </div>
-<p>Utilize iterator properties returned with row data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
-    <span class="n">page</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">total_rows</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next_page_token</span>
-</pre></div>
-</div>
 <p>Insert rows into a table’s data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
     <span class="p">]</span>
@@ -403,7 +365,9 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Copy a table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">source_dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
     <span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
 
@@ -424,11 +388,16 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Extract a table to Google Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># bucket_name = &#39;my-bucket&#39;</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;bigquery-public-data&#39;</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="s1">&#39;samples&#39;</span>
+    <span class="n">table_id</span> <span class="o">=</span> <span class="s1">&#39;shakespeare&#39;</span>
+
     <span class="n">destination_uri</span> <span class="o">=</span> <span class="s1">&#39;gs://</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="s1">&#39;shakespeare.csv&#39;</span><span class="p">)</span>
-    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
-    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
 
     <span class="n">extract_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">extract_table</span><span class="p">(</span>
         <span class="n">table_ref</span><span class="p">,</span>
@@ -436,10 +405,14 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
         <span class="c1"># Location must match that of the source table.</span>
         <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
     <span class="n">extract_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exported </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">,</span> <span class="n">destination_uri</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Delete a table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
     <span class="c1"># table_id = &#39;my_table&#39;</span>
 
@@ -450,30 +423,40 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Upload table data from a file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;full_name,age</span>
-<span class="s2">Phred Phlyntstone,32</span>
-<span class="s2">Wylma Phlyntstone,29</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+    <span class="c1"># filename = &#39;/path/to/file.csv&#39;</span>
+    <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+    <span class="c1"># table_id = &#39;my_table&#39;</span>
 
-    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">CSV</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
-        <span class="n">csv_file</span><span class="p">,</span>
-        <span class="n">table_ref</span><span class="p">,</span>
-        <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Location must match that of the destination dataset.</span>
-        <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">source_file</span><span class="p">:</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
+            <span class="n">source_file</span><span class="p">,</span>
+            <span class="n">table_ref</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Must match the destination dataset location.</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+
     <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loaded </span><span class="si">{}</span><span class="s1"> rows into </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">output_rows</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">table_id</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="section" id="load-table-data-from-google-cloud-storage">
 <h4><a class="toc-backref" href="#id10">Load table data from Google Cloud Storage</a><a class="headerlink" href="#load-table-data-from-google-cloud-storage" title="Permalink to this headline">#</a></h4>
 <p>See also: <a class="reference external" href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json">Loading JSON data from Cloud Storage</a>.</p>
 <p>Load a CSV file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
@@ -498,8 +481,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Load a JSON file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
@@ -523,8 +508,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Load a Parquet file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">PARQUET</span>
@@ -543,8 +530,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Load a CSV file from Cloud Storage, using an autodetected schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
@@ -566,8 +555,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Append a CSV file from Cloud Storage to an existing table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
@@ -591,8 +582,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Append a JSON file from Cloud Storage to an existing table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
@@ -613,8 +606,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Append a Parquet file from Cloud Storage to an existing table:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">PARQUET</span>
@@ -635,8 +630,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Overwrite / replace an existing table with a CSV file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
@@ -660,8 +657,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Overwrite / replace an existing table with a JSON file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
@@ -684,8 +683,10 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Overwrite / replace an existing table with a Parquet file from Cloud Storage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
     <span class="c1"># table_ref = client.dataset(&#39;my_dataset&#39;).table(&#39;existing_table&#39;)</span>
+
     <span class="n">previous_rows</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span><span class="o">.</span><span class="n">num_rows</span>
     <span class="k">assert</span> <span class="n">previous_rows</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
@@ -716,7 +717,10 @@ with Cloud KMS keys</a>
 in the BigQuery documentation for more details.</p>
 <p>Create a new table, using a customer-managed encryption key from
 Cloud KMS to encrypt it.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
 
     <span class="c1"># Set the encryption key to use for the table.</span>
@@ -732,7 +736,10 @@ Cloud KMS to encrypt it.</p>
 </pre></div>
 </div>
 <p>Change the key used to encrypt a table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">encryption_configuration</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="o">==</span> <span class="n">original_kms_key_name</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">encryption_configuration</span><span class="o">.</span><span class="n">kms_key_name</span> <span class="o">==</span> <span class="n">original_kms_key_name</span>
 
     <span class="c1"># Set a new encryption key to use for the destination.</span>
     <span class="c1"># TODO: Replace this key with a key you have created in KMS.</span>
@@ -751,7 +758,10 @@ Cloud KMS to encrypt it.</p>
 </div>
 <p>Load a file from Cloud Storage, using a customer-managed encryption key from
 Cloud KMS for the destination table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+    <span class="c1"># dataset_id = &#39;my_dataset&#39;</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
@@ -782,7 +792,10 @@ Cloud KMS for the destination table.</p>
 </div>
 <p>Copy a table, using a customer-managed encryption key from Cloud KMS for the
 destination table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">source_dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">source_dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span>
         <span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">,</span> <span class="s1">&#39;samples&#39;</span><span class="p">)</span>
     <span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
 
@@ -814,7 +827,10 @@ destination table.</p>
 </div>
 <p>Write query results to a table, using a customer-managed encryption key from
 Cloud KMS for the destination table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
 
     <span class="c1"># Set the destination table. Here, dataset_id is a string, such as:</span>
     <span class="c1"># dataset_id = &#39;your_dataset_id&#39;</span>
@@ -847,58 +863,33 @@ Cloud KMS for the destination table.</p>
 </div>
 <div class="section" id="queries">
 <h2><a class="toc-backref" href="#id12">Queries</a><a class="headerlink" href="#queries" title="Permalink to this headline">#</a></h2>
-<div class="section" id="run-a-simple-query">
-<h3><a class="toc-backref" href="#id13">Run a simple query</a><a class="headerlink" href="#run-a-simple-query" title="Permalink to this headline">#</a></h3>
+<div class="section" id="querying-data">
+<h3><a class="toc-backref" href="#id13">Querying data</a><a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
 <p>Run a query and wait for it to finish:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
         <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
         <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
     <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-        <span class="n">QUERY</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">,</span>
         <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
         <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
 
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>  <span class="c1"># API request - fetches results</span>
         <span class="c1"># Row values can be accessed by field name or index</span>
         <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="section" id="querying-data">
-<h3><a class="toc-backref" href="#id14">Querying data</a><a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">query_str</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
-        <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
-        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
-    <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-        <span class="n">query_str</span><span class="p">,</span>
-        <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
-        <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
-
-    <span class="c1"># Waits for the query to finish</span>
-    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
-    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
-    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li>Use of the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> parameter is optional. The query will continue to
-run in the background even if it takes longer the timeout allowed.</li>
-</ul>
 </div>
 </div>
 <div class="section" id="run-a-dry-run-query">
-<h3><a class="toc-backref" href="#id15">Run a dry run query</a><a class="headerlink" href="#run-a-dry-run-query" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id14">Run a dry run query</a><a class="headerlink" href="#run-a-dry-run-query" title="Permalink to this headline">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
     <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="kc">False</span>
@@ -921,10 +912,12 @@ run in the background even if it takes longer the timeout allowed.</li>
 </div>
 </div>
 <div class="section" id="writing-query-results-to-a-destination-table">
-<h3><a class="toc-backref" href="#id16">Writing query results to a destination table</a><a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id15">Writing query results to a destination table</a><a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h3>
 <p>See BigQuery documentation for more information on
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/writing-results">writing query results</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
 
     <span class="c1"># Set the destination table. Here, dataset_id is a string, such as:</span>
@@ -935,7 +928,7 @@ run in the background even if it takes longer the timeout allowed.</li>
     <span class="c1"># The write_disposition specifies the behavior when writing query results</span>
     <span class="c1"># to a table that already exists. With WRITE_TRUNCATE, any existing rows</span>
     <span class="c1"># in the table are overwritten by the query results.</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">WriteDisposition</span><span class="o">.</span><span class="n">WRITE_TRUNCATE</span>
 
     <span class="c1"># Start the query, passing in the extra configuration.</span>
     <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
@@ -963,38 +956,41 @@ run in the background even if it takes longer the timeout allowed.</li>
 </div>
 </div>
 <div class="section" id="run-a-query-using-a-named-query-parameter">
-<h3><a class="toc-backref" href="#id17">Run a query using a named query parameter</a><a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id16">Run a query using a named query parameter</a><a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h3>
 <p>See BigQuery documentation for more information on
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/parameterized-queries">parameterized queries</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">query_w_param</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;SELECT name, state &#39;</span>
-        <span class="s1">&#39;FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
-        <span class="s1">&#39;WHERE state = @state &#39;</span>
-        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
-    <span class="n">param</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;TX&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        SELECT word, word_count</span>
+<span class="s2">        FROM `bigquery-public-data.samples.shakespeare`</span>
+<span class="s2">        WHERE corpus = @corpus</span>
+<span class="s2">        AND word_count &gt;= @min_word_count</span>
+<span class="s2">        ORDER BY word_count DESC;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">query_params</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;romeoandjuliet&#39;</span><span class="p">),</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;min_word_count&#39;</span><span class="p">,</span> <span class="s1">&#39;INT64&#39;</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+    <span class="p">]</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
-    <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">param</span><span class="p">]</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_params</span>
     <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-        <span class="n">query_w_param</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">,</span>
         <span class="c1"># Location must match that of the dataset(s) referenced in the query.</span>
         <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>
         <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
 
-    <span class="c1"># Waits for the query to finish</span>
-    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
-    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+    <span class="c1"># Print the results</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="se">\t</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">word</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">word_count</span><span class="p">))</span>
 
     <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
-    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">row</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;TX&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="list-jobs-for-a-project">
-<h3><a class="toc-backref" href="#id18">List jobs for a project</a><a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id17">List jobs for a project</a><a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h3>
 <p>Jobs describe actions performed on data in BigQuery tables:</p>
 <ul class="simple">
 <li>Load data into a table</li>
@@ -1002,15 +998,18 @@ run in the background even if it takes longer the timeout allowed.</li>
 <li>Extract data from a table</li>
 <li>Copy a table</li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">job_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span>
-        <span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># Optionally, limit the results to 10 jobs.</span>
-    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_iterator</span><span class="p">:</span>  <span class="c1"># API request(s) happen when iterating</span>
-        <span class="n">do_something_with</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client(project=&#39;my_project&#39;)</span>
+
+    <span class="c1"># List the 10 most recent jobs in reverse chronological order.</span>
+    <span class="c1"># Omit the max_results parameter to list jobs from the past 6 months.</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">max_results</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>  <span class="c1"># API request(s)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="using-bigquery-with-pandas">
-<h3><a class="toc-backref" href="#id19">Using BigQuery with Pandas</a><a class="headerlink" href="#using-bigquery-with-pandas" title="Permalink to this headline">#</a></h3>
+<h3><a class="toc-backref" href="#id18">Using BigQuery with Pandas</a><a class="headerlink" href="#using-bigquery-with-pandas" title="Permalink to this headline">#</a></h3>
 <p>As of version 0.29.0, you can use the
 <a class="reference internal" href="reference.html#google.cloud.bigquery.table.RowIterator.to_dataframe" title="google.cloud.bigquery.table.RowIterator.to_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> function to
 retrieve query results or table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
@@ -1024,7 +1023,9 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 </pre></div>
 </div>
 <p>To retrieve query results as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        SELECT name, SUM(number) as count</span>
 <span class="s2">        FROM `bigquery-public-data.usa_names.usa_1910_current`</span>
@@ -1037,7 +1038,9 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 </pre></div>
 </div>
 <p>To retrieve table rows as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># client = bigquery.Client()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># from google.cloud import bigquery</span>
+    <span class="c1"># client = bigquery.Client()</span>
+
     <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;samples&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">)</span>
     <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
@@ -1048,11 +1051,12 @@ retrieve query results or table rows as a <a class="reference external" href="ht
 </div>
 </div>
 <div class="section" id="changelog">
-<h2><a class="toc-backref" href="#id20">Changelog</a><a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h2>
+<h2><a class="toc-backref" href="#id19">Changelog</a><a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h2>
 <p>For a list of all <code class="docutils literal notranslate"><span class="pre">google-cloud-bigquery</span></code> releases:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#">1.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.32.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#">0.31.0</a></li>
@@ -1161,7 +1165,7 @@ retrieve query results or table rows as a <a class="reference external" href="ht
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
