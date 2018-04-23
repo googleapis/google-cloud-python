@@ -222,6 +222,12 @@ class TestBigQuery(unittest.TestCase):
                    dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
+    def test_list_datasets_w_project(self):
+        # Retrieve datasets from a different project.
+        iterator = Config.CLIENT.list_datasets(project='bigquery-public-data')
+        all_datasets = frozenset([dataset.dataset_id for dataset in iterator])
+        self.assertIn('usa_names', all_datasets)
+
     def test_create_table(self):
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
         table_id = 'test_table'
