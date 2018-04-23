@@ -1169,11 +1169,13 @@ class Test_Blob(unittest.TestCase):
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
             num_retries=None, user_project=None, predefined_acl=None,
-            blob_chunk_size=786432):
+            blob_chunk_size=786432, kms_encryption_key=None):
+        from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
-        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob = self._make_one(
+            u'blob-name', bucket=bucket, kms_encryption_key=kms_encryption_key)
         blob.metadata = {'rook': 'takes knight'}
         blob.chunk_size = blob_chunk_size
         if blob_chunk_size is not None:
@@ -1204,14 +1206,23 @@ class Test_Blob(unittest.TestCase):
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
+
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
-            bucket.path +
-            '/o?uploadType=resumable')
+            bucket.path + '/o')
+        qs_params = [('uploadType', 'resumable')]
+
         if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
+            qs_params.append(('userProject', user_project))
+
         if predefined_acl is not None:
-            upload_url += '&predefinedAcl={}'.format(predefined_acl)
+            qs_params.append(('predefinedAcl', predefined_acl))
+
+        if kms_encryption_key is not None:
+            qs_params.append(('kmsKeyName', kms_encryption_key))
+
+        upload_url += '?' + urlencode(qs_params)
+
         self.assertEqual(upload.upload_url, upload_url)
         if extra_headers is None:
             self.assertEqual(upload._headers, {})
@@ -1270,6 +1281,16 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_user_project(self):
         user_project = 'user-project-123'
         self._initiate_resumable_helper(user_project=user_project)
+
+    def test__initiate_resumable_upload_with_kms(self):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+            "cryptoKeyVersions/1"
+        )
+        self._initiate_resumable_helper(kms_encryption_key=kms_resource)
 
     def test__initiate_resumable_upload_without_chunk_size(self):
         self._initiate_resumable_helper(blob_chunk_size=None)
