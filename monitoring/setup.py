@@ -29,10 +29,10 @@ version = '0.28.1'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-cloud-core<0.29dev,>=0.28.0',
-    'google-api-core<2.0.0dev,>=0.1.1',
+    'google-api-core[grpc]<2.0.0dev,>=0.1.1',
 ]
 extras = {
+    'pandas': 'pandas>=0.17.1',
 }
 
 
