@@ -1424,6 +1424,9 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
 
+        if self._kms_encryption_key is not None:
+            query_params['destinationKmsKeyName'] = self._kms_encryption_key
+
         api_response = client._connection.api_request(
             method='POST',
             path=source.path + '/rewriteTo' + self.path,

@@ -2245,6 +2245,63 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(
             headers['X-Goog-Encryption-Key-Sha256'], DEST_KEY_HASH_B64)
 
+    def test_rewrite_same_name_w_old_key_new_kms_key(self):
+        import base64
+        import hashlib
+
+        SOURCE_KEY = b'01234567890123456789012345678901'  # 32 bytes
+        SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode('ascii')
+        SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
+        SOURCE_KEY_HASH_B64 = base64.b64encode(
+            SOURCE_KEY_HASH).rstrip().decode('ascii')
+        DEST_KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+        )
+        BLOB_NAME = 'blob'
+        RESPONSE = {
+            'totalBytesRewritten': 42,
+            'objectSize': 42,
+            'done': True,
+            'resource': {'etag': 'DEADBEEF'},
+        }
+        response = ({'status': http_client.OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source = self._make_one(
+            BLOB_NAME, bucket=bucket, encryption_key=SOURCE_KEY)
+        dest = self._make_one(BLOB_NAME, bucket=bucket,
+                              kms_encryption_key=DEST_KMS_RESOURCE)
+
+        token, rewritten, size = dest.rewrite(source)
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, 42)
+        self.assertEqual(size, 42)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertEqual(kw[0]['query_params'],
+                         {'destinationKmsKeyName': DEST_KMS_RESOURCE})
+        SENT = {}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key'], SOURCE_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key-Sha256'],
+            SOURCE_KEY_HASH_B64)
+
     def test_update_storage_class_invalid(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
