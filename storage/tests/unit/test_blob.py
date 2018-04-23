@@ -80,7 +80,6 @@ class Test_Blob(unittest.TestCase):
             "locations/global/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
-            "cryptoKeyVersions/1"
         )
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -97,7 +96,6 @@ class Test_Blob(unittest.TestCase):
             "locations/global/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
-            "cryptoKeyVersions/1"
         )
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -501,7 +499,6 @@ class Test_Blob(unittest.TestCase):
             "locations/global/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
-            "cryptoKeyVersions/1"
         )
         kms_encoded = urlencode([('kmsKeyName', kms_resource)])
         blob_name = 'bzzz-fly.txt'
@@ -1140,7 +1137,6 @@ class Test_Blob(unittest.TestCase):
             "locations/global/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
-            "cryptoKeyVersions/1"
         )
         self._do_multipart_success(
             mock_get_boundary, kms_encryption_key=kms_resource)
@@ -1288,7 +1284,6 @@ class Test_Blob(unittest.TestCase):
             "locations/global/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
-            "cryptoKeyVersions/1"
         )
         self._initiate_resumable_helper(kms_encryption_key=kms_resource)
 
