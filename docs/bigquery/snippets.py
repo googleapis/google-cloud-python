@@ -1012,9 +1012,12 @@ def test_load_table_from_uri_parquet(client, to_delete):
 
 
 def test_load_table_from_uri_autodetect(client, to_delete):
-    """Different file formats should have their own tested load sample
-    (test_load_table_from_uri_format), but repetitive code should be reduced
-    for autodetect, append, and truncate.
+    """Load table from a GCS URI using various formats and auto-detected schema
+
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
 
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
@@ -1072,9 +1075,12 @@ def test_load_table_from_uri_autodetect(client, to_delete):
 
 
 def test_load_table_from_uri_append(client, to_delete):
-    """Different file formats should have their own tested load sample
-    (test_load_table_from_uri_format), but repetitive code should be reduced
-    for autodetect, append, and truncate.
+    """Appends data to a table from a GCS URI using various formats
+
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
 
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
@@ -1156,9 +1162,12 @@ def test_load_table_from_uri_append(client, to_delete):
 
 
 def test_load_table_from_uri_truncate(client, to_delete):
-    """Different file formats should have their own tested load sample
-    (test_load_table_from_uri_format), but repetitive code should be reduced
-    for autodetect, append, and truncate.
+    """Replaces table data with data from a GCS URI using various formats
+
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
 
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
