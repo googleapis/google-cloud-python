@@ -460,6 +460,8 @@ class BackgroundConsumer(object):
         self._bidi_rpc.close()
 
         if self._thread is not None:
+            # Resume the thread to wake it up in case it is sleeping.
+            self.resume()
             self._thread.join()
 
         self._thread = None

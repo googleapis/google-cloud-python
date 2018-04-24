@@ -36,9 +36,9 @@ _LeasedMessage = collections.namedtuple(
 
 
 class Leaser(object):
-    def __init__(self, subscriber):
+    def __init__(self, manager):
         self._thread = None
-        self._subscriber = subscriber
+        self._manager = manager
 
         self._leased_messages = {}
         """dict[str, float]: A mapping of ack IDs to the local time when the
@@ -93,17 +93,17 @@ class Leaser(object):
             self._bytes = 0
 
     def maintain_leases(self):
-        """Maintain all of the leases being managed by the subscriber.
+        """Maintain all of the leases being managed.
 
         This method modifies the ack deadline for all of the managed
         ack IDs, then waits for most of that time (but with jitter), and
         repeats.
         """
-        while self._subscriber.is_active and not self._stop_event.is_set():
+        while self._manager.is_active and not self._stop_event.is_set():
             # Determine the appropriate duration for the lease. This is
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.
-            p99 = self._subscriber.ack_histogram.percentile(99)
+            p99 = self._manager.ack_histogram.percentile(99)
             _LOGGER.debug('The current p99 value is %d seconds.', p99)
 
             # Make a copy of the leased messages. This is needed because it's
@@ -116,7 +116,7 @@ class Leaser(object):
             # drop messages and allow Pub/Sub to resend them.
             cutoff = (
                 time.time() -
-                self._subscriber.flow_control.max_lease_duration)
+                self._manager.flow_control.max_lease_duration)
             to_drop = [
                 requests.DropRequest(ack_id, item.size)
                 for ack_id, item
@@ -127,11 +127,11 @@ class Leaser(object):
                 _LOGGER.warning(
                     'Dropping %s items because they were leased too long.',
                     len(to_drop))
-                self._subscriber.drop(to_drop)
+                self._manager.dispatcher.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
             # have already been removed from the real one by
-            # self._subscriber.drop(), which calls self.remove()).
+            # self._manager.drop(), which calls self.remove()).
             for item in to_drop:
                 leased_messages.pop(item.ack_id)
 
@@ -147,7 +147,7 @@ class Leaser(object):
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
-                self._subscriber.modify_ack_deadline([
+                self._manager.dispatcher.modify_ack_deadline([
                     requests.ModAckRequest(ack_id, p99) for ack_id in ack_ids])
 
             # Now wait an appropriate period of time and do this again.
