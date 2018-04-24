@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.pubsub_v1.subscriber import _histogram
+from google.cloud.pubsub_v1.subscriber._protocol import histogram
 
 
 def test_init():
     data = {}
-    histo = _histogram.Histogram(data=data)
+    histo = histogram.Histogram(data=data)
     assert histo._data is data
     assert len(histo) == 0
 
 
 def test_contains():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     histo.add(10)
     histo.add(20)
     assert 10 in histo
@@ -32,7 +32,7 @@ def test_contains():
 
 
 def test_max():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     assert histo.max == 600
     histo.add(120)
     assert histo.max == 120
@@ -43,7 +43,7 @@ def test_max():
 
 
 def test_min():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     assert histo.min == 10
     histo.add(60)
     assert histo.min == 60
@@ -54,7 +54,7 @@ def test_min():
 
 
 def test_add():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     histo.add(60)
     assert histo._data[60] == 1
     histo.add(60)
@@ -62,21 +62,21 @@ def test_add():
 
 
 def test_add_lower_limit():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     histo.add(5)
     assert 5 not in histo
     assert 10 in histo
 
 
 def test_add_upper_limit():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     histo.add(12000)
     assert 12000 not in histo
     assert 600 in histo
 
 
 def test_percentile():
-    histo = _histogram.Histogram()
+    histo = histogram.Histogram()
     [histo.add(i) for i in range(101, 201)]
     assert histo.percentile(100) == 200
     assert histo.percentile(101) == 200
