@@ -887,9 +887,10 @@ def test_load_table_from_uri_csv(client, to_delete):
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
     job_config.source_format = bigquery.SourceFormat.CSV
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
 
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+        uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
 
@@ -921,9 +922,10 @@ def test_load_table_from_uri_json(client, to_delete):
         bigquery.SchemaField('post_abbr', 'STRING')
     ]
     job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
 
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        uri,
         dataset_ref.table('us_states'),
         location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
@@ -961,9 +963,10 @@ def test_load_table_from_uri_cmek(client, to_delete):
     encryption_config = bigquery.EncryptionConfiguration(
         kms_key_name=kms_key_name)
     job_config.destination_encryption_configuration = encryption_config
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
 
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        uri,
         dataset_ref.table('us_states'),
         location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
@@ -992,9 +995,10 @@ def test_load_table_from_uri_parquet(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.PARQUET
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
 
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
+        uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
 
@@ -1007,13 +1011,26 @@ def test_load_table_from_uri_parquet(client, to_delete):
     # [END bigquery_load_table_gcs_parquet]
 
 
-def test_load_table_from_uri_csv_autodetect(client, to_delete):
+def test_load_table_from_uri_autodetect(client, to_delete):
+    """Load table from a GCS URI using various formats and auto-detected schema
+
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
+
+    This code snippet is made up of shared code, then format-specific code,
+    followed by more shared code. Note that only the last format in the
+    format-specific code section will be tested in this test.
+    """
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
+    # Shared code
     # [START bigquery_load_table_gcs_csv_autodetect]
+    # [START bigquery_load_table_gcs_json_autodetect]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # dataset_id = 'my_dataset'
@@ -1021,12 +1038,29 @@ def test_load_table_from_uri_csv_autodetect(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
     job_config.autodetect = True
+    # [END bigquery_load_table_gcs_csv_autodetect]
+    # [END bigquery_load_table_gcs_json_autodetect]
+
+    # Format-specific code
+    # [START bigquery_load_table_gcs_csv_autodetect]
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
     job_config.source_format = bigquery.SourceFormat.CSV
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
+    # [END bigquery_load_table_gcs_csv_autodetect]
+    # unset csv-specific attribute
+    del job_config._properties['load']['skipLeadingRows']
 
+    # [START bigquery_load_table_gcs_json_autodetect]
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
+    # [END bigquery_load_table_gcs_json_autodetect]
+
+    # Shared code
+    # [START bigquery_load_table_gcs_csv_autodetect]
+    # [START bigquery_load_table_gcs_json_autodetect]
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+        uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
 
@@ -1037,41 +1071,21 @@ def test_load_table_from_uri_csv_autodetect(client, to_delete):
     assert load_job.state == 'DONE'
     assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_csv_autodetect]
-
-
-def test_load_table_from_uri_json_autodetect(client, to_delete):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = 'US'
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_load_table_gcs_json_autodetect]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    job_config = bigquery.LoadJobConfig()
-    job_config.autodetect = True
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-
-    load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
-        dataset_ref.table('us_states'),
-        location='US',  # Location must match that of the destination dataset.
-        job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
-
-    load_job.result()  # Waits for table load to complete.
-
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
     # [END bigquery_load_table_gcs_json_autodetect]
 
 
-def test_load_table_from_uri_csv_append(client, to_delete):
+def test_load_table_from_uri_append(client, to_delete):
+    """Appends data to a table from a GCS URI using various formats
+
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
+
+    This code snippet is made up of shared code, then format-specific code,
+    followed by more shared code. Note that only the last format in the
+    format-specific code section will be tested in this test.
+    """
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1087,7 +1101,10 @@ def test_load_table_from_uri_csv_append(client, to_delete):
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
+    # SHared code
     # [START bigquery_load_table_gcs_csv_append]
+    # [START bigquery_load_table_gcs_json_append]
+    # [START bigquery_load_table_gcs_parquet_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1097,12 +1114,37 @@ def test_load_table_from_uri_csv_append(client, to_delete):
 
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    # [END bigquery_load_table_gcs_csv_append]
+    # [END bigquery_load_table_gcs_json_append]
+    # [END bigquery_load_table_gcs_parquet_append]
+
+    # Format-specific code
+    # [START bigquery_load_table_gcs_csv_append]
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
     job_config.source_format = bigquery.SourceFormat.CSV
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
+    # [END bigquery_load_table_gcs_csv_append]
+    # unset csv-specific attribute
+    del job_config._properties['load']['skipLeadingRows']
 
+    # [START bigquery_load_table_gcs_json_append]
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
+    # [END bigquery_load_table_gcs_json_append]
+
+    # [START bigquery_load_table_gcs_parquet_append]
+    # The schema of the parquet file must match the table schema in an append
+    job_config.source_format = bigquery.SourceFormat.PARQUET
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
+    # [END bigquery_load_table_gcs_parquet_append]
+
+    # Shared code
+    # [START bigquery_load_table_gcs_csv_append]
+    # [START bigquery_load_table_gcs_json_append]
+    # [START bigquery_load_table_gcs_parquet_append]
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+        uri,
         table_ref,
         job_config=job_config)  # API request
 
@@ -1113,56 +1155,24 @@ def test_load_table_from_uri_csv_append(client, to_delete):
     assert load_job.state == 'DONE'
     assert client.get_table(table_ref).num_rows == previous_rows + 50
     # [END bigquery_load_table_gcs_csv_append]
+    # [END bigquery_load_table_gcs_json_append]
+    # [END bigquery_load_table_gcs_parquet_append]
 
     assert previous_rows == 1
 
 
-def test_load_table_from_uri_json_append(client, to_delete):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = 'US'
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
+def test_load_table_from_uri_truncate(client, to_delete):
+    """Replaces table data with data from a GCS URI using various formats
 
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = [
-        bigquery.SchemaField('name', 'STRING'),
-        bigquery.SchemaField('post_abbr', 'STRING')
-    ]
-    table_ref = dataset.table('us_states')
-    body = six.BytesIO(b'Washington,WA')
-    client.load_table_from_file(
-        body,
-        table_ref,
-        location='US',  # Location must match that of the destination dataset.
-        job_config=job_config).result()
+    Each file format has its own tested load from URI sample. Because most of
+    the code is common for autodetect, append, and truncate, this sample
+    includes snippets for all supported formats but only calls a single load
+    job.
 
-    # [START bigquery_load_table_gcs_json_append]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
-
-    load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
-        table_ref,
-        location='US',  # Location must match that of the destination dataset.
-        job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
-
-    load_job.result()  # Waits for table load to complete.
-
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == previous_rows + 50
-    # [END bigquery_load_table_gcs_json_append]
-
-
-def test_load_table_from_uri_parquet_append(client, to_delete):
+    This code snippet is made up of shared code, then format-specific code,
+    followed by more shared code. Note that only the last format in the
+    format-specific code section will be tested in this test.
+    """
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1178,48 +1188,10 @@ def test_load_table_from_uri_parquet_append(client, to_delete):
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
-    # [START bigquery_load_table_gcs_parquet_append]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = bigquery.SourceFormat.PARQUET
-    # The schema of the parquet file must match the table schema in an append
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
-
-    load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
-        table_ref,
-        job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
-
-    load_job.result()  # Waits for table load to complete.
-
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == previous_rows + 50
-    # [END bigquery_load_table_gcs_parquet_append]
-
-
-def test_load_table_from_uri_csv_truncate(client, to_delete):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = [
-        bigquery.SchemaField('name', 'STRING'),
-        bigquery.SchemaField('post_abbr', 'STRING')
-    ]
-    table_ref = dataset.table('us_states')
-    body = six.BytesIO(b'Washington,WA')
-    client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
-
+    # Shared code
     # [START bigquery_load_table_gcs_csv_truncate]
+    # [START bigquery_load_table_gcs_json_truncate]
+    # [START bigquery_load_table_gcs_parquet_truncate]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1229,12 +1201,36 @@ def test_load_table_from_uri_csv_truncate(client, to_delete):
 
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+    # [END bigquery_load_table_gcs_csv_truncate]
+    # [END bigquery_load_table_gcs_json_truncate]
+    # [END bigquery_load_table_gcs_parquet_truncate]
+
+    # Format-specific code
+    # [START bigquery_load_table_gcs_csv_truncate]
     job_config.skip_leading_rows = 1
     # The source format defaults to CSV, so the line below is optional.
     job_config.source_format = bigquery.SourceFormat.CSV
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
+    # [END bigquery_load_table_gcs_csv_truncate]
+    # unset csv-specific attribute
+    del job_config._properties['load']['skipLeadingRows']
 
+    # [START bigquery_load_table_gcs_json_truncate]
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.json'
+    # [END bigquery_load_table_gcs_json_truncate]
+
+    # [START bigquery_load_table_gcs_parquet_truncate]
+    job_config.source_format = bigquery.SourceFormat.PARQUET
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
+    # [END bigquery_load_table_gcs_parquet_truncate]
+
+    # Shared code
+    # [START bigquery_load_table_gcs_csv_truncate]
+    # [START bigquery_load_table_gcs_json_truncate]
+    # [START bigquery_load_table_gcs_parquet_truncate]
     load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+        uri,
         table_ref,
         job_config=job_config)  # API request
 
@@ -1245,94 +1241,7 @@ def test_load_table_from_uri_csv_truncate(client, to_delete):
     assert load_job.state == 'DONE'
     assert client.get_table(table_ref).num_rows == 50
     # [END bigquery_load_table_gcs_csv_truncate]
-
-
-def test_load_table_from_uri_json_truncate(client, to_delete):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = 'US'
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = [
-        bigquery.SchemaField('name', 'STRING'),
-        bigquery.SchemaField('post_abbr', 'STRING')
-    ]
-    table_ref = dataset.table('us_states')
-    body = six.BytesIO(b'Washington,WA')
-    client.load_table_from_file(
-        body,
-        table_ref,
-        location='US',  # Location must match that of the destination dataset.
-        job_config=job_config).result()
-
-    # [START bigquery_load_table_gcs_json_truncate]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    assert previous_rows > 0
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
-
-    load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
-        table_ref,
-        location='US',  # Location must match that of the destination dataset.
-        job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
-
-    load_job.result()  # Waits for table load to complete.
-
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == 50
     # [END bigquery_load_table_gcs_json_truncate]
-
-
-def test_load_table_from_uri_parquet_truncate(client, to_delete):
-    dataset_id = 'load_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = [
-        bigquery.SchemaField('name', 'STRING'),
-        bigquery.SchemaField('post_abbr', 'STRING')
-    ]
-    table_ref = dataset.table('us_states')
-    body = six.BytesIO(b'Washington,WA')
-    client.load_table_from_file(
-        body, table_ref, job_config=job_config).result()
-
-    # [START bigquery_load_table_gcs_parquet_truncate]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('existing_table')
-
-    previous_rows = client.get_table(table_ref).num_rows
-    assert previous_rows > 0
-
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = bigquery.SourceFormat.PARQUET
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
-
-    load_job = client.load_table_from_uri(
-        'gs://cloud-samples-data/bigquery/us-states/us-states.parquet',
-        table_ref,
-        job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
-
-    load_job.result()  # Waits for table load to complete.
-
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == 50
     # [END bigquery_load_table_gcs_parquet_truncate]
 
 
