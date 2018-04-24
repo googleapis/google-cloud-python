@@ -65,7 +65,7 @@ class Scheduler(object):
 
 
 def _make_default_thread_pool_executor():
-    # Python 2.7 and 3.6+ have the thead_name_prefix argument, which is useful
+    # Python 2.7 and 3.6+ have the thread_name_prefix argument, which is useful
     # for debugging.
     executor_kwargs = {}
     if sys.version_info[:2] == (2, 7) or sys.version_info >= (3, 6):
