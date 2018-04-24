@@ -28,7 +28,7 @@ import six
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
-from google.cloud.pubsub_v1.subscriber import _histogram
+from google.cloud.pubsub_v1.subscriber._protocol import histogram
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -114,7 +114,7 @@ class BasePolicy(object):
         self._last_histogram_size = 0
         self._future = None
         self.flow_control = flow_control
-        self.histogram = _histogram.Histogram(data=histogram_data)
+        self.histogram = histogram.Histogram(data=histogram_data)
         """.Histogram: the histogram tracking ack latency."""
         self.leased_messages = {}
         """dict[str, float]: A mapping of ack IDs to the local time when the
