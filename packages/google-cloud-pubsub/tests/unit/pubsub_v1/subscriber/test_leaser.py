@@ -16,8 +16,8 @@ import logging
 import threading
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import _histogram
 from google.cloud.pubsub_v1.subscriber import subscriber
+from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
@@ -87,7 +87,7 @@ def create_subscriber(flow_control=types.FlowControl()):
     subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
     subscriber_.is_active = True
     subscriber_.flow_control = flow_control
-    subscriber_.ack_histogram = _histogram.Histogram()
+    subscriber_.ack_histogram = histogram.Histogram()
     return subscriber_
 
 
