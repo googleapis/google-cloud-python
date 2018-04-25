@@ -18,13 +18,10 @@ from google.cloud.speech_v1p1beta1 import types
 from google.cloud.speech_v1p1beta1.gapic import enums
 from google.cloud.speech_v1p1beta1.gapic import speech_client
 
-from google.cloud.speech_v1.helpers import SpeechHelpers
 
-
-class SpeechClient(SpeechHelpers, speech_client.SpeechClient):
+class SpeechClient(speech_client.SpeechClient):
     __doc__ = speech_client.SpeechClient.__doc__
     enums = enums
-    types = types
 
 
 __all__ = (
