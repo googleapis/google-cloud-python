@@ -163,21 +163,6 @@ class RecognitionMetadata(object):
         OTHER_INDOOR_DEVICE = 6
 
 
-class GoogleDataCollectionConfig(object):
-    class LoggingConsentState(object):
-        """
-        Speech content will not be logged until authorized consent is opted in.
-        Once it is opted in, this flag enables/disables logging to override that
-        consent.  default = ENABLED (logging due to consent).
-
-        Attributes:
-          ENABLED (int)
-          DISABLED (int)
-        """
-        ENABLED = 0
-        DISABLED = 1
-
-
 class StreamingRecognizeResponse(object):
     class SpeechEventType(object):
         """
