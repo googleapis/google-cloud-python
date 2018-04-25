@@ -20,7 +20,8 @@
 .ipynb_checkpoints
 .tags
 .pytest_cache
-.testmondata
+.testmon*
+.vscode/
 
 # Docs #
 ########

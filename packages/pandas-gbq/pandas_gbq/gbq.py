@@ -186,7 +186,15 @@ class GbqConnector(object):
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials_path = _get_credentials_file()
-        self.credentials = self.get_credentials()
+        self.credentials, default_project = self.get_credentials()
+
+        if self.project_id is None:
+            self.project_id = default_project
+
+        if self.project_id is None:
+            raise ValueError(
+                'Could not determine project ID and one was not supplied.')
+
         self.client = self.get_client()
 
         # BQ Queries costs $5 per TB. First 1 TB per month is free
@@ -196,12 +204,14 @@ class GbqConnector(object):
     def get_credentials(self):
         if self.private_key:
             return self.get_service_account_credentials()
-        else:
-            # Try to retrieve Application Default Credentials
-            credentials = self.get_application_default_credentials()
-            if not credentials:
-                credentials = self.get_user_account_credentials()
-            return credentials
+
+        # Try to retrieve Application Default Credentials
+        credentials, default_project = (
+            self.get_application_default_credentials())
+        if credentials:
+            return credentials, default_project
+
+        return self.get_user_account_credentials(), None
 
     def get_application_default_credentials(self):
         """
@@ -227,11 +237,13 @@ class GbqConnector(object):
         from google.auth.exceptions import DefaultCredentialsError
 
         try:
-            credentials, _ = google.auth.default(scopes=[self.scope])
+            credentials, default_project = google.auth.default(
+                scopes=[self.scope])
         except (DefaultCredentialsError, IOError):
-            return None
+            return None, None
 
-        return _try_credentials(self.project_id, credentials)
+        billing_project = self.project_id or default_project
+        return _try_credentials(billing_project, credentials), default_project
 
     def load_user_account_credentials(self):
         """
@@ -412,7 +424,7 @@ class GbqConnector(object):
             request = google.auth.transport.requests.Request()
             credentials.refresh(request)
 
-            return credentials
+            return credentials, json_key.get('project_id')
         except (KeyError, ValueError, TypeError, AttributeError):
             raise InvalidPrivateKeyFormat(
                 "Private key is missing or invalid. It should be service "
@@ -750,7 +762,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     ----------
     query : str
         SQL-Like Query to return data values
-    project_id : str
+    project_id : str (optional when available in environment)
         Google BigQuery Account project ID.
     index_col : str (optional)
         Name of result column to use for index in results DataFrame
@@ -809,9 +821,6 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
             "a future version. Set logging level in order to vary "
             "verbosity", FutureWarning, stacklevel=1)
 
-    if not project_id:
-        raise TypeError("Missing required parameter: project_id")
-
     if dialect not in ('legacy', 'standard'):
         raise ValueError("'{0}' is not valid for dialect".format(dialect))
 
@@ -859,7 +868,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     return final_df
 
 
-def to_gbq(dataframe, destination_table, project_id, chunksize=None,
+def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
            verbose=None, reauth=False, if_exists='fail', private_key=None,
            auth_local_webserver=False, table_schema=None):
     """Write a DataFrame to a Google BigQuery table.
@@ -891,7 +900,7 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=None,
         DataFrame to be written
     destination_table : string
         Name of table to be written, in the form 'dataset.tablename'
-    project_id : str
+    project_id : str (optional when available in environment)
         Google BigQuery Account project ID.
     chunksize : int (default None)
         Number of rows to be inserted in each chunk from the dataframe. Use

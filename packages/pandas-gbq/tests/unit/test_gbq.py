@@ -15,9 +15,13 @@ except ImportError:  # pragma: NO COVER
 
 @pytest.fixture(autouse=True)
 def mock_bigquery_client(monkeypatch):
+    from google.api_core.exceptions import NotFound
     import google.cloud.bigquery
     import google.cloud.bigquery.table
     mock_client = mock.create_autospec(google.cloud.bigquery.Client)
+    mock_schema = [
+        google.cloud.bigquery.SchemaField('_f0', 'INTEGER')
+    ]
     # Mock out SELECT 1 query results.
     mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
     mock_query.job_id = 'some-random-id'
@@ -25,11 +29,12 @@ def mock_bigquery_client(monkeypatch):
     mock_rows = mock.create_autospec(
         google.cloud.bigquery.table.RowIterator)
     mock_rows.total_rows = 1
-    mock_rows.schema = [
-        google.cloud.bigquery.SchemaField('_f0', 'INTEGER')]
+    mock_rows.schema = mock_schema
     mock_rows.__iter__.return_value = [(1,)]
     mock_query.result.return_value = mock_rows
     mock_client.query.return_value = mock_query
+    # Mock table creation.
+    mock_client.get_table.side_effect = NotFound('nope')
     monkeypatch.setattr(
         gbq.GbqConnector, 'get_client', lambda _: mock_client)
 
@@ -42,11 +47,7 @@ def no_auth(monkeypatch):
     monkeypatch.setattr(
         gbq.GbqConnector,
         'get_application_default_credentials',
-        lambda _: mock_credentials)
-    monkeypatch.setattr(
-        gbq.GbqConnector,
-        'get_user_account_credentials',
-        lambda _: mock_credentials)
+        lambda _: (mock_credentials, 'default-project'))
 
 
 def test_should_return_credentials_path_set_by_env_var():
@@ -76,12 +77,16 @@ def test_should_return_bigquery_correctly_typed(
 
 def test_to_gbq_should_fail_if_invalid_table_name_passed():
     with pytest.raises(gbq.NotFoundException):
-        gbq.to_gbq(DataFrame(), 'invalid_table_name', project_id="1234")
+        gbq.to_gbq(DataFrame([[1]]), 'invalid_table_name', project_id="1234")
 
 
-def test_to_gbq_with_no_project_id_given_should_fail():
+def test_to_gbq_with_no_project_id_given_should_fail(monkeypatch):
+    monkeypatch.setattr(
+        gbq.GbqConnector,
+        'get_application_default_credentials',
+        lambda _: None)
     with pytest.raises(TypeError):
-        gbq.to_gbq(DataFrame(), 'dataset.tablename')
+        gbq.to_gbq(DataFrame([[1]]), 'dataset.tablename')
 
 
 def test_to_gbq_with_verbose_new_pandas_warns_deprecation():
@@ -95,7 +100,7 @@ def test_to_gbq_with_verbose_new_pandas_warns_deprecation():
         mock_version.side_effect = [min_bq_version, pandas_version]
         try:
             gbq.to_gbq(
-                DataFrame(),
+                DataFrame([[1]]),
                 'dataset.tablename',
                 project_id='my-project',
                 verbose=True)
@@ -114,7 +119,7 @@ def test_to_gbq_with_not_verbose_new_pandas_warns_deprecation():
         mock_version.side_effect = [min_bq_version, pandas_version]
         try:
             gbq.to_gbq(
-                DataFrame(),
+                DataFrame([[1]]),
                 'dataset.tablename',
                 project_id='my-project',
                 verbose=False)
@@ -132,7 +137,7 @@ def test_to_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn):
         mock_version.side_effect = [min_bq_version, pandas_version]
         try:
             gbq.to_gbq(
-                DataFrame(), 'dataset.tablename', project_id='my-project')
+                DataFrame([[1]]), 'dataset.tablename', project_id='my-project')
         except gbq.TableCreationError:
             pass
         assert len(recwarn) == 0
@@ -148,7 +153,7 @@ def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn):
         mock_version.side_effect = [min_bq_version, pandas_version]
         try:
             gbq.to_gbq(
-                DataFrame(),
+                DataFrame([[1]]),
                 'dataset.tablename',
                 project_id='my-project',
                 verbose=True)
@@ -157,9 +162,18 @@ def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn):
         assert len(recwarn) == 0
 
 
-def test_read_gbq_with_no_project_id_given_should_fail():
+def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
+    monkeypatch.setattr(
+        gbq.GbqConnector,
+        'get_application_default_credentials',
+        lambda _: None)
     with pytest.raises(TypeError):
         gbq.read_gbq('SELECT 1')
+
+
+def test_read_gbq_with_inferred_project_id(monkeypatch):
+    df = gbq.read_gbq('SELECT 1')
+    assert df is not None
 
 
 def test_that_parse_data_works_properly():

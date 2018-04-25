@@ -4,6 +4,13 @@ Changelog
 0.5.0 / TBD
 -----------
 
+- Project ID parameter is optional in ``read_gbq`` and ``to_gbq`` when it can
+  inferred from the environment. Note: you must still pass in a project ID when
+  using user-based authentication. (:issue:`103`)
+
+Internal changes
+~~~~~~~~~~~~~~~~
+
 - Tests now use `nox` to run in multiple Python environments. (:issue:`52`)
 - Renamed internal modules. (:issue:`154`)
 
