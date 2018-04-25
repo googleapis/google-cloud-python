@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import collections
 import logging
+import math
 import threading
 
 from google.cloud.pubsub_v1 import types
@@ -57,11 +58,12 @@ class Dispatcher(object):
         self._thread = thread
 
     def stop(self):
-        if self._thread is not None:
-            # Signal the worker to stop by queueing a "poison pill"
-            self._queue.put(helper_threads.STOP)
-            self._thread.join()
+        if self._thread is None:
+            return
 
+        # Signal the worker to stop by queueing a "poison pill"
+        self._queue.put(helper_threads.STOP)
+        self._thread.join()
         self._thread = None
 
     def dispatch_callback(self, items):
@@ -110,7 +112,8 @@ class Dispatcher(object):
         for item in items:
             time_to_ack = item.time_to_ack
             if time_to_ack is not None:
-                self._subscriber.ack_histogram.add(int(time_to_ack))
+                self._subscriber.ack_histogram.add(
+                    int(math.ceil(time_to_ack)))
 
         ack_ids = [item.ack_id for item in items]
         request = types.StreamingPullRequest(ack_ids=ack_ids)
