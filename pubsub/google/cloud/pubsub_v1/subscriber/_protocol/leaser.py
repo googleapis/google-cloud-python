@@ -127,7 +127,7 @@ class Leaser(object):
                 _LOGGER.warning(
                     'Dropping %s items because they were leased too long.',
                     len(to_drop))
-                self._subscriber.drop(to_drop)
+                self._subscriber.dispatcher.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
             # have already been removed from the real one by
@@ -147,7 +147,7 @@ class Leaser(object):
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
-                self._subscriber.modify_ack_deadline([
+                self._subscriber.dispatcher.modify_ack_deadline([
                     requests.ModAckRequest(ack_id, p99) for ack_id in ack_ids])
 
             # Now wait an appropriate period of time and do this again.

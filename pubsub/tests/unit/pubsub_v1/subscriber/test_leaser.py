@@ -17,6 +17,7 @@ import threading
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import subscriber
+from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import requests
@@ -85,6 +86,8 @@ def test_remove_negative_bytes(caplog):
 
 def create_subscriber(flow_control=types.FlowControl()):
     subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    subscriber_.dispatcher = mock.create_autospec(
+        dispatcher.Dispatcher, instance=True)
     subscriber_.is_active = True
     subscriber_.flow_control = flow_control
     subscriber_.ack_histogram = histogram.Histogram()
@@ -133,7 +136,7 @@ def test_maintain_leases_ack_ids(sleep):
 
     leaser_.maintain_leases()
 
-    subscriber_.modify_ack_deadline.assert_called_once_with([
+    subscriber_.dispatcher.modify_ack_deadline.assert_called_once_with([
         requests.ModAckRequest(
             ack_id='my ack id',
             seconds=10,
@@ -150,7 +153,7 @@ def test_maintain_leases_no_ack_ids(sleep):
 
     leaser_.maintain_leases()
 
-    subscriber_.modify_ack_deadline.assert_not_called()
+    subscriber_.dispatcher.modify_ack_deadline.assert_not_called()
     sleep.assert_called()
 
 
@@ -177,13 +180,13 @@ def test_maintain_leases_outdated_items(sleep, time):
     leaser_.maintain_leases()
 
     # Only ack2 should be renewed. ack1 should've been dropped
-    subscriber_.modify_ack_deadline.assert_called_once_with([
+    subscriber_.dispatcher.modify_ack_deadline.assert_called_once_with([
         requests.ModAckRequest(
             ack_id='ack2',
             seconds=10,
         )
     ])
-    subscriber_.drop.assert_called_once_with([
+    subscriber_.dispatcher.drop.assert_called_once_with([
         requests.DropRequest(ack_id='ack1', byte_size=50)
     ])
     sleep.assert_called()

@@ -14,31 +14,34 @@
 
 import threading
 
+from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.subscriber import subscriber
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber import subscriber
 
 import mock
 from six.moves import queue
 import pytest
 
 
-@pytest.mark.parametrize('item,method', [
+@pytest.mark.parametrize('item,method_name', [
     (requests.AckRequest(0, 0, 0), 'ack'),
     (requests.DropRequest(0, 0), 'drop'),
     (requests.LeaseRequest(0, 0), 'lease'),
     (requests.ModAckRequest(0, 0), 'modify_ack_deadline'),
     (requests.NackRequest(0, 0), 'nack')
 ])
-def test_dispatch_callback(item, method):
+def test_dispatch_callback(item, method_name):
     subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
     dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
 
     items = [item]
-    dispatcher_.dispatch_callback(items)
 
-    getattr(subscriber_, method).assert_called_once_with([item])
+    with mock.patch.object(dispatcher_, method_name) as method:
+        dispatcher_.dispatch_callback(items)
+
+    method.assert_called_once_with([item])
 
 
 def test_dispatch_callback_inactive():
@@ -48,7 +51,87 @@ def test_dispatch_callback_inactive():
 
     dispatcher_.dispatch_callback([requests.AckRequest(0, 0, 0)])
 
-    subscriber_.ack.assert_not_called()
+    subscriber_.send.assert_not_called()
+
+
+def test_ack():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.AckRequest(
+        ack_id='ack_id_string', byte_size=0, time_to_ack=20)]
+    dispatcher_.ack(items)
+
+    subscriber_.send.assert_called_once_with(types.StreamingPullRequest(
+        ack_ids=['ack_id_string'],
+    ))
+
+    subscriber_.leaser.remove.assert_called_once_with(items)
+    subscriber_.maybe_resume_consumer.assert_called_once()
+    subscriber_.ack_histogram.add.assert_called_once_with(20)
+
+
+def test_ack_no_time():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.AckRequest(
+        ack_id='ack_id_string', byte_size=0, time_to_ack=None)]
+    dispatcher_.ack(items)
+
+    subscriber_.send.assert_called_once_with(types.StreamingPullRequest(
+        ack_ids=['ack_id_string'],
+    ))
+
+    subscriber_.ack_histogram.add.assert_not_called()
+
+
+def test_lease():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.LeaseRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.lease(items)
+
+    subscriber_.leaser.add.assert_called_once_with(items)
+    subscriber_.maybe_pause_consumer.assert_called_once()
+
+
+def test_drop():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.DropRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.drop(items)
+
+    subscriber_.leaser.remove.assert_called_once_with(items)
+    subscriber_.maybe_resume_consumer.assert_called_once()
+
+
+def test_nack():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.NackRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.nack(items)
+
+    subscriber_.send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack_id_string'],
+        modify_deadline_seconds=[0],
+    ))
+
+
+def test_modify_ack_deadline():
+    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+
+    items = [requests.ModAckRequest(ack_id='ack_id_string', seconds=60)]
+    dispatcher_.modify_ack_deadline(items)
+
+    subscriber_.send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack_id_string'],
+        modify_deadline_seconds=[60],
+    ))
 
 
 @mock.patch('threading.Thread', autospec=True)
