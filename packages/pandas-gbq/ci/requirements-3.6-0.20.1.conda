@@ -1,3 +1,8 @@
 google-auth
 google-auth-oauthlib
-google-cloud-bigquery
+google-cloud-bigquery==0.32.0
+pytest
+pytest-cov
+codecov
+coverage
+flake8

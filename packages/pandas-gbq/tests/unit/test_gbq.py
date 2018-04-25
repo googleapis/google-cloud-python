@@ -20,6 +20,7 @@ def mock_bigquery_client(monkeypatch):
     mock_client = mock.create_autospec(google.cloud.bigquery.Client)
     # Mock out SELECT 1 query results.
     mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    mock_query.job_id = 'some-random-id'
     mock_query.state = 'DONE'
     mock_rows = mock.create_autospec(
         google.cloud.bigquery.table.RowIterator)

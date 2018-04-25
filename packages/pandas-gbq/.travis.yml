@@ -17,11 +17,15 @@ install:
   # https://github.com/pre-commit/pre-commit/commit/e3ab8902692e896da9ded42bd4d76ea4e1de359d
   - pyenv install -s $PYENV_VERSION
   - pyenv global system $PYENV_VERSION
+  # Upgrade setuptools and pip to work around
+  # https://github.com/pypa/setuptools/issues/885
+  - pip install --upgrade setuptools
+  - pip install --upgrade pip
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.pip" ]; then
       pip install --upgrade nox-automation ;
     else
-      wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+      wget http://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh -O miniconda.sh;
       bash miniconda.sh -b -p $HOME/miniconda ;
       export PATH="$HOME/miniconda/bin:$PATH" ;
       hash -r ;
@@ -32,8 +36,8 @@ install:
       conda info -a ;
       conda create -q -n test-environment python=$PYTHON ;
       source activate test-environment ;
+      conda install -q setuptools ;
       conda install -q pandas=$PANDAS;
-      pip install coverage pytest pytest-cov flake8 codecov ;
       conda install -q --file "$REQ.conda";
       conda list ;
       python setup.py install ;
@@ -45,7 +49,6 @@ script:
   - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test36master ; fi
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.conda" ]; then
-      pip install pytest ;
       pytest -v tests ;
     fi
   - if [[ $COVERAGE == 'true' ]]; then nox -s cover ; fi
