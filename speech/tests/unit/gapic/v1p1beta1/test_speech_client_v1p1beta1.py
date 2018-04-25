@@ -197,7 +197,7 @@ class TestSpeechClient(object):
         request = cloud_speech_pb2.StreamingRecognizeRequest(**request)
         requests = [request]
 
-        response = client.streaming_recognize(requests)
+        response = client._streaming_recognize(requests)
         resources = list(response)
         assert len(resources) == 1
         assert expected_response == resources[0]
@@ -220,4 +220,4 @@ class TestSpeechClient(object):
         requests = [request]
 
         with pytest.raises(CustomException):
-            client.streaming_recognize(requests)
+            client._streaming_recognize(requests)
