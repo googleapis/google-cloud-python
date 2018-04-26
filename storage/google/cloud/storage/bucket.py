@@ -787,6 +787,32 @@ class Bucket(_PropertyMixin):
         self._patch_property('cors', entries)
 
     @property
+    def default_kms_key_name(self):
+        """Retrieve / set default KMS encryption key for objects in the bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set default KMS encryption key for items in this bucket.
+        :getter: Get default KMS encryption key for items in this bucket.
+
+        :rtype: str
+        :returns: Default KMS encryption key, or ``None`` if not set.
+        """
+        encryption_config = self._properties.get('encryption', {})
+        return encryption_config.get('defaultKmsKeyName')
+
+    @default_kms_key_name.setter
+    def default_kms_key_name(self, value):
+        """Set default KMS encryption key for objects in the bucket.
+
+        :type value: str or None
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        encryption_config = self._properties.get('encryption', {})
+        encryption_config['defaultKmsKeyName'] = value
+        self._patch_property('encryption', encryption_config)
+
+    @property
     def labels(self):
         """Retrieve or set labels assigned to this bucket.
 
