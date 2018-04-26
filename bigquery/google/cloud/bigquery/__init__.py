@@ -61,6 +61,7 @@ from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
+from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
 from google.cloud.bigquery.external_config import BigtableColumnFamily

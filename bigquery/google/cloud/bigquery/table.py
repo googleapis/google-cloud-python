@@ -1099,3 +1099,9 @@ class RowIterator(HTTPIterator):
         rows = [row.values() for row in iter(self)]
 
         return pandas.DataFrame(rows, columns=column_headers)
+
+
+class TimePartitioningType(object):
+    """The only type supported is DAY, which generates one partition per day.
+    """
+    DAY = 'DAY'
