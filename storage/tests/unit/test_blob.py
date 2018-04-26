@@ -55,7 +55,7 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
-        self.assertEqual(blob._kms_encryption_key, None)
+        self.assertEqual(blob._kms_key_name, None)
 
     def test_ctor_with_encoded_unicode(self):
         blob_name = b'wet \xe2\x9b\xb5'
@@ -71,9 +71,9 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
         self.assertEqual(blob._encryption_key, KEY)
-        self.assertEqual(blob._kms_encryption_key, None)
+        self.assertEqual(blob._kms_key_name, None)
 
-    def test_ctor_w_kms_encryption_key_and_encryption_key(self):
+    def test_ctor_w_kms_key_name_and_encryption_key(self):
         KEY = b'01234567890123456789012345678901'  # 32 bytes
         KMS_RESOURCE = (
             "projects/test-project-123/"
@@ -88,9 +88,9 @@ class Test_Blob(unittest.TestCase):
             self._make_one(
                 BLOB_NAME, bucket=bucket,
                 encryption_key=KEY,
-                kms_encryption_key=KMS_RESOURCE)
+                kms_key_name=KMS_RESOURCE)
 
-    def test_ctor_w_kms_encryption_key(self):
+    def test_ctor_w_kms_key_name(self):
         KMS_RESOURCE = (
             "projects/test-project-123/"
             "locations/global/"
@@ -100,9 +100,9 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         blob = self._make_one(
-            BLOB_NAME, bucket=bucket, kms_encryption_key=KMS_RESOURCE)
+            BLOB_NAME, bucket=bucket, kms_key_name=KMS_RESOURCE)
         self.assertEqual(blob._encryption_key, None)
-        self.assertEqual(blob._kms_encryption_key, KMS_RESOURCE)
+        self.assertEqual(blob._kms_key_name, KMS_RESOURCE)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -492,7 +492,7 @@ class Test_Blob(unittest.TestCase):
                 user_project))
         self.assertEqual(download_url, expected_url)
 
-    def test__get_download_url_on_the_fly_with_kms_encryption_key(self):
+    def test__get_download_url_on_the_fly_with_kms_key_name(self):
         from six.moves.urllib.parse import urlencode
         kms_resource = (
             "projects/test-project-123/"
@@ -504,7 +504,7 @@ class Test_Blob(unittest.TestCase):
         blob_name = 'bzzz-fly.txt'
         bucket = _Bucket(name='buhkit')
         blob = self._make_one(
-            blob_name, bucket=bucket, kms_encryption_key=kms_resource)
+            blob_name, bucket=bucket, kms_key_name=kms_resource)
 
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
@@ -1054,11 +1054,11 @@ class Test_Blob(unittest.TestCase):
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
                               num_retries=None, user_project=None,
-                              predefined_acl=None, kms_encryption_key=None):
+                              predefined_acl=None, kms_key_name=None):
         from six.moves.urllib.parse import urlencode
         bucket = _Bucket(name='w00t', user_project=user_project)
         blob = self._make_one(
-            u'blob-name', bucket=bucket, kms_encryption_key=kms_encryption_key)
+            u'blob-name', bucket=bucket, kms_key_name=kms_key_name)
         self.assertIsNone(blob.chunk_size)
 
         # Create mocks to be checked for doing transport.
@@ -1095,8 +1095,8 @@ class Test_Blob(unittest.TestCase):
         if predefined_acl is not None:
             qs_params.append(('predefinedAcl', predefined_acl))
 
-        if kms_encryption_key is not None:
-            qs_params.append(('kmsKeyName', kms_encryption_key))
+        if kms_key_name is not None:
+            qs_params.append(('kmsKeyName', kms_key_name))
 
         upload_url += '?' + urlencode(qs_params)
 
@@ -1139,7 +1139,7 @@ class Test_Blob(unittest.TestCase):
             "cryptoKeys/test-key/"
         )
         self._do_multipart_success(
-            mock_get_boundary, kms_encryption_key=kms_resource)
+            mock_get_boundary, kms_key_name=kms_resource)
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
@@ -1165,13 +1165,13 @@ class Test_Blob(unittest.TestCase):
     def _initiate_resumable_helper(
             self, size=None, extra_headers=None, chunk_size=None,
             num_retries=None, user_project=None, predefined_acl=None,
-            blob_chunk_size=786432, kms_encryption_key=None):
+            blob_chunk_size=786432, kms_key_name=None):
         from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
 
         bucket = _Bucket(name='whammy', user_project=user_project)
         blob = self._make_one(
-            u'blob-name', bucket=bucket, kms_encryption_key=kms_encryption_key)
+            u'blob-name', bucket=bucket, kms_key_name=kms_key_name)
         blob.metadata = {'rook': 'takes knight'}
         blob.chunk_size = blob_chunk_size
         if blob_chunk_size is not None:
@@ -1214,8 +1214,8 @@ class Test_Blob(unittest.TestCase):
         if predefined_acl is not None:
             qs_params.append(('predefinedAcl', predefined_acl))
 
-        if kms_encryption_key is not None:
-            qs_params.append(('kmsKeyName', kms_encryption_key))
+        if kms_key_name is not None:
+            qs_params.append(('kmsKeyName', kms_key_name))
 
         upload_url += '?' + urlencode(qs_params)
 
@@ -1285,7 +1285,7 @@ class Test_Blob(unittest.TestCase):
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
-        self._initiate_resumable_helper(kms_encryption_key=kms_resource)
+        self._initiate_resumable_helper(kms_key_name=kms_resource)
 
     def test__initiate_resumable_upload_without_chunk_size(self):
         self._initiate_resumable_helper(blob_chunk_size=None)
@@ -2274,7 +2274,7 @@ class Test_Blob(unittest.TestCase):
         source = self._make_one(
             BLOB_NAME, bucket=bucket, encryption_key=SOURCE_KEY)
         dest = self._make_one(BLOB_NAME, bucket=bucket,
-                              kms_encryption_key=DEST_KMS_RESOURCE)
+                              kms_key_name=DEST_KMS_RESOURCE)
 
         token, rewritten, size = dest.rewrite(source)
 
