@@ -918,7 +918,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.cors, [CORS_ENTRY])
         self.assertTrue('cors' in bucket._changes)
 
-    def test_default_kms_encryption_key_getter(self):
+    def test_default_kms_key_name_getter(self):
         NAME = 'name'
         KMS_RESOURCE = (
             'projects/test-project-123/'
@@ -930,11 +930,11 @@ class Test_Bucket(unittest.TestCase):
             'defaultKmsKeyName': KMS_RESOURCE,
         }
         bucket = self._make_one(name=NAME)
-        self.assertIsNone(bucket.default_kms_encryption_key)
+        self.assertIsNone(bucket.default_kms_key_name)
         bucket._properties['encryption'] = ENCRYPTION_CONFIG
-        self.assertEqual(bucket.default_kms_encryption_key, KMS_RESOURCE)
+        self.assertEqual(bucket.default_kms_key_name, KMS_RESOURCE)
 
-    def test_default_kms_encryption_key_setter(self):
+    def test_default_kms_key_name_setter(self):
         NAME = 'name'
         KMS_RESOURCE = (
             'projects/test-project-123/'
@@ -946,7 +946,7 @@ class Test_Bucket(unittest.TestCase):
             'defaultKmsKeyName': KMS_RESOURCE,
         }
         bucket = self._make_one(name=NAME)
-        bucket.default_kms_encryption_key = KMS_RESOURCE
+        bucket.default_kms_key_name = KMS_RESOURCE
         self.assertEqual(
             bucket._properties['encryption'], ENCRYPTION_CONFIG)
         self.assertTrue('encryption' in bucket._changes)
