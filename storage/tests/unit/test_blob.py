@@ -493,7 +493,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(download_url, expected_url)
 
     def test__get_download_url_on_the_fly_with_kms_key_name(self):
-        from six.moves.urllib.parse import urlencode
         kms_resource = (
             "projects/test-project-123/"
             "locations/global/"
