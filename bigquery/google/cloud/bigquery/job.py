@@ -1548,10 +1548,10 @@ class ExtractJob(_AsyncJob):
             specified in the 'destinationUris' field.  Returns None if job is
             not yet complete.
         """
-        result = self._job_statistics().get('destinationUriFileCounts')
-        if result is not None:
-            result = int(result)
-        return result
+        counts = self._job_statistics().get('destinationUriFileCounts')
+        if counts is not None:
+            return [int(count) for count in counts]
+        return None
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
