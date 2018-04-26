@@ -788,7 +788,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def default_kms_encryption_key(self):
-        """Retrieve or set default KMS encryption key for items in the bucket.
+        """Retrieve / set default KMS encryption key for objects in the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
@@ -803,7 +803,7 @@ class Bucket(_PropertyMixin):
 
     @default_kms_encryption_key.setter
     def default_kms_encryption_key(self, value):
-        """Set default KMS encryption key for items in the bucket.
+        """Set default KMS encryption key for objects in the bucket.
 
         :type value: str or None
         :param value: new KMS key name (None to clear any existing key).
