@@ -2118,6 +2118,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.time_partitioning)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2143,6 +2144,23 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
         self.assertEqual(job.query_parameters, query_parameters)
+
+    def test_ctor_w_time_partitioning(self):
+        from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = TimePartitioning(
+            TimePartitioningType.DAY, 'name', 10000)
+        client = _make_client(project=self.PROJECT)
+        config = QueryJobConfig()
+        config.time_partitioning = time_partitioning
+        job = self._make_one(
+            self.JOB_ID, self.QUERY, client, job_config=config)
+        self.assertEqual(
+            job.time_partitioning.partition_type, TimePartitioningType.DAY)
+        self.assertEqual(job.time_partitioning.field, 'name')
+        self.assertEqual(job.time_partitioning.expiration_ms, 10000)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()

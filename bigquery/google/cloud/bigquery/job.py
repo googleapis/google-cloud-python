@@ -34,6 +34,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
@@ -1910,6 +1911,20 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop(
             'tableDefinitions',  _to_api_repr_table_defs(values))
 
+    @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
+        partitioning for the destination table.
+        """
+        prop = self._get_sub_prop('timePartitioning')
+        if prop is not None:
+            prop = TimePartitioning.from_api_repr(prop)
+        return prop
+
+    @time_partitioning.setter
+    def time_partitioning(self, value):
+        self._set_sub_prop('timePartitioning', value.to_api_repr())
+
     def to_api_repr(self):
         """Build an API representation of the query job config.
 
@@ -2080,6 +2095,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.table_definitions`.
         """
         return self._configuration.table_definitions
+
+    @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
+        partitioning for the destination table.
+        """
+        return self._configuration.time_partitioning
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
