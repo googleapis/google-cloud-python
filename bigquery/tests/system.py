@@ -843,6 +843,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, destination)
         got = destination.download_as_string().decode('utf-8')
         self.assertIn('"Bharney Rhubble"', got)
+        self.assertEqual(job.destination_uri_file_counts, [1])
 
     def test_copy_table(self):
         # If we create a new table to copy from, the test won't work
