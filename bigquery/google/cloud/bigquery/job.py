@@ -1541,14 +1541,17 @@ class ExtractJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.extract.destinationUriFileCounts
 
-        :rtype: int or None
-        :returns: number of DML rows affectd by the job, or None if job is not
-                  yet complete.
+        Returns:
+            a list of integer counts, each representing the number of files
+            per destination URI or URI pattern specified in the extract
+            configuration. These values will be in the same order as the URIs
+            specified in the 'destinationUris' field.  Returns None if job is
+            not yet complete.
         """
-        result = self._job_statistics().get('destinationUriFileCounts')
-        if result is not None:
-            result = int(result)
-        return result
+        counts = self._job_statistics().get('destinationUriFileCounts')
+        if counts is not None:
+            return [int(count) for count in counts]
+        return None
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
