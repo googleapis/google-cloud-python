@@ -456,7 +456,7 @@ class BasePolicy(object):
 
         For example, if a the Policy implementation takes a callback in its
         constructor, you can schedule the callback using a
-        :cls:`concurrent.futures.ThreadPoolExecutor`::
+        :class:`concurrent.futures.ThreadPoolExecutor`::
 
             self._pool.submit(self._callback, response)
 

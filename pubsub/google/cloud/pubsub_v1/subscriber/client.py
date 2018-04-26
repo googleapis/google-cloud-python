@@ -154,7 +154,7 @@ class Client(object):
         provided ``callback``.
 
         The ``callback`` will be called with an individual
-        :cls:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the
+        :class:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the
         responsibility of the callback to either call ``ack()`` or ``nack()``
         on the message when it finished processing. If an exception occurs in
         the callback during processing, the exception is logged and the message
