@@ -280,6 +280,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
 
+    def test_list_partitions(self):
+        table_ref = DatasetReference('bigquery-partition-samples', 'samples').table('stackoverflow_comments')
+        all_rows = Config.CLIENT.list_partitions(table_ref)
+        self.assertIn("20150508", all_rows)
+
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
         dataset = self.temp_dataset(DATASET_ID)

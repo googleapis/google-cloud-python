@@ -1340,14 +1340,16 @@ class Client(ClientWithProject):
         :rtype: list
         :returns: a list of time partitions
         """
-        config = job.QueryJobConfig()
-        config.use_legacy_sql = True  # required for '$' syntax
-        query_job = self.query(
-            'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
-            (table.project, table.dataset_id, table.table_id),
-            job_config=config,
-            retry=retry)
-        return [row[0] for row in query_job]
+        meta_table = self.get_table(
+            TableReference( 
+            self.dataset(table.dataset_id, project=table.project),
+                '%s$__PARTITIONS_SUMMARY__' % table.table_id))
+        
+        subset = [col for col in meta_table.schema if col.name in ('partition_id')]
+        
+        return [row[0] for row in self.list_rows(meta_table, 
+                selected_fields=subset,
+                retry = retry)]
 
 
 # pylint: disable=unused-argument
