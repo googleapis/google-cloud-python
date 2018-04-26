@@ -968,6 +968,20 @@ class LoadJobConfig(_JobConfig):
             api_repr = value.to_api_repr()
         self._set_sub_prop('destinationEncryptionConfiguration', api_repr)
 
+    @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
+        partitioning for the destination table.
+        """
+        prop = self._get_sub_prop('timePartitioning')
+        if prop is not None:
+            prop = TimePartitioning.from_api_repr(prop)
+        return prop
+
+    @time_partitioning.setter
+    def time_partitioning(self, value):
+        self._set_sub_prop('timePartitioning', value.to_api_repr())
+
 
 class LoadJob(_AsyncJob):
     """Asynchronous job for loading data into a table.
@@ -1114,6 +1128,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
+
+    @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
+        partitioning for the destination table.
+        """
+        return self._configuration.time_partitioning
 
     @property
     def input_file_bytes(self):
