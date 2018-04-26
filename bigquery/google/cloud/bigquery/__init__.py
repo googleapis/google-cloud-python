@@ -62,6 +62,7 @@ from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import TimePartitioningType
+from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
 from google.cloud.bigquery.external_config import BigtableColumnFamily
@@ -94,6 +95,8 @@ __all__ = [
     'LoadJob',
     'LoadJobConfig',
     'UnknownJob',
+    'TimePartitioningType',
+    'TimePartitioning',
     # Shared helpers
     'SchemaField',
     'UDFResource',

@@ -1347,3 +1347,71 @@ class TestRowIterator(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()
+
+
+class TestTimePartitioning(unittest.TestCase):
+
+    def test_constructor_w_type_only(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+
+        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+
+        api_repr = time_partitioning.to_api_repr()
+
+        exp_api_repr = {'type': 'DAY'}
+        self.assertEqual(api_repr, exp_api_repr)
+
+        tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
+
+        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertIsNone(tp_from_api_repr.field)
+        self.assertIsNone(tp_from_api_repr.expiration_ms)
+
+    def test_constructor_w_type_and_field(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = TimePartitioning(TimePartitioningType.DAY, 'name')
+
+        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertEqual(time_partitioning.field, 'name')
+        self.assertIsNone(time_partitioning.expiration_ms)
+
+        api_repr = time_partitioning.to_api_repr()
+
+        exp_api_repr = {'type': 'DAY', 'field': 'name'}
+        self.assertEqual(api_repr, exp_api_repr)
+
+        tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
+
+        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.field, 'name')
+        self.assertIsNone(tp_from_api_repr.expiration_ms)
+
+    def test_constructor_w_all_properties(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = TimePartitioning(
+            TimePartitioningType.DAY, 'name', 10000)
+
+        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertEqual(time_partitioning.field, 'name')
+        self.assertEqual(time_partitioning.expiration_ms, 10000)
+
+        api_repr = time_partitioning.to_api_repr()
+
+        exp_api_repr = {
+            'type': 'DAY', 'field': 'name', 'expirationMs': '10000'}
+        self.assertEqual(api_repr, exp_api_repr)
+
+        tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
+
+        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.field, 'name')
+        self.assertEqual(tp_from_api_repr.expiration_ms, 10000)

@@ -1105,3 +1105,76 @@ class TimePartitioningType(object):
     """The only type supported is DAY, which generates one partition per day.
     """
     DAY = 'DAY'
+
+
+class TimePartitioning(object):
+    """Configures time-based partitioning for a table.
+
+    Args:
+        partition_type (google.cloud.bigquery.table.TimePartitioningType):
+            The only type supported is DAY, which will generate one partition
+            per day.
+        field (str, optional):
+            If set, the table is partitioned by this field. If not set, the
+            table is partitioned by pseudo column '_PARTITIONTIME'. The field
+            must be a top-level TIMESTAMP or DATE field. Its mode must be
+            NULLABLE or REQUIRED.
+        expiration_ms(int, optional):
+            Number of milliseconds for which to keep the storage for a
+            partition.
+    """
+    def __init__(self, partition_type, field=None, expiration_ms=None):
+        self._partition_type = partition_type
+        self._field = field
+        self._expiration_ms = _helpers._str_or_none(expiration_ms)
+
+    @property
+    def partition_type(self):
+        """google.cloud.bigquery.table.TimePartitioningType: The type of time
+        partitioning to use.
+        """
+        return self._partition_type
+
+    @property
+    def field(self):
+        """str: Field in the table to use for partitioning"""
+        return self._field
+
+    @property
+    def expiration_ms(self):
+        """int: Number of milliseconds to keep the storage for a partition."""
+        return _helpers._int_or_none(self._expiration_ms)
+
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Return a ``TimePartitioning`` object deserialized from a ``dict``.
+
+        Args:
+            api_repr (Mapping[str, str]):
+                The serialized representation of the TimePartitioning, such as
+                what is output by :meth:`to_api_repr`.
+
+        Returns:
+            google.cloud.bigquery.table.TimePartitioning:
+                The ``TimePartitioning`` object.
+        """
+        return cls(
+            api_repr['type'],
+            api_repr.get('field'),
+            api_repr.get('expirationMs')
+        )
+
+    def to_api_repr(self):
+        """Return a dictionary representing this object.
+
+        Returns:
+            dict:
+                A dictionary representing the TimePartitioning object in
+                serialized form.
+        """
+        api_repr = {'type': self._partition_type}
+        if self._expiration_ms is not None:
+            api_repr['expirationMs'] = self._expiration_ms
+        if self._field is not None:
+            api_repr['field'] = self._field
+        return api_repr
