@@ -349,7 +349,7 @@ class DlpServiceClient(object):
         """
         Finds potentially sensitive info in content.
         This method has limits on input size, processing time, and output size.
-        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`_, [How-to guide for
+        `How-to guide for text <https://cloud.google.com/dlp/docs/inspecting-text>`__, [How-to guide for
         images](/dlp/docs/inspecting-images)
 
         Example:
@@ -417,7 +417,7 @@ class DlpServiceClient(object):
         """
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time, and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`_
+        `How-to guide <https://cloud.google.com/dlp/docs/redacting-sensitive-data-images>`__
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -483,7 +483,7 @@ class DlpServiceClient(object):
         """
         De-identifies potentially sensitive info from a ContentItem.
         This method has limits on input size and output size.
-        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`_
+        `How-to guide <https://cloud.google.com/dlp/docs/deidentify-sensitive-data>`__
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1284,7 +1284,7 @@ class DlpServiceClient(object):
                        metadata=None):
         """
         Creates a new job to inspect storage or calculate risk metrics.
-        `How-to guide <https://cloud.google.com/dlp/docs/compute-risk-analysis>`_.
+        `How-to guide <https://cloud.google.com/dlp/docs/compute-risk-analysis>`__.
 
         Example:
             >>> from google.cloud import dlp_v2
