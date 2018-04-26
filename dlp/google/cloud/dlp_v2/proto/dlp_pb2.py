@@ -16,7 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.privacy.dlp_v2.proto import storage_pb2 as google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2
+from google.cloud.dlp_v2.proto import storage_pb2 as google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
