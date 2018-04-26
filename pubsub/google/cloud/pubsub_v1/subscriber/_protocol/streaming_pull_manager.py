@@ -356,7 +356,7 @@ class StreamingPullManager(object):
             self._scheduler.schedule(self._callback, message)
 
     def _should_recover(self, exception):
-        """Determine if an error on the RPC straem should be recovered.
+        """Determine if an error on the RPC stream should be recovered.
 
         If the exception is one of the retryable exceptions, this will signal
         to the consumer thread that it should "recover" from the failure.
