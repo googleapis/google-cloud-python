@@ -500,7 +500,6 @@ class Test_Blob(unittest.TestCase):
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
-        kms_encoded = urlencode([('kmsKeyName', kms_resource)])
         blob_name = 'bzzz-fly.txt'
         bucket = _Bucket(name='buhkit')
         blob = self._make_one(
@@ -510,7 +509,7 @@ class Test_Blob(unittest.TestCase):
         download_url = blob._get_download_url()
         expected_url = (
             'https://www.googleapis.com/download/storage/v1/b/'
-            'buhkit/o/bzzz-fly.txt?alt=media&{}'.format(kms_encoded))
+            'buhkit/o/bzzz-fly.txt?alt=media')  # kmsKeyName *not* expected
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
