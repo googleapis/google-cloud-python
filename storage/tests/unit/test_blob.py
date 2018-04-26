@@ -104,6 +104,81 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob._encryption_key, None)
         self.assertEqual(blob._kms_key_name, KMS_RESOURCE)
 
+    def test__set_properties_normal(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW = now.strftime(_RFC3339_MICROS)
+        BLOB_NAME = 'blob-name'
+        GENERATION = 12345
+        BLOB_ID = 'name/{}/{}'.format(BLOB_NAME, GENERATION)
+        SELF_LINK = 'http://example.com/self/'
+        METAGENERATION = 23456
+        SIZE = 12345
+        MD5_HASH = 'DEADBEEF'
+        MEDIA_LINK = 'http://example.com/media/'
+        ENTITY = 'project-owner-12345'
+        ENTITY_ID = '23456'
+        CRC32C = 'FACE0DAC'
+        COMPONENT_COUNT = 2
+        ETAG = 'ETAG'
+        resource = {
+            'id': BLOB_ID,
+            'selfLink': SELF_LINK,
+            'generation': GENERATION,
+            'metageneration': METAGENERATION,
+            'contentType': 'text/plain',
+            'timeCreated': NOW,
+            'updated': NOW,
+            'timeDeleted': NOW,
+            'storageClass': 'NEARLINE',
+            'timeStorageClassUpdated': NOW,
+            'size': SIZE,
+            'md5Hash': MD5_HASH,
+            'mediaLink': MEDIA_LINK,
+            'contentEncoding': 'gzip',
+            'contentDisposition': 'inline',
+            'contentLanguage': 'en-US',
+            'cacheControl': 'private',
+            'metadata': {
+                'foo': 'Foo',
+            },
+            'owner': {
+                'entity': ENTITY,
+                'entityId': ENTITY_ID,
+            },
+            'crc32c': CRC32C,
+            'componentCount': COMPONENT_COUNT,
+            'etag': ETAG,
+        }
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob._set_properties(resource)
+
+        self.assertEqual(blob.id, BLOB_ID)
+        self.assertEqual(blob.self_link, SELF_LINK)
+        self.assertEqual(blob.generation, GENERATION)
+        self.assertEqual(blob.metageneration, METAGENERATION)
+        self.assertEqual(blob.content_type, 'text/plain')
+        self.assertEqual(blob.time_created, now)
+        self.assertEqual(blob.updated, now)
+        self.assertEqual(blob.time_deleted, now)
+        self.assertEqual(blob.storage_class, 'NEARLINE')
+        self.assertEqual(blob.size, SIZE)
+        self.assertEqual(blob.md5_hash, MD5_HASH)
+        self.assertEqual(blob.media_link, MEDIA_LINK)
+        self.assertEqual(blob.content_encoding, 'gzip')
+        self.assertEqual(blob.content_disposition, 'inline')
+        self.assertEqual(blob.content_language, 'en-US')
+        self.assertEqual(blob.cache_control, 'private')
+        self.assertEqual(blob.metadata, {'foo': 'Foo'})
+        self.assertEqual(blob.owner, {'entity': ENTITY, 'entityId': ENTITY_ID})
+        self.assertEqual(blob.crc32c, CRC32C)
+        self.assertEqual(blob.component_count, COMPONENT_COUNT)
+        self.assertEqual(blob.etag, ETAG)
+
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
 
