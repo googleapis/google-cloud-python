@@ -39,9 +39,9 @@ class Test_Blob(unittest.TestCase):
     def _make_one(*args, **kw):
         from google.cloud.storage.blob import Blob
 
-        properties = kw.pop('properties', None)
+        properties = kw.pop('properties', {})
         blob = Blob(*args, **kw)
-        blob._properties = properties or {}
+        blob._properties.update(properties)
         return blob
 
     def test_ctor_wo_encryption_key(self):
@@ -55,7 +55,7 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
-        self.assertEqual(blob._kms_key_name, None)
+        self.assertEqual(blob.kms_key_name, None)
 
     def test_ctor_with_encoded_unicode(self):
         blob_name = b'wet \xe2\x9b\xb5'
@@ -71,7 +71,7 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
         self.assertEqual(blob._encryption_key, KEY)
-        self.assertEqual(blob._kms_key_name, None)
+        self.assertEqual(blob.kms_key_name, None)
 
     def test_ctor_w_kms_key_name_and_encryption_key(self):
         KEY = b'01234567890123456789012345678901'  # 32 bytes
@@ -102,9 +102,9 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(
             BLOB_NAME, bucket=bucket, kms_key_name=KMS_RESOURCE)
         self.assertEqual(blob._encryption_key, None)
-        self.assertEqual(blob._kms_key_name, KMS_RESOURCE)
+        self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
 
-    def test__set_properties_normal(self):
+    def _set_properties_helper(self, kms_key_name=None):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _RFC3339_MICROS
@@ -152,6 +152,10 @@ class Test_Blob(unittest.TestCase):
             'componentCount': COMPONENT_COUNT,
             'etag': ETAG,
         }
+
+        if kms_key_name is not None:
+            resource['kmsKeyName'] = kms_key_name
+
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
 
@@ -178,6 +182,23 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.crc32c, CRC32C)
         self.assertEqual(blob.component_count, COMPONENT_COUNT)
         self.assertEqual(blob.etag, ETAG)
+
+        if kms_key_name is not None:
+            self.assertEqual(blob.kms_key_name, kms_key_name)
+        else:
+            self.assertIsNone(blob.kms_key_name)
+
+    def test__set_properties_wo_kms_key_name(self):
+        self._set_properties_helper()
+
+    def test__set_properties_w_kms_key_name(self):
+        kms_resource = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+        )
+        self._set_properties_helper(kms_key_name=kms_resource)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -2362,7 +2383,9 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['path'], PATH)
         self.assertEqual(kw[0]['query_params'],
                          {'destinationKmsKeyName': DEST_KMS_RESOURCE})
-        SENT = {}
+        SENT = {
+            'kmsKeyName': DEST_KMS_RESOURCE,
+        }
         self.assertEqual(kw[0]['data'], SENT)
 
         headers = {
