@@ -186,6 +186,59 @@ def test_subscribe_to_messages_async_callbacks(
     subscription.close()
 
 
+def test_subscribe_to_messages_async_callbacks_experimental(
+        publisher, topic_path, subscriber, subscription_path, cleanup):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
+
+    # Create a topic.
+    publisher.create_topic(topic_path)
+
+    # Subscribe to the topic. This must happen before the messages
+    # are published.
+    subscriber.create_subscription(subscription_path, topic_path)
+
+    # Publish some messages.
+    futures = [
+        publisher.publish(
+            topic_path,
+            b'Wooooo! The claaaaaw!',
+            num=str(index),
+        )
+        for index in six.moves.range(2)
+    ]
+
+    # Make sure the publish completes.
+    for future in futures:
+        future.result()
+
+    # We want to make sure that the callback was called asynchronously. So
+    # track when each call happened and make sure below.
+    callback = TimesCallback(2)
+
+    # Actually open the subscription and hold it open for a few seconds.
+    future = subscriber.subscribe_experimental(subscription_path, callback)
+    for second in six.moves.range(5):
+        time.sleep(4)
+
+        # The callback should have fired at least two times, but it may
+        # take some time.
+        if callback.calls >= 2:
+            first, last = sorted(callback.call_times[:2])
+            diff = last - first
+            # "Ensure" the first two callbacks were executed asynchronously
+            # (sequentially would have resulted in a difference of 2+
+            # seconds).
+            assert diff.days == 0
+            assert diff.seconds < callback.sleep_time
+
+    # Okay, we took too long; fail out.
+    assert callback.calls >= 2
+
+    future.cancel()
+
+
 class AckCallback(object):
 
     def __init__(self):

@@ -14,47 +14,139 @@
 
 import threading
 
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber import subscriber
+from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 
 import mock
 from six.moves import queue
 import pytest
 
 
-@pytest.mark.parametrize('item,method', [
+@pytest.mark.parametrize('item,method_name', [
     (requests.AckRequest(0, 0, 0), 'ack'),
     (requests.DropRequest(0, 0), 'drop'),
     (requests.LeaseRequest(0, 0), 'lease'),
     (requests.ModAckRequest(0, 0), 'modify_ack_deadline'),
     (requests.NackRequest(0, 0), 'nack')
 ])
-def test_dispatch_callback(item, method):
-    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
-    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+def test_dispatch_callback(item, method_name):
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     items = [item]
-    dispatcher_.dispatch_callback(items)
 
-    getattr(subscriber_, method).assert_called_once_with([item])
+    with mock.patch.object(dispatcher_, method_name) as method:
+        dispatcher_.dispatch_callback(items)
+
+    method.assert_called_once_with([item])
 
 
 def test_dispatch_callback_inactive():
-    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
-    subscriber_.is_active = False
-    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    manager.is_active = False
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     dispatcher_.dispatch_callback([requests.AckRequest(0, 0, 0)])
 
-    subscriber_.ack.assert_not_called()
+    manager.send.assert_not_called()
+
+
+def test_ack():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.AckRequest(
+        ack_id='ack_id_string', byte_size=0, time_to_ack=20)]
+    dispatcher_.ack(items)
+
+    manager.send.assert_called_once_with(types.StreamingPullRequest(
+        ack_ids=['ack_id_string'],
+    ))
+
+    manager.leaser.remove.assert_called_once_with(items)
+    manager.maybe_resume_consumer.assert_called_once()
+    manager.ack_histogram.add.assert_called_once_with(20)
+
+
+def test_ack_no_time():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.AckRequest(
+        ack_id='ack_id_string', byte_size=0, time_to_ack=None)]
+    dispatcher_.ack(items)
+
+    manager.send.assert_called_once_with(types.StreamingPullRequest(
+        ack_ids=['ack_id_string'],
+    ))
+
+    manager.ack_histogram.add.assert_not_called()
+
+
+def test_lease():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.LeaseRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.lease(items)
+
+    manager.leaser.add.assert_called_once_with(items)
+    manager.maybe_pause_consumer.assert_called_once()
+
+
+def test_drop():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.DropRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.drop(items)
+
+    manager.leaser.remove.assert_called_once_with(items)
+    manager.maybe_resume_consumer.assert_called_once()
+
+
+def test_nack():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.NackRequest(ack_id='ack_id_string', byte_size=10)]
+    dispatcher_.nack(items)
+
+    manager.send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack_id_string'],
+        modify_deadline_seconds=[0],
+    ))
+
+
+def test_modify_ack_deadline():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [requests.ModAckRequest(ack_id='ack_id_string', seconds=60)]
+    dispatcher_.modify_ack_deadline(items)
+
+    manager.send.assert_called_once_with(types.StreamingPullRequest(
+        modify_deadline_ack_ids=['ack_id_string'],
+        modify_deadline_seconds=[60],
+    ))
 
 
 @mock.patch('threading.Thread', autospec=True)
 def test_start(thread):
-    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
-    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     dispatcher_.start()
 
@@ -68,8 +160,9 @@ def test_start(thread):
 
 @mock.patch('threading.Thread', autospec=True)
 def test_start_already_started(thread):
-    subscriber_ = mock.create_autospec(subscriber.Subscriber, instance=True)
-    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.queue, subscriber_)
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True)
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
     dispatcher_._thread = mock.sentinel.thread
 
     with pytest.raises(ValueError):
@@ -80,7 +173,7 @@ def test_start_already_started(thread):
 
 def test_stop():
     queue_ = queue.Queue()
-    dispatcher_ = dispatcher.Dispatcher(queue_, mock.sentinel.subscriber)
+    dispatcher_ = dispatcher.Dispatcher(mock.sentinel.manager, queue_)
     thread = mock.create_autospec(threading.Thread, instance=True)
     dispatcher_._thread = thread
 
@@ -93,6 +186,6 @@ def test_stop():
 
 def test_stop_no_join():
     dispatcher_ = dispatcher.Dispatcher(
-        mock.sentinel.queue, mock.sentinel.subscriber)
+        mock.sentinel.manager, mock.sentinel.queue)
 
     dispatcher_.stop()

@@ -62,3 +62,36 @@ class Future(futures.Future):
             return False
 
         return super(Future, self).running()
+
+
+class StreamingPullFuture(futures.Future):
+    """Represents a process that asynchronously performs streaming pull and
+    schedules messages to be processed.
+
+    This future is resolved when the process is stopped (via :meth:`cancel`) or
+    if it encounters an unrecoverable error. Calling `.result()` will cause
+    the calling thread to block indefinitely.
+    """
+
+    def __init__(self, manager):
+        super(StreamingPullFuture, self).__init__()
+        self._manager = manager
+        self._manager.add_close_callback(self._on_close_callback)
+        self._cancelled = True
+
+    def _on_close_callback(self, manager, result):
+        if result is None:
+            self.set_result(True)
+        else:
+            self.set_exception(result)
+
+    def cancel(self):
+        """Stops pulling messages and shutdowns the background thread consuming
+        messages.
+        """
+        self._cancelled = True
+        return self._manager.close()
+
+    def cancelled(self):
+        """bool: True if the subscription has been cancelled."""
+        return self._cancelled
