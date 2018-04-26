@@ -158,7 +158,7 @@ class Client(object):
         responsibility of the callback to either call ``ack()`` or ``nack()``
         on the message when it finished processing. If an exception occurs in
         the callback during processing, the exception is logged and the message
-        is ``nack()``ed.
+        is ``nack()`` ed.
 
         The ``flow_control`` argument can be used to control the rate of
         message processing.
