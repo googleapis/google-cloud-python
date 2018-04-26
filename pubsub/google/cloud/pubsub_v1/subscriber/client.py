@@ -169,7 +169,9 @@ class Client(object):
         is encountered (such as loss of network connectivity). Cancelling the
         future will signal the process to shutdown gracefully and exit.
 
-        Example::
+        Example
+
+        .. code-block:: python
 
             from google.cloud.pubsub_v1 import subscriber
 
