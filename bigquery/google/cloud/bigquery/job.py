@@ -1541,11 +1541,12 @@ class ExtractJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.extract.destinationUriFileCounts
 
-        :rtype: list of int or None
-        :returns: number of files per destination URI or URI pattern specified
-                  in the extract configuration. These values will be in the
-                  same order as the URIs specified in the 'destinationUris'
-                  field, or None if job is not yet complete.
+        Returns:
+            a list of integer counts, each representing the number of files
+            per destination URI or URI pattern specified in the extract
+            configuration. These values will be in the same order as the URIs
+            specified in the 'destinationUris' field.  Returns None if job is
+            not yet complete.
         """
         result = self._job_statistics().get('destinationUriFileCounts')
         if result is not None:
