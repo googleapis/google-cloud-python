@@ -408,6 +408,7 @@ class BackgroundConsumer(object):
         self._paused = False
         self._wake = threading.Condition()
         self._thread = None
+        self._operational_lock = threading.Lock()
 
     def _on_call_done(self, future):
         # Resume the thread if it's paused, this prevents blocking forever
@@ -447,24 +448,26 @@ class BackgroundConsumer(object):
 
     def start(self):
         """Start the background thread and begin consuming the thread."""
-        thread = threading.Thread(
-            name=_BIDIRECTIONAL_CONSUMER_NAME,
-            target=self._thread_main)
-        thread.daemon = True
-        thread.start()
-        self._thread = thread
-        _LOGGER.debug('Started helper thread %s', thread.name)
+        with self._operational_lock:
+            thread = threading.Thread(
+                name=_BIDIRECTIONAL_CONSUMER_NAME,
+                target=self._thread_main)
+            thread.daemon = True
+            thread.start()
+            self._thread = thread
+            _LOGGER.debug('Started helper thread %s', thread.name)
 
     def stop(self):
         """Stop consuming the stream and shutdown the background thread."""
-        self._bidi_rpc.close()
+        with self._operational_lock:
+            self._bidi_rpc.close()
 
-        if self._thread is not None:
-            # Resume the thread to wake it up in case it is sleeping.
-            self.resume()
-            self._thread.join()
+            if self._thread is not None:
+                # Resume the thread to wake it up in case it is sleeping.
+                self.resume()
+                self._thread.join()
 
-        self._thread = None
+            self._thread = None
 
     @property
     def is_active(self):

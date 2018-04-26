@@ -32,37 +32,41 @@ class Dispatcher(object):
         self._manager = manager
         self._queue = queue
         self._thread = None
+        self._operational_lock = threading.Lock()
 
     def start(self):
         """Start a thread to dispatch requests queued up by callbacks.
         Spawns a thread to run :meth:`dispatch_callback`.
         """
-        if self._thread is not None:
-            raise ValueError('Dispatcher is already running.')
+        with self._operational_lock:
+            if self._thread is not None:
+                raise ValueError('Dispatcher is already running.')
 
-        worker = helper_threads.QueueCallbackWorker(
-            self._queue,
-            self.dispatch_callback,
-            max_items=self._manager.flow_control.max_request_batch_size,
-            max_latency=self._manager.flow_control.max_request_batch_latency
-        )
-        # Create and start the helper thread.
-        thread = threading.Thread(
-            name=_CALLBACK_WORKER_NAME,
-            target=worker,
-        )
-        thread.daemon = True
-        thread.start()
-        _LOGGER.debug('Started helper thread %s', thread.name)
-        self._thread = thread
+            flow_control = self._manager.flow_control
+            worker = helper_threads.QueueCallbackWorker(
+                self._queue,
+                self.dispatch_callback,
+                max_items=flow_control.max_request_batch_size,
+                max_latency=flow_control.max_request_batch_latency
+            )
+            # Create and start the helper thread.
+            thread = threading.Thread(
+                name=_CALLBACK_WORKER_NAME,
+                target=worker,
+            )
+            thread.daemon = True
+            thread.start()
+            _LOGGER.debug('Started helper thread %s', thread.name)
+            self._thread = thread
 
     def stop(self):
-        if self._thread is not None:
-            # Signal the worker to stop by queueing a "poison pill"
-            self._queue.put(helper_threads.STOP)
-            self._thread.join()
+        with self._operational_lock:
+            if self._thread is not None:
+                # Signal the worker to stop by queueing a "poison pill"
+                self._queue.put(helper_threads.STOP)
+                self._thread.join()
 
-        self._thread = None
+            self._thread = None
 
     def dispatch_callback(self, items):
         """Map the callback request to the appropriate gRPC request.

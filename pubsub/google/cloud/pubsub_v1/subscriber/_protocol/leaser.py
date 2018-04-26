@@ -38,6 +38,7 @@ _LeasedMessage = collections.namedtuple(
 class Leaser(object):
     def __init__(self, manager):
         self._thread = None
+        self._operational_lock = threading.Lock()
         self._manager = manager
 
         self._leased_messages = {}
@@ -163,25 +164,27 @@ class Leaser(object):
         _LOGGER.info('%s exiting.', _LEASE_WORKER_NAME)
 
     def start(self):
-        if self._thread is not None:
-            raise ValueError('Leaser is already running.')
+        with self._operational_lock:
+            if self._thread is not None:
+                raise ValueError('Leaser is already running.')
 
-        # Create and start the helper thread.
-        self._stop_event.clear()
-        thread = threading.Thread(
-            name=_LEASE_WORKER_NAME,
-            target=self.maintain_leases)
-        thread.daemon = True
-        thread.start()
-        _LOGGER.debug('Started helper thread %s', thread.name)
-        self._thread = thread
+            # Create and start the helper thread.
+            self._stop_event.clear()
+            thread = threading.Thread(
+                name=_LEASE_WORKER_NAME,
+                target=self.maintain_leases)
+            thread.daemon = True
+            thread.start()
+            _LOGGER.debug('Started helper thread %s', thread.name)
+            self._thread = thread
 
     def stop(self):
-        self._stop_event.set()
+        with self._operational_lock:
+            self._stop_event.set()
 
-        if self._thread is not None:
-            # The thread should automatically exit when the consumer is
-            # inactive.
-            self._thread.join()
+            if self._thread is not None:
+                # The thread should automatically exit when the consumer is
+                # inactive.
+                self._thread.join()
 
-        self._thread = None
+            self._thread = None
