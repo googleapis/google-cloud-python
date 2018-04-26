@@ -24,6 +24,8 @@ from google.api_core import grpc_helpers
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import subscriber_client
+from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -78,7 +80,7 @@ class Client(object):
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
-        self.api = subscriber_client.SubscriberClient(**kwargs)
+        self._api = subscriber_client.SubscriberClient(**kwargs)
 
         # The subcription class is responsible to retrieving and dispatching
         # messages.
@@ -92,6 +94,11 @@ class Client(object):
             str: The location of the API.
         """
         return subscriber_client.SubscriberClient.SERVICE_ADDRESS
+
+    @property
+    def api(self):
+        """The underlying gapic API client."""
+        return self._api
 
     def subscribe(self, subscription, callback=None, flow_control=()):
         """Return a representation of an individual subscription.
@@ -136,3 +143,79 @@ class Client(object):
             error = '{!r} is not callable, please check input'.format(callback)
             raise TypeError(error)
         return subscr
+
+    def subscribe_experimental(
+            self, subscription, callback, flow_control=(),
+            scheduler_=None):
+        """Asynchronously start receiving messages on a given subscription.
+
+        This method starts a background thread to begin pulling messages from
+        a Pub/Sub subscription and scheduling them to be processed using the
+        provided ``callback``.
+
+        The ``callback`` will be called with an individual
+        :class:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the
+        responsibility of the callback to either call ``ack()`` or ``nack()``
+        on the message when it finished processing. If an exception occurs in
+        the callback during processing, the exception is logged and the message
+        is ``nack()`` ed.
+
+        The ``flow_control`` argument can be used to control the rate of
+        message processing.
+
+        This method starts the receiver in the background and returns a
+        *Future* representing its execution. Waiting on the future (calling
+        ``result()``) will block forever or until a non-recoverable error
+        is encountered (such as loss of network connectivity). Cancelling the
+        future will signal the process to shutdown gracefully and exit.
+
+        Example
+
+        .. code-block:: python
+
+            from google.cloud.pubsub_v1 import subscriber
+
+            subscriber_client = pubsub.SubscriberClient()
+
+            # existing subscription
+            subscription = subscriber_client.subscription_path(
+                'my-project-id', 'my-subscription')
+
+            def callback(message):
+                print(message)
+                message.ack()
+
+            future = subscriber.subscribe_experimental(
+                subscription, callback)
+
+            try:
+                future.result()
+            except KeyboardInterrupt:
+                future.cancel()
+
+        Args:
+            subscription (str): The name of the subscription. The
+                subscription should have already been created (for example,
+                by using :meth:`create_subscription`).
+            callback (Callable[~.pubsub_v1.subscriber.message.Message]):
+                The callback function. This function receives the message as
+                its only argument and will be called from a different thread/
+                process depending on the scheduling strategy.
+            flow_control (~.pubsub_v1.types.FlowControl): The flow control
+                settings. Use this to prevent situations where you are
+                inundated with too many messages at once.
+
+        Returns:
+            google.cloud.pubsub_v1.futures.StreamingPullFuture: A Future object
+                that can be used to manage the background stream.
+        """
+        flow_control = types.FlowControl(*flow_control)
+
+        manager = streaming_pull_manager.StreamingPullManager(
+            self, subscription, flow_control)
+
+        future = futures.StreamingPullFuture(manager)
+
+        manager.open(callback)
+
+        return future
