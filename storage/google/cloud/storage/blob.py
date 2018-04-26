@@ -121,6 +121,12 @@ class Blob(_PropertyMixin):
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
+
+    :type kms_key_name: str
+    :param kms_key_name:
+        Optional resource name of Cloud KMS key used to encrypt the blob's
+        contents.
+        See https://cloud.google.com/storage/docs/encryption#kms.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -150,14 +156,21 @@ class Blob(_PropertyMixin):
        set as their 'storage_class'.
     """
 
-    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+    def __init__(self, name, bucket, chunk_size=None,
+                 encryption_key=None, kms_key_name=None):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        if encryption_key is not None and kms_key_name is not None:
+            raise ValueError(
+                "Pass at most one of 'encryption_key' "
+                "and 'kms_key_name'")
+
         self._encryption_key = encryption_key
+        self._kms_key_name = kms_key_name
 
     @property
     def chunk_size(self):
@@ -727,6 +740,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self._kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self._kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -813,6 +830,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self._kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self._kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -1400,6 +1421,9 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
+
+        if self._kms_key_name is not None:
+            query_params['destinationKmsKeyName'] = self._kms_key_name
 
         api_response = client._connection.api_request(
             method='POST',
