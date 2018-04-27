@@ -151,11 +151,6 @@ class TestTableReference(unittest.TestCase):
         with self.assertRaises(ValueError):
             cls.from_string('string_dataset.string_table')
 
-    def test_from_string_legacy_string(self):
-        cls = self._get_target_class()
-        with self.assertRaises(ValueError):
-            cls.from_string('string-project:string_dataset')
-
     def test___eq___wrong_type(self):
         from google.cloud.bigquery.dataset import DatasetReference
         dataset_ref = DatasetReference('project_1', 'dataset_1')

@@ -539,7 +539,6 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(repr(dataset), expected)
 
 
-
 class TestDatasetListItem(unittest.TestCase):
 
     @staticmethod
