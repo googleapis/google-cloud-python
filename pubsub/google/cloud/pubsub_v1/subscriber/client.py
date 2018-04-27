@@ -160,8 +160,13 @@ class Client(object):
         the callback during processing, the exception is logged and the message
         is ``nack()`` ed.
 
-        The ``flow_control`` argument can be used to control the rate of
-        message processing.
+        The ``flow_control`` argument can be used to control the rate of at
+        which messages are pulled. The settings are relatively conservative by
+        default to prevent "message hoarding" - a situation where the client
+        pulls a large number of messages but can not process them fast enough
+        leading it to "starve" other clients of messages. Increasing these
+        settings may lead to faster throughput for messages that do not take
+        a long time to process.
 
         This method starts the receiver in the background and returns a
         *Future* representing its execution. Waiting on the future (calling
