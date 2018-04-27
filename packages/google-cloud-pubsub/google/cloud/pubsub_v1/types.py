@@ -14,7 +14,6 @@
 
 from __future__ import absolute_import
 import collections
-import psutil
 import sys
 
 from google.api_core.protobuf_helpers import get_messages
@@ -58,13 +57,13 @@ FlowControl = collections.namedtuple(
      'max_lease_duration'],
 )
 FlowControl.__new__.__defaults__ = (
-    psutil.virtual_memory().total * 0.2,  # max_bytes: 20% of total RAM
-    float('inf'),                         # max_messages: no limit
-    0.8,                                  # resume_threshold: 80%
-    100,                                  # max_requests: 100
-    100,                                  # max_request_batch_size: 100
-    0.01,                                 # max_request_batch_latency: 0.01s
-    2 * 60 * 60,                          # max_lease_duration: 2 hours.
+    100 * 1024 * 1024,    # max_bytes: 100mb
+    100,                  # max_messages: 100
+    0.8,                  # resume_threshold: 80%
+    100,                  # max_requests: 100
+    100,                  # max_request_batch_size: 100
+    0.01,                 # max_request_batch_latency: 0.01s
+    2 * 60 * 60,          # max_lease_duration: 2 hours.
 )
 
 

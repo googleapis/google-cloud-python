@@ -31,7 +31,6 @@ release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'google-api-core[grpc]<2.0.0dev,>=0.1.3',
     'grpc-google-iam-v1<0.12dev,>=0.11.1',
-    'psutil<6.0dev,>=5.2.2',
 ]
 extras = {
 }
