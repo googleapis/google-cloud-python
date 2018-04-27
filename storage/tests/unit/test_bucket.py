@@ -77,7 +77,25 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
 
-    def test_blob(self):
+    def test_blob_wo_keys(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'BLOB_NAME'
+        CHUNK_SIZE = 1024 * 1024
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(
+            BLOB_NAME, chunk_size=CHUNK_SIZE)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+        self.assertIsNone(blob._encryption_key)
+        self.assertIsNone(blob.kms_key_name)
+
+    def test_blob_w_encryption_key(self):
         from google.cloud.storage.blob import Blob
 
         BUCKET_NAME = 'BUCKET_NAME'
@@ -94,6 +112,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
+        self.assertIsNone(blob.kms_key_name)
+
+    def test_blob_w_kms_key_name(self):
+        from google.cloud.storage.blob import Blob
+
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'BLOB_NAME'
+        CHUNK_SIZE = 1024 * 1024
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/global/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key/"
+        )
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        blob = bucket.blob(
+            BLOB_NAME, chunk_size=CHUNK_SIZE, kms_key_name=KMS_RESOURCE)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+        self.assertIsNone(blob._encryption_key)
+        self.assertEqual(blob.kms_key_name, KMS_RESOURCE)
 
     def test_notification_defaults(self):
         from google.cloud.storage.notification import BucketNotification

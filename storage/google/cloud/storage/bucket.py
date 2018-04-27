@@ -171,7 +171,8 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None):
+    def blob(self, blob_name, chunk_size=None,
+             encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -190,11 +191,15 @@ class Bucket(_PropertyMixin):
         :param encryption_key:
             Optional 32 byte encryption key for customer-supplied encryption.
 
+        :type kms_key_name: str
+        :param kms_key_name:
+            Optional resource name of KMS key used to encrypt blob's content.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key)
+                    encryption_key=encryption_key, kms_key_name=kms_key_name)
 
     def notification(self, topic_name,
                      topic_project=None,
