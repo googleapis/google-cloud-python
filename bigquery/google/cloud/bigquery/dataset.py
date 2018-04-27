@@ -239,7 +239,7 @@ class DatasetReference(object):
                 'full_dataset_id must be a fully-qualified dataset ID in '
                 'standard SQL format. e.g. "project.dataset_id", got '
                 '{}'.format(full_dataset_id))
-        return cls(parts[0], parts[1])
+        return cls(*parts)
 
     def to_api_repr(self):
         """Construct the API resource representation of this dataset reference
@@ -503,8 +503,7 @@ class Dataset(object):
                 If ``full_dataset_id`` is not a fully-qualified dataset ID in
                 standard SQL format.
         """
-        dataset_ref = DatasetReference.from_string(full_dataset_id)
-        return cls(dataset_ref)
+        return cls(DatasetReference.from_string(full_dataset_id))
 
     @classmethod
     def from_api_repr(cls, resource):

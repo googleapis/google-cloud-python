@@ -667,8 +667,7 @@ class Table(object):
                 If ``full_table_id`` is not a fully-qualified table ID in
                 standard SQL format.
         """
-        table_ref = TableReference.from_string(full_table_id)
-        return cls(table_ref)
+        return cls(TableReference.from_string(full_table_id))
 
     @classmethod
     def from_api_repr(cls, resource):
