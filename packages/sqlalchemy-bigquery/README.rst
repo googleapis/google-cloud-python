@@ -26,7 +26,7 @@ Follow the `Google Cloud library guide <https://google-cloud-python.readthedocs.
 
 .. code-block:: python
 
-    engine = create_engine('bigquery://project', credentials_path='/path/to/keyfile.json')
+    engine = create_engine('bigquery://', credentials_path='/path/to/keyfile.json')
 
 Table names
 ___________
