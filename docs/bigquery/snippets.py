@@ -501,6 +501,46 @@ def test_create_table_cmek(client, to_delete):
     # [END bigquery_create_table_cmek]
 
 
+def test_create_partitioned_table(client, to_delete):
+    dataset_id = 'create_table_partitioned_{}'.format(_millis())
+    dataset_ref = bigquery.Dataset(client.dataset(dataset_id))
+    dataset = client.create_dataset(dataset_ref)
+    to_delete.append(dataset)
+
+    # [START bigquery_create_table_partitioned]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    table_ref = dataset_ref.table('my_partitioned_table')
+    schema = [
+        bigquery.SchemaField('requested_url', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('request_ts', 'TIMESTAMP', mode='REQUIRED'),
+        bigquery.SchemaField(
+            'response_info', 'RECORD', fields=[
+                bigquery.SchemaField('backend_server', 'STRING'),
+                bigquery.SchemaField('response_ms', 'INTEGER'),
+            ]
+        ),
+    ]
+    table = bigquery.Table(table_ref, schema=schema)
+    time_partitioning = bigquery.TimePartitioning(
+        bigquery.TimePartitioningType.DAY,
+        field='request_ts',        # name of column to use for partitioning
+        expiration_ms=7776000000)  # 90 days
+    table.time_partitioning = time_partitioning
+
+    table = client.create_table(table)
+
+    print('Created table {}, partitioned on column {}'.format(
+        table.table_id, table.time_partitioning.field))
+    # [END bigquery_create_table_partitioned]
+
+    assert table.time_partitioning.partitioning_type == 'DAY'
+    assert table.time_partitioning.field == 'request_ts'
+    assert table.time_partitioning.expiration_ms == 7776000000
+
+
 def test_get_table_information(client, to_delete):
     """Show a table's properties."""
     dataset_id = 'show_table_dataset_{}'.format(_millis())
