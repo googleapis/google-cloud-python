@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest
+import warnings
 
 import mock
 import six
@@ -760,106 +761,88 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(['bad'])
 
-    def test_partition_type_setter_bad_type(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test_time_partitioning_setter(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        with self.assertRaises(ValueError):
-            table.partitioning_type = 123
+        table = self._make_one(table_ref)
+        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
 
-    def test_partition_type_setter_unknown_value(self):
-        from google.cloud.bigquery.table import SchemaField
+        table.time_partitioning = time_partitioning
 
+        self.assertEqual(
+            table.time_partitioning.partitioning_type,
+            TimePartitioningType.DAY)
+        # Both objects point to the same properties dict
+        self.assertIs(
+            table._properties['timePartitioning'],
+            time_partitioning._properties)
+
+        time_partitioning.expiration_ms = 10000
+
+        # Changes to TimePartitioning object are reflected in Table properties
+        self.assertEqual(
+            table.time_partitioning.expiration_ms,
+            time_partitioning.expiration_ms)
+
+    def test_time_partitioning_setter_bad_type(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        with self.assertRaises(ValueError):
-            table.partitioning_type = "HASH"
-
-    def test_partition_type_setter_w_known_value(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
+        table = self._make_one(table_ref)
         self.assertIsNone(table.partitioning_type)
-        table.partitioning_type = 'DAY'
-        self.assertEqual(table.partitioning_type, 'DAY')
 
-    def test_partition_type_setter_w_none(self):
-        from google.cloud.bigquery.table import SchemaField
+        with self.assertRaises(ValueError):
+            table.time_partitioning = {'timePartitioning': {'type': 'DAY'}}
+
+    def test_partitioning_type_setter(self):
+        from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        table._properties['timePartitioning'] = {'type': 'DAY'}
+        table = self._make_one(table_ref)
+
+        with warnings.catch_warnings(record=True) as warning_output:
+            warnings.simplefilter('always')
+
+            table.partitioning_type = TimePartitioningType.DAY
+
+            self.assertEqual(table.partitioning_type, 'DAY')
+            assert len(warning_output) == 2
+            assert issubclass(
+                warning_output[-1].category, PendingDeprecationWarning)
+
+    def test_partitioning_type_setter_w_time_partitioning(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+        table.time_partitioning = time_partitioning
+
         table.partitioning_type = None
+
         self.assertIsNone(table.partitioning_type)
-        self.assertFalse('timePartitioning' in table._properties)
 
-    def test_partition_experation_bad_type(self):
-        from google.cloud.bigquery.table import SchemaField
-
+    def test_partition_expiration_setter(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        with self.assertRaises(ValueError):
-            table.partition_expiration = "NEVER"
+        table = self._make_one(table_ref)
 
-    def test_partition_expiration_w_integer(self):
-        from google.cloud.bigquery.table import SchemaField
+        with warnings.catch_warnings(record=True) as warning_output:
+            warnings.simplefilter('always')
 
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        self.assertIsNone(table.partition_expiration)
-        table.partition_expiration = 100
-        self.assertEqual(table.partitioning_type, "DAY")
-        self.assertEqual(table.partition_expiration, 100)
+            table.partition_expiration = 100
 
-    def test_partition_expiration_w_none(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        self.assertIsNone(table.partition_expiration)
-        table._properties['timePartitioning'] = {
-            'type': 'DAY',
-            'expirationMs': 100,
-        }
-        table.partition_expiration = None
-        self.assertEqual(table.partitioning_type, "DAY")
-        self.assertIsNone(table.partition_expiration)
-
-    def test_partition_expiration_w_none_no_partition_set(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age])
-        self.assertIsNone(table.partition_expiration)
-        table.partition_expiration = None
-        self.assertIsNone(table.partitioning_type)
-        self.assertIsNone(table.partition_expiration)
+            self.assertEqual(table.partition_expiration, 100)
+            # defaults to 'DAY' when expiration is set and type is not set
+            self.assertEqual(table.partitioning_type, 'DAY')
+            assert len(warning_output) == 3
+            assert issubclass(
+                warning_output[-1].category, PendingDeprecationWarning)
 
     def test_encryption_configuration_setter(self):
         from google.cloud.bigquery.table import EncryptionConfiguration
@@ -1357,7 +1340,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         time_partitioning = TimePartitioning(TimePartitioningType.DAY)
 
-        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
 
@@ -1368,7 +1351,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
         self.assertIsNone(tp_from_api_repr.field)
         self.assertIsNone(tp_from_api_repr.expiration_ms)
 
@@ -1378,7 +1361,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         time_partitioning = TimePartitioning(TimePartitioningType.DAY, 'name')
 
-        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')
         self.assertIsNone(time_partitioning.expiration_ms)
 
@@ -1389,7 +1372,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
         self.assertEqual(tp_from_api_repr.field, 'name')
         self.assertIsNone(tp_from_api_repr.expiration_ms)
 
@@ -1400,7 +1383,7 @@ class TestTimePartitioning(unittest.TestCase):
         time_partitioning = TimePartitioning(
             TimePartitioningType.DAY, 'name', 10000)
 
-        self.assertEqual(time_partitioning.partition_type, 'DAY')
+        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')
         self.assertEqual(time_partitioning.expiration_ms, 10000)
 
@@ -1412,6 +1395,6 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partition_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
         self.assertEqual(tp_from_api_repr.field, 'name')
         self.assertEqual(tp_from_api_repr.expiration_ms, 10000)

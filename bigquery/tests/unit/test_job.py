@@ -476,14 +476,16 @@ class TestLoadJob(unittest.TestCase, _Base):
         from google.cloud.bigquery import table
 
         time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name', 10000)
+            table.TimePartitioningType.DAY, 'name')
         client = _make_client(project=self.PROJECT)
         config = job.LoadJobConfig()
         config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
         load_job = self._make_one(
             self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client, config)
         self.assertEqual(
-            load_job.time_partitioning.partition_type,
+            load_job.time_partitioning.partitioning_type,
             table.TimePartitioningType.DAY)
         self.assertEqual(load_job.time_partitioning.field, 'name')
         self.assertEqual(load_job.time_partitioning.expiration_ms, 10000)
@@ -2168,14 +2170,16 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery import table
 
         time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name', 10000)
+            table.TimePartitioningType.DAY, 'name')
         client = _make_client(project=self.PROJECT)
         config = job.QueryJobConfig()
         config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
         query_job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
         self.assertEqual(
-            query_job.time_partitioning.partition_type,
+            query_job.time_partitioning.partitioning_type,
             table.TimePartitioningType.DAY)
         self.assertEqual(query_job.time_partitioning.field, 'name')
         self.assertEqual(query_job.time_partitioning.expiration_ms, 10000)
