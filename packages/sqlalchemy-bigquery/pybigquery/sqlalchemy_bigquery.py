@@ -93,16 +93,21 @@ class BigQueryDialect(DefaultDialect):
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
 
-    def __init__(self, arraysize=5000, *args, **kwargs):
+    def __init__(self, arraysize=5000, credentials_path=None, *args, **kwargs):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
+        self.credentials_path = credentials_path
 
     @classmethod
     def dbapi(cls):
         return dbapi
 
     def create_connect_args(self, url):
-        client = bigquery.Client(url.host) if url.host else None
+        project = url.host
+        if self.credentials_path:
+            client = bigquery.Client(project).from_service_account_json(self.credentials_path)
+        else:
+            client = bigquery.Client(project)
         return ([client], {})
 
     def _split_table_name(self, full_table_name):
