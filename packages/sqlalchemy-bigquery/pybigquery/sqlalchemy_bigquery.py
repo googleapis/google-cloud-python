@@ -103,11 +103,10 @@ class BigQueryDialect(DefaultDialect):
         return dbapi
 
     def create_connect_args(self, url):
-        project = url.host
         if self.credentials_path:
-            client = bigquery.Client(project).from_service_account_json(self.credentials_path)
+            client = bigquery.Client.from_service_account_json(self.credentials_path)
         else:
-            client = bigquery.Client(project)
+            client = bigquery.Client(url.host)
         return ([client], {})
 
     def _split_table_name(self, full_table_name):
