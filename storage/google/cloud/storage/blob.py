@@ -170,7 +170,9 @@ class Blob(_PropertyMixin):
                 "and 'kms_key_name'")
 
         self._encryption_key = encryption_key
-        self._kms_key_name = kms_key_name
+
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
 
     @property
     def chunk_size(self):
@@ -741,8 +743,8 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
 
-        if self._kms_key_name is not None:
-            name_value_pairs.append(('kmsKeyName', self._kms_key_name))
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
 
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
@@ -831,8 +833,8 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
 
-        if self._kms_key_name is not None:
-            name_value_pairs.append(('kmsKeyName', self._kms_key_name))
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
 
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
@@ -1422,8 +1424,8 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
 
-        if self._kms_key_name is not None:
-            query_params['destinationKmsKeyName'] = self._kms_key_name
+        if self.kms_key_name is not None:
+            query_params['destinationKmsKeyName'] = self.kms_key_name
 
         api_response = client._connection.api_request(
             method='POST',
@@ -1712,6 +1714,18 @@ class Blob(_PropertyMixin):
         size = self._properties.get('size')
         if size is not None:
             return int(size)
+
+    @property
+    def kms_key_name(self):
+        """Resource name of Cloud KMS key used to encrypt the blob's contents.
+
+        See https://cloud.google.com/storage/docs/encryption#kms.
+
+        :rtype: str or ``NoneType``
+        :returns:
+            The resource name or ``None`` if the property is not set locally.
+        """
+        return self._properties.get('kmsKeyName')
 
     storage_class = _scalar_property('storageClass')
     """Retrieve the storage class for the object.
