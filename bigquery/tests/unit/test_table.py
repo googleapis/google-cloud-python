@@ -834,13 +834,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         with warnings.catch_warnings(record=True) as warning_output:
             warnings.simplefilter('always')
+            self.assertIsNone(table.partition_expiration)
 
             table.partition_expiration = 100
 
             self.assertEqual(table.partition_expiration, 100)
             # defaults to 'DAY' when expiration is set and type is not set
             self.assertEqual(table.partitioning_type, 'DAY')
-            assert len(warning_output) == 3
+            assert len(warning_output) == 4
             assert issubclass(
                 warning_output[-1].category, PendingDeprecationWarning)
 
@@ -961,6 +962,7 @@ class TestTableListItem(unittest.TestCase):
             'type': 'TABLE',
             'timePartitioning': {
                 'type': 'DAY',
+                'field': 'mycolumn',
                 'expirationMs': '10000',
             },
             'labels': {
@@ -980,6 +982,9 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.reference.table_id, table_id)
         self.assertEqual(table.friendly_name, 'Mahogany Coffee Table')
         self.assertEqual(table.table_type, 'TABLE')
+        self.assertEqual(table.time_partitioning.partitioning_type, 'DAY')
+        self.assertEqual(table.time_partitioning.expiration_ms, 10000)
+        self.assertEqual(table.time_partitioning.field, 'mycolumn')
         self.assertEqual(table.partitioning_type, 'DAY')
         self.assertEqual(table.partition_expiration, 10000)
         self.assertEqual(table.labels['some-stuff'], 'this-is-a-label')
@@ -1029,6 +1034,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.table_type)
+        self.assertIsNone(table.time_partitioning)
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
         self.assertEqual(table.labels, {})

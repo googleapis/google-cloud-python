@@ -474,7 +474,7 @@ class Table(object):
     @time_partitioning.setter
     def time_partitioning(self, value):
         if value is not None and isinstance(value, TimePartitioning):
-            self._properties['timePartitioning'] = value._properties
+            self._properties['timePartitioning'] = value.to_api_repr()
         else:
             raise ValueError(
                 "value must be google.cloud.bigquery.table.TimePartitioning "
@@ -844,21 +844,40 @@ class TableListItem(object):
         return self._properties.get('type')
 
     @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
+        partitioning for a table.
+        """
+        prop = self._properties.get('timePartitioning')
+        if prop is not None:
+            return TimePartitioning.from_api_repr(prop)
+
+    @property
     def partitioning_type(self):
         """Union[str, None]: Time partitioning of the table if it is
         partitioned (Defaults to :data:`None`).
-
-        The only partitioning type that is currently supported is ``'DAY'``.
         """
-        return self._properties.get('timePartitioning', {}).get('type')
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.partitioning_type instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.partitioning_type
 
     @property
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
+
+        If this property is set and :attr:`partitioning_type` is not set,
+        :attr:`partitioning_type` will default to
+        :attr:`TimePartitioningType.DAY`.
         """
-        expiration = self._properties.get(
-            'timePartitioning', {}).get('expirationMs')
-        return _helpers._int_or_none(expiration)
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.expiration_ms instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.expiration_ms
 
     @property
     def friendly_name(self):
