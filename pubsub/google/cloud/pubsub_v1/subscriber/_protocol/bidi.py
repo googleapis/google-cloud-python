@@ -428,9 +428,7 @@ class BackgroundConsumer(object):
                 # (oops!) and wait for a notification that will never come.
                 # Keeping the lock throughout avoids that.
                 with self._wake:
-                    paused = self._paused
-
-                    if paused:
+                    if self._paused:
                         _LOGGER.debug('paused, waiting for waking.')
                         self._wake.wait()
                         _LOGGER.debug('woken.')
