@@ -14,17 +14,15 @@
 
 from google.auth import credentials
 import mock
-import pytest
 
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber import futures
-from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def test_init():
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
-    assert client._policy_class is thread.Policy
+    assert client.api is not None
 
 
 def test_init_emulator(monkeypatch):
@@ -41,40 +39,14 @@ def test_init_emulator(monkeypatch):
     assert channel.target().decode('utf8') == '/baz/bacon/'
 
 
-def test_subscribe():
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    subscription = client.subscribe('sub_name_a')
-    assert isinstance(subscription, thread.Policy)
-
-
-def test_subscribe_with_callback():
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    callback = mock.Mock()
-    with mock.patch.object(thread.Policy, 'open') as open_:
-        subscription = client.subscribe('sub_name_b', callback)
-        open_.assert_called_once_with(callback)
-    assert isinstance(subscription, thread.Policy)
-
-
-def test_subscribe_with_failed_callback():
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    callback = 'abcdefg'
-    with pytest.raises(TypeError) as exc_info:
-        client.subscribe('sub_name_b', callback)
-    assert callback in str(exc_info.value)
-
-
 @mock.patch(
     'google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager.'
     'StreamingPullManager.open', autospec=True)
-def test_subscribe_experimental(manager_open):
+def test_subscribe(manager_open):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
 
-    future = client.subscribe_experimental(
+    future = client.subscribe(
         'sub_name_a', callback=mock.sentinel.callback)
     assert isinstance(future, futures.StreamingPullFuture)
 
