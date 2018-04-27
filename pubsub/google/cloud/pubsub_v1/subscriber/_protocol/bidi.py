@@ -421,16 +421,25 @@ class BackgroundConsumer(object):
             self._bidi_rpc.open()
 
             while self._bidi_rpc.is_active:
-                if not self.is_paused:
+                # Do not allow the paused status to change at all during this
+                # section. There is a condition where we could be resumed
+                # between checking if we are paused and calling wake.wait(),
+                # which means that we will miss the notification to wake up
+                # (oops!) and wait for a notification that will never come.
+                # Keeping the lock throughout avoids that.
+                self._wake.acquire()
+
+                if not self._paused:
+                    self._wake.release()
                     _LOGGER.debug('waiting for recv.')
                     response = self._bidi_rpc.recv()
                     _LOGGER.debug('recved response.')
                     self._on_response(response)
                 else:
                     _LOGGER.debug('paused, waiting for waking.')
-                    with self._wake:
-                        self._wake.wait()
+                    self._wake.wait()
                     _LOGGER.debug('woken.')
+                    self._wake.release()
 
         except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(
