@@ -435,7 +435,7 @@ class BackgroundConsumer(object):
                         self._wake.wait()
                         _LOGGER.debug('woken.')
 
-                if not paused:
+                if not self._paused:
                     _LOGGER.debug('waiting for recv.')
                     response = self._bidi_rpc.recv()
                     _LOGGER.debug('recved response.')
