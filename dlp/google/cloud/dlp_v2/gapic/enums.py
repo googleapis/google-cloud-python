@@ -41,13 +41,13 @@ class FileType(object):
 
     Attributes:
       FILE_TYPE_UNSPECIFIED (int): Includes all files.
-      BINARY_FILE (int): Includes all file extensions not covered by other types.
+      BINARY_FILE (int): Includes all file extensions not covered by text file types.
       TEXT_FILE (int): Included file extensions:
-        c, cc, cpp, cxx, c++, cs, css, dart, eml, go, h, hh, hpp, hxx, h++, hs,
-        html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json, ocaml, md, mkd,
-        markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw, rb, rbw, rs, rc,
-        scala, sh, sql, tex, txt, asc, text, brf, vcard, vcs, wml, xml, xsl, xsd,
-        yml, yaml.
+        asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
+        hxx, h++, hs, html, htm, shtml, shtm, xhtml, lhs, ini, java, js, json,
+        ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
+        rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
+        xml, xsl, xsd, yml, yaml.
     """
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
