@@ -201,7 +201,7 @@ class DlpServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CreateInspectTemplate(self, request, context):
-    """Creates an inspect template for re-using frequently used configuration
+    """Creates an InspectTemplate for re-using frequently used configuration
     for inspecting content, images, and storage.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -209,64 +209,64 @@ class DlpServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def UpdateInspectTemplate(self, request, context):
-    """Updates the inspect template.
+    """Updates the InspectTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetInspectTemplate(self, request, context):
-    """Gets an inspect template.
+    """Gets an InspectTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def ListInspectTemplates(self, request, context):
-    """Lists inspect templates.
+    """Lists InspectTemplates.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DeleteInspectTemplate(self, request, context):
-    """Deletes an inspect template.
+    """Deletes an InspectTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def CreateDeidentifyTemplate(self, request, context):
-    """Creates a de-identify template for re-using frequently used configuration
-    for Deidentifying content, images, and storage.
+    """Creates a DeidentifyTemplate for re-using frequently used configuration
+    for de-identifying content, images, and storage.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def UpdateDeidentifyTemplate(self, request, context):
-    """Updates the de-identify template.
+    """Updates the DeidentifyTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetDeidentifyTemplate(self, request, context):
-    """Gets a de-identify template.
+    """Gets a DeidentifyTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def ListDeidentifyTemplates(self, request, context):
-    """Lists de-identify templates.
+    """Lists DeidentifyTemplates.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def DeleteDeidentifyTemplate(self, request, context):
-    """Deletes a de-identify template.
+    """Deletes a DeidentifyTemplate.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -309,8 +309,8 @@ class DlpServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CreateDlpJob(self, request, context):
-    """Creates a new job to inspect storage or calculate risk metrics [How-to
-    guide](/dlp/docs/compute-risk-analysis).
+    """Creates a new job to inspect storage or calculate risk metrics.
+    [How-to guide](/dlp/docs/compute-risk-analysis).
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
