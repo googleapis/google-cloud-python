@@ -24,6 +24,9 @@ INSTALL_REQUIRES = [
     'google-cloud-bigquery>=0.29.0',
 ]
 
+extras = {
+    'tqdm': 'tqdm>=4.23.0',
+}
 
 setup(
     name=NAME,
@@ -50,6 +53,7 @@ setup(
     ],
     keywords='data',
     install_requires=INSTALL_REQUIRES,
+    extras_require=extras,
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
 )

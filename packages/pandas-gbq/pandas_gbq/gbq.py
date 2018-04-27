@@ -16,6 +16,11 @@ logger = logging.getLogger(__name__)
 BIGQUERY_INSTALLED_VERSION = None
 SHOW_VERBOSE_DEPRECATION = False
 
+try:
+    import tqdm  # noqa
+except ImportError:
+    tqdm = None
+
 
 def _check_google_client_version():
     global BIGQUERY_INSTALLED_VERSION, SHOW_VERBOSE_DEPRECATION
@@ -563,16 +568,19 @@ class GbqConnector(object):
 
     def load_data(
             self, dataframe, dataset_id, table_id, chunksize=None,
-            schema=None):
+            schema=None, progress_bar=True):
         from pandas_gbq import load
 
         total_rows = len(dataframe)
         logger.info("\n\n")
 
         try:
-            for remaining_rows in load.load_chunks(
-                    self.client, dataframe, dataset_id, table_id,
-                    chunksize=chunksize, schema=schema):
+            chunks = load.load_chunks(self.client, dataframe, dataset_id,
+                                      table_id, chunksize=chunksize,
+                                      schema=schema)
+            if progress_bar and tqdm:
+                chunks = tqdm.tqdm(chunks)
+            for remaining_rows in chunks:
                 logger.info("\rLoad is {0}% Complete".format(
                     ((total_rows - remaining_rows) * 100) / total_rows))
         except self.http_error as ex:
@@ -870,7 +878,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
 def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
            verbose=None, reauth=False, if_exists='fail', private_key=None,
-           auth_local_webserver=False, table_schema=None):
+           auth_local_webserver=False, table_schema=None, progress_bar=True):
     """Write a DataFrame to a Google BigQuery table.
 
     The main method a user calls to export pandas DataFrame contents to
@@ -935,6 +943,8 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
         names of a field.
         .. versionadded:: 0.3.1
     verbose : None, deprecated
+    progress_bar : boolean, True by default. It uses the library `tqdm` to show
+        the progress bar for the upload, chunk by chunk.
     """
 
     _test_google_api_imports()
@@ -987,7 +997,7 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
 
     connector.load_data(
         dataframe, dataset_id, table_id, chunksize=chunksize,
-        schema=table_schema)
+        schema=table_schema, progress_bar=progress_bar)
 
 
 def generate_bq_schema(df, default_type='STRING'):
