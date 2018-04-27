@@ -134,6 +134,28 @@ class TestTableReference(unittest.TestCase):
 
         self.assertEqual(expected, got)
 
+    def test_from_string(self):
+        cls = self._get_target_class()
+        got = cls.from_string('string-project.string_dataset.string_table')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+        self.assertEqual(got.table_id, 'string_table')
+
+    def test_from_string_legacy_string(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string-project:string_dataset.string_table')
+
+    def test_from_string_not_fully_qualified(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string_dataset.string_table')
+
+    def test_from_string_legacy_string(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string-project:string_dataset')
+
     def test___eq___wrong_type(self):
         from google.cloud.bigquery.dataset import DatasetReference
         dataset_ref = DatasetReference('project_1', 'dataset_1')
@@ -193,7 +215,10 @@ class TestTableReference(unittest.TestCase):
     def test___repr__(self):
         dataset = DatasetReference('project1', 'dataset1')
         table1 = self._make_one(dataset, 'table1')
-        expected = "TableReference('project1', 'dataset1', 'table1')"
+        expected = (
+            "TableReference(DatasetReference('project1', 'dataset1'), "
+            "'table1')"
+        )
         self.assertEqual(repr(table1), expected)
 
 
@@ -634,6 +659,23 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.labels = 12345
 
+    def test_from_string(self):
+        cls = self._get_target_class()
+        got = cls.from_string('string-project.string_dataset.string_table')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+        self.assertEqual(got.table_id, 'string_table')
+
+    def test_from_string_legacy_string(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string-project:string_dataset.string_table')
+
+    def test_from_string_not_fully_qualified(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string_dataset.string_table')
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         RESOURCE = {}
@@ -836,6 +878,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
                          self.KMS_KEY_NAME)
         table.encryption_configuration = None
         self.assertIsNone(table.encryption_configuration)
+
+    def test___repr__(self):
+        from google.cloud.bigquery.table import TableReference
+        dataset = DatasetReference('project1', 'dataset1')
+        table1 = self._make_one(TableReference(dataset, 'table1'))
+        expected = (
+            "Table(TableReference("
+            "DatasetReference('project1', 'dataset1'), "
+            "'table1'))"
+        )
+        self.assertEqual(repr(table1), expected)
 
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):

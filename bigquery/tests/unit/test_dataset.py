@@ -165,16 +165,27 @@ class TestDatasetReference(unittest.TestCase):
             })
 
     def test_from_api_repr(self):
-        from google.cloud.bigquery.dataset import DatasetReference
+        cls = self._get_target_class()
         expected = self._make_one('project_1', 'dataset_1')
 
-        got = DatasetReference.from_api_repr(
+        got = cls.from_api_repr(
             {
                 'projectId': 'project_1',
                 'datasetId': 'dataset_1',
             })
 
         self.assertEqual(expected, got)
+
+    def test_from_string(self):
+        cls = self._get_target_class()
+        got = cls.from_string('string-project.string_dataset')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+
+    def test_from_string_legacy_string(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string-project:string_dataset')
 
     def test___eq___wrong_type(self):
         dataset = self._make_one('project_1', 'dataset_1')
@@ -484,6 +495,17 @@ class TestDataset(unittest.TestCase):
         }
         self.assertEqual(resource, exp_resource)
 
+    def test_from_string(self):
+        cls = self._get_target_class()
+        got = cls.from_string('string-project.string_dataset')
+        self.assertEqual(got.project, 'string-project')
+        self.assertEqual(got.dataset_id, 'string_dataset')
+
+    def test_from_string_legacy_string(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string('string-project:string_dataset')
+
     def test__build_resource_w_custom_field(self):
         dataset = self._make_one(self.DS_REF)
         dataset._properties['newAlphaProperty'] = 'unreleased property'
@@ -509,6 +531,13 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(table.table_id, 'table_id')
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
+
+    def test___repr__(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = self._make_one(DatasetReference('project1', 'dataset1'))
+        expected = "Dataset(DatasetReference('project1', 'dataset1'))"
+        self.assertEqual(repr(dataset), expected)
+
 
 
 class TestDatasetListItem(unittest.TestCase):

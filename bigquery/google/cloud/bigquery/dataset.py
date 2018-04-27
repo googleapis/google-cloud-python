@@ -210,6 +210,37 @@ class DatasetReference(object):
         dataset_id = resource['datasetId']
         return cls(project, dataset_id)
 
+    @classmethod
+    def from_string(cls, full_dataset_id):
+        """Construct a dataset reference from fully-qualified dataset ID.
+
+        Args:
+            full_dataset_id (str):
+                A fully-qualified dataset ID in standard SQL format. Must
+                included both the project ID and the dataset ID, separated by
+                ``.``.
+
+        Returns:
+            DatasetReference:
+                Dataset reference parsed from ``full_dataset_id``.
+
+        Examples:
+            >>> DatasetReference.from_string('my-project-id.some_dataset')
+            DatasetReference('my-project-id', 'some_dataset')
+
+        Raises:
+            ValueError:
+                If ``full_dataset_id`` is not a fully-qualified dataset ID in
+                standard SQL format.
+        """
+        parts = full_dataset_id.split('.')
+        if len(parts) != 2:
+            raise ValueError(
+                'full_dataset_id must be a fully-qualified dataset ID in '
+                'standard SQL format. e.g. "project.dataset_id", got '
+                '{}'.format(full_dataset_id))
+        return cls(parts[0], parts[1])
+
     def to_api_repr(self):
         """Construct the API resource representation of this dataset reference
 
@@ -451,6 +482,31 @@ class Dataset(object):
         self._properties['labels'] = value
 
     @classmethod
+    def from_string(cls, full_dataset_id):
+        """Construct a dataset from fully-qualified dataset ID.
+
+        Args:
+            full_dataset_id (str):
+                A fully-qualified dataset ID in standard SQL format. Must
+                included both the project ID and the dataset ID, separated by
+                ``.``.
+
+        Returns:
+            Dataset: Dataset parsed from ``full_dataset_id``.
+
+        Examples:
+            >>> Dataset.from_string('my-project-id.some_dataset')
+            Dataset(DatasetReference('my-project-id', 'some_dataset'))
+
+        Raises:
+            ValueError:
+                If ``full_dataset_id`` is not a fully-qualified dataset ID in
+                standard SQL format.
+        """
+        dataset_ref = DatasetReference.from_string(full_dataset_id)
+        return cls(dataset_ref)
+
+    @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct a dataset given its API representation
 
@@ -507,6 +563,9 @@ class Dataset(object):
                 A TableReference for a table in this dataset.
         """
         return TableReference(self.reference, table_id)
+
+    def __repr__(self):
+        return 'Dataset({})'.format(repr(self.reference))
 
 
 class DatasetListItem(object):

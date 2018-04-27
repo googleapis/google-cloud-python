@@ -167,6 +167,39 @@ class TableReference(object):
             self._project, self._dataset_id, self._table_id)
 
     @classmethod
+    def from_string(cls, full_table_id):
+        """Construct a table reference from fully-qualified table ID.
+
+        Args:
+            full_table_id (str):
+                A fully-qualified table ID in standard SQL format. Must
+                included a project ID, dataset ID, and table ID, each
+                separated by ``.``.
+
+        Returns:
+            TableReference: Table reference parsed from ``full_table_id``.
+
+        Examples:
+            >>> TableReference.from_string('my-project.mydataset.mytable')
+            TableRef...(DatasetRef...('my-project', 'mydataset'), 'mytable')
+
+        Raises:
+            ValueError:
+                If ``full_table_id`` is not a fully-qualified table ID in
+                standard SQL format.
+        """
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        parts = full_table_id.split('.')
+        if len(parts) != 3:
+            raise ValueError(
+                'full_table_id must be a fully-qualified table ID in '
+                'standard SQL format. e.g. "project.dataset.table", got '
+                '{}'.format(full_table_id))
+
+        return cls(DatasetReference(parts[0], parts[1]), parts[2])
+
+    @classmethod
     def from_api_repr(cls, resource):
         """Factory:  construct a table reference given its API representation
 
@@ -223,7 +256,10 @@ class TableReference(object):
         return hash(self._key())
 
     def __repr__(self):
-        return 'TableReference{}'.format(self._key())
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset_ref = DatasetReference(self._project, self._dataset_id)
+        return "TableReference({}, '{}')".format(
+            repr(dataset_ref), self._table_id)
 
 
 class Table(object):
@@ -610,6 +646,31 @@ class Table(object):
         self._properties['externalDataConfiguration'] = api_repr
 
     @classmethod
+    def from_string(cls, full_table_id):
+        """Construct a table from fully-qualified table ID.
+
+        Args:
+            full_table_id (str):
+                A fully-qualified table ID in standard SQL format. Must
+                included a project ID, dataset ID, and table ID, each
+                separated by ``.``.
+
+        Returns:
+            Table: Table parsed from ``full_table_id``.
+
+        Examples:
+            >>> Table.from_string('my-project.mydataset.mytable')
+            Table(TableRef...(D...('my-project', 'mydataset'), 'mytable'))
+
+        Raises:
+            ValueError:
+                If ``full_table_id`` is not a fully-qualified table ID in
+                standard SQL format.
+        """
+        table_ref = TableReference.from_string(full_table_id)
+        return cls(table_ref)
+
+    @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct a table given its API representation
 
@@ -667,6 +728,9 @@ class Table(object):
                 partial[filter_field] = self._properties[filter_field]
 
         return partial
+
+    def __repr__(self):
+        return 'Table({})'.format(repr(self.reference))
 
 
 class TableListItem(object):
