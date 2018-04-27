@@ -427,17 +427,18 @@ class BackgroundConsumer(object):
                 # which means that we will miss the notification to wake up
                 # (oops!) and wait for a notification that will never come.
                 # Keeping the lock throughout avoids that.
+                # In the future, we could use `Condition.wait_for` if we drop
+                # Python 2.7.
                 with self._wake:
                     if self._paused:
                         _LOGGER.debug('paused, waiting for waking.')
                         self._wake.wait()
                         _LOGGER.debug('woken.')
 
-                if not self._paused:
-                    _LOGGER.debug('waiting for recv.')
-                    response = self._bidi_rpc.recv()
-                    _LOGGER.debug('recved response.')
-                    self._on_response(response)
+                _LOGGER.debug('waiting for recv.')
+                response = self._bidi_rpc.recv()
+                _LOGGER.debug('recved response.')
+                self._on_response(response)
 
         except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(
