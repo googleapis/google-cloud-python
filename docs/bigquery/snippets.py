@@ -541,6 +541,46 @@ def test_create_partitioned_table(client, to_delete):
     assert table.time_partitioning.expiration_ms == 7776000000
 
 
+def test_query_partitioned_table(client, to_delete):
+    # [START bigquery_query_partitioned_table]
+    import datetime
+    import pytz
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    dataset_ref = client.dataset(
+        'samples', project='bigquery-partition-samples')
+    table_ref = dataset_ref.table('stackoverflow_comments')
+    sql = """
+        SELECT *
+        FROM `bigquery-partition-samples.samples.stackoverflow_comments`
+        WHERE creation_date > @mytime
+    """
+    query_parameters = [
+        bigquery.ScalarQueryParameter(
+            'mytime',
+            'TIMESTAMP',
+            datetime.datetime(2016, 1, 1, 0, 0, tzinfo=pytz.UTC)
+        )
+    ]
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = query_parameters
+    job_config.dry_run = True
+
+    query_job = client.query(
+        sql,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request
+
+    # A dry run query completes immediately.
+    assert query_job.state == 'DONE'
+
+    print("This query will process {} bytes.".format(
+        query_job.total_bytes_processed))
+    # [END bigquery_query_partitioned_table]
+
+
 def test_get_table_information(client, to_delete):
     """Show a table's properties."""
     dataset_id = 'show_table_dataset_{}'.format(_millis())
