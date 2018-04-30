@@ -473,19 +473,22 @@ class Table(object):
 
     @time_partitioning.setter
     def time_partitioning(self, value):
-        if value is not None and isinstance(value, TimePartitioning):
-            self._properties['timePartitioning'] = value.to_api_repr()
-        else:
+        api_repr = value
+        if isinstance(value, TimePartitioning):
+            api_repr = value.to_api_repr()
+        elif value is not None:
             raise ValueError(
                 "value must be google.cloud.bigquery.table.TimePartitioning "
                 "or None")
+        self._properties['timePartitioning'] = api_repr
 
     @property
     def partitioning_type(self):
         """Union[str, None]: Time partitioning of the table if it is
         partitioned (Defaults to :data:`None`).
 
-        The only partitioning type that is currently supported is ``'DAY'``.
+        The only partitioning type that is currently supported is
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
@@ -508,9 +511,9 @@ class Table(object):
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
 
-        If this property is set and :attr:`partitioning_type` is not set,
-        :attr:`partitioning_type` will default to
-        :attr:`TimePartitioningType.DAY`.
+        If :attr:`partition_expiration` is set and :attr:`partitioning_type` is
+        not set, :attr:`partitioning_type` will default to
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
@@ -1148,9 +1151,10 @@ class RowIterator(HTTPIterator):
 
 
 class TimePartitioningType(object):
-    """The only type supported is DAY, which generates one partition per day.
-    """
+    """Specifies the type of time partitioning to perform."""
+
     DAY = 'DAY'
+    """str: Generates one partition per day."""
 
 
 class TimePartitioning(object):
@@ -1158,13 +1162,14 @@ class TimePartitioning(object):
 
     Args:
         partitioning_type (google.cloud.bigquery.table.TimePartitioningType):
-            The only type supported is DAY, which will generate one partition
-            per day.
+            The only type supported is
+            :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
+            which will generate one partition per day.
         field (str, optional):
             If set, the table is partitioned by this field. If not set, the
-            table is partitioned by pseudo column '_PARTITIONTIME'. The field
-            must be a top-level TIMESTAMP or DATE field. Its mode must be
-            NULLABLE or REQUIRED.
+            table is partitioned by pseudo column ``_PARTITIONTIME``. The field
+            must be a top-level ``TIMESTAMP`` or ``DATE`` field. Its mode must
+            be ``NULLABLE`` or ``REQUIRED``.
         expiration_ms(int, optional):
             Number of milliseconds for which to keep the storage for a
             partition.
@@ -1175,7 +1180,7 @@ class TimePartitioning(object):
         if field is not None:
             self.field = field
         if expiration_ms is not None:
-            self.expiration_ms = str(expiration_ms)
+            self.expiration_ms = expiration_ms
 
     @property
     def partitioning_type(self):
@@ -1208,12 +1213,13 @@ class TimePartitioning(object):
 
     @classmethod
     def from_api_repr(cls, api_repr):
-        """Return a ``TimePartitioning`` object deserialized from a ``dict``.
+        """Return a :class:`TimePartitioning` object deserialized from a dict.
 
-        This method creates a new TimePartitioning instance that points to the
-        ``api_repr`` parameter as its internal properties dict. This means that
-        when a ``TimePartitioning`` instance is stored as a property of another
-        object, any changes made at the higher level will also appear here.::
+        This method creates a new ``TimePartitioning`` instance that points to
+        the ``api_repr`` parameter as its internal properties dict. This means
+        that when a ``TimePartitioning`` instance is stored as a property of
+        another object, any changes made at the higher level will also appear
+        here::
 
             >>> time_partitioning = TimePartitioning(TimePartitioningType.DAY)
             >>> table.time_partitioning = time_partitioning
@@ -1236,6 +1242,11 @@ class TimePartitioning(object):
 
     def to_api_repr(self):
         """Return a dictionary representing this object.
+
+        This method returns the properties dict of the ``TimePartitioning``
+        instance rather than making a copy. This means that when a
+        ``TimePartitioning`` instance is stored as a property of another
+        object, any changes made at the higher level will also appear here.
 
         Returns:
             dict:

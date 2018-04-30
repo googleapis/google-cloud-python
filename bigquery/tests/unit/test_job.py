@@ -249,6 +249,24 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
 
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            table.TimePartitioningType.DAY, 'name')
+        config = self._get_target_class()()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+        self.assertEqual(
+            config.time_partitioning.partitioning_type,
+            table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+
     def test_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
@@ -470,25 +488,6 @@ class TestLoadJob(unittest.TestCase, _Base):
             job_ref, [self.SOURCE1], self.TABLE_REF, client)
         self.assertEqual(load_job.project, 'alternative-project')
         self.assertEqual(load_job.location, 'US')
-
-    def test_ctor_w_time_partitioning(self):
-        from google.cloud.bigquery import job
-        from google.cloud.bigquery import table
-
-        time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name')
-        client = _make_client(project=self.PROJECT)
-        config = job.LoadJobConfig()
-        config.time_partitioning = time_partitioning
-        # TimePartitioning should be configurable after assigning
-        time_partitioning.expiration_ms = 10000
-        load_job = self._make_one(
-            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client, config)
-        self.assertEqual(
-            load_job.time_partitioning.partitioning_type,
-            table.TimePartitioningType.DAY)
-        self.assertEqual(load_job.time_partitioning.field, 'name')
-        self.assertEqual(load_job.time_partitioning.expiration_ms, 10000)
 
     def test_done(self):
         client = _make_client(project=self.PROJECT)
@@ -1861,6 +1860,25 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.default_dataset)
         self.assertIsNone(config.destination)
 
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            table.TimePartitioningType.DAY, 'name')
+        config = self._make_one()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+
+        self.assertEqual(
+            config.time_partitioning.partitioning_type,
+            table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})
@@ -2164,25 +2182,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
         self.assertEqual(job.query_parameters, query_parameters)
-
-    def test_ctor_w_time_partitioning(self):
-        from google.cloud.bigquery import job
-        from google.cloud.bigquery import table
-
-        time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name')
-        client = _make_client(project=self.PROJECT)
-        config = job.QueryJobConfig()
-        config.time_partitioning = time_partitioning
-        # TimePartitioning should be configurable after assigning
-        time_partitioning.expiration_ms = 10000
-        query_job = self._make_one(
-            self.JOB_ID, self.QUERY, client, job_config=config)
-        self.assertEqual(
-            query_job.time_partitioning.partitioning_type,
-            table.TimePartitioningType.DAY)
-        self.assertEqual(query_job.time_partitioning.field, 'name')
-        self.assertEqual(query_job.time_partitioning.expiration_ms, 10000)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()

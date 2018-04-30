@@ -791,10 +791,18 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        self.assertIsNone(table.partitioning_type)
 
         with self.assertRaises(ValueError):
             table.time_partitioning = {'timePartitioning': {'type': 'DAY'}}
+
+    def test_time_partitioning_setter_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table.time_partitioning = None
+
+        self.assertIsNone(table.partitioning_type)
 
     def test_partitioning_type_setter(self):
         from google.cloud.bigquery.table import TimePartitioningType

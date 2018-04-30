@@ -980,7 +980,10 @@ class LoadJobConfig(_JobConfig):
 
     @time_partitioning.setter
     def time_partitioning(self, value):
-        self._set_sub_prop('timePartitioning', value.to_api_repr())
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._set_sub_prop('timePartitioning', api_repr)
 
 
 class LoadJob(_AsyncJob):
@@ -1131,8 +1134,8 @@ class LoadJob(_AsyncJob):
 
     @property
     def time_partitioning(self):
-        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
-        partitioning for the destination table.
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
 
@@ -1944,7 +1947,10 @@ class QueryJobConfig(_JobConfig):
 
     @time_partitioning.setter
     def time_partitioning(self, value):
-        self._set_sub_prop('timePartitioning', value.to_api_repr())
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._set_sub_prop('timePartitioning', api_repr)
 
     def to_api_repr(self):
         """Build an API representation of the query job config.
@@ -2119,8 +2125,8 @@ class QueryJob(_AsyncJob):
 
     @property
     def time_partitioning(self):
-        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
-        partitioning for the destination table.
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
 
