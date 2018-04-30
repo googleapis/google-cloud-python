@@ -72,7 +72,7 @@ class Client(object):
                   interact with the Instance Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
-    :type project: :instance: grpc.Channel
+    :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) A ``Channel`` instance
             through which to make calls. This argument is mutually
             exclusive with ``credentials``; providing both will raise an
