@@ -49,7 +49,7 @@ Pulling a Subscription
 Once you have created a subscription (or if you already had one), the next
 step is to pull data from it. The subscriber client uses the
 :meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method to start a
-backgroud thread to receive messages from Pub/Sub and calls a callback with
+background thread to receive messages from Pub/Sub and calls a callback with
 each message received.
 
 .. code-block:: python
@@ -69,7 +69,7 @@ you to control the background thread that is managing the subscription.
 Subscription Callbacks
 ----------------------
 
-Messages recieved from a subscription are processed asynchronously through
+Messages received from a subscription are processed asynchronously through
 **callbacks**.
 
 The basic idea: Define a function that takes one argument; this argument
@@ -125,7 +125,7 @@ thread will be set on the future.
 
 Finally, you can use
 :meth:`~.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel` to stop
-recieving messages.
+receiving messages.
 
 
 .. code-block:: python
