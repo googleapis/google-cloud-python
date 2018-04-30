@@ -28,37 +28,19 @@ import six
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
-from google.cloud.pubsub_v1.subscriber import _histogram
+from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber._protocol import histogram
 
 
 _LOGGER = logging.getLogger(__name__)
 
 # Namedtuples for management requests. Used by the Message class to communicate
 # items of work back to the policy.
-AckRequest = collections.namedtuple(
-    'AckRequest',
-    ['ack_id', 'byte_size', 'time_to_ack'],
-)
-
-DropRequest = collections.namedtuple(
-    'DropRequest',
-    ['ack_id', 'byte_size'],
-)
-
-LeaseRequest = collections.namedtuple(
-    'LeaseRequest',
-    ['ack_id', 'byte_size'],
-)
-
-ModAckRequest = collections.namedtuple(
-    'ModAckRequest',
-    ['ack_id', 'seconds'],
-)
-
-NackRequest = collections.namedtuple(
-    'NackRequest',
-    ['ack_id', 'byte_size'],
-)
+AckRequest = requests.AckRequest
+DropRequest = requests.DropRequest
+LeaseRequest = requests.LeaseRequest
+ModAckRequest = requests.ModAckRequest
+NackRequest = requests.NackRequest
 
 _LeasedMessage = collections.namedtuple(
     '_LeasedMessage',
@@ -114,7 +96,7 @@ class BasePolicy(object):
         self._last_histogram_size = 0
         self._future = None
         self.flow_control = flow_control
-        self.histogram = _histogram.Histogram(data=histogram_data)
+        self.histogram = histogram.Histogram(data=histogram_data)
         """.Histogram: the histogram tracking ack latency."""
         self.leased_messages = {}
         """dict[str, float]: A mapping of ack IDs to the local time when the
@@ -474,7 +456,7 @@ class BasePolicy(object):
 
         For example, if a the Policy implementation takes a callback in its
         constructor, you can schedule the callback using a
-        :cls:`concurrent.futures.ThreadPoolExecutor`::
+        :class:`concurrent.futures.ThreadPoolExecutor`::
 
             self._pool.submit(self._callback, response)
 

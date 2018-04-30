@@ -18,7 +18,7 @@ import json
 import math
 import time
 
-from google.cloud.pubsub_v1.subscriber.policy import base as base_policy
+from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
 _MESSAGE_REPR = """\
@@ -174,7 +174,7 @@ class Message(object):
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
-            base_policy.AckRequest(
+            requests.AckRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size,
                 time_to_ack=time_to_ack
@@ -195,7 +195,7 @@ class Message(object):
             directly.
         """
         self._request_queue.put(
-            base_policy.DropRequest(
+            requests.DropRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )
@@ -209,7 +209,7 @@ class Message(object):
             need to call it manually.
         """
         self._request_queue.put(
-            base_policy.LeaseRequest(
+            requests.LeaseRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )
@@ -231,7 +231,7 @@ class Message(object):
                 values below 10 are advised against.
         """
         self._request_queue.put(
-            base_policy.ModAckRequest(
+            requests.ModAckRequest(
                 ack_id=self._ack_id,
                 seconds=seconds
             )
@@ -243,7 +243,7 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self._request_queue.put(
-            base_policy.NackRequest(
+            requests.NackRequest(
                 ack_id=self._ack_id,
                 byte_size=self.size
             )

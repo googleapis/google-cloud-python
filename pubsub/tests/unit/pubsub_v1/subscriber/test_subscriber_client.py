@@ -17,6 +17,7 @@ import mock
 import pytest
 
 from google.cloud.pubsub_v1 import subscriber
+from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -64,3 +65,17 @@ def test_subscribe_with_failed_callback():
     with pytest.raises(TypeError) as exc_info:
         client.subscribe('sub_name_b', callback)
     assert callback in str(exc_info.value)
+
+
+@mock.patch(
+    'google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager.'
+    'StreamingPullManager.open', autospec=True)
+def test_subscribe_experimental(manager_open):
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+
+    future = client.subscribe_experimental(
+        'sub_name_a', callback=mock.sentinel.callback)
+    assert isinstance(future, futures.StreamingPullFuture)
+
+    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)
