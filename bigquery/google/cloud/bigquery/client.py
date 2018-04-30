@@ -1345,7 +1345,7 @@ class Client(ClientWithProject):
             self.dataset(table.dataset_id, project=table.project),
                 '%s$__PARTITIONS_SUMMARY__' % table.table_id))
         
-        subset = [col for col in meta_table.schema if col.name in ('partition_id')]
+        subset = [col for col in meta_table.schema if col.name == 'partition_id']
         
         return [row[0] for row in self.list_rows(meta_table, 
                 selected_fields=subset,

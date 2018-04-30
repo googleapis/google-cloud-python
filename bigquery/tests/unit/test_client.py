@@ -3111,54 +3111,6 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
-    def test_list_partitions(self):
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': 'JOB_ID',
-            },
-            'configuration': {
-                'query': {
-                    'query': 'q',
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': 'DS_ID',
-                        'tableId': 'TABLE_ID',
-                    },
-                },
-            },
-            'status': {
-                'state': 'DONE',
-            },
-        }
-        RESULTS_RESOURCE = {
-            'jobReference': RESOURCE['jobReference'],
-            'jobComplete': True,
-            'schema': {
-                'fields': [
-                    {'name': 'partition_id', 'type': 'INTEGER',
-                     'mode': 'REQUIRED'},
-                ]
-            },
-            'totalRows': '2',
-            'pageToken': 'next-page',
-        }
-        FIRST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
-        FIRST_PAGE['rows'] = [
-            {'f': [{'v': 20160804}]},
-            {'f': [{'v': 20160805}]},
-        ]
-        del FIRST_PAGE['pageToken']
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
-        client._connection = _make_connection(
-            RESOURCE, RESULTS_RESOURCE, FIRST_PAGE)
-        self.assertEqual(client.list_partitions(self.TABLE_REF),
-                         [20160804, 20160805])
-
-
 class Test_make_job_id(unittest.TestCase):
     def _call_fut(self, job_id, prefix=None):
         from google.cloud.bigquery.client import _make_job_id
