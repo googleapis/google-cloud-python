@@ -548,9 +548,6 @@ def test_query_partitioned_table(client, to_delete):
     # from google.cloud import bigquery
     # client = bigquery.Client()
 
-    dataset_ref = client.dataset(
-        'samples', project='bigquery-partition-samples')
-    table_ref = dataset_ref.table('stackoverflow_comments')
     sql = """
         SELECT *
         FROM `bigquery-partition-samples.samples.stackoverflow_comments`
