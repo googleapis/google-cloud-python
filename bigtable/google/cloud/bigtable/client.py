@@ -96,10 +96,6 @@ class Client(object):
         self.channel = channel
         self._credentials = credentials
         self.SCOPE = self._get_scopes()
-
-        # NOTE: This API has no use for the _http argument, but sending it
-        #       will have no impact since the _http() @property only lazily
-        #       creates a working HTTP object.
         super(Client, self).__init__()
 
         if self.channel is not None:
@@ -206,7 +202,7 @@ class Client(object):
     def list_instances(self):
         """List instances owned by the project.
 
-        :rtype: :class:`~google.gax.PageIterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: A list of Instance.
         """
         return self._instance_admin_client.list_instances(self.project_path)

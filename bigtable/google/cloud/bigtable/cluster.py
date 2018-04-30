@@ -108,7 +108,7 @@ class Cluster(object):
 
             before calling :meth:`create`.
 
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.types._OperationFuture`
+        :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the
                   create operation.
         """
