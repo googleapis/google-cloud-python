@@ -55,10 +55,6 @@ class Instance(object):
                         created.  Required for instances which do not yet
                         exist.
 
-    :type app_profile_id: str
-    :param app_profile_id: (Optional) The ID to be used when referring to the
-                            new app profile within its instance.
-
     :type display_name: str
     :param display_name: (Optional) The display name for the instance in the
                          Cloud Console UI. (Must be between 4 and 30
@@ -66,14 +62,13 @@ class Instance(object):
                          constructor, will fall back to the instance ID.
     """
 
-    def __init__(self, instance_id, client, app_profile_id='',
+    def __init__(self, instance_id, client,
                  location_id=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
         self._cluster_location_id = location_id
         self._client = client
-        self._app_profile_id = app_profile_id
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -130,16 +125,6 @@ class Instance(object):
         """
         return self._client._instance_admin_client.instance_path(
             project=self._client.project, instance=self.instance_id)
-
-    @property
-    def app_profile_path(self):
-        """AppProfile name used in requests
-
-        :rtype: str
-        :return: Return a fully-qualified app_profile string.
-        """
-        return self._client._instance_admin_client.app_profile_path(
-            self._client.project, self.name, self._app_profile_id)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -256,8 +241,12 @@ class Instance(object):
 
         return result
 
-    def create_app_profile(self):
+    def create_app_profile(self, app_profile_id):
         """Creates an app profile within an instance.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name of the instance in which to
+                                create the new app profile.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
@@ -265,25 +254,28 @@ class Instance(object):
         return self._client._instance_admin_client.create_app_profile(
             self.name, self._app_profile_id, {})
 
-    def update_app_profile(self, name):
+    def update_app_profile(self, app_profile_id, ignore_warnings=None):
         """Updates an app profile within an instance.
 
-        :type: name: str
-        :param name: The unique name of the instance in which to create the
-                    new app profile.
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name of the instance in which to
+                                update the app profile.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
         """
-        app_profile = instance_pb2.AppProfile(name=name)
-        ignore_warnings = None
+        app_profile = instance_pb2.AppProfile(name=app_profile_id)
         return self._client._instance_admin_client.update_app_profile(
             app_profile=app_profile, update_mask={},
             ignore_warnings=ignore_warnings
         )
 
-    def delete_app_profile(self, ignore_warnings=False):
+    def delete_app_profile(self, app_profile_id, ignore_warnings=False):
         """Deletes an app profile from an instance.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name of the instance in which to
+                                delete the app profile.
 
         :raises: google.api_core.exceptions.GoogleAPICallError: If the request
                     failed for any reason.
@@ -291,5 +283,8 @@ class Instance(object):
                     due to a retryable error and retry attempts failed.
                 ValueError: If the parameters are invalid.
         """
+        instance_admin_client =  self._client._instance_admin_client
+        app_profile_path = instance_admin_client(
+            self._client.project, self.name, app_profile_id)
         return self._client._instance_admin_client.delete_app_profile(
-            self.app_profile_path, ignore_warnings)
+            app_profile_path, ignore_warnings)
