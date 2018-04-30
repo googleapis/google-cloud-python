@@ -899,21 +899,39 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :type entries: list of dictionaries
-        :param entries: A sequence of mappings describing each lifecycle rule.
+        :type rules: list of dictionaries
+        :param rules: A sequence of mappings describing each lifecycle rule.
         """
         self._patch_property('lifecycle', {'rule': rules})
 
-    location = _scalar_property('location')
-    """Retrieve location configured for this bucket.
+    _location = _scalar_property('location')
 
-    See https://cloud.google.com/storage/docs/json_api/v1/buckets and
-    https://cloud.google.com/storage/docs/bucket-locations
+    @property
+    def location(self):
+        """Retrieve location configured for this bucket.
 
-    If the property is not set locally, returns ``None``.
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
 
-    :rtype: str or ``NoneType``
-    """
+        If the property is not set locally, returns ``None``.
+
+        :rtype: str or ``NoneType``
+        """
+        return self._location
+
+    @location.setter
+    def location(self, bucket_location):
+        """Set location configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/bucket-locations
+
+        :param bucket_location: The location of this bucket
+        """
+        if self._location is None:
+            self._location = bucket_location
+        else:
+            raise ValueError("Location can't be altered once set")
 
     def get_logging(self):
         """Return info about access logging for this bucket.
