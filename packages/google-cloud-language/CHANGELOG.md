@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.0.2
+
+### Packaging
+- Update setuptools before packaging (#5265)
+- Update setup.py to use recommended method for python-verson specific dependencies (#5266)
+- Fix bad trove classifier
+
 ## 1.0.1
 
 ### Dependencies
