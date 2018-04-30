@@ -604,7 +604,7 @@ class Test_Blob(unittest.TestCase):
         download_url = blob._get_download_url()
         expected_url = (
             'https://www.googleapis.com/download/storage/v1/b/'
-            'buhkit/o/bzzz-fly.txt?alt=media')  # kmsKeyName *not* expected
+            'buhkit/o/bzzz-fly.txt?alt=media')
         self.assertEqual(download_url, expected_url)
 
     @staticmethod

@@ -126,7 +126,6 @@ class Blob(_PropertyMixin):
     :param kms_key_name:
         Optional resource name of Cloud KMS key used to encrypt the blob's
         contents.
-        See https://cloud.google.com/storage/docs/encryption#kms.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -1718,8 +1717,6 @@ class Blob(_PropertyMixin):
     @property
     def kms_key_name(self):
         """Resource name of Cloud KMS key used to encrypt the blob's contents.
-
-        See https://cloud.google.com/storage/docs/encryption#kms.
 
         :rtype: str or ``NoneType``
         :returns:
