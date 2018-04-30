@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.1.2
+
+### Packaging
+- Update setuptools before packaging (#5265)
+
 ## 1.1.1
 
 ### Internal / Testing Changes
