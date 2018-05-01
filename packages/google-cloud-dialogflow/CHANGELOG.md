@@ -2,7 +2,7 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/DISTRIBUTION NAME/#history
+[1]: https://pypi.org/project/dialogflow/#history
 
 ## 0.2.0
 
