@@ -29,6 +29,7 @@ from google.cloud.websecurityscanner_v1alpha.proto import finding_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_config_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_run_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_pb2
+from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -133,7 +134,7 @@ class WebSecurityScannerClient(object):
 
         # Create the gRPC stubs.
         self.web_security_scanner_stub = (
-            web_security_scanner_pb2.WebSecurityScannerStub(channel))
+            web_security_scanner_pb2_grpc.WebSecurityScannerStub(channel))
 
         if client_info is None:
             client_info = (
