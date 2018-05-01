@@ -772,8 +772,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.time_partitioning = time_partitioning
 
         self.assertEqual(
-            table.time_partitioning.partitioning_type,
-            TimePartitioningType.DAY)
+            table.time_partitioning.type_, TimePartitioningType.DAY)
         # Both objects point to the same properties dict
         self.assertIs(
             table._properties['timePartitioning'],
@@ -984,7 +983,7 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.reference.table_id, table_id)
         self.assertEqual(table.friendly_name, 'Mahogany Coffee Table')
         self.assertEqual(table.table_type, 'TABLE')
-        self.assertEqual(table.time_partitioning.partitioning_type, 'DAY')
+        self.assertEqual(table.time_partitioning.type_, 'DAY')
         self.assertEqual(table.time_partitioning.expiration_ms, 10000)
         self.assertEqual(table.time_partitioning.field, 'mycolumn')
         self.assertEqual(table.partitioning_type, 'DAY')
@@ -1348,7 +1347,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         time_partitioning = TimePartitioning(TimePartitioningType.DAY)
 
-        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
+        self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
 
@@ -1359,7 +1358,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.type_, 'DAY')
         self.assertIsNone(tp_from_api_repr.field)
         self.assertIsNone(tp_from_api_repr.expiration_ms)
 
@@ -1369,7 +1368,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         time_partitioning = TimePartitioning(TimePartitioningType.DAY, 'name')
 
-        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
+        self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')
         self.assertIsNone(time_partitioning.expiration_ms)
 
@@ -1380,7 +1379,7 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.type_, 'DAY')
         self.assertEqual(tp_from_api_repr.field, 'name')
         self.assertIsNone(tp_from_api_repr.expiration_ms)
 
@@ -1391,7 +1390,7 @@ class TestTimePartitioning(unittest.TestCase):
         time_partitioning = TimePartitioning(
             TimePartitioningType.DAY, 'name', 10000)
 
-        self.assertEqual(time_partitioning.partitioning_type, 'DAY')
+        self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')
         self.assertEqual(time_partitioning.expiration_ms, 10000)
 
@@ -1403,6 +1402,6 @@ class TestTimePartitioning(unittest.TestCase):
 
         tp_from_api_repr = TimePartitioning.from_api_repr(api_repr)
 
-        self.assertEqual(tp_from_api_repr.partitioning_type, 'DAY')
+        self.assertEqual(tp_from_api_repr.type_, 'DAY')
         self.assertEqual(tp_from_api_repr.field, 'name')
         self.assertEqual(tp_from_api_repr.expiration_ms, 10000)

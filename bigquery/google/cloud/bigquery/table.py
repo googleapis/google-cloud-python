@@ -280,7 +280,7 @@ class Table(object):
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
         'time_partitioning': 'timePartitioning',
-        'partitioning_type': 'timePartitioning',
+        'type_': 'timePartitioning',
         'partition_expiration': 'timePartitioning',
         'view_use_legacy_sql': 'view',
         'view_query': 'view',
@@ -492,16 +492,16 @@ class Table(object):
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
-            "Table.time_partitioning.partitioning_type instead.",
+            "Table.time_partitioning.type_ instead.",
             UserWarning)
         if self.time_partitioning is not None:
-            return self.time_partitioning.partitioning_type
+            return self.time_partitioning.type_
 
     @partitioning_type.setter
     def partitioning_type(self, value):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
-            "Table.time_partitioning.partitioning_type instead.",
+            "Table.time_partitioning.type_ instead.",
             UserWarning)
         if self.time_partitioning is None:
             self._properties['timePartitioning'] = {}
@@ -511,8 +511,8 @@ class Table(object):
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
 
-        If :attr:`partition_expiration` is set and :attr:`partitioning_type` is
-        not set, :attr:`partitioning_type` will default to
+        If :attr:`partition_expiration` is set and :attr:`type_` is
+        not set, :attr:`type_` will default to
         :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
         warnings.warn(
@@ -862,18 +862,17 @@ class TableListItem(object):
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
-            "TableListItem.time_partitioning.partitioning_type instead.",
+            "TableListItem.time_partitioning.type_ instead.",
             PendingDeprecationWarning)
         if self.time_partitioning is not None:
-            return self.time_partitioning.partitioning_type
+            return self.time_partitioning.type_
 
     @property
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
 
-        If this property is set and :attr:`partitioning_type` is not set,
-        :attr:`partitioning_type` will default to
-        :attr:`TimePartitioningType.DAY`.
+        If this property is set and :attr:`type_` is not set, :attr:`type_`
+        will default to :attr:`TimePartitioningType.DAY`.
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
@@ -1161,7 +1160,7 @@ class TimePartitioning(object):
     """Configures time-based partitioning for a table.
 
     Args:
-        partitioning_type (google.cloud.bigquery.table.TimePartitioningType):
+        type_ (google.cloud.bigquery.table.TimePartitioningType):
             The only type supported is
             :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
             which will generate one partition per day.
@@ -1174,23 +1173,23 @@ class TimePartitioning(object):
             Number of milliseconds for which to keep the storage for a
             partition.
     """
-    def __init__(self, partitioning_type, field=None, expiration_ms=None):
+    def __init__(self, type_, field=None, expiration_ms=None):
         self._properties = {}
-        self.partitioning_type = partitioning_type
+        self.type_ = type_
         if field is not None:
             self.field = field
         if expiration_ms is not None:
             self.expiration_ms = expiration_ms
 
     @property
-    def partitioning_type(self):
+    def type_(self):
         """google.cloud.bigquery.table.TimePartitioningType: The type of time
         partitioning to use.
         """
         return self._properties['type']
 
-    @partitioning_type.setter
-    def partitioning_type(self, value):
+    @type_.setter
+    def type_(self, value):
         self._properties['type'] = value
 
     @property

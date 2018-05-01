@@ -536,7 +536,7 @@ def test_create_partitioned_table(client, to_delete):
         table.table_id, table.time_partitioning.field))
     # [END bigquery_create_table_partitioned]
 
-    assert table.time_partitioning.partitioning_type == 'DAY'
+    assert table.time_partitioning.type_ == 'DAY'
     assert table.time_partitioning.field == 'request_ts'
     assert table.time_partitioning.expiration_ms == 7776000000
 

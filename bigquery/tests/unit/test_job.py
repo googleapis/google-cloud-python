@@ -259,7 +259,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         # TimePartitioning should be configurable after assigning
         time_partitioning.expiration_ms = 10000
         self.assertEqual(
-            config.time_partitioning.partitioning_type,
+            config.time_partitioning.type_,
             table.TimePartitioningType.DAY)
         self.assertEqual(config.time_partitioning.field, 'name')
         self.assertEqual(config.time_partitioning.expiration_ms, 10000)
@@ -1871,8 +1871,7 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         time_partitioning.expiration_ms = 10000
 
         self.assertEqual(
-            config.time_partitioning.partitioning_type,
-            table.TimePartitioningType.DAY)
+            config.time_partitioning.type_, table.TimePartitioningType.DAY)
         self.assertEqual(config.time_partitioning.field, 'name')
         self.assertEqual(config.time_partitioning.expiration_ms, 10000)
 

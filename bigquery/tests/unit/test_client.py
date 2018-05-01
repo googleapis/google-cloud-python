@@ -546,7 +546,7 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partitioning_type, 'DAY')
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_custom_property(self):
@@ -660,7 +660,7 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY', 'expirationMs': '100'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partitioning_type, 'DAY')
         self.assertEqual(table.partition_expiration, 100)
         self.assertEqual(got.table_id, self.TABLE_ID)
 
