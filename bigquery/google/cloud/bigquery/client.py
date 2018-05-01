@@ -1439,11 +1439,12 @@ def _check_mode(stream):
     :param stream: A bytes IO object open for reading.
 
     :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
-             and is not among ``rb``, ``r+b`` or ``rb+``.
+             and is not among ``rb``, ``r+b``, ``rb+``, or  in case of gzip
+             in ``1`` or ``2``.
     """
     mode = getattr(stream, 'mode', None)
 
-    if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
+    if mode is not None and mode not in ('rb', 'r+b', 'rb+', 1, 2):
         raise ValueError(
             "Cannot upload files opened in text mode:  use "
             "open(filename, mode='rb') or open(filename, mode='r+b')")
