@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import unittest
-import warnings
 
 import mock
 import six
@@ -811,15 +810,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
 
-        with warnings.catch_warnings(record=True) as warning_output:
-            warnings.simplefilter('always')
-
+        with mock.patch('warnings.warn') as warn_patch:
             table.partitioning_type = TimePartitioningType.DAY
 
             self.assertEqual(table.partitioning_type, 'DAY')
-            assert len(warning_output) == 2
-            assert issubclass(
-                warning_output[-1].category, PendingDeprecationWarning)
+
+        assert warn_patch.called
 
     def test_partitioning_type_setter_w_time_partitioning(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -840,8 +836,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
 
-        with warnings.catch_warnings(record=True) as warning_output:
-            warnings.simplefilter('always')
+        with mock.patch('warnings.warn') as warn_patch:
             self.assertIsNone(table.partition_expiration)
 
             table.partition_expiration = 100
@@ -849,9 +844,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.partition_expiration, 100)
             # defaults to 'DAY' when expiration is set and type is not set
             self.assertEqual(table.partitioning_type, 'DAY')
-            assert len(warning_output) == 4
-            assert issubclass(
-                warning_output[-1].category, PendingDeprecationWarning)
+
+        assert warn_patch.called
 
     def test_encryption_configuration_setter(self):
         from google.cloud.bigquery.table import EncryptionConfiguration

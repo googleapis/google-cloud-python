@@ -493,7 +493,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.partitioning_type instead.",
-            PendingDeprecationWarning)
+            UserWarning)
         if self.time_partitioning is not None:
             return self.time_partitioning.partitioning_type
 
@@ -502,7 +502,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.partitioning_type instead.",
-            PendingDeprecationWarning)
+            UserWarning)
         if self.time_partitioning is None:
             self._properties['timePartitioning'] = {}
         self._properties['timePartitioning']['type'] = value
@@ -518,7 +518,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.expiration_ms instead.",
-            PendingDeprecationWarning)
+            UserWarning)
         if self.time_partitioning is not None:
             return self.time_partitioning.expiration_ms
 
@@ -527,7 +527,7 @@ class Table(object):
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
             "Table.time_partitioning.expiration_ms instead.",
-            PendingDeprecationWarning)
+            UserWarning)
         if self.time_partitioning is None:
             self._properties['timePartitioning'] = {
                 'type': TimePartitioningType.DAY}
