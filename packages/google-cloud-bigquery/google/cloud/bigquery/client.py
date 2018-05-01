@@ -571,7 +571,7 @@ class Client(ClientWithProject):
                 or :class:`google.cloud.bigquery.job.QueryJob`
         :returns: the job instance, constructed via the resource
         """
-        config = resource['configuration']
+        config = resource.get('configuration', {})
         if 'load' in config:
             return job.LoadJob.from_api_repr(resource, self)
         elif 'copy' in config:
@@ -580,7 +580,7 @@ class Client(ClientWithProject):
             return job.ExtractJob.from_api_repr(resource, self)
         elif 'query' in config:
             return job.QueryJob.from_api_repr(resource, self)
-        raise ValueError('Cannot parse job resource')
+        return job.UnknownJob.from_api_repr(resource, self)
 
     def get_job(
             self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
