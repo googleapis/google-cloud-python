@@ -1160,10 +1160,10 @@ class TimePartitioning(object):
     """Configures time-based partitioning for a table.
 
     Args:
-        type_ (google.cloud.bigquery.table.TimePartitioningType):
-            The only type supported is
+        type_ (google.cloud.bigquery.table.TimePartitioningType, optional):
+            Specifies the type of time partitioning to perform. Defaults to
             :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
-            which will generate one partition per day.
+            which is the only currently supported type.
         field (str, optional):
             If set, the table is partitioned by this field. If not set, the
             table is partitioned by pseudo column ``_PARTITIONTIME``. The field
@@ -1173,9 +1173,12 @@ class TimePartitioning(object):
             Number of milliseconds for which to keep the storage for a
             partition.
     """
-    def __init__(self, type_, field=None, expiration_ms=None):
+    def __init__(self, type_=None, field=None, expiration_ms=None):
         self._properties = {}
-        self.type_ = type_
+        if type_ is None:
+            self.type_ = TimePartitioningType.DAY
+        else:
+            self.type_ = type_
         if field is not None:
             self.field = field
         if expiration_ms is not None:
@@ -1220,7 +1223,7 @@ class TimePartitioning(object):
         another object, any changes made at the higher level will also appear
         here::
 
-            >>> time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+            >>> time_partitioning = TimePartitioning()
             >>> table.time_partitioning = time_partitioning
             >>> table.time_partitioning.field = 'timecolumn'
             >>> time_partitioning.field

@@ -525,7 +525,7 @@ def test_create_partitioned_table(client, to_delete):
     ]
     table = bigquery.Table(table_ref, schema=schema)
     time_partitioning = bigquery.TimePartitioning(
-        bigquery.TimePartitioningType.DAY,
+        type_=bigquery.TimePartitioningType.DAY,
         field='request_ts',        # name of column to use for partitioning
         expiration_ms=7776000000)  # 90 days
     table.time_partitioning = time_partitioning

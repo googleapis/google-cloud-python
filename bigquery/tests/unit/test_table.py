@@ -767,7 +767,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+        time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
 
         table.time_partitioning = time_partitioning
 
@@ -823,7 +823,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+        time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
         table.time_partitioning = time_partitioning
 
         table.partitioning_type = None
@@ -1341,11 +1341,21 @@ class TestRowIterator(unittest.TestCase):
 
 class TestTimePartitioning(unittest.TestCase):
 
+    def test_constructor_defaults(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        time_partitioning = TimePartitioning()
+
+        self.assertEqual(time_partitioning.type_, 'DAY')
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+
     def test_constructor_w_type_only(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
 
-        time_partitioning = TimePartitioning(TimePartitioningType.DAY)
+        time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
 
         self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertIsNone(time_partitioning.field)
@@ -1366,7 +1376,8 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
 
-        time_partitioning = TimePartitioning(TimePartitioningType.DAY, 'name')
+        time_partitioning = TimePartitioning(
+            type_=TimePartitioningType.DAY, field='name')
 
         self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')
@@ -1388,7 +1399,7 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = TimePartitioning(
-            TimePartitioningType.DAY, 'name', 10000)
+            type_=TimePartitioningType.DAY, field='name', expiration_ms=10000)
 
         self.assertEqual(time_partitioning.type_, 'DAY')
         self.assertEqual(time_partitioning.field, 'name')

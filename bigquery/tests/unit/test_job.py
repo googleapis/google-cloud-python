@@ -253,7 +253,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery import table
 
         time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name')
+            type_=table.TimePartitioningType.DAY, field='name')
         config = self._get_target_class()()
         config.time_partitioning = time_partitioning
         # TimePartitioning should be configurable after assigning
@@ -1864,7 +1864,7 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         from google.cloud.bigquery import table
 
         time_partitioning = table.TimePartitioning(
-            table.TimePartitioningType.DAY, 'name')
+            type_=table.TimePartitioningType.DAY, field='name')
         config = self._make_one()
         config.time_partitioning = time_partitioning
         # TimePartitioning should be configurable after assigning
