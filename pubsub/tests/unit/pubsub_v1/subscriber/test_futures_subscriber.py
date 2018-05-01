@@ -17,33 +17,8 @@ from __future__ import absolute_import
 import mock
 import pytest
 
-from google.auth import credentials
-from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber import futures
-from google.cloud.pubsub_v1.subscriber.policy import thread
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-
-
-def create_policy(**kwargs):
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    return thread.Policy(client, 'sub_name_c', **kwargs)
-
-
-def create_future(policy=None):
-    if policy is None:
-        policy = create_policy()
-    future = futures.Future(policy=policy)
-    policy._future = future
-    return future
-
-
-def test_running():
-    policy = create_policy()
-    future = create_future(policy=policy)
-    assert future.running() is True
-    policy._future = None
-    assert future.running() is False
 
 
 class TestStreamingPullFuture(object):
