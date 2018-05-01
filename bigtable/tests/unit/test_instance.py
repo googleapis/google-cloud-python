@@ -489,7 +489,7 @@ class TestInstance(unittest.TestCase):
 
         ignore_warnings = True
 
-        expected_result = None # delete() has no return value.
+        expected_result = None  #delete() has no return value.
 
         app_profile_id = 'appProfileId1262094415'
         result = instance.delete_app_profile(app_profile_id, ignore_warnings)

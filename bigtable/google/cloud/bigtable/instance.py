@@ -310,7 +310,7 @@ class Instance(object):
                     due to a retryable error and retry attempts failed.
                 ValueError: If the parameters are invalid.
         """
-        instance_admin_client =  self._client._instance_admin_client
+        instance_admin_client = self._client._instance_admin_client
         app_profile_path = instance_admin_client.app_profile_path(
             self._client.project, self.name, app_profile_id)
         return self._client._instance_admin_client.delete_app_profile(
