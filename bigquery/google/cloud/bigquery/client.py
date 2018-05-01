@@ -1239,6 +1239,31 @@ class Client(ClientWithProject):
 
         return errors
 
+    def list_partitions(self, table, retry=DEFAULT_RETRY):
+        """List the partitions in a table.
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the table to list, or a reference to it.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
+        :rtype: list
+        :returns: a list of time partitions
+        """
+        meta_table = self.get_table(
+            TableReference(
+                self.dataset(table.dataset_id, project=table.project),
+                '%s$__PARTITIONS_SUMMARY__' % table.table_id))
+
+        subset = [col for col in
+            meta_table.schema if col.name == 'partition_id']
+        return [row[0] for row in self.list_rows(meta_table,
+                selected_fields=subset,
+                retry=retry)]
+
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, page_size=None,
                   retry=DEFAULT_RETRY):
@@ -1325,32 +1350,6 @@ class Client(ClientWithProject):
             page_size=page_size,
             extra_params=params)
         return row_iterator
-
-    def list_partitions(self, table, retry=DEFAULT_RETRY):
-        """List the partitions in a table.
-
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the table to list, or a reference to it.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: list
-        :returns: a list of time partitions
-        """
-        meta_table = self.get_table(
-            TableReference( 
-            self.dataset(table.dataset_id, project=table.project),
-                '%s$__PARTITIONS_SUMMARY__' % table.table_id))
-        
-        subset = [col for col in meta_table.schema if col.name == 'partition_id']
-        
-        return [row[0] for row in self.list_rows(meta_table, 
-                selected_fields=subset,
-                retry = retry)]
-
 
 # pylint: disable=unused-argument
 def _item_to_project(iterator, resource):

@@ -2876,6 +2876,49 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
+    def test_list_partitions(self):
+        from google.cloud.bigquery.table import Table
+
+        ROWS = 3
+        META_INFO = {
+            'tableReference':
+                {'projectId': self.PROJECT,
+                 'datasetId': self.DS_ID,
+                 'tableId': '%s$__PARTITIONS_SUMMARY__' % self.TABLE_ID},
+            'schema': {'fields': [
+                {'name': 'project_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'dataset_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'table_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'partition_id', 'type': 'STRING', 'mode': 'NULLABLE'}]},
+            'etag': 'ETAG',
+            'numRows': ROWS,
+        }
+
+        DATA = {
+            'totalRows': str(ROWS),
+            'rows': [
+                {'f': [
+                    {'v': '20180101'},
+                ]},
+                {'f': [
+                    {'v': '20180102'},
+                ]},
+                {'f': [
+                    {'v': '20180103'},
+                ]},
+            ]
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        client._connection = _make_connection(META_INFO, DATA)
+        table = Table(self.TABLE_REF)
+
+        partition_list = client.list_partitions(table)
+        self.assertEqual(len(partition_list), 3)
+        self.assertIn('20180102', partition_list)
+
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
