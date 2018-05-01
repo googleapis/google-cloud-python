@@ -245,8 +245,7 @@ class Instance(object):
         """Creates an app profile within an instance.
 
         :type: app_profile_id: str
-        :param app_profile_id: The unique name of the instance in which to
-                                create the new app profile.
+        :param app_profile_id: The unique name for the new app profile.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
@@ -258,8 +257,7 @@ class Instance(object):
         """Gets information about an app profile.
 
         :type: app_profile_id: str
-        :param app_profile_id: The unique name of the instance in which to
-                                update the app profile.
+        :param app_profile_id: The unique name for the app profile.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
@@ -272,21 +270,21 @@ class Instance(object):
     def list_app_profiles(self):
         """Lists information about app profiles in an instance.
 
-        :rtype: :class:`~google.gax.PageIterator`
-        :return: A :class:`~google.gax.PageIterator` instance. By default,
-                this is an iterable of
+        :rtype: :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`]
+        :return: A :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`].
+                By default, this is a list of
                 :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-                instances. This object can also be configured to iterate
-                over the pages of the response through the `options` parameter.
+                instances.
         """
-        return self._client._instance_admin_client.list_app_profiles(self.name)
+        list_app_profiles = list(
+            self._client._instance_admin_client.list_app_profiles(self.name))
+        return list_app_profiles
 
     def update_app_profile(self, app_profile_id, ignore_warnings=None):
         """Updates an app profile within an instance.
 
         :type: app_profile_id: str
-        :param app_profile_id: The unique name of the instance in which to
-                                update the app profile.
+        :param app_profile_id: The unique name for the app profile to update.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
@@ -301,17 +299,15 @@ class Instance(object):
         """Deletes an app profile from an instance.
 
         :type: app_profile_id: str
-        :param app_profile_id: The unique name of the instance in which to
-                                delete the app profile.
+        :param app_profile_id: The unique name for the app profile to delete.
 
         :raises: google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-                google.api_core.exceptions.RetryError: If the request failed
-                    due to a retryable error and retry attempts failed.
-                ValueError: If the parameters are invalid.
+                failed for any reason. google.api_core.exceptions.RetryError:
+                If the request failed due to a retryable error and retry
+                attempts failed. ValueError: If the parameters are invalid.
         """
         instance_admin_client = self._client._instance_admin_client
         app_profile_path = instance_admin_client.app_profile_path(
             self._client.project, self.name, app_profile_id)
-        return self._client._instance_admin_client.delete_app_profile(
+        self._client._instance_admin_client.delete_app_profile(
             app_profile_path, ignore_warnings)

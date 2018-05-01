@@ -437,8 +437,7 @@ class TestInstance(unittest.TestCase):
             expected_response]
 
         # Perform the method and check the result.
-        paged_list_response = instance.list_app_profiles()
-        response = list(paged_list_response)
+        response = instance.list_app_profiles()
 
         self.assertEqual(response[0], expected_response.app_profiles[0])
 
