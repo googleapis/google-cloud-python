@@ -2516,3 +2516,25 @@ class QueryPlanEntry(object):
             steps=[QueryPlanEntryStep.from_api_repr(step)
                    for step in resource.get('steps', ())],
         )
+
+
+class UnknownJob(_AsyncJob):
+    """A job whose type cannot be determined."""
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Construct an UnknownJob from the JSON representation.
+
+        Args:
+            resource (dict): JSON representation of a job.
+            client (google.cloud.bigquery.client.Client):
+                Client connected to BigQuery API.
+
+        Returns:
+            UnknownJob: Job corresponding to the resource.
+        """
+        job_ref = _JobReference._from_api_repr(
+            resource.get('jobReference', {'projectId': client.project}))
+        job = cls(job_ref, client)
+        job._properties = resource
+        return job
