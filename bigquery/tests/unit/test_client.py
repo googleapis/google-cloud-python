@@ -515,6 +515,7 @@ class TestClient(unittest.TestCase):
 
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TimePartitioning
 
         path = 'projects/%s/datasets/%s/tables' % (
             self.PROJECT, self.DS_ID)
@@ -530,7 +531,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
-        table.partitioning_type = 'DAY'
+        table.time_partitioning = TimePartitioning()
 
         got = client.create_table(table)
 
@@ -546,7 +547,7 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, 'DAY')
+        self.assertEqual(table.time_partitioning.type_, 'DAY')
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_custom_property(self):
@@ -628,6 +629,7 @@ class TestClient(unittest.TestCase):
 
     def test_create_table_w_day_partition_and_expire(self):
         from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TimePartitioning
 
         path = 'projects/%s/datasets/%s/tables' % (
             self.PROJECT, self.DS_ID)
@@ -643,8 +645,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
-        table.partitioning_type = 'DAY'
-        table.partition_expiration = 100
+        table.time_partitioning = TimePartitioning(expiration_ms=100)
 
         got = client.create_table(table)
 
@@ -660,8 +661,8 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY', 'expirationMs': '100'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, 'DAY')
-        self.assertEqual(table.partition_expiration, 100)
+        self.assertEqual(table.time_partitioning.type_, 'DAY')
+        self.assertEqual(table.time_partitioning.expiration_ms, 100)
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_schema_and_query(self):

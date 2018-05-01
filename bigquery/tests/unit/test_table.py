@@ -800,7 +800,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         table.time_partitioning = None
 
-        self.assertIsNone(table.partitioning_type)
+        self.assertIsNone(table.time_partitioning)
 
     def test_partitioning_type_setter(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -826,9 +826,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
         table.time_partitioning = time_partitioning
 
-        table.partitioning_type = None
+        with mock.patch('warnings.warn') as warn_patch:
+            table.partitioning_type = None
 
-        self.assertIsNone(table.partitioning_type)
+            self.assertIsNone(table.partitioning_type)
+
+        assert warn_patch.called
 
     def test_partition_expiration_setter(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1343,7 +1346,6 @@ class TestTimePartitioning(unittest.TestCase):
 
     def test_constructor_defaults(self):
         from google.cloud.bigquery.table import TimePartitioning
-        from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = TimePartitioning()
 
