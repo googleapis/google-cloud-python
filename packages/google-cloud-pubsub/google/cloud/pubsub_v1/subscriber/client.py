@@ -26,7 +26,6 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -42,19 +41,13 @@ class Client(object):
     get sensible defaults.
 
     Args:
-        policy_class (class): A class that describes how to handle
-            subscriptions. You may subclass the
-            :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`
-            class in order to define your own consumer. This is primarily
-            provided to allow use of different concurrency models; the default
-            is based on :class:`threading.Thread`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, policy_class=thread.Policy, **kwargs):
+    def __init__(self, **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -82,10 +75,6 @@ class Client(object):
         # client.
         self._api = subscriber_client.SubscriberClient(**kwargs)
 
-        # The subcription class is responsible to retrieving and dispatching
-        # messages.
-        self._policy_class = policy_class
-
     @property
     def target(self):
         """Return the target (where the API is).
@@ -100,51 +89,7 @@ class Client(object):
         """The underlying gapic API client."""
         return self._api
 
-    def subscribe(self, subscription, callback=None, flow_control=()):
-        """Return a representation of an individual subscription.
-
-        This method creates and returns a ``Consumer`` object (that is, a
-        :class:`~.pubsub_v1.subscriber._consumer.Consumer`)
-        subclass) bound to the topic. It does `not` create the subcription
-        on the backend (or do any API call at all); it simply returns an
-        object capable of doing these things.
-
-        If the ``callback`` argument is provided, then the :meth:`open` method
-        is automatically called on the returned object. If ``callback`` is
-        not provided, the subscription is returned unopened.
-
-        .. note::
-            It only makes sense to provide ``callback`` here if you have
-            already created the subscription manually in the API.
-
-        Args:
-            subscription (str): The name of the subscription. The
-                subscription should have already been created (for example,
-                by using :meth:`create_subscription`).
-            callback (function): The callback function. This function receives
-                the :class:`~.pubsub_v1.types.PubsubMessage` as its only
-                argument.
-            flow_control (~.pubsub_v1.types.FlowControl): The flow control
-                settings. Use this to prevent situations where you are
-                inundated with too many messages at once.
-
-        Returns:
-            ~.pubsub_v1.subscriber._consumer.Consumer: An instance
-                of the defined ``consumer_class`` on the client.
-
-        Raises:
-            TypeError: If ``callback`` is not callable.
-        """
-        flow_control = types.FlowControl(*flow_control)
-        subscr = self._policy_class(self, subscription, flow_control)
-        if callable(callback):
-            subscr.open(callback)
-        elif callback is not None:
-            error = '{!r} is not callable, please check input'.format(callback)
-            raise TypeError(error)
-        return subscr
-
-    def subscribe_experimental(
+    def subscribe(
             self, subscription, callback, flow_control=(),
             scheduler_=None):
         """Asynchronously start receiving messages on a given subscription.
