@@ -1439,8 +1439,8 @@ def _check_mode(stream):
     :param stream: A bytes IO object open for reading.
 
     :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
-             and is not among ``rb``, ``r+b``, ``rb+``, or  in case of gzip
-             in ``1`` or ``2``.
+             and is not among ``rb``, ``r+b``, ``rb+``, or, in case of gzip,
+             not among ``1`` or ``2``.
     """
     mode = getattr(stream, 'mode', None)
 
