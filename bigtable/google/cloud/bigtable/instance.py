@@ -252,7 +252,34 @@ class Instance(object):
         :return: The AppProfile instance.
         """
         return self._client._instance_admin_client.create_app_profile(
-            self.name, self._app_profile_id, {})
+            self.name, app_profile_id, {})
+
+    def get_app_profile(self, app_profile_id):
+        """Gets information about an app profile.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name of the instance in which to
+                                update the app profile.
+
+        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+        :return: The AppProfile instance.
+        """
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.name, app_profile_id)
+        return self._client._instance_admin_client.get_app_profile(name)
+
+    def list_app_profiles(self):
+        """Lists information about app profiles in an instance.
+
+        :rtype: :class:`~google.gax.PageIterator`
+        :return: A :class:`~google.gax.PageIterator` instance. By default,
+                this is an iterable of
+                :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+                instances. This object can also be configured to iterate
+                over the pages of the response through the `options` parameter.
+        """
+        return self._client._instance_admin_client.list_app_profiles(self.name)
 
     def update_app_profile(self, app_profile_id, ignore_warnings=None):
         """Updates an app profile within an instance.
@@ -284,7 +311,7 @@ class Instance(object):
                 ValueError: If the parameters are invalid.
         """
         instance_admin_client =  self._client._instance_admin_client
-        app_profile_path = instance_admin_client(
+        app_profile_path = instance_admin_client.app_profile_path(
             self._client.project, self.name, app_profile_id)
         return self._client._instance_admin_client.delete_app_profile(
             app_profile_path, ignore_warnings)

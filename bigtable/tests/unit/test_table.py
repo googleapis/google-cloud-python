@@ -337,7 +337,8 @@ class TestTable(unittest.TestCase):
         request_pb = object()  # Returned by our mock.
         mock_created = []
 
-        def mock_create_row_request(table_name, row_key, filter_):
+        def mock_create_row_request(table_name, row_key, filter_,
+                                    app_profile_id=None):
             mock_created.append((table_name, row_key, filter_))
             return request_pb
 
@@ -462,6 +463,7 @@ class TestTable(unittest.TestCase):
             'filter_': filter_obj,
             'limit': limit,
             'end_inclusive': False,
+            'app_profile_id': None
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
@@ -1014,12 +1016,14 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
-                  filter_=None, limit=None, end_inclusive=False):
+                  filter_=None, limit=None, end_inclusive=False,
+                  app_profile_id=None):
         from google.cloud.bigtable.table import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit, end_inclusive=end_inclusive)
+            filter_=filter_, limit=limit, end_inclusive=end_inclusive,
+            app_profile_id=app_profile_id)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -1099,6 +1103,19 @@ class Test__create_row_request(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(
             table_name=table_name,
             rows_limit=limit,
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_with_app_profile_id(self):
+        table_name = 'table_name'
+        limit = 1337
+        app_profile_id = 'app-profile-id'
+        result = self._call_fut(table_name, limit=limit,
+                                app_profile_id=app_profile_id)
+        expected_result = _ReadRowsRequestPB(
+            table_name=table_name,
+            rows_limit=limit,
+            app_profile_id=app_profile_id
         )
         self.assertEqual(result, expected_result)
 
