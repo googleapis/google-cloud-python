@@ -820,7 +820,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_partitioning_type_setter_w_time_partitioning_set(self):
         from google.cloud.bigquery.table import TimePartitioning
-        from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
