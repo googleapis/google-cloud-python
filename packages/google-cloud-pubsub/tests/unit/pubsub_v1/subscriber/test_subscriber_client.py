@@ -16,6 +16,7 @@ from google.auth import credentials
 import mock
 
 from google.cloud.pubsub_v1 import subscriber
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 
 
@@ -50,4 +51,29 @@ def test_subscribe(manager_open):
         'sub_name_a', callback=mock.sentinel.callback)
     assert isinstance(future, futures.StreamingPullFuture)
 
-    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)
+    assert future._manager._subscription == 'sub_name_a'
+    manager_open.assert_called_once_with(
+        mock.ANY, mock.sentinel.callback)
+
+
+@mock.patch(
+    'google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager.'
+    'StreamingPullManager.open', autospec=True)
+def test_subscribe_options(manager_open):
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+    flow_control = types.FlowControl(max_bytes=42)
+    scheduler = mock.sentinel.scheduler
+
+    future = client.subscribe(
+        'sub_name_a',
+        callback=mock.sentinel.callback,
+        flow_control=flow_control,
+        scheduler=scheduler)
+    assert isinstance(future, futures.StreamingPullFuture)
+
+    assert future._manager._subscription == 'sub_name_a'
+    assert future._manager.flow_control == flow_control
+    assert future._manager._scheduler == scheduler
+    manager_open.assert_called_once_with(
+        mock.ANY, mock.sentinel.callback)

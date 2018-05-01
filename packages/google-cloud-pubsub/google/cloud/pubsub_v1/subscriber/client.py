@@ -91,7 +91,7 @@ class Client(object):
 
     def subscribe(
             self, subscription, callback, flow_control=(),
-            scheduler_=None):
+            scheduler=None):
         """Asynchronously start receiving messages on a given subscription.
 
         This method starts a background thread to begin pulling messages from
@@ -154,6 +154,9 @@ class Client(object):
             flow_control (~.pubsub_v1.types.FlowControl): The flow control
                 settings. Use this to prevent situations where you are
                 inundated with too many messages at once.
+            scheduler (~.pubsub_v1.subscriber.scheduler.Scheduler): An optional
+                *scheduler* to use when executing the callback. This controls
+                how callbacks are executed concurrently.
 
         Returns:
             google.cloud.pubsub_v1.futures.StreamingPullFuture: A Future object
@@ -162,7 +165,7 @@ class Client(object):
         flow_control = types.FlowControl(*flow_control)
 
         manager = streaming_pull_manager.StreamingPullManager(
-            self, subscription, flow_control)
+            self, subscription, flow_control=flow_control, scheduler=scheduler)
 
         future = futures.StreamingPullFuture(manager)
 
