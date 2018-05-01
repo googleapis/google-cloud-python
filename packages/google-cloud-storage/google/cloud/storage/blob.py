@@ -548,7 +548,7 @@ class Blob(_PropertyMixin):
             with open(filename, 'wb') as file_obj:
                 self.download_to_file(
                     file_obj, client=client, start=start, end=end)
-        except resumable_media.DataCorruption as exc:
+        except resumable_media.DataCorruption:
             # Delete the corrupt downloaded file.
             os.remove(filename)
             raise
