@@ -1219,7 +1219,7 @@ def test_load_table_from_uri_json(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_json]
 
 
@@ -1291,7 +1291,7 @@ def test_load_table_from_uri_parquet(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_parquet]
 
 
@@ -1299,7 +1299,7 @@ def test_load_table_from_uri_orc(client, to_delete):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
-    # to_delete.append(dataset)
+    to_delete.append(dataset)
 
     # [START bigquery_load_table_gcs_orc]
     # from google.cloud import bigquery
@@ -1321,7 +1321,7 @@ def test_load_table_from_uri_orc(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_orc]
 
 
