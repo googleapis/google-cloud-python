@@ -1395,10 +1395,12 @@ class TestClient(unittest.TestCase):
             client.delete_table(client.dataset(self.DS_ID))
 
     def test_job_from_resource_unknown_type(self):
+        from google.cloud.bigquery.job import UnknownJob
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        with self.assertRaises(ValueError):
-            client.job_from_resource({'configuration': {'nonesuch': {}}})
+        got = client.job_from_resource({})  # Can parse redacted job.
+        self.assertIsInstance(got, UnknownJob)
+        self.assertEqual(got.project, self.PROJECT)
 
     def test_get_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound

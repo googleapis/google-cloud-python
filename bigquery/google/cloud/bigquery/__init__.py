@@ -50,6 +50,7 @@ from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
 from google.cloud.bigquery.job import SourceFormat
+from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -91,6 +92,7 @@ __all__ = [
     'ExtractJobConfig',
     'LoadJob',
     'LoadJobConfig',
+    'UnknownJob',
     # Shared helpers
     'SchemaField',
     'UDFResource',
