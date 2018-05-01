@@ -810,26 +810,42 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
 
         with mock.patch('warnings.warn') as warn_patch:
+            self.assertIsNone(table.partitioning_type)
+
             table.partitioning_type = TimePartitioningType.DAY
 
             self.assertEqual(table.partitioning_type, 'DAY')
 
         assert warn_patch.called
 
-    def test_partitioning_type_setter_w_time_partitioning(self):
+    def test_partitioning_type_setter_w_time_partitioning_set(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
-        table.time_partitioning = time_partitioning
+        table.time_partitioning = TimePartitioning()
 
         with mock.patch('warnings.warn') as warn_patch:
-            table.partitioning_type = None
+            table.partitioning_type = 'NEW_FAKE_TYPE'
 
-            self.assertIsNone(table.partitioning_type)
+            self.assertEqual(table.partitioning_type, 'NEW_FAKE_TYPE')
+
+        assert warn_patch.called
+
+    def test_partitioning_expiration_setter_w_time_partitioning_set(self):
+        from google.cloud.bigquery.table import TimePartitioning
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table.time_partitioning = TimePartitioning()
+
+        with mock.patch('warnings.warn') as warn_patch:
+            table.partition_expiration = 100000
+
+            self.assertEqual(table.partition_expiration, 100000)
 
         assert warn_patch.called
 
