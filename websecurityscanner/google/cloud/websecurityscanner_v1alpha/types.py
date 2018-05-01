@@ -21,10 +21,12 @@ from google.api import http_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import crawled_url_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import finding_addon_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import finding_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_type_stats_pb2
+from google.cloud.websecurityscanner_v1alpha.proto import \
+    finding_type_stats_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_config_pb2
 from google.cloud.websecurityscanner_v1alpha.proto import scan_run_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_pb2
+from google.cloud.websecurityscanner_v1alpha.proto import \
+    web_security_scanner_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
