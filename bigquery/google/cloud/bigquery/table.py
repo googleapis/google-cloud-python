@@ -1172,8 +1172,13 @@ class TimePartitioning(object):
         expiration_ms(int, optional):
             Number of milliseconds for which to keep the storage for a
             partition.
+        require_partition_filter (bool, optional):
+            If set to true, queries over the partitioned table require a
+            partition filter that can be used for partition elimination to be
+            specified.
     """
-    def __init__(self, type_=None, field=None, expiration_ms=None):
+    def __init__(self, type_=None, field=None, expiration_ms=None,
+                 require_partition_filter=None):
         self._properties = {}
         if type_ is None:
             self.type_ = TimePartitioningType.DAY
@@ -1183,6 +1188,8 @@ class TimePartitioning(object):
             self.field = field
         if expiration_ms is not None:
             self.expiration_ms = expiration_ms
+        if require_partition_filter is not None:
+            self.require_partition_filter = require_partition_filter
 
     @property
     def type_(self):
@@ -1212,6 +1219,16 @@ class TimePartitioning(object):
     @expiration_ms.setter
     def expiration_ms(self, value):
         self._properties['expirationMs'] = str(value)
+
+    @property
+    def require_partition_filter(self):
+        """bool: Specifies whether partition filters are required for queries
+        """
+        return self._properties.get('requirePartitionFilter')
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties['requirePartitionFilter'] = value
 
     @classmethod
     def from_api_repr(cls, api_repr):
