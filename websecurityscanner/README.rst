@@ -7,9 +7,9 @@ Python Client for Web Security Scanner API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Web Security Scanner API: https://cloud.google.com/websecurityscanner
+.. _Web Security Scanner API: https://cloud.google.com/security-scanner
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/websecurityscanner/usage.html
-.. _Product Documentation:  https://cloud.google.com/websecurityscanner
+.. _Product Documentation:  https://cloud.google.com/security-scanner
 
 Quick Start
 -----------
@@ -23,7 +23,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Web Security Scanner API.:  https://cloud.google.com/websecurityscanner
+.. _Enable the Web Security Scanner API.:  https://cloud.google.com/security-scanner
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
@@ -71,5 +71,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Web Security Scanner API Product documentation:  https://cloud.google.com/websecurityscanner
+.. _Web Security Scanner API Product documentation:  https://cloud.google.com/security-scanner
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
