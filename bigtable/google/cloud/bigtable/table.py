@@ -197,7 +197,7 @@ class Table(object):
             for initial_split_key in initial_split_keys:
                 splits.append(
                     table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                    key=initial_split_key.encode('utf-8')))
+                        key=initial_split_key.encode('utf-8')))
         else:
             splits = None
 
