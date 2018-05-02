@@ -297,7 +297,7 @@ class InvalidChunk(RuntimeError):
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type read_method: :class:`client._data_stub.ReadRows`
+    :type read_method: :class:`client._table_data_client.read_rows`
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`
@@ -356,7 +356,7 @@ def _retry_read_rows_exception(exc):
 class YieldRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type read_method: :class:`client._data_stub.ReadRows`
+    :type read_method: :class:`client._table_data_client.read_rows`
     :param read_method: ``ReadRows`` method.
 
     :type request: :class:`data_messages_v2_pb2.ReadRowsRequest`

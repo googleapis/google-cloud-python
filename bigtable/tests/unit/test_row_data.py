@@ -33,7 +33,7 @@ class TestCell(unittest.TestCase):
     def _from_pb_test_helper(self, labels=None):
         import datetime
         from google.cloud._helpers import _EPOCH
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable_v2.proto import (
             data_pb2 as data_v2_pb2)
 
         timestamp_micros = TestCell.timestamp_micros
@@ -867,7 +867,7 @@ class _ReadRowsResponseV2(object):
 
 def _generate_cell_chunks(chunk_text_pbs):
     from google.protobuf.text_format import Merge
-    from google.cloud.bigtable._generated.bigtable_pb2 import ReadRowsResponse
+    from google.cloud.bigtable_v2.proto.bigtable_pb2 import ReadRowsResponse
 
     chunks = []
 
@@ -900,7 +900,7 @@ def _parse_readrows_acceptance_tests(filename):
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
 
     family_name = kw.pop('family_name')
