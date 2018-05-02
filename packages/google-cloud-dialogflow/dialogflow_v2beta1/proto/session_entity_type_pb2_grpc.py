@@ -6,13 +6,18 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class SessionEntityTypesStub(object):
-  """Manages session entity types.
+  """Entities are extracted from user input and represent parameters that are
+  meaningful to your application. For example, a date range, a proper name
+  such as a geographic location or landmark, and so on. Entities represent
+  actionable data for your application.
 
-  Session entity types can be redefined on a session level, allowing for
-  specific concepts, like a user's playlists.
+  Session entity types are referred to as **User** entity types and are
+  entities that are built for an individual user such as
+  favorites, preferences, playlists, and so on. You can redefine a session
+  entity type at the session level.
 
-
-  Standard methods.
+  For more information about entity types, see the
+  [Dialogflow documentation](https://dialogflow.com/docs/entities).
   """
 
   def __init__(self, channel):
@@ -49,13 +54,18 @@ class SessionEntityTypesStub(object):
 
 
 class SessionEntityTypesServicer(object):
-  """Manages session entity types.
+  """Entities are extracted from user input and represent parameters that are
+  meaningful to your application. For example, a date range, a proper name
+  such as a geographic location or landmark, and so on. Entities represent
+  actionable data for your application.
 
-  Session entity types can be redefined on a session level, allowing for
-  specific concepts, like a user's playlists.
+  Session entity types are referred to as **User** entity types and are
+  entities that are built for an individual user such as
+  favorites, preferences, playlists, and so on. You can redefine a session
+  entity type at the session level.
 
-
-  Standard methods.
+  For more information about entity types, see the
+  [Dialogflow documentation](https://dialogflow.com/docs/entities).
   """
 
   def ListSessionEntityTypes(self, request, context):

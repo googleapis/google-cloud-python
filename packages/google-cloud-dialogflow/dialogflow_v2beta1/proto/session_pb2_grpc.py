@@ -5,10 +5,10 @@ from dialogflow_v2beta1.proto import session_pb2 as google_dot_cloud_dot_dialogf
 
 
 class SessionsStub(object):
-  """Manages user sessions.
-
-
-  Custom methods.
+  """A session represents an interaction with a user. You retrieve user input
+  and pass it to the [DetectIntent][google.cloud.dialogflow.v2beta1.Sessions.DetectIntent] (or
+  [StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]) method to determine
+  user intent and respond.
   """
 
   def __init__(self, channel):
@@ -30,10 +30,10 @@ class SessionsStub(object):
 
 
 class SessionsServicer(object):
-  """Manages user sessions.
-
-
-  Custom methods.
+  """A session represents an interaction with a user. You retrieve user input
+  and pass it to the [DetectIntent][google.cloud.dialogflow.v2beta1.Sessions.DetectIntent] (or
+  [StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]) method to determine
+  user intent and respond.
   """
 
   def DetectIntent(self, request, context):

@@ -70,70 +70,70 @@ _AGENT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.cloud.dialogflow.v2beta1.Agent.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='default_language_code', full_name='google.cloud.dialogflow.v2beta1.Agent.default_language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='supported_language_codes', full_name='google.cloud.dialogflow.v2beta1.Agent.supported_language_codes', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='time_zone', full_name='google.cloud.dialogflow.v2beta1.Agent.time_zone', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.cloud.dialogflow.v2beta1.Agent.description', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='avatar_uri', full_name='google.cloud.dialogflow.v2beta1.Agent.avatar_uri', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='enable_logging', full_name='google.cloud.dialogflow.v2beta1.Agent.enable_logging', index=7,
       number=8, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='match_mode', full_name='google.cloud.dialogflow.v2beta1.Agent.match_mode', index=8,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='classification_threshold', full_name='google.cloud.dialogflow.v2beta1.Agent.classification_threshold', index=9,
       number=10, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -165,7 +165,7 @@ _GETAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -196,21 +196,21 @@ _SEARCHAGENTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.cloud.dialogflow.v2beta1.SearchAgentsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.cloud.dialogflow.v2beta1.SearchAgentsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -241,14 +241,14 @@ _SEARCHAGENTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.cloud.dialogflow.v2beta1.SearchAgentsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -279,7 +279,7 @@ _TRAINAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -310,14 +310,14 @@ _EXPORTAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2beta1.ExportAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -348,14 +348,14 @@ _EXPORTAGENTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2beta1.ExportAgentResponse.agent_content', index=1,
       number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -389,21 +389,21 @@ _IMPORTAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2beta1.ImportAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2beta1.ImportAgentRequest.agent_content', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -437,21 +437,21 @@ _RESTOREAGENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_uri', full_name='google.cloud.dialogflow.v2beta1.RestoreAgentRequest.agent_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='agent_content', full_name='google.cloud.dialogflow.v2beta1.RestoreAgentRequest.agent_content', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -505,7 +505,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), dict(
   DESCRIPTOR = _AGENT,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """Represents a conversational agent.
   
@@ -534,8 +534,8 @@ Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), d
           500 characters. If exceeded, the request is rejected.
       avatar_uri:
           Optional. The URI of the agent's avatar. Avatars are used
-          throughout API.AI console and in the self-hosted `Web Demo
-          <https://dialogflow.com/docs/integrations/web-demo>`__
+          throughout the Dialogflow console and in the self-hosted `Web
+          Demo <https://dialogflow.com/docs/integrations/web-demo>`__
           integration.
       enable_logging:
           Optional. Determines whether this agent should log
@@ -559,9 +559,10 @@ _sym_db.RegisterMessage(Agent)
 
 GetAgentRequest = _reflection.GeneratedProtocolMessageType('GetAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETAGENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.GetAgent].
+  __doc__ = """The request message for
+  [Agents.GetAgent][google.cloud.dialogflow.v2beta1.Agents.GetAgent].
   
   
   Attributes:
@@ -575,9 +576,10 @@ _sym_db.RegisterMessage(GetAgentRequest)
 
 SearchAgentsRequest = _reflection.GeneratedProtocolMessageType('SearchAgentsRequest', (_message.Message,), dict(
   DESCRIPTOR = _SEARCHAGENTSREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.SearchAgents].
+  __doc__ = """The request message for
+  [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
   
   
   Attributes:
@@ -597,9 +599,10 @@ _sym_db.RegisterMessage(SearchAgentsRequest)
 
 SearchAgentsResponse = _reflection.GeneratedProtocolMessageType('SearchAgentsResponse', (_message.Message,), dict(
   DESCRIPTOR = _SEARCHAGENTSRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The response message for [Agents.SearchAgents].
+  __doc__ = """The response message for
+  [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
   
   
   Attributes:
@@ -616,9 +619,10 @@ _sym_db.RegisterMessage(SearchAgentsResponse)
 
 TrainAgentRequest = _reflection.GeneratedProtocolMessageType('TrainAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _TRAINAGENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.TrainAgent].
+  __doc__ = """The request message for
+  [Agents.TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent].
   
   
   Attributes:
@@ -632,9 +636,10 @@ _sym_db.RegisterMessage(TrainAgentRequest)
 
 ExportAgentRequest = _reflection.GeneratedProtocolMessageType('ExportAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _EXPORTAGENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.ExportAgent].
+  __doc__ = """The request message for
+  [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
   
   
   Attributes:
@@ -642,9 +647,9 @@ ExportAgentRequest = _reflection.GeneratedProtocolMessageType('ExportAgentReques
           Required. The project that the agent to export is associated
           with. Format: ``projects/<Project ID>``.
       agent_uri:
-          Optional. The URI to export the agent to. Note: The URI must
-          start with "gs://". If left unspecified, the serialized agent
-          is returned inline.
+          Optional. The Google Cloud Storage URI to export the agent to.
+          Note: The URI must start with "gs://". If left unspecified,
+          the serialized agent is returned inline.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ExportAgentRequest)
   ))
@@ -652,9 +657,10 @@ _sym_db.RegisterMessage(ExportAgentRequest)
 
 ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentResponse', (_message.Message,), dict(
   DESCRIPTOR = _EXPORTAGENTRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The response message for [Agents.ExportAgent].
+  __doc__ = """The response message for
+  [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
   
   
   Attributes:
@@ -662,7 +668,8 @@ ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentRespo
           Required. The exported agent.
       agent_uri:
           The URI to a file containing the exported agent. This field is
-          populated only if ``agent_uri``
+          populated only if ``agent_uri`` is specified in
+          ``ExportAgentRequest``.
       agent_content:
           The exported agent.
   """,
@@ -672,9 +679,10 @@ _sym_db.RegisterMessage(ExportAgentResponse)
 
 ImportAgentRequest = _reflection.GeneratedProtocolMessageType('ImportAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _IMPORTAGENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.ImportAgent].
+  __doc__ = """The request message for
+  [Agents.ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent].
   
   
   Attributes:
@@ -684,8 +692,8 @@ ImportAgentRequest = _reflection.GeneratedProtocolMessageType('ImportAgentReques
       agent:
           Required. The agent to import.
       agent_uri:
-          The URI to a file containing the agent to import. Note: The
-          URI must start with "gs://".
+          The URI to a Google Cloud Storage file containing the agent to
+          import. Note: The URI must start with "gs://".
       agent_content:
           The agent to import.
   """,
@@ -695,9 +703,10 @@ _sym_db.RegisterMessage(ImportAgentRequest)
 
 RestoreAgentRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _RESTOREAGENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
   ,
-  __doc__ = """The request message for [Agents.RestoreAgent].
+  __doc__ = """The request message for
+  [Agents.RestoreAgent][google.cloud.dialogflow.v2beta1.Agents.RestoreAgent].
   
   
   Attributes:
@@ -707,8 +716,8 @@ RestoreAgentRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentRequ
       agent:
           Required. The agent to restore.
       agent_uri:
-          The URI to a file containing the agent to restore. Note: The
-          URI must start with "gs://".
+          The URI to a Google Cloud Storage file containing the agent to
+          restore. Note: The URI must start with "gs://".
       agent_content:
           The agent to restore.
   """,
@@ -719,394 +728,73 @@ _sym_db.RegisterMessage(RestoreAgentRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n#com.google.cloud.dialogflow.v2beta1B\nAgentProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_AGENTS = _descriptor.ServiceDescriptor(
+  name='Agents',
+  full_name='google.cloud.dialogflow.v2beta1.Agents',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=1213,
+  serialized_end=2161,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetAgent',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.GetAgent',
+    index=0,
+    containing_service=None,
+    input_type=_GETAGENTREQUEST,
+    output_type=_AGENT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002$\022\"/v2beta1/{parent=projects/*}/agent')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SearchAgents',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.SearchAgents',
+    index=1,
+    containing_service=None,
+    input_type=_SEARCHAGENTSREQUEST,
+    output_type=_SEARCHAGENTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002+\022)/v2beta1/{parent=projects/*}/agent:search')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='TrainAgent',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.TrainAgent',
+    index=2,
+    containing_service=None,
+    input_type=_TRAINAGENTREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002-\"(/v2beta1/{parent=projects/*}/agent:train:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ExportAgent',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.ExportAgent',
+    index=3,
+    containing_service=None,
+    input_type=_EXPORTAGENTREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002.\")/v2beta1/{parent=projects/*}/agent:export:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ImportAgent',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.ImportAgent',
+    index=4,
+    containing_service=None,
+    input_type=_IMPORTAGENTREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002.\")/v2beta1/{parent=projects/*}/agent:import:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='RestoreAgent',
+    full_name='google.cloud.dialogflow.v2beta1.Agents.RestoreAgent',
+    index=5,
+    containing_service=None,
+    input_type=_RESTOREAGENTREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002/\"*/v2beta1/{parent=projects/*}/agent:restore:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_AGENTS)
+
+DESCRIPTOR.services_by_name['Agents'] = _AGENTS
 
-  class AgentsStub(object):
-    """Manages conversational agents.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-    # about agents.
-
-    Standard methods.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.GetAgent = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/GetAgent',
-          request_serializer=GetAgentRequest.SerializeToString,
-          response_deserializer=Agent.FromString,
-          )
-      self.SearchAgents = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/SearchAgents',
-          request_serializer=SearchAgentsRequest.SerializeToString,
-          response_deserializer=SearchAgentsResponse.FromString,
-          )
-      self.TrainAgent = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/TrainAgent',
-          request_serializer=TrainAgentRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.ExportAgent = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/ExportAgent',
-          request_serializer=ExportAgentRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.ImportAgent = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/ImportAgent',
-          request_serializer=ImportAgentRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.RestoreAgent = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.Agents/RestoreAgent',
-          request_serializer=RestoreAgentRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-
-
-  class AgentsServicer(object):
-    """Manages conversational agents.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-    # about agents.
-
-    Standard methods.
-    """
-
-    def GetAgent(self, request, context):
-      """Retrieves the specified agent.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def SearchAgents(self, request, context):
-      """Returns the list of agents.
-
-      Since there is at most one conversational agent per project, this method is
-      useful primarily for listing all agents across projects the caller has
-      access to. One can achieve that with a wildcard project collection id "-".
-      Refer to [List
-      Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def TrainAgent(self, request, context):
-      """Trains the specified agent.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ExportAgent(self, request, context):
-      """Exports the specified agent to a ZIP file.
-
-
-      Operation<response: ExportAgentResponse,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def ImportAgent(self, request, context):
-      """Imports the specified agent from a ZIP file.
-
-      Uploads new intents and entity types without deleting the existing ones.
-      Intents and entity types with the same name are replaced with the new
-      versions from ImportAgentRequest.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def RestoreAgent(self, request, context):
-      """Restores the specified agent from a ZIP file.
-
-      Replaces the current agent version with a new one. All the intents and
-      entity types in the older version are deleted.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_AgentsServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'GetAgent': grpc.unary_unary_rpc_method_handler(
-            servicer.GetAgent,
-            request_deserializer=GetAgentRequest.FromString,
-            response_serializer=Agent.SerializeToString,
-        ),
-        'SearchAgents': grpc.unary_unary_rpc_method_handler(
-            servicer.SearchAgents,
-            request_deserializer=SearchAgentsRequest.FromString,
-            response_serializer=SearchAgentsResponse.SerializeToString,
-        ),
-        'TrainAgent': grpc.unary_unary_rpc_method_handler(
-            servicer.TrainAgent,
-            request_deserializer=TrainAgentRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'ExportAgent': grpc.unary_unary_rpc_method_handler(
-            servicer.ExportAgent,
-            request_deserializer=ExportAgentRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'ImportAgent': grpc.unary_unary_rpc_method_handler(
-            servicer.ImportAgent,
-            request_deserializer=ImportAgentRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'RestoreAgent': grpc.unary_unary_rpc_method_handler(
-            servicer.RestoreAgent,
-            request_deserializer=RestoreAgentRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.dialogflow.v2beta1.Agents', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaAgentsServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages conversational agents.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-    # about agents.
-
-    Standard methods.
-    """
-    def GetAgent(self, request, context):
-      """Retrieves the specified agent.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def SearchAgents(self, request, context):
-      """Returns the list of agents.
-
-      Since there is at most one conversational agent per project, this method is
-      useful primarily for listing all agents across projects the caller has
-      access to. One can achieve that with a wildcard project collection id "-".
-      Refer to [List
-      Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def TrainAgent(self, request, context):
-      """Trains the specified agent.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ExportAgent(self, request, context):
-      """Exports the specified agent to a ZIP file.
-
-
-      Operation<response: ExportAgentResponse,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def ImportAgent(self, request, context):
-      """Imports the specified agent from a ZIP file.
-
-      Uploads new intents and entity types without deleting the existing ones.
-      Intents and entity types with the same name are replaced with the new
-      versions from ImportAgentRequest.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def RestoreAgent(self, request, context):
-      """Restores the specified agent from a ZIP file.
-
-      Replaces the current agent version with a new one. All the intents and
-      entity types in the older version are deleted.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaAgentsStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages conversational agents.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-    # about agents.
-
-    Standard methods.
-    """
-    def GetAgent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves the specified agent.
-      """
-      raise NotImplementedError()
-    GetAgent.future = None
-    def SearchAgents(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns the list of agents.
-
-      Since there is at most one conversational agent per project, this method is
-      useful primarily for listing all agents across projects the caller has
-      access to. One can achieve that with a wildcard project collection id "-".
-      Refer to [List
-      Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
-      """
-      raise NotImplementedError()
-    SearchAgents.future = None
-    def TrainAgent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Trains the specified agent.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    TrainAgent.future = None
-    def ExportAgent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Exports the specified agent to a ZIP file.
-
-
-      Operation<response: ExportAgentResponse,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    ExportAgent.future = None
-    def ImportAgent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Imports the specified agent from a ZIP file.
-
-      Uploads new intents and entity types without deleting the existing ones.
-      Intents and entity types with the same name are replaced with the new
-      versions from ImportAgentRequest.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    ImportAgent.future = None
-    def RestoreAgent(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Restores the specified agent from a ZIP file.
-
-      Replaces the current agent version with a new one. All the intents and
-      entity types in the older version are deleted.
-
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    RestoreAgent.future = None
-
-
-  def beta_create_Agents_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ExportAgent'): ExportAgentRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'GetAgent'): GetAgentRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ImportAgent'): ImportAgentRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'RestoreAgent'): RestoreAgentRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'SearchAgents'): SearchAgentsRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'TrainAgent'): TrainAgentRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ExportAgent'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'GetAgent'): Agent.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ImportAgent'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'RestoreAgent'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'SearchAgents'): SearchAgentsResponse.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'TrainAgent'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ExportAgent'): face_utilities.unary_unary_inline(servicer.ExportAgent),
-      ('google.cloud.dialogflow.v2beta1.Agents', 'GetAgent'): face_utilities.unary_unary_inline(servicer.GetAgent),
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ImportAgent'): face_utilities.unary_unary_inline(servicer.ImportAgent),
-      ('google.cloud.dialogflow.v2beta1.Agents', 'RestoreAgent'): face_utilities.unary_unary_inline(servicer.RestoreAgent),
-      ('google.cloud.dialogflow.v2beta1.Agents', 'SearchAgents'): face_utilities.unary_unary_inline(servicer.SearchAgents),
-      ('google.cloud.dialogflow.v2beta1.Agents', 'TrainAgent'): face_utilities.unary_unary_inline(servicer.TrainAgent),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Agents_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ExportAgent'): ExportAgentRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'GetAgent'): GetAgentRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ImportAgent'): ImportAgentRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'RestoreAgent'): RestoreAgentRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'SearchAgents'): SearchAgentsRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'TrainAgent'): TrainAgentRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ExportAgent'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'GetAgent'): Agent.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'ImportAgent'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'RestoreAgent'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'SearchAgents'): SearchAgentsResponse.FromString,
-      ('google.cloud.dialogflow.v2beta1.Agents', 'TrainAgent'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-    }
-    cardinalities = {
-      'ExportAgent': cardinality.Cardinality.UNARY_UNARY,
-      'GetAgent': cardinality.Cardinality.UNARY_UNARY,
-      'ImportAgent': cardinality.Cardinality.UNARY_UNARY,
-      'RestoreAgent': cardinality.Cardinality.UNARY_UNARY,
-      'SearchAgents': cardinality.Cardinality.UNARY_UNARY,
-      'TrainAgent': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.dialogflow.v2beta1.Agents', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/dialogflow_v2beta1/proto/webhook.proto',
   package='google.cloud.dialogflow.v2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n3google/cloud/dialogflow_v2beta1/proto/webhook.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/context.proto\x1a\x32google/cloud/dialogflow_v2beta1/proto/intent.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/session.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe3\x01\n\x0eWebhookRequest\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12\x42\n\x0cquery_result\x18\x02 \x01(\x0b\x32,.google.cloud.dialogflow.v2beta1.QueryResult\x12\x64\n\x1eoriginal_detect_intent_request\x18\x03 \x01(\x0b\x32<.google.cloud.dialogflow.v2beta1.OriginalDetectIntentRequest\x12\x12\n\nsession_id\x18\x04 \x01(\t\"\xc2\x02\n\x0fWebhookResponse\x12\x18\n\x10\x66ulfillment_text\x18\x01 \x01(\t\x12M\n\x14\x66ulfillment_messages\x18\x02 \x03(\x0b\x32/.google.cloud.dialogflow.v2beta1.Intent.Message\x12\x0e\n\x06source\x18\x03 \x01(\t\x12(\n\x07payload\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x41\n\x0foutput_contexts\x18\x05 \x03(\x0b\x32(.google.cloud.dialogflow.v2beta1.Context\x12I\n\x14\x66ollowup_event_input\x18\x06 \x01(\x0b\x32+.google.cloud.dialogflow.v2beta1.EventInput\"W\n\x1bOriginalDetectIntentRequest\x12\x0e\n\x06source\x18\x01 \x01(\t\x12(\n\x07payload\x18\x03 \x01(\x0b\x32\x17.google.protobuf.StructB\xaa\x01\n#com.google.cloud.dialogflow.v2beta1B\x0cWebhookProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
+  serialized_pb=_b('\n3google/cloud/dialogflow_v2beta1/proto/webhook.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/context.proto\x1a\x32google/cloud/dialogflow_v2beta1/proto/intent.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/session.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe0\x01\n\x0eWebhookRequest\x12\x0f\n\x07session\x18\x04 \x01(\t\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12\x42\n\x0cquery_result\x18\x02 \x01(\x0b\x32,.google.cloud.dialogflow.v2beta1.QueryResult\x12\x64\n\x1eoriginal_detect_intent_request\x18\x03 \x01(\x0b\x32<.google.cloud.dialogflow.v2beta1.OriginalDetectIntentRequest\"\xc2\x02\n\x0fWebhookResponse\x12\x18\n\x10\x66ulfillment_text\x18\x01 \x01(\t\x12M\n\x14\x66ulfillment_messages\x18\x02 \x03(\x0b\x32/.google.cloud.dialogflow.v2beta1.Intent.Message\x12\x0e\n\x06source\x18\x03 \x01(\t\x12(\n\x07payload\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x41\n\x0foutput_contexts\x18\x05 \x03(\x0b\x32(.google.cloud.dialogflow.v2beta1.Context\x12I\n\x14\x66ollowup_event_input\x18\x06 \x01(\x0b\x32+.google.cloud.dialogflow.v2beta1.EventInput\"W\n\x1bOriginalDetectIntentRequest\x12\x0e\n\x06source\x18\x01 \x01(\t\x12(\n\x07payload\x18\x03 \x01(\x0b\x32\x17.google.protobuf.StructB\xaa\x01\n#com.google.cloud.dialogflow.v2beta1B\x0cWebhookProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_intent__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_session__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
 
@@ -39,33 +39,33 @@ _WEBHOOKREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='response_id', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.response_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='query_result', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.query_result', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='original_detect_intent_request', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.original_detect_intent_request', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='session_id', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.session_id', index=3,
+      name='session', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.session', index=0,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='response_id', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.response_id', index=1,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='query_result', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.query_result', index=2,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='original_detect_intent_request', full_name='google.cloud.dialogflow.v2beta1.WebhookRequest.original_detect_intent_request', index=3,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -79,7 +79,7 @@ _WEBHOOKREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=307,
-  serialized_end=534,
+  serialized_end=531,
 )
 
 
@@ -96,42 +96,42 @@ _WEBHOOKRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='fulfillment_messages', full_name='google.cloud.dialogflow.v2beta1.WebhookResponse.fulfillment_messages', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='source', full_name='google.cloud.dialogflow.v2beta1.WebhookResponse.source', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='payload', full_name='google.cloud.dialogflow.v2beta1.WebhookResponse.payload', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='output_contexts', full_name='google.cloud.dialogflow.v2beta1.WebhookResponse.output_contexts', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='followup_event_input', full_name='google.cloud.dialogflow.v2beta1.WebhookResponse.followup_event_input', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -144,8 +144,8 @@ _WEBHOOKRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=537,
-  serialized_end=859,
+  serialized_start=534,
+  serialized_end=856,
 )
 
 
@@ -162,14 +162,14 @@ _ORIGINALDETECTINTENTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='payload', full_name='google.cloud.dialogflow.v2beta1.OriginalDetectIntentRequest.payload', index=1,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -182,8 +182,8 @@ _ORIGINALDETECTINTENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=861,
-  serialized_end=948,
+  serialized_start=858,
+  serialized_end=945,
 )
 
 _WEBHOOKREQUEST.fields_by_name['query_result'].message_type = google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_session__pb2._QUERYRESULT
@@ -200,12 +200,16 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 WebhookRequest = _reflection.GeneratedProtocolMessageType('WebhookRequest', (_message.Message,), dict(
   DESCRIPTOR = _WEBHOOKREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.webhook_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.webhook_pb2'
   ,
   __doc__ = """The request message for a webhook call.
   
   
   Attributes:
+      session:
+          The unique identifier of detectIntent request session. Can be
+          used to identify end-user inside webhook implementation.
+          Format: ``projects/<Project ID>/agent/sessions/<Session ID>``.
       response_id:
           The unique identifier of the response. Contains the same value
           as ``[Streaming]DetectIntentResponse.response_id``.
@@ -216,9 +220,6 @@ WebhookRequest = _reflection.GeneratedProtocolMessageType('WebhookRequest', (_me
       original_detect_intent_request:
           Optional. The contents of the original request that was passed
           to ``[Streaming]DetectIntent`` call.
-      session_id:
-          The unique identifier of detectIntent request session. Can be
-          used to identify end-user inside webhook implementation.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.WebhookRequest)
   ))
@@ -226,7 +227,7 @@ _sym_db.RegisterMessage(WebhookRequest)
 
 WebhookResponse = _reflection.GeneratedProtocolMessageType('WebhookResponse', (_message.Message,), dict(
   DESCRIPTOR = _WEBHOOKRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.webhook_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.webhook_pb2'
   ,
   __doc__ = """The response message for a webhook call.
   
@@ -244,7 +245,18 @@ WebhookResponse = _reflection.GeneratedProtocolMessageType('WebhookResponse', (_
           ``QueryResult.webhook_source``.
       payload:
           Optional. This value is passed directly to
-          ``QueryResult.webhook_payload``.
+          ``QueryResult.webhook_payload``. See the related
+          ``fulfillment_messages[i].payload field``, which may be used
+          as an alternative to this field.  This field can be used for
+          Actions on Google responses. It should have a structure
+          similar to the JSON message shown here. For more information,
+          see `Actions on Google Webhook Format
+          <https://developers.google.com/actions/dialogflow/webhook>`__
+          .. raw:: html     <pre>{      "google": {
+          "expectUserResponse": true,        "richResponse": {
+          "items": [            {              "simpleResponse": {
+          "textToSpeech": "this is a simple response"              }
+          }          ]        }      }    }</pre>
       output_contexts:
           Optional. The collection of output contexts. This value is
           passed directly to ``QueryResult.output_contexts``.
@@ -259,16 +271,16 @@ _sym_db.RegisterMessage(WebhookResponse)
 
 OriginalDetectIntentRequest = _reflection.GeneratedProtocolMessageType('OriginalDetectIntentRequest', (_message.Message,), dict(
   DESCRIPTOR = _ORIGINALDETECTINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.webhook_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.webhook_pb2'
   ,
-  __doc__ = """Represents the contents of the original request that was passed to
-  ``[Streaming]DetectIntent call``.
+  __doc__ = """Represents the contents of the original request that was passed to the
+  ``[Streaming]DetectIntent`` call.
   
   
   Attributes:
       source:
-          The source of this request, e.g., Google, Facebook, Slack. It
-          is set by Dialogflow-owned servers.
+          The source of this request, e.g., ``google``, ``facebook``,
+          ``slack``. It is set by Dialogflow-owned servers.
       payload:
           Optional. This field is set to the value of
           ``QueryParameters.payload`` field passed in the request.
@@ -280,14 +292,4 @@ _sym_db.RegisterMessage(OriginalDetectIntentRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n#com.google.cloud.dialogflow.v2beta1B\014WebhookProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

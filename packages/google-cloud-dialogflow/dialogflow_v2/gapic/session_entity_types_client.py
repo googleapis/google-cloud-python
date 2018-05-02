@@ -182,7 +182,7 @@ class SessionEntityTypesClient(object):
         Returns the list of all session entity types in the specified session.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
@@ -261,7 +261,7 @@ class SessionEntityTypesClient(object):
         Retrieves the specified session entity type.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
@@ -311,7 +311,7 @@ class SessionEntityTypesClient(object):
         Creates a session entity type.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
@@ -366,7 +366,7 @@ class SessionEntityTypesClient(object):
         Updates the specified session entity type.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
@@ -422,7 +422,7 @@ class SessionEntityTypesClient(object):
         Deletes the specified session entity type.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>

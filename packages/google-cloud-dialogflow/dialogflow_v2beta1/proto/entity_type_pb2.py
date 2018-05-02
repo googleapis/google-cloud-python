@@ -92,14 +92,14 @@ _ENTITYTYPE_ENTITY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='synonyms', full_name='google.cloud.dialogflow.v2beta1.EntityType.Entity.synonyms', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -129,35 +129,35 @@ _ENTITYTYPE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='display_name', full_name='google.cloud.dialogflow.v2beta1.EntityType.display_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='kind', full_name='google.cloud.dialogflow.v2beta1.EntityType.kind', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='auto_expansion_mode', full_name='google.cloud.dialogflow.v2beta1.EntityType.auto_expansion_mode', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entities', full_name='google.cloud.dialogflow.v2beta1.EntityType.entities', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -190,28 +190,28 @@ _LISTENTITYTYPESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.ListEntityTypesRequest.language_code', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.cloud.dialogflow.v2beta1.ListEntityTypesRequest.page_size', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.cloud.dialogflow.v2beta1.ListEntityTypesRequest.page_token', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -242,14 +242,14 @@ _LISTENTITYTYPESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.cloud.dialogflow.v2beta1.ListEntityTypesResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -280,14 +280,14 @@ _GETENTITYTYPEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.GetEntityTypeRequest.language_code', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -318,21 +318,21 @@ _CREATEENTITYTYPEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_type', full_name='google.cloud.dialogflow.v2beta1.CreateEntityTypeRequest.entity_type', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.CreateEntityTypeRequest.language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -363,21 +363,21 @@ _UPDATEENTITYTYPEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.UpdateEntityTypeRequest.language_code', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.cloud.dialogflow.v2beta1.UpdateEntityTypeRequest.update_mask', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -408,7 +408,7 @@ _DELETEENTITYTYPEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -439,35 +439,35 @@ _BATCHUPDATEENTITYTYPESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_type_batch_uri', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesRequest.entity_type_batch_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_type_batch_inline', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesRequest.entity_type_batch_inline', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesRequest.language_code', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesRequest.update_mask', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -501,7 +501,7 @@ _BATCHUPDATEENTITYTYPESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -532,14 +532,14 @@ _BATCHDELETEENTITYTYPESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_type_names', full_name='google.cloud.dialogflow.v2beta1.BatchDeleteEntityTypesRequest.entity_type_names', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -570,21 +570,21 @@ _BATCHCREATEENTITIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entities', full_name='google.cloud.dialogflow.v2beta1.BatchCreateEntitiesRequest.entities', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.BatchCreateEntitiesRequest.language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -615,28 +615,28 @@ _BATCHUPDATEENTITIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entities', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntitiesRequest.entities', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntitiesRequest.language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateEntitiesRequest.update_mask', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -667,21 +667,21 @@ _BATCHDELETEENTITIESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='entity_values', full_name='google.cloud.dialogflow.v2beta1.BatchDeleteEntitiesRequest.entity_values', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.dialogflow.v2beta1.BatchDeleteEntitiesRequest.language_code', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -712,7 +712,7 @@ _ENTITYTYPEBATCH = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -772,7 +772,7 @@ EntityType = _reflection.GeneratedProtocolMessageType('EntityType', (_message.Me
 
   Entity = _reflection.GeneratedProtocolMessageType('Entity', (_message.Message,), dict(
     DESCRIPTOR = _ENTITYTYPE_ENTITY,
-    __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+    __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
     ,
     __doc__ = """Optional. Represents an entity.
     
@@ -792,7 +792,7 @@ EntityType = _reflection.GeneratedProtocolMessageType('EntityType', (_message.Me
     ))
   ,
   DESCRIPTOR = _ENTITYTYPE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """Represents an entity type. Entity types serve as a tool for extracting
   parameter values from natural language queries.
@@ -800,8 +800,10 @@ EntityType = _reflection.GeneratedProtocolMessageType('EntityType', (_message.Me
   
   Attributes:
       name:
-          Required. The unique identifier of the entity type. Format:
-          ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
+          Required for all methods except ``create`` (``create``
+          populates the name automatically. The unique identifier of the
+          entity type. Format: ``projects/<Project
+          ID>/agent/entityTypes/<Entity Type ID>``.
       display_name:
           Required. The name of the entity.
       kind:
@@ -820,9 +822,10 @@ _sym_db.RegisterMessage(EntityType.Entity)
 
 ListEntityTypesRequest = _reflection.GeneratedProtocolMessageType('ListEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTENTITYTYPESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.ListEntityTypes].
+  __doc__ = """The request message for
+  [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
   
   
   Attributes:
@@ -849,9 +852,10 @@ _sym_db.RegisterMessage(ListEntityTypesRequest)
 
 ListEntityTypesResponse = _reflection.GeneratedProtocolMessageType('ListEntityTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTENTITYTYPESRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The response message for [EntityTypes.ListEntityTypes].
+  __doc__ = """The response message for
+  [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
   
   
   Attributes:
@@ -869,9 +873,10 @@ _sym_db.RegisterMessage(ListEntityTypesResponse)
 
 GetEntityTypeRequest = _reflection.GeneratedProtocolMessageType('GetEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETENTITYTYPEREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.GetEntityType].
+  __doc__ = """The request message for
+  [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType].
   
   
   Attributes:
@@ -892,9 +897,10 @@ _sym_db.RegisterMessage(GetEntityTypeRequest)
 
 CreateEntityTypeRequest = _reflection.GeneratedProtocolMessageType('CreateEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEENTITYTYPEREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.CreateEntityType].
+  __doc__ = """The request message for
+  [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.CreateEntityType].
   
   
   Attributes:
@@ -917,9 +923,10 @@ _sym_db.RegisterMessage(CreateEntityTypeRequest)
 
 UpdateEntityTypeRequest = _reflection.GeneratedProtocolMessageType('UpdateEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATEENTITYTYPEREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.UpdateEntityType].
+  __doc__ = """The request message for
+  [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType].
   
   
   Attributes:
@@ -942,9 +949,10 @@ _sym_db.RegisterMessage(UpdateEntityTypeRequest)
 
 DeleteEntityTypeRequest = _reflection.GeneratedProtocolMessageType('DeleteEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEENTITYTYPEREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.DeleteEntityType].
+  __doc__ = """The request message for
+  [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.DeleteEntityType].
   
   
   Attributes:
@@ -958,9 +966,10 @@ _sym_db.RegisterMessage(DeleteEntityTypeRequest)
 
 BatchUpdateEntityTypesRequest = _reflection.GeneratedProtocolMessageType('BatchUpdateEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITYTYPESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.BatchUpdateEntityTypes].
+  __doc__ = """The request message for
+  [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
   
   
   Attributes:
@@ -973,10 +982,10 @@ BatchUpdateEntityTypesRequest = _reflection.GeneratedProtocolMessageType('BatchU
           update an existing entity type. \* If ``name`` is not
           specified, we create a new entity type.
       entity_type_batch_uri:
-          The URI to a file containing entity types to update or create.
-          The file format can be either a serialized proto (of
-          EntityBatch type) or a JSON object. Note: The URI must start
-          with "gs://".
+          The URI to a Google Cloud Storage file containing entity types
+          to update or create. The file format can either be a
+          serialized proto (of EntityBatch type) or a JSON object. Note:
+          The URI must start with "gs://".
       entity_type_batch_inline:
           The collection of entity type to update or create.
       language_code:
@@ -995,9 +1004,10 @@ _sym_db.RegisterMessage(BatchUpdateEntityTypesRequest)
 
 BatchUpdateEntityTypesResponse = _reflection.GeneratedProtocolMessageType('BatchUpdateEntityTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITYTYPESRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The response message for [EntityTypes.BatchUpdateEntityTypes].
+  __doc__ = """The response message for
+  [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
   
   
   Attributes:
@@ -1010,9 +1020,10 @@ _sym_db.RegisterMessage(BatchUpdateEntityTypesResponse)
 
 BatchDeleteEntityTypesRequest = _reflection.GeneratedProtocolMessageType('BatchDeleteEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHDELETEENTITYTYPESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.BatchDeleteEntityTypes].
+  __doc__ = """The request message for
+  [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes].
   
   
   Attributes:
@@ -1029,9 +1040,10 @@ _sym_db.RegisterMessage(BatchDeleteEntityTypesRequest)
 
 BatchCreateEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchCreateEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHCREATEENTITIESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.BatchCreateEntities].
+  __doc__ = """The request message for
+  [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
   
   
   Attributes:
@@ -1055,9 +1067,10 @@ _sym_db.RegisterMessage(BatchCreateEntitiesRequest)
 
 BatchUpdateEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchUpdateEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITIESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The response message for [EntityTypes.BatchCreateEntities].
+  __doc__ = """The response message for
+  [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
   
   
   Attributes:
@@ -1084,9 +1097,10 @@ _sym_db.RegisterMessage(BatchUpdateEntitiesRequest)
 
 BatchDeleteEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchDeleteEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHDELETEENTITIESREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
-  __doc__ = """The request message for [EntityTypes.BatchDeleteEntities].
+  __doc__ = """The request message for
+  [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities].
   
   
   Attributes:
@@ -1112,7 +1126,7 @@ _sym_db.RegisterMessage(BatchDeleteEntitiesRequest)
 
 EntityTypeBatch = _reflection.GeneratedProtocolMessageType('EntityTypeBatch', (_message.Message,), dict(
   DESCRIPTOR = _ENTITYTYPEBATCH,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """This message is a wrapper around a collection of entity types.
   
@@ -1128,483 +1142,109 @@ _sym_db.RegisterMessage(EntityTypeBatch)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n#com.google.cloud.dialogflow.v2beta1B\017EntityTypeProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_ENTITYTYPES = _descriptor.ServiceDescriptor(
+  name='EntityTypes',
+  full_name='google.cloud.dialogflow.v2beta1.EntityTypes',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=2293,
+  serialized_end=4208,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListEntityTypes',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes',
+    index=0,
+    containing_service=None,
+    input_type=_LISTENTITYTYPESREQUEST,
+    output_type=_LISTENTITYTYPESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0020\022./v2beta1/{parent=projects/*/agent}/entityTypes')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetEntityType',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType',
+    index=1,
+    containing_service=None,
+    input_type=_GETENTITYTYPEREQUEST,
+    output_type=_ENTITYTYPE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0020\022./v2beta1/{name=projects/*/agent/entityTypes/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateEntityType',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.CreateEntityType',
+    index=2,
+    containing_service=None,
+    input_type=_CREATEENTITYTYPEREQUEST,
+    output_type=_ENTITYTYPE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002=\"./v2beta1/{parent=projects/*/agent}/entityTypes:\013entity_type')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateEntityType',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATEENTITYTYPEREQUEST,
+    output_type=_ENTITYTYPE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002I2:/v2beta1/{entity_type.name=projects/*/agent/entityTypes/*}:\013entity_type')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteEntityType',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.DeleteEntityType',
+    index=4,
+    containing_service=None,
+    input_type=_DELETEENTITYTYPEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0020*./v2beta1/{name=projects/*/agent/entityTypes/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BatchUpdateEntityTypes',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes',
+    index=5,
+    containing_service=None,
+    input_type=_BATCHUPDATEENTITYTYPESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002?\":/v2beta1/{parent=projects/*/agent}/entityTypes:batchUpdate:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BatchDeleteEntityTypes',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes',
+    index=6,
+    containing_service=None,
+    input_type=_BATCHDELETEENTITYTYPESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002?\":/v2beta1/{parent=projects/*/agent}/entityTypes:batchDelete:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BatchCreateEntities',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities',
+    index=7,
+    containing_service=None,
+    input_type=_BATCHCREATEENTITIESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002J\"E/v2beta1/{parent=projects/*/agent/entityTypes/*}/entities:batchCreate:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BatchUpdateEntities',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntities',
+    index=8,
+    containing_service=None,
+    input_type=_BATCHUPDATEENTITIESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002J\"E/v2beta1/{parent=projects/*/agent/entityTypes/*}/entities:batchUpdate:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BatchDeleteEntities',
+    full_name='google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities',
+    index=9,
+    containing_service=None,
+    input_type=_BATCHDELETEENTITIESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002J\"E/v2beta1/{parent=projects/*/agent/entityTypes/*}/entities:batchDelete:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_ENTITYTYPES)
 
-  class EntityTypesStub(object):
-    """Manages agent entity types.
+DESCRIPTOR.services_by_name['EntityTypes'] = _ENTITYTYPES
 
-
-    Refer to [documentation](https://dialogflow.com/docs/entities) for more
-    # details about entity types.
-
-    Standard methods.
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListEntityTypes = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/ListEntityTypes',
-          request_serializer=ListEntityTypesRequest.SerializeToString,
-          response_deserializer=ListEntityTypesResponse.FromString,
-          )
-      self.GetEntityType = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/GetEntityType',
-          request_serializer=GetEntityTypeRequest.SerializeToString,
-          response_deserializer=EntityType.FromString,
-          )
-      self.CreateEntityType = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/CreateEntityType',
-          request_serializer=CreateEntityTypeRequest.SerializeToString,
-          response_deserializer=EntityType.FromString,
-          )
-      self.UpdateEntityType = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/UpdateEntityType',
-          request_serializer=UpdateEntityTypeRequest.SerializeToString,
-          response_deserializer=EntityType.FromString,
-          )
-      self.DeleteEntityType = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/DeleteEntityType',
-          request_serializer=DeleteEntityTypeRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.BatchUpdateEntityTypes = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/BatchUpdateEntityTypes',
-          request_serializer=BatchUpdateEntityTypesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.BatchDeleteEntityTypes = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/BatchDeleteEntityTypes',
-          request_serializer=BatchDeleteEntityTypesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.BatchCreateEntities = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/BatchCreateEntities',
-          request_serializer=BatchCreateEntitiesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.BatchUpdateEntities = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/BatchUpdateEntities',
-          request_serializer=BatchUpdateEntitiesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-      self.BatchDeleteEntities = channel.unary_unary(
-          '/google.cloud.dialogflow.v2beta1.EntityTypes/BatchDeleteEntities',
-          request_serializer=BatchDeleteEntitiesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-
-
-  class EntityTypesServicer(object):
-    """Manages agent entity types.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/entities) for more
-    # details about entity types.
-
-    Standard methods.
-    """
-
-    def ListEntityTypes(self, request, context):
-      """Returns the list of all entity types in the specified agent.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetEntityType(self, request, context):
-      """Retrieves the specified entity type.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateEntityType(self, request, context):
-      """Creates an entity type in the specified agent.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateEntityType(self, request, context):
-      """Updates the specified entity type.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteEntityType(self, request, context):
-      """Deletes the specified entity type.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BatchUpdateEntityTypes(self, request, context):
-      """Updates/Creates multiple entity types in the specified agent.
-
-      Operation<response: BatchUpdateEntityTypesResponse,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BatchDeleteEntityTypes(self, request, context):
-      """Deletes entity types in the specified agent.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BatchCreateEntities(self, request, context):
-      """Creates multiple new entities in the specified entity type (extends the
-      existing collection of entries).
-
-      Operation<response: google.protobuf.Empty>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BatchUpdateEntities(self, request, context):
-      """Updates entities in the specified entity type (replaces the existing
-      collection of entries).
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def BatchDeleteEntities(self, request, context):
-      """Deletes entities in the specified entity type.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_EntityTypesServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListEntityTypes': grpc.unary_unary_rpc_method_handler(
-            servicer.ListEntityTypes,
-            request_deserializer=ListEntityTypesRequest.FromString,
-            response_serializer=ListEntityTypesResponse.SerializeToString,
-        ),
-        'GetEntityType': grpc.unary_unary_rpc_method_handler(
-            servicer.GetEntityType,
-            request_deserializer=GetEntityTypeRequest.FromString,
-            response_serializer=EntityType.SerializeToString,
-        ),
-        'CreateEntityType': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateEntityType,
-            request_deserializer=CreateEntityTypeRequest.FromString,
-            response_serializer=EntityType.SerializeToString,
-        ),
-        'UpdateEntityType': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateEntityType,
-            request_deserializer=UpdateEntityTypeRequest.FromString,
-            response_serializer=EntityType.SerializeToString,
-        ),
-        'DeleteEntityType': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteEntityType,
-            request_deserializer=DeleteEntityTypeRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'BatchUpdateEntityTypes': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchUpdateEntityTypes,
-            request_deserializer=BatchUpdateEntityTypesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'BatchDeleteEntityTypes': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchDeleteEntityTypes,
-            request_deserializer=BatchDeleteEntityTypesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'BatchCreateEntities': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchCreateEntities,
-            request_deserializer=BatchCreateEntitiesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'BatchUpdateEntities': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchUpdateEntities,
-            request_deserializer=BatchUpdateEntitiesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        'BatchDeleteEntities': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchDeleteEntities,
-            request_deserializer=BatchDeleteEntitiesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.dialogflow.v2beta1.EntityTypes', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaEntityTypesServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages agent entity types.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/entities) for more
-    # details about entity types.
-
-    Standard methods.
-    """
-    def ListEntityTypes(self, request, context):
-      """Returns the list of all entity types in the specified agent.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetEntityType(self, request, context):
-      """Retrieves the specified entity type.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateEntityType(self, request, context):
-      """Creates an entity type in the specified agent.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateEntityType(self, request, context):
-      """Updates the specified entity type.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteEntityType(self, request, context):
-      """Deletes the specified entity type.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BatchUpdateEntityTypes(self, request, context):
-      """Updates/Creates multiple entity types in the specified agent.
-
-      Operation<response: BatchUpdateEntityTypesResponse,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BatchDeleteEntityTypes(self, request, context):
-      """Deletes entity types in the specified agent.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BatchCreateEntities(self, request, context):
-      """Creates multiple new entities in the specified entity type (extends the
-      existing collection of entries).
-
-      Operation<response: google.protobuf.Empty>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BatchUpdateEntities(self, request, context):
-      """Updates entities in the specified entity type (replaces the existing
-      collection of entries).
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def BatchDeleteEntities(self, request, context):
-      """Deletes entities in the specified entity type.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaEntityTypesStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages agent entity types.
-
-
-    Refer to [documentation](https://dialogflow.com/docs/entities) for more
-    # details about entity types.
-
-    Standard methods.
-    """
-    def ListEntityTypes(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns the list of all entity types in the specified agent.
-      """
-      raise NotImplementedError()
-    ListEntityTypes.future = None
-    def GetEntityType(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves the specified entity type.
-      """
-      raise NotImplementedError()
-    GetEntityType.future = None
-    def CreateEntityType(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates an entity type in the specified agent.
-      """
-      raise NotImplementedError()
-    CreateEntityType.future = None
-    def UpdateEntityType(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the specified entity type.
-      """
-      raise NotImplementedError()
-    UpdateEntityType.future = None
-    def DeleteEntityType(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes the specified entity type.
-      """
-      raise NotImplementedError()
-    DeleteEntityType.future = None
-    def BatchUpdateEntityTypes(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates/Creates multiple entity types in the specified agent.
-
-      Operation<response: BatchUpdateEntityTypesResponse,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    BatchUpdateEntityTypes.future = None
-    def BatchDeleteEntityTypes(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes entity types in the specified agent.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    BatchDeleteEntityTypes.future = None
-    def BatchCreateEntities(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates multiple new entities in the specified entity type (extends the
-      existing collection of entries).
-
-      Operation<response: google.protobuf.Empty>
-      """
-      raise NotImplementedError()
-    BatchCreateEntities.future = None
-    def BatchUpdateEntities(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates entities in the specified entity type (replaces the existing
-      collection of entries).
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    BatchUpdateEntities.future = None
-    def BatchDeleteEntities(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes entities in the specified entity type.
-
-      Operation<response: google.protobuf.Empty,
-      metadata: google.protobuf.Struct>
-      """
-      raise NotImplementedError()
-    BatchDeleteEntities.future = None
-
-
-  def beta_create_EntityTypes_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchCreateEntities'): BatchCreateEntitiesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntities'): BatchDeleteEntitiesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntityTypes'): BatchDeleteEntityTypesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntities'): BatchUpdateEntitiesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntityTypes'): BatchUpdateEntityTypesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'CreateEntityType'): CreateEntityTypeRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'DeleteEntityType'): DeleteEntityTypeRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'GetEntityType'): GetEntityTypeRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'ListEntityTypes'): ListEntityTypesRequest.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'UpdateEntityType'): UpdateEntityTypeRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchCreateEntities'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntities'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntityTypes'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntities'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntityTypes'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'CreateEntityType'): EntityType.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'DeleteEntityType'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'GetEntityType'): EntityType.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'ListEntityTypes'): ListEntityTypesResponse.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'UpdateEntityType'): EntityType.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchCreateEntities'): face_utilities.unary_unary_inline(servicer.BatchCreateEntities),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntities'): face_utilities.unary_unary_inline(servicer.BatchDeleteEntities),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntityTypes'): face_utilities.unary_unary_inline(servicer.BatchDeleteEntityTypes),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntities'): face_utilities.unary_unary_inline(servicer.BatchUpdateEntities),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntityTypes'): face_utilities.unary_unary_inline(servicer.BatchUpdateEntityTypes),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'CreateEntityType'): face_utilities.unary_unary_inline(servicer.CreateEntityType),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'DeleteEntityType'): face_utilities.unary_unary_inline(servicer.DeleteEntityType),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'GetEntityType'): face_utilities.unary_unary_inline(servicer.GetEntityType),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'ListEntityTypes'): face_utilities.unary_unary_inline(servicer.ListEntityTypes),
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'UpdateEntityType'): face_utilities.unary_unary_inline(servicer.UpdateEntityType),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_EntityTypes_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchCreateEntities'): BatchCreateEntitiesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntities'): BatchDeleteEntitiesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntityTypes'): BatchDeleteEntityTypesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntities'): BatchUpdateEntitiesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntityTypes'): BatchUpdateEntityTypesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'CreateEntityType'): CreateEntityTypeRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'DeleteEntityType'): DeleteEntityTypeRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'GetEntityType'): GetEntityTypeRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'ListEntityTypes'): ListEntityTypesRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'UpdateEntityType'): UpdateEntityTypeRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchCreateEntities'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntities'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchDeleteEntityTypes'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntities'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'BatchUpdateEntityTypes'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'CreateEntityType'): EntityType.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'DeleteEntityType'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'GetEntityType'): EntityType.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'ListEntityTypes'): ListEntityTypesResponse.FromString,
-      ('google.cloud.dialogflow.v2beta1.EntityTypes', 'UpdateEntityType'): EntityType.FromString,
-    }
-    cardinalities = {
-      'BatchCreateEntities': cardinality.Cardinality.UNARY_UNARY,
-      'BatchDeleteEntities': cardinality.Cardinality.UNARY_UNARY,
-      'BatchDeleteEntityTypes': cardinality.Cardinality.UNARY_UNARY,
-      'BatchUpdateEntities': cardinality.Cardinality.UNARY_UNARY,
-      'BatchUpdateEntityTypes': cardinality.Cardinality.UNARY_UNARY,
-      'CreateEntityType': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteEntityType': cardinality.Cardinality.UNARY_UNARY,
-      'GetEntityType': cardinality.Cardinality.UNARY_UNARY,
-      'ListEntityTypes': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateEntityType': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.dialogflow.v2beta1.EntityTypes', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

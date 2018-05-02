@@ -153,7 +153,7 @@ class SessionsClient(object):
         results of future queries.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionsClient()
             >>>
@@ -231,7 +231,7 @@ class SessionsClient(object):
         EXPERIMENTAL: This method interface might change in the future.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.SessionsClient()
             >>>

@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -107,9 +107,10 @@ class TestIntentsClient(object):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
         display_name = 'displayName1615086568'
-        priority = -1165461084
+        priority = 1165461084
         is_fallback = False
         ml_enabled = False
+        ml_disabled = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -120,6 +121,7 @@ class TestIntentsClient(object):
             'priority': priority,
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
+            'ml_disabled': ml_disabled,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -157,9 +159,10 @@ class TestIntentsClient(object):
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
-        priority = -1165461084
+        priority = 1165461084
         is_fallback = False
         ml_enabled = False
+        ml_disabled = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -170,6 +173,7 @@ class TestIntentsClient(object):
             'priority': priority,
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
+            'ml_disabled': ml_disabled,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -210,9 +214,10 @@ class TestIntentsClient(object):
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
-        priority = -1165461084
+        priority = 1165461084
         is_fallback = False
         ml_enabled = False
+        ml_disabled = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -223,6 +228,7 @@ class TestIntentsClient(object):
             'priority': priority,
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
+            'ml_disabled': ml_disabled,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -343,7 +349,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)
@@ -368,7 +374,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)

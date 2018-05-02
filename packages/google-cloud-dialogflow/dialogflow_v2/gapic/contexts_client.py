@@ -183,7 +183,7 @@ class ContextsClient(object):
         Returns the list of all contexts in the specified session.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
@@ -261,7 +261,7 @@ class ContextsClient(object):
         Retrieves the specified context.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
@@ -308,7 +308,7 @@ class ContextsClient(object):
         Creates a context.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
@@ -362,7 +362,7 @@ class ContextsClient(object):
         Updates the specified context.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
@@ -415,7 +415,7 @@ class ContextsClient(object):
         Deletes the specified context.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
@@ -458,7 +458,7 @@ class ContextsClient(object):
         Deletes all active contexts in the specified session.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>

@@ -671,19 +671,7 @@ ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentRespo
           populated only if ``agent_uri`` is specified in
           ``ExportAgentRequest``.
       agent_content:
-          The exported agent.  Example for how to export an agent to a
-          zip file via a command line::
-
-            curl 'https://dialogflow.googleapis.com/v2/projects//agent:export'
-            -X POST
-            -H 'Authorization: Bearer '$(gcloud auth print-access-token)
-            -H 'Accept: application/json' 
-            -H 'Content-Type: application/json'
-            --compressed
-            --data-binary '{}'
-            \| grep agentContent 
-            \| sed -e 's/.*"agentContent":"([^"]*)".\*/:raw-latex:`\1`/'
-            \| base64 --decode >
+          The exported agent.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.ExportAgentResponse)
   ))

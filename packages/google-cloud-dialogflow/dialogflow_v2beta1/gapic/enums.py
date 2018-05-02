@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -117,6 +117,27 @@ class EntityType(object):
         AUTO_EXPANSION_MODE_DEFAULT = 1
 
 
+class SessionEntityType(object):
+    class EntityOverrideMode(object):
+        """
+        The types of modifications for a session entity type.
+
+        Attributes:
+          ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
+          ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
+          in the corresponding developer entity type.
+          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
+          the corresponding developer entity type.
+          Calls to ``ListSessionEntityTypes``, ``GetSessionEntityType``,
+          ``CreateSessionEntityType`` and ``UpdateSessionEntityType`` return the full
+          collection of entities from the developer entity type in the agent's
+          default language and the session entity type.
+        """
+        ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
+        ENTITY_OVERRIDE_MODE_OVERRIDE = 1
+        ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
+
+
 class Intent(object):
     class WebhookState(object):
         """
@@ -163,6 +184,70 @@ class Intent(object):
               LINE (int): Line.
               VIBER (int): Viber.
               ACTIONS_ON_GOOGLE (int): Actions on Google.
+              When using Actions on Google, you can choose one of the specific
+              Intent.Message types that mention support for Actions on Google,
+              or you can use the advanced Intent.Message.payload field.
+              The payload field provides access to AoG features not available in the
+              specific message types.
+              If using the Intent.Message.payload field, it should have a structure
+              similar to the JSON message shown here. For more information, see
+              [Actions on Google Webhook
+              Format](https://developers.google.com/actions/dialogflow/webhook)
+              <pre>{
+                \"expectUserResponse\": true,
+                \"isSsml\": false,
+                \"noInputPrompts\": [],
+                \"richResponse\": {
+              ::
+
+                  \"items\": [
+                    {
+                      \"simpleResponse\": {
+                        \"displayText\": \"hi\",
+                        \"textToSpeech\": \"hello\"
+                      }
+                    }
+                  ],
+                  \"suggestions\": [
+                    {
+                      \"title\": \"Say this\"
+                    },
+                    {
+                      \"title\": \"or this\"
+                    }
+                  ]
+                },
+                \"systemIntent\": {
+              ::
+
+                  \"data\": {
+                    \"@type\": \"type.googleapis.com/google.actions.v2.OptionValueSpec\",
+                    \"listSelect\": {
+                      \"items\": [
+                        {
+                          \"optionInfo\": {
+                            \"key\": \"key1\",
+                            \"synonyms\": [
+                              \"key one\"
+                            ]
+                          },
+                          \"title\": \"must not be empty, but unique\"
+                        },
+                        {
+                          \"optionInfo\": {
+                            \"key\": \"key2\",
+                            \"synonyms\": [
+                              \"key two\"
+                            ]
+                          },
+                          \"title\": \"must not be empty, but unique\"
+                        }
+                      ]
+                    }
+                  },
+                  \"intent\": \"actions.intent.OPTION\"
+                }
+              }</pre>
             """
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
@@ -173,44 +258,6 @@ class Intent(object):
             LINE = 6
             VIBER = 7
             ACTIONS_ON_GOOGLE = 8
-
-
-class Agent(object):
-    class MatchMode(object):
-        """
-        Match mode determines how intents are detected from user queries.
-
-        Attributes:
-          MATCH_MODE_UNSPECIFIED (int): Not specified.
-          MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
-          use of templates syntax and composite entities.
-          MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
-          especially the ones using @sys.any or very large developer entities.
-        """
-        MATCH_MODE_UNSPECIFIED = 0
-        MATCH_MODE_HYBRID = 1
-        MATCH_MODE_ML_ONLY = 2
-
-
-class SessionEntityType(object):
-    class EntityOverrideMode(object):
-        """
-        The types of modifications for a session entity type.
-
-        Attributes:
-          ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
-          ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
-          in the corresponding developer entity type.
-          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
-          the corresponding developer entity type.
-          Calls to ``ListSessionEntityTypes``, ``GetSessionEntityType``,
-          ``CreateSessionEntityType`` and ``UpdateSessionEntityType`` return the full
-          collection of entities from the developer entity type and the session
-          entity type.
-        """
-        ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
-        ENTITY_OVERRIDE_MODE_OVERRIDE = 1
-        ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
 
 
 class StreamingRecognitionResult(object):
@@ -232,3 +279,20 @@ class StreamingRecognitionResult(object):
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
+
+
+class Agent(object):
+    class MatchMode(object):
+        """
+        Match mode determines how intents are detected from user queries.
+
+        Attributes:
+          MATCH_MODE_UNSPECIFIED (int): Not specified.
+          MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
+          use of templates syntax and composite entities.
+          MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
+          especially the ones using @sys.any or very large developer entities.
+        """
+        MATCH_MODE_UNSPECIFIED = 0
+        MATCH_MODE_HYBRID = 1
+        MATCH_MODE_ML_ONLY = 2

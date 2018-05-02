@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -196,11 +196,7 @@ class TestAgentsClient(object):
     def test_export_agent(self):
         # Setup Expected Response
         agent_uri = 'agentUri-1700713166'
-        agent_content = b'63'
-        expected_response = {
-            'agent_uri': agent_uri,
-            'agent_content': agent_content
-        }
+        expected_response = {'agent_uri': agent_uri}
         expected_response = agent_pb2.ExportAgentResponse(**expected_response)
         operation = operations_pb2.Operation(
             name='operations/test_export_agent', done=True)

@@ -177,7 +177,7 @@ class AgentsClient(object):
         Retrieves the specified agent.
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>
@@ -230,7 +230,7 @@ class AgentsClient(object):
         Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>
@@ -312,7 +312,7 @@ class AgentsClient(object):
         metadata: [google.protobuf.Struct][google.protobuf.Struct]>
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>
@@ -378,7 +378,7 @@ class AgentsClient(object):
         metadata: [google.protobuf.Struct][google.protobuf.Struct]>
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>
@@ -455,7 +455,7 @@ class AgentsClient(object):
         metadata: [google.protobuf.Struct][google.protobuf.Struct]>
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>
@@ -554,7 +554,7 @@ class AgentsClient(object):
         metadata: [google.protobuf.Struct][google.protobuf.Struct]>
 
         Example:
-            >>> from google.cloud import dialogflow_v2
+            >>> import dialogflow_v2
             >>>
             >>> client = dialogflow_v2.AgentsClient()
             >>>

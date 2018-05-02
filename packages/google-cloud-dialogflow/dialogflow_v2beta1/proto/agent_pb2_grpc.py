@@ -6,13 +6,31 @@ from google.longrunning import operations_pb2 as google_dot_longrunning_dot_oper
 
 
 class AgentsStub(object):
-  """Manages conversational agents.
+  """Agents are best described as Natural Language Understanding (NLU) modules
+  that transform user requests into actionable data. You can include agents
+  in your app, product, or service to determine user intent and respond to the
+  user in a natural way.
 
+  After you create an agent, you can add [Intents][google.cloud.dialogflow.v2beta1.Intents], [Contexts][google.cloud.dialogflow.v2beta1.Contexts],
+  [Entity Types][google.cloud.dialogflow.v2beta1.EntityTypes], [Webhooks][google.cloud.dialogflow.v2beta1.WebhookRequest], and so on to
+  manage the flow of a conversation and match user input to predefined intents
+  and actions.
 
-  Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-  # about agents.
+  You can create an agent using both Dialogflow Standard Edition and
+  Dialogflow Enterprise Edition. For details, see
+  [Dialogflow Editions](/dialogflow-enterprise/docs/editions).
 
-  Standard methods.
+  You can save your agent for backup or versioning by exporting the agent by
+  using the [ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent] method. You can import a saved
+  agent by using the [ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent] method.
+
+  Dialogflow provides several
+  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
+  conversation scenarios such as determining a date and time, converting
+  currency, and so on.
+
+  For more information about agents, see the
+  [Dialogflow documentation](https://dialogflow.com/docs/agents).
   """
 
   def __init__(self, channel):
@@ -54,13 +72,31 @@ class AgentsStub(object):
 
 
 class AgentsServicer(object):
-  """Manages conversational agents.
+  """Agents are best described as Natural Language Understanding (NLU) modules
+  that transform user requests into actionable data. You can include agents
+  in your app, product, or service to determine user intent and respond to the
+  user in a natural way.
 
+  After you create an agent, you can add [Intents][google.cloud.dialogflow.v2beta1.Intents], [Contexts][google.cloud.dialogflow.v2beta1.Contexts],
+  [Entity Types][google.cloud.dialogflow.v2beta1.EntityTypes], [Webhooks][google.cloud.dialogflow.v2beta1.WebhookRequest], and so on to
+  manage the flow of a conversation and match user input to predefined intents
+  and actions.
 
-  Refer to [documentation](https://dialogflow.com/docs/agents) for more details
-  # about agents.
+  You can create an agent using both Dialogflow Standard Edition and
+  Dialogflow Enterprise Edition. For details, see
+  [Dialogflow Editions](/dialogflow-enterprise/docs/editions).
 
-  Standard methods.
+  You can save your agent for backup or versioning by exporting the agent by
+  using the [ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent] method. You can import a saved
+  agent by using the [ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent] method.
+
+  Dialogflow provides several
+  [prebuilt agents](https://dialogflow.com/docs/prebuilt-agents) for common
+  conversation scenarios such as determining a date and time, converting
+  currency, and so on.
+
+  For more information about agents, see the
+  [Dialogflow documentation](https://dialogflow.com/docs/agents).
   """
 
   def GetAgent(self, request, context):
@@ -87,8 +123,8 @@ class AgentsServicer(object):
     """Trains the specified agent.
 
 
-    Operation<response: google.protobuf.Empty,
-    metadata: google.protobuf.Struct>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
+    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -98,8 +134,8 @@ class AgentsServicer(object):
     """Exports the specified agent to a ZIP file.
 
 
-    Operation<response: ExportAgentResponse,
-    metadata: google.protobuf.Struct>
+    Operation <response: [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse],
+    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -113,8 +149,8 @@ class AgentsServicer(object):
     versions from ImportAgentRequest.
 
 
-    Operation<response: google.protobuf.Empty,
-    metadata: google.protobuf.Struct>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
+    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -127,8 +163,8 @@ class AgentsServicer(object):
     entity types in the older version are deleted.
 
 
-    Operation<response: google.protobuf.Empty,
-    metadata: google.protobuf.Struct>
+    Operation <response: [google.protobuf.Empty][google.protobuf.Empty],
+    metadata: [google.protobuf.Struct][google.protobuf.Struct]>
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

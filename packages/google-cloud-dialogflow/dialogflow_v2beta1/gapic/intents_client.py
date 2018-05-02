@@ -1,25 +1,17 @@
-# Copyright 2017, Google LLC
+# -*- coding: utf8 -*-
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/cloud/dialogflow/v2beta1/intent.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.cloud.dialogflow.v2beta1 Intents API."""
 
 import functools
@@ -41,22 +33,48 @@ from dialogflow_v2beta1.proto import agent_pb2
 from dialogflow_v2beta1.proto import context_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2
 from dialogflow_v2beta1.proto import intent_pb2
+from dialogflow_v2beta1.proto import intent_pb2_grpc
+
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution('dialogflow').version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution('dialogflow',
+                                                        ).version
 
 
 class IntentsClient(object):
     """
-    Manages agent intents.
+    An intent represents a mapping between input from a user and an action to
+    be taken by your application. When you pass user input to the
+    ``DetectIntent`` (or
+    ``StreamingDetectIntent``) method, the
+    Dialogflow API analyzes the input and searches
+    for a matching intent. If no match is found, the Dialogflow API returns a
+    fallback intent (``is_fallback`` = true).
 
+    You can provide additional information for the Dialogflow API to use to
+    match user input to an intent by adding the following to your intent.
 
-    Refer to `intents documentation <https://dialogflow.com/docs/intents>`_ for
-    more details about agent intents.
+    *   **Contexts** - provide additional context for intent analysis. For
+        example, if an intent is related to an object in your application that
+        plays music, you can provide a context to determine when to match the
+        intent if the user input is “turn it off”.  You can include a context
+        that matches the intent when there is previous user input of
+        \"play music\", and not when there is previous user input of
+        \"turn on the light\".
+    *   **Events** - allow for matching an intent by using an event name
+        instead of user input. Your application can provide an event name and
+        related parameters to the Dialogflow API to match an intent. For
+        example, when your application starts, you can send a welcome event
+        with a user name parameter to the Dialogflow API to match an intent with
+        a personalized welcome message for the user.
+    *   **Training phrases** - provide examples of user input to train the
+        Dialogflow API agent to better match intents.
 
-    Standard methods.
+    For more information about intents, see the
+    `Dialogflow documentation <https://dialogflow.com/docs/intents>`__.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
@@ -67,31 +85,42 @@ class IntentsClient(object):
     _DEFAULT_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.cloud.dialogflow.v2beta1.Intents')
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.cloud.dialogflow.v2beta1.Intents'
 
     @classmethod
     def project_agent_path(cls, project):
-        """Returns a fully-qualified project_agent resource name string."""
+        """Return a fully-qualified project_agent string."""
         return google.api_core.path_template.expand(
             'projects/{project}/agent',
-            project=project, )
+            project=project,
+        )
 
     @classmethod
     def intent_path(cls, project, intent):
-        """Returns a fully-qualified intent resource name string."""
+        """Return a fully-qualified intent string."""
         return google.api_core.path_template.expand(
             'projects/{project}/agent/intents/{intent}',
             project=project,
-            intent=intent, )
+            intent=intent,
+        )
 
     @classmethod
     def agent_path(cls, project, agent):
-        """Returns a fully-qualified agent resource name string."""
+        """Return a fully-qualified agent string."""
         return google.api_core.path_template.expand(
             'projects/{project}/agents/{agent}',
             project=project,
-            agent=agent, )
+            agent=agent,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}',
+            project=project,
+        )
 
     def __init__(self,
                  channel=None,
@@ -102,35 +131,38 @@ class IntentsClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. If specified, then the ``credentials``
-                argument is ignored.
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used. Generally, you only need
-                to set this if you're developing your own client library.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__))
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
+        # Create the channel.
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES)
+                scopes=self._DEFAULT_SCOPES,
+            )
 
-        self.intents_stub = (intent_pb2.IntentsStub(channel))
+        # Create the gRPC stubs.
+        self.intents_stub = (intent_pb2_grpc.IntentsStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.
@@ -140,48 +172,61 @@ class IntentsClient(object):
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
         method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            interface_config)
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
         self._list_intents = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.ListIntents,
             default_retry=method_configs['ListIntents'].retry,
             default_timeout=method_configs['ListIntents'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_intent = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.GetIntent,
             default_retry=method_configs['GetIntent'].retry,
             default_timeout=method_configs['GetIntent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._create_intent = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.CreateIntent,
             default_retry=method_configs['CreateIntent'].retry,
             default_timeout=method_configs['CreateIntent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._update_intent = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.UpdateIntent,
             default_retry=method_configs['UpdateIntent'].retry,
             default_timeout=method_configs['UpdateIntent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._delete_intent = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.DeleteIntent,
             default_retry=method_configs['DeleteIntent'].retry,
             default_timeout=method_configs['DeleteIntent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._batch_update_intents = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.BatchUpdateIntents,
             default_retry=method_configs['BatchUpdateIntents'].retry,
             default_timeout=method_configs['BatchUpdateIntents'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._batch_delete_intents = google.api_core.gapic_v1.method.wrap_method(
             self.intents_stub.BatchDeleteIntents,
             default_retry=method_configs['BatchDeleteIntents'].retry,
             default_timeout=method_configs['BatchDeleteIntents'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
 
     # Service calls
     def list_intents(self,
@@ -190,7 +235,8 @@ class IntentsClient(object):
                      intent_view=None,
                      page_size=None,
                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT):
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Returns the list of all intents in the specified agent.
 
@@ -233,6 +279,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
@@ -247,19 +295,27 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = intent_pb2.ListIntentsRequest(
             parent=parent,
             language_code=language_code,
             intent_view=intent_view,
-            page_size=page_size)
+            page_size=page_size,
+        )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_intents, retry=retry, timeout=timeout),
+                self._list_intents,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='intents',
             request_token_field='page_token',
-            response_token_field='next_page_token')
+            response_token_field='next_page_token',
+        )
         return iterator
 
     def get_intent(self,
@@ -267,7 +323,8 @@ class IntentsClient(object):
                    language_code=None,
                    intent_view=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
-                   timeout=google.api_core.gapic_v1.method.DEFAULT):
+                   timeout=google.api_core.gapic_v1.method.DEFAULT,
+                   metadata=None):
         """
         Retrieves the specified intent.
 
@@ -295,6 +352,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~dialogflow_v2beta1.types.Intent` instance.
@@ -306,9 +365,16 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = intent_pb2.GetIntentRequest(
-            name=name, language_code=language_code, intent_view=intent_view)
-        return self._get_intent(request, retry=retry, timeout=timeout)
+            name=name,
+            language_code=language_code,
+            intent_view=intent_view,
+        )
+        return self._get_intent(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_intent(self,
                       parent,
@@ -316,7 +382,8 @@ class IntentsClient(object):
                       language_code=None,
                       intent_view=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Creates an intent in the specified agent.
 
@@ -326,6 +393,8 @@ class IntentsClient(object):
             >>> client = dialogflow_v2beta1.IntentsClient()
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``intent``:
             >>> intent = {}
             >>>
             >>> response = client.create_intent(parent, intent)
@@ -348,6 +417,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~dialogflow_v2beta1.types.Intent` instance.
@@ -359,12 +430,17 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = intent_pb2.CreateIntentRequest(
             parent=parent,
             intent=intent,
             language_code=language_code,
-            intent_view=intent_view)
-        return self._create_intent(request, retry=retry, timeout=timeout)
+            intent_view=intent_view,
+        )
+        return self._create_intent(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_intent(self,
                       intent,
@@ -372,7 +448,8 @@ class IntentsClient(object):
                       update_mask=None,
                       intent_view=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Updates the specified intent.
 
@@ -381,7 +458,10 @@ class IntentsClient(object):
             >>>
             >>> client = dialogflow_v2beta1.IntentsClient()
             >>>
+            >>> # TODO: Initialize ``intent``:
             >>> intent = {}
+            >>>
+            >>> # TODO: Initialize ``language_code``:
             >>> language_code = ''
             >>>
             >>> response = client.update_intent(intent, language_code)
@@ -406,6 +486,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~dialogflow_v2beta1.types.Intent` instance.
@@ -417,17 +499,23 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = intent_pb2.UpdateIntentRequest(
             intent=intent,
             language_code=language_code,
             update_mask=update_mask,
-            intent_view=intent_view)
-        return self._update_intent(request, retry=retry, timeout=timeout)
+            intent_view=intent_view,
+        )
+        return self._update_intent(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_intent(self,
                       name,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Deletes the specified intent.
 
@@ -449,6 +537,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -457,8 +547,12 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        request = intent_pb2.DeleteIntentRequest(name=name)
-        self._delete_intent(request, retry=retry, timeout=timeout)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = intent_pb2.DeleteIntentRequest(name=name, )
+        self._delete_intent(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def batch_update_intents(self,
                              parent,
@@ -468,11 +562,12 @@ class IntentsClient(object):
                              update_mask=None,
                              intent_view=None,
                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT):
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Updates/Creates multiple intents in the specified agent.
 
-        Operation<response: BatchUpdateIntentsResponse>
+        Operation <response: ``BatchUpdateIntentsResponse``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -480,6 +575,8 @@ class IntentsClient(object):
             >>> client = dialogflow_v2beta1.IntentsClient()
             >>>
             >>> parent = client.agent_path('[PROJECT]', '[AGENT]')
+            >>>
+            >>> # TODO: Initialize ``language_code``:
             >>> language_code = ''
             >>>
             >>> response = client.batch_update_intents(parent, language_code)
@@ -501,9 +598,9 @@ class IntentsClient(object):
                 used. [More than a dozen
                 languages](https://dialogflow.com/docs/reference/language) are supported.
                 Note: languages must be enabled in the agent, before they can be used.
-            intent_batch_uri (str): The URI to a file containing intents to update or create. The file
-                format can be either a serialized proto (of IntentBatch type) or JSON
-                object. Note: The URI must start with \"gs://\".
+            intent_batch_uri (str): The URI to a Google Cloud Storage file containing intents to update or
+                create. The file format can either be a serialized proto (of IntentBatch
+                type) or JSON object. Note: The URI must start with \"gs://\".
             intent_batch_inline (Union[dict, ~dialogflow_v2beta1.types.IntentBatch]): The collection of intents to update or create.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~dialogflow_v2beta1.types.IntentBatch`
@@ -517,6 +614,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~dialogflow_v2beta1.types._OperationFuture` instance.
@@ -528,11 +627,15 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
             intent_batch_uri=intent_batch_uri,
-            intent_batch_inline=intent_batch_inline, )
+            intent_batch_inline=intent_batch_inline,
+        )
 
         request = intent_pb2.BatchUpdateIntentsRequest(
             parent=parent,
@@ -540,24 +643,27 @@ class IntentsClient(object):
             intent_batch_uri=intent_batch_uri,
             intent_batch_inline=intent_batch_inline,
             update_mask=update_mask,
-            intent_view=intent_view)
+            intent_view=intent_view,
+        )
         operation = self._batch_update_intents(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
             intent_pb2.BatchUpdateIntentsResponse,
-            metadata_type=struct_pb2.Struct)
+            metadata_type=struct_pb2.Struct,
+        )
 
     def batch_delete_intents(self,
                              parent,
                              intents,
                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT):
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Deletes intents in the specified agent.
 
-        Operation<response: google.protobuf.Empty>
+        Operation <response: ``google.protobuf.Empty``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -565,6 +671,8 @@ class IntentsClient(object):
             >>> client = dialogflow_v2beta1.IntentsClient()
             >>>
             >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``intents``:
             >>> intents = []
             >>>
             >>> response = client.batch_delete_intents(parent, intents)
@@ -591,6 +699,8 @@ class IntentsClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~dialogflow_v2beta1.types._OperationFuture` instance.
@@ -602,12 +712,18 @@ class IntentsClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = intent_pb2.BatchDeleteIntentsRequest(
-            parent=parent, intents=intents)
+            parent=parent,
+            intents=intents,
+        )
         operation = self._batch_delete_intents(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
             empty_pb2.Empty,
-            metadata_type=struct_pb2.Struct)
+            metadata_type=struct_pb2.Struct,
+        )
