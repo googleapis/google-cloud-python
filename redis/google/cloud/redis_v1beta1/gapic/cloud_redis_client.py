@@ -28,6 +28,7 @@ import google.api_core.path_template
 from google.cloud.redis_v1beta1.gapic import cloud_redis_client_config
 from google.cloud.redis_v1beta1.gapic import enums
 from google.cloud.redis_v1beta1.proto import cloud_redis_pb2
+from google.cloud.redis_v1beta1.proto import cloud_redis_pb2_grpc
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import empty_pb2
@@ -126,7 +127,7 @@ class CloudRedisClient(object):
             )
 
         # Create the gRPC stubs.
-        self.cloud_redis_stub = (cloud_redis_pb2.CloudRedisStub(channel))
+        self.cloud_redis_stub = (cloud_redis_pb2_grpc.CloudRedisStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.
