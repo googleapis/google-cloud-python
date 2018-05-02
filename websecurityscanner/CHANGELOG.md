@@ -7,5 +7,4 @@
 ## 0.1.0
 
 ### New Features
-- Generate v1alpha websecurityscanner endpoint
-
+- Add v1alpha1 websecurityscanner endpoint
