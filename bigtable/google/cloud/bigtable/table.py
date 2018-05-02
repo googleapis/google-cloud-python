@@ -21,12 +21,8 @@ from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable._generated import (
+from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
-    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from google.cloud.bigtable._generated import (
-    table_pb2 as table_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
@@ -110,7 +106,10 @@ class Table(object):
         :rtype: str
         :returns: The table name.
         """
-        return self._instance.name + '/tables/' + self.table_id
+        project = self._instance._client.project
+        instance_id = self._instance.instance_id
+        return self._instance._client._table_admin_client.table_path(
+            project=project, instance=instance_id, table=self.table_id)
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
@@ -170,7 +169,7 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, initial_split_keys=None, column_families=()):
+    def create(self):
         """Creates this table.
 
         .. note::
@@ -178,49 +177,17 @@ class Table(object):
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
-
-        :type initial_split_keys: list
-        :param initial_split_keys: (Optional) List of row keys that will be
-                                   used to initially split the table into
-                                   several tablets (Tablets are similar to
-                                   HBase regions). Given two split keys,
-                                   ``"s1"`` and ``"s2"``, three tablets will be
-                                   created, spanning the key ranges:
-                                   ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
-
-        :type column_families: list
-        :param column_families: (Optional) List or other iterable of
-                                :class:`.ColumnFamily` instances.
         """
-        if initial_split_keys is not None:
-            split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
-            initial_split_keys = [
-                split_pb(key=key) for key in initial_split_keys]
-
-        table_pb = None
-        if column_families:
-            table_pb = table_v2_pb2.Table()
-            for col_fam in column_families:
-                curr_id = col_fam.column_family_id
-                table_pb.column_families[curr_id].CopyFrom(col_fam.to_pb())
-
-        request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
-            initial_splits=initial_split_keys or [],
-            parent=self._instance.name,
-            table_id=self.table_id,
-            table=table_pb,
-        )
         client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        client._table_stub.CreateTable(request_pb)
+        instance_name = self._instance.name
+        client._table_admin_client.create_table(parent=instance_name,
+                                                table_id=self.table_id,
+                                                table={})
 
     def delete(self):
         """Delete this table."""
-        request_pb = table_admin_messages_v2_pb2.DeleteTableRequest(
-            name=self.name)
         client = self._instance._client
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.DeleteTable(request_pb)
+        client._table_admin_client.delete_table(name=self.name)
 
     def list_column_families(self):
         """List the column families owned by this table.
@@ -233,11 +200,8 @@ class Table(object):
                  family name from the response does not agree with the computed
                  name from the column family ID.
         """
-        request_pb = table_admin_messages_v2_pb2.GetTableRequest(
-            name=self.name)
         client = self._instance._client
-        # We expect a `._generated.table_pb2.Table`
-        table_pb = client._table_stub.GetTable(request_pb)
+        table_pb = client._table_admin_client.get_table(self.name)
 
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
@@ -263,10 +227,12 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request = _create_row_request(self.name, row_key=row_key,
-                                      filter_=filter_)
+        request_pb = _create_row_request(self.name, row_key=row_key,
+                                         filter_=filter_)
         client = self._instance._client
-        rows_data = PartialRowsData(client._data_stub.ReadRows, request)
+        rows_data = PartialRowsData(client._table_data_client._read_rows,
+                                    request_pb)
+
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
             raise ValueError('The row remains partial / is not committed.')
@@ -308,12 +274,12 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
-        request = _create_row_request(
+        request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
-
-        return PartialRowsData(client._data_stub.ReadRows, request)
+        return PartialRowsData(client._table_data_client._read_rows,
+                               request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
                    filter_=None):
@@ -342,13 +308,12 @@ class Table(object):
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
-
-        request = _create_row_request(
+        request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-
-        generator = YieldRowsData(client._data_stub.ReadRows, request)
+        generator = YieldRowsData(client._table_data_client._read_rows,
+                                  request_pb)
         for row in generator.read_rows():
             yield row
 
@@ -416,10 +381,9 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
-            table_name=self.name)
         client = self._instance._client
-        response_iterator = client._data_stub.SampleRowKeys(request_pb)
+        response_iterator = client._table_data_client.sample_row_keys(
+            self.name)
         return response_iterator
 
 
@@ -505,8 +469,8 @@ class _RetryableMutateRowsWorker(object):
 
         mutate_rows_request = _mutate_rows_request(
             self.table_name, retryable_rows)
-        responses = self.client._data_stub.MutateRows(
-            mutate_rows_request)
+        responses = self.client._table_data_client._mutate_rows(
+            mutate_rows_request, retry=None)
 
         num_responses = 0
         num_retryable_responses = 0
