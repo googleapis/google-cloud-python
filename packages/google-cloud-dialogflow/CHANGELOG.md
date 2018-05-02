@@ -4,6 +4,10 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## 0.3.0
+- Regenerate v2 endpoint
+- Update documentation comments
+
 ## 0.2.0
 
 ### New Features
