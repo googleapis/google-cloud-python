@@ -34,6 +34,7 @@ import dialogflow
 # [END import_libraries]
 
 
+# [START dialogflow_list_intents]
 def list_intents(project_id):
     intents_client = dialogflow.IntentsClient()
 
@@ -58,6 +59,7 @@ def list_intents(project_id):
         print('Output contexts:')
         for output_context in intent.output_contexts:
             print('\tName: {}'.format(output_context.name))
+# [END dialogflow_list_intents]
 
 
 # [START dialogflow_create_intent]
