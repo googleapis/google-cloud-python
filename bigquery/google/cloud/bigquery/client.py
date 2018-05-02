@@ -1250,7 +1250,7 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
 
         Returns:
-            [str]:
+            List[str]:
                 A list of the partition ids present in the partitioned table
         """
         meta_table = self.get_table(
