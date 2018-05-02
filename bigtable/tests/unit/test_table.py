@@ -279,7 +279,7 @@ class TestTable(unittest.TestCase):
     def test_create(self):
         self._create_test_helper()
 
-    def test_create_w_split_keys(self):
+    def test_create_with_split_keys(self):
         channel = self._make_channel()
         client = self._make_client(project='project-id', channel=channel,
                                    admin=True)
