@@ -393,6 +393,37 @@ class Table(object):
             self.name, app_profile_id=self._app_profile_id)
         return response_iterator
 
+    def truncate(self):
+        """Truncate the table
+
+        :raise: google.api_core.exceptions.GoogleAPICallError: If the
+                request failed for any reason.
+                google.api_core.exceptions.RetryError: If the request failed
+                due to a retryable error and retry attempts failed.
+                ValueError: If the parameters are invalid.
+        """
+        client = self._instance._client
+        table_admin_client = client._table_admin_client
+        table_admin_client.drop_row_range(self.name,
+                                          delete_all_data_from_table=True)
+
+    def drop_by_prefix(self, row_key_prefix):
+        """
+        :type row_prefix: bytes
+        :param row_prefix: Delete all rows that start with this row key
+                            prefix. Prefix cannot be zero length.
+
+        :raise: google.api_core.exceptions.GoogleAPICallError: If the
+                request failed for any reason.
+                google.api_core.exceptions.RetryError: If the request failed
+                due to a retryable error and retry attempts failed.
+                ValueError: If the parameters are invalid.
+        """
+        client = self._instance._client
+        table_admin_client = client._table_admin_client
+        table_admin_client.drop_row_range(
+            self.name, row_key_prefix=row_key_prefix.encode('utf-8'))
+
 
 class _RetryableMutateRowsWorker(object):
     """A callable worker that can retry to mutate rows with transient errors.

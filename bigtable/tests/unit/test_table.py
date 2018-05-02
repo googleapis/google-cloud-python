@@ -533,6 +533,29 @@ class TestTable(unittest.TestCase):
         result = table.sample_row_keys()
         self.assertEqual(result[0], expected_result)
 
+    def test_truncate(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2)
+
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        delete_all_data_from_table = True
+
+        request_pb = bigtable_table_admin_pb2.DropRowRangeRequest(
+            name=self.TABLE_NAME,
+            row_key_prefix=None,
+            delete_all_data_from_table=delete_all_data_from_table,
+        )
+
+        # Patch the stub used by the API method.
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.SampleRowKeys.side_effect = [[response_iterator]]
+
+
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
     from grpc import StatusCode
