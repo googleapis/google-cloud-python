@@ -88,103 +88,122 @@ def _error_result_to_exception(error_result):
 
 
 class Compression(object):
-    """The compression type to use for exported files.
+    """The compression type to use for exported files. The default value is
+    :attr:`NONE`.
 
-    Possible values include `GZIP`, `DEFLATE`, `SNAPPY`, and `NONE`. The
-    default value is `NONE`. `DEFLATE` and `SNAPPY` are only supported for
-    Avro.
+    :attr:`DEFLATE` and :attr:`SNAPPY` are
+    only supported for Avro.
     """
+
     GZIP = 'GZIP'
+    """Specifies GZIP format."""
+
     DEFLATE = 'DEFLATE'
+    """Specifies DEFLATE format."""
+
     SNAPPY = 'SNAPPY'
+    """Specifies SNAPPY format."""
+
     NONE = 'NONE'
+    """Specifies no compression."""
 
 
 class CreateDisposition(object):
-    """Specifies whether the job is allowed to create new tables.
-
-    The following values are supported:
-    `CREATE_IF_NEEDED`: If the table does not exist, BigQuery creates
-    the table.
-    `CREATE_NEVER`: The table must already exist. If it does not,
-    a 'notFound' error is returned in the job result.
-    The default value is `CREATE_IF_NEEDED`.
+    """Specifies whether the job is allowed to create new tables. The default
+    value is :attr:`CREATE_IF_NEEDED`.
 
     Creation, truncation and append actions occur as one atomic update
     upon job completion.
     """
+
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
+    """If the table does not exist, BigQuery creates the table."""
+
     CREATE_NEVER = 'CREATE_NEVER'
+    """The table must already exist. If it does not, a 'notFound' error is
+    returned in the job result."""
 
 
 class DestinationFormat(object):
-    """The exported file format.
+    """The exported file format. The default value is :attr:`CSV`.
 
-    Possible values include `CSV`, `NEWLINE_DELIMITED_JSON` and `AVRO`.
-    The default value is `CSV`. Tables with nested or repeated fields
-    cannot be exported as CSV.
+    Tables with nested or repeated fields cannot be exported as CSV.
     """
+
     CSV = 'CSV'
+    """Specifies CSV format."""
+
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    """Specifies newline delimited JSON format."""
+
     AVRO = 'AVRO'
+    """Specifies Avro format."""
 
 
 class Encoding(object):
-    """The character encoding of the data. The supported values
-    are `UTF_8` corresponding to `'UTF-8'` or `ISO_8859_1` corresponding to
-    `'ISO-8859-1'`. The default value is `UTF_8`.
+    """The character encoding of the data. The default is :attr:`UTF_8`.
 
     BigQuery decodes the data after the raw, binary data has been
     split using the values of the quote and fieldDelimiter properties.
     """
+
     UTF_8 = 'UTF-8'
+    """Specifies UTF-8 encoding."""
+
     ISO_8859_1 = 'ISO-8859-1'
+    """Specifies ISO-8859-1 encoding."""
 
 
 class QueryPriority(object):
-    """Specifies a priority for the query.
-
-    Possible values include `INTERACTIVE` and `BATCH`. The default value
-    is `INTERACTIVE`.
+    """Specifies a priority for the query. The default value is
+    :attr:`INTERACTIVE`.
     """
+
     INTERACTIVE = 'INTERACTIVE'
+    """Specifies interactive priority."""
+
     BATCH = 'BATCH'
+    """Specifies batch priority."""
 
 
 class SourceFormat(object):
-    """The format of the data files.
+    """The format of the data files. The default value is :attr:`CSV`."""
 
-    For CSV files, specify `CSV`. For datastore backups, specify
-    `DATASTORE_BACKUP`. For newline-delimited json, specify
-    `NEWLINE_DELIMITED_JSON`. For Avro, specify `AVRO`. For Parquet, specify
-    `PARQUET`. The default value is `CSV`.
-    """
     CSV = 'CSV'
+    """Specifies CSV format."""
+
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
+    """Specifies datastore backup format"""
+
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    """Specifies newline delimited JSON format."""
+
     AVRO = 'AVRO'
+    """Specifies Avro format."""
+
     PARQUET = 'PARQUET'
+    """Specifies Parquet format."""
 
 
 class WriteDisposition(object):
     """Specifies the action that occurs if destination table already exists.
 
-    The following values are supported:
-    `WRITE_TRUNCATE`: If the table already exists, BigQuery overwrites the
-    table data.
-    `WRITE_APPEND`: If the table already exists, BigQuery appends the data
-    to the table.
-    `WRITE_EMPTY`: If the table already exists and contains data, a 'duplicate'
-    error is returned in the job result.
-    The default value is `WRITE_APPEND`.
+    The default value is :attr:`WRITE_APPEND`.
 
     Each action is atomic and only occurs if BigQuery is able to complete
     the job successfully. Creation, truncation and append actions occur as one
     atomic update upon job completion.
     """
+
     WRITE_APPEND = 'WRITE_APPEND'
+    """If the table already exists, BigQuery appends the data to the table."""
+
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
+    """If the table already exists, BigQuery overwrites the table data."""
+
     WRITE_EMPTY = 'WRITE_EMPTY'
+    """If the table already exists and contains data, a 'duplicate' error is
+    returned in the job result."""
 
 
 class _JobReference(object):
