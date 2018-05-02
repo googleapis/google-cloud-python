@@ -279,6 +279,22 @@ class TestTable(unittest.TestCase):
     def test_create(self):
         self._create_test_helper()
 
+    def test_create_w_split_keys(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        split_keys = ['split1', 'split2', 'split3']
+
+        # Create expected_result.
+        expected_result = None  # create() has no return value.
+
+        # Perform the method and check the result.
+        result = table.create(split_keys)
+        self.assertEqual(result, expected_result)
+
     def test_delete(self):
         channel = self._make_channel()
         client = self._make_client(project='project-id', channel=channel,
