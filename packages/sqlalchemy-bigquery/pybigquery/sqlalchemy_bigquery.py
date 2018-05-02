@@ -93,16 +93,20 @@ class BigQueryDialect(DefaultDialect):
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
 
-    def __init__(self, arraysize=5000, *args, **kwargs):
+    def __init__(self, arraysize=5000, credentials_path=None, *args, **kwargs):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
+        self.credentials_path = credentials_path
 
     @classmethod
     def dbapi(cls):
         return dbapi
 
     def create_connect_args(self, url):
-        client = bigquery.Client(url.host) if url.host else None
+        if self.credentials_path:
+            client = bigquery.Client.from_service_account_json(self.credentials_path)
+        else:
+            client = bigquery.Client(url.host)
         return ([client], {})
 
     def _split_table_name(self, full_table_name):
@@ -119,17 +123,16 @@ class BigQueryDialect(DefaultDialect):
 
         return (project, dataset, table_name)
 
-    def _get_table(self, connection, table_name,schema=None):
-        if (isinstance(connection,Engine)):
+    def _get_table(self, connection, table_name, schema=None):
+        if isinstance(connection, Engine):
             connection = connection.connect()
-        project, dataset, tablename = self._split_table_name(table_name)
-        if dataset == None and schema != None:
+
+        project, dataset, table_name_prepared = self._split_table_name(table_name)
+        if dataset is None and schema is not None:
             dataset = schema
-            tablename = table_name
-        print(project)
-        print(schema)
-        print(tablename)
-        table = connection.connection._client.dataset(dataset, project=project).table(tablename)
+            table_name_prepared = table_name
+
+        table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
             t = connection.connection._client.get_table(table)
         except NotFound as e:
@@ -138,13 +141,13 @@ class BigQueryDialect(DefaultDialect):
 
     def has_table(self, connection, table_name, schema=None):
         try:
-            self._get_table(connection, table_name)
+            self._get_table(connection, table_name, schema)
             return True
         except NoSuchTableError:
             return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
-        table = self._get_table(connection, table_name,schema)
+        table = self._get_table(connection, table_name, schema)
         columns = table.schema
         result = []
         for col in columns:
@@ -173,21 +176,24 @@ class BigQueryDialect(DefaultDialect):
     def get_indexes(self, connection, table_name, schema=None, **kw):
         # BigQuery has no support for indexes.
         return []
+
     def get_schema_names(self, connection, **kw):
-        if (isinstance(connection,Engine)):
+        if isinstance(connection, Engine):
             connection = connection.connect()
+
         datasets = connection.connection._client.list_datasets()
         return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
-        if (isinstance(connection,Engine)):
+        if isinstance(connection, Engine):
             connection = connection.connect()
+
         datasets = connection.connection._client.list_datasets()
         result = []
         for d in datasets:
-            if schema != None and d.dataset_id != schema:
+            if schema is not None and d.dataset_id != schema:
                 continue
-            tables = connection.connection._client.list_dataset_tables(d)
+            tables = connection.connection._client.list_tables(d.reference)
             for t in tables:
                 result.append(d.dataset_id + '.' + t.table_id)
         return result
@@ -203,5 +209,3 @@ class BigQueryDialect(DefaultDialect):
     def _check_unicode_description(self, connection):
         # requests gives back Unicode strings
         return True
-
-
