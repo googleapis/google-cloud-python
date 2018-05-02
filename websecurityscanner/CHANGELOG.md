@@ -8,5 +8,3 @@
 
 ### New Features
 - Add v1alpha1 websecurityscanner endpoint
-
-
