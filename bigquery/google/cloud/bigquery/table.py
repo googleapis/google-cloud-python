@@ -280,7 +280,7 @@ class Table(object):
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
         'time_partitioning': 'timePartitioning',
-        'type_': 'timePartitioning',
+        'partitioning_type': 'timePartitioning',
         'partition_expiration': 'timePartitioning',
         'view_use_legacy_sql': 'view',
         'view_query': 'view',
