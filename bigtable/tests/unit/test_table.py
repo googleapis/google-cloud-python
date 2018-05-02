@@ -540,7 +540,7 @@ class TestTable(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
-        expected_result = None # truncate() has no return value.
+        expected_result = None  # truncate() has no return value.
 
         result = table.truncate()
 
@@ -553,14 +553,13 @@ class TestTable(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
-        expected_result = None # drop_by_prefix() has no return value.
+        expected_result = None  # drop_by_prefix() has no return value.
 
         row_key_prefix = 'row-key-prefix'
 
         result = table.drop_by_prefix(row_key_prefix=row_key_prefix)
 
         self.assertEqual(result, expected_result)
-
 
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
