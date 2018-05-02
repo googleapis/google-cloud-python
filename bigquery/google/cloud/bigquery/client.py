@@ -1242,16 +1242,16 @@ class Client(ClientWithProject):
     def list_partitions(self, table, retry=DEFAULT_RETRY):
         """List the partitions in a table.
 
-        :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
-        :param table: the table to list, or a reference to it.
+        Arguments:
+            table (Union[google.cloud.bigquery.table.Table,
+                    google.cloud.bigquery.table.TableReference]):
+                The table or reference from which to get partition info
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: list
-        :returns: a list of time partitions
+        Returns:
+            [str]:
+                A list of the partition ids present in the partitioned table
         """
         meta_table = self.get_table(
             TableReference(
@@ -1259,7 +1259,7 @@ class Client(ClientWithProject):
                 '%s$__PARTITIONS_SUMMARY__' % table.table_id))
 
         subset = [col for col in
-            meta_table.schema if col.name == 'partition_id']
+                  meta_table.schema if col.name == 'partition_id']
         return [row[0] for row in self.list_rows(meta_table,
                 selected_fields=subset,
                 retry=retry)]
@@ -1350,6 +1350,7 @@ class Client(ClientWithProject):
             page_size=page_size,
             extra_params=params)
         return row_iterator
+
 
 # pylint: disable=unused-argument
 def _item_to_project(iterator, resource):

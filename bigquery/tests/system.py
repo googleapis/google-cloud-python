@@ -281,10 +281,11 @@ class TestBigQuery(unittest.TestCase):
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
 
     def test_list_partitions(self):
-        # TODO(shollyman): public canonical static partition tables samples
-        table_ref = DatasetReference('bigquery-partition-samples', 'samples').table('stackoverflow_comments')
+        table_ref = DatasetReference(
+            'bigquery-partition-samples',
+            'samples').table('stackoverflow_comments')
         all_rows = Config.CLIENT.list_partitions(table_ref)
-        self.assertIn("20150508", all_rows)
+        self.assertIn('20150508', all_rows)
         self.assertEquals(2066, len(all_rows))
 
     def test_list_tables(self):

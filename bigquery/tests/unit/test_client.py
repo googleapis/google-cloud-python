@@ -2879,8 +2879,8 @@ class TestClient(unittest.TestCase):
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
 
-        ROWS = 3
-        META_INFO = {
+        rows = 3
+        meta_info = {
             'tableReference':
                 {'projectId': self.PROJECT,
                  'datasetId': self.DS_ID,
@@ -2889,13 +2889,14 @@ class TestClient(unittest.TestCase):
                 {'name': 'project_id', 'type': 'STRING', 'mode': 'NULLABLE'},
                 {'name': 'dataset_id', 'type': 'STRING', 'mode': 'NULLABLE'},
                 {'name': 'table_id', 'type': 'STRING', 'mode': 'NULLABLE'},
-                {'name': 'partition_id', 'type': 'STRING', 'mode': 'NULLABLE'}]},
+                {'name': 'partition_id', 'type': 'STRING', 'mode': 'NULLABLE'}
+            ]},
             'etag': 'ETAG',
-            'numRows': ROWS,
+            'numRows': rows,
         }
 
-        DATA = {
-            'totalRows': str(ROWS),
+        data = {
+            'totalRows': str(rows),
             'rows': [
                 {'f': [
                     {'v': '20180101'},
@@ -2912,11 +2913,11 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 _http=http)
-        client._connection = _make_connection(META_INFO, DATA)
+        client._connection = _make_connection(meta_info, data)
         table = Table(self.TABLE_REF)
 
         partition_list = client.list_partitions(table)
-        self.assertEqual(len(partition_list), 3)
+        self.assertEqual(len(partition_list), rows)
         self.assertIn('20180102', partition_list)
 
     def test_list_rows(self):
@@ -3153,6 +3154,7 @@ class TestClient(unittest.TestCase):
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
             client.list_rows(1)
+
 
 class Test_make_job_id(unittest.TestCase):
     def _call_fut(self, job_id, prefix=None):
