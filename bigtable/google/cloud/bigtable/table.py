@@ -393,8 +393,12 @@ class Table(object):
             self.name, app_profile_id=self._app_profile_id)
         return response_iterator
 
-    def truncate(self):
+    def truncate(self, timeout=60):
         """Truncate the table
+
+        :type timeout: float
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+                        for the request to complete.
 
         :raise: google.api_core.exceptions.GoogleAPICallError: If the
                 request failed for any reason.
@@ -405,13 +409,18 @@ class Table(object):
         client = self._instance._client
         table_admin_client = client._table_admin_client
         table_admin_client.drop_row_range(self.name,
-                                          delete_all_data_from_table=True)
+                                          delete_all_data_from_table=True,
+                                          timeout=timeout)
 
-    def drop_by_prefix(self, row_key_prefix):
+    def drop_by_prefix(self, row_key_prefix, timeout=60):
         """
         :type row_prefix: bytes
         :param row_prefix: Delete all rows that start with this row key
                             prefix. Prefix cannot be zero length.
+
+        :type timeout: float
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+                        for the request to complete.
 
         :raise: google.api_core.exceptions.GoogleAPICallError: If the
                 request failed for any reason.
@@ -422,7 +431,8 @@ class Table(object):
         client = self._instance._client
         table_admin_client = client._table_admin_client
         table_admin_client.drop_row_range(
-            self.name, row_key_prefix=row_key_prefix.encode('utf-8'))
+            self.name, row_key_prefix=row_key_prefix.encode('utf-8'),
+            timeout=timeout)
 
 
 class _RetryableMutateRowsWorker(object):

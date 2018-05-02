@@ -534,26 +534,32 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result[0], expected_result)
 
     def test_truncate(self):
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2)
-
         channel = self._make_channel()
         client = self._make_client(project='project-id', channel=channel,
                                    admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
-        delete_all_data_from_table = True
+        expected_result = None # truncate() has no return value.
 
-        request_pb = bigtable_table_admin_pb2.DropRowRangeRequest(
-            name=self.TABLE_NAME,
-            row_key_prefix=None,
-            delete_all_data_from_table=delete_all_data_from_table,
-        )
+        result = table.truncate()
 
-        # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.SampleRowKeys.side_effect = [[response_iterator]]
+        self.assertEqual(result, expected_result)
+
+    def test_drop_by_prefix(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        expected_result = None # drop_by_prefix() has no return value.
+
+        row_key_prefix = 'row-key-prefix'
+
+        result = table.drop_by_prefix(row_key_prefix=row_key_prefix)
+
+        self.assertEqual(result, expected_result)
 
 
 
