@@ -138,7 +138,7 @@ class StreamedResultSet(object):
         while True:
             if not iter_rows:
                 try:
-                    self._consume_next()  # raises StopIteration
+                    self._consume_next()
                 except StopIteration:
                     return
                 iter_rows, self._rows[:] = self._rows[:], ()
