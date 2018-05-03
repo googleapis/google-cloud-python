@@ -93,13 +93,10 @@ class Client(object):
         self.project = project
         self._read_only = bool(read_only)
         self._admin = bool(admin)
-        self.channel = channel
+        self._channel = channel
         self._credentials = credentials
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__()
-
-        if self.channel is not None:
-            self._credentials = None
 
     def _get_scopes(self):
         """Get the scopes corresponding to admin / read-only state.
@@ -143,7 +140,7 @@ class Client(object):
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
-        return bigtable_v2.BigtableClient(channel=self.channel,
+        return bigtable_v2.BigtableClient(channel=self._channel,
                                           credentials=self._credentials)
 
     @property
@@ -159,7 +156,7 @@ class Client(object):
         if not self._admin:
             raise ValueError('Client is not an admin client.')
         return bigtable_admin_v2.BigtableTableAdminClient(
-            channel=self.channel, credentials=self._credentials)
+            channel=self._channel, credentials=self._credentials)
 
     @property
     def _instance_admin_client(self):
@@ -173,8 +170,9 @@ class Client(object):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
+
         return bigtable_admin_v2.BigtableInstanceAdminClient(
-            channel=self.channel, credentials=self._credentials)
+            channel=self._channel, credentials=self._credentials)
 
     def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None):

@@ -515,6 +515,7 @@ class TestClient(unittest.TestCase):
 
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TimePartitioning
 
         path = 'projects/%s/datasets/%s/tables' % (
             self.PROJECT, self.DS_ID)
@@ -530,7 +531,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
-        table.partitioning_type = 'DAY'
+        table.time_partitioning = TimePartitioning()
 
         got = client.create_table(table)
 
@@ -546,7 +547,7 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.time_partitioning.type_, 'DAY')
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_custom_property(self):
@@ -628,6 +629,7 @@ class TestClient(unittest.TestCase):
 
     def test_create_table_w_day_partition_and_expire(self):
         from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TimePartitioning
 
         path = 'projects/%s/datasets/%s/tables' % (
             self.PROJECT, self.DS_ID)
@@ -643,8 +645,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF)
-        table.partitioning_type = 'DAY'
-        table.partition_expiration = 100
+        table.time_partitioning = TimePartitioning(expiration_ms=100)
 
         got = client.create_table(table)
 
@@ -660,8 +661,8 @@ class TestClient(unittest.TestCase):
                 'timePartitioning': {'type': 'DAY', 'expirationMs': '100'},
                 'labels': {},
             })
-        self.assertEqual(table.partitioning_type, "DAY")
-        self.assertEqual(table.partition_expiration, 100)
+        self.assertEqual(table.time_partitioning.type_, 'DAY')
+        self.assertEqual(table.time_partitioning.expiration_ms, 100)
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_schema_and_query(self):
@@ -1395,10 +1396,12 @@ class TestClient(unittest.TestCase):
             client.delete_table(client.dataset(self.DS_ID))
 
     def test_job_from_resource_unknown_type(self):
+        from google.cloud.bigquery.job import UnknownJob
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        with self.assertRaises(ValueError):
-            client.job_from_resource({'configuration': {'nonesuch': {}}})
+        got = client.job_from_resource({})  # Can parse redacted job.
+        self.assertIsInstance(got, UnknownJob)
+        self.assertEqual(got.project, self.PROJECT)
 
     def test_get_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound
@@ -2876,6 +2879,50 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             data=SENT)
 
+    def test_list_partitions(self):
+        from google.cloud.bigquery.table import Table
+
+        rows = 3
+        meta_info = {
+            'tableReference':
+                {'projectId': self.PROJECT,
+                 'datasetId': self.DS_ID,
+                 'tableId': '%s$__PARTITIONS_SUMMARY__' % self.TABLE_ID},
+            'schema': {'fields': [
+                {'name': 'project_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'dataset_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'table_id', 'type': 'STRING', 'mode': 'NULLABLE'},
+                {'name': 'partition_id', 'type': 'STRING', 'mode': 'NULLABLE'}
+            ]},
+            'etag': 'ETAG',
+            'numRows': rows,
+        }
+
+        data = {
+            'totalRows': str(rows),
+            'rows': [
+                {'f': [
+                    {'v': '20180101'},
+                ]},
+                {'f': [
+                    {'v': '20180102'},
+                ]},
+                {'f': [
+                    {'v': '20180103'},
+                ]},
+            ]
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        client._connection = _make_connection(meta_info, data)
+        table = Table(self.TABLE_REF)
+
+        partition_list = client.list_partitions(table)
+        self.assertEqual(len(partition_list), rows)
+        self.assertIn('20180102', partition_list)
+
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
@@ -3110,53 +3157,6 @@ class TestClient(unittest.TestCase):
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
             client.list_rows(1)
-
-    def test_list_partitions(self):
-        RESOURCE = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': 'JOB_ID',
-            },
-            'configuration': {
-                'query': {
-                    'query': 'q',
-                    'destinationTable': {
-                        'projectId': self.PROJECT,
-                        'datasetId': 'DS_ID',
-                        'tableId': 'TABLE_ID',
-                    },
-                },
-            },
-            'status': {
-                'state': 'DONE',
-            },
-        }
-        RESULTS_RESOURCE = {
-            'jobReference': RESOURCE['jobReference'],
-            'jobComplete': True,
-            'schema': {
-                'fields': [
-                    {'name': 'partition_id', 'type': 'INTEGER',
-                     'mode': 'REQUIRED'},
-                ]
-            },
-            'totalRows': '2',
-            'pageToken': 'next-page',
-        }
-        FIRST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
-        FIRST_PAGE['rows'] = [
-            {'f': [{'v': 20160804}]},
-            {'f': [{'v': 20160805}]},
-        ]
-        del FIRST_PAGE['pageToken']
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=self.PROJECT, credentials=creds,
-                                _http=http)
-        client._connection = _make_connection(
-            RESOURCE, RESULTS_RESOURCE, FIRST_PAGE)
-        self.assertEqual(client.list_partitions(self.TABLE_REF),
-                         [20160804, 20160805])
 
 
 class Test_make_job_id(unittest.TestCase):

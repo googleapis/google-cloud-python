@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.31.1
+
+### Packaging
+- Update setuptools before packaging (#5265)
+
 ## 0.31.0
 
 - Vision v1p2beta1: PDF/TIFF OCR (#5127)
