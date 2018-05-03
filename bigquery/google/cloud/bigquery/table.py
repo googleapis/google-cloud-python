@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import copy
 import datetime
 import operator
+import warnings
 
 import six
 try:
@@ -278,6 +279,7 @@ class Table(object):
     _PROPERTY_TO_API_FIELD = {
         'friendly_name': 'friendlyName',
         'expires': 'expirationTime',
+        'time_partitioning': 'timePartitioning',
         'partitioning_type': 'timePartitioning',
         'partition_expiration': 'timePartitioning',
         'view_use_legacy_sql': 'view',
@@ -457,51 +459,79 @@ class Table(object):
         return self._properties.get('type')
 
     @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
+        partitioning for a table.
+
+        Raises:
+            ValueError:
+                If the value is not :class:`TimePartitioning` or :data:`None`.
+        """
+        prop = self._properties.get('timePartitioning')
+        if prop is not None:
+            return TimePartitioning.from_api_repr(prop)
+
+    @time_partitioning.setter
+    def time_partitioning(self, value):
+        api_repr = value
+        if isinstance(value, TimePartitioning):
+            api_repr = value.to_api_repr()
+        elif value is not None:
+            raise ValueError(
+                "value must be google.cloud.bigquery.table.TimePartitioning "
+                "or None")
+        self._properties['timePartitioning'] = api_repr
+
+    @property
     def partitioning_type(self):
         """Union[str, None]: Time partitioning of the table if it is
         partitioned (Defaults to :data:`None`).
 
-        The only partitioning type that is currently supported is ``'DAY'``.
-
-        Raises:
-            ValueError: If the value is not ``'DAY'`` or :data:`None`.
+        The only partitioning type that is currently supported is
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
-        return self._properties.get('timePartitioning', {}).get('type')
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.type_ instead.",
+            UserWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.type_
 
     @partitioning_type.setter
     def partitioning_type(self, value):
-        if value not in ('DAY', None):
-            raise ValueError("value must be one of ['DAY', None]")
-
-        if value is None:
-            self._properties.pop('timePartitioning', None)
-        else:
-            time_part = self._properties.setdefault('timePartitioning', {})
-            time_part['type'] = value.upper()
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.type_ instead.",
+            UserWarning)
+        if self.time_partitioning is None:
+            self._properties['timePartitioning'] = {}
+        self._properties['timePartitioning']['type'] = value
 
     @property
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
+
+        If :attr:`partition_expiration` is set and :attr:`type_` is
+        not set, :attr:`type_` will default to
+        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
-        return _helpers._int_or_none(
-            self._properties.get('timePartitioning', {}).get('expirationMs'))
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.expiration_ms instead.",
+            UserWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.expiration_ms
 
     @partition_expiration.setter
     def partition_expiration(self, value):
-        if not isinstance(value, (int, type(None))):
-            raise ValueError(
-                "must be an integer representing milliseconds or None")
-
-        if value is None:
-            if 'timePartitioning' in self._properties:
-                self._properties['timePartitioning'].pop('expirationMs')
-        else:
-            api_repr = str(value)
-            try:
-                self._properties['timePartitioning']['expirationMs'] = api_repr
-            except KeyError:
-                self._properties['timePartitioning'] = {'type': 'DAY'}
-                self._properties['timePartitioning']['expirationMs'] = api_repr
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "Table.time_partitioning.expiration_ms instead.",
+            UserWarning)
+        if self.time_partitioning is None:
+            self._properties['timePartitioning'] = {
+                'type': TimePartitioningType.DAY}
+        self._properties['timePartitioning']['expirationMs'] = str(value)
 
     @property
     def description(self):
@@ -817,21 +847,39 @@ class TableListItem(object):
         return self._properties.get('type')
 
     @property
+    def time_partitioning(self):
+        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
+        partitioning for a table.
+        """
+        prop = self._properties.get('timePartitioning')
+        if prop is not None:
+            return TimePartitioning.from_api_repr(prop)
+
+    @property
     def partitioning_type(self):
         """Union[str, None]: Time partitioning of the table if it is
         partitioned (Defaults to :data:`None`).
-
-        The only partitioning type that is currently supported is ``'DAY'``.
         """
-        return self._properties.get('timePartitioning', {}).get('type')
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.type_ instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.type_
 
     @property
     def partition_expiration(self):
         """Union[int, None]: Expiration time in milliseconds for a partition.
+
+        If this property is set and :attr:`type_` is not set, :attr:`type_`
+        will default to :attr:`TimePartitioningType.DAY`.
         """
-        expiration = self._properties.get(
-            'timePartitioning', {}).get('expirationMs')
-        return _helpers._int_or_none(expiration)
+        warnings.warn(
+            "This method will be deprecated in future versions. Please use "
+            "TableListItem.time_partitioning.expiration_ms instead.",
+            PendingDeprecationWarning)
+        if self.time_partitioning is not None:
+            return self.time_partitioning.expiration_ms
 
     @property
     def friendly_name(self):
@@ -1099,3 +1147,129 @@ class RowIterator(HTTPIterator):
         rows = [row.values() for row in iter(self)]
 
         return pandas.DataFrame(rows, columns=column_headers)
+
+
+class TimePartitioningType(object):
+    """Specifies the type of time partitioning to perform."""
+
+    DAY = 'DAY'
+    """str: Generates one partition per day."""
+
+
+class TimePartitioning(object):
+    """Configures time-based partitioning for a table.
+
+    Args:
+        type_ (google.cloud.bigquery.table.TimePartitioningType, optional):
+            Specifies the type of time partitioning to perform. Defaults to
+            :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
+            which is the only currently supported type.
+        field (str, optional):
+            If set, the table is partitioned by this field. If not set, the
+            table is partitioned by pseudo column ``_PARTITIONTIME``. The field
+            must be a top-level ``TIMESTAMP`` or ``DATE`` field. Its mode must
+            be ``NULLABLE`` or ``REQUIRED``.
+        expiration_ms(int, optional):
+            Number of milliseconds for which to keep the storage for a
+            partition.
+        require_partition_filter (bool, optional):
+            If set to true, queries over the partitioned table require a
+            partition filter that can be used for partition elimination to be
+            specified.
+    """
+    def __init__(self, type_=None, field=None, expiration_ms=None,
+                 require_partition_filter=None):
+        self._properties = {}
+        if type_ is None:
+            self.type_ = TimePartitioningType.DAY
+        else:
+            self.type_ = type_
+        if field is not None:
+            self.field = field
+        if expiration_ms is not None:
+            self.expiration_ms = expiration_ms
+        if require_partition_filter is not None:
+            self.require_partition_filter = require_partition_filter
+
+    @property
+    def type_(self):
+        """google.cloud.bigquery.table.TimePartitioningType: The type of time
+        partitioning to use.
+        """
+        return self._properties['type']
+
+    @type_.setter
+    def type_(self, value):
+        self._properties['type'] = value
+
+    @property
+    def field(self):
+        """str: Field in the table to use for partitioning"""
+        return self._properties.get('field')
+
+    @field.setter
+    def field(self, value):
+        self._properties['field'] = value
+
+    @property
+    def expiration_ms(self):
+        """int: Number of milliseconds to keep the storage for a partition."""
+        return _helpers._int_or_none(self._properties.get('expirationMs'))
+
+    @expiration_ms.setter
+    def expiration_ms(self, value):
+        self._properties['expirationMs'] = str(value)
+
+    @property
+    def require_partition_filter(self):
+        """bool: Specifies whether partition filters are required for queries
+        """
+        return self._properties.get('requirePartitionFilter')
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties['requirePartitionFilter'] = value
+
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Return a :class:`TimePartitioning` object deserialized from a dict.
+
+        This method creates a new ``TimePartitioning`` instance that points to
+        the ``api_repr`` parameter as its internal properties dict. This means
+        that when a ``TimePartitioning`` instance is stored as a property of
+        another object, any changes made at the higher level will also appear
+        here::
+
+            >>> time_partitioning = TimePartitioning()
+            >>> table.time_partitioning = time_partitioning
+            >>> table.time_partitioning.field = 'timecolumn'
+            >>> time_partitioning.field
+            'timecolumn'
+
+        Args:
+            api_repr (Mapping[str, str]):
+                The serialized representation of the TimePartitioning, such as
+                what is output by :meth:`to_api_repr`.
+
+        Returns:
+            google.cloud.bigquery.table.TimePartitioning:
+                The ``TimePartitioning`` object.
+        """
+        instance = cls(api_repr['type'])
+        instance._properties = api_repr
+        return instance
+
+    def to_api_repr(self):
+        """Return a dictionary representing this object.
+
+        This method returns the properties dict of the ``TimePartitioning``
+        instance rather than making a copy. This means that when a
+        ``TimePartitioning`` instance is stored as a property of another
+        object, any changes made at the higher level will also appear here.
+
+        Returns:
+            dict:
+                A dictionary representing the TimePartitioning object in
+                serialized form.
+        """
+        return self._properties

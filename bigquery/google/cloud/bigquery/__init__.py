@@ -50,6 +50,7 @@ from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
 from google.cloud.bigquery.job import SourceFormat
+from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -60,6 +61,8 @@ from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
+from google.cloud.bigquery.table import TimePartitioningType
+from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
 from google.cloud.bigquery.external_config import BigtableColumnFamily
@@ -91,6 +94,9 @@ __all__ = [
     'ExtractJobConfig',
     'LoadJob',
     'LoadJobConfig',
+    'UnknownJob',
+    'TimePartitioningType',
+    'TimePartitioning',
     # Shared helpers
     'SchemaField',
     'UDFResource',

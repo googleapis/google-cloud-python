@@ -112,8 +112,9 @@ class Blob(_PropertyMixin):
     :param bucket: The bucket to which this blob belongs.
 
     :type chunk_size: int
-    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
-                       This must be a multiple of 256 KB per the API
+
+    :param chunk_size: The size of a chunk of data whenever iterating (in
+                       bytes). This must be a multiple of 256 KB per the API
                        specification.
 
     :type encryption_key: bytes
@@ -548,7 +549,7 @@ class Blob(_PropertyMixin):
             with open(filename, 'wb') as file_obj:
                 self.download_to_file(
                     file_obj, client=client, start=start, end=end)
-        except resumable_media.DataCorruption as exc:
+        except resumable_media.DataCorruption:
             # Delete the corrupt downloaded file.
             os.remove(filename)
             raise
