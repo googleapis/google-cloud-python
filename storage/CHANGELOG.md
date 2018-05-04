@@ -7,7 +7,7 @@
 ## 1.9.0
 
 ### Implementation Changes
-- Change GCS batch endpoint from /batch to /batch/storage/v1 (#5040)
+- Change GCS batch endpoint from `/batch` to `/batch/storage/v1` (#5040)
 
 ### New Features
 - Allow uploading files larger than 2GB by using Resumable Media Requests (#5187)
