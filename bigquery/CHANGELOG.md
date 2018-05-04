@@ -7,14 +7,14 @@
 ## 1.2.0
 
 ### Implementation Changes
-- switch list_partitions helper to a direct metatable read (#5273)
+- Switch list_partitions helper to a direct metatable read (#5273)
 - Fix typo in Encoding.ISO_8859_1 enum value (#5211)
 
 ### New Features
-- add UnknownJob type for redacted jobs. (#5281)
+- Add UnknownJob type for redacted jobs. (#5281)
 - Add project parameter to `list_datasets` and `list_jobs` (#5217)
-- add from_string factory methods to Dataset and Table (#5255)
-- Column based time partitioning (#5267)
+- Add from_string factory methods to Dataset and Table (#5255)
+- Add column based time partitioning (#5267)
 
 ### Documentation
 - Standardize docstrings for constants (#5289)
