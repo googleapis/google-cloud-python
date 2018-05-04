@@ -47,37 +47,38 @@ Pulling a Subscription
 ----------------------
 
 Once you have created a subscription (or if you already had one), the next
-step is to pull data from it. This entails two steps: first you must call
-:meth:`~.pubsub_v1.subscriber.client.Client.subscribe`, passing in the
-subscription string.
+step is to pull data from it. The subscriber client uses the
+:meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method to start a
+background thread to receive messages from Pub/Sub and calls a callback with
+each message received.
 
 .. code-block:: python
 
     # As before, substitute {project} and {subscription} with appropriate
     # values for your application.
-    subscription = subscriber.subscribe(
+    future = subscriber.subscribe(
         'projects/{project}/subscriptions/{subscription}',
+        callback
     )
 
-This will return an object with an
-:meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open` method; calling
-this method will actually begin consumption of the subscription.
+This will return a 
+:class:`~.pubsub_v1.subscriber.futures.StreamingPullFuture`. This future allows
+you to control the background thread that is managing the subscription.
 
 
 Subscription Callbacks
 ----------------------
 
-Because subscriptions in this Pub/Sub client are opened asynchronously,
-processing the messages that are yielded by the subscription is handled
-through **callbacks**.
+Messages received from a subscription are processed asynchronously through
+**callbacks**.
 
 The basic idea: Define a function that takes one argument; this argument
 will be a :class:`~.pubsub_v1.subscriber.message.Message` instance. This
 function should do whatever processing is necessary. At the end, the
-function should :meth:`~.pubsub_v1.subscriber.message.Message.ack` the
-message.
+function should either :meth:`~.pubsub_v1.subscriber.message.Message.ack`
+or :meth:`~.pubsub_v1.subscriber.message.Message.nack` the message.
 
-When you call :meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open`, you
+When you call :meth:`~.pubsub_v1.subscriber.client.Client.subscribe`, you
 must pass the callback that will be used.
 
 Here is an example:
@@ -91,11 +92,15 @@ Here is an example:
         message.ack()
 
     # Open the subscription, passing the callback.
-    future = subscription.open(callback)
+    future = subscriber.subscribe(
+        'projects/{project}/subscriptions/{subscription}',
+        callback
+    )
 
-The :meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open` method returns
-a :class:`~.pubsub_v1.subscriber.futures.Future`, which is both the interface
-to wait on messages (e.g. block the primary thread) and to address exceptions.
+The :meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method returns
+a :class:`~.pubsub_v1.subscriber.futures.StreamingPullFuture`, which is both
+the interface to wait on messages (e.g. block the primary thread) and to
+address exceptions.
 
 To block the thread you are in while messages are coming in the stream,
 use the :meth:`~.pubsub_v1.subscriber.futures.Future.result` method:
@@ -103,6 +108,9 @@ use the :meth:`~.pubsub_v1.subscriber.futures.Future.result` method:
 .. code-block:: python
 
     future.result()
+
+.. note: This will block forever assuming no errors or that ``cancel`` is never
+    called.
 
 You can also use this for error handling; any exceptions that crop up on a
 thread will be set on the future.
@@ -114,6 +122,15 @@ thread will be set on the future.
     except Exception as ex:
         subscription.close()
         raise
+
+Finally, you can use
+:meth:`~.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel` to stop
+receiving messages.
+
+
+.. code-block:: python
+
+    future.cancel()
 
 
 Explaining Ack
@@ -142,5 +159,6 @@ API Reference
   :maxdepth: 2
 
   api/client
-  api/policy
   api/message
+  api/futures
+  api/scheduler

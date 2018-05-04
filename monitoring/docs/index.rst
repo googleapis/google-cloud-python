@@ -5,7 +5,6 @@ Python Client for Stackdriver Monitoring API (`Alpha`_)
 must be associated with a Stackdriver account, with a few exceptions as
 noted on the individual method pages.
 
-- `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

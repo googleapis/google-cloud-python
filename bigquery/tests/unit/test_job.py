@@ -249,6 +249,24 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
 
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            type_=table.TimePartitioningType.DAY, field='name')
+        config = self._get_target_class()()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+        self.assertEqual(
+            config.time_partitioning.type_,
+            table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+
     def test_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
@@ -447,6 +465,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.time_partitioning)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -1841,6 +1860,24 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.default_dataset)
         self.assertIsNone(config.destination)
 
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            type_=table.TimePartitioningType.DAY, field='name')
+        config = self._make_one()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+
+        self.assertEqual(
+            config.time_partitioning.type_, table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})
@@ -2118,6 +2155,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.time_partitioning)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
