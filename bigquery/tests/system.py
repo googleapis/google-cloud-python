@@ -142,6 +142,14 @@ class TestBigQuery(unittest.TestCase):
             else:
                 doomed.delete()
 
+    def test_get_service_account_email(self):
+        client = Config.CLIENT
+
+        got = client.get_service_account_email()
+
+        self.assertIsInstance(got, six.text_type)
+        self.assertIn('@', got)
+
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id('create_dataset')
         dataset = self.temp_dataset(DATASET_ID)
@@ -214,6 +222,12 @@ class TestBigQuery(unittest.TestCase):
                    dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
+    def test_list_datasets_w_project(self):
+        # Retrieve datasets from a different project.
+        iterator = Config.CLIENT.list_datasets(project='bigquery-public-data')
+        all_datasets = frozenset([dataset.dataset_id for dataset in iterator])
+        self.assertIn('usa_names', all_datasets)
+
     def test_create_table(self):
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
         table_id = 'test_table'
@@ -265,6 +279,14 @@ class TestBigQuery(unittest.TestCase):
         schema_names = [field.name for field in table.schema]
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
+
+    def test_list_partitions(self):
+        table_ref = DatasetReference(
+            'bigquery-partition-samples',
+            'samples').table('stackoverflow_comments')
+        all_rows = Config.CLIENT.list_partitions(table_ref)
+        self.assertIn('20150508', all_rows)
+        self.assertEquals(2066, len(all_rows))
 
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
@@ -381,7 +403,7 @@ class TestBigQuery(unittest.TestCase):
         config = bigquery.LoadJobConfig()
         config.schema = schema
         job = Config.CLIENT.load_table_from_file(
-            six.StringIO(body), table_ref, job_config=config)
+            six.BytesIO(body.encode('ascii')), table_ref, job_config=config)
         job.result()
         return bigquery.Table(table_ref, schema=schema)
 
@@ -829,6 +851,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, destination)
         got = destination.download_as_string().decode('utf-8')
         self.assertIn('"Bharney Rhubble"', got)
+        self.assertEqual(job.destination_uri_file_counts, [1])
 
     def test_copy_table(self):
         # If we create a new table to copy from, the test won't work
@@ -1707,7 +1730,7 @@ class TestBigQuery(unittest.TestCase):
             {'string_col': 'Some value', 'record_col': record},
         ]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.StringIO('{}\n'.format('\n'.join(rows)))
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)).encode('ascii'))
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('nested_df'))
         table = dataset.table(table_id)
@@ -1736,6 +1759,42 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
+
+    def test_list_rows_page_size(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        num_items = 7
+        page_size = 3
+        num_pages, num_last_page = divmod(num_items, page_size)
+
+        SF = bigquery.SchemaField
+        schema = [SF('string_col', 'STRING', mode='NULLABLE')]
+        to_insert = [{'string_col': 'item%d' % i} for i in range(num_items)]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.BytesIO('{}\n'.format('\n'.join(rows)).encode('ascii'))
+
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
+        table = dataset.table(table_id)
+        self.to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(
+            body, table, job_config=job_config).result()
+
+        df = Config.CLIENT.list_rows(
+            table, selected_fields=schema, page_size=page_size)
+        pages = df.pages
+
+        for i in range(num_pages):
+            page = next(pages)
+            self.assertEqual(page.num_items, page_size)
+        page = next(pages)
+        self.assertEqual(page.num_items, num_last_page)
 
     def temp_dataset(self, dataset_id, location=None):
         dataset = Dataset(Config.CLIENT.dataset(dataset_id))

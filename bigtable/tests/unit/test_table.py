@@ -136,6 +136,16 @@ class TestTable(unittest.TestCase):
     VALUE = b'value'
     _json_tests = None
 
+    @mock.patch('google.auth.transport.grpc.secure_authorized_channel')
+    def _make_channel(self, secure_authorized_channel):
+        from google.api_core import grpc_helpers
+        target = 'example.com:443'
+
+        channel = grpc_helpers.create_channel(
+            target, credentials=mock.sentinel.credentials)
+
+        return channel
+
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.table import Table
@@ -145,42 +155,33 @@ class TestTable(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def test_constructor(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
         table_id = 'table-id'
-        instance = object()
-
-        table = self._make_one(table_id, instance)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
         self.assertEqual(table.table_id, table_id)
-        self.assertIs(table._instance, instance)
-
-    def test_name_property(self):
-        table_id = 'table-id'
-        instance_name = 'instance_name'
-
-        instance = _Instance(instance_name)
-        table = self._make_one(table_id, instance)
-        expected_name = instance_name + '/tables/' + table_id
-        self.assertEqual(table.name, expected_name)
-
-    def test_column_family_factory(self):
-        from google.cloud.bigtable.column_family import ColumnFamily
-
-        table_id = 'table-id'
-        gc_rule = object()
-        table = self._make_one(table_id, None)
-        column_family_id = 'column_family_id'
-        column_family = table.column_family(column_family_id, gc_rule=gc_rule)
-
-        self.assertIsInstance(column_family, ColumnFamily)
-        self.assertEqual(column_family.column_family_id, column_family_id)
-        self.assertIs(column_family.gc_rule, gc_rule)
-        self.assertEqual(column_family._table, table)
+        self.assertIs(table._instance._client, client)
 
     def test_row_factory_direct(self):
         from google.cloud.bigtable.row import DirectRow
 
-        table_id = 'table-id'
-        table = self._make_one(table_id, None)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
         row = table.row(row_key)
 
@@ -191,8 +192,11 @@ class TestTable(unittest.TestCase):
     def test_row_factory_conditional(self):
         from google.cloud.bigtable.row import ConditionalRow
 
-        table_id = 'table-id'
-        table = self._make_one(table_id, None)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
         filter_ = object()
         row = table.row(row_key, filter_=filter_)
@@ -204,8 +208,11 @@ class TestTable(unittest.TestCase):
     def test_row_factory_append(self):
         from google.cloud.bigtable.row import AppendRow
 
-        table_id = 'table-id'
-        table = self._make_one(table_id, None)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
         row = table.row(row_key, append=True)
 
@@ -214,110 +221,84 @@ class TestTable(unittest.TestCase):
         self.assertEqual(row._table, table)
 
     def test_row_factory_failure(self):
-        table = self._make_one(self.TABLE_ID, None)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
         with self.assertRaises(ValueError):
             table.row(b'row_key', filter_=object(), append=True)
 
     def test___eq__(self):
-        instance = object()
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table1 = self._make_one(self.TABLE_ID, instance)
         table2 = self._make_one(self.TABLE_ID, instance)
         self.assertEqual(table1, table2)
 
     def test___eq__type_differ(self):
-        table1 = self._make_one(self.TABLE_ID, None)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table1 = self._make_one(self.TABLE_ID, instance)
         table2 = object()
         self.assertNotEqual(table1, table2)
 
     def test___ne__same_value(self):
-        instance = object()
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table1 = self._make_one(self.TABLE_ID, instance)
         table2 = self._make_one(self.TABLE_ID, instance)
         comparison_val = (table1 != table2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        table1 = self._make_one('table_id1', 'instance1')
-        table2 = self._make_one('table_id2', 'instance2')
+        table1 = self._make_one('table_id1', None)
+        table2 = self._make_one('table_id2', None)
         self.assertNotEqual(table1, table2)
 
-    def _create_test_helper(self, initial_split_keys, column_families=()):
-        from google.cloud._helpers import _to_bytes
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+    def _create_test_helper(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
-
-        # Create request_pb
-        splits_pb = [
-            _CreateTableRequestSplitPB(key=_to_bytes(key))
-            for key in initial_split_keys or ()]
-        table_pb = None
-        if column_families:
-            table_pb = _TablePB()
-            for cf in column_families:
-                cf_pb = table_pb.column_families[cf.column_family_id]
-                if cf.gc_rule is not None:
-                    cf_pb.gc_rule.CopyFrom(cf.gc_rule.to_pb())
-        request_pb = _CreateTableRequestPB(
-            initial_splits=splits_pb,
-            parent=self.INSTANCE_NAME,
-            table_id=self.TABLE_ID,
-            table=table_pb,
-        )
-
-        # Create response_pb
-        response_pb = _TablePB()
-
-        # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = None  # create() has no return value.
 
         # Perform the method and check the result.
-        result = table.create(initial_split_keys=initial_split_keys,
-                              column_families=column_families)
+        result = table.create()
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'CreateTable',
-            (request_pb,),
-            {},
-        )])
 
     def test_create(self):
-        initial_split_keys = None
-        self._create_test_helper(initial_split_keys)
+        self._create_test_helper()
 
-    def test_create_with_split_keys(self):
-        initial_split_keys = [b's1', b's2']
-        self._create_test_helper(initial_split_keys)
-
-    def test_create_with_column_families(self):
-        from google.cloud.bigtable.column_family import ColumnFamily
-        from google.cloud.bigtable.column_family import MaxVersionsGCRule
-
-        cf_id1 = 'col-fam-id1'
-        cf1 = ColumnFamily(cf_id1, None)
-        cf_id2 = 'col-fam-id2'
-        gc_rule = MaxVersionsGCRule(42)
-        cf2 = ColumnFamily(cf_id2, None, gc_rule=gc_rule)
-
-        initial_split_keys = None
-        column_families = [cf1, cf2]
-        self._create_test_helper(initial_split_keys,
-                                 column_families=column_families)
-
-    def _list_column_families_helper(self):
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+    def test_delete(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
-        # Create request_pb
-        request_pb = _GetTableRequestPB(name=self.TABLE_NAME)
+        # Create expected_result.
+        expected_result = None  # delete() has no return value.
+
+        # Perform the method and check the result.
+        result = table.delete()
+        self.assertEqual(result, expected_result)
+
+    def _list_column_families_helper(self):
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create response_pb
         COLUMN_FAMILY_ID = 'foo'
@@ -326,8 +307,9 @@ class TestTable(unittest.TestCase):
             column_families={COLUMN_FAMILY_ID: column_family},
         )
 
-        # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
+        bigtable_table_stub = (
+            client._table_admin_client.bigtable_table_admin_stub)
+        bigtable_table_stub.GetTable.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = {
@@ -337,51 +319,18 @@ class TestTable(unittest.TestCase):
         # Perform the method and check the result.
         result = table.list_column_families()
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'GetTable',
-            (request_pb,),
-            {},
-        )])
 
     def test_list_column_families(self):
         self._list_column_families_helper()
 
-    def test_delete(self):
-        from google.protobuf import empty_pb2
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        # Create request_pb
-        request_pb = _DeleteTableRequestPB(name=self.TABLE_NAME)
-
-        # Create response_pb
-        response_pb = empty_pb2.Empty()
-
-        # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
-
-        # Create expected_result.
-        expected_result = None  # delete() has no return value.
-
-        # Perform the method and check the result.
-        result = table.delete()
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'DeleteTable',
-            (request_pb,),
-            {},
-        )])
-
     def _read_row_helper(self, chunks, expected_result):
         from google.cloud._testing import _Monkey
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable import table as MUT
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
@@ -400,7 +349,8 @@ class TestTable(unittest.TestCase):
             response_iterator = iter([response_pb])
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub(response_iterator)
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.ReadRows.side_effect = [response_iterator]
 
         # Perform the method and check the result.
         filter_obj = object()
@@ -408,11 +358,6 @@ class TestTable(unittest.TestCase):
             result = table.read_row(self.ROW_KEY, filter_=filter_obj)
 
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ReadRows',
-            (request_pb,),
-            {},
-        )])
         self.assertEqual(mock_created,
                          [(table.name, self.ROW_KEY, filter_obj)])
 
@@ -458,7 +403,10 @@ class TestTable(unittest.TestCase):
     def test_mutate_rows(self):
         from google.rpc.status_pb2 import Status
 
-        instance = mock.MagicMock()
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
         response = [Status(code=0), Status(code=1)]
@@ -478,8 +426,10 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
@@ -490,12 +440,10 @@ class TestTable(unittest.TestCase):
             mock_created.append((table_name, kwargs))
             return request
 
-        # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-
         # Create expected_result.
-        expected_result = PartialRowsData(client._data_stub.ReadRows,
-                                          request)
+        expected_result = PartialRowsData(
+            client._table_data_client.bigtable_stub.ReadRows,
+            request)
 
         # Perform the method and check the result.
         start_key = b'start-key'
@@ -518,8 +466,10 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
     def test_yield_retry_rows(self):
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create response_iterator
@@ -548,10 +498,9 @@ class TestTable(unittest.TestCase):
         response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-        client._data_stub.ReadRows.side_effect = [response_failure_iterator_1,
-                                                  response_failure_iterator_2,
-                                                  response_iterator]
+        client._table_data_client.bigtable_stub.ReadRows.side_effect = [
+            response_failure_iterator_1, response_failure_iterator_2,
+            response_iterator]
 
         rows = []
         for row in table.yield_rows(start_key=self.ROW_KEY_1,
@@ -562,32 +511,25 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_sample_row_keys(self):
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
-
-        # Create request_pb
-        request_pb = _SampleRowKeysRequestPB(table_name=self.TABLE_NAME)
 
         # Create response_iterator
         response_iterator = object()  # Just passed to a mock.
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub(response_iterator)
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.SampleRowKeys.side_effect = [[response_iterator]]
 
         # Create expected_result.
         expected_result = response_iterator
 
         # Perform the method and check the result.
         result = table.sample_row_keys()
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'SampleRowKeys',
-            (request_pb,),
-            {},
-        )])
+        self.assertEqual(result[0], expected_result)
 
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
@@ -603,6 +545,16 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     RETRYABLE_1 = StatusCode.DEADLINE_EXCEEDED.value[0]
     RETRYABLE_2 = StatusCode.ABORTED.value[0]
     NON_RETRYABLE = StatusCode.CANCELLED.value[0]
+
+    @mock.patch('google.auth.transport.grpc.secure_authorized_channel')
+    def _make_channel(self, secure_authorized_channel):
+        from google.api_core import grpc_helpers
+        target = 'example.com:443'
+
+        channel = grpc_helpers.create_channel(
+            target, credentials=mock.sentinel.credentials)
+
+        return channel
 
     @staticmethod
     def _get_target_class_for_worker():
@@ -622,6 +574,15 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def _make_table(self, *args, **kwargs):
         return self._get_target_class_for_table()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def _make_responses_statuses(self, codes):
         from google.rpc.status_pb2 import Status
 
@@ -630,7 +591,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def _make_responses(self, codes):
         import six
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
+        from google.cloud.bigtable_v2.proto.bigtable_pb2 import (
             MutateRowsResponse)
         from google.rpc.status_pb2 import Status
 
@@ -640,11 +601,13 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         return MutateRowsResponse(entries=entries)
 
     def test_callable_empty_rows(self):
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
-        worker = self._make_worker(table._instance._client, table.name, [])
+        worker = self._make_worker(client, table.name, [])
         statuses = worker()
 
         self.assertEqual(len(statuses), 0)
@@ -662,8 +625,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, retryable, non-retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -679,8 +644,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-        client._data_stub.MutateRows.return_value = [response]
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.return_value = [response]
 
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
         statuses = worker(retry=None)
@@ -688,7 +653,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
 
-        client._data_stub.MutateRows.assert_called_once()
+        client._table_data_client.bigtable_stub.MutateRows.assert_called_once()
         self.assertEqual(result, expected_result)
 
     def test_callable_retry(self):
@@ -706,8 +671,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, success, non-retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -724,8 +691,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response_2 = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-        client._data_stub.MutateRows.side_effect = [[response_1], [response_2]]
+        client._table_data_client.bigtable_stub.MutateRows.side_effect = [
+            [response_1], [response_2]]
 
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
@@ -734,10 +701,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
 
-        client._data_stub.MutateRows.assert_has_calls([
-            mock.call(mock.ANY),
-            mock.call(mock.ANY)])
-        self.assertEqual(client._data_stub.MutateRows.call_count, 2)
+        self.assertEqual(
+            client._table_data_client.bigtable_stub.MutateRows.call_count, 2)
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
@@ -755,8 +720,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - By the time deadline is reached, statuses should be
         #       [retryable, retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -767,8 +734,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.RETRYABLE_1, self.RETRYABLE_1])
 
         # Patch the stub used by the API method.
-        client._data_stub = mock.MagicMock()
-        client._data_stub.MutateRows.return_value = [response]
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.return_value = [response]
 
         retry = DEFAULT_RETRY.with_delay(
                 initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
@@ -778,22 +745,24 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         result = [status.code for status in statuses]
         expected_result = [self.RETRYABLE_1, self.RETRYABLE_1]
 
-        self.assertTrue(client._data_stub.MutateRows.call_count > 1)
+        self.assertTrue(
+            client._table_data_client.bigtable_stub.MutateRows.call_count > 1)
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_empty_rows(self):
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
-        worker = self._make_worker(table._instance._client, table.name, [])
+        worker = self._make_worker(client, table.name, [])
         statuses = worker._do_mutate_retryable_rows()
 
         self.assertEqual(len(statuses), 0)
 
     def test_do_mutate_retryable_rows(self):
         from google.cloud.bigtable.row import DirectRow
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 2 rows.
@@ -802,8 +771,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Expectation:
         #   - Expect [success, non-retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -814,10 +785,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.side_effect = [[response]]
 
-        worker = self._make_worker(
-            table._instance._client, table.name, [row_1, row_2])
+        worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
@@ -828,7 +799,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def test_do_mutate_retryable_rows_retry(self):
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 3 rows.
@@ -839,8 +809,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, retryable, non-retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -856,10 +828,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.side_effect = [[response]]
 
-        worker = self._make_worker(
-            table._instance._client, table.name, [row_1, row_2, row_3])
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
 
         with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows()
@@ -873,7 +845,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def test_do_mutate_retryable_rows_second_retry(self):
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 4 rows.
@@ -889,8 +860,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - Exception contains response whose index should be '3' even though
         #     only two rows were retried.
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -905,11 +878,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.RETRYABLE_1])
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.side_effect = [[response]]
 
-        worker = self._make_worker(
-            table._instance._client,
-            table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(client, table.name,
+                                   [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -930,7 +903,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_second_try(self):
         from google.cloud.bigtable.row import DirectRow
-        from tests.unit._testing import _FakeStub
 
         # Setup:
         #   - Mutate 4 rows.
@@ -942,8 +914,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - After second try:
         #       [success, non-retryable, non-retryable, success]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -958,11 +932,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.NON_RETRYABLE, self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.side_effect = [[response]]
 
-        worker = self._make_worker(
-            table._instance._client,
-            table.name, [row_1, row_2, row_3, row_4])
+        worker = self._make_worker(client, table.name,
+                                   [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses([
             self.SUCCESS,
             self.RETRYABLE_1,
@@ -990,8 +964,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Expectation:
         #   - After second try: [success, non-retryable]
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -999,8 +975,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        worker = self._make_worker(
-            table._instance._client, table.name, [row_1, row_2])
+        worker = self._make_worker(client, table.name, [row_1, row_2])
         worker.responses_statuses = self._make_responses_statuses(
             [self.SUCCESS, self.NON_RETRYABLE])
 
@@ -1013,10 +988,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_mismatch_num_responses(self):
         from google.cloud.bigtable.row import DirectRow
-        from tests.unit._testing import _FakeStub
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        channel = self._make_channel()
+        client = self._make_client(project='project-id', channel=channel,
+                                   admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
         row_1 = DirectRow(row_key=b'row_key', table=table)
@@ -1027,11 +1003,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.side_effect = [[response]]
 
-        worker = self._make_worker(
-            table._instance._client,
-            table.name, [row_1, row_2])
+        worker = self._make_worker(client, table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):
             worker._do_mutate_retryable_rows()
 
@@ -1128,43 +1103,15 @@ class Test__create_row_request(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
 
-def _CreateTableRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.CreateTableRequest(*args, **kw)
-
-
-def _CreateTableRequestSplitPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.CreateTableRequest.Split(*args, **kw)
-
-
-def _DeleteTableRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.DeleteTableRequest(*args, **kw)
-
-
-def _GetTableRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_table_admin_pb2 as table_admin_v2_pb2)
-
-    return table_admin_v2_pb2.GetTableRequest(*args, **kw)
-
-
 def _ReadRowsRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
 
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
 
     family_name = kw.pop('family_name')
@@ -1176,53 +1123,17 @@ def _ReadRowsResponseCellChunkPB(*args, **kw):
 
 
 def _ReadRowsResponsePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as messages_v2_pb2)
 
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
-def _SampleRowKeysRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
-
-
 def _mutate_rows_request_pb(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_v2.proto import (
         bigtable_pb2 as data_messages_v2_pb2)
 
     return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
-
-
-def _TablePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        table_pb2 as table_v2_pb2)
-
-    return table_v2_pb2.Table(*args, **kw)
-
-
-def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        table_pb2 as table_v2_pb2)
-
-    return table_v2_pb2.ColumnFamily(*args, **kw)
-
-
-class _Client(object):
-
-    data_stub = None
-    instance_stub = None
-    operations_stub = None
-    table_stub = None
-
-
-class _Instance(object):
-
-    def __init__(self, name, client=None):
-        self.name = name
-        self._client = client
 
 
 class _MockReadRowsIterator(object):
@@ -1282,3 +1193,17 @@ class _ReadRowsResponseV2(object):
     def __init__(self, chunks, last_scanned_row_key=''):
         self.chunks = chunks
         self.last_scanned_row_key = last_scanned_row_key
+
+
+def _TablePB(*args, **kw):
+    from google.cloud.bigtable_admin_v2.proto import (
+        table_pb2 as table_v2_pb2)
+
+    return table_v2_pb2.Table(*args, **kw)
+
+
+def _ColumnFamilyPB(*args, **kw):
+    from google.cloud.bigtable_admin_v2.proto import (
+        table_pb2 as table_v2_pb2)
+
+    return table_v2_pb2.ColumnFamily(*args, **kw)

@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.34.0
+
+### Implementation Changes
+
+- Lower the flow control defaults. (#5248)
+
+### New Features
+
+- A new implementation of the subscriber has been added. This is available as `SubscriberClient.subscribe_experimental`. In the next release, this will be replace the current `subscribe` method. If you use this, please report your
+findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)
+
+### Dependencies
+
+- Remove psutil dependency. (#5248)
+
+## 0.33.1
+
+### Implementation changes
+
+- Surface publish RPC errors back to the publish futures (#5124)
+- Make the pausable response iterator aware of the RPC state to prevent deadlock (#5108)
+- Properly handle graceful stop in request generator (#5097)
+
 ## 0.33.0
 
 ### Implementation changes

@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+from __future__ import absolute_import
 
+import datetime
+import unittest
+import mock
 
 PROJECT = 'my-project'
 
@@ -36,51 +39,57 @@ RESOURCE_LABELS2 = {
 METRIC_KIND = 'DELTA'
 VALUE_TYPE = 'DOUBLE'
 
-TS0 = '2016-04-06T22:05:00.042Z'
-TS1 = '2016-04-06T22:05:01.042Z'
-TS2 = '2016-04-06T22:05:02.042Z'
+TS0 = datetime.datetime(2016, 4, 6, 22, 5, 0, 42)
+TS1 = datetime.datetime(2016, 4, 6, 22, 5, 1, 42)
+TS2 = datetime.datetime(2016, 4, 6, 22, 5, 2, 42)
 
 
-class TestAligner(unittest.TestCase):
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.monitoring.query import Aligner
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
 
-        return Aligner
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
 
-    def test_one(self):
-        self.assertTrue(hasattr(self._get_target_class(), 'ALIGN_RATE'))
+        response = None
+        if self.channel_stub.responses:
+            response = self.channel_stub.responses.pop()
 
-    def test_names(self):
-        for name in self._get_target_class().__dict__:
-            if not name.startswith('_'):
-                self.assertEqual(getattr(self._get_target_class(), name), name)
+        if isinstance(response, Exception):
+            raise response
+
+        if response:
+            return response
 
 
-class TestReducer(unittest.TestCase):
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.monitoring.query import Reducer
+    def __init__(self, responses=[]):
+        from google.cloud.monitoring_v3.proto import metric_service_pb2
 
-        return Reducer
+        self.responses = responses
+        self.responses = [
+            metric_service_pb2.ListTimeSeriesResponse(**response)
+            for response in responses
+        ]
+        self.requests = []
 
-    def test_one(self):
-        self.assertTrue(hasattr(self._get_target_class(),
-                                'REDUCE_PERCENTILE_99'))
-
-    def test_names(self):
-        for name in self._get_target_class().__dict__:
-            if not name.startswith('_'):
-                self.assertEqual(getattr(self._get_target_class(), name), name)
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
 
 
 class TestQuery(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.monitoring.query import Query
+        from google.cloud.monitoring_v3.query import Query
 
         return Query
 
@@ -88,14 +97,23 @@ class TestQuery(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     @staticmethod
-    def _make_timestamp(value):
-        from google.cloud._helpers import _datetime_to_rfc3339
+    def _make_interval(end_time, start_time=None):
+        from google.cloud.monitoring_v3 import types
 
-        return _datetime_to_rfc3339(value)
+        interval = types.TimeInterval()
+        interval.end_time.FromDatetime(end_time)
+        if start_time is not None:
+            interval.start_time.FromDatetime(start_time)
+        return interval
 
     def test_constructor_minimal(self):
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client)
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
+        # Mock the API response
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+
+        query = self._make_one(client, PROJECT)
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type,
@@ -104,20 +122,21 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query._start_time)
         self.assertIsNone(query._end_time)
 
-        self.assertIsNone(query._per_series_aligner)
-        self.assertIsNone(query._alignment_period_seconds)
-        self.assertIsNone(query._cross_series_reducer)
+        self.assertEqual(query._per_series_aligner, 0)
+        self.assertEqual(query._alignment_period_seconds, 0)
+        self.assertEqual(query._cross_series_reducer, 0)
         self.assertEqual(query._group_by_fields, ())
 
     def test_constructor_maximal(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
 
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 30)
         DAYS, HOURS, MINUTES = 1, 2, 3
         T0 = T1 - datetime.timedelta(days=DAYS, hours=HOURS, minutes=MINUTES)
 
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE,
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE,
                                end_time=T1,
                                days=DAYS, hours=HOURS, minutes=MINUTES)
 
@@ -127,59 +146,71 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query._start_time, T0)
         self.assertEqual(query._end_time, T1)
 
-        self.assertIsNone(query._per_series_aligner)
-        self.assertIsNone(query._alignment_period_seconds)
-        self.assertIsNone(query._cross_series_reducer)
+        self.assertEqual(query._per_series_aligner, 0)
+        self.assertEqual(query._alignment_period_seconds, 0)
+        self.assertEqual(query._cross_series_reducer, 0)
         self.assertEqual(query._group_by_fields, ())
 
     def test_constructor_default_end_time(self):
-        import datetime
-        import mock
+        from google.cloud.monitoring_v3 import MetricServiceClient
 
         MINUTES = 5
-        NOW, T0, T1 = [
-            datetime.datetime(2016, 4, 7, 2, 30, 30),
-            datetime.datetime(2016, 4, 7, 2, 25, 0),
-            datetime.datetime(2016, 4, 7, 2, 30, 0),
-        ]
+        NOW = datetime.datetime(2016, 4, 7, 2, 30, 30)
+        T0 = datetime.datetime(2016, 4, 7, 2, 25, 0)
+        T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
-        client = _Client(project=PROJECT, connection=_Connection())
-        with mock.patch('google.cloud.monitoring.query._UTCNOW',
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        with mock.patch('google.cloud.monitoring_v3.query._UTCNOW',
                         new=lambda: NOW):
-            query = self._make_one(client, METRIC_TYPE, minutes=MINUTES)
+            query = self._make_one(
+                client, PROJECT, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)
         self.assertEqual(query._end_time, T1)
 
     def test_constructor_nonzero_duration_illegal(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
 
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 30)
-        client = _Client(project=PROJECT, connection=_Connection())
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
         with self.assertRaises(ValueError):
-            self._make_one(client, METRIC_TYPE, end_time=T1)
+            self._make_one(client, PROJECT, METRIC_TYPE, end_time=T1)
 
     def test_execution_without_interval_illegal(self):
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         with self.assertRaises(ValueError):
             list(query)
 
     def test_metric_type(self):
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         self.assertEqual(query.metric_type, METRIC_TYPE)
 
     def test_filter(self):
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         expected = 'metric.type = "{type}"'.format(type=METRIC_TYPE)
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_group(self):
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
         GROUP = '1234567'
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_group(GROUP)
         expected = (
             'metric.type = "{type}"'
@@ -188,9 +219,12 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_projects(self):
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
         PROJECT1, PROJECT2 = 'project-1', 'project-2'
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_projects(PROJECT1, PROJECT2)
         expected = (
             'metric.type = "{type}"'
@@ -199,9 +233,12 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_resources(self):
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
         ZONE_PREFIX = 'europe-'
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_resources(zone_prefix=ZONE_PREFIX)
         expected = (
             'metric.type = "{type}"'
@@ -210,9 +247,12 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_metrics(self):
+        from google.cloud.monitoring_v3 import MetricServiceClient
+
         INSTANCE = 'my-instance'
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_metrics(instance_name=INSTANCE)
         expected = (
             'metric.type = "{type}"'
@@ -221,66 +261,73 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filter, expected)
 
     def test_request_parameters_minimal(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
+        from google.cloud.monitoring_v3.gapic import enums
 
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(end_time=T1)
-        actual = list(query._build_query_params())
-        expected = [
-            ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-            ('interval.endTime', self._make_timestamp(T1)),
-        ]
+        actual = query._build_query_params()
+        expected = {
+            'name': u'projects/{}'.format(PROJECT),
+            'filter_': 'metric.type = "{type}"'.format(type=METRIC_TYPE),
+            'interval': self._make_interval(T1),
+            'view': enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
+        }
         self.assertEqual(actual, expected)
 
     def test_request_parameters_maximal(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
+        from google.cloud.monitoring_v3 import types
+        from google.cloud.monitoring_v3.gapic import enums
 
         T0 = datetime.datetime(2016, 4, 7, 2, 0, 0)
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
         ALIGNER = 'ALIGN_DELTA'
-        MINUTES, SECONDS, PERIOD = 1, 30, '90s'
+        MINUTES, SECONDS, PERIOD_IN_SECONDS = 1, 30, 90
 
         REDUCER = 'REDUCE_MEAN'
         FIELD1, FIELD2 = 'resource.zone', 'metric.instance_name'
 
         PAGE_SIZE = 100
-        PAGE_TOKEN = 'second-page-please'
 
-        client = _Client(project=PROJECT, connection=_Connection())
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub()
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         query = query.align(ALIGNER, minutes=MINUTES, seconds=SECONDS)
         query = query.reduce(REDUCER, FIELD1, FIELD2)
-        actual = list(query._build_query_params(headers_only=True,
-                                                page_size=PAGE_SIZE,
-                                                page_token=PAGE_TOKEN))
-        expected = [
-            ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-            ('interval.endTime', self._make_timestamp(T1)),
-            ('interval.startTime', self._make_timestamp(T0)),
-            ('aggregation.perSeriesAligner', ALIGNER),
-            ('aggregation.alignmentPeriod', PERIOD),
-            ('aggregation.crossSeriesReducer', REDUCER),
-            ('aggregation.groupByFields', FIELD1),
-            ('aggregation.groupByFields', FIELD2),
-            ('view', 'HEADERS'),
-            ('pageSize', PAGE_SIZE),
-            ('pageToken', PAGE_TOKEN),
-        ]
+        actual = query._build_query_params(headers_only=True,
+                                           page_size=PAGE_SIZE)
+        expected = {
+            'name': 'projects/%s' % PROJECT,
+            'filter_': 'metric.type = "{type}"'.format(type=METRIC_TYPE),
+            'interval': self._make_interval(T1, T0),
+            'aggregation': types.Aggregation(
+                per_series_aligner=ALIGNER,
+                alignment_period={'seconds': PERIOD_IN_SECONDS},
+                cross_series_reducer=REDUCER,
+                group_by_fields=[FIELD1, FIELD2],
+            ),
+            'view': enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS,
+            'page_size': PAGE_SIZE,
+        }
         self.assertEqual(actual, expected)
 
     def test_iteration(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
+        from google.cloud.monitoring_v3.gapic import enums
+        from google.cloud.monitoring_v3.proto import metric_service_pb2
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
 
-        INTERVAL1 = {'startTime': TS0, 'endTime': TS1}
-        INTERVAL2 = {'startTime': TS1, 'endTime': TS2}
+        INTERVAL1 = self._make_interval(TS1, TS0)
+        INTERVAL2 = self._make_interval(TS2, TS1)
 
         VALUE1 = 60  # seconds
         VALUE2 = 60.001  # seconds
@@ -288,29 +335,29 @@ class TestQuery(unittest.TestCase):
         SERIES1 = {
             'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
             'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
+            'metric_kind': METRIC_KIND,
+            'value_type': VALUE_TYPE,
             'points': [
-                {'interval': INTERVAL2, 'value': {'doubleValue': VALUE1}},
-                {'interval': INTERVAL1, 'value': {'doubleValue': VALUE1}},
+                {'interval': INTERVAL2, 'value': {'double_value': VALUE1}},
+                {'interval': INTERVAL1, 'value': {'double_value': VALUE1}},
             ],
         }
         SERIES2 = {
             'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
             'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
+            'metric_kind': METRIC_KIND,
+            'value_type': VALUE_TYPE,
             'points': [
-                {'interval': INTERVAL2, 'value': {'doubleValue': VALUE2}},
-                {'interval': INTERVAL1, 'value': {'doubleValue': VALUE2}},
+                {'interval': INTERVAL2, 'value': {'double_value': VALUE2}},
+                {'interval': INTERVAL1, 'value': {'double_value': VALUE2}},
             ],
         }
 
-        RESPONSE = {'timeSeries': [SERIES1, SERIES2]}
+        RESPONSE = {'time_series': [SERIES1, SERIES2], 'next_page_token': ''}
 
-        connection = _Connection(RESPONSE)
-        client = _Client(project=PROJECT, connection=connection)
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub(responses=[RESPONSE])
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -322,139 +369,53 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(series1.resource.labels, RESOURCE_LABELS)
         self.assertEqual(series2.resource.labels, RESOURCE_LABELS2)
 
-        self.assertEqual([p.value for p in series1.points], [VALUE1, VALUE1])
-        self.assertEqual([p.value for p in series2.points], [VALUE2, VALUE2])
-        self.assertEqual([p.end_time for p in series1.points], [TS1, TS2])
-        self.assertEqual([p.end_time for p in series2.points], [TS1, TS2])
+        self.assertEqual([p.value.double_value for p in series1.points],
+                         [VALUE1, VALUE1])
+        self.assertEqual([p.value.double_value for p in series2.points],
+                         [VALUE2, VALUE2])
+        self.assertEqual([p.interval for p in series1.points],
+                         [INTERVAL2, INTERVAL1])
+        self.assertEqual([p.interval for p in series2.points],
+                         [INTERVAL2, INTERVAL1])
 
-        expected_request = {
-            'method': 'GET',
-            'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
-            'query_params': [
-                ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', self._make_timestamp(T1)),
-                ('interval.startTime', self._make_timestamp(T0)),
-            ],
-        }
-
-        request, = connection._requested
+        expected_request = metric_service_pb2.ListTimeSeriesRequest(
+            name='projects/' + PROJECT,
+            filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
+            interval=self._make_interval(T1, T0),
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+        )
+        request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
 
-    def test_iteration_paged(self):
-        import copy
-        import datetime
-        from google.cloud.exceptions import NotFound
-
-        T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
-        T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
-
-        INTERVAL1 = {'startTime': TS0, 'endTime': TS1}
-        INTERVAL2 = {'startTime': TS1, 'endTime': TS2}
-
-        VALUE1 = 60  # seconds
-        VALUE2 = 60.001  # seconds
-
-        SERIES1 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
-            'points': [
-                {'interval': INTERVAL2, 'value': {'doubleValue': VALUE1}},
-                {'interval': INTERVAL1, 'value': {'doubleValue': VALUE1}},
-            ],
-        }
-        SERIES2_PART1 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
-            'points': [
-                {'interval': INTERVAL2, 'value': {'doubleValue': VALUE2}},
-            ],
-        }
-        SERIES2_PART2 = {
-            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
-            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
-            'points': [
-                {'interval': INTERVAL1, 'value': {'doubleValue': VALUE2}},
-            ],
-        }
-
-        TOKEN = 'second-page-please'
-        RESPONSE1 = {'timeSeries': [SERIES1, SERIES2_PART1],
-                     'nextPageToken': TOKEN}
-        RESPONSE2 = {'timeSeries': [SERIES2_PART2]}
-
-        connection = _Connection(RESPONSE1, RESPONSE2)
-        client = _Client(project=PROJECT, connection=connection)
-        query = self._make_one(client, METRIC_TYPE)
-        query = query.select_interval(start_time=T0, end_time=T1)
-        response = list(query)
-
-        self.assertEqual(len(response), 2)
-        series1, series2 = response
-
-        self.assertEqual(series1.metric.labels, METRIC_LABELS)
-        self.assertEqual(series2.metric.labels, METRIC_LABELS2)
-        self.assertEqual(series1.resource.labels, RESOURCE_LABELS)
-        self.assertEqual(series2.resource.labels, RESOURCE_LABELS2)
-
-        self.assertEqual([p.value for p in series1.points], [VALUE1, VALUE1])
-        self.assertEqual([p.value for p in series2.points], [VALUE2, VALUE2])
-        self.assertEqual([p.end_time for p in series1.points], [TS1, TS2])
-        self.assertEqual([p.end_time for p in series2.points], [TS1, TS2])
-
-        expected_request1 = {
-            'method': 'GET',
-            'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
-            'query_params': [
-                ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', self._make_timestamp(T1)),
-                ('interval.startTime', self._make_timestamp(T0)),
-            ],
-        }
-
-        expected_request2 = copy.deepcopy(expected_request1)
-        expected_request2['query_params'].append(('pageToken', TOKEN))
-
-        request1, request2 = connection._requested
-        self.assertEqual(request1, expected_request1)
-        self.assertEqual(request2, expected_request2)
-
-        with self.assertRaises(NotFound):
-            list(query)
-
     def test_iteration_empty(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
+        from google.cloud.monitoring_v3.gapic import enums
+        from google.cloud.monitoring_v3.proto import metric_service_pb2
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
 
-        connection = _Connection({})
-        client = _Client(project=PROJECT, connection=connection)
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub(responses=[{'next_page_token': ''}])
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
         self.assertEqual(len(response), 0)
 
-        expected_request = {
-            'method': 'GET',
-            'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
-            'query_params': [
-                ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', self._make_timestamp(T1)),
-                ('interval.startTime', self._make_timestamp(T0)),
-            ],
-        }
-        request, = connection._requested
+        expected_request = metric_service_pb2.ListTimeSeriesRequest(
+            name='projects/' + PROJECT,
+            filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
+            interval=self._make_interval(T1, T0),
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+        )
+        request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
 
     def test_iteration_headers_only(self):
-        import datetime
+        from google.cloud.monitoring_v3 import MetricServiceClient
+        from google.cloud.monitoring_v3.gapic import enums
+        from google.cloud.monitoring_v3.proto import metric_service_pb2
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
@@ -462,21 +423,21 @@ class TestQuery(unittest.TestCase):
         SERIES1 = {
             'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
             'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
+            'metric_kind': METRIC_KIND,
+            'value_type': VALUE_TYPE,
         }
         SERIES2 = {
             'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
             'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
-            'metricKind': METRIC_KIND,
-            'valueType': VALUE_TYPE,
+            'metric_kind': METRIC_KIND,
+            'value_type': VALUE_TYPE,
         }
 
-        RESPONSE = {'timeSeries': [SERIES1, SERIES2]}
+        RESPONSE = {'time_series': [SERIES1, SERIES2], 'next_page_token': ''}
 
-        connection = _Connection(RESPONSE)
-        client = _Client(project=PROJECT, connection=connection)
-        query = self._make_one(client, METRIC_TYPE)
+        channel = ChannelStub(responses=[RESPONSE])
+        client = MetricServiceClient(channel=channel)
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query.iter(headers_only=True))
 
@@ -488,21 +449,16 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(series1.resource.labels, RESOURCE_LABELS)
         self.assertEqual(series2.resource.labels, RESOURCE_LABELS2)
 
-        self.assertEqual(series1.points, [])
-        self.assertEqual(series2.points, [])
+        self.assertFalse(len(series1.points))
+        self.assertFalse(len(series2.points))
 
-        expected_request = {
-            'method': 'GET',
-            'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
-            'query_params': [
-                ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', self._make_timestamp(T1)),
-                ('interval.startTime', self._make_timestamp(T0)),
-                ('view', 'HEADERS'),
-            ],
-        }
-
-        request, = connection._requested
+        expected_request = metric_service_pb2.ListTimeSeriesRequest(
+            name='projects/' + PROJECT,
+            filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
+            interval=self._make_interval(T1, T0),
+            view=enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+        )
+        request = channel.requests[0][1]
         self.assertEqual(request, expected_request)
 
 
@@ -510,7 +466,7 @@ class Test_Filter(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.monitoring.query import _Filter
+        from google.cloud.monitoring_v3.query import _Filter
 
         return _Filter
 
@@ -545,7 +501,7 @@ class Test_Filter(unittest.TestCase):
 class Test__build_label_filter(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
-        from google.cloud.monitoring.query import _build_label_filter
+        from google.cloud.monitoring_v3.query import _build_label_filter
 
         return _build_label_filter(*args, **kwargs)
 
@@ -633,26 +589,3 @@ class Test__build_label_filter(unittest.TestCase):
         actual = self._call_fut('resource', resource_type_suffix='-foo')
         expected = 'resource.type = ends_with("-foo")'
         self.assertEqual(actual, expected)
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = list(responses)
-        self._requested = []
-
-    def api_request(self, **kwargs):
-        from google.cloud.exceptions import NotFound
-
-        self._requested.append(kwargs)
-        try:
-            return self._responses.pop(0)
-        except IndexError:
-            raise NotFound('miss')
-
-
-class _Client(object):
-
-    def __init__(self, project, connection):
-        self.project = project
-        self._connection = connection

@@ -19,9 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1p2beta1/proto/geometry.proto',
   package='google.cloud.vision.v1p2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n2google/cloud/vision_v1p2beta1/proto/geometry.proto\x12\x1dgoogle.cloud.vision.v1p2beta1\"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"G\n\x0c\x42oundingPoly\x12\x37\n\x08vertices\x18\x01 \x03(\x0b\x32%.google.cloud.vision.v1p2beta1.Vertex\"+\n\x08Position\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x42|\n!com.google.cloud.vision.v1p2beta1B\rGeometryProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n2google/cloud/vision_v1p2beta1/proto/geometry.proto\x12\x1dgoogle.cloud.vision.v1p2beta1\"\x1e\n\x06Vertex\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"\x95\x01\n\x0c\x42oundingPoly\x12\x37\n\x08vertices\x18\x01 \x03(\x0b\x32%.google.cloud.vision.v1p2beta1.Vertex\x12L\n\x13normalized_vertices\x18\x02 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.NormalizedVertex\"+\n\x08Position\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x42|\n!com.google.cloud.vision.v1p2beta1B\rGeometryProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\xf8\x01\x01\x62\x06proto3')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -39,14 +38,14 @@ _VERTEX = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='y', full_name='google.cloud.vision.v1p2beta1.Vertex.y', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -64,20 +63,27 @@ _VERTEX = _descriptor.Descriptor(
 )
 
 
-_BOUNDINGPOLY = _descriptor.Descriptor(
-  name='BoundingPoly',
-  full_name='google.cloud.vision.v1p2beta1.BoundingPoly',
+_NORMALIZEDVERTEX = _descriptor.Descriptor(
+  name='NormalizedVertex',
+  full_name='google.cloud.vision.v1p2beta1.NormalizedVertex',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='vertices', full_name='google.cloud.vision.v1p2beta1.BoundingPoly.vertices', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='x', full_name='google.cloud.vision.v1p2beta1.NormalizedVertex.x', index=0,
+      number=1, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='google.cloud.vision.v1p2beta1.NormalizedVertex.y', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -91,7 +97,45 @@ _BOUNDINGPOLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=117,
-  serialized_end=188,
+  serialized_end=157,
+)
+
+
+_BOUNDINGPOLY = _descriptor.Descriptor(
+  name='BoundingPoly',
+  full_name='google.cloud.vision.v1p2beta1.BoundingPoly',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='vertices', full_name='google.cloud.vision.v1p2beta1.BoundingPoly.vertices', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='normalized_vertices', full_name='google.cloud.vision.v1p2beta1.BoundingPoly.normalized_vertices', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=160,
+  serialized_end=309,
 )
 
 
@@ -108,21 +152,21 @@ _POSITION = _descriptor.Descriptor(
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='y', full_name='google.cloud.vision.v1p2beta1.Position.y', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='z', full_name='google.cloud.vision.v1p2beta1.Position.z', index=2,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -135,14 +179,17 @@ _POSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=190,
-  serialized_end=233,
+  serialized_start=311,
+  serialized_end=354,
 )
 
 _BOUNDINGPOLY.fields_by_name['vertices'].message_type = _VERTEX
+_BOUNDINGPOLY.fields_by_name['normalized_vertices'].message_type = _NORMALIZEDVERTEX
 DESCRIPTOR.message_types_by_name['Vertex'] = _VERTEX
+DESCRIPTOR.message_types_by_name['NormalizedVertex'] = _NORMALIZEDVERTEX
 DESCRIPTOR.message_types_by_name['BoundingPoly'] = _BOUNDINGPOLY
 DESCRIPTOR.message_types_by_name['Position'] = _POSITION
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Vertex = _reflection.GeneratedProtocolMessageType('Vertex', (_message.Message,), dict(
   DESCRIPTOR = _VERTEX,
@@ -159,6 +206,21 @@ Vertex = _reflection.GeneratedProtocolMessageType('Vertex', (_message.Message,),
   ))
 _sym_db.RegisterMessage(Vertex)
 
+NormalizedVertex = _reflection.GeneratedProtocolMessageType('NormalizedVertex', (_message.Message,), dict(
+  DESCRIPTOR = _NORMALIZEDVERTEX,
+  __module__ = 'google.cloud.vision_v1p2beta1.proto.geometry_pb2'
+  ,
+  __doc__ = """X coordinate.
+  
+  
+  Attributes:
+      y:
+          Y coordinate.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p2beta1.NormalizedVertex)
+  ))
+_sym_db.RegisterMessage(NormalizedVertex)
+
 BoundingPoly = _reflection.GeneratedProtocolMessageType('BoundingPoly', (_message.Message,), dict(
   DESCRIPTOR = _BOUNDINGPOLY,
   __module__ = 'google.cloud.vision_v1p2beta1.proto.geometry_pb2'
@@ -169,6 +231,8 @@ BoundingPoly = _reflection.GeneratedProtocolMessageType('BoundingPoly', (_messag
   Attributes:
       vertices:
           The bounding polygon vertices.
+      normalized_vertices:
+          The bounding polygon normalized vertices.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p2beta1.BoundingPoly)
   ))
@@ -198,14 +262,4 @@ _sym_db.RegisterMessage(Position)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.cloud.vision.v1p2beta1B\rGeometryProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\370\001\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

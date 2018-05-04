@@ -23,7 +23,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n7google/cloud/vision_v1p2beta1/proto/web_detection.proto\x12\x1dgoogle.cloud.vision.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\"\x8c\x07\n\x0cWebDetection\x12K\n\x0cweb_entities\x18\x01 \x03(\x0b\x32\x35.google.cloud.vision.v1p2beta1.WebDetection.WebEntity\x12R\n\x14\x66ull_matching_images\x18\x02 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebImage\x12U\n\x17partial_matching_images\x18\x03 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebImage\x12W\n\x1apages_with_matching_images\x18\x04 \x03(\x0b\x32\x33.google.cloud.vision.v1p2beta1.WebDetection.WebPage\x12U\n\x17visually_similar_images\x18\x06 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebImage\x12O\n\x11\x62\x65st_guess_labels\x18\x08 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebLabel\x1a\x42\n\tWebEntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x1a&\n\x08WebImage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x1a\xe4\x01\n\x07WebPage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x12\n\npage_title\x18\x03 \x01(\t\x12R\n\x14\x66ull_matching_images\x18\x04 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebImage\x12U\n\x17partial_matching_images\x18\x05 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.WebDetection.WebImage\x1a\x30\n\x08WebLabel\x12\r\n\x05label\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\tB\x80\x01\n!com.google.cloud.vision.v1p2beta1B\x11WebDetectionProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -41,21 +40,21 @@ _WEBDETECTION_WEBENTITY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebEntity.score', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebEntity.description', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -85,14 +84,14 @@ _WEBDETECTION_WEBIMAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebImage.score', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -122,35 +121,35 @@ _WEBDETECTION_WEBPAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebPage.score', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_title', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebPage.page_title', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='full_matching_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebPage.full_matching_images', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partial_matching_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebPage.partial_matching_images', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -180,14 +179,14 @@ _WEBDETECTION_WEBLABEL = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_code', full_name='google.cloud.vision.v1p2beta1.WebDetection.WebLabel.language_code', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -217,42 +216,42 @@ _WEBDETECTION = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='full_matching_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.full_matching_images', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='partial_matching_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.partial_matching_images', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pages_with_matching_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.pages_with_matching_images', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='visually_similar_images', full_name='google.cloud.vision.v1p2beta1.WebDetection.visually_similar_images', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='best_guess_labels', full_name='google.cloud.vision.v1p2beta1.WebDetection.best_guess_labels', index=5,
       number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -282,6 +281,7 @@ _WEBDETECTION.fields_by_name['pages_with_matching_images'].message_type = _WEBDE
 _WEBDETECTION.fields_by_name['visually_similar_images'].message_type = _WEBDETECTION_WEBIMAGE
 _WEBDETECTION.fields_by_name['best_guess_labels'].message_type = _WEBDETECTION_WEBLABEL
 DESCRIPTOR.message_types_by_name['WebDetection'] = _WEBDETECTION
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_message.Message,), dict(
 
@@ -389,8 +389,7 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
       visually_similar_images:
           The visually similar image results.
       best_guess_labels:
-          The service's best guess as to the topic of the request image.
-          Inferred from similar images on the open web.
+          Best guess text labels for the request image.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p2beta1.WebDetection)
   ))
@@ -403,14 +402,4 @@ _sym_db.RegisterMessage(WebDetection.WebLabel)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.cloud.vision.v1p2beta1B\021WebDetectionProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\370\001\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

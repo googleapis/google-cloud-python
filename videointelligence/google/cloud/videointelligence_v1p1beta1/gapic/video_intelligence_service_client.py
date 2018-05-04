@@ -25,6 +25,7 @@ import google.api_core.operations_v1
 from google.cloud.videointelligence_v1p1beta1.gapic import enums
 from google.cloud.videointelligence_v1p1beta1.gapic import video_intelligence_service_client_config
 from google.cloud.videointelligence_v1p1beta1.proto import video_intelligence_pb2
+from google.cloud.videointelligence_v1p1beta1.proto import video_intelligence_pb2_grpc
 from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -86,7 +87,7 @@ class VideoIntelligenceServiceClient(object):
 
         # Create the gRPC stubs.
         self.video_intelligence_service_stub = (
-            video_intelligence_pb2.VideoIntelligenceServiceStub(channel))
+            video_intelligence_pb2_grpc.VideoIntelligenceServiceStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.

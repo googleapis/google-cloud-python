@@ -249,6 +249,24 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
 
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            type_=table.TimePartitioningType.DAY, field='name')
+        config = self._get_target_class()()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+        self.assertEqual(
+            config.time_partitioning.type_,
+            table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
+
     def test_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
@@ -447,6 +465,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.source_format)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.time_partitioning)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -542,8 +561,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                         'reason': 'REASON'}
 
         client = _make_client(project=self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         job._properties['etag'] = 'ETAG'
         job._properties['id'] = FULL_JOB_ID
         job._properties['selfLink'] = URL
@@ -872,8 +891,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         self.assertFalse(job.exists())
 
@@ -888,8 +907,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -920,8 +939,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESOURCE = self._make_resource()
         conn = _make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.reload()
 
@@ -938,8 +957,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.reload(client=client2)
 
@@ -976,8 +995,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESPONSE = {'job': RESOURCE}
         conn = _make_connection(RESPONSE)
         client = _make_client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
 
         job.cancel()
 
@@ -995,8 +1014,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection(RESPONSE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        table = _Table()
-        job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
+        job = self._make_one(
+            self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
 
         job.cancel(client=client2)
 
@@ -1567,11 +1586,15 @@ class TestExtractJob(unittest.TestCase, _Base):
             self.assertIsNone(job.print_header)
 
     def test_ctor(self):
+        from google.cloud.bigquery.table import Table
+
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
-        self.assertEqual(job.source, source)
+        source = Table(self.TABLE_REF)
+        job = self._make_one(
+            self.JOB_ID, source, [self.DESTINATION_URI], client)
+        self.assertEqual(job.source.project, self.PROJECT)
+        self.assertEqual(job.source.dataset_id, self.DS_ID)
+        self.assertEqual(job.source.table_id, self.TABLE_ID)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -1590,9 +1613,8 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_destination_uri_file_counts(self):
         file_counts = 23
         client = _make_client(project=self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
         self.assertIsNone(job.destination_uri_file_counts)
 
         statistics = job._properties['statistics'] = {}
@@ -1601,8 +1623,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         extract_stats = statistics['extract'] = {}
         self.assertIsNone(job.destination_uri_file_counts)
 
-        extract_stats['destinationUriFileCounts'] = str(file_counts)
-        self.assertEqual(job.destination_uri_file_counts, file_counts)
+        extract_stats['destinationUriFileCounts'] = [str(file_counts)]
+        self.assertEqual(job.destination_uri_file_counts, [file_counts])
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -1754,9 +1776,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client)
 
         self.assertFalse(job.exists())
 
@@ -1771,9 +1792,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
-                             client1)
+        job = self._make_one(
+            self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -1839,6 +1859,24 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         config.destination = None
         self.assertIsNone(config.default_dataset)
         self.assertIsNone(config.destination)
+
+    def test_time_partitioning(self):
+        from google.cloud.bigquery import table
+
+        time_partitioning = table.TimePartitioning(
+            type_=table.TimePartitioningType.DAY, field='name')
+        config = self._make_one()
+        config.time_partitioning = time_partitioning
+        # TimePartitioning should be configurable after assigning
+        time_partitioning.expiration_ms = 10000
+
+        self.assertEqual(
+            config.time_partitioning.type_, table.TimePartitioningType.DAY)
+        self.assertEqual(config.time_partitioning.field, 'name')
+        self.assertEqual(config.time_partitioning.expiration_ms, 10000)
+
+        config.time_partitioning = None
+        self.assertIsNone(config.time_partitioning)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -2117,6 +2155,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.time_partitioning)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -3337,21 +3376,3 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
-
-
-class _Table(object):
-
-    def __init__(self, table_id=None):
-        self._table_id = table_id
-
-    @property
-    def table_id(self):
-        return TestLoadJob.TABLE_ID
-
-    @property
-    def project(self):
-        return TestLoadJob.PROJECT
-
-    @property
-    def dataset_id(self):
-        return TestLoadJob.DS_ID

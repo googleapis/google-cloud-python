@@ -94,6 +94,9 @@ _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
 
+_DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
+_MAX_MULTIPART_SIZE = 8388608  # 8 MB
+
 
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
@@ -109,8 +112,9 @@ class Blob(_PropertyMixin):
     :param bucket: The bucket to which this blob belongs.
 
     :type chunk_size: int
-    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
-                       This must be a multiple of 256 KB per the API
+
+    :param chunk_size: The size of a chunk of data whenever iterating (in
+                       bytes). This must be a multiple of 256 KB per the API
                        specification.
 
     :type encryption_key: bytes
@@ -120,7 +124,6 @@ class Blob(_PropertyMixin):
     """
 
     _chunk_size = None  # Default value for each instance.
-
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
@@ -175,7 +178,9 @@ class Blob(_PropertyMixin):
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
                  multiple of 256 KB.
         """
-        if value is not None and value % self._CHUNK_SIZE_MULTIPLE != 0:
+        if value is not None and \
+                value > 0 and \
+                value % self._CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError('Chunk size must be a multiple of %d.' % (
                 self._CHUNK_SIZE_MULTIPLE,))
         self._chunk_size = value
@@ -424,7 +429,8 @@ class Blob(_PropertyMixin):
 
         return _add_query_parameters(base_url, name_value_pairs)
 
-    def _do_download(self, transport, file_obj, download_url, headers, start=None, end=None):
+    def _do_download(self, transport, file_obj, download_url, headers,
+                     start=None, end=None):
         """Perform a download without any error handling.
 
         This is intended to be called by :meth:`download_to_file` so it can
@@ -444,18 +450,21 @@ class Blob(_PropertyMixin):
         :type headers: dict
         :param headers: Optional headers to be sent with the request(s).
 
-        :type start: int 
+        :type start: int
         :param start: Optional, the first byte in a range to be downloaded.
 
-        :type end: int 
+        :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
         """
         if self.chunk_size is None:
-            download = Download(download_url, stream=file_obj, headers=headers, start=start, end=end)
+            download = Download(
+                download_url, stream=file_obj, headers=headers,
+                start=start, end=end)
             download.consume(transport)
         else:
             download = ChunkedDownload(
-                download_url, self.chunk_size, file_obj, headers=headers, start=start if start else 0, end=end)
+                download_url, self.chunk_size, file_obj, headers=headers,
+                start=start if start else 0, end=end)
 
             while not download.finished:
                 download.consume_next_chunk(transport)
@@ -508,11 +517,13 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._do_download(transport, file_obj, download_url, headers, start, end)
+            self._do_download(
+                transport, file_obj, download_url, headers, start, end)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def download_to_filename(self, filename, client=None, start=None, end=None):
+    def download_to_filename(self, filename, client=None,
+                             start=None, end=None):
         """Download the contents of this blob into a named file.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -536,8 +547,9 @@ class Blob(_PropertyMixin):
         """
         try:
             with open(filename, 'wb') as file_obj:
-                self.download_to_file(file_obj, client=client, start=start, end=end)
-        except resumable_media.DataCorruption as exc:
+                self.download_to_file(
+                    file_obj, client=client, start=start, end=end)
+        except resumable_media.DataCorruption:
             # Delete the corrupt downloaded file.
             os.remove(filename)
             raise
@@ -569,7 +581,8 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client, start=start, end=end)
+        self.download_to_file(
+            string_buffer, client=client, start=start, end=end)
         return string_buffer.getvalue()
 
     def _get_content_type(self, content_type, filename=None):
@@ -660,8 +673,6 @@ class Blob(_PropertyMixin):
     def _do_multipart_upload(self, client, stream, content_type,
                              size, num_retries, predefined_acl):
         """Perform a multipart upload.
-
-        Assumes ``chunk_size`` is :data:`None` on the current blob.
 
         The content type of the upload will be determined in order
         of precedence:
@@ -787,6 +798,8 @@ class Blob(_PropertyMixin):
         """
         if chunk_size is None:
             chunk_size = self.chunk_size
+            if chunk_size is None:
+                chunk_size = _DEFAULT_CHUNKSIZE
 
         transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
@@ -868,9 +881,9 @@ class Blob(_PropertyMixin):
                    size, num_retries, predefined_acl):
         """Determine an upload strategy and then perform the upload.
 
-        If the current blob has a ``chunk_size`` set, then a resumable upload
-        will be used, otherwise the content and the metadata will be uploaded
-        in a single multipart upload request.
+        If the size of the data to be uploaded exceeds 5 MB a resumable media
+        request will be used, otherwise the content and the metadata will be
+        uploaded in a single multipart upload request.
 
         The content type of the upload will be determined in order
         of precedence:
@@ -906,7 +919,7 @@ class Blob(_PropertyMixin):
                   **only** response in the multipart case and it will be the
                   **final** response in the resumable case.
         """
-        if self.chunk_size is None:
+        if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type,
                 size, num_retries, predefined_acl)
@@ -1183,8 +1196,13 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1215,8 +1233,13 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1253,8 +1276,13 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+        .. note:
+
+           Blob- / object-level IAM support does not yet exist and methods
+           currently call an internal ACL backend not providing any utility
+           beyond the blob's :attr:`acl` at this time. The API may be enhanced
+           in the future and is currently undocumented. Use :attr:`acl` for
+           managing object access control.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.

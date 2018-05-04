@@ -285,5 +285,6 @@ An API and type reference is provided for the v1.1 beta also:
 For a list of all ``google-cloud-language`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-  releases
+  changelog

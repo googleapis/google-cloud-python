@@ -126,18 +126,35 @@ Example with :meth:`~google.cloud.vision.ImageAnnotatorClient.logo_detection`:
 API Reference
 *************
 
+This package includes clients for multiple versions of the Vision
+API. By default, you will get ``v1``, the latest stable version.
+
 .. toctree::
   :maxdepth: 2
 
   gapic/v1/api
   gapic/v1/types
 
-********
-Releases
-********
+A new beta release with additional features over the current stable version,
+spelled ``v1p2beta1``, is provided to allow you to use these new features.
+These are expected to move into the stable release soon; until then, the
+usual beta admonishment (changes are possible, etc.) applies.
+
+An API and type reference is provided for this beta:
+
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v1p2beta1/api
+    gapic/v1p2beta1/types
+
+*********
+Changelog
+*********
 
 For a list of all ``google-cloud-vision`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-  releases
+  changelog

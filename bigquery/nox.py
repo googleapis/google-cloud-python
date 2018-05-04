@@ -35,11 +35,19 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', 'ipython', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+
+    # Pandas does not support Python 3.4
     if session.interpreter == 'python3.4':
         session.install('-e', '.')
     else:
         session.install('-e', '.[pandas]')
+
+    # IPython does not support Python 2 after version 5.x
+    if session.interpreter == 'python2.7':
+        session.install('ipython==5.5')
+    else:
+        session.install('ipython')
 
     # Run py.test against the unit tests.
     session.run(
@@ -87,12 +95,18 @@ def system(session, py):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('mock', 'pytest', 'ipython', *LOCAL_DEPS)
+    session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install(
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
     session.install('-e', '.[pandas]')
+
+    # IPython does not support Python 2 after version 5.x
+    if session.interpreter == 'python2.7':
+        session.install('ipython==5.5')
+    else:
+        session.install('ipython')
 
     # Run py.test against the system tests.
     session.run(
@@ -125,12 +139,11 @@ def snippets(session, py):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('-e', '.')
+    session.install('-e', '.[pandas]')
 
     # Run py.test against the system tests.
     session.run(
         'py.test',
-        '--quiet',
         os.path.join(os.pardir, 'docs', 'bigquery', 'snippets.py'),
         *session.posargs
     )

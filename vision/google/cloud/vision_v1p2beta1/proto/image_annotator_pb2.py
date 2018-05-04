@@ -29,10 +29,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1p2beta1/proto/image_annotator.proto',
   package='google.cloud.vision.v1p2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n9google/cloud/vision_v1p2beta1/proto/image_annotator.proto\x12\x1dgoogle.cloud.vision.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/vision_v1p2beta1/proto/geometry.proto\x1a\x39google/cloud/vision_v1p2beta1/proto/text_annotation.proto\x1a\x37google/cloud/vision_v1p2beta1/proto/web_detection.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x17google/type/color.proto\x1a\x18google/type/latlng.proto\"\xe1\x02\n\x07\x46\x65\x61ture\x12\x39\n\x04type\x18\x01 \x01(\x0e\x32+.google.cloud.vision.v1p2beta1.Feature.Type\x12\x13\n\x0bmax_results\x18\x02 \x01(\x05\x12\r\n\x05model\x18\x03 \x01(\t\"\xf6\x01\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x41\x43\x45_DETECTION\x10\x01\x12\x16\n\x12LANDMARK_DETECTION\x10\x02\x12\x12\n\x0eLOGO_DETECTION\x10\x03\x12\x13\n\x0fLABEL_DETECTION\x10\x04\x12\x12\n\x0eTEXT_DETECTION\x10\x05\x12\x1b\n\x17\x44OCUMENT_TEXT_DETECTION\x10\x0b\x12\x19\n\x15SAFE_SEARCH_DETECTION\x10\x06\x12\x14\n\x10IMAGE_PROPERTIES\x10\x07\x12\x0e\n\nCROP_HINTS\x10\t\x12\x11\n\rWEB_DETECTION\x10\n\"7\n\x0bImageSource\x12\x15\n\rgcs_image_uri\x18\x01 \x01(\t\x12\x11\n\timage_uri\x18\x02 \x01(\t\"T\n\x05Image\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12:\n\x06source\x18\x02 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.ImageSource\"\x9b\x0e\n\x0e\x46\x61\x63\x65\x41nnotation\x12\x42\n\rbounding_poly\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12\x45\n\x10\x66\x64_bounding_poly\x18\x02 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12I\n\tlandmarks\x18\x03 \x03(\x0b\x32\x36.google.cloud.vision.v1p2beta1.FaceAnnotation.Landmark\x12\x12\n\nroll_angle\x18\x04 \x01(\x02\x12\x11\n\tpan_angle\x18\x05 \x01(\x02\x12\x12\n\ntilt_angle\x18\x06 \x01(\x02\x12\x1c\n\x14\x64\x65tection_confidence\x18\x07 \x01(\x02\x12\x1e\n\x16landmarking_confidence\x18\x08 \x01(\x02\x12\x41\n\x0ejoy_likelihood\x18\t \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x44\n\x11sorrow_likelihood\x18\n \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x43\n\x10\x61nger_likelihood\x18\x0b \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x46\n\x13surprise_likelihood\x18\x0c \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12K\n\x18under_exposed_likelihood\x18\r \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x45\n\x12\x62lurred_likelihood\x18\x0e \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x46\n\x13headwear_likelihood\x18\x0f \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x1a\xc7\x07\n\x08Landmark\x12I\n\x04type\x18\x03 \x01(\x0e\x32;.google.cloud.vision.v1p2beta1.FaceAnnotation.Landmark.Type\x12\x39\n\x08position\x18\x04 \x01(\x0b\x32\'.google.cloud.vision.v1p2beta1.Position\"\xb4\x06\n\x04Type\x12\x14\n\x10UNKNOWN_LANDMARK\x10\x00\x12\x0c\n\x08LEFT_EYE\x10\x01\x12\r\n\tRIGHT_EYE\x10\x02\x12\x18\n\x14LEFT_OF_LEFT_EYEBROW\x10\x03\x12\x19\n\x15RIGHT_OF_LEFT_EYEBROW\x10\x04\x12\x19\n\x15LEFT_OF_RIGHT_EYEBROW\x10\x05\x12\x1a\n\x16RIGHT_OF_RIGHT_EYEBROW\x10\x06\x12\x19\n\x15MIDPOINT_BETWEEN_EYES\x10\x07\x12\x0c\n\x08NOSE_TIP\x10\x08\x12\r\n\tUPPER_LIP\x10\t\x12\r\n\tLOWER_LIP\x10\n\x12\x0e\n\nMOUTH_LEFT\x10\x0b\x12\x0f\n\x0bMOUTH_RIGHT\x10\x0c\x12\x10\n\x0cMOUTH_CENTER\x10\r\x12\x15\n\x11NOSE_BOTTOM_RIGHT\x10\x0e\x12\x14\n\x10NOSE_BOTTOM_LEFT\x10\x0f\x12\x16\n\x12NOSE_BOTTOM_CENTER\x10\x10\x12\x19\n\x15LEFT_EYE_TOP_BOUNDARY\x10\x11\x12\x19\n\x15LEFT_EYE_RIGHT_CORNER\x10\x12\x12\x1c\n\x18LEFT_EYE_BOTTOM_BOUNDARY\x10\x13\x12\x18\n\x14LEFT_EYE_LEFT_CORNER\x10\x14\x12\x1a\n\x16RIGHT_EYE_TOP_BOUNDARY\x10\x15\x12\x1a\n\x16RIGHT_EYE_RIGHT_CORNER\x10\x16\x12\x1d\n\x19RIGHT_EYE_BOTTOM_BOUNDARY\x10\x17\x12\x19\n\x15RIGHT_EYE_LEFT_CORNER\x10\x18\x12\x1f\n\x1bLEFT_EYEBROW_UPPER_MIDPOINT\x10\x19\x12 \n\x1cRIGHT_EYEBROW_UPPER_MIDPOINT\x10\x1a\x12\x14\n\x10LEFT_EAR_TRAGION\x10\x1b\x12\x15\n\x11RIGHT_EAR_TRAGION\x10\x1c\x12\x12\n\x0eLEFT_EYE_PUPIL\x10\x1d\x12\x13\n\x0fRIGHT_EYE_PUPIL\x10\x1e\x12\x15\n\x11\x46OREHEAD_GLABELLA\x10\x1f\x12\x11\n\rCHIN_GNATHION\x10 \x12\x14\n\x10\x43HIN_LEFT_GONION\x10!\x12\x15\n\x11\x43HIN_RIGHT_GONION\x10\"\"4\n\x0cLocationInfo\x12$\n\x07lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\"=\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x14\n\x0cuint64_value\x18\x03 \x01(\x04\"\xbc\x02\n\x10\x45ntityAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x0e\n\x06locale\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\x12\n\ntopicality\x18\x06 \x01(\x02\x12\x42\n\rbounding_poly\x18\x07 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12>\n\tlocations\x18\x08 \x03(\x0b\x32+.google.cloud.vision.v1p2beta1.LocationInfo\x12;\n\nproperties\x18\t \x03(\x0b\x32\'.google.cloud.vision.v1p2beta1.Property\"\xbc\x02\n\x14SafeSearchAnnotation\x12\x38\n\x05\x61\x64ult\x18\x01 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x38\n\x05spoof\x18\x02 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12:\n\x07medical\x18\x03 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12;\n\x08violence\x18\x04 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x37\n\x04racy\x18\t \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\"a\n\x0bLatLongRect\x12(\n\x0bmin_lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\x12(\n\x0bmax_lat_lng\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\"U\n\tColorInfo\x12!\n\x05\x63olor\x18\x01 \x01(\x0b\x32\x12.google.type.Color\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x16\n\x0epixel_fraction\x18\x03 \x01(\x02\"T\n\x18\x44ominantColorsAnnotation\x12\x38\n\x06\x63olors\x18\x01 \x03(\x0b\x32(.google.cloud.vision.v1p2beta1.ColorInfo\"c\n\x0fImageProperties\x12P\n\x0f\x64ominant_colors\x18\x01 \x01(\x0b\x32\x37.google.cloud.vision.v1p2beta1.DominantColorsAnnotation\"\x7f\n\x08\x43ropHint\x12\x42\n\rbounding_poly\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x1b\n\x13importance_fraction\x18\x03 \x01(\x02\"R\n\x13\x43ropHintsAnnotation\x12;\n\ncrop_hints\x18\x01 \x03(\x0b\x32\'.google.cloud.vision.v1p2beta1.CropHint\"(\n\x0f\x43ropHintsParams\x12\x15\n\raspect_ratios\x18\x01 \x03(\x02\"1\n\x12WebDetectionParams\x12\x1b\n\x13include_geo_results\x18\x02 \x01(\x08\"\x85\x02\n\x0cImageContext\x12\x41\n\rlat_long_rect\x18\x01 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.LatLongRect\x12\x16\n\x0elanguage_hints\x18\x02 \x03(\t\x12I\n\x11\x63rop_hints_params\x18\x04 \x01(\x0b\x32..google.cloud.vision.v1p2beta1.CropHintsParams\x12O\n\x14web_detection_params\x18\x06 \x01(\x0b\x32\x31.google.cloud.vision.v1p2beta1.WebDetectionParams\"\xc9\x01\n\x14\x41nnotateImageRequest\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1p2beta1.Image\x12\x38\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32&.google.cloud.vision.v1p2beta1.Feature\x12\x42\n\rimage_context\x18\x03 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.ImageContext\":\n\x16ImageAnnotationContext\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\"\x8a\x07\n\x15\x41nnotateImageResponse\x12G\n\x10\x66\x61\x63\x65_annotations\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p2beta1.FaceAnnotation\x12M\n\x14landmark_annotations\x18\x02 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12I\n\x10logo_annotations\x18\x03 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12J\n\x11label_annotations\x18\x04 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12I\n\x10text_annotations\x18\x05 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12K\n\x14\x66ull_text_annotation\x18\x0c \x01(\x0b\x32-.google.cloud.vision.v1p2beta1.TextAnnotation\x12S\n\x16safe_search_annotation\x18\x06 \x01(\x0b\x32\x33.google.cloud.vision.v1p2beta1.SafeSearchAnnotation\x12S\n\x1bimage_properties_annotation\x18\x08 \x01(\x0b\x32..google.cloud.vision.v1p2beta1.ImageProperties\x12Q\n\x15\x63rop_hints_annotation\x18\x0b \x01(\x0b\x32\x32.google.cloud.vision.v1p2beta1.CropHintsAnnotation\x12\x42\n\rweb_detection\x18\r \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.WebDetection\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status\x12\x46\n\x07\x63ontext\x18\x15 \x01(\x0b\x32\x35.google.cloud.vision.v1p2beta1.ImageAnnotationContext\"c\n\x1a\x42\x61tchAnnotateImagesRequest\x12\x45\n\x08requests\x18\x01 \x03(\x0b\x32\x33.google.cloud.vision.v1p2beta1.AnnotateImageRequest\"f\n\x1b\x42\x61tchAnnotateImagesResponse\x12G\n\tresponses\x18\x01 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.AnnotateImageResponse\"\x9e\x02\n\x18\x41syncAnnotateFileRequest\x12@\n\x0cinput_config\x18\x01 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.InputConfig\x12\x38\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32&.google.cloud.vision.v1p2beta1.Feature\x12\x42\n\rimage_context\x18\x03 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.ImageContext\x12\x42\n\routput_config\x18\x04 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.OutputConfig\"_\n\x19\x41syncAnnotateFileResponse\x12\x42\n\routput_config\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.OutputConfig\"k\n\x1e\x41syncBatchAnnotateFilesRequest\x12I\n\x08requests\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1p2beta1.AsyncAnnotateFileRequest\"n\n\x1f\x41syncBatchAnnotateFilesResponse\x12K\n\tresponses\x18\x01 \x03(\x0b\x32\x38.google.cloud.vision.v1p2beta1.AsyncAnnotateFileResponse\"^\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32(.google.cloud.vision.v1p2beta1.GcsSource\x12\x11\n\tmime_type\x18\x02 \x01(\t\"j\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32-.google.cloud.vision.v1p2beta1.GcsDestination\x12\x12\n\nbatch_size\x18\x02 \x01(\x05\"\x18\n\tGcsSource\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x1d\n\x0eGcsDestination\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x8f\x02\n\x11OperationMetadata\x12\x45\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.vision.v1p2beta1.OperationMetadata.State\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"Q\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\r\n\tCANCELLED\x10\x04*e\n\nLikelihood\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xf0\x02\n\x0eImageAnnotator\x12\xb3\x01\n\x13\x42\x61tchAnnotateImages\x12\x39.google.cloud.vision.v1p2beta1.BatchAnnotateImagesRequest\x1a:.google.cloud.vision.v1p2beta1.BatchAnnotateImagesResponse\"%\x82\xd3\xe4\x93\x02\x1f\"\x1a/v1p2beta1/images:annotate:\x01*\x12\xa7\x01\n\x17\x41syncBatchAnnotateFiles\x12=.google.cloud.vision.v1p2beta1.AsyncBatchAnnotateFilesRequest\x1a\x1d.google.longrunning.Operation\".\x82\xd3\xe4\x93\x02(\"#/v1p2beta1/files:asyncBatchAnnotate:\x01*B\x82\x01\n!com.google.cloud.vision.v1p2beta1B\x13ImageAnnotatorProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n9google/cloud/vision_v1p2beta1/proto/image_annotator.proto\x12\x1dgoogle.cloud.vision.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x32google/cloud/vision_v1p2beta1/proto/geometry.proto\x1a\x39google/cloud/vision_v1p2beta1/proto/text_annotation.proto\x1a\x37google/cloud/vision_v1p2beta1/proto/web_detection.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x17google/type/color.proto\x1a\x18google/type/latlng.proto\"\xe1\x02\n\x07\x46\x65\x61ture\x12\x39\n\x04type\x18\x01 \x01(\x0e\x32+.google.cloud.vision.v1p2beta1.Feature.Type\x12\x13\n\x0bmax_results\x18\x02 \x01(\x05\x12\r\n\x05model\x18\x03 \x01(\t\"\xf6\x01\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x41\x43\x45_DETECTION\x10\x01\x12\x16\n\x12LANDMARK_DETECTION\x10\x02\x12\x12\n\x0eLOGO_DETECTION\x10\x03\x12\x13\n\x0fLABEL_DETECTION\x10\x04\x12\x12\n\x0eTEXT_DETECTION\x10\x05\x12\x1b\n\x17\x44OCUMENT_TEXT_DETECTION\x10\x0b\x12\x19\n\x15SAFE_SEARCH_DETECTION\x10\x06\x12\x14\n\x10IMAGE_PROPERTIES\x10\x07\x12\x0e\n\nCROP_HINTS\x10\t\x12\x11\n\rWEB_DETECTION\x10\n\"7\n\x0bImageSource\x12\x15\n\rgcs_image_uri\x18\x01 \x01(\t\x12\x11\n\timage_uri\x18\x02 \x01(\t\"T\n\x05Image\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12:\n\x06source\x18\x02 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.ImageSource\"\x9b\x0e\n\x0e\x46\x61\x63\x65\x41nnotation\x12\x42\n\rbounding_poly\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12\x45\n\x10\x66\x64_bounding_poly\x18\x02 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12I\n\tlandmarks\x18\x03 \x03(\x0b\x32\x36.google.cloud.vision.v1p2beta1.FaceAnnotation.Landmark\x12\x12\n\nroll_angle\x18\x04 \x01(\x02\x12\x11\n\tpan_angle\x18\x05 \x01(\x02\x12\x12\n\ntilt_angle\x18\x06 \x01(\x02\x12\x1c\n\x14\x64\x65tection_confidence\x18\x07 \x01(\x02\x12\x1e\n\x16landmarking_confidence\x18\x08 \x01(\x02\x12\x41\n\x0ejoy_likelihood\x18\t \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x44\n\x11sorrow_likelihood\x18\n \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x43\n\x10\x61nger_likelihood\x18\x0b \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x46\n\x13surprise_likelihood\x18\x0c \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12K\n\x18under_exposed_likelihood\x18\r \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x45\n\x12\x62lurred_likelihood\x18\x0e \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x46\n\x13headwear_likelihood\x18\x0f \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x1a\xc7\x07\n\x08Landmark\x12I\n\x04type\x18\x03 \x01(\x0e\x32;.google.cloud.vision.v1p2beta1.FaceAnnotation.Landmark.Type\x12\x39\n\x08position\x18\x04 \x01(\x0b\x32\'.google.cloud.vision.v1p2beta1.Position\"\xb4\x06\n\x04Type\x12\x14\n\x10UNKNOWN_LANDMARK\x10\x00\x12\x0c\n\x08LEFT_EYE\x10\x01\x12\r\n\tRIGHT_EYE\x10\x02\x12\x18\n\x14LEFT_OF_LEFT_EYEBROW\x10\x03\x12\x19\n\x15RIGHT_OF_LEFT_EYEBROW\x10\x04\x12\x19\n\x15LEFT_OF_RIGHT_EYEBROW\x10\x05\x12\x1a\n\x16RIGHT_OF_RIGHT_EYEBROW\x10\x06\x12\x19\n\x15MIDPOINT_BETWEEN_EYES\x10\x07\x12\x0c\n\x08NOSE_TIP\x10\x08\x12\r\n\tUPPER_LIP\x10\t\x12\r\n\tLOWER_LIP\x10\n\x12\x0e\n\nMOUTH_LEFT\x10\x0b\x12\x0f\n\x0bMOUTH_RIGHT\x10\x0c\x12\x10\n\x0cMOUTH_CENTER\x10\r\x12\x15\n\x11NOSE_BOTTOM_RIGHT\x10\x0e\x12\x14\n\x10NOSE_BOTTOM_LEFT\x10\x0f\x12\x16\n\x12NOSE_BOTTOM_CENTER\x10\x10\x12\x19\n\x15LEFT_EYE_TOP_BOUNDARY\x10\x11\x12\x19\n\x15LEFT_EYE_RIGHT_CORNER\x10\x12\x12\x1c\n\x18LEFT_EYE_BOTTOM_BOUNDARY\x10\x13\x12\x18\n\x14LEFT_EYE_LEFT_CORNER\x10\x14\x12\x1a\n\x16RIGHT_EYE_TOP_BOUNDARY\x10\x15\x12\x1a\n\x16RIGHT_EYE_RIGHT_CORNER\x10\x16\x12\x1d\n\x19RIGHT_EYE_BOTTOM_BOUNDARY\x10\x17\x12\x19\n\x15RIGHT_EYE_LEFT_CORNER\x10\x18\x12\x1f\n\x1bLEFT_EYEBROW_UPPER_MIDPOINT\x10\x19\x12 \n\x1cRIGHT_EYEBROW_UPPER_MIDPOINT\x10\x1a\x12\x14\n\x10LEFT_EAR_TRAGION\x10\x1b\x12\x15\n\x11RIGHT_EAR_TRAGION\x10\x1c\x12\x12\n\x0eLEFT_EYE_PUPIL\x10\x1d\x12\x13\n\x0fRIGHT_EYE_PUPIL\x10\x1e\x12\x15\n\x11\x46OREHEAD_GLABELLA\x10\x1f\x12\x11\n\rCHIN_GNATHION\x10 \x12\x14\n\x10\x43HIN_LEFT_GONION\x10!\x12\x15\n\x11\x43HIN_RIGHT_GONION\x10\"\"4\n\x0cLocationInfo\x12$\n\x07lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\"=\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x14\n\x0cuint64_value\x18\x03 \x01(\x04\"\xbc\x02\n\x10\x45ntityAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x0e\n\x06locale\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\x12\n\ntopicality\x18\x06 \x01(\x02\x12\x42\n\rbounding_poly\x18\x07 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12>\n\tlocations\x18\x08 \x03(\x0b\x32+.google.cloud.vision.v1p2beta1.LocationInfo\x12;\n\nproperties\x18\t \x03(\x0b\x32\'.google.cloud.vision.v1p2beta1.Property\"\xbc\x02\n\x14SafeSearchAnnotation\x12\x38\n\x05\x61\x64ult\x18\x01 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x38\n\x05spoof\x18\x02 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12:\n\x07medical\x18\x03 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12;\n\x08violence\x18\x04 \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\x12\x37\n\x04racy\x18\t \x01(\x0e\x32).google.cloud.vision.v1p2beta1.Likelihood\"a\n\x0bLatLongRect\x12(\n\x0bmin_lat_lng\x18\x01 \x01(\x0b\x32\x13.google.type.LatLng\x12(\n\x0bmax_lat_lng\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\"U\n\tColorInfo\x12!\n\x05\x63olor\x18\x01 \x01(\x0b\x32\x12.google.type.Color\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x16\n\x0epixel_fraction\x18\x03 \x01(\x02\"T\n\x18\x44ominantColorsAnnotation\x12\x38\n\x06\x63olors\x18\x01 \x03(\x0b\x32(.google.cloud.vision.v1p2beta1.ColorInfo\"c\n\x0fImageProperties\x12P\n\x0f\x64ominant_colors\x18\x01 \x01(\x0b\x32\x37.google.cloud.vision.v1p2beta1.DominantColorsAnnotation\"\x7f\n\x08\x43ropHint\x12\x42\n\rbounding_poly\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.BoundingPoly\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x1b\n\x13importance_fraction\x18\x03 \x01(\x02\"R\n\x13\x43ropHintsAnnotation\x12;\n\ncrop_hints\x18\x01 \x03(\x0b\x32\'.google.cloud.vision.v1p2beta1.CropHint\"(\n\x0f\x43ropHintsParams\x12\x15\n\raspect_ratios\x18\x01 \x03(\x02\"1\n\x12WebDetectionParams\x12\x1b\n\x13include_geo_results\x18\x02 \x01(\x08\"\x85\x02\n\x0cImageContext\x12\x41\n\rlat_long_rect\x18\x01 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.LatLongRect\x12\x16\n\x0elanguage_hints\x18\x02 \x03(\t\x12I\n\x11\x63rop_hints_params\x18\x04 \x01(\x0b\x32..google.cloud.vision.v1p2beta1.CropHintsParams\x12O\n\x14web_detection_params\x18\x06 \x01(\x0b\x32\x31.google.cloud.vision.v1p2beta1.WebDetectionParams\"\xc9\x01\n\x14\x41nnotateImageRequest\x12\x33\n\x05image\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1p2beta1.Image\x12\x38\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32&.google.cloud.vision.v1p2beta1.Feature\x12\x42\n\rimage_context\x18\x03 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.ImageContext\":\n\x16ImageAnnotationContext\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\"\x8a\x07\n\x15\x41nnotateImageResponse\x12G\n\x10\x66\x61\x63\x65_annotations\x18\x01 \x03(\x0b\x32-.google.cloud.vision.v1p2beta1.FaceAnnotation\x12M\n\x14landmark_annotations\x18\x02 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12I\n\x10logo_annotations\x18\x03 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12J\n\x11label_annotations\x18\x04 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12I\n\x10text_annotations\x18\x05 \x03(\x0b\x32/.google.cloud.vision.v1p2beta1.EntityAnnotation\x12K\n\x14\x66ull_text_annotation\x18\x0c \x01(\x0b\x32-.google.cloud.vision.v1p2beta1.TextAnnotation\x12S\n\x16safe_search_annotation\x18\x06 \x01(\x0b\x32\x33.google.cloud.vision.v1p2beta1.SafeSearchAnnotation\x12S\n\x1bimage_properties_annotation\x18\x08 \x01(\x0b\x32..google.cloud.vision.v1p2beta1.ImageProperties\x12Q\n\x15\x63rop_hints_annotation\x18\x0b \x01(\x0b\x32\x32.google.cloud.vision.v1p2beta1.CropHintsAnnotation\x12\x42\n\rweb_detection\x18\r \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.WebDetection\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status\x12\x46\n\x07\x63ontext\x18\x15 \x01(\x0b\x32\x35.google.cloud.vision.v1p2beta1.ImageAnnotationContext\"\xa1\x01\n\x14\x41nnotateFileResponse\x12@\n\x0cinput_config\x18\x01 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.InputConfig\x12G\n\tresponses\x18\x02 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.AnnotateImageResponse\"c\n\x1a\x42\x61tchAnnotateImagesRequest\x12\x45\n\x08requests\x18\x01 \x03(\x0b\x32\x33.google.cloud.vision.v1p2beta1.AnnotateImageRequest\"f\n\x1b\x42\x61tchAnnotateImagesResponse\x12G\n\tresponses\x18\x01 \x03(\x0b\x32\x34.google.cloud.vision.v1p2beta1.AnnotateImageResponse\"\x9e\x02\n\x18\x41syncAnnotateFileRequest\x12@\n\x0cinput_config\x18\x01 \x01(\x0b\x32*.google.cloud.vision.v1p2beta1.InputConfig\x12\x38\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0b\x32&.google.cloud.vision.v1p2beta1.Feature\x12\x42\n\rimage_context\x18\x03 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.ImageContext\x12\x42\n\routput_config\x18\x04 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.OutputConfig\"_\n\x19\x41syncAnnotateFileResponse\x12\x42\n\routput_config\x18\x01 \x01(\x0b\x32+.google.cloud.vision.v1p2beta1.OutputConfig\"k\n\x1e\x41syncBatchAnnotateFilesRequest\x12I\n\x08requests\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1p2beta1.AsyncAnnotateFileRequest\"n\n\x1f\x41syncBatchAnnotateFilesResponse\x12K\n\tresponses\x18\x01 \x03(\x0b\x32\x38.google.cloud.vision.v1p2beta1.AsyncAnnotateFileResponse\"^\n\x0bInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32(.google.cloud.vision.v1p2beta1.GcsSource\x12\x11\n\tmime_type\x18\x02 \x01(\t\"j\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32-.google.cloud.vision.v1p2beta1.GcsDestination\x12\x12\n\nbatch_size\x18\x02 \x01(\x05\"\x18\n\tGcsSource\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x1d\n\x0eGcsDestination\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\x8f\x02\n\x11OperationMetadata\x12\x45\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.vision.v1p2beta1.OperationMetadata.State\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"Q\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\r\n\tCANCELLED\x10\x04*e\n\nLikelihood\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xf0\x02\n\x0eImageAnnotator\x12\xb3\x01\n\x13\x42\x61tchAnnotateImages\x12\x39.google.cloud.vision.v1p2beta1.BatchAnnotateImagesRequest\x1a:.google.cloud.vision.v1p2beta1.BatchAnnotateImagesResponse\"%\x82\xd3\xe4\x93\x02\x1f\"\x1a/v1p2beta1/images:annotate:\x01*\x12\xa7\x01\n\x17\x41syncBatchAnnotateFiles\x12=.google.cloud.vision.v1p2beta1.AsyncBatchAnnotateFilesRequest\x1a\x1d.google.longrunning.Operation\".\x82\xd3\xe4\x93\x02(\"#/v1p2beta1/files:asyncBatchAnnotate:\x01*B\x82\x01\n!com.google.cloud.vision.v1p2beta1B\x13ImageAnnotatorProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1p2beta1_dot_proto_dot_geometry__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1p2beta1_dot_proto_dot_text__annotation__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1p2beta1_dot_proto_dot_web__detection__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,google_dot_type_dot_color__pb2.DESCRIPTOR,google_dot_type_dot_latlng__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 _LIKELIHOOD = _descriptor.EnumDescriptor(
   name='Likelihood',
@@ -67,8 +66,8 @@ _LIKELIHOOD = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=6975,
-  serialized_end=7076,
+  serialized_start=7139,
+  serialized_end=7240,
 )
 _sym_db.RegisterEnumDescriptor(_LIKELIHOOD)
 
@@ -322,8 +321,8 @@ _OPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=6892,
-  serialized_end=6973,
+  serialized_start=7056,
+  serialized_end=7137,
 )
 _sym_db.RegisterEnumDescriptor(_OPERATIONMETADATA_STATE)
 
@@ -341,21 +340,21 @@ _FEATURE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_results', full_name='google.cloud.vision.v1p2beta1.Feature.max_results', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='model', full_name='google.cloud.vision.v1p2beta1.Feature.model', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -387,14 +386,14 @@ _IMAGESOURCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_uri', full_name='google.cloud.vision.v1p2beta1.ImageSource.image_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -425,14 +424,14 @@ _IMAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='source', full_name='google.cloud.vision.v1p2beta1.Image.source', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -463,14 +462,14 @@ _FACEANNOTATION_LANDMARK = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='position', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.Landmark.position', index=1,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -501,105 +500,105 @@ _FACEANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='fd_bounding_poly', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.fd_bounding_poly', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='landmarks', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.landmarks', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='roll_angle', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.roll_angle', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pan_angle', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.pan_angle', index=4,
       number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tilt_angle', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.tilt_angle', index=5,
       number=6, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='detection_confidence', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.detection_confidence', index=6,
       number=7, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='landmarking_confidence', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.landmarking_confidence', index=7,
       number=8, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='joy_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.joy_likelihood', index=8,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sorrow_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.sorrow_likelihood', index=9,
       number=10, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='anger_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.anger_likelihood', index=10,
       number=11, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='surprise_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.surprise_likelihood', index=11,
       number=12, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='under_exposed_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.under_exposed_likelihood', index=12,
       number=13, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='blurred_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.blurred_likelihood', index=13,
       number=14, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='headwear_likelihood', full_name='google.cloud.vision.v1p2beta1.FaceAnnotation.headwear_likelihood', index=14,
       number=15, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -630,7 +629,7 @@ _LOCATIONINFO = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -661,21 +660,21 @@ _PROPERTY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='google.cloud.vision.v1p2beta1.Property.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='uint64_value', full_name='google.cloud.vision.v1p2beta1.Property.uint64_value', index=2,
       number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -706,63 +705,63 @@ _ENTITYANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='locale', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.locale', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.description', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.score', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.confidence', index=4,
       number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='topicality', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.topicality', index=5,
       number=6, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bounding_poly', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.bounding_poly', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='locations', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.locations', index=7,
       number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='properties', full_name='google.cloud.vision.v1p2beta1.EntityAnnotation.properties', index=8,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -793,35 +792,35 @@ _SAFESEARCHANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='spoof', full_name='google.cloud.vision.v1p2beta1.SafeSearchAnnotation.spoof', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='medical', full_name='google.cloud.vision.v1p2beta1.SafeSearchAnnotation.medical', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='violence', full_name='google.cloud.vision.v1p2beta1.SafeSearchAnnotation.violence', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='racy', full_name='google.cloud.vision.v1p2beta1.SafeSearchAnnotation.racy', index=4,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -852,14 +851,14 @@ _LATLONGRECT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='max_lat_lng', full_name='google.cloud.vision.v1p2beta1.LatLongRect.max_lat_lng', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -890,21 +889,21 @@ _COLORINFO = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='score', full_name='google.cloud.vision.v1p2beta1.ColorInfo.score', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pixel_fraction', full_name='google.cloud.vision.v1p2beta1.ColorInfo.pixel_fraction', index=2,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -935,7 +934,7 @@ _DOMINANTCOLORSANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -966,7 +965,7 @@ _IMAGEPROPERTIES = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -997,21 +996,21 @@ _CROPHINT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1p2beta1.CropHint.confidence', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='importance_fraction', full_name='google.cloud.vision.v1p2beta1.CropHint.importance_fraction', index=2,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1042,7 +1041,7 @@ _CROPHINTSANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1073,7 +1072,7 @@ _CROPHINTSPARAMS = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1104,7 +1103,7 @@ _WEBDETECTIONPARAMS = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1135,28 +1134,28 @@ _IMAGECONTEXT = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='language_hints', full_name='google.cloud.vision.v1p2beta1.ImageContext.language_hints', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='crop_hints_params', full_name='google.cloud.vision.v1p2beta1.ImageContext.crop_hints_params', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='web_detection_params', full_name='google.cloud.vision.v1p2beta1.ImageContext.web_detection_params', index=3,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1187,21 +1186,21 @@ _ANNOTATEIMAGEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='features', full_name='google.cloud.vision.v1p2beta1.AnnotateImageRequest.features', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_context', full_name='google.cloud.vision.v1p2beta1.AnnotateImageRequest.image_context', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1232,14 +1231,14 @@ _IMAGEANNOTATIONCONTEXT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_number', full_name='google.cloud.vision.v1p2beta1.ImageAnnotationContext.page_number', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1270,84 +1269,84 @@ _ANNOTATEIMAGERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='landmark_annotations', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.landmark_annotations', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='logo_annotations', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.logo_annotations', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='label_annotations', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.label_annotations', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='text_annotations', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.text_annotations', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='full_text_annotation', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.full_text_annotation', index=5,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='safe_search_annotation', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.safe_search_annotation', index=6,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_properties_annotation', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.image_properties_annotation', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='crop_hints_annotation', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.crop_hints_annotation', index=8,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='web_detection', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.web_detection', index=9,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='error', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.error', index=10,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='context', full_name='google.cloud.vision.v1p2beta1.AnnotateImageResponse.context', index=11,
       number=21, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1365,6 +1364,44 @@ _ANNOTATEIMAGERESPONSE = _descriptor.Descriptor(
 )
 
 
+_ANNOTATEFILERESPONSE = _descriptor.Descriptor(
+  name='AnnotateFileResponse',
+  full_name='google.cloud.vision.v1p2beta1.AnnotateFileResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='input_config', full_name='google.cloud.vision.v1p2beta1.AnnotateFileResponse.input_config', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='responses', full_name='google.cloud.vision.v1p2beta1.AnnotateFileResponse.responses', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5629,
+  serialized_end=5790,
+)
+
+
 _BATCHANNOTATEIMAGESREQUEST = _descriptor.Descriptor(
   name='BatchAnnotateImagesRequest',
   full_name='google.cloud.vision.v1p2beta1.BatchAnnotateImagesRequest',
@@ -1378,7 +1415,7 @@ _BATCHANNOTATEIMAGESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1391,8 +1428,8 @@ _BATCHANNOTATEIMAGESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5628,
-  serialized_end=5727,
+  serialized_start=5792,
+  serialized_end=5891,
 )
 
 
@@ -1409,7 +1446,7 @@ _BATCHANNOTATEIMAGESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1422,8 +1459,8 @@ _BATCHANNOTATEIMAGESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5729,
-  serialized_end=5831,
+  serialized_start=5893,
+  serialized_end=5995,
 )
 
 
@@ -1440,28 +1477,28 @@ _ASYNCANNOTATEFILEREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='features', full_name='google.cloud.vision.v1p2beta1.AsyncAnnotateFileRequest.features', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='image_context', full_name='google.cloud.vision.v1p2beta1.AsyncAnnotateFileRequest.image_context', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='output_config', full_name='google.cloud.vision.v1p2beta1.AsyncAnnotateFileRequest.output_config', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1474,8 +1511,8 @@ _ASYNCANNOTATEFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5834,
-  serialized_end=6120,
+  serialized_start=5998,
+  serialized_end=6284,
 )
 
 
@@ -1492,7 +1529,7 @@ _ASYNCANNOTATEFILERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1505,8 +1542,8 @@ _ASYNCANNOTATEFILERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6122,
-  serialized_end=6217,
+  serialized_start=6286,
+  serialized_end=6381,
 )
 
 
@@ -1523,7 +1560,7 @@ _ASYNCBATCHANNOTATEFILESREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1536,8 +1573,8 @@ _ASYNCBATCHANNOTATEFILESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6219,
-  serialized_end=6326,
+  serialized_start=6383,
+  serialized_end=6490,
 )
 
 
@@ -1554,7 +1591,7 @@ _ASYNCBATCHANNOTATEFILESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1567,8 +1604,8 @@ _ASYNCBATCHANNOTATEFILESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6328,
-  serialized_end=6438,
+  serialized_start=6492,
+  serialized_end=6602,
 )
 
 
@@ -1585,14 +1622,14 @@ _INPUTCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='mime_type', full_name='google.cloud.vision.v1p2beta1.InputConfig.mime_type', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1605,8 +1642,8 @@ _INPUTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6440,
-  serialized_end=6534,
+  serialized_start=6604,
+  serialized_end=6698,
 )
 
 
@@ -1623,14 +1660,14 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='batch_size', full_name='google.cloud.vision.v1p2beta1.OutputConfig.batch_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1643,8 +1680,8 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6536,
-  serialized_end=6642,
+  serialized_start=6700,
+  serialized_end=6806,
 )
 
 
@@ -1661,7 +1698,7 @@ _GCSSOURCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1674,8 +1711,8 @@ _GCSSOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6644,
-  serialized_end=6668,
+  serialized_start=6808,
+  serialized_end=6832,
 )
 
 
@@ -1692,7 +1729,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1705,8 +1742,8 @@ _GCSDESTINATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6670,
-  serialized_end=6699,
+  serialized_start=6834,
+  serialized_end=6863,
 )
 
 
@@ -1723,21 +1760,21 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='create_time', full_name='google.cloud.vision.v1p2beta1.OperationMetadata.create_time', index=1,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_time', full_name='google.cloud.vision.v1p2beta1.OperationMetadata.update_time', index=2,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1751,8 +1788,8 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6702,
-  serialized_end=6973,
+  serialized_start=6866,
+  serialized_end=7137,
 )
 
 _FEATURE.fields_by_name['type'].enum_type = _FEATURE_TYPE
@@ -1806,6 +1843,8 @@ _ANNOTATEIMAGERESPONSE.fields_by_name['crop_hints_annotation'].message_type = _C
 _ANNOTATEIMAGERESPONSE.fields_by_name['web_detection'].message_type = google_dot_cloud_dot_vision__v1p2beta1_dot_proto_dot_web__detection__pb2._WEBDETECTION
 _ANNOTATEIMAGERESPONSE.fields_by_name['error'].message_type = google_dot_rpc_dot_status__pb2._STATUS
 _ANNOTATEIMAGERESPONSE.fields_by_name['context'].message_type = _IMAGEANNOTATIONCONTEXT
+_ANNOTATEFILERESPONSE.fields_by_name['input_config'].message_type = _INPUTCONFIG
+_ANNOTATEFILERESPONSE.fields_by_name['responses'].message_type = _ANNOTATEIMAGERESPONSE
 _BATCHANNOTATEIMAGESREQUEST.fields_by_name['requests'].message_type = _ANNOTATEIMAGEREQUEST
 _BATCHANNOTATEIMAGESRESPONSE.fields_by_name['responses'].message_type = _ANNOTATEIMAGERESPONSE
 _ASYNCANNOTATEFILEREQUEST.fields_by_name['input_config'].message_type = _INPUTCONFIG
@@ -1841,6 +1880,7 @@ DESCRIPTOR.message_types_by_name['ImageContext'] = _IMAGECONTEXT
 DESCRIPTOR.message_types_by_name['AnnotateImageRequest'] = _ANNOTATEIMAGEREQUEST
 DESCRIPTOR.message_types_by_name['ImageAnnotationContext'] = _IMAGEANNOTATIONCONTEXT
 DESCRIPTOR.message_types_by_name['AnnotateImageResponse'] = _ANNOTATEIMAGERESPONSE
+DESCRIPTOR.message_types_by_name['AnnotateFileResponse'] = _ANNOTATEFILERESPONSE
 DESCRIPTOR.message_types_by_name['BatchAnnotateImagesRequest'] = _BATCHANNOTATEIMAGESREQUEST
 DESCRIPTOR.message_types_by_name['BatchAnnotateImagesResponse'] = _BATCHANNOTATEIMAGESRESPONSE
 DESCRIPTOR.message_types_by_name['AsyncAnnotateFileRequest'] = _ASYNCANNOTATEFILEREQUEST
@@ -1853,6 +1893,7 @@ DESCRIPTOR.message_types_by_name['GcsSource'] = _GCSSOURCE
 DESCRIPTOR.message_types_by_name['GcsDestination'] = _GCSDESTINATION
 DESCRIPTOR.message_types_by_name['OperationMetadata'] = _OPERATIONMETADATA
 DESCRIPTOR.enum_types_by_name['Likelihood'] = _LIKELIHOOD
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Feature = _reflection.GeneratedProtocolMessageType('Feature', (_message.Message,), dict(
   DESCRIPTOR = _FEATURE,
@@ -2283,7 +2324,7 @@ ImageContext = _reflection.GeneratedProtocolMessageType('ImageContext', (_messag
   
   Attributes:
       lat_long_rect:
-          lat/long rectangle that specifies the location of the image.
+          Not used.
       language_hints:
           List of languages to use for TEXT\_DETECTION. In most cases,
           an empty value yields the best results since it enables
@@ -2384,6 +2425,25 @@ AnnotateImageResponse = _reflection.GeneratedProtocolMessageType('AnnotateImageR
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p2beta1.AnnotateImageResponse)
   ))
 _sym_db.RegisterMessage(AnnotateImageResponse)
+
+AnnotateFileResponse = _reflection.GeneratedProtocolMessageType('AnnotateFileResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ANNOTATEFILERESPONSE,
+  __module__ = 'google.cloud.vision_v1p2beta1.proto.image_annotator_pb2'
+  ,
+  __doc__ = """Response to a single file annotation request. A file may contain one or
+  more images, which individually have their own responses.
+  
+  
+  Attributes:
+      input_config:
+          Information about the file for which this response is
+          generated.
+      responses:
+          Individual responses to images found within the file.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p2beta1.AnnotateFileResponse)
+  ))
+_sym_db.RegisterMessage(AnnotateFileResponse)
 
 BatchAnnotateImagesRequest = _reflection.GeneratedProtocolMessageType('BatchAnnotateImagesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHANNOTATEIMAGESREQUEST,
@@ -2594,178 +2654,37 @@ _sym_db.RegisterMessage(OperationMetadata)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.cloud.vision.v1p2beta1B\023ImageAnnotatorProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/vision/v1p2beta1;vision\370\001\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_IMAGEANNOTATOR = _descriptor.ServiceDescriptor(
+  name='ImageAnnotator',
+  full_name='google.cloud.vision.v1p2beta1.ImageAnnotator',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=7243,
+  serialized_end=7611,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='BatchAnnotateImages',
+    full_name='google.cloud.vision.v1p2beta1.ImageAnnotator.BatchAnnotateImages',
+    index=0,
+    containing_service=None,
+    input_type=_BATCHANNOTATEIMAGESREQUEST,
+    output_type=_BATCHANNOTATEIMAGESRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037\"\032/v1p2beta1/images:annotate:\001*')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='AsyncBatchAnnotateFiles',
+    full_name='google.cloud.vision.v1p2beta1.ImageAnnotator.AsyncBatchAnnotateFiles',
+    index=1,
+    containing_service=None,
+    input_type=_ASYNCBATCHANNOTATEFILESREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002(\"#/v1p2beta1/files:asyncBatchAnnotate:\001*')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_IMAGEANNOTATOR)
 
-  class ImageAnnotatorStub(object):
-    """Service that performs Google Cloud Vision API detection tasks over client
-    images, such as face, landmark, logo, label, and text detection. The
-    ImageAnnotator service returns detected entities from the images.
-    """
+DESCRIPTOR.services_by_name['ImageAnnotator'] = _IMAGEANNOTATOR
 
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.BatchAnnotateImages = channel.unary_unary(
-          '/google.cloud.vision.v1p2beta1.ImageAnnotator/BatchAnnotateImages',
-          request_serializer=BatchAnnotateImagesRequest.SerializeToString,
-          response_deserializer=BatchAnnotateImagesResponse.FromString,
-          )
-      self.AsyncBatchAnnotateFiles = channel.unary_unary(
-          '/google.cloud.vision.v1p2beta1.ImageAnnotator/AsyncBatchAnnotateFiles',
-          request_serializer=AsyncBatchAnnotateFilesRequest.SerializeToString,
-          response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-          )
-
-
-  class ImageAnnotatorServicer(object):
-    """Service that performs Google Cloud Vision API detection tasks over client
-    images, such as face, landmark, logo, label, and text detection. The
-    ImageAnnotator service returns detected entities from the images.
-    """
-
-    def BatchAnnotateImages(self, request, context):
-      """Run image detection and annotation for a batch of images.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def AsyncBatchAnnotateFiles(self, request, context):
-      """Run async image detection and annotation for a list of generic files (e.g.
-      PDF) which may contain multiple pages and multiple images per page.
-      Progress and results can be retrieved through the
-      `google.longrunning.Operations` interface.
-      `Operation.metadata` contains `OperationMetadata` (metadata).
-      `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results).
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ImageAnnotatorServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'BatchAnnotateImages': grpc.unary_unary_rpc_method_handler(
-            servicer.BatchAnnotateImages,
-            request_deserializer=BatchAnnotateImagesRequest.FromString,
-            response_serializer=BatchAnnotateImagesResponse.SerializeToString,
-        ),
-        'AsyncBatchAnnotateFiles': grpc.unary_unary_rpc_method_handler(
-            servicer.AsyncBatchAnnotateFiles,
-            request_deserializer=AsyncBatchAnnotateFilesRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.vision.v1p2beta1.ImageAnnotator', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaImageAnnotatorServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service that performs Google Cloud Vision API detection tasks over client
-    images, such as face, landmark, logo, label, and text detection. The
-    ImageAnnotator service returns detected entities from the images.
-    """
-    def BatchAnnotateImages(self, request, context):
-      """Run image detection and annotation for a batch of images.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def AsyncBatchAnnotateFiles(self, request, context):
-      """Run async image detection and annotation for a list of generic files (e.g.
-      PDF) which may contain multiple pages and multiple images per page.
-      Progress and results can be retrieved through the
-      `google.longrunning.Operations` interface.
-      `Operation.metadata` contains `OperationMetadata` (metadata).
-      `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results).
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaImageAnnotatorStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Service that performs Google Cloud Vision API detection tasks over client
-    images, such as face, landmark, logo, label, and text detection. The
-    ImageAnnotator service returns detected entities from the images.
-    """
-    def BatchAnnotateImages(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Run image detection and annotation for a batch of images.
-      """
-      raise NotImplementedError()
-    BatchAnnotateImages.future = None
-    def AsyncBatchAnnotateFiles(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Run async image detection and annotation for a list of generic files (e.g.
-      PDF) which may contain multiple pages and multiple images per page.
-      Progress and results can be retrieved through the
-      `google.longrunning.Operations` interface.
-      `Operation.metadata` contains `OperationMetadata` (metadata).
-      `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results).
-      """
-      raise NotImplementedError()
-    AsyncBatchAnnotateFiles.future = None
-
-
-  def beta_create_ImageAnnotator_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'AsyncBatchAnnotateFiles'): AsyncBatchAnnotateFilesRequest.FromString,
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'BatchAnnotateImages'): BatchAnnotateImagesRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'AsyncBatchAnnotateFiles'): google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'BatchAnnotateImages'): BatchAnnotateImagesResponse.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'AsyncBatchAnnotateFiles'): face_utilities.unary_unary_inline(servicer.AsyncBatchAnnotateFiles),
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'BatchAnnotateImages'): face_utilities.unary_unary_inline(servicer.BatchAnnotateImages),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_ImageAnnotator_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'AsyncBatchAnnotateFiles'): AsyncBatchAnnotateFilesRequest.SerializeToString,
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'BatchAnnotateImages'): BatchAnnotateImagesRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'AsyncBatchAnnotateFiles'): google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-      ('google.cloud.vision.v1p2beta1.ImageAnnotator', 'BatchAnnotateImages'): BatchAnnotateImagesResponse.FromString,
-    }
-    cardinalities = {
-      'AsyncBatchAnnotateFiles': cardinality.Cardinality.UNARY_UNARY,
-      'BatchAnnotateImages': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.vision.v1p2beta1.ImageAnnotator', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)
