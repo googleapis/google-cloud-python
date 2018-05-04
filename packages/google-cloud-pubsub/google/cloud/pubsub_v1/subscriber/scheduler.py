@@ -118,5 +118,9 @@ class ThreadScheduler(object):
         # Drop all pending item from the executor. Without this, the executor
         # will block until all pending items are complete, which is
         # undesirable.
-        self._executor._work_queue.queue.clear()
+        try:
+            while True:
+                self._executor._work_queue.get(block=False)
+        except queue.Empty:
+            pass
         self._executor.shutdown()
