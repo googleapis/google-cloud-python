@@ -2483,11 +2483,44 @@ class QueryPlanEntry(object):
     :type entry_id: int
     :param entry_id: ID of the entry
 
+    :type start_ms: int
+    :param start_ms: start time for this stage of the query plan
+
+    :type end_ms: int
+    :param end_ms: end time for this stage of the query plan
+
+    :type input_stages: List(int)
+    :param input_stages: list of stage IDs that are inputs for this stage
+
+    :type parallel_inputs: int
+    :param completed_parallel_inputs: number of parallel input
+            segments in the stage
+
+    :type completed_parallel_inputs: int
+    :param completed_parallel_inputs: number of parallel input
+            segments completed
+
+    :type wait_ms_avg: int
+    :param wait_ms_avg: milliseconds the average shard spent
+            waiting to be scheduled
+
+    :type wait_ms_max: int
+    :param wait_ms_max: milliseconds the slowest shard spent
+            waiting to be scheduled
+
     :type wait_ratio_avg: float
     :param wait_ratio_avg: average wait ratio
 
     :type wait_ratio_max: float
     :param wait_ratio_max: maximum wait ratio
+
+    :type read_ms_avg: int
+    :param read_ms_avg: milliseconds the average shard spent
+            reading input
+
+    :type read_ms_max: int
+    :param read_ms_max: milliseconds the slowest shard spent
+            reading input
 
     :type read_ratio_avg: float
     :param read_ratio_avg: average read ratio
@@ -2495,11 +2528,27 @@ class QueryPlanEntry(object):
     :type read_ratio_max: float
     :param read_ratio_max: maximum read ratio
 
+    :type compute_ms_avg: int
+    :param compute_ms_avg: milliseconds the average shard spent
+            on cpu-bound tasks
+
+    :type compute_ms_max: int
+    :param compute_ms_max: milliseconds the slowest shard spent
+            on cpu-bound tasks
+
     :type compute_ratio_avg: float
     :param compute_ratio_avg: average compute ratio
 
     :type compute_ratio_max: float
     :param compute_ratio_max: maximum compute ratio
+
+    :type write_ms_avg: int
+    :param write_ms_avg: milliseconds the average shard spent
+            writing output
+
+    :type write_ms_max: int
+    :param write_ms_max: milliseconds the slowest shard spent
+            writing output
 
     :type write_ratio_avg: float
     :param write_ratio_avg: average write ratio
@@ -2516,37 +2565,74 @@ class QueryPlanEntry(object):
     :type status: str
     :param status: entry status
 
+    :type shuffle_output_bytes: int
+    :param shuffle_output_bytes: number of bytes written to shuffle
+
+    :type shuffle_output_bytes_spilled: int
+    :param shuffle_output_bytes_spilled: number of bytes written
+            to shuffle and spilled to disk
+
     :type steps: List(QueryPlanEntryStep)
     :param steps: steps in the entry
     """
     def __init__(self,
                  name,
                  entry_id,
+                 start_ms,
+                 end_ms,
+                 input_stages,
+                 parallel_inputs,
+                 completed_parallel_inputs,
+                 wait_ms_avg,
+                 wait_ms_max,
                  wait_ratio_avg,
                  wait_ratio_max,
+                 read_ms_avg,
+                 read_ms_max,
                  read_ratio_avg,
                  read_ratio_max,
+                 compute_ms_avg,
+                 compute_ms_max,
                  compute_ratio_avg,
                  compute_ratio_max,
+                 write_ms_avg,
+                 write_ms_max,
                  write_ratio_avg,
                  write_ratio_max,
                  records_read,
                  records_written,
                  status,
+                 shuffle_output_bytes,
+                 shuffle_output_bytes_spilled,
                  steps):
         self.name = name
         self.entry_id = entry_id
+        self.start_ms = start_ms
+        self.end_ms = end_ms
+        self.input_stages = input_stages
+        self.parallel_inputs = parallel_inputs
+        self.completed_parallel_inputs = completed_parallel_inputs
+        self.wait_ms_avg = wait_ms_avg
+        self.wait_ms_max = wait_ms_max
         self.wait_ratio_avg = wait_ratio_avg
         self.wait_ratio_max = wait_ratio_max
+        self.read_ms_avg = read_ms_avg
+        self.read_ms_max = read_ms_max
         self.read_ratio_avg = read_ratio_avg
         self.read_ratio_max = read_ratio_max
+        self.compute_ms_avg = compute_ms_avg
+        self.compute_ms_max = compute_ms_max
         self.compute_ratio_avg = compute_ratio_avg
         self.compute_ratio_max = compute_ratio_max
+        self.write_ms_avg = write_ms_avg
+        self.write_ms_max = write_ms_max
         self.write_ratio_avg = write_ratio_avg
         self.write_ratio_max = write_ratio_max
         self.records_read = records_read
         self.records_written = records_written
         self.status = status
+        self.shuffle_output_bytes = shuffle_output_bytes
+        self.shuffle_output_bytes_spilled = shuffle_output_bytes_spilled
         self.steps = steps
 
     @classmethod
@@ -2570,17 +2656,33 @@ class QueryPlanEntry(object):
         return cls(
             name=resource.get('name'),
             entry_id=resource.get('id'),
+            start_ms=resource.get('startMs'),
+            end_ms=resource.get('endMs'),
+            input_stages=resource.get('inputStages', []),
+            parallel_inputs=resource.get('parallelInputs'),
+            completed_parallel_inputs=resource.get('completedParallelInputs'),
+            wait_ms_avg=resource.get('waitMsAvg'),
+            wait_ms_max=resource.get('waitMsMax'),
             wait_ratio_avg=resource.get('waitRatioAvg'),
             wait_ratio_max=resource.get('waitRatioMax'),
+            read_ms_avg=resource.get('readMsAvg'),
+            read_ms_max=resource.get('readMsMax'),
             read_ratio_avg=resource.get('readRatioAvg'),
             read_ratio_max=resource.get('readRatioMax'),
+            compute_ms_avg=resource.get('computeMsAvg'),
+            compute_ms_max=resource.get('computeMsMax'),
             compute_ratio_avg=resource.get('computeRatioAvg'),
             compute_ratio_max=resource.get('computeRatioMax'),
+            write_ms_avg=resource.get('writeMsAvg'),
+            write_ms_max=resource.get('writeMsMax'),
             write_ratio_avg=resource.get('writeRatioAvg'),
             write_ratio_max=resource.get('writeRatioMax'),
             records_read=records_read,
             records_written=records_written,
             status=resource.get('status'),
+            shuffle_output_bytes=resource.get('shuffleOutputBytes'),
+            shuffle_output_bytes_spilled=resource.get(
+                    'shuffleOutputBytesSpilled'),
             steps=[QueryPlanEntryStep.from_api_repr(step)
                    for step in resource.get('steps', ())],
         )
