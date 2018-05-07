@@ -1,4 +1,4 @@
-import json
+
 import logging
 import os
 import time
@@ -6,8 +6,11 @@ import warnings
 from datetime import datetime
 
 import numpy as np
-from pandas import DataFrame, compat
+from pandas import DataFrame
 from pandas.compat import lzip
+
+from pandas_gbq.exceptions import AccessDenied
+
 
 logger = logging.getLogger(__name__)
 
@@ -71,36 +74,6 @@ def _test_google_api_imports():
             "pandas-gbq requires google-cloud-bigquery: {0}".format(ex))
 
     _check_google_client_version()
-
-
-def _try_credentials(project_id, credentials):
-    from google.cloud import bigquery
-    import google.api_core.exceptions
-
-    if credentials is None:
-        return None
-
-    try:
-        client = bigquery.Client(project=project_id, credentials=credentials)
-        # Check if the application has rights to the BigQuery project
-        client.query('SELECT 1').result()
-        return credentials
-    except google.api_core.exceptions.GoogleAPIError:
-        return None
-
-
-class InvalidPrivateKeyFormat(ValueError):
-    """
-    Raised when provided private key has invalid format.
-    """
-    pass
-
-
-class AccessDenied(ValueError):
-    """
-    Raised when invalid credentials are provided, or tokens have expired.
-    """
-    pass
 
 
 class DatasetCreationError(ValueError):
@@ -176,13 +149,13 @@ class TableCreationError(ValueError):
 
 
 class GbqConnector(object):
-    scope = 'https://www.googleapis.com/auth/bigquery'
 
     def __init__(self, project_id, reauth=False,
                  private_key=None, auth_local_webserver=False,
                  dialect='legacy'):
         from google.api_core.exceptions import GoogleAPIError
         from google.api_core.exceptions import ClientError
+        from pandas_gbq import auth
         self.http_error = (ClientError, GoogleAPIError)
         self.project_id = project_id
         self.reauth = reauth
@@ -190,7 +163,9 @@ class GbqConnector(object):
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials_path = _get_credentials_file()
-        self.credentials, default_project = self.get_credentials()
+        self.credentials, default_project = auth.get_credentials(
+            private_key=private_key, project_id=project_id, reauth=reauth,
+            auth_local_webserver=auth_local_webserver)
 
         if self.project_id is None:
             self.project_id = default_project
@@ -204,238 +179,6 @@ class GbqConnector(object):
         # BQ Queries costs $5 per TB. First 1 TB per month is free
         # see here for more: https://cloud.google.com/bigquery/pricing
         self.query_price_for_TB = 5. / 2**40  # USD/TB
-
-    def get_credentials(self):
-        if self.private_key:
-            return self.get_service_account_credentials()
-
-        # Try to retrieve Application Default Credentials
-        credentials, default_project = (
-            self.get_application_default_credentials())
-        if credentials:
-            return credentials, default_project
-
-        return self.get_user_account_credentials(), None
-
-    def get_application_default_credentials(self):
-        """
-        This method tries to retrieve the "default application credentials".
-        This could be useful for running code on Google Cloud Platform.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        - GoogleCredentials,
-            If the default application credentials can be retrieved
-            from the environment. The retrieved credentials should also
-            have access to the project (self.project_id) on BigQuery.
-        - OR None,
-            If default application credentials can not be retrieved
-            from the environment. Or, the retrieved credentials do not
-            have access to the project (self.project_id) on BigQuery.
-        """
-        import google.auth
-        from google.auth.exceptions import DefaultCredentialsError
-
-        try:
-            credentials, default_project = google.auth.default(
-                scopes=[self.scope])
-        except (DefaultCredentialsError, IOError):
-            return None, None
-
-        billing_project = self.project_id or default_project
-        return _try_credentials(billing_project, credentials), default_project
-
-    def load_user_account_credentials(self):
-        """
-        Loads user account credentials from a local file.
-
-        .. versionadded 0.2.0
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        - GoogleCredentials,
-            If the credentials can loaded. The retrieved credentials should
-            also have access to the project (self.project_id) on BigQuery.
-        - OR None,
-            If credentials can not be loaded from a file. Or, the retrieved
-            credentials do not have access to the project (self.project_id)
-            on BigQuery.
-        """
-        import google.auth.transport.requests
-        from google.oauth2.credentials import Credentials
-
-        # Use the default credentials location under ~/.config and the
-        # equivalent directory on windows if the user has not specified a
-        # credentials path.
-        if not self.credentials_path:
-            self.credentials_path = self.get_default_credentials_path()
-
-            # Previously, pandas-gbq saved user account credentials in the
-            # current working directory. If the bigquery_credentials.dat file
-            # exists in the current working directory, move the credentials to
-            # the new default location.
-            if os.path.isfile('bigquery_credentials.dat'):
-                os.rename('bigquery_credentials.dat', self.credentials_path)
-
-        try:
-            with open(self.credentials_path) as credentials_file:
-                credentials_json = json.load(credentials_file)
-        except (IOError, ValueError):
-            return None
-
-        credentials = Credentials(
-            token=credentials_json.get('access_token'),
-            refresh_token=credentials_json.get('refresh_token'),
-            id_token=credentials_json.get('id_token'),
-            token_uri=credentials_json.get('token_uri'),
-            client_id=credentials_json.get('client_id'),
-            client_secret=credentials_json.get('client_secret'),
-            scopes=credentials_json.get('scopes'))
-
-        # Refresh the token before trying to use it.
-        request = google.auth.transport.requests.Request()
-        credentials.refresh(request)
-
-        return _try_credentials(self.project_id, credentials)
-
-    def get_default_credentials_path(self):
-        """
-        Gets the default path to the BigQuery credentials
-
-        .. versionadded 0.3.0
-
-        Returns
-        -------
-        Path to the BigQuery credentials
-        """
-
-        import os
-
-        if os.name == 'nt':
-            config_path = os.environ['APPDATA']
-        else:
-            config_path = os.path.join(os.path.expanduser('~'), '.config')
-
-        config_path = os.path.join(config_path, 'pandas_gbq')
-
-        # Create a pandas_gbq directory in an application-specific hidden
-        # user folder on the operating system.
-        if not os.path.exists(config_path):
-            os.makedirs(config_path)
-
-        return os.path.join(config_path, 'bigquery_credentials.dat')
-
-    def save_user_account_credentials(self, credentials):
-        """
-        Saves user account credentials to a local file.
-
-        .. versionadded 0.2.0
-        """
-        try:
-            with open(self.credentials_path, 'w') as credentials_file:
-                credentials_json = {
-                    'refresh_token': credentials.refresh_token,
-                    'id_token': credentials.id_token,
-                    'token_uri': credentials.token_uri,
-                    'client_id': credentials.client_id,
-                    'client_secret': credentials.client_secret,
-                    'scopes': credentials.scopes,
-                }
-                json.dump(credentials_json, credentials_file)
-        except IOError:
-            logger.warning('Unable to save credentials.')
-
-    def get_user_account_credentials(self):
-        """Gets user account credentials.
-
-        This method authenticates using user credentials, either loading saved
-        credentials from a file or by going through the OAuth flow.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        GoogleCredentials : credentials
-            Credentials for the user with BigQuery access.
-        """
-        from google_auth_oauthlib.flow import InstalledAppFlow
-        from oauthlib.oauth2.rfc6749.errors import OAuth2Error
-
-        credentials = self.load_user_account_credentials()
-
-        client_config = {
-            'installed': {
-                'client_id': ('495642085510-k0tmvj2m941jhre2nbqka17vqpjfddtd'
-                              '.apps.googleusercontent.com'),
-                'client_secret': 'kOc9wMptUtxkcIFbtZCcrEAc',
-                'redirect_uris': ['urn:ietf:wg:oauth:2.0:oob'],
-                'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
-                'token_uri': 'https://accounts.google.com/o/oauth2/token',
-            }
-        }
-
-        if credentials is None or self.reauth:
-            app_flow = InstalledAppFlow.from_client_config(
-                client_config, scopes=[self.scope])
-
-            try:
-                if self.auth_local_webserver:
-                    credentials = app_flow.run_local_server()
-                else:
-                    credentials = app_flow.run_console()
-            except OAuth2Error as ex:
-                raise AccessDenied(
-                    "Unable to get valid credentials: {0}".format(ex))
-
-            self.save_user_account_credentials(credentials)
-
-        return credentials
-
-    def get_service_account_credentials(self):
-        import google.auth.transport.requests
-        from google.oauth2.service_account import Credentials
-        from os.path import isfile
-
-        try:
-            if isfile(self.private_key):
-                with open(self.private_key) as f:
-                    json_key = json.loads(f.read())
-            else:
-                # ugly hack: 'private_key' field has new lines inside,
-                # they break json parser, but we need to preserve them
-                json_key = json.loads(self.private_key.replace('\n', '   '))
-                json_key['private_key'] = json_key['private_key'].replace(
-                    '   ', '\n')
-
-            if compat.PY3:
-                json_key['private_key'] = bytes(
-                    json_key['private_key'], 'UTF-8')
-
-            credentials = Credentials.from_service_account_info(json_key)
-            credentials = credentials.with_scopes([self.scope])
-
-            # Refresh the token before trying to use it.
-            request = google.auth.transport.requests.Request()
-            credentials.refresh(request)
-
-            return credentials, json_key.get('project_id')
-        except (KeyError, ValueError, TypeError, AttributeError):
-            raise InvalidPrivateKeyFormat(
-                "Private key is missing or invalid. It should be service "
-                "account private key JSON (file path or string contents) "
-                "with at least two keys: 'client_email' and 'private_key'. "
-                "Can be obtained from: https://console.developers.google."
-                "com/permissions/serviceaccounts")
 
     def _start_timer(self):
         self.start = time.time()

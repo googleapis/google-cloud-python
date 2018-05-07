@@ -49,7 +49,7 @@ script:
   - if [[ $PYTHON == '3.6' ]] && [[ "$PANDAS" == "MASTER" ]]; then nox -s test36master ; fi
   - REQ="ci/requirements-${PYTHON}-${PANDAS}" ;
     if [ -f "$REQ.conda" ]; then
-      pytest -v tests/unit tests/system.py ;
+      pytest --quiet -m 'not local_auth' -v tests ;
     fi
   - if [[ $COVERAGE == 'true' ]]; then nox -s cover ; fi
   - if [[ $LINT == 'true' ]]; then nox -s lint ; fi
