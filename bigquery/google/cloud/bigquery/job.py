@@ -2687,6 +2687,26 @@ class QueryPlanEntry(object):
                    for step in resource.get('steps', ())],
         )
 
+    @property
+    def started(self):
+        """Datetime at which the stage started
+
+        :rtype: ``datetime.datetime``, or ``NoneType``
+        :returns: the start time of this stage of execution
+        """
+        if self.start_ms is not None:
+                return _datetime_from_microseconds(self.start_ms * 1000.0)
+
+    @property
+    def ended(self):
+        """Datetime at which the stage ended
+
+        :rtype: ``datetime.datetime``, or ``NoneType``
+        :returns: the stendart time of this stage of execution
+        """
+        if self.end_ms is not None:
+                return _datetime_from_microseconds(self.end_ms * 1000.0)
+
 
 class UnknownJob(_AsyncJob):
     """A job whose type cannot be determined."""

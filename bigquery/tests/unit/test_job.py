@@ -25,6 +25,7 @@ from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud._helpers import _datetime_from_microseconds
 
 import mock
 
@@ -3497,3 +3498,29 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
+
+    def test_started(self):
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr({})
+        self.assertEqual(
+            entry.started,
+            None)
+
+        entry.start_ms = self.START_MS
+        self.assertEqual(
+            entry.started,
+            _datetime_from_microseconds(self.START_MS * 1000))
+
+    def test_ended(self):
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr({})
+        self.assertEqual(
+            entry.ended,
+            None)
+
+        entry.end_ms = self.END_MS
+        self.assertEqual(
+            entry.ended,
+            _datetime_from_microseconds(self.END_MS * 1000))
