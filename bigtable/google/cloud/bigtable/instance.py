@@ -20,6 +20,8 @@ import re
 from google.cloud.bigtable.table import Table
 
 from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin_pb2
+from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -161,9 +163,18 @@ class Instance(object):
                     operation.
         """
         parent = self._client.project_path
+        cluster_path = self._client._instance_admin_client.cluster_path(
+            self._client.project, self.instance_id, 'shared-perf-cluster'
+        )
+        location_path = self._client._instance_admin_client.location_path(
+            self._client.project, 'us-central1-f'
+        )
+        clusters = []
+        clusters.append(instance_pb2.Cluster(name=cluster_path,
+                                             location=location_path))
         return self._client._instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance={},
-            clusters={})
+            clusters=clusters)
 
     def update(self):
         """Update this instance.

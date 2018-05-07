@@ -36,6 +36,7 @@ from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
 
+PROJECT_ID = 'grass-clump-479'
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
 TABLE_ID = 'google-cloud-python-test-table'
@@ -79,19 +80,19 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(admin=True)
+        Config.CLIENT = Client(project=PROJECT_ID, admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances, failed_locations = retry(Config.CLIENT.list_instances)()
+        instances_response = retry(Config.CLIENT.list_instances)()
 
-        if len(failed_locations) != 0:
-            raise ValueError('List instances failed in module set up.')
+        # if len(instances_response.instances) != 0:
+        #     raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances
+        EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
