@@ -282,7 +282,7 @@ class Table(object):
                                request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None):
+                   filter_=None, end_inclusive=False):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -305,12 +305,16 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
+        :type end_inclusive: bool
+        :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                      considered inclusive. The default is False (exclusive).
+
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit)
+            limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
         generator = YieldRowsData(client._table_data_client._read_rows,
                                   request_pb)
