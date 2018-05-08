@@ -473,10 +473,12 @@ class TestInstance(unittest.TestCase):
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
         client._instance_admin_client.bigtable_instance_admin_stub = stub
+        update_mask = []
 
         # Perform the method and check the result.
         app_profile_id = 'appProfileId1262094415'
-        result = instance.update_app_profile(app_profile_id)
+        result = instance.update_app_profile(app_profile_id,
+                                             update_mask=update_mask)
 
         self.assertIsInstance(result, operation.Operation)
 

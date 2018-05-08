@@ -19,6 +19,8 @@ import re
 
 from google.cloud.bigtable.table import Table
 
+from google.protobuf import field_mask_pb2
+
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 
@@ -241,17 +243,48 @@ class Instance(object):
 
         return result
 
-    def create_app_profile(self, app_profile_id):
+    def create_app_profile(self, app_profile_id, etag='', description='',
+                           ignore_warnings=None, metadata=None):
         """Creates an app profile within an instance.
 
         :type: app_profile_id: str
         :param app_profile_id: The unique name for the new app profile.
 
+        :type: etag: str
+        :param: etag: (Optional) Strongly validated etag for optimistic
+                        concurrency control. Preserve the value returned
+                        from ``GetAppProfile`` when calling
+                        ``UpdateAppProfile`` to fail the request if there
+                        has been a modification in the mean time. The
+                        ``update_mask`` of the request need not include
+                        ``etag`` for this protection to apply.
+
+        :type: description: str
+        :param: description: (Optional) Optional long form description of the
+                                use case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
+
+        :type: metadata: [Sequence[Tuple[str, str]]]
+        :param: metadata: (Optional) Additional metadata that is provided to
+                            the method.
+
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
         """
+
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.name, app_profile_id)
+        app_profile = instance_pb2.AppProfile(
+            name=name, etag=etag, description=description
+        )
         return self._client._instance_admin_client.create_app_profile(
-            self.name, app_profile_id, {})
+            parent=self.name, app_profile_id=app_profile_id,
+            app_profile=app_profile, ignore_warnings=ignore_warnings,
+            metadata=metadata)
 
     def get_app_profile(self, app_profile_id):
         """Gets information about an app profile.
@@ -280,19 +313,57 @@ class Instance(object):
             self._client._instance_admin_client.list_app_profiles(self.name))
         return list_app_profiles
 
-    def update_app_profile(self, app_profile_id, ignore_warnings=None):
+    def update_app_profile(self, app_profile_id, etag='', description='',
+                           ignore_warnings=None, metadata=None,
+                           update_mask=None):
         """Updates an app profile within an instance.
 
         :type: app_profile_id: str
-        :param app_profile_id: The unique name for the app profile to update.
+        :param app_profile_id: The unique name for the new app profile.
+
+        :type: etag: str
+        :param: etag: (Optional) Strongly validated etag for optimistic
+                        concurrency control. Preserve the value returned
+                        from ``GetAppProfile`` when calling
+                        ``UpdateAppProfile`` to fail the request if there has
+                        been a modification in the mean time. The
+                        ``update_mask`` of the request need not include
+                        ``etag`` for this protection to apply.
+
+        :type: description: str
+        :param: description: (Optional) Optional long form description of the
+                                use case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
+
+        :type: metadata: [Sequence[Tuple[str, str]]]
+        :param: metadata: (Optional) Additional metadata that is provided to
+                            the method.
+
+        :type: update_mask: list
+        :param: update_mask: (Optional) Name of the parameters of
+                                AppProfiles that needed to update. If it is
+                                blank it will update all parameters.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
         """
-        app_profile = instance_pb2.AppProfile(name=app_profile_id)
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.name, app_profile_id)
+        update_app_profile = instance_pb2.AppProfile(
+            name=name,
+            etag=etag,
+            description=description
+        )
+        if update_mask is not None:
+            update_mask = field_mask_pb2.FieldMask(paths=update_mask)
+
         return self._client._instance_admin_client.update_app_profile(
-            app_profile=app_profile, update_mask={},
-            ignore_warnings=ignore_warnings
+            app_profile=update_app_profile, update_mask=update_mask,
+            ignore_warnings=ignore_warnings, metadata=metadata
         )
 
     def delete_app_profile(self, app_profile_id, ignore_warnings=False):
