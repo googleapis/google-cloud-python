@@ -2483,42 +2483,6 @@ class QueryPlanEntry(object):
 
     """
 
-    _PROPERTY_TO_API_FIELD = {
-        'name': 'name',
-        'entry_id': 'id',
-        'start': 'startMs',
-        'end': 'endMs',
-        'input_stages': 'inputStages',
-        'parallel_inputs': 'parallelInputs',
-        'completed_parallel_inputs': 'completedParallelInputs',
-
-        'wait_ms_avg': 'waitMsAvg',
-        'wait_ms_max': 'waitMsMax',
-        'wait_ratio_avg': 'waitRatioAvg',
-        'wait_ratio_max': 'waitRatioMax',
-
-        'read_ms_avg': 'readMsAvg',
-        'read_ms_max': 'readMsMax',
-        'read_ratio_avg': 'readRatioAvg',
-        'read_ratio_max': 'readRatioMax',
-
-        'compute_ms_avg': 'computeMsAvg',
-        'compute_ms_max': 'computeMsMax',
-        'compute_ratio_avg': 'computeRatioAvg',
-        'compute_ratio_max': 'computeRatioMax',
-
-        'write_ms_avg': 'writeMsAvg',
-        'write_ms_max': 'writeMsMax',
-        'write_ratio_avg': 'writeRatioAvg',
-        'write_ratio_max': 'writeRatioMax',
-        'records_read': 'recordsRead',
-        'records_written': 'recordsWritten',
-        'status': 'status',
-        'shuffle_output_bytes': 'shuffleOutputBytes',
-        'shuffle_output_bytes_spilled': 'shuffleOutputBytesSpilled',
-        'steps': 'steps',
-     }
-
     def __init__(self):
         self._properties = {}
 
@@ -2535,7 +2499,7 @@ class QueryPlanEntry(object):
                 Query plan entry parsed from ``resource``
         """
         entry = cls()
-        entry._properties = copy.deepcopy(resource)
+        entry._properties = resource
         return entry
 
     @property
@@ -2551,28 +2515,28 @@ class QueryPlanEntry(object):
     @property
     def start(self):
         """Union[Datetime, None]: Datetime when the stage started."""
-        if self._properties.get('startMs') is not None:
-            return _datetime_from_microseconds(
-                    self._properties.get('startMs') * 1000.0)
+        if self._properties.get('startMs') is None:
+            return None
+        return _datetime_from_microseconds(
+                self._properties.get('startMs') * 1000.0)
 
     @property
     def end(self):
         """Union[Datetime, None]: Datetime when the stage ended."""
-        if self._properties.get('endMs') is not None:
-            return _datetime_from_microseconds(
-                    self._properties.get('endMs') * 1000.0)
+        if self._properties.get('endMs') is None:
+            return None
+        return _datetime_from_microseconds(
+                self._properties.get('endMs') * 1000.0)
 
     @property
     def input_stages(self):
-        """List(int): Entry IDs for stages that were inputs
-                for this stage.
-        """
+        """List(int): Entry IDs for stages that were inputs for this stage."""
         return self._properties.get('inputStages', [])
 
     @property
     def parallel_inputs(self):
         """Union[int, None]: Number of parallel input segments within
-                the stage.
+        the stage.
         """
         return self._properties.get('parallelInputs')
 
@@ -2584,120 +2548,120 @@ class QueryPlanEntry(object):
     @property
     def wait_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent waiting to
-                be scheduled.
+        be scheduled.
         """
         return self._properties.get('waitMsAvg')
 
     @property
     def wait_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent waiting to
-                be scheduled.
+        be scheduled.
         """
         return self._properties.get('waitMsMax')
 
     @property
     def wait_ratio_avg(self):
         """Union[float, None]: Ratio of time the average worker spent waiting
-                to be scheduled, relative to the longest time spent by any
-                worker in any stage of the overall plan.
+        to be scheduled, relative to the longest time spent by any worker in
+        any stage of the overall plan.
         """
         return self._properties.get('waitRatioAvg')
 
     @property
     def wait_ratio_max(self):
         """Union[float, None]: Ratio of time the slowest worker spent waiting
-                to be scheduled, relative to the longest time spent by any
-                worker in any stage of the overall plan.
+        to be scheduled, relative to the longest time spent by any worker in
+        any stage of the overall plan.
         """
         return self._properties.get('waitRatioMax')
 
     @property
     def read_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent reading
-                input.
+        input.
         """
         return self._properties.get('readMsAvg')
 
     @property
     def read_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent reading
-                input.
+        input.
         """
         return self._properties.get('readMsMax')
 
     @property
     def read_ratio_avg(self):
         """Union[float, None]: Ratio of time the average worker spent reading
-                input, relative to the longest time spent by any worker
-                in any stage of the overall plan.
+        input, relative to the longest time spent by any worker in any stage
+        of the overall plan.
         """
         return self._properties.get('readRatioAvg')
 
     @property
     def read_ratio_max(self):
         """Union[float, None]: Ratio of time the slowest worker spent reading
-                to be scheduled, relative to the longest time spent by any
-                worker in any stage of the overall plan.
+        to be scheduled, relative to the longest time spent by any worker in
+        any stage of the overall plan.
         """
         return self._properties.get('readRatioMax')
 
     @property
     def compute_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent on CPU-bound
-                processing.
+        processing.
         """
         return self._properties.get('computeMsAvg')
 
     @property
     def compute_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent on CPU-bound
-                processing.
+        processing.
         """
         return self._properties.get('computeMsMax')
 
     @property
     def compute_ratio_avg(self):
         """Union[float, None]: Ratio of time the average worker spent on
-                CPU-bound processing, relative to the longest time spent
-                by any worker in any stage of the overall plan.
+        CPU-bound processing, relative to the longest time spent by any
+        worker in any stage of the overall plan.
         """
         return self._properties.get('computeRatioAvg')
 
     @property
     def compute_ratio_max(self):
         """Union[float, None]: Ratio of time the slowest worker spent on
-                CPU-bound processing, relative to the longest time spent
-                by any worker in any stage of the overall plan.
+        CPU-bound processing, relative to the longest time spent by any
+        worker in any stage of the overall plan.
         """
         return self._properties.get('computeRatioMax')
 
     @property
     def write_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent writing
-                output data.
+        output data.
         """
         return self._properties.get('writeMsAvg')
 
     @property
     def write_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent writing
-                output data.
+        output data.
         """
         return self._properties.get('writeMsMax')
 
     @property
     def write_ratio_avg(self):
         """Union[float, None]: Ratio of time the average worker spent writing
-                output data, relative to the longest time spent by any
-                worker in any stage of the overall plan.
+        output data, relative to the longest time spent by any worker in any
+        stage of the overall plan.
         """
         return self._properties.get('writeRatioAvg')
 
     @property
     def write_ratio_max(self):
         """Union[float, None]: Ratio of time the slowest worker spent writing
-                output data, relative to the longest time spent by any
-                worker in any stage of the overall plan.
+        output data, relative to the longest time spent by any worker in any
+        stage of the overall plan.
         """
         return self._properties.get('writeRatioMax')
 
@@ -2719,21 +2683,21 @@ class QueryPlanEntry(object):
     @property
     def shuffle_output_bytes(self):
         """Union[int, None]: Number of bytes written by this stage to
-                intermediate shuffle.
+        intermediate shuffle.
         """
         return self._properties.get('shuffleOutputBytes')
 
     @property
     def shuffle_output_bytes_spilled(self):
         """Union[int, None]: Number of bytes written by this stage to
-                intermediate shuffle and spilled to disk.
+        intermediate shuffle and spilled to disk.
         """
         return self._properties.get('shuffleOutputBytesSpilled')
 
     @property
     def steps(self):
-        """List(QueryPlanEntryStep): List of step operations
-                performed by each worker in the stage.
+        """List(QueryPlanEntryStep): List of step operations performed by
+        each worker in the stage.
         """
         return [QueryPlanEntryStep.from_api_repr(step)
                 for step in self._properties.get('steps', [])]
