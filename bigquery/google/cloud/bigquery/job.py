@@ -2732,7 +2732,7 @@ class QueryPlanEntry(object):
 
     @property
     def steps(self):
-        """Union[List(QueryPlanEntryStep), None] List of step operations
+        """List(QueryPlanEntryStep): List of step operations
                 performed by each worker in the stage.
         """
         return [QueryPlanEntryStep.from_api_repr(step)
