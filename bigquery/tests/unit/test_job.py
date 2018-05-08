@@ -2465,6 +2465,21 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['numDmlAffectedRows'] = str(num_rows)
         self.assertEqual(job.num_dml_affected_rows, num_rows)
 
+    def test_slot_millis(self):
+        millis = 1234
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.slot_millis)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.slot_millis)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.slot_millis)
+
+        query_stats['totalSlotMs'] = millis
+        self.assertEqual(job.slot_millis, millis)
+
     def test_statement_type(self):
         statement_type = 'SELECT'
         client = _make_client(project=self.PROJECT)
@@ -2526,6 +2541,34 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.table_id, 'other-table')
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
+
+    def test_timeline(self):
+        timeline_resource = [{
+            'elapsedMs': 1,
+            'activeUnits': 22,
+            'pendingUnits': 33,
+            'completedUnits': 44,
+            'totalSlotMs': 101,
+        }]
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertEqual(job.timeline, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.timeline, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.timeline, [])
+
+        query_stats['timeline'] = timeline_resource
+
+        self.assertEqual(len(job.timeline), len(timeline_resource))
+        self.assertEqual(job.timeline[0].elapsed_ms, 1)
+        self.assertEqual(job.timeline[0].active_units, 22)
+        self.assertEqual(job.timeline[0].pending_units, 33)
+        self.assertEqual(job.timeline[0].completed_units, 44)
+        self.assertEqual(job.timeline[0].slot_millis, 101)
 
     def test_undeclared_query_parameters(self):
         from google.cloud.bigquery.query import ArrayQueryParameter
@@ -3455,3 +3498,42 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(
             entry.end.strftime(_RFC3339_MICROS),
             self.END_RFC3339_MICROS)
+
+
+class TestTimelineEntry(unittest.TestCase, _Base):
+    ELAPSED_MS = 101
+    ACTIVE_UNITS = 50
+    PENDING_UNITS = 98
+    COMPLETED_UNITS = 520
+    SLOT_MILLIS = 12029
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import TimelineEntry
+        return TimelineEntry
+
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+        entry = klass.from_api_repr({})
+        self.assertIsNone(entry.elapsed_ms)
+        self.assertIsNone(entry.active_units)
+        self.assertIsNone(entry.pending_units)
+        self.assertIsNone(entry.completed_units)
+        self.assertIsNone(entry.slot_millis)
+
+    def test_from_api_repr_normal(self):
+        resource = {
+            'elapsedMs': self.ELAPSED_MS,
+            'activeUnits': self.ACTIVE_UNITS,
+            'pendingUnits': self.PENDING_UNITS,
+            'completedUnits': self.COMPLETED_UNITS,
+            'totalSlotMs': self.SLOT_MILLIS,
+        }
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr(resource)
+        self.assertEqual(entry.elapsed_ms, self.ELAPSED_MS)
+        self.assertEqual(entry.active_units, self.ACTIVE_UNITS)
+        self.assertEqual(entry.pending_units, self.PENDING_UNITS)
+        self.assertEqual(entry.completed_units, self.COMPLETED_UNITS)
+        self.assertEqual(entry.slot_millis, self.SLOT_MILLIS)

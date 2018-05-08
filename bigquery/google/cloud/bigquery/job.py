@@ -2201,6 +2201,14 @@ class QueryJob(_AsyncJob):
         return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
 
     @property
+    def timeline(self):
+        """List(TimelineEntry): Return the query execution timeline
+        from job statistics.
+        """
+        raw = self._job_statistics().get('timeline', ())
+        return [TimelineEntry.from_api_repr(entry) for entry in raw]
+
+    @property
     def total_bytes_processed(self):
         """Return total bytes processed from job statistics, if present.
 
@@ -2273,6 +2281,11 @@ class QueryJob(_AsyncJob):
         if result is not None:
             result = int(result)
         return result
+
+    @property
+    def slot_millis(self):
+        """Union[int, None]: Slot-milliseconds used by this query job."""
+        return self._job_statistics().get('totalSlotMs')
 
     @property
     def statement_type(self):
@@ -2701,6 +2714,66 @@ class QueryPlanEntry(object):
         """
         return [QueryPlanEntryStep.from_api_repr(step)
                 for step in self._properties.get('steps', [])]
+
+
+class TimelineEntry(object):
+    """TimelineEntry represents progress of a query job at a particular
+    point in time.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs
+    for the underlying API representation within query statistics.
+
+    """
+
+    def __init__(self):
+        self._properties = {}
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct instance from the JSON repr.
+
+        Args:
+            resource(Dict[str: object]):
+                QueryTimelineSample representation returned from API
+
+        Returns:
+            google.cloud.bigquery.TimelineEntry:
+                Timeline sample parsed from ``resource``
+        """
+        entry = cls()
+        entry._properties = resource
+        return entry
+
+    @property
+    def elapsed_ms(self):
+        """Union[int, None]: Milliseconds elapsed since start of query
+        execution."""
+        return self._properties.get('elapsedMs')
+
+    @property
+    def active_units(self):
+        """Union[int, None]: Current number of input units being processed
+        by workers, reported as largest value since the last sample."""
+        return self._properties.get('activeUnits')
+
+    @property
+    def pending_units(self):
+        """Union[int, None]: Current number of input units remaining for
+        query stages active at this sample time."""
+        return self._properties.get('pendingUnits')
+
+    @property
+    def completed_units(self):
+        """Union[int, None]: Current number of input units completed by
+        this query."""
+        return self._properties.get('completedUnits')
+
+    @property
+    def slot_millis(self):
+        """Union[int, None]: Cumulative slot-milliseconds consumed by
+        this query."""
+        return self._properties.get('totalSlotMs')
 
 
 class UnknownJob(_AsyncJob):
