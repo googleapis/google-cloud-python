@@ -20,7 +20,6 @@ import re
 from google.cloud.bigtable.table import Table
 
 from google.cloud.bigtable_admin_v2 import enums
-from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
