@@ -30,7 +30,6 @@ version = '0.1.0'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
     'google-api-core >= 0.1.0, < 0.2.0dev',
-    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
 extras = {
 }
