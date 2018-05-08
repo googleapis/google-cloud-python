@@ -18,6 +18,17 @@ import unittest
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
+
+
 class TestCluster(unittest.TestCase):
 
     PROJECT = 'project'
@@ -81,8 +92,9 @@ class TestCluster(unittest.TestCase):
         from google.cloud.bigtable.instance import Instance
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance)
         instance = Instance(self.INSTANCE_ID, client)
@@ -124,8 +136,9 @@ class TestCluster(unittest.TestCase):
 
         LOCATION = 'LOCATION'
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance)
 
@@ -156,8 +169,9 @@ class TestCluster(unittest.TestCase):
         from google.cloud.bigtable.instance import Instance
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance)
 
@@ -198,8 +212,9 @@ class TestCluster(unittest.TestCase):
         SERVE_NODES = 81
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  serve_nodes=SERVE_NODES)
@@ -247,8 +262,9 @@ class TestCluster(unittest.TestCase):
         from google.cloud.bigtable.instance import Instance
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  serve_nodes=DEFAULT_SERVE_NODES)

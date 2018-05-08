@@ -98,9 +98,11 @@ class TestClient(unittest.TestCase):
 
     def test_project_name_property(self):
         credentials = _make_credentials()
+        channel = _make_channel()
         project = 'PROJECT'
         client = self._make_one(
-            project=project, credentials=credentials, admin=True)
+            project=project, channel=channel, credentials=credentials,
+            admin=True)
         project_name = 'projects/' + project
         self.assertEqual(client.project_path, project_name)
 
@@ -142,8 +144,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_admin_client_w_value_error(self):
-        channel = _make_channel()
-        client = self._make_one(project=self.PROJECT, channel=channel)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         with self.assertRaises(ValueError):
             client._table_admin_client()
@@ -165,9 +167,10 @@ class TestClient(unittest.TestCase):
         INSTANCE_NAME2 = (
                 'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
+        credentials = _make_credentials()
         channel = _make_channel()
         client = self._make_one(project=self.PROJECT, channel=channel,
-                                admin=True)
+                                credentials=credentials, admin=True)
 
         # Create response_pb
         response_pb = messages_v2_pb2.ListInstancesResponse(

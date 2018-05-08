@@ -29,6 +29,17 @@ def _make_channel(secure_authorized_channel):
     return channel
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
+
+
 class TestRow(unittest.TestCase):
 
     @staticmethod
@@ -351,8 +362,9 @@ class TestDirectRow(unittest.TestCase):
         column = b'column'
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
 
@@ -486,8 +498,9 @@ class TestConditionalRow(unittest.TestCase):
         column2 = b'column2'
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         row_filter = RowSampleFilter(0.33)
         row = self._make_one(row_key, table, filter_=row_filter)
@@ -632,8 +645,9 @@ class TestAppendRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         column = b'column'
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
 
@@ -662,8 +676,9 @@ class TestAppendRow(unittest.TestCase):
         project_id = 'project-id'
         row_key = b'row_key'
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(None, client=client)
         row = self._make_one(row_key, table)
         self.assertEqual(row._rule_pb_list, [])
