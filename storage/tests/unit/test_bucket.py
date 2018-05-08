@@ -124,7 +124,7 @@ class Test_Bucket(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
 
         bucket = self._make_one(name=BUCKET_NAME)

@@ -79,7 +79,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -95,7 +95,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -196,7 +196,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         self._set_properties_helper(kms_key_name=kms_resource)
 
@@ -593,7 +593,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         blob_name = 'bzzz-fly.txt'
         bucket = _Bucket(name='buhkit')
@@ -1230,7 +1230,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         self._do_multipart_success(
             mock_get_boundary, kms_key_name=kms_resource)
@@ -1377,7 +1377,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         self._initiate_resumable_helper(kms_key_name=kms_resource)
 
@@ -2352,7 +2352,7 @@ class Test_Blob(unittest.TestCase):
             "projects/test-project-123/"
             "locations/us/"
             "keyRings/test-ring/"
-            "cryptoKeys/test-key/"
+            "cryptoKeys/test-key"
         )
         BLOB_NAME = 'blob'
         RESPONSE = {
