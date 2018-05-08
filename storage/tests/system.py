@@ -1013,7 +1013,7 @@ class TestKMSIntegration(TestStorageFiles):
             "cryptoKeys/{}"
         ).format(
             Config.CLIENT.project,
-            'global',  # will be 'self.bucket.location' after launch
+            self.bucket.location.lower(),
             self.KEYRING_NAME,
             key_name,
         )

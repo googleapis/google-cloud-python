@@ -77,7 +77,7 @@ class Test_Blob(unittest.TestCase):
         KEY = b'01234567890123456789012345678901'  # 32 bytes
         KMS_RESOURCE = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -93,7 +93,7 @@ class Test_Blob(unittest.TestCase):
     def test_ctor_w_kms_key_name(self):
         KMS_RESOURCE = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -194,7 +194,7 @@ class Test_Blob(unittest.TestCase):
     def test__set_properties_w_kms_key_name(self):
         kms_resource = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -591,7 +591,7 @@ class Test_Blob(unittest.TestCase):
     def test__get_download_url_on_the_fly_with_kms_key_name(self):
         kms_resource = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -1228,7 +1228,7 @@ class Test_Blob(unittest.TestCase):
     def test__do_multipart_upload_with_kms(self, mock_get_boundary):
         kms_resource = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -1375,7 +1375,7 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_kms(self):
         kms_resource = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -2350,7 +2350,7 @@ class Test_Blob(unittest.TestCase):
             SOURCE_KEY_HASH).rstrip().decode('ascii')
         DEST_KMS_RESOURCE = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )

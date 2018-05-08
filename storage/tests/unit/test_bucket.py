@@ -122,7 +122,7 @@ class Test_Bucket(unittest.TestCase):
         CHUNK_SIZE = 1024 * 1024
         KMS_RESOURCE = (
             "projects/test-project-123/"
-            "locations/global/"
+            "locations/us/"
             "keyRings/test-ring/"
             "cryptoKeys/test-key/"
         )
@@ -965,7 +965,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = 'name'
         KMS_RESOURCE = (
             'projects/test-project-123/'
-            'locations/global/'
+            'locations/us/'
             'keyRings/test-ring/'
             'cryptoKeys/test-key'
         )
@@ -981,7 +981,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = 'name'
         KMS_RESOURCE = (
             'projects/test-project-123/'
-            'locations/global/'
+            'locations/us/'
             'keyRings/test-ring/'
             'cryptoKeys/test-key'
         )
