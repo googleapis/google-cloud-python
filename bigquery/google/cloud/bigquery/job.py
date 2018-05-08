@@ -2285,7 +2285,7 @@ class QueryJob(_AsyncJob):
     @property
     def slot_millis(self):
         """Union[int, None]: Slot-milliseconds used by this query job."""
-        return self._job_statistics().get('totalSlotMs')
+        return _int_or_none(self._job_statistics().get('totalSlotMs'))
 
     @property
     def statement_type(self):
@@ -2531,7 +2531,7 @@ class QueryPlanEntry(object):
         if self._properties.get('startMs') is None:
             return None
         return _datetime_from_microseconds(
-                self._properties.get('startMs') * 1000.0)
+                int(self._properties.get('startMs')) * 1000.0)
 
     @property
     def end(self):
@@ -2539,38 +2539,41 @@ class QueryPlanEntry(object):
         if self._properties.get('endMs') is None:
             return None
         return _datetime_from_microseconds(
-                self._properties.get('endMs') * 1000.0)
+                int(self._properties.get('endMs')) * 1000.0)
 
     @property
     def input_stages(self):
         """List(int): Entry IDs for stages that were inputs for this stage."""
-        return self._properties.get('inputStages', [])
+        if self._properties.get('inputStages') is None:
+            return []
+        return [_int_or_none(entry)
+                for entry in self._properties.get('inputStages')]
 
     @property
     def parallel_inputs(self):
         """Union[int, None]: Number of parallel input segments within
         the stage.
         """
-        return self._properties.get('parallelInputs')
+        return _int_or_none(self._properties.get('parallelInputs'))
 
     @property
     def completed_parallel_inputs(self):
         """Union[int, None]: Number of parallel input segments completed."""
-        return self._properties.get('completedParallelInputs')
+        return _int_or_none(self._properties.get('completedParallelInputs'))
 
     @property
     def wait_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent waiting to
         be scheduled.
         """
-        return self._properties.get('waitMsAvg')
+        return _int_or_none(self._properties.get('waitMsAvg'))
 
     @property
     def wait_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent waiting to
         be scheduled.
         """
-        return self._properties.get('waitMsMax')
+        return _int_or_none(self._properties.get('waitMsMax'))
 
     @property
     def wait_ratio_avg(self):
@@ -2593,14 +2596,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent reading
         input.
         """
-        return self._properties.get('readMsAvg')
+        return _int_or_none(self._properties.get('readMsAvg'))
 
     @property
     def read_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent reading
         input.
         """
-        return self._properties.get('readMsMax')
+        return _int_or_none(self._properties.get('readMsMax'))
 
     @property
     def read_ratio_avg(self):
@@ -2623,14 +2626,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent on CPU-bound
         processing.
         """
-        return self._properties.get('computeMsAvg')
+        return _int_or_none(self._properties.get('computeMsAvg'))
 
     @property
     def compute_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent on CPU-bound
         processing.
         """
-        return self._properties.get('computeMsMax')
+        return _int_or_none(self._properties.get('computeMsMax'))
 
     @property
     def compute_ratio_avg(self):
@@ -2653,14 +2656,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent writing
         output data.
         """
-        return self._properties.get('writeMsAvg')
+        return _int_or_none(self._properties.get('writeMsAvg'))
 
     @property
     def write_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent writing
         output data.
         """
-        return self._properties.get('writeMsMax')
+        return _int_or_none(self._properties.get('writeMsMax'))
 
     @property
     def write_ratio_avg(self):
@@ -2681,12 +2684,12 @@ class QueryPlanEntry(object):
     @property
     def records_read(self):
         """Union[int, None]: Number of records read by this stage."""
-        return self._properties.get('recordsRead')
+        return _int_or_none(self._properties.get('recordsRead'))
 
     @property
     def records_written(self):
         """Union[int, None]: Number of records written by this stage."""
-        return self._properties.get('recordsWritten')
+        return _int_or_none(self._properties.get('recordsWritten'))
 
     @property
     def status(self):
@@ -2698,14 +2701,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle.
         """
-        return self._properties.get('shuffleOutputBytes')
+        return _int_or_none(self._properties.get('shuffleOutputBytes'))
 
     @property
     def shuffle_output_bytes_spilled(self):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle and spilled to disk.
         """
-        return self._properties.get('shuffleOutputBytesSpilled')
+        return _int_or_none(self._properties.get('shuffleOutputBytesSpilled'))
 
     @property
     def steps(self):
@@ -2749,31 +2752,31 @@ class TimelineEntry(object):
     def elapsed_ms(self):
         """Union[int, None]: Milliseconds elapsed since start of query
         execution."""
-        return self._properties.get('elapsedMs')
+        return _int_or_none(self._properties.get('elapsedMs'))
 
     @property
     def active_units(self):
         """Union[int, None]: Current number of input units being processed
         by workers, reported as largest value since the last sample."""
-        return self._properties.get('activeUnits')
+        return _int_or_none(self._properties.get('activeUnits'))
 
     @property
     def pending_units(self):
         """Union[int, None]: Current number of input units remaining for
         query stages active at this sample time."""
-        return self._properties.get('pendingUnits')
+        return _int_or_none(self._properties.get('pendingUnits'))
 
     @property
     def completed_units(self):
         """Union[int, None]: Current number of input units completed by
         this query."""
-        return self._properties.get('completedUnits')
+        return _int_or_none(self._properties.get('completedUnits'))
 
     @property
     def slot_millis(self):
         """Union[int, None]: Cumulative slot-milliseconds consumed by
         this query."""
-        return self._properties.get('totalSlotMs')
+        return _int_or_none(self._properties.get('totalSlotMs'))
 
 
 class UnknownJob(_AsyncJob):

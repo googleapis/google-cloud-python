@@ -2289,33 +2289,33 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         plan_entries = [{
             'name': 'NAME',
-            'id': 1234,
-            'inputStages': [88, 101],
-            'startMs': 1522540800000,
-            'endMs':   1522540804000,
-            'parallelInputs': 1000,
-            'completedParallelInputs': 5,
-            'waitMsAvg': 33,
-            'waitMsMax': 400,
+            'id': '1234',
+            'inputStages': ['88', '101'],
+            'startMs': '1522540800000',
+            'endMs':   '1522540804000',
+            'parallelInputs': '1000',
+            'completedParallelInputs': '5',
+            'waitMsAvg': '33',
+            'waitMsMax': '400',
             'waitRatioAvg': 2.71828,
             'waitRatioMax': 3.14159,
-            'readMsAvg': 45,
-            'readMsMax': 90,
+            'readMsAvg': '45',
+            'readMsMax': '90',
             'readRatioAvg': 1.41421,
             'readRatioMax': 1.73205,
-            'computeMsAvg': 55,
-            'computeMsMax': 99,
+            'computeMsAvg': '55',
+            'computeMsMax': '99',
             'computeRatioAvg': 0.69315,
             'computeRatioMax': 1.09861,
-            'writeMsAvg': 203,
-            'writeMsMax': 340,
+            'writeMsAvg': '203',
+            'writeMsMax': '340',
             'writeRatioAvg': 3.32193,
             'writeRatioMax': 2.30258,
             'recordsRead': '100',
             'recordsWritten': '1',
             'status': 'STATUS',
-            'shuffleOutputBytes': 1024,
-            'shuffleOutputBytesSpilled': 1,
+            'shuffleOutputBytes': '1024',
+            'shuffleOutputBytesSpilled': '1',
             'steps': [{
                 'kind': 'KIND',
                 'substeps': ['SUBSTEP1', 'SUBSTEP2'],
@@ -2342,7 +2342,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     len(found.input_stages),
                     len(expected['inputStages']))
             for f_id in found.input_stages:
-                self.assertIn(f_id, expected['inputStages'])
+                self.assertIn(f_id, [int(e) for e in expected['inputStages']])
             self.assertEqual(
                 found.start.strftime(_RFC3339_MICROS),
                 '2018-04-01T00:00:00.000000Z')
@@ -2351,39 +2351,43 @@ class TestQueryJob(unittest.TestCase, _Base):
                 '2018-04-01T00:00:04.000000Z')
             self.assertEqual(
                     found.parallel_inputs,
-                    expected['parallelInputs'])
+                    int(expected['parallelInputs']))
             self.assertEqual(
                     found.completed_parallel_inputs,
-                    expected['completedParallelInputs'])
-            self.assertEqual(found.wait_ms_avg, expected['waitMsAvg'])
-            self.assertEqual(found.wait_ms_max, expected['waitMsMax'])
+                    int(expected['completedParallelInputs']))
+            self.assertEqual(found.wait_ms_avg, int(expected['waitMsAvg']))
+            self.assertEqual(found.wait_ms_max, int(expected['waitMsMax']))
             self.assertEqual(found.wait_ratio_avg, expected['waitRatioAvg'])
             self.assertEqual(found.wait_ratio_max, expected['waitRatioMax'])
-            self.assertEqual(found.read_ms_avg, expected['readMsAvg'])
-            self.assertEqual(found.read_ms_max, expected['readMsMax'])
+            self.assertEqual(found.read_ms_avg, int(expected['readMsAvg']))
+            self.assertEqual(found.read_ms_max, int(expected['readMsMax']))
             self.assertEqual(found.read_ratio_avg, expected['readRatioAvg'])
             self.assertEqual(found.read_ratio_max, expected['readRatioMax'])
-            self.assertEqual(found.compute_ms_avg, expected['computeMsAvg'])
-            self.assertEqual(found.compute_ms_max, expected['computeMsMax'])
+            self.assertEqual(
+                found.compute_ms_avg,
+                int(expected['computeMsAvg']))
+            self.assertEqual(
+                found.compute_ms_max,
+                int(expected['computeMsMax']))
             self.assertEqual(
                 found.compute_ratio_avg, expected['computeRatioAvg'])
             self.assertEqual(
                 found.compute_ratio_max, expected['computeRatioMax'])
-            self.assertEqual(found.write_ms_avg, expected['writeMsAvg'])
-            self.assertEqual(found.write_ms_max, expected['writeMsMax'])
+            self.assertEqual(found.write_ms_avg, int(expected['writeMsAvg']))
+            self.assertEqual(found.write_ms_max, int(expected['writeMsMax']))
             self.assertEqual(found.write_ratio_avg, expected['writeRatioAvg'])
             self.assertEqual(found.write_ratio_max, expected['writeRatioMax'])
             self.assertEqual(
-                found.records_read, expected['recordsRead'])
+                found.records_read, int(expected['recordsRead']))
             self.assertEqual(
-                found.records_written, expected['recordsWritten'])
+                found.records_written, int(expected['recordsWritten']))
             self.assertEqual(found.status, expected['status'])
             self.assertEqual(
                     found.shuffle_output_bytes,
-                    expected['shuffleOutputBytes'])
+                    int(expected['shuffleOutputBytes']))
             self.assertEqual(
                     found.shuffle_output_bytes_spilled,
-                    expected['shuffleOutputBytesSpilled'])
+                    int(expected['shuffleOutputBytesSpilled']))
 
             self.assertEqual(len(found.steps), len(expected['steps']))
             for f_step, e_step in zip(found.steps, expected['steps']):
