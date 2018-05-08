@@ -35,6 +35,8 @@ from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
 
+from google.cloud.client import ClientWithProject
+
 
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
@@ -44,7 +46,7 @@ READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 
-class Client(object):
+class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
     .. note::
@@ -90,13 +92,11 @@ class Client(object):
 
         # NOTE: We set the scopes **before** calling the parent constructor.
         #       It **may** use those scopes in ``with_scopes_if_required``.
-        self.project = project
         self._read_only = bool(read_only)
         self._admin = bool(admin)
         self._channel = channel
-        self._credentials = credentials
         self.SCOPE = self._get_scopes()
-        super(Client, self).__init__()
+        super(Client, self).__init__(project=project, credentials=credentials)
 
     def _get_scopes(self):
         """Get the scopes corresponding to admin / read-only state.
@@ -140,8 +140,7 @@ class Client(object):
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
-        return bigtable_v2.BigtableClient(channel=self._channel,
-                                          credentials=self._credentials)
+        return bigtable_v2.BigtableClient(channel=self._channel)
 
     @property
     def _table_admin_client(self):
@@ -156,7 +155,7 @@ class Client(object):
         if not self._admin:
             raise ValueError('Client is not an admin client.')
         return bigtable_admin_v2.BigtableTableAdminClient(
-            channel=self._channel, credentials=self._credentials)
+            channel=self._channel)
 
     @property
     def _instance_admin_client(self):
@@ -171,7 +170,7 @@ class Client(object):
         if not self._admin:
             raise ValueError('Client is not an admin client.')
         return bigtable_admin_v2.BigtableInstanceAdminClient(
-            channel=self._channel, credentials=self._credentials)
+            channel=self._channel)
 
     def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None):

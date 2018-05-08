@@ -93,7 +93,8 @@ class TestClient(unittest.TestCase):
         project = 'PROJECT'
         client = self._make_one(
             project=project, credentials=credentials)
-        self.assertIs(client._credentials, credentials)
+        self.assertIs(client._credentials,
+                      credentials.with_scopes.return_value)
 
     def test_project_name_property(self):
         credentials = _make_credentials()
