@@ -1154,22 +1154,14 @@ class TestBigQuery(unittest.TestCase):
         self.assertGreater(first_stage.shuffle_output_bytes, 0)
         self.assertEqual(first_stage.status, 'COMPLETE')
 
-        # Query plan is a digraph, determine that there's a stage that's has
-        # the max ratio for an accounting type, and that not all nodes in the
-        # graphs recieve input from other stages.
+        # Query plan is a digraph.  Ensure it has inter-stage links,
+        # but not every stage has inputs.
         stages_with_inputs = 0
-        stages_with_max_ratio = 0
         for entry in plan:
             if len(entry.input_stages) > 0:
                 stages_with_inputs = stages_with_inputs + 1
-            if (entry.compute_ratio_max == 1.0 or
-                    entry.read_ratio_max == 1.0 or
-                    entry.wait_ratio_max == 1.0 or
-                    entry.write_ratio_max == 1.0):
-                stages_with_max_ratio = stages_with_max_ratio + 1
         self.assertGreater(stages_with_inputs, 0)
         self.assertGreater(len(plan), stages_with_inputs)
-        self.assertGreater(stages_with_max_ratio, 0)
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
