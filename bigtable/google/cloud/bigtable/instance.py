@@ -20,7 +20,6 @@ import re
 from google.cloud.bigtable.table import Table
 
 from google.cloud.bigtable_admin_v2 import enums
-from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
