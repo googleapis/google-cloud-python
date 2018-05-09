@@ -19,6 +19,17 @@ import grpc
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
+
+
 class Test___mutate_rows_request(unittest.TestCase):
 
     def _call_fut(self, table_name, rows):
@@ -166,8 +177,9 @@ class TestTable(unittest.TestCase):
 
     def test_constructor(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table_id = 'table-id'
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
@@ -178,8 +190,9 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import DirectRow
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
@@ -193,8 +206,9 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import ConditionalRow
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
@@ -209,8 +223,9 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import AppendRow
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         row_key = b'row_key'
@@ -222,8 +237,9 @@ class TestTable(unittest.TestCase):
 
     def test_row_factory_failure(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         with self.assertRaises(ValueError):
@@ -231,8 +247,9 @@ class TestTable(unittest.TestCase):
 
     def test___eq__(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table1 = self._make_one(self.TABLE_ID, instance)
         table2 = self._make_one(self.TABLE_ID, instance)
@@ -240,8 +257,9 @@ class TestTable(unittest.TestCase):
 
     def test___eq__type_differ(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table1 = self._make_one(self.TABLE_ID, instance)
         table2 = object()
@@ -249,8 +267,9 @@ class TestTable(unittest.TestCase):
 
     def test___ne__same_value(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table1 = self._make_one(self.TABLE_ID, instance)
         table2 = self._make_one(self.TABLE_ID, instance)
@@ -264,8 +283,9 @@ class TestTable(unittest.TestCase):
 
     def _create_test_helper(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -281,8 +301,9 @@ class TestTable(unittest.TestCase):
 
     def test_delete(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -295,8 +316,9 @@ class TestTable(unittest.TestCase):
 
     def _list_column_families_helper(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -328,8 +350,9 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable import table as MUT
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -404,8 +427,9 @@ class TestTable(unittest.TestCase):
         from google.rpc.status_pb2 import Status
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -427,8 +451,9 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable import table as MUT
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -467,8 +492,9 @@ class TestTable(unittest.TestCase):
 
     def test_yield_retry_rows(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -512,8 +538,9 @@ class TestTable(unittest.TestCase):
 
     def test_sample_row_keys(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
@@ -602,8 +629,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_callable_empty_rows(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -626,8 +654,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #       [success, retryable, non-retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -672,8 +701,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #       [success, success, non-retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -721,8 +751,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #       [retryable, retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -751,8 +782,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_empty_rows(self):
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -772,8 +804,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - Expect [success, non-retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -810,8 +843,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #       [success, retryable, non-retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -861,8 +895,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #     only two rows were retried.
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -915,8 +950,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #       [success, non-retryable, non-retryable, success]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -965,8 +1001,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - After second try: [success, non-retryable]
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
@@ -990,8 +1027,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         from google.cloud.bigtable.row import DirectRow
 
         channel = self._make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
