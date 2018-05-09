@@ -311,7 +311,8 @@ class Instance(object):
         if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-        elif routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=cluster_id,
@@ -425,7 +426,8 @@ class Instance(object):
         if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
-        elif routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=cluster_id,
