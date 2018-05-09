@@ -18,8 +18,10 @@
 import re
 
 from google.cloud.bigtable.table import Table
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
 from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -140,7 +142,7 @@ class Instance(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self):
+    def create(self, location_id):
         """Create this instance.
 
         .. note::
@@ -156,14 +158,29 @@ class Instance(object):
 
             before calling :meth:`create`.
 
+        :type location_id: str
+        :param location_id: The unique ID of the location.
+
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
         """
+        clusters = {}
+        cluster_id = '{}-cluster'.format(self.instance_id)
+        cluster_name = self._client._instance_admin_client.cluster_path(
+            self._client.project, self.instance_id, cluster_id)
+        location = self._client._instance_admin_client.location_path(
+            self._client.project, location_id)
+        cluster = instance_pb2.Cluster(name=cluster_name, location=location,
+                                       serve_nodes=DEFAULT_SERVE_NODES)
+        instance = instance_pb2.Instance(
+            display_name=self.display_name
+        )
+        clusters[cluster_id] = cluster
         parent = self._client.project_path
         return self._client._instance_admin_client.create_instance(
-            parent=parent, instance_id=self.instance_id, instance={},
-            clusters={})
+            parent=parent, instance_id=self.instance_id, instance=instance,
+            clusters=clusters)
 
     def update(self):
         """Update this instance.
