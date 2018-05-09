@@ -1087,6 +1087,90 @@ class TestBigQuery(unittest.TestCase):
             # 1 second is much too short for this query.
             query_job.result(timeout=1)
 
+    def test_query_statistics(self):
+        """
+        A system test to exercise some of the extended query statistics.
+
+        Note:  We construct a query that should need at least three stages by
+        specifying a JOIN query.  Exact plan and stats are effectively
+        non-deterministic, so we're largely interested in confirming values
+        are present.
+        """
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
+        query_job = Config.CLIENT.query(
+            """
+            SELECT
+              COUNT(1)
+            FROM
+            (
+              SELECT
+                year,
+                wban_number
+              FROM `bigquery-public-data.samples.gsod`
+              LIMIT 1000
+            ) lside
+            INNER JOIN
+            (
+              SELECT
+                year,
+                state
+              FROM `bigquery-public-data.samples.natality`
+              LIMIT 1000
+            ) rside
+            ON
+            lside.year = rside.year
+            """,
+            location='US',
+            job_config=job_config)
+
+        # run the job to completion
+        query_job.result()
+
+        # Assert top-level stats
+        self.assertFalse(query_job.cache_hit)
+        self.assertIsNotNone(query_job.destination)
+        self.assertTrue(query_job.done)
+        self.assertFalse(query_job.dry_run)
+        self.assertIsNone(query_job.num_dml_affected_rows)
+        self.assertEqual(query_job.priority, 'INTERACTIVE')
+        self.assertGreater(query_job.total_bytes_billed, 1)
+        self.assertGreater(query_job.total_bytes_processed, 1)
+        self.assertEqual(query_job.statement_type, 'SELECT')
+        self.assertGreater(query_job.slot_millis, 1)
+
+        # Make assertions on the shape of the query plan.
+        plan = query_job.query_plan
+        self.assertGreaterEqual(len(plan), 3)
+        first_stage = plan[0]
+        self.assertIsNotNone(first_stage.start)
+        self.assertIsNotNone(first_stage.end)
+        self.assertIsNotNone(first_stage.entry_id)
+        self.assertIsNotNone(first_stage.name)
+        self.assertGreater(first_stage.parallel_inputs, 0)
+        self.assertGreater(first_stage.completed_parallel_inputs, 0)
+        self.assertGreater(first_stage.shuffle_output_bytes, 0)
+        self.assertEqual(first_stage.status, 'COMPLETE')
+
+        # Query plan is a digraph, determine that there's a stage that's has
+        # the max ratio for an accounting type, and that not all nodes in the
+        # graphs recieve input from other stages.
+        stages_with_inputs = 0
+        stages_with_max_ratio = 0
+        for entry in plan:
+            if len(entry.input_stages) > 0:
+                stages_with_inputs = stages_with_inputs + 1
+            if (entry.compute_ratio_max == 1.0 or
+                    entry.read_ratio_max == 1.0 or
+                    entry.wait_ratio_max == 1.0 or
+                    entry.write_ratio_max == 1.0):
+                stages_with_max_ratio = stages_with_max_ratio + 1
+        self.assertGreater(stages_with_inputs, 0)
+        self.assertGreater(len(plan), stages_with_inputs)
+        self.assertGreater(stages_with_max_ratio, 0)
+
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
         for example in examples:
