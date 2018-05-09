@@ -19,10 +19,7 @@ import re
 
 from google.cloud.bigtable.table import Table
 
-from google.protobuf import field_mask_pb2
-
 from google.cloud.bigtable_admin_v2 import enums
-from google.cloud.bigtable_admin_v2.proto import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
