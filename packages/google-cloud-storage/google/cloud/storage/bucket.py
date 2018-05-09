@@ -171,7 +171,8 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None):
+    def blob(self, blob_name, chunk_size=None,
+             encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -190,11 +191,15 @@ class Bucket(_PropertyMixin):
         :param encryption_key:
             Optional 32 byte encryption key for customer-supplied encryption.
 
+        :type kms_key_name: str
+        :param kms_key_name:
+            Optional resource name of KMS key used to encrypt blob's content.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key)
+                    encryption_key=encryption_key, kms_key_name=kms_key_name)
 
     def notification(self, topic_name,
                      topic_project=None,
@@ -785,6 +790,32 @@ class Bucket(_PropertyMixin):
         :param entries: A sequence of mappings describing each CORS policy.
         """
         self._patch_property('cors', entries)
+
+    @property
+    def default_kms_key_name(self):
+        """Retrieve / set default KMS encryption key for objects in the bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set default KMS encryption key for items in this bucket.
+        :getter: Get default KMS encryption key for items in this bucket.
+
+        :rtype: str
+        :returns: Default KMS encryption key, or ``None`` if not set.
+        """
+        encryption_config = self._properties.get('encryption', {})
+        return encryption_config.get('defaultKmsKeyName')
+
+    @default_kms_key_name.setter
+    def default_kms_key_name(self, value):
+        """Set default KMS encryption key for objects in the bucket.
+
+        :type value: str or None
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        encryption_config = self._properties.get('encryption', {})
+        encryption_config['defaultKmsKeyName'] = value
+        self._patch_property('encryption', encryption_config)
 
     @property
     def labels(self):

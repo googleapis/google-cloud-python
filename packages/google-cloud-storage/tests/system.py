@@ -990,3 +990,134 @@ class TestAnonymousClient(unittest.TestCase):
         blob, = bucket.list_blobs(max_results=1)
         with tempfile.TemporaryFile() as stream:
             blob.download_to_file(stream)
+
+
+class TestKMSIntegration(TestStorageFiles):
+
+    FILENAMES = (
+        'file01.txt',
+    )
+
+    KEYRING_NAME = 'gcs-test'
+    KEY_NAME = 'gcs-test'
+    ALT_KEY_NAME = 'gcs-test-alternate'
+
+    def _kms_key_name(self, key_name=None):
+        if key_name is None:
+            key_name = self.KEY_NAME
+
+        return (
+            "projects/{}/"
+            "locations/{}/"
+            "keyRings/{}/"
+            "cryptoKeys/{}"
+        ).format(
+            Config.CLIENT.project,
+            self.bucket.location.lower(),
+            self.KEYRING_NAME,
+            key_name,
+        )
+
+    def test_blob_w_explicit_kms_key_name(self):
+        BLOB_NAME = 'explicit-kms-key-name'
+        file_data = self.FILES['simple']
+        kms_key_name = self._kms_key_name()
+        blob = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
+        with open(file_data['path'], 'rb') as _file_data:
+            self.assertEqual(blob.download_as_string(), _file_data.read())
+        # We don't know the current version of the key.
+        self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
+
+        listed, = list(self.bucket.list_blobs())
+        self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
+
+    def test_bucket_w_default_kms_key_name(self):
+        BLOB_NAME = 'default-kms-key-name'
+        OVERRIDE_BLOB_NAME = 'override-default-kms-key-name'
+        ALT_BLOB_NAME = 'alt-default-kms-key-name'
+        CLEARTEXT_BLOB_NAME = 'cleartext'
+
+        file_data = self.FILES['simple']
+
+        with open(file_data['path'], 'rb') as _file_data:
+            contents = _file_data.read()
+
+        kms_key_name = self._kms_key_name()
+        self.bucket.default_kms_key_name = kms_key_name
+        self.bucket.patch()
+        self.assertEqual(self.bucket.default_kms_key_name, kms_key_name)
+
+        defaulted_blob = self.bucket.blob(BLOB_NAME)
+        defaulted_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(defaulted_blob)
+
+        self.assertEqual(defaulted_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(defaulted_blob.kms_key_name.startswith(kms_key_name))
+
+        alt_kms_key_name = self._kms_key_name(self.ALT_KEY_NAME)
+
+        override_blob = self.bucket.blob(
+            OVERRIDE_BLOB_NAME, kms_key_name=alt_kms_key_name)
+        override_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(override_blob)
+
+        self.assertEqual(override_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(
+            override_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = alt_kms_key_name
+        self.bucket.patch()
+
+        alt_blob = self.bucket.blob(ALT_BLOB_NAME)
+        alt_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(alt_blob)
+
+        self.assertEqual(alt_blob.download_as_string(), contents)
+        # We don't know the current version of the key.
+        self.assertTrue(alt_blob.kms_key_name.startswith(alt_kms_key_name))
+
+        self.bucket.default_kms_key_name = None
+        self.bucket.patch()
+
+        cleartext_blob = self.bucket.blob(CLEARTEXT_BLOB_NAME)
+        cleartext_blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(cleartext_blob)
+
+        self.assertEqual(cleartext_blob.download_as_string(), contents)
+        self.assertIsNone(cleartext_blob.kms_key_name)
+
+    def test_rewrite_rotate_csek_to_cmek(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+
+        SOURCE_KEY = os.urandom(32)
+        source = self.bucket.blob(BLOB_NAME, encryption_key=SOURCE_KEY)
+        source.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(source)
+        source_data = source.download_as_string()
+
+        kms_key_name = self._kms_key_name()
+
+        # We can't verify it, but ideally we would check that the following
+        # URL was resolvable with our credentals
+        # KEY_URL = 'https://cloudkms.googleapis.com/v1/{}'.format(
+        #     kms_key_name)
+
+        dest = self.bucket.blob(BLOB_NAME, kms_key_name=kms_key_name)
+        token, rewritten, total = dest.rewrite(source)
+
+        while token is not None:
+            token, rewritten, total = dest.rewrite(source, token=token)
+
+        # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
+        # same object as 'source'.
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, len(source_data))
+        self.assertEqual(total, len(source_data))
+
+        self.assertEqual(dest.download_as_string(), source_data)
