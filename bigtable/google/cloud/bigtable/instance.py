@@ -277,27 +277,26 @@ class Instance(object):
                             the method.
 
         :type: routing_policy_type: int
-        :parm: routing_policy_type: (Optional) There are two routing policies
-                                    1. ROUTING_POLICY_TYPE_ANY = 1 and
-                                    2. ROUTING_POLICY_TYPE_SINGLE = 2.
+        :param: routing_policy_type: (Optional) There are two routing policies
+                                    ROUTING_POLICY_TYPE_ANY = 1 and
+                                    ROUTING_POLICY_TYPE_SINGLE = 2.
                                     By default it is ROUTING_POLICY_TYPE_ANY
-                                    which is MultiClusterRoutingUseAny policy
-                                    and for SingleClusterRouting user need to
-                                    assign 2 and that will need cluster_id
-                                    and allow_transactional_writes
-                                    for single cluster routing policy proto.
+                                    which will create a
+                                    MultiClusterRoutingUseAny policy.
+                                    If ROUTING_POLICY_TYPE_ANY is specified, a
+                                    SingleClusterRouting policy will be created
+                                    using the cluster_id and
+                                    allow_transactional_writes parameters.
 
         :type: cluster_id: str
-        :param: cluster_id: (Optional) Unique cluster_id  to create AppProfile
-                            on selected cluster route. It is only required
+        :param: cluster_id: (Optional) Unique cluster_id which is only required
                             when routing_policy_type is
                             ROUTING_POLICY_TYPE_SINGLE.
 
         :type: allow_transactional_writes: bool
         :param: allow_transactional_writes: (Optional) If true, allow
-                                            transactional writes to single
-                                            cluster routing, if cluster_id is
-                                            given.
+                                            transactional writes for
+                                            ROUTING_POLICY_TYPE_SINGLE.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
@@ -392,27 +391,26 @@ class Instance(object):
                             the method.
 
         :type: routing_policy_type: int
-        :parm: routing_policy_type: (Optional) There are two routing policies
-                                    1. ROUTING_POLICY_TYPE_ANY = 1 and
-                                    2. ROUTING_POLICY_TYPE_SINGLE = 2.
+        :param: routing_policy_type: (Optional) There are two routing policies
+                                    ROUTING_POLICY_TYPE_ANY = 1 and
+                                    ROUTING_POLICY_TYPE_SINGLE = 2.
                                     By default it is ROUTING_POLICY_TYPE_ANY
-                                    which is MultiClusterRoutingUseAny policy
-                                    and for SingleClusterRouting user need to
-                                    assign 2 and that will need cluster_id
-                                    and allow_transactional_writes
-                                    for single cluster routing policy proto.
+                                    which will create a
+                                    MultiClusterRoutingUseAny policy.
+                                    If ROUTING_POLICY_TYPE_ANY is specified, a
+                                    SingleClusterRouting policy will be created
+                                    using the cluster_id and
+                                    allow_transactional_writes parameters.
 
         :type: cluster_id: str
-        :param: cluster_id: (Optional) Unique cluster_id  to create AppProfile
-                            on selected cluster route. It is only required
+        :param: cluster_id: (Optional) Unique cluster_id which is only required
                             when routing_policy_type is
                             ROUTING_POLICY_TYPE_SINGLE.
 
         :type: allow_transactional_writes: bool
         :param: allow_transactional_writes: (Optional) If true, allow
-                                            transactional writes to single
-                                            cluster routing, if cluster_id is
-                                            given.
+                                            transactional writes for
+                                            ROUTING_POLICY_TYPE_SINGLE.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
