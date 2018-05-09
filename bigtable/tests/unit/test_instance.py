@@ -205,6 +205,40 @@ class TestInstance(unittest.TestCase):
         instance2 = self._make_one('instance_id2', 'client2', self.LOCATION_ID)
         self.assertNotEqual(instance1, instance2)
 
+    def test_reload(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+
+        channel = _make_channel()
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Create response_pb
+        DISPLAY_NAME = u'hey-hi-hello'
+        response_pb = data_v2_pb2.Instance(
+            display_name=DISPLAY_NAME,
+        )
+
+        # Patch the stub used by the API method.
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.GetInstance.side_effect = [response_pb]
+
+        # Create expected_result.
+        expected_result = None  # reload() has no return value.
+
+        # Check Instance optional config values before.
+        self.assertEqual(instance.display_name, self.INSTANCE_ID)
+
+        # Perform the method and check the result.
+        result = instance.reload()
+        self.assertEqual(result, expected_result)
+
+        # Check Instance optional config values before.
+        self.assertEqual(instance.display_name, DISPLAY_NAME)
+
     def test_create(self):
         import datetime
         from google.api_core import operation

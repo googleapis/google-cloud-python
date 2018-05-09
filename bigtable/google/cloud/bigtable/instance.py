@@ -18,8 +18,10 @@
 import re
 
 from google.cloud.bigtable.table import Table
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
 from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -140,6 +142,15 @@ class Instance(object):
     def __ne__(self, other):
         return not self == other
 
+    def reload(self):
+        """Reload the metadata for this instance."""
+        instance_pb = self._client._instance_admin_client.get_instance(
+            self.name)
+
+        # NOTE: _update_from_pb does not check that the project and
+        #       instance ID on the response match the request.
+        self._update_from_pb(instance_pb)
+
     def create(self):
         """Create this instance.
 
@@ -160,10 +171,22 @@ class Instance(object):
         :returns: The long-running operation corresponding to the create
                     operation.
         """
+        clusters = {}
+        cluster_id = '{}-cluster'.format(self.instance_id)
+        cluster_name = self._client._instance_admin_client.cluster_path(
+            self._client.project, self.instance_id, cluster_id)
+        location = self._client._instance_admin_client.location_path(
+            self._client.project, self._cluster_location_id)
+        cluster = instance_pb2.Cluster(name=cluster_name, location=location,
+                                       serve_nodes=DEFAULT_SERVE_NODES)
+        instance = instance_pb2.Instance(
+            display_name=self.display_name
+        )
+        clusters[cluster_id] = cluster
         parent = self._client.project_path
         return self._client._instance_admin_client.create_instance(
-            parent=parent, instance_id=self.instance_id, instance={},
-            clusters={})
+            parent=parent, instance_id=self.instance_id, instance=instance,
+            clusters=clusters)
 
     def update(self):
         """Update this instance.
