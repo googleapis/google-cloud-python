@@ -4,10 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.2.0
+
+### Implementation Changes
+- Switch `list_partitions` helper to a direct metatable read (#5273)
+- Fix typo in `Encoding.ISO_8859_1` enum value (#5211)
+
+### New Features
+- Add UnknownJob type for redacted jobs. (#5281)
+- Add project parameter to `list_datasets` and `list_jobs` (#5217)
+- Add from_string factory methods to Dataset and Table (#5255)
+- Add column based time partitioning (#5267)
+
+### Documentation
+- Standardize docstrings for constants (#5289)
+- Fix docstring / impl of `ExtractJob.destination_uri_file_counts`. (#5245)
+
+### Internal / Testing Changes
+- Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)
+
 ## 1.1.0
 
 ### New Features
-- Add client.get_service_account_email (#5203)
+- Add `client.get_service_account_email` (#5203)
 
 ### Documentation
 - Update samples and standardize region tags (#5195)
