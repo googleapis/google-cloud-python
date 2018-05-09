@@ -162,18 +162,9 @@ class Instance(object):
                     operation.
         """
         parent = self._client.project_path
-        cluster_path = self._client._instance_admin_client.cluster_path(
-            self._client.project, self.instance_id, 'shared-perf-cluster'
-        )
-        location_path = self._client._instance_admin_client.location_path(
-            self._client.project, 'us-central1-f'
-        )
-        clusters = []
-        clusters.append(instance_pb2.Cluster(name=cluster_path,
-                                             location=location_path))
         return self._client._instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance={},
-            clusters=clusters)
+            clusters={})
 
     def update(self):
         """Update this instance.
