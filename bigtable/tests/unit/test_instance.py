@@ -29,6 +29,17 @@ def _make_channel(secure_authorized_channel):
     return channel
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
+
+
 class TestInstance(unittest.TestCase):
 
     PROJECT = 'project'
@@ -163,8 +174,9 @@ class TestInstance(unittest.TestCase):
 
     def test_name_property(self):
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
 
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
@@ -206,8 +218,9 @@ class TestInstance(unittest.TestCase):
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
                                   display_name=self.DISPLAY_NAME)
 
@@ -241,8 +254,9 @@ class TestInstance(unittest.TestCase):
         from tests.unit._testing import _FakeStub
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create response_pb
@@ -259,8 +273,9 @@ class TestInstance(unittest.TestCase):
 
     def test_update(self):
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
                                   display_name=self.DISPLAY_NAME)
 
@@ -274,8 +289,9 @@ class TestInstance(unittest.TestCase):
 
     def test_delete(self):
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create expected_result.
@@ -293,8 +309,9 @@ class TestInstance(unittest.TestCase):
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create response_pb

@@ -28,6 +28,17 @@ def _make_channel(secure_authorized_channel):
     return channel
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
+
+
 class TestMaxVersionsGCRule(unittest.TestCase):
 
     @staticmethod
@@ -384,8 +395,9 @@ class TestColumnFamily(unittest.TestCase):
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
@@ -440,8 +452,9 @@ class TestColumnFamily(unittest.TestCase):
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
@@ -497,8 +510,9 @@ class TestColumnFamily(unittest.TestCase):
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
         channel = _make_channel()
+        credentials = _make_credentials()
         client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(column_family_id, table)
 
