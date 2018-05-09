@@ -336,6 +336,249 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
+    def test_create_app_profile(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as instance_data_v2_pb2)
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        name = 'name3373707'
+        etag = 'etag3123477'
+        description = 'description-1724546052'
+        expected_response = {
+            'name': name,
+            'etag': etag,
+            'description': description
+        }
+        expected_response = instance_data_v2_pb2.AppProfile(
+            **expected_response)
+
+        response_pb = instance_data_v2_pb2.AppProfile(
+            name=name,
+            etag=etag,
+            description=description
+        )
+
+        # Patch the stub used by the API method.
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.CreateAppProfile.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.create_app_profile(app_profile_id=app_profile_id)
+
+        self.assertEqual(result, expected_response)
+
+    def test_create_app_profile_with_cluster_id(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as instance_data_v2_pb2)
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        name = 'name3373707'
+        etag = 'etag3123477'
+        description = 'description-1724546052'
+        cluster_id = 'cluster-id'
+        expected_response = {
+            'name': name,
+            'etag': etag,
+            'description': description
+        }
+        expected_response = instance_data_v2_pb2.AppProfile(
+            **expected_response)
+
+        response_pb = instance_data_v2_pb2.AppProfile(
+            name=name,
+            etag=etag,
+            description=description
+        )
+
+        # Patch the stub used by the API method.
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.CreateAppProfile.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.create_app_profile(app_profile_id=app_profile_id,
+                                             cluster_id=cluster_id)
+
+        self.assertEqual(result, expected_response)
+
+    def test_get_app_profile(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as instance_data_v2_pb2)
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        name = 'name3373707'
+        etag = 'etag3123477'
+        description = 'description-1724546052'
+        expected_response = {
+            'name': name,
+            'etag': etag,
+            'description': description
+        }
+        expected_response = instance_data_v2_pb2.AppProfile(
+            **expected_response)
+
+        response_pb = instance_data_v2_pb2.AppProfile(
+            name=name,
+            etag=etag,
+            description=description
+        )
+
+        # Patch the stub used by the API method.
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.GetAppProfile.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.get_app_profile(app_profile_id=app_profile_id)
+
+        self.assertEqual(result, expected_response)
+
+    def test_list_app_profiles(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_messages_v1_pb2)
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Setup Expected Response
+        next_page_token = ''
+        app_profiles_element = {}
+        app_profiles = [app_profiles_element]
+        expected_response = {
+            'next_page_token': next_page_token,
+            'app_profiles': app_profiles
+        }
+        expected_response = instance_messages_v1_pb2.ListAppProfilesResponse(
+            **expected_response)
+
+        # Patch the stub used by the API method.
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.ListAppProfiles.side_effect = [
+            expected_response]
+
+        # Perform the method and check the result.
+        response = instance.list_app_profiles()
+
+        self.assertEqual(response[0], expected_response.app_profiles[0])
+
+    def test_update_app_profile(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from tests.unit._testing import _FakeStub
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Create response_pb
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        # Patch the stub used by the API method.
+        stub = _FakeStub(response_pb)
+        client._instance_admin_client.bigtable_instance_admin_stub = stub
+        update_mask = []
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.update_app_profile(app_profile_id,
+                                             update_mask=update_mask)
+
+        self.assertIsInstance(result, operation.Operation)
+
+    def test_update_app_profile_with_cluster_id(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from tests.unit._testing import _FakeStub
+
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Create response_pb
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        # Patch the stub used by the API method.
+        stub = _FakeStub(response_pb)
+        client._instance_admin_client.bigtable_instance_admin_stub = stub
+        update_mask = []
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        cluster_id = 'cluster-id'
+        result = instance.update_app_profile(app_profile_id,
+                                             update_mask=update_mask,
+                                             cluster_id=cluster_id)
+
+        self.assertIsInstance(result, operation.Operation)
+
+    def test_delete_app_profile(self):
+        channel = _make_channel()
+        client = self._make_client(project=self.PROJECT, channel=channel,
+                                   admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        ignore_warnings = True
+
+        expected_result = None  # delete() has no return value.
+
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.delete_app_profile(app_profile_id, ignore_warnings)
+
+        self.assertEqual(expected_result, result)
+
 
 class _Client(object):
 
