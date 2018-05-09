@@ -373,7 +373,7 @@ class TestInstance(unittest.TestCase):
 
         self.assertEqual(result, expected_response)
 
-    def test_create_app_profile_with_cluster_id(self):
+    def test_create_app_profile_with_single_routing_policy(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as instance_data_v2_pb2)
 
@@ -408,6 +408,7 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         app_profile_id = 'appProfileId1262094415'
         result = instance.create_app_profile(app_profile_id=app_profile_id,
+                                             routing_policy_type=2,
                                              cluster_id=cluster_id)
 
         self.assertEqual(result, expected_response)
@@ -521,7 +522,7 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(result, operation.Operation)
 
-    def test_update_app_profile_with_cluster_id(self):
+    def test_update_app_profile_with_single_routing_policy(self):
         import datetime
         from google.api_core import operation
         from google.longrunning import operations_pb2
@@ -560,6 +561,7 @@ class TestInstance(unittest.TestCase):
         cluster_id = 'cluster-id'
         result = instance.update_app_profile(app_profile_id,
                                              update_mask=update_mask,
+                                             routing_policy_type=2,
                                              cluster_id=cluster_id)
 
         self.assertIsInstance(result, operation.Operation)

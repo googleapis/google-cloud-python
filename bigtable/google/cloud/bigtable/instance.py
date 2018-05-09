@@ -28,6 +28,8 @@ from google.cloud.bigtable_admin_v2.proto import instance_pb2
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+ROUTING_POLICY_TYPE_ANY = 1
+ROUTING_POLICY_TYPE_SINGLE = 2
 
 
 class Instance(object):
@@ -245,7 +247,9 @@ class Instance(object):
 
     def create_app_profile(self, app_profile_id, etag='', description='',
                            ignore_warnings=None, metadata=None,
-                           cluster_id=None, allow_transactional_writes=False):
+                           routing_policy_type=ROUTING_POLICY_TYPE_ANY,
+                           cluster_id=None,
+                           allow_transactional_writes=False):
         """Creates an app profile within an instance.
 
         :type: app_profile_id: str
@@ -272,11 +276,22 @@ class Instance(object):
         :param: metadata: (Optional) Additional metadata that is provided to
                             the method.
 
+        :type: routing_policy_type: int
+        :parm: routing_policy_type: (Optional) There are two routing policies
+                                    1. ROUTING_POLICY_TYPE_ANY = 1 and
+                                    2. ROUTING_POLICY_TYPE_SINGLE = 2.
+                                    By default it is ROUTING_POLICY_TYPE_ANY
+                                    which is MultiClusterRoutingUseAny policy
+                                    and for SingleClusterRouting user need to
+                                    assign 2 and that will need cluster_id
+                                    and allow_transactional_writes
+                                    for single cluster routing policy proto.
+
         :type: cluster_id: str
-        :param: cluster_id: (Optional) Routing policy to create AppProfile on
-                                selected cluster route. If it is None it
-                                will use MultiClusterRoutingUseAny routing
-                                policy.
+        :param: cluster_id: (Optional) Unique cluster_id  to create AppProfile
+                            on selected cluster route. It is only required
+                            when routing_policy_type is
+                            ROUTING_POLICY_TYPE_SINGLE.
 
         :type: allow_transactional_writes: bool
         :param: allow_transactional_writes: (Optional) If true, allow
@@ -293,15 +308,15 @@ class Instance(object):
         name = instance_admin_client.app_profile_path(
             self._client.project, self.name, app_profile_id)
 
-        if cluster_id:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id='shared-perf-cluster',
-                    allow_transactional_writes=allow_transactional_writes
-                ))
-        else:
+        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+        elif routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+            single_cluster_routing = (
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=cluster_id,
+                    allow_transactional_writes=allow_transactional_writes
+                ))
 
         app_profile = instance_pb2.AppProfile(
             name=name, etag=etag, description=description,
@@ -343,6 +358,7 @@ class Instance(object):
 
     def update_app_profile(self, app_profile_id, update_mask, etag='',
                            description='', ignore_warnings=None, metadata=None,
+                           routing_policy_type=ROUTING_POLICY_TYPE_ANY,
                            cluster_id=None, allow_transactional_writes=False):
         """Updates an app profile within an instance.
 
@@ -374,11 +390,22 @@ class Instance(object):
         :param: metadata: (Optional) Additional metadata that is provided to
                             the method.
 
+        :type: routing_policy_type: int
+        :parm: routing_policy_type: (Optional) There are two routing policies
+                                    1. ROUTING_POLICY_TYPE_ANY = 1 and
+                                    2. ROUTING_POLICY_TYPE_SINGLE = 2.
+                                    By default it is ROUTING_POLICY_TYPE_ANY
+                                    which is MultiClusterRoutingUseAny policy
+                                    and for SingleClusterRouting user need to
+                                    assign 2 and that will need cluster_id
+                                    and allow_transactional_writes
+                                    for single cluster routing policy proto.
+
         :type: cluster_id: str
-        :param: cluster_id: (Optional) Routing policy to create AppProfile on
-                                selected cluster route. If it is None it
-                                will use MultiClusterRoutingUseAny routing
-                                policy.
+        :param: cluster_id: (Optional) Unique cluster_id  to create AppProfile
+                            on selected cluster route. It is only required
+                            when routing_policy_type is
+                            ROUTING_POLICY_TYPE_SINGLE.
 
         :type: allow_transactional_writes: bool
         :param: allow_transactional_writes: (Optional) If true, allow
@@ -395,15 +422,15 @@ class Instance(object):
         name = instance_admin_client.app_profile_path(
             self._client.project, self.instance_id, app_profile_id)
 
-        if cluster_id:
-            single_cluster_routing = (
-                instance_pb2.AppProfile.SingleClusterRouting(
-                    cluster_id='shared-perf-cluster',
-                    allow_transactional_writes=allow_transactional_writes
-                ))
-        else:
+        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+        elif routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+            single_cluster_routing = (
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=cluster_id,
+                    allow_transactional_writes=allow_transactional_writes
+                ))
 
         update_app_profile = instance_pb2.AppProfile(
             name=name, etag=etag, description=description,
