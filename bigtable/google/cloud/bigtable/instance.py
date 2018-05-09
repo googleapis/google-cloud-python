@@ -142,7 +142,16 @@ class Instance(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, location_id):
+    def reload(self):
+        """Reload the metadata for this instance."""
+        instance_pb = self._client._instance_admin_client.get_instance(
+            self.name)
+
+        # NOTE: _update_from_pb does not check that the project and
+        #       instance ID on the response match the request.
+        self._update_from_pb(instance_pb)
+
+    def create(self):
         """Create this instance.
 
         .. note::
@@ -158,9 +167,6 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :type location_id: str
-        :param location_id: The unique ID of the location.
-
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
@@ -170,7 +176,7 @@ class Instance(object):
         cluster_name = self._client._instance_admin_client.cluster_path(
             self._client.project, self.instance_id, cluster_id)
         location = self._client._instance_admin_client.location_path(
-            self._client.project, location_id)
+            self._client.project, self._cluster_location_id)
         cluster = instance_pb2.Cluster(name=cluster_name, location=location,
                                        serve_nodes=DEFAULT_SERVE_NODES)
         instance = instance_pb2.Instance(

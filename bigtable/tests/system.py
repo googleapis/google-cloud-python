@@ -79,7 +79,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(project='grass-clump-479', admin=True)
+        Config.CLIENT = Client(admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
@@ -94,7 +94,7 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
-        created_op = Config.INSTANCE.create('us-central1-f')
+        created_op = Config.INSTANCE.create()
         created_op.result(timeout=10)
 
 
@@ -116,11 +116,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        instances, failed_locations = Config.CLIENT.list_instances()
-        self.assertEqual(failed_locations, [])
+        instances_response = Config.CLIENT.list_instances()
+        self.assertEqual(instances_response.failed_locations, [])
         # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
-        for instance in instances:
+        self.assertEqual(len(instances_response.instances),
+                         len(EXISTING_INSTANCES) + 1)
+        for instance in instances_response.instances:
             instance_existence = (instance in EXISTING_INSTANCES or
                                   instance == Config.INSTANCE)
             self.assertTrue(instance_existence)
@@ -378,7 +379,7 @@ class TestDataAPI(unittest.TestCase):
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
 
-        number_of_bytes = 10 * 1024 * 1024
+        number_of_bytes = 10 * 1024
         data = b'1' * number_of_bytes  # 10MB of 1's.
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, data)
         row.commit()
