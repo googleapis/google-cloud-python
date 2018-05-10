@@ -385,58 +385,54 @@ class TestBigQuery(unittest.TestCase):
         page = six.next(iterator.pages)
         return list(page)
 
-    def _create_table_many_columns(self, rows):
-        # Load a table with many columns
-        dataset = self.temp_dataset(_make_dataset_id('list_rows'))
+    def _create_table_many_columns(self, rowcount):
+        # Generate a table of maximum width via CREATE TABLE AS SELECT.
+        # first column is named 'rowval', and has a value from 1..rowcount
+        # Subsequent column is named col_<N> and contains the value N*rowval,
+        # where N is between 1 and 9999 inclusive.
+        dsname = _make_dataset_id('wide_schema')
+        dataset = self.temp_dataset(dsname)
         table_id = 'many_columns'
         table_ref = dataset.table(table_id)
         self.to_delete.insert(0, table_ref)
-        schema = [
-            bigquery.SchemaField(
-                'column_{}_with_long_name'.format(col_i),
-                'INTEGER')
-            for col_i in range(len(rows[0]))]
-        body = ''
-        for row in rows:
-            body += ','.join([str(item) for item in row])
-            body += '\n'
-        config = bigquery.LoadJobConfig()
-        config.schema = schema
-        job = Config.CLIENT.load_table_from_file(
-            six.BytesIO(body.encode('ascii')), table_ref, job_config=config)
-        job.result()
-        return bigquery.Table(table_ref, schema=schema)
-
-    def test_list_rows_many_columns(self):
-        rows = [[], []]
-        # BigQuery tables can have max 10,000 columns
-        for col_i in range(9999):
-            rows[0].append(col_i)
-            rows[1].append(10000 - col_i)
-        expected_rows = frozenset([tuple(row) for row in rows])
-        table = self._create_table_many_columns(rows)
-
-        rows = list(Config.CLIENT.list_rows(table))
-
-        assert len(rows) == 2
-        rows_set = frozenset([tuple(row.values()) for row in rows])
-        assert rows_set == expected_rows
+        colprojections = ','.join(
+                ['r * {} as col_{}'.format(n, n) for n in range(1, 10000)])
+        sql = """
+            CREATE TABLE {}.{}
+            AS
+            SELECT
+                r as rowval,
+                {}
+            FROM
+              UNNEST(GENERATE_ARRAY(1,{},1)) as r
+            """.format(dsname, table_id, colprojections, rowcount)
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+        return table_ref
 
     def test_query_many_columns(self):
-        rows = [[], []]
-        # BigQuery tables can have max 10,000 columns
-        for col_i in range(9999):
-            rows[0].append(col_i)
-            rows[1].append(10000 - col_i)
-        expected_rows = frozenset([tuple(row) for row in rows])
-        table = self._create_table_many_columns(rows)
-
+        # Test working with the widest schema BigQuery supports, 10k columns.
+        row_count = 2
+        table_ref = self._create_table_many_columns(row_count)
         rows = list(Config.CLIENT.query(
-            'SELECT * FROM `{}.many_columns`'.format(table.dataset_id)))
+            'SELECT * FROM `{}.{}`'.format(
+                table_ref.dataset_id, table_ref.table_id)))
 
-        assert len(rows) == 2
-        rows_set = frozenset([tuple(row.values()) for row in rows])
-        assert rows_set == expected_rows
+        self.assertEqual(len(rows), row_count)
+
+        # check field representations adhere to expected values.
+        correctwidth = 0
+        badvals = 0
+        for r in rows:
+            vals = r._xxx_values
+            rowval = vals[0]
+            if len(vals) == 10000:
+                correctwidth = correctwidth + 1
+            for n in range(1, 10000):
+                if vals[n] != rowval * (n):
+                    badvals = badvals + 1
+        self.assertEqual(correctwidth, row_count)
+        self.assertEqual(badvals, 0)
 
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
@@ -692,33 +688,31 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
 
-        # Can query from EU.
-        query_string = 'SELECT MAX(value) FROM `{}.letters`'.format(
+        # Verify location behavior with queries
+        query_config = bigquery.QueryJobConfig()
+        query_config.dry_run = True
+
+        query_string = 'SELECT * FROM `{}.letters` LIMIT 1'.format(
             dataset.dataset_id)
-        max_value = list(client.query(query_string, location='EU'))[0][0]
-        self.assertEqual(max_value, 3)
+
+        eu_query = client.query(
+            query_string,
+            location='EU',
+            job_config=query_config)
+        self.assertTrue(eu_query.done)
 
         # Cannot query from US.
         with self.assertRaises(BadRequest):
-            list(client.query(query_string, location='US'))
-
-        # Can copy from EU.
-        copy_job = client.copy_table(
-            table_ref, dataset.table('letters2'), location='EU')
-        copy_job.result()
+            list(client.query(
+                    query_string,
+                    location='US',
+                    job_config=query_config))
 
         # Cannot copy from US.
         with self.assertRaises(BadRequest):
             client.copy_table(
                 table_ref, dataset.table('letters2_us'),
                 location='US').result()
-
-        # Can extract from EU.
-        extract_job = client.extract_table(
-            table_ref,
-            'gs://{}/letters.csv'.format(bucket_name),
-            location='EU')
-        extract_job.result()
 
         # Cannot extract from US.
         with self.assertRaises(BadRequest):
