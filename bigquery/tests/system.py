@@ -387,7 +387,7 @@ class TestBigQuery(unittest.TestCase):
 
     def _create_table_many_columns(self, rowcount):
         # Generate a table of maximum width via CREATE TABLE AS SELECT.
-        # first column is named 'rowval', and has a value from 0..rowcount
+        # first column is named 'rowval', and has a value from 1..rowcount
         # Subsequent column is named col_<N> and contains the value N*rowval,
         # where N is between 1 and 9999 inclusive.
         dsname = _make_dataset_id('wide_schema')
