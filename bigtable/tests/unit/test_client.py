@@ -17,16 +17,7 @@ import unittest
 
 import mock
 
-
-def _make_credentials():
-    import google.auth.credentials
-
-    class _CredentialsWithScopes(
-            google.auth.credentials.Credentials,
-            google.auth.credentials.Scoped):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
+from ._testing import _make_credentials
 
 
 class TestClient(unittest.TestCase):
