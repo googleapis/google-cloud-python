@@ -17,7 +17,9 @@
 import collections
 import inspect
 
+from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.message import Message
+from google.protobuf.descriptor import FieldDescriptor
 
 _SENTINEL = object()
 
@@ -247,3 +249,42 @@ def setdefault(msg_or_dict, key, value):
     """
     if not get(msg_or_dict, key, default=None):
         set(msg_or_dict, key, value)
+
+
+def fieldmask(original, modified):
+    """Constructs a field mask from two proto messages.
+
+    Args:
+        original (~google.protobuf.message.Message): the original message. 
+        modified (~google.protobuf.message.Message): the modified message.
+
+    Returns:
+        FieldMask: returns a FieldMask object representing the differences
+            between made from the original message to the modified message.
+
+    Raises:
+        ValueError: If the ``original`` or ``modified`` are not subclasses of
+        ``google.protobuf.message.Message``.
+    """
+    if not isinstance(original, Message) or not isinstance(modified, Message):
+        raise ValueError('The parameters passed must be a subclass of google.protobuf.message.Message.')
+    if type(original) != type(modified):
+        raise ValueError('The parameters passed must be of the same type.')
+    answer = []
+    seen = [] 
+    for field, _ in original.ListFields():
+        seen.append(field.name)
+        if field.label != FieldDescriptor.LABEL_REPEATED and field.message_type is not None:
+            if getattr(original, field.name) != getattr(modified, field.name):
+                subpaths = fieldmask(getattr(original, field.name), getattr(modified, field.name)).paths
+                answer.extend(['%s.%s' % (field.name, s) for s in subpaths])
+        elif getattr(original, field.name) != getattr(modified, field.name):
+            answer.append(field.name)
+
+    for field, _ in modified.ListFields():
+        if field.name not in seen:
+            answer.append(field.name)
+
+    return FieldMask(paths=answer)
+
+

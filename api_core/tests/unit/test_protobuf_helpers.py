@@ -14,10 +14,12 @@
 
 import pytest
 
+from . import field_mask_test_pb2 as test_pb2
 from google.api import http_pb2
 from google.api_core import protobuf_helpers
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf.message import Message
 from google.type import date_pb2
@@ -230,3 +232,85 @@ def test_setdefault_pb2_truthy():
     operation = operations_pb2.Operation(name='bar')
     protobuf_helpers.setdefault(operation, 'name', 'foo')
     assert operation.name == 'bar'
+
+def test_fieldmask_invalid_args():
+    with pytest.raises(ValueError):
+        protobuf_helpers.fieldmask('foo', any_pb2.Any())
+    with pytest.raises(ValueError):
+        protobuf_helpers.fieldmask(any_pb2.Any(), 'bar')
+    with pytest.raises(ValueError):
+        protobuf_helpers.fieldmask(any_pb2.Any(), operations_pb2.Operation())
+
+def test_fieldmask_equal_values():
+    original = test_pb2.TestCase(num=1)
+    modified = test_pb2.TestCase(num=1)
+    assert protobuf_helpers.fieldmask(original, modified).paths == []
+
+    original = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    modified = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    assert protobuf_helpers.fieldmask(original, modified).paths == []
+
+    original = test_pb2.TestCase(foos=[test_pb2.Foo(num=1)])
+    modified = test_pb2.TestCase(foos=[test_pb2.Foo(num=1)])
+    assert protobuf_helpers.fieldmask(original, modified).paths == []
+    
+    original = test_pb2.TestCase(foo_map={'bar': test_pb2.Foo(num=1)})
+    modified = test_pb2.TestCase(foo_map={'bar': test_pb2.Foo(num=1)})
+    assert protobuf_helpers.fieldmask(original, modified).paths == []
+
+def test_fieldmask_singular_field_diffs():
+    original = test_pb2.TestCase(num=1)
+    modified = test_pb2.TestCase()
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['num']
+
+    original = test_pb2.TestCase()
+    modified = test_pb2.TestCase(num=1)
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['num']
+
+def test_fieldmask_message_field_diffs():
+    original = test_pb2.TestCase()
+    modified = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo']
+
+    original = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    modified = test_pb2.TestCase()
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo.num']
+    
+    original = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    modified = test_pb2.TestCase(foo=test_pb2.Foo(num=2))
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo.num']
+
+def test_fieldmask_repeated_diffs():
+    original = test_pb2.TestCase()
+    modified = test_pb2.TestCase(foos=[test_pb2.Foo(num=1), test_pb2.Foo(num=2)])
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foos']
+
+    original = test_pb2.TestCase(foos=[test_pb2.Foo(num=1), test_pb2.Foo(num=2)])
+    modified = test_pb2.TestCase()
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foos']
+
+    original = test_pb2.TestCase(foos=[test_pb2.Foo(num=1), test_pb2.Foo(num=2)])
+    modified = test_pb2.TestCase(foos=[test_pb2.Foo(num=2), test_pb2.Foo(num=1)])
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foos']
+
+def test_fieldmask_map_diffs():
+    original = test_pb2.TestCase()
+    modified = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=1)})
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo_map']
+
+    original = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=1)})
+    modified = test_pb2.TestCase()
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo_map']
+
+    original = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=1)})
+    modified = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=2)})
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo_map']
+
+    original = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=1)})
+    modified = test_pb2.TestCase(foo_map={'foo': test_pb2.Foo(num=2)})
+    assert protobuf_helpers.fieldmask(original, modified).paths == ['foo_map']
+
+def test_fieldmask_different_level_diffs():
+    original = test_pb2.TestCase(foo=test_pb2.Foo(num=1))
+    modified = test_pb2.TestCase(foo=test_pb2.Foo(num=2), num=1)
+    assert sorted(protobuf_helpers.fieldmask(original, modified).paths) == ['foo.num', 'num']
