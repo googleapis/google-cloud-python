@@ -18,17 +18,6 @@ import unittest
 import mock
 
 
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def _make_channel(secure_authorized_channel):
-    from google.api_core import grpc_helpers
-    target = 'example.com:443'
-
-    channel = grpc_helpers.create_channel(
-        target, credentials=mock.sentinel.credentials)
-
-    return channel
-
-
 def _make_credentials():
     import google.auth.credentials
 
@@ -173,10 +162,17 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, client)
 
     def test_name_property(self):
-        channel = _make_channel()
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
+
+        # Patch the the API method.
+        client._instance_admin_client = api
 
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
@@ -208,10 +204,13 @@ class TestInstance(unittest.TestCase):
     def test_reload(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
-        channel = _make_channel()
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
@@ -222,6 +221,7 @@ class TestInstance(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
+        client._instance_admin_client = api
         bigtable_instance_stub = (
             client._instance_admin_client.bigtable_instance_admin_stub)
         bigtable_instance_stub.GetInstance.side_effect = [response_pb]
@@ -248,12 +248,15 @@ class TestInstance(unittest.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
-        channel = _make_channel()
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
                                   display_name=self.DISPLAY_NAME)
@@ -272,6 +275,7 @@ class TestInstance(unittest.TestCase):
 
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
         client._instance_admin_client.bigtable_instance_admin_stub = stub
 
         # Perform the method and check the result.
@@ -286,10 +290,13 @@ class TestInstance(unittest.TestCase):
         from google.api_core import operation
         from google.longrunning import operations_pb2
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
-        channel = _make_channel()
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
@@ -298,6 +305,7 @@ class TestInstance(unittest.TestCase):
 
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
         client._instance_admin_client.bigtable_instance_admin_stub = stub
 
         # Perform the method and check the result.
@@ -306,12 +314,19 @@ class TestInstance(unittest.TestCase):
         self.assertIsInstance(result, operation.Operation)
 
     def test_update(self):
-        channel = _make_channel()
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
                                   display_name=self.DISPLAY_NAME)
+
+        # Mock api calls
+        client._instance_admin_client = api
 
         # Create expected_result.
         expected_result = None
@@ -322,11 +337,18 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_delete(self):
-        channel = _make_channel()
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Mock api calls
+        client._instance_admin_client = api
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.
@@ -341,10 +363,16 @@ class TestInstance(unittest.TestCase):
             table_pb2 as table_data_v2_pb2)
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client, bigtable_instance_admin_client)
 
-        channel = _make_channel()
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, channel=channel,
+        client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
@@ -359,6 +387,8 @@ class TestInstance(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
         bigtable_table_stub.ListTables.side_effect = [response_pb]

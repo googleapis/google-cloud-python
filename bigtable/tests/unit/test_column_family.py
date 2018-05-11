@@ -17,17 +17,6 @@ import unittest
 import mock
 
 
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def _make_channel(secure_authorized_channel):
-    from google.api_core import grpc_helpers
-    target = 'example.com:443'
-
-    channel = grpc_helpers.create_channel(
-        target, credentials=mock.sentinel.credentials)
-
-    return channel
-
-
 def _make_credentials():
     import google.auth.credentials
 
@@ -385,6 +374,8 @@ class TestColumnFamily(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -394,9 +385,9 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        channel = _make_channel()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id, channel=channel,
+        client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
@@ -419,6 +410,7 @@ class TestColumnFamily(unittest.TestCase):
 
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
+        client._table_admin_client = api
         client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.
@@ -442,6 +434,8 @@ class TestColumnFamily(unittest.TestCase):
         from tests.unit._testing import _FakeStub
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -451,9 +445,9 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        channel = _make_channel()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id, channel=channel,
+        client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
@@ -476,6 +470,7 @@ class TestColumnFamily(unittest.TestCase):
 
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
+        client._table_admin_client = api
         client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.
@@ -500,6 +495,8 @@ class TestColumnFamily(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -509,9 +506,9 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        channel = _make_channel()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=project_id, channel=channel,
+        client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(column_family_id, table)
@@ -528,6 +525,7 @@ class TestColumnFamily(unittest.TestCase):
 
         # Patch the stub used by the API method.
         stub = _FakeStub(response_pb)
+        client._table_admin_client = api
         client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.

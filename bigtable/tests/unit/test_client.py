@@ -29,17 +29,6 @@ def _make_credentials():
     return mock.Mock(spec=_CredentialsWithScopes)
 
 
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def _make_channel(secure_authorized_channel):
-    from google.api_core import grpc_helpers
-    target = 'example.com:443'
-
-    channel = grpc_helpers.create_channel(
-        target, credentials=mock.sentinel.credentials)
-
-    return channel
-
-
 class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
@@ -98,11 +87,9 @@ class TestClient(unittest.TestCase):
 
     def test_project_name_property(self):
         credentials = _make_credentials()
-        channel = _make_channel()
         project = 'PROJECT'
-        client = self._make_one(
-            project=project, channel=channel, credentials=credentials,
-            admin=True)
+        client = self._make_one( project=project, credentials=credentials,
+                                 admin=True)
         project_name = 'projects/' + project
         self.assertEqual(client.project_path, project_name)
 
@@ -148,16 +135,49 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client._table_admin_client()
+            client.table_admin_client()
 
         with self.assertRaises(ValueError):
-            client._instance_admin_client()
+            client.instance_admin_client()
+
+    def test_table_data_client(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
+
+        table_data_client = client.table_data_client
+        self.assertEqual(client._table_data_client, table_data_client)
+
+        client._table_data_client = object()
+        table_data_client = client.table_data_client
+        self.assertEqual(client.table_data_client, table_data_client)
+
+    def test_table_admin_client(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
+
+        table_admin_client = client.table_admin_client
+        self.assertEqual(client._table_admin_client, table_admin_client)
+
+        client._table_admin_client = object()
+        table_admin_client = client.table_admin_client
+        self.assertEqual(client._table_admin_client, table_admin_client)
+
+    def test_table_data_client_w_value_error(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.table_data_client()
 
     def test_list_instances(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import \
+            bigtable_instance_admin_client
 
         FAILED_LOCATION = 'FAILED'
         INSTANCE_ID1 = 'instance-id1'
@@ -168,9 +188,10 @@ class TestClient(unittest.TestCase):
                 'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
         credentials = _make_credentials()
-        channel = _make_channel()
-        client = self._make_one(project=self.PROJECT, channel=channel,
-                                credentials=credentials, admin=True)
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
 
         # Create response_pb
         response_pb = messages_v2_pb2.ListInstancesResponse(
@@ -189,12 +210,14 @@ class TestClient(unittest.TestCase):
             ],
         )
 
-        # Patch the stub used by the API method.
-        bigtable_instance_stub = (
-            client._instance_admin_client.bigtable_instance_admin_stub)
-        bigtable_instance_stub.ListInstances.side_effect = [response_pb]
         expected_result = response_pb
 
+        # Patch the stub used by the API method.
+        client._instance_admin_client = api
+        bigtable_instance_stub = (
+            client.instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.ListInstances.side_effect = [response_pb]
+
         # Perform the method and check the result.
-        result = client.list_instances()
-        self.assertEqual(result, expected_result)
+        response = client.list_instances()
+        self.assertEqual(response, expected_result)

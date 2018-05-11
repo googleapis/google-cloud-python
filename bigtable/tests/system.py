@@ -380,7 +380,7 @@ class TestDataAPI(unittest.TestCase):
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
 
-        number_of_bytes = 10 * 1024
+        number_of_bytes = 10 * 1024 * 1024
         data = b'1' * number_of_bytes  # 10MB of 1's.
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, data)
         row.commit()
