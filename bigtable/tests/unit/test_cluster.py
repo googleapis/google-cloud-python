@@ -212,8 +212,8 @@ class TestCluster(unittest.TestCase):
         api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
             mock.Mock())
         credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT, credentials=credentials,
-                                   admin=True)
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  serve_nodes=SERVE_NODES)

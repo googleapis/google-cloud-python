@@ -88,8 +88,8 @@ class TestClient(unittest.TestCase):
     def test_project_name_property(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_one( project=project, credentials=credentials,
-                                 admin=True)
+        client = self._make_one(project=project, credentials=credentials,
+                                admin=True)
         project_name = 'projects/' + project
         self.assertEqual(client.project_path, project_name)
 

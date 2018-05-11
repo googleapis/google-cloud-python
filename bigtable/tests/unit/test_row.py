@@ -676,7 +676,6 @@ class TestAppendRow(unittest.TestCase):
         project_id = 'project-id'
         row_key = b'row_key'
 
-
         credentials = _make_credentials()
         client = self._make_client(project=project_id, credentials=credentials,
                                    admin=True)

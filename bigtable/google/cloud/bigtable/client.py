@@ -41,7 +41,6 @@ from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from google.cloud.client import ClientWithProject
 
 
-
 _CLIENT_INFO = client_info.ClientInfo(
     client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
