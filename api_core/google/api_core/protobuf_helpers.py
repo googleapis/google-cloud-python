@@ -17,9 +17,9 @@
 import collections
 import inspect
 
-from google.protobuf.field_mask_pb2 import FieldMask
-from google.protobuf.message import Message
-from google.protobuf.descriptor import FieldDescriptor
+from google.protobuf import field_mask_pb2
+from google.protobuf import message
+from google.protobuf import descriptor
 
 _SENTINEL = object()
 
@@ -75,13 +75,13 @@ def get_messages(module):
             module to find Message subclasses.
 
     Returns:
-        dict[str, Message]: A dictionary with the Message class names as
-            keys, and the Message subclasses themselves as values.
+        dict[str, google.protobuf.message.Message]: A dictionary with the 
+            Message class names as keys, and the Message subclasses themselves as values.
     """
     answer = collections.OrderedDict()
     for name in dir(module):
         candidate = getattr(module, name)
-        if inspect.isclass(candidate) and issubclass(candidate, Message):
+        if inspect.isclass(candidate) and issubclass(candidate, message.Message):
             answer[name] = candidate
     return answer
 
@@ -145,7 +145,7 @@ def get(msg_or_dict, key, default=_SENTINEL):
 
     # Attempt to get the value from the two types of objects we know about.
     # If we get something else, complain.
-    if isinstance(msg_or_dict, Message):
+    if isinstance(msg_or_dict, message.Message):
         answer = getattr(msg_or_dict, key, default)
     elif isinstance(msg_or_dict, collections.Mapping):
         answer = msg_or_dict.get(key, default)
@@ -188,7 +188,7 @@ def _set_field_on_message(msg, key, value):
         # Assign the dictionary values to the protobuf message.
         for item_key, item_value in value.items():
             set(getattr(msg, key), item_key, item_value)
-    elif isinstance(value, Message):
+    elif isinstance(value, message.Message):
         getattr(msg, key).CopyFrom(value)
     else:
         setattr(msg, key, value)
@@ -207,7 +207,7 @@ def set(msg_or_dict, key, value):
         TypeError: If ``msg_or_dict`` is not a Message or dictionary.
     """
     # Sanity check: Is our target object valid?
-    if not isinstance(msg_or_dict, (collections.MutableMapping, Message)):
+    if not isinstance(msg_or_dict, (collections.MutableMapping, message.Message)):
         raise TypeError(
             'set() expected a dict or protobuf message, got {!r}.'.format(
                 type(msg_or_dict)))
@@ -252,31 +252,31 @@ def setdefault(msg_or_dict, key, value):
 
 
 def fieldmask(original, modified):
-    """Constructs a field mask from two proto messages.
+    """Create a field mask by comparing two messages.
 
     Args:
         original (~google.protobuf.message.Message): the original message. 
         modified (~google.protobuf.message.Message): the modified message.
 
     Returns:
-        FieldMask: returns a FieldMask object representing the differences
-            between made from the original message to the modified message.
+        google.protobuf.field_mask_pb2.FieldMask: returns a FieldMask instance
+            representing the differences between between two messages.
 
     Raises:
-        ValueError: If the ``original`` or ``modified`` are not subclasses of
-        ``google.protobuf.message.Message``.
+        ValueError: If the ``original`` or ``modified`` are not the same type.
     """
-    if not isinstance(original, Message) or not isinstance(modified, Message):
-        raise ValueError('The parameters passed must be a subclass of google.protobuf.message.Message.')
     if type(original) != type(modified):
-        raise ValueError('The parameters passed must be of the same type.')
+        raise ValueError('fieldmask() expects parameters must be of the same type.')
     answer = []
-    seen = [] 
+    seen = []
+
     for field, _ in original.ListFields():
         seen.append(field.name)
-        if field.label != FieldDescriptor.LABEL_REPEATED and field.message_type is not None:
+        if field.label != descriptor.FieldDescriptor.LABEL_REPEATED and field.message_type is not None:
             if getattr(original, field.name) != getattr(modified, field.name):
-                subpaths = fieldmask(getattr(original, field.name), getattr(modified, field.name)).paths
+                subpaths = fieldmask(
+                    getattr(original, field.name), getattr(
+                        modified, field.name)).paths
                 answer.extend(['%s.%s' % (field.name, s) for s in subpaths])
         elif getattr(original, field.name) != getattr(modified, field.name):
             answer.append(field.name)
@@ -285,6 +285,5 @@ def fieldmask(original, modified):
         if field.name not in seen:
             answer.append(field.name)
 
-    return FieldMask(paths=answer)
-
+    return field_mask_pb2.FieldMask(paths=answer)
 
