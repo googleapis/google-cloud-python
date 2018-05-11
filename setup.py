@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import os
+import sys
 
 from setuptools import setup
-
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -34,7 +34,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 7 - Inactive',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -76,9 +76,16 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud',
-    version='0.32.1.dev1',
+    version='0.32.2',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,
     **SETUP_BASE
 )
+
+print("WARNING: The google-cloud Python package is deprecated. On "
+      "June 15, 2018, this package will no longer install any other "
+      "packages. Please install the product-specific google-cloud-* "
+      "packages needed for your application. See "
+      "https://github.com/GoogleCloudPlatform/google-cloud-python.",
+      file=sys.stderr)
