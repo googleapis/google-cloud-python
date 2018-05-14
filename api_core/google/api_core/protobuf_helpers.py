@@ -17,9 +17,9 @@
 import collections
 import inspect
 
+from google.protobuf import descriptor
 from google.protobuf import field_mask_pb2
 from google.protobuf import message
-from google.protobuf import descriptor
 
 _SENTINEL = object()
 
@@ -75,13 +75,15 @@ def get_messages(module):
             module to find Message subclasses.
 
     Returns:
-        dict[str, google.protobuf.message.Message]: A dictionary with the 
-            Message class names as keys, and the Message subclasses themselves as values.
+        dict[str, google.protobuf.message.Message]: A dictionary with the
+            Message class names as keys, and the Message subclasses themselves
+            as values.
     """
     answer = collections.OrderedDict()
     for name in dir(module):
         candidate = getattr(module, name)
-        if inspect.isclass(candidate) and issubclass(candidate, message.Message):
+        if (inspect.isclass(candidate) and
+                issubclass(candidate, message.Message)):
             answer[name] = candidate
     return answer
 
@@ -207,7 +209,8 @@ def set(msg_or_dict, key, value):
         TypeError: If ``msg_or_dict`` is not a Message or dictionary.
     """
     # Sanity check: Is our target object valid?
-    if not isinstance(msg_or_dict, (collections.MutableMapping, message.Message)):
+    if (not isinstance(msg_or_dict,
+                       (collections.MutableMapping, message.Message))):
         raise TypeError(
             'set() expected a dict or protobuf message, got {!r}.'.format(
                 type(msg_or_dict)))
@@ -255,7 +258,7 @@ def fieldmask(original, modified):
     """Create a field mask by comparing two messages.
 
     Args:
-        original (~google.protobuf.message.Message): the original message. 
+        original (~google.protobuf.message.Message): the original message.
         modified (~google.protobuf.message.Message): the modified message.
 
     Returns:
@@ -268,14 +271,16 @@ def fieldmask(original, modified):
     """
     if type(original) != type(modified):
         raise ValueError(
-            'expected that both original and modified should be of the same type, received "{!r}" and "{!r}".'.
-            format(type(original), type(modified)))
+                'expected that both original and modified should be of the '
+                'same type, received "{!r}" and "{!r}".'.
+                format(type(original), type(modified)))
     answer = []
     seen = []
 
     for field, _ in original.ListFields():
         seen.append(field.name)
-        if field.label != descriptor.FieldDescriptor.LABEL_REPEATED and field.message_type is not None:
+        if (field.label != descriptor.FieldDescriptor.LABEL_REPEATED and
+                field.message_type is not None):
             if getattr(original, field.name) != getattr(modified, field.name):
                 subpaths = fieldmask(
                     getattr(original, field.name), getattr(
