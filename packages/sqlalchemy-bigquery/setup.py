@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="pybigquery",
-    version='0.3.0',
+    version='0.3.1',
     description="SQLAlchemy dialect for BigQuery",
     author="Maxim Zudilov",
     author_email="maxim.zudilov@gmail.com",
