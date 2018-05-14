@@ -15,8 +15,8 @@
 """App Engine standard application that runs basic system tests for
 google.auth.app_engine.
 
-This application has to run tests manually instead of using py.test because
-py.test currently doesn't work on App Engine standard.
+This application has to run tests manually instead of using pytest because
+pytest currently doesn't work on App Engine standard.
 """
 
 import contextlib
