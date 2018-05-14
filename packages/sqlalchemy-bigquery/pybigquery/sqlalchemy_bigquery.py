@@ -11,6 +11,7 @@ from sqlalchemy import types, util
 from sqlalchemy.sql.compiler import SQLCompiler, IdentifierPreparer
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
+from sqlalchemy.sql.schema import Column
 
 
 class UniversalSet(object):
@@ -67,6 +68,12 @@ class BigQueryExecutionContext(DefaultExecutionContext):
 
 
 class BigQueryCompiler(SQLCompiler):
+    def __init__(self, dialect, statement, column_keys=None,
+                 inline=False, **kwargs):
+        if isinstance(statement, Column):
+             kwargs['compile_kwargs'] = util.immutabledict({'include_table': False})
+        super(BigQueryCompiler, self).__init__(dialect, statement, column_keys, inline, **kwargs)
+
     def visit_label(self, *args, **kwargs):
         # Use labels in GROUP BY clause
         if len(kwargs) == 0 or len(kwargs) == 1:
