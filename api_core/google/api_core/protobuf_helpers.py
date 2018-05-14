@@ -259,14 +259,17 @@ def fieldmask(original, modified):
         modified (~google.protobuf.message.Message): the modified message.
 
     Returns:
-        google.protobuf.field_mask_pb2.FieldMask: returns a FieldMask instance
-            representing the differences between between two messages.
+        google.protobuf.field_mask_pb2.FieldMask: field mask that contains
+        the list of field names that have different values between the two
+        messages. If the messages are equivalent, then the field mask is empty.
 
     Raises:
         ValueError: If the ``original`` or ``modified`` are not the same type.
     """
     if type(original) != type(modified):
-        raise ValueError('fieldmask() expects parameters must be of the same type.')
+        raise ValueError(
+            'expected that both original and modified should be of the same type, received "{!r}" and "{!r}".'.
+            format(type(original), type(modified)))
     answer = []
     seen = []
 
@@ -286,4 +289,3 @@ def fieldmask(original, modified):
             answer.append(field.name)
 
     return field_mask_pb2.FieldMask(paths=answer)
-
