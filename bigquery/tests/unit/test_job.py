@@ -25,6 +25,7 @@ from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud._helpers import _RFC3339_MICROS
 
 import mock
 
@@ -2289,17 +2290,32 @@ class TestQueryJob(unittest.TestCase, _Base):
         plan_entries = [{
             'name': 'NAME',
             'id': 1234,
+            'inputStages': [88, 101],
+            'startMs': 1522540800000,
+            'endMs':   1522540804000,
+            'parallelInputs': 1000,
+            'completedParallelInputs': 5,
+            'waitMsAvg': 33,
+            'waitMsMax': 400,
             'waitRatioAvg': 2.71828,
             'waitRatioMax': 3.14159,
+            'readMsAvg': 45,
+            'readMsMax': 90,
             'readRatioAvg': 1.41421,
             'readRatioMax': 1.73205,
+            'computeMsAvg': 55,
+            'computeMsMax': 99,
             'computeRatioAvg': 0.69315,
             'computeRatioMax': 1.09861,
+            'writeMsAvg': 203,
+            'writeMsMax': 340,
             'writeRatioAvg': 3.32193,
             'writeRatioMax': 2.30258,
             'recordsRead': '100',
             'recordsWritten': '1',
             'status': 'STATUS',
+            'shuffleOutputBytes': 1024,
+            'shuffleOutputBytesSpilled': 1,
             'steps': [{
                 'kind': 'KIND',
                 'substeps': ['SUBSTEP1', 'SUBSTEP2'],
@@ -2322,21 +2338,52 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertIsInstance(found, QueryPlanEntry)
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.entry_id, expected['id'])
+            self.assertEqual(
+                    len(found.input_stages),
+                    len(expected['inputStages']))
+            for f_id in found.input_stages:
+                self.assertIn(f_id, expected['inputStages'])
+            self.assertEqual(
+                found.start.strftime(_RFC3339_MICROS),
+                '2018-04-01T00:00:00.000000Z')
+            self.assertEqual(
+                found.end.strftime(_RFC3339_MICROS),
+                '2018-04-01T00:00:04.000000Z')
+            self.assertEqual(
+                    found.parallel_inputs,
+                    expected['parallelInputs'])
+            self.assertEqual(
+                    found.completed_parallel_inputs,
+                    expected['completedParallelInputs'])
+            self.assertEqual(found.wait_ms_avg, expected['waitMsAvg'])
+            self.assertEqual(found.wait_ms_max, expected['waitMsMax'])
             self.assertEqual(found.wait_ratio_avg, expected['waitRatioAvg'])
             self.assertEqual(found.wait_ratio_max, expected['waitRatioMax'])
+            self.assertEqual(found.read_ms_avg, expected['readMsAvg'])
+            self.assertEqual(found.read_ms_max, expected['readMsMax'])
             self.assertEqual(found.read_ratio_avg, expected['readRatioAvg'])
             self.assertEqual(found.read_ratio_max, expected['readRatioMax'])
+            self.assertEqual(found.compute_ms_avg, expected['computeMsAvg'])
+            self.assertEqual(found.compute_ms_max, expected['computeMsMax'])
             self.assertEqual(
                 found.compute_ratio_avg, expected['computeRatioAvg'])
             self.assertEqual(
                 found.compute_ratio_max, expected['computeRatioMax'])
+            self.assertEqual(found.write_ms_avg, expected['writeMsAvg'])
+            self.assertEqual(found.write_ms_max, expected['writeMsMax'])
             self.assertEqual(found.write_ratio_avg, expected['writeRatioAvg'])
             self.assertEqual(found.write_ratio_max, expected['writeRatioMax'])
             self.assertEqual(
-                found.records_read, int(expected['recordsRead']))
+                found.records_read, expected['recordsRead'])
             self.assertEqual(
-                found.records_written, int(expected['recordsWritten']))
+                found.records_written, expected['recordsWritten'])
             self.assertEqual(found.status, expected['status'])
+            self.assertEqual(
+                    found.shuffle_output_bytes,
+                    expected['shuffleOutputBytes'])
+            self.assertEqual(
+                    found.shuffle_output_bytes_spilled,
+                    expected['shuffleOutputBytesSpilled'])
 
             self.assertEqual(len(found.steps), len(expected['steps']))
             for f_step, e_step in zip(found.steps, expected['steps']):
@@ -3256,63 +3303,41 @@ class TestQueryPlanEntryStep(unittest.TestCase, _Base):
 class TestQueryPlanEntry(unittest.TestCase, _Base):
     NAME = 'NAME'
     ENTRY_ID = 1234
+    START_MS = 1522540800000
+    END_MS = 1522540804000
+    INPUT_STAGES = (88, 101)
+    PARALLEL_INPUTS = 1000
+    COMPLETED_PARALLEL_INPUTS = 5
+    WAIT_MS_AVG = 33
+    WAIT_MS_MAX = 400
     WAIT_RATIO_AVG = 2.71828
     WAIT_RATIO_MAX = 3.14159
+    READ_MS_AVG = 45
+    READ_MS_MAX = 90
     READ_RATIO_AVG = 1.41421
     READ_RATIO_MAX = 1.73205
+    COMPUTE_MS_AVG = 55
+    COMPUTE_MS_MAX = 99
     COMPUTE_RATIO_AVG = 0.69315
     COMPUTE_RATIO_MAX = 1.09861
+    WRITE_MS_AVG = 203
+    WRITE_MS_MAX = 340
     WRITE_RATIO_AVG = 3.32193
     WRITE_RATIO_MAX = 2.30258
     RECORDS_READ = 100
     RECORDS_WRITTEN = 1
     STATUS = 'STATUS'
+    SHUFFLE_OUTPUT_BYTES = 1024
+    SHUFFLE_OUTPUT_BYTES_SPILLED = 1
+
+    START_RFC3339_MICROS = '2018-04-01T00:00:00.000000Z'
+    END_RFC3339_MICROS = '2018-04-01T00:00:04.000000Z'
 
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import QueryPlanEntry
 
         return QueryPlanEntry
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_ctor(self):
-        from google.cloud.bigquery.job import QueryPlanEntryStep
-
-        steps = [QueryPlanEntryStep(
-            kind=TestQueryPlanEntryStep.KIND,
-            substeps=TestQueryPlanEntryStep.SUBSTEPS)]
-        entry = self._make_one(
-            name=self.NAME,
-            entry_id=self.ENTRY_ID,
-            wait_ratio_avg=self.WAIT_RATIO_AVG,
-            wait_ratio_max=self.WAIT_RATIO_MAX,
-            read_ratio_avg=self.READ_RATIO_AVG,
-            read_ratio_max=self.READ_RATIO_MAX,
-            compute_ratio_avg=self.COMPUTE_RATIO_AVG,
-            compute_ratio_max=self.COMPUTE_RATIO_MAX,
-            write_ratio_avg=self.WRITE_RATIO_AVG,
-            write_ratio_max=self.WRITE_RATIO_MAX,
-            records_read=self.RECORDS_READ,
-            records_written=self.RECORDS_WRITTEN,
-            status=self.STATUS,
-            steps=steps,
-        )
-        self.assertEqual(entry.name, self.NAME)
-        self.assertEqual(entry.entry_id, self.ENTRY_ID)
-        self.assertEqual(entry.wait_ratio_avg, self.WAIT_RATIO_AVG)
-        self.assertEqual(entry.wait_ratio_max, self.WAIT_RATIO_MAX)
-        self.assertEqual(entry.read_ratio_avg, self.READ_RATIO_AVG)
-        self.assertEqual(entry.read_ratio_max, self.READ_RATIO_MAX)
-        self.assertEqual(entry.compute_ratio_avg, self.COMPUTE_RATIO_AVG)
-        self.assertEqual(entry.compute_ratio_max, self.COMPUTE_RATIO_MAX)
-        self.assertEqual(entry.write_ratio_avg, self.WRITE_RATIO_AVG)
-        self.assertEqual(entry.write_ratio_max, self.WRITE_RATIO_MAX)
-        self.assertEqual(entry.records_read, self.RECORDS_READ)
-        self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
-        self.assertEqual(entry.status, self.STATUS)
-        self.assertEqual(entry.steps, steps)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -3321,17 +3346,32 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
 
         self.assertIsNone(entry.name)
         self.assertIsNone(entry.entry_id)
+        self.assertEqual(entry.input_stages, [])
+        self.assertIsNone(entry.start)
+        self.assertIsNone(entry.end)
+        self.assertIsNone(entry.parallel_inputs)
+        self.assertIsNone(entry.completed_parallel_inputs)
+        self.assertIsNone(entry.wait_ms_avg)
+        self.assertIsNone(entry.wait_ms_max)
         self.assertIsNone(entry.wait_ratio_avg)
         self.assertIsNone(entry.wait_ratio_max)
+        self.assertIsNone(entry.read_ms_avg)
+        self.assertIsNone(entry.read_ms_max)
         self.assertIsNone(entry.read_ratio_avg)
         self.assertIsNone(entry.read_ratio_max)
+        self.assertIsNone(entry.compute_ms_avg)
+        self.assertIsNone(entry.compute_ms_max)
         self.assertIsNone(entry.compute_ratio_avg)
         self.assertIsNone(entry.compute_ratio_max)
+        self.assertIsNone(entry.write_ms_avg)
+        self.assertIsNone(entry.write_ms_max)
         self.assertIsNone(entry.write_ratio_avg)
         self.assertIsNone(entry.write_ratio_max)
         self.assertIsNone(entry.records_read)
         self.assertIsNone(entry.records_written)
         self.assertIsNone(entry.status)
+        self.assertIsNone(entry.shuffle_output_bytes)
+        self.assertIsNone(entry.shuffle_output_bytes_spilled)
         self.assertEqual(entry.steps, [])
 
     def test_from_api_repr_normal(self):
@@ -3343,17 +3383,30 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         resource = {
             'name': self.NAME,
             'id': self.ENTRY_ID,
+            'inputStages': self.INPUT_STAGES,
+            'startMs': self.START_MS,
+            'endMs': self.END_MS,
+            'waitMsAvg': self.WAIT_MS_AVG,
+            'waitMsMax': self.WAIT_MS_MAX,
             'waitRatioAvg': self.WAIT_RATIO_AVG,
             'waitRatioMax': self.WAIT_RATIO_MAX,
+            'readMsAvg': self.READ_MS_AVG,
+            'readMsMax': self.READ_MS_MAX,
             'readRatioAvg': self.READ_RATIO_AVG,
             'readRatioMax': self.READ_RATIO_MAX,
+            'computeMsAvg': self.COMPUTE_MS_AVG,
+            'computeMsMax': self.COMPUTE_MS_MAX,
             'computeRatioAvg': self.COMPUTE_RATIO_AVG,
             'computeRatioMax': self.COMPUTE_RATIO_MAX,
+            'writeMsAvg': self.WRITE_MS_AVG,
+            'writeMsMax': self.WRITE_MS_MAX,
             'writeRatioAvg': self.WRITE_RATIO_AVG,
             'writeRatioMax': self.WRITE_RATIO_MAX,
-            'recordsRead': str(self.RECORDS_READ),
-            'recordsWritten': str(self.RECORDS_WRITTEN),
+            'recordsRead': self.RECORDS_READ,
+            'recordsWritten': self.RECORDS_WRITTEN,
             'status': self.STATUS,
+            'shuffleOutputBytes': self.SHUFFLE_OUTPUT_BYTES,
+            'shuffleOutputBytesSpilled': self.SHUFFLE_OUTPUT_BYTES_SPILLED,
             'steps': [{
                 'kind': TestQueryPlanEntryStep.KIND,
                 'substeps': TestQueryPlanEntryStep.SUBSTEPS,
@@ -3376,3 +3429,29 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
+
+    def test_start(self):
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr({})
+        self.assertEqual(
+            entry.start,
+            None)
+
+        entry._properties['startMs'] = self.START_MS
+        self.assertEqual(
+            entry.start.strftime(_RFC3339_MICROS),
+            self.START_RFC3339_MICROS)
+
+    def test_end(self):
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr({})
+        self.assertEqual(
+            entry.end,
+            None)
+
+        entry._properties['endMs'] = self.END_MS
+        self.assertEqual(
+            entry.end.strftime(_RFC3339_MICROS),
+            self.END_RFC3339_MICROS)
