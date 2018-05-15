@@ -268,6 +268,43 @@ def test_field_mask_equal_values():
     assert protobuf_helpers.field_mask(original, modified).paths == []
 
 
+def test_field_mask_zero_values():
+    original = color_pb2.Color(red=0.0)
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = None
+    modified = color_pb2.Color(red=0.0)
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = struct_pb2.ListValue(values=[])
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = None
+    modified = struct_pb2.ListValue(values=[])
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = struct_pb2.Struct(fields={})
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = None
+    modified = struct_pb2.Struct(fields={})
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    original = struct_pb2.Value(number_value=0.0)
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == []
+
+    # Shows that zero values set on oneof fields will cause a field
+    # mask to be added.
+    original = None
+    modified = struct_pb2.Value(number_value=0.0)
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
+            ['number_value'])
+
+
 def test_field_mask_singular_field_diffs():
     original = struct_pb2.Value(number_value=1.0)
     modified = struct_pb2.Value()
