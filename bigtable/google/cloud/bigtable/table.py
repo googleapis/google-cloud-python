@@ -27,7 +27,7 @@ from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
-from google.cloud.bigtable.row import DirectRow
+from google.cloud.bigtable.row import RowMutations
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 
@@ -158,7 +158,7 @@ class Table(object):
         elif filter_ is not None:
             return ConditionalRow(row_key, self, filter_=filter_)
         else:
-            return DirectRow(row_key, self)
+            return RowMutations(row_key, self)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
