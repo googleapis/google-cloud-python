@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import os
-import sys
+import logging
 
 from setuptools import setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+with open(os.path.join(PACKAGE_ROOT, 'setup-README.rst')) as file_obj:
     README = file_obj.read()
 
 # NOTE: This is duplicated throughout and we should try to
@@ -83,9 +83,10 @@ setup(
     **SETUP_BASE
 )
 
-print("WARNING: The google-cloud Python package is deprecated. On "
-      "June 15, 2018, this package will no longer install any other "
-      "packages. Please install the product-specific google-cloud-* "
-      "packages needed for your application. See "
-      "https://github.com/GoogleCloudPlatform/google-cloud-python.",
-      file=sys.stderr)
+warning = "WARNING: The google-cloud Python package is deprecated. On " \
+          "June 15, 2018, this package will no longer install any other " \
+          "packages. Please install the product-specific google-cloud-* " \
+          "packages needed for your application. See " \
+          "https://github.com/GoogleCloudPlatform/google-cloud-python."
+
+logging.warn(warning)
