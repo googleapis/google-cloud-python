@@ -371,7 +371,7 @@ class RowMutations(object):
         entry = self.create_entry()
         self.entries.append(entry)
 
-    def mutate_rows(self, retry=DEFAULT_RETRY):
+    def mutate(self, retry=DEFAULT_RETRY):
         """Call the GAPIC API for MutateRows
 
         Returns:
