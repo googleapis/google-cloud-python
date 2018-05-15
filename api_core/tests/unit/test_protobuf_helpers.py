@@ -235,110 +235,147 @@ def test_setdefault_pb2_truthy():
     assert operation.name == 'bar'
 
 
-def test_fieldmask_invalid_args():
+def test_field_mask_invalid_args():
     with pytest.raises(ValueError):
-        protobuf_helpers.fieldmask('foo', any_pb2.Any())
+        protobuf_helpers.field_mask('foo', any_pb2.Any())
     with pytest.raises(ValueError):
-        protobuf_helpers.fieldmask(any_pb2.Any(), 'bar')
+        protobuf_helpers.field_mask(any_pb2.Any(), 'bar')
     with pytest.raises(ValueError):
-        protobuf_helpers.fieldmask(any_pb2.Any(), operations_pb2.Operation())
+        protobuf_helpers.field_mask(any_pb2.Any(), operations_pb2.Operation())
 
 
-def test_fieldmask_equal_values():
+def test_field_mask_equal_values():
+    assert protobuf_helpers.field_mask(None, None).paths == []
+
     original = struct_pb2.Value(number_value=1.0)
     modified = struct_pb2.Value(number_value=1.0)
-    assert protobuf_helpers.fieldmask(original, modified).paths == []
+    assert protobuf_helpers.field_mask(original, modified).paths == []
 
     original = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
     modified = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
-    assert protobuf_helpers.fieldmask(original, modified).paths == []
+    assert protobuf_helpers.field_mask(original, modified).paths == []
 
     original = struct_pb2.ListValue(
             values=[struct_pb2.Value(number_value=1.0)])
     modified = struct_pb2.ListValue(
             values=[struct_pb2.Value(number_value=1.0)])
-    assert protobuf_helpers.fieldmask(original, modified).paths == []
+    assert protobuf_helpers.field_mask(original, modified).paths == []
 
     original = struct_pb2.Struct(
             fields={'bar': struct_pb2.Value(number_value=1.0)})
     modified = struct_pb2.Struct(
             fields={'bar': struct_pb2.Value(number_value=1.0)})
-    assert protobuf_helpers.fieldmask(original, modified).paths == []
+    assert protobuf_helpers.field_mask(original, modified).paths == []
 
 
-def test_fieldmask_singular_field_diffs():
+def test_field_mask_singular_field_diffs():
     original = struct_pb2.Value(number_value=1.0)
     modified = struct_pb2.Value()
-    assert (protobuf_helpers.fieldmask(original, modified).paths ==
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
             ['number_value'])
 
     original = struct_pb2.Value()
     modified = struct_pb2.Value(number_value=1.0)
-    assert (protobuf_helpers.fieldmask(original, modified).paths ==
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
+            ['number_value'])
+
+    original = None
+    modified = struct_pb2.Value(number_value=1.0)
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
             ['number_value'])
 
 
-def test_fieldmask_message_field_diffs():
+def test_field_mask_message_field_diffs():
     original = color_pb2.Color()
     modified = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['alpha']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['alpha']
 
     original = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
     modified = color_pb2.Color()
-    assert (protobuf_helpers.fieldmask(original, modified).paths ==
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
             ['alpha.value'])
 
     original = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
     modified = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=2.0))
-    assert (protobuf_helpers.fieldmask(original, modified).paths ==
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
+            ['alpha.value'])
+
+    original = None
+    modified = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=2.0))
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
+            ['alpha'])
+
+    original = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
+    modified = None
+    assert (protobuf_helpers.field_mask(original, modified).paths ==
             ['alpha.value'])
 
 
-def test_fieldmask_repeated_diffs():
+def test_field_mask_repeated_diffs():
     original = struct_pb2.ListValue()
     modified = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=1.0),
                                     struct_pb2.Value(number_value=2.0)])
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['values']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['values']
 
     original = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=1.0),
                                     struct_pb2.Value(number_value=2.0)])
     modified = struct_pb2.ListValue()
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['values']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['values']
+
+    original = None
+    modified = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=1.0),
+                                    struct_pb2.Value(number_value=2.0)])
+    assert protobuf_helpers.field_mask(original, modified).paths == ['values']
+
+    original = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=1.0),
+                                    struct_pb2.Value(number_value=2.0)])
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == ['values']
 
     original = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=1.0),
                                     struct_pb2.Value(number_value=2.0)])
     modified = struct_pb2.ListValue(values=[struct_pb2.Value(number_value=2.0),
                                     struct_pb2.Value(number_value=1.0)])
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['values']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['values']
 
 
-def test_fieldmask_map_diffs():
+def test_field_mask_map_diffs():
     original = struct_pb2.Struct()
     modified = struct_pb2.Struct(
             fields={'foo': struct_pb2.Value(number_value=1.0)})
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['fields']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
 
     original = struct_pb2.Struct(
             fields={'foo': struct_pb2.Value(number_value=1.0)})
     modified = struct_pb2.Struct()
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['fields']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
+
+    original = None
+    modified = struct_pb2.Struct(
+            fields={'foo': struct_pb2.Value(number_value=1.0)})
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
+
+    original = struct_pb2.Struct(
+            fields={'foo': struct_pb2.Value(number_value=1.0)})
+    modified = None
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
 
     original = struct_pb2.Struct(
             fields={'foo': struct_pb2.Value(number_value=1.0)})
     modified = struct_pb2.Struct(
             fields={'foo': struct_pb2.Value(number_value=2.0)})
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['fields']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
 
     original = struct_pb2.Struct(
             fields={'foo': struct_pb2.Value(number_value=1.0)})
     modified = struct_pb2.Struct(
             fields={'bar': struct_pb2.Value(number_value=1.0)})
-    assert protobuf_helpers.fieldmask(original, modified).paths == ['fields']
+    assert protobuf_helpers.field_mask(original, modified).paths == ['fields']
 
 
-def test_fieldmask_different_level_diffs():
+def test_field_mask_different_level_diffs():
     original = color_pb2.Color(alpha=wrappers_pb2.FloatValue(value=1.0))
     modified = color_pb2.Color(
             alpha=wrappers_pb2.FloatValue(value=2.0), red=1.0)
-    assert (sorted(protobuf_helpers.fieldmask(original, modified).paths) ==
+    assert (sorted(protobuf_helpers.field_mask(original, modified).paths) ==
             ['alpha.value', 'red'])
