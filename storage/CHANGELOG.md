@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.10.0
+
+### New Features
+
+- Storage: add support for KMS keys (#5259)
+
 ## 1.9.0
 
 ### Implementation Changes
