@@ -2829,35 +2829,48 @@ class TestClient(unittest.TestCase):
     def test_insert_rows_w_numeric(self):
         from google.cloud.bigquery import table
 
+        project = 'PROJECT'
+        ds_id = 'DS_ID'
+        table_id = 'TABLE_ID'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(
-            project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _Connection({})
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        conn = client._connection = _make_connection({})
+        table_ref = DatasetReference(project, ds_id).table(table_id)
         schema = [
             table.SchemaField('account', 'STRING'),
             table.SchemaField('balance', 'NUMERIC'),
         ]
-        insert_table = table.Table(self.TABLE_REF, schema=schema)
+        insert_table = table.Table(table_ref, schema=schema)
         rows = [
             ('Savings', decimal.Decimal('23.47')),
             ('Checking', decimal.Decimal('1.98')),
             ('Mortgage', decimal.Decimal('-12345678909.87654321')),
         ]
 
-        errors = client.create_rows(insert_table, rows)
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(rows)))):
+            errors = client.insert_rows(insert_table, rows)
 
         self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        sent_rows = req['data']['rows']
-        self.assertEqual(
-            sent_rows[0]['json'], {'account': 'Savings', 'balance': '23.47'})
-        self.assertEqual(
-            sent_rows[1]['json'], {'account': 'Checking', 'balance': '1.98'})
-        self.assertEqual(
-            sent_rows[2]['json'],
-            {'account': 'Mortgage', 'balance': '-12345678909.87654321'})
+        rows_json = [
+            {'account': 'Savings', 'balance': '23.47'},
+            {'account': 'Checking', 'balance': '1.98'},
+            {
+                'account': 'Mortgage',
+                'balance': '-12345678909.87654321',
+            },
+        ]
+        sent = {
+            'rows': [{
+                'json': row,
+                'insertId': str(i),
+            } for i, row in enumerate(rows_json)],
+        }
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/datasets/{}/tables/{}/insertAll'.format(
+                project, ds_id, table_id),
+            data=sent)
 
     def test_insert_rows_json(self):
         from google.cloud.bigquery.table import Table, SchemaField
