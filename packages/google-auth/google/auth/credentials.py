@@ -53,8 +53,9 @@ class Credentials(object):
     def expired(self):
         """Checks if the credentials are expired.
 
-        Note that credentials can be invalid but not expired becaue Credentials
-        with :attr:`expiry` set to None is considered to never expire.
+        Note that credentials can be invalid but not expired because
+        Credentials with :attr:`expiry` set to None is considered to never
+        expire.
         """
         if not self.expiry:
             return False
