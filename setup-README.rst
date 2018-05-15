@@ -7,7 +7,7 @@ Google Cloud Python Client
     this package will no longer install any other packages. Please install the
     `product-specific google-cloud-* packages`__ needed for your application.
 
-.. __: https://github.com/GoogleCloudPlatform/google-cloud-python.
+.. __: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-python-client
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
