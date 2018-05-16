@@ -1665,6 +1665,145 @@ class Test_Bucket(unittest.TestCase):
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
+    def test_make_private_defaults(self):
+        NAME = 'name'
+        no_permissions = []
+        after = {'acl': no_permissions, 'defaultObjectAcl': []}
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+        bucket.make_private()
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': after['acl']})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def _make_private_w_future_helper(self, default_object_acl_loaded=True):
+        NAME = 'name'
+        no_permissions = []
+        after1 = {'acl': no_permissions, 'defaultObjectAcl': []}
+        after2 = {'acl': no_permissions, 'defaultObjectAcl': no_permissions}
+        if default_object_acl_loaded:
+            num_requests = 2
+            connection = _Connection(after1, after2)
+        else:
+            num_requests = 3
+            # We return the same value for default_object_acl.reload()
+            # to consume.
+            connection = _Connection(after1, after1, after2)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = default_object_acl_loaded
+        bucket.make_private(future=True)
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), no_permissions)
+        kw = connection._requested
+        self.assertEqual(len(kw), num_requests)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        if not default_object_acl_loaded:
+            self.assertEqual(kw[1]['method'], 'GET')
+            self.assertEqual(kw[1]['path'], '/b/%s/defaultObjectAcl' % NAME)
+        # Last could be 1 or 2 depending on `default_object_acl_loaded`.
+        self.assertEqual(kw[-1]['method'], 'PATCH')
+        self.assertEqual(kw[-1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[-1]['data'], {'defaultObjectAcl': no_permissions})
+        self.assertEqual(kw[-1]['query_params'], {'projection': 'full'})
+
+    def test_make_private_w_future(self):
+        self._make_private_w_future_helper(default_object_acl_loaded=True)
+
+    def test_make_private_w_future_reload_default(self):
+        self._make_private_w_future_helper(default_object_acl_loaded=False)
+
+    def test_make_private_recursive(self):
+        _saved = []
+
+        class _Blob(object):
+            _granted = True
+
+            def __init__(self, bucket, name):
+                self._bucket = bucket
+                self._name = name
+
+            @property
+            def acl(self):
+                return self
+
+            # Faux ACL methods
+            def all(self):
+                return self
+
+            def revoke_read(self):
+                self._granted = False
+
+            def save(self, client=None):
+                _saved.append(
+                    (self._bucket, self._name, self._granted, client))
+
+        def item_to_blob(self, item):
+            return _Blob(self.bucket, item['name'])
+
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        no_permissions = []
+        after = {'acl': no_permissions, 'defaultObjectAcl': []}
+        connection = _Connection(after, {'items': [{'name': BLOB_NAME}]})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+
+        with mock.patch('google.cloud.storage.bucket._item_to_blob',
+                        new=item_to_blob):
+            bucket.make_private(recursive=True)
+        self.assertEqual(list(bucket.acl), no_permissions)
+        self.assertEqual(list(bucket.default_object_acl), [])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None)])
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['method'], 'GET')
+        self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
+        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
+        self.assertEqual(kw[1]['query_params'],
+                         {'maxResults': max_results, 'projection': 'full'})
+
+    def test_make_private_recursive_too_many(self):
+        NO_PERMISSIONS = []
+        AFTER = {'acl': NO_PERMISSIONS, 'defaultObjectAcl': []}
+
+        NAME = 'name'
+        BLOB_NAME1 = 'blob-name1'
+        BLOB_NAME2 = 'blob-name2'
+        GET_BLOBS_RESP = {
+            'items': [
+                {'name': BLOB_NAME1},
+                {'name': BLOB_NAME2},
+            ],
+        }
+        connection = _Connection(AFTER, GET_BLOBS_RESP)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+
+        # Make the Bucket refuse to make_private with 2 objects.
+        bucket._MAX_OBJECTS_FOR_ITERATION = 1
+        self.assertRaises(ValueError, bucket.make_private, recursive=True)
+
     def test_page_empty_response(self):
         from google.api_core import page_iterator
 
