@@ -375,3 +375,7 @@ class TestChannelStub(object):
         channel = grpc_helpers.ChannelStub()
         assert channel.subscribe(None) is None
         assert channel.unsubscribe(None) is None
+
+    def test_close(self):
+        channel = grpc_helpers.ChannelStub()
+        assert channel.close() is None
