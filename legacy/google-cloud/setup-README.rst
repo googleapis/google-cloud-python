@@ -3,7 +3,7 @@ Google Cloud Python Client
 
     Python idiomatic client for `Google Cloud Platform`_ services.
 
-    WARNING: The google-cloud Python package is deprecated. On June 15, 2018,
+    WARNING: The google-cloud Python package is deprecated. On June 18, 2018,
     this package will no longer install any other packages. Please install the
     `product-specific google-cloud-* packages`__ needed for your application.
 

@@ -76,7 +76,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud',
-    version='0.32.2',
+    version='0.33.0',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,
@@ -84,7 +84,7 @@ setup(
 )
 
 warning = "WARNING: The google-cloud Python package is deprecated. On " \
-          "June 15, 2018, this package will no longer install any other " \
+          "June 18, 2018, this package will no longer install any other " \
           "packages. Please install the product-specific google-cloud-* " \
           "packages needed for your application. See " \
           "https://github.com/GoogleCloudPlatform/google-cloud-python."
