@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.2.0
+
+### Implementation Changes
+- Add close method to grpc Channel (#5333)
+
+### Internal / Testing Changes
+- Fix tests after grpcio update (#5333)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+
 ## 1.1.2
 
 ### Packaging
