@@ -1346,6 +1346,18 @@ class Blob(_PropertyMixin):
         self.acl.all().grant_read()
         self.acl.save(client=client)
 
+    def make_private(self, client=None):
+        """Make this blob private by removing `allusers` read access.
+        Does not revoke access for anything other than the `allusers` group.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
     def compose(self, sources, client=None):
         """Concatenate source blobs into this one.
 

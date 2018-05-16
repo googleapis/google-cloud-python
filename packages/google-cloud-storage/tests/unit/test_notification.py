@@ -36,7 +36,7 @@ class TestBucketNotification(unittest.TestCase):
     ETAG = 'DEADBEEF'
     CREATE_PATH = '/b/{}/notificationConfigs'.format(BUCKET_NAME)
     NOTIFICATION_PATH = '/b/{}/notificationConfigs/{}'.format(
-            BUCKET_NAME, NOTIFICATION_ID)
+        BUCKET_NAME, NOTIFICATION_ID)
 
     @staticmethod
     def event_types():
