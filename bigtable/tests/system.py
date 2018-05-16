@@ -86,12 +86,13 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        if len(failed_locations) != 0:
+        instances_response = retry(Config.CLIENT.list_instances)()
+
+        if len(instances_response.failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances
+        EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
@@ -116,11 +117,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        instances, failed_locations = Config.CLIENT.list_instances()
-        self.assertEqual(failed_locations, [])
+        instances_response = Config.CLIENT.list_instances()
+        self.assertEqual(instances_response.failed_locations, [])
         # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
-        for instance in instances:
+        self.assertEqual(len(instances_response.instances),
+                         len(EXISTING_INSTANCES) + 1)
+        for instance in instances_response.instances:
             instance_existence = (instance in EXISTING_INSTANCES or
                                   instance == Config.INSTANCE)
             self.assertTrue(instance_existence)
