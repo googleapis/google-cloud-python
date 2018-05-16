@@ -96,6 +96,8 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
+    lro_payload: MessageType = None
+    lro_metadata: MessageType = None
     meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
@@ -170,4 +172,19 @@ class Service:
                 '.'.join(method.output.meta.address.package),
                 method.output.pb2_module,
             ))
+            if method.lro_payload:
+                answer.add((
+                    '.'.join(method.lro_payload.meta.address.package),
+                    method.lro_payload.pb2_module,
+                ))
+            if method.lro_metadata:
+                answer.add((
+                    '.'.join(method.lro_metadata.meta.address.package),
+                    method.lro_metadata.pb2_module,
+                ))
         return sorted(answer)
+
+    @property
+    def has_lro(self) -> bool:
+        """Return whether the service has a long-running method."""
+        return any(method.lro_payload for method in self.methods.values())

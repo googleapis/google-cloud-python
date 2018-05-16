@@ -4,6 +4,9 @@
 from typing import Sequence, Tuple
 
 from google.api_core import grpc_helpers
+{%- if service.has_lro %}
+from google.api_core import operations_v1
+{%- endif %}
 from google.auth import credentials
 
 import grpc
@@ -57,6 +60,24 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         # Return the channel from cache.
         return self.__dict__['grpc_channel']
+    {%- if service.has_lro %}
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if 'operations_client' not in self.__dict__:
+            self.__dict__['operations_client'] = operations_v1.OperationsClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self.__dict__['operations_client']
+    {%- endif %}
 
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,

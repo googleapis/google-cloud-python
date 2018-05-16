@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/api/experimental/lro.proto',
   package='google.api.experimental',
   syntax='proto3',
-  serialized_pb=_b('\n!google/api/experimental/lro.proto\x12\x17google.api.experimental\x1a google/protobuf/descriptor.proto\"<\n\x0eOperationTypes\x12\x13\n\x0breturn_type\x18\x01 \x01(\t\x12\x15\n\rmetadata_type\x18\x02 \x01(\t:X\n\x05types\x12\x1e.google.protobuf.MethodOptions\x18\x80\x90\x03 \x01(\x0b\x32\'.google.api.experimental.OperationTypesb\x06proto3')
+  serialized_pb=_b('\n!google/api/experimental/lro.proto\x12\x17google.api.experimental\x1a google/protobuf/descriptor.proto\"A\n\x0bMethodTypes\x12\x17\n\x0flro_return_type\x18\x01 \x01(\t\x12\x19\n\x11lro_metadata_type\x18\x02 \x01(\t:U\n\x05types\x12\x1e.google.protobuf.MethodOptions\x18\x80\x90\x03 \x01(\x0b\x32$.google.api.experimental.MethodTypesb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_descriptor__pb2.DESCRIPTOR,])
 
@@ -35,22 +35,22 @@ types = _descriptor.FieldDescriptor(
   options=None, file=DESCRIPTOR)
 
 
-_OPERATIONTYPES = _descriptor.Descriptor(
-  name='OperationTypes',
-  full_name='google.api.experimental.OperationTypes',
+_METHODTYPES = _descriptor.Descriptor(
+  name='MethodTypes',
+  full_name='google.api.experimental.MethodTypes',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_type', full_name='google.api.experimental.OperationTypes.return_type', index=0,
+      name='lro_return_type', full_name='google.api.experimental.MethodTypes.lro_return_type', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='metadata_type', full_name='google.api.experimental.OperationTypes.metadata_type', index=1,
+      name='lro_metadata_type', full_name='google.api.experimental.MethodTypes.lro_metadata_type', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -69,21 +69,21 @@ _OPERATIONTYPES = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=96,
-  serialized_end=156,
+  serialized_end=161,
 )
 
-DESCRIPTOR.message_types_by_name['OperationTypes'] = _OPERATIONTYPES
+DESCRIPTOR.message_types_by_name['MethodTypes'] = _METHODTYPES
 DESCRIPTOR.extensions_by_name['types'] = types
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-OperationTypes = _reflection.GeneratedProtocolMessageType('OperationTypes', (_message.Message,), dict(
-  DESCRIPTOR = _OPERATIONTYPES,
+MethodTypes = _reflection.GeneratedProtocolMessageType('MethodTypes', (_message.Message,), dict(
+  DESCRIPTOR = _METHODTYPES,
   __module__ = 'google.api.experimental.lro_pb2'
-  # @@protoc_insertion_point(class_scope:google.api.experimental.OperationTypes)
+  # @@protoc_insertion_point(class_scope:google.api.experimental.MethodTypes)
   ))
-_sym_db.RegisterMessage(OperationTypes)
+_sym_db.RegisterMessage(MethodTypes)
 
-types.message_type = _OPERATIONTYPES
+types.message_type = _METHODTYPES
 google_dot_protobuf_dot_descriptor__pb2.MethodOptions.RegisterExtension(types)
 
 # @@protoc_insertion_point(module_scope)

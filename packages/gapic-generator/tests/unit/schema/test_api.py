@@ -22,6 +22,7 @@ from api_factory.schema import metadata
 from api_factory.schema import wrappers
 from api_factory.schema.api import API
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import lro_pb2
 
 
 def test_long_name():
@@ -74,6 +75,11 @@ def test_warehouse_package_name_with_namespace():
         namespace=('Google', 'Cloud'),
     ))
     assert api.warehouse_package_name == 'google-cloud-bigquery'
+
+
+def test_warehouse_package_name_multiple_words():
+    api = make_api(client=make_client(name='Big Query', namespace=[]))
+    assert api.warehouse_package_name == 'big-query'
 
 
 def test_load():
@@ -265,6 +271,47 @@ def test_get_methods():
     # Done.
     with pytest.raises(StopIteration):
         next(items)
+
+
+def test_get_methods_lro():
+    # Start with an empty API object.
+    api = make_api()
+
+    # Load the message types for a method into the API object, including LRO
+    # payload and metadata.
+    address = metadata.Address(package=['foo', 'bar'], module='baz')
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='In'),
+                         address=address, info={})
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Out'),
+                         address=address, info={})
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Progress'),
+                         address=address, info={})
+    operations_address = metadata.Address(
+        package=['google', 'longrunning'],
+        module='operations',
+    )
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Operation'),
+                         address=operations_address, info={})
+    method_pb = descriptor_pb2.MethodDescriptorProto(
+        name='DoBigThings',
+        input_type='foo.bar.In',
+        output_type='google.longrunning.Operation',
+    )
+    method_pb.options.Extensions[lro_pb2.types].MergeFrom(lro_pb2.MethodTypes(
+        lro_return_type='foo.bar.Out',
+        lro_metadata_type='foo.bar.Progress',
+    ))
+
+    # Run the method under test.
+    methods = api._get_methods([method_pb], address=address, info={})
+
+    # Test that the method has the expected lro output, payload, and metadata.
+    method = next(iter(methods.values()))
+    assert method.output.name == 'Operation'
+    assert isinstance(method.lro_payload, wrappers.MessageType)
+    assert method.lro_payload.name == 'Out'
+    assert isinstance(method.lro_metadata, wrappers.MessageType)
+    assert method.lro_metadata.name == 'Progress'
 
 
 def test_load_descriptor():

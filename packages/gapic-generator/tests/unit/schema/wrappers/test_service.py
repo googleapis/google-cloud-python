@@ -59,6 +59,26 @@ def test_service_pb2_modules():
     ]
 
 
+def test_service_pb2_modules_lro():
+    service = make_lro_service()
+    assert service.pb2_modules == [
+        ('foo', 'bar_pb2'),
+        ('foo', 'baz_pb2'),
+        ('foo', 'qux_pb2'),
+        ('google.longrunning', 'operations_pb2'),
+    ]
+
+
+def test_service_no_lro():
+    service = make_service()
+    assert service.has_lro is False
+
+
+def test_service_has_lro():
+    service = make_lro_service()
+    assert service.has_lro
+
+
 def test_module_name():
     service = make_service(name='MyService')
     assert service.module_name == 'my_service'
@@ -88,15 +108,47 @@ def make_service(name: str = 'Placeholder', host: str = '',
     )
 
 
-def get_method(name: str, in_type: str, out_type: str) -> wrappers.Method:
+def make_lro_service() -> wrappers.Service:
+    # Declare a long-running method.
+    method = get_method(
+        'DoBigThing',
+        'foo.bar.ThingRequest',
+        'google.longrunning.operations.Operation',
+        lro_payload_type='foo.baz.ThingResponse',
+        lro_metadata_type='foo.qux.ThingMetadata',
+    )
+
+    # Define a service descriptor.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(name='ThingDoer')
+
+    # Return a service object to test.
+    return wrappers.Service(
+        service_pb=service_pb,
+        methods={method.name: method},
+    )
+
+
+def get_method(name: str,
+               in_type: str,
+               out_type: str,
+               lro_payload_type: str = '',
+               lro_metadata_type: str = '') -> wrappers.Method:
     input_ = get_message(in_type)
     output = get_message(out_type)
+    lro_payload = get_message(lro_payload_type) if lro_payload_type else None
+    lro_metadata = get_message(lro_metadata_type) if lro_metadata_type else None
     method_pb = descriptor_pb2.MethodDescriptorProto(
         name=name,
         input_type=input_.proto_path,
         output_type=output.proto_path,
     )
-    return wrappers.Method(method_pb=method_pb, input=input_, output=output)
+    return wrappers.Method(
+        method_pb=method_pb,
+        input=input_,
+        lro_metadata=lro_metadata,
+        lro_payload=lro_payload,
+        output=output,
+    )
 
 
 def get_message(dot_path: str) -> wrappers.MessageType:

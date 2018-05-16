@@ -28,6 +28,7 @@ from api_factory import utils
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import lro_pb2
 
 
 @dataclasses.dataclass
@@ -90,7 +91,7 @@ class API:
 
         # Piece the name and namespace together to come up with the
         # proper package name.
-        answer = list(self.client.namespace) + [self.client.name]
+        answer = list(self.client.namespace) + self.client.name.split(' ')
         return '-'.join(answer).lower()
 
     def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
@@ -228,8 +229,11 @@ class API:
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
         for method_pb, i in zip(methods, range(0, sys.maxsize)):
+            types = method_pb.options.Extensions[lro_pb2.types]
             answer[method_pb.name] = wrappers.Method(
                 input=self.messages[method_pb.input_type.lstrip('.')],
+                lro_metadata=self.messages.get(types.lro_metadata_type, None),
+                lro_payload=self.messages.get(types.lro_return_type, None),
                 method_pb=method_pb,
                 meta=metadata.Metadata(
                     address=address,

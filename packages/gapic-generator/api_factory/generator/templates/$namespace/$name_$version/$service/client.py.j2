@@ -6,6 +6,9 @@ import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
+{%- if service.has_lro %}
+from google.api_core import operation
+{%- endif %}
 from google.api_core import retry
 from google.auth import credentials
 
@@ -59,7 +62,11 @@ class {{ service.name }}:
             retry: retry.Retry = None,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
+            {%- if method.lro_payload %}
+            ) -> operation.Operation:
+            {%- else %}
             ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
+            {%- endif %}
         """{{ method.meta.doc|wrap(width=72, subsequent_indent=' ' * 8) }}
 
         Args:
@@ -73,9 +80,14 @@ class {{ service.name }}:
                 sent alont with the request as metadata.
 
         Returns:
+            {%- if method.lro_payload %}
+            ~.operation.Operation:
+                A :class:`google.api_core.operation.Operation` instance.
+            {%- else %}
             ~.{{ method.output.pb2_module }}.{{ method.output.name }}:
                 {{ method.output.meta.doc|wrap(width=72, initial_width=56,
                                                subsequent_indent=' ' * 16) }}
+            {%- endif %}
         """
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -86,8 +98,21 @@ class {{ service.name }}:
             client_info=self.client_info,
         )
 
-        # Send the request and return the response.
-        return rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        {%- if method.lro_payload %}
+
+        # Wrap the response in an operation future
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            {{ method.lro_payload.pb2_module }}.{{ method.lro_payload.name }},
+            metadata_type={{ method.lro_metadata.pb2_module }}.{{ method.lro_metadata.name }}
+        )
+        {%- endif %}
+
+        # Done; return the response.
+        return response
     {%- endfor %}
 
     @property

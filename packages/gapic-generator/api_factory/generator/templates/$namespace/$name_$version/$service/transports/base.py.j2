@@ -5,6 +5,9 @@ import abc
 import typing
 
 from google import auth
+{%- if service.has_lro %}
+from google.api_core import operations_v1
+{%- endif %}
 from google.auth import credentials
 
 {% for package, pb2_module in service.pb2_modules -%}
@@ -42,6 +45,13 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
 
         # Save the credentials.
         self._credentials = credentials
+    {%- if service.has_lro %}
+
+    @abc.abstractproperty
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError
+    {%- endif %}
 
     {% for method in service.methods.values() -%}
     @abc.abstractmethod

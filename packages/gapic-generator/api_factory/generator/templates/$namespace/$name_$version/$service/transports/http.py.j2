@@ -2,7 +2,9 @@
 
 {% block content %}
 from typing import Sequence, Tuple
-
+{% if service.has_lro %}
+from google.api_core import operations_v1
+{%- endif %}
 from google.auth import credentials
 from google.auth.transport.requests import AuthorizedSession
 
@@ -37,6 +39,29 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         """
         super().__init__(credentials=credentials)
         self._session = AuthorizedSession(self._credentials)
+    {%- if service.has_lro %}
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if 'operations_client' not in self.__dict__:
+            from google.api_core import grpc_helpers
+            self.__dict__['operations_client'] = operations_v1.OperationsClient(
+                grpc_helpers.create_channel(
+                    '{0}:443'.format(self.SERVICE_ADDRESS),
+                    credentials=self._credentials,
+                    scopes=self.AUTH_SCOPES,
+                )
+            )
+
+        # Return the client from cache.
+        return self.__dict__['operations_client']
+    {%- endif %}
 
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
