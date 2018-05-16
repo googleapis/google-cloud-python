@@ -960,6 +960,7 @@ class TestBigQuery(unittest.TestCase):
         stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
         zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
+        numeric = decimal.Decimal('123456789.123456789')
         return [
             {
                 'sql': 'SELECT 1',
@@ -1007,8 +1008,8 @@ class TestBigQuery(unittest.TestCase):
                 'expected': naive.time(),
             },
             {
-                'sql': 'SELECT NUMERIC "123456789.123456789"',
-                'expected': decimal.Decimal('123456789.123456789'),
+                'sql': 'SELECT NUMERIC "%s"' % (numeric,),
+                'expected': numeric,
             },
             {
                 'sql': 'SELECT (1, 2)',
