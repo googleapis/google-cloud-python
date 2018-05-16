@@ -709,7 +709,7 @@ class Bucket(_PropertyMixin):
             path=api_path,
             query_params=query_params,
             _target_object=new_blob,
-            )
+        )
 
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
@@ -1326,6 +1326,54 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
+                blob.acl.save(client=client)
+
+    def make_private(self, recursive=False, future=False, client=None):
+        """Undo the `make_public` method and make the bucket private.
+
+        If ``recursive=True`` and the bucket contains more than 256
+        objects / blobs this will cowardly refuse to make the objects private.
+        This is to prevent extremely long runtime of this method.
+
+        :type recursive: bool
+        :param recursive: If True, this will make all blobs inside the bucket
+                          private as well.
+
+        :type future: bool
+        :param future: If True, this will make all objects created in the
+                       future private as well.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
+        if future:
+            doa = self.default_object_acl
+            if not doa.loaded:
+                doa.reload(client=client)
+            doa.all().revoke_read()
+            doa.save(client=client)
+
+        if recursive:
+            blobs = list(self.list_blobs(
+                projection='full',
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                client=client))
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+                message = (
+                    'Refusing to make private recursively with more than '
+                    '%d objects. If you actually want to make every object '
+                    'in this bucket private, please do it on the objects '
+                    'yourself.'
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                raise ValueError(message)
+
+            for blob in blobs:
+                blob.acl.all().revoke_read()
                 blob.acl.save(client=client)
 
     def generate_upload_policy(

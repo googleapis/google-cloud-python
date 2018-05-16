@@ -2062,6 +2062,24 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_make_private(self):
+        BLOB_NAME = 'blob-name'
+        no_permissions = []
+        after = ({'status': http_client.OK}, {'acl': no_permissions})
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob.acl.loaded = True
+        blob.make_private()
+        self.assertEqual(list(blob.acl), no_permissions)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
     def test_compose_wo_content_type_set(self):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
@@ -2103,7 +2121,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {'userProject': USER_PROJECT},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
@@ -2143,7 +2161,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
