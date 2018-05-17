@@ -19,7 +19,7 @@ Client
 ======
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     client.Client
 
@@ -30,7 +30,7 @@ Job Configuration
 -----------------
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     job.QueryJobConfig
     job.CopyJobConfig
@@ -41,7 +41,7 @@ Job Classes
 -----------
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     job.QueryJob
     job.CopyJob
@@ -53,7 +53,7 @@ Job Resources
 -------------
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     job.Compression
     job.CreateDisposition
@@ -68,7 +68,7 @@ Dataset
 =======
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     dataset.Dataset
     dataset.DatasetReference
@@ -79,7 +79,7 @@ Table
 =====
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     table.Table
     table.TableReference
@@ -93,7 +93,7 @@ Schema
 ======
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     schema.SchemaField
 
@@ -102,7 +102,7 @@ Query
 =====
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     query.ArrayQueryParameter
     query.ScalarQueryParameter
@@ -114,7 +114,7 @@ External Configuration
 ======================
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     external_config.ExternalConfig
     external_config.BigtableOptions
@@ -128,6 +128,6 @@ Magics
 ======================
 
 .. autosummary::
-    :toctree: reference
+    :toctree: generated
 
     magics
