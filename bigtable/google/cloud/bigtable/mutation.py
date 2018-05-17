@@ -1,11 +1,13 @@
 from grpc import StatusCode
 
+from google.cloud._helpers import _to_bytes
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable_v2.proto.bigtable_pb2 import MutateRowsRequest
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as table_v2_pb2)
 
 
 class _BigtableRetryableError(Exception):
@@ -21,15 +23,17 @@ DEFAULT_RETRY = Retry(
 )
 
 
-class MutateRowsEntry(object):
+class RowMutations(object):
     """Create Entry using list of mutations
 
-    Arguments:
-        row_key (bytes): Key of the Row in bytes.
-    """
+        Arguments:
+            row_key (str): Key of the Row in string.
+        """
 
-    def __init__(self, row_key):
-        self.row_key = row_key
+    def __init__(self, row_key, table, app_profile_id=None):
+        self.row_key = _to_bytes(row_key)
+        self.table = table
+        self.app_profile_id = app_profile_id
         self.mutations = []
 
     def set_cell(self, family_name, column_id, value, timestamp=None):
@@ -40,10 +44,10 @@ class MutateRowsEntry(object):
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
-            column_id (bytes):
+            column_id (str):
                 The qualifier of the column into which new data should be
                 written. Can be any byte string, including the empty string.
-            value (bytes):
+            value (str):
                 The value to be written into the specified cell.
             timestamp (int):
                 (optional) The timestamp of the cell into which new data should
@@ -55,14 +59,14 @@ class MutateRowsEntry(object):
         """
         set_cell_mutation = data_v2_pb2.Mutation.SetCell(
             family_name=family_name,
-            column_qualifier=column_id,
+            column_qualifier=_to_bytes(column_id),
             timestamp_micros=timestamp,
-            value=value
+            value=_to_bytes(value)
         )
         mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
         self.mutations.append(mutation_message)
 
-    def delete_from_column(self, family_name, column_id, time_range=None):
+    def delete_cells(self, family_name, columns, time_range=None):
         """Create the mutation request message for DeleteFromColumn and
             add it to the list of mutations
 
@@ -70,21 +74,23 @@ class MutateRowsEntry(object):
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
-            column_id (bytes):
-                The qualifier of the column into which new data should be
-                written. Can be any byte string, including the empty string.
+            columns (list):
+                The columns within the column family that will have cells
+                deleted.
             time_range (TimestampRange):
                 (optional) The range of timestamps within which cells should be
                 deleted.
         """
-        delete_from_column_mutation = data_v2_pb2.Mutation.DeleteFromColumn(
-            family_name=family_name,
-            column_qualifier=column_id,
-            time_range=time_range
-        )
-        mutation_message = data_v2_pb2.Mutation(
-            delete_from_column=delete_from_column_mutation)
-        self.mutations.append(mutation_message)
+        for column_id in columns:
+            delete_from_column_mutation = (
+                data_v2_pb2.Mutation.DeleteFromColumn(
+                    family_name=family_name,
+                    column_qualifier=_to_bytes(column_id),
+                    time_range=time_range))
+
+            mutation_message = data_v2_pb2.Mutation(
+                delete_from_column=delete_from_column_mutation)
+            self.mutations.append(mutation_message)
 
     def delete_from_family(self, family_name):
         """Create the mutation request message for DeleteFromFamily and add
@@ -102,7 +108,7 @@ class MutateRowsEntry(object):
             delete_from_family=delete_from_family_mutation)
         self.mutations.append(mutation_message)
 
-    def delete_from_row(self):
+    def delete(self):
         """Create the mutation request message for DeleteFromRow and add it
         to the list of mutations"""
         delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
@@ -117,10 +123,24 @@ class MutateRowsEntry(object):
             `Entry <google.bigtable.v2.MutateRowsRequest.Entry>`
              An ``Entry`` for a MutateRowsRequest message.
         """
-        entry = MutateRowsRequest.Entry(row_key=self.row_key)
+        entry = table_v2_pb2.MutateRowsRequest.Entry(row_key=self.row_key)
         for mutation in self.mutations:
             entry.mutations.add().CopyFrom(mutation)
         return entry
+
+    def mutate(self):
+        """Call the GAPIC API for MutateRows
+
+        Returns:
+            A :class:`~google.cloud.bigtable_v2.types.MutateRowResponse`
+            instance.
+        """
+        return self.table._instance._client._table_data_client.mutate_row(
+            self.table.name,
+            self.row_key,
+            self.mutations,
+            self.app_profile_id
+        )
 
 
 class MutateRows(object):
@@ -132,23 +152,27 @@ class MutateRows(object):
         client (class):
             `Client <google.cloud.bigtable_v2.BigtableClient>`
             The client class for the GAPIC API.
+        rows_mutations (list):
+            List or other iterable of :class:`.DirectRow` instances.
     """
 
-    def __init__(self, table_name, client):
+    def __init__(self, table_name, client, rows_mutations):
         self.table_name = table_name
         self.client = client
+        self.rows_mutations = rows_mutations
         self.entries = []
 
-    def add_row_mutations_entry(self, mutate_rows_entry):
+    def add_row_mutations_entry(self):
         """Add an ``Entry`` to the list for the mutate request
 
         Arguments:
             mutate_rows_entry (class): Class of ``MutateRowsEntry``
         """
-        entry = mutate_rows_entry.create_entry()
-        self.entries.append(entry)
+        for row_mutations in self.rows_mutations:
+            entry = row_mutations.create_entry()
+            self.entries.append(entry)
 
-    def mutate(self, retry=DEFAULT_RETRY):
+    def mutate_all(self, retry=DEFAULT_RETRY):
         """Call the GAPIC API for MutateRows
 
         Returns:

@@ -21,31 +21,15 @@ import struct
 import grpc
 import six
 
-from grpc import StatusCode
-
 from google.api_core import exceptions
 from google.api_core import retry
-from google.api_core.exceptions import RetryError
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable_v2.proto import (
-    bigtable_pb2 as table_v2_pb2)
+from google.cloud.bigtable import mutation
 
-
-class _BigtableRetryableError(Exception):
-    """Retry-able error expected by the default retry strategy."""
-
-
-DEFAULT_RETRY = retry.Retry(
-    predicate=retry.if_exception_type(_BigtableRetryableError),
-    initial=1.0,
-    maximum=15.0,
-    multiplier=2.0,
-    deadline=120.0,  # 2 minutes
-)
 
 _PACK_I64 = struct.Struct('>q').pack
 
@@ -262,237 +246,6 @@ def _retry_commit_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-class RowMutations(object):
-    """Create Entry using list of mutations
-
-        Arguments:
-            row_key (bytes): Key of the Row in bytes.
-        """
-
-    def __init__(self, row_key, table):
-        self.row_key = row_key.encode('utf-8')
-        self.table = table
-        self.mutations = []
-        self.entries = []
-
-    def set_cell(self, family_name, column_id, value, timestamp=None):
-        """Create the mutation request message for SetCell and add it to the
-            list of mutations
-
-        Arguments:
-            family_name (str):
-                The name of the family into which new data should be written.
-                Must match ``[-_.a-zA-Z0-9]+``.
-            column_id (bytes):
-                The qualifier of the column into which new data should be
-                written. Can be any byte string, including the empty string.
-            value (bytes):
-                The value to be written into the specified cell.
-            timestamp (int):
-                (optional) The timestamp of the cell into which new data should
-                be written. Use -1 for current Bigtable server time. Otherwise,
-                the client should set this value itself, noting that the
-                default value is a timestamp of zero if the field is left
-                unspecified. Values must match the granularity of the table
-                (e.g. micros, millis).
-        """
-        set_cell_mutation = data_v2_pb2.Mutation.SetCell(
-            family_name=family_name,
-            column_qualifier=column_id.encode('utf-8'),
-            timestamp_micros=timestamp,
-            value=value.encode('utf-8')
-        )
-        mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
-        self.mutations.append(mutation_message)
-
-    def delete_cell(self, family_name, column_id, time_range=None):
-        """Create the mutation request message for DeleteFromColumn and
-            add it to the list of mutations
-
-        Arguments:
-            family_name (str):
-                The name of the family into which new data should be written.
-                Must match ``[-_.a-zA-Z0-9]+``.
-            column_id (bytes):
-                The qualifier of the column into which new data should be
-                written. Can be any byte string, including the empty string.
-            time_range (TimestampRange):
-                (optional) The range of timestamps within which cells should be
-                deleted.
-        """
-        delete_from_column_mutation = data_v2_pb2.Mutation.DeleteFromColumn(
-            family_name=family_name,
-            column_qualifier=column_id,
-            time_range=time_range
-        )
-        mutation_message = data_v2_pb2.Mutation(
-            delete_from_column=delete_from_column_mutation)
-        self.mutations.append(mutation_message)
-
-    def delete_from_family(self, family_name):
-        """Create the mutation request message for DeleteFromFamily and add
-        it to the list of mutations
-
-        Arguments:
-            family_name (str):
-                The name of the family into which new data should be written.
-                Must match ``[-_.a-zA-Z0-9]+``.
-        """
-        delete_from_family_mutation = data_v2_pb2.Mutation.DeleteFromFamily(
-            family_name=family_name
-        )
-        mutation_message = data_v2_pb2.Mutation(
-            delete_from_family=delete_from_family_mutation)
-        self.mutations.append(mutation_message)
-
-    def delete(self):
-        """Create the mutation request message for DeleteFromRow and add it
-        to the list of mutations"""
-        delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
-        mutation_message = data_v2_pb2.Mutation(
-            delete_from_row=delete_from_row_mutation)
-        self.mutations.append(mutation_message)
-
-    def create_entry(self):
-        """Create a MutateRowsRequest Entry from the list of mutations
-
-        Returns:
-            `Entry <google.bigtable.v2.MutateRowsRequest.Entry>`
-             An ``Entry`` for a MutateRowsRequest message.
-        """
-        entry = table_v2_pb2.MutateRowsRequest.Entry(row_key=self.row_key)
-        for mutation in self.mutations:
-            entry.mutations.add().CopyFrom(mutation)
-        return entry
-
-    def add_row_mutations_entry(self):
-        """Add an ``Entry`` to the list for the mutate request
-        """
-        entry = self.create_entry()
-        self.entries.append(entry)
-
-    def mutate(self, retry=DEFAULT_RETRY):
-        """Call the GAPIC API for MutateRows
-
-        Returns:
-            List[~google.rpc.status_pb2.Status].
-            A list of response statuses (`google.rpc.status_pb2.Status`)
-            corresponding to success or failure of each Entry sent.
-        """
-        self.add_row_mutations_entry()
-        retryable_mutate_rows = _RetryableMutateRows(
-            self.table.name, self.table._instance._client._table_data_client,
-            self.entries)
-        return retryable_mutate_rows(retry=retry)
-
-
-class _RetryableMutateRows(object):
-    """A callable worker that can retry to mutate rows with transient errors.
-
-    This class is a callable that can retry mutating rows that result in
-    transient errors. After all rows are successful or none of the rows
-    are retryable, any subsequent call on this callable will be a no-op.
-    """
-
-    RETRY_CODES = (
-        StatusCode.DEADLINE_EXCEEDED.value[0],
-        StatusCode.ABORTED.value[0],
-        StatusCode.UNAVAILABLE.value[0],
-    )
-
-    def __init__(self, table_name, client, entries):
-        self.table_name = table_name
-        self.client = client
-        self.responses_statuses = [None] * len(entries)
-        self.retryable_entries = entries
-
-    def __call__(self, retry=DEFAULT_RETRY):
-        """Attempt to mutate all rows and retry rows with transient errors.
-
-        Will retry the rows with transient errors until all rows succeed or
-        ``deadline`` specified in the `retry` is reached.
-
-        Arguments:
-        retry (class):
-            `Retry <google.api_core.retry.Retry>`
-            (optional) This is a DEFAULT_RETRY class with default settings.
-            It is optional by passing False to this parameter retry logic will
-            bypass.
-
-        Returns:
-            List[~google.rpc.status_pb2.Status].
-            A list of response statuses (`google.rpc.status_pb2.Status`)
-            corresponding to success or failure of each row mutation
-            sent. These will be in the same order as the ``rows``.
-        """
-        mutate_rows = self._do_mutate_retryable_mutate_rows
-        if retry:
-            mutate_rows = retry(self._do_mutate_retryable_mutate_rows)
-
-        try:
-            mutate_rows()
-        except (_BigtableRetryableError, RetryError) as err:
-            # - _BigtableRetryableError raised when no retry strategy is used
-            #   and a retryable error on a mutation occurred.
-            # - RetryError raised when retry deadline is reached.
-            # In both cases, just return current `responses_statuses`.
-            pass
-
-        return self.responses_statuses
-
-    @staticmethod
-    def _is_retryable(status):
-        return (status is None or
-                status.code in _RetryableMutateRows.RETRY_CODES)
-
-    def _do_mutate_retryable_mutate_rows(self):
-        """Mutate all the rows that are eligible for retry.
-
-        A row is eligible for retry if it has not been tried or if it resulted
-        in a transient error in a previous call.
-        Returns:
-            `List [~google.rpc.status_pb2.Status]`
-             The responses statuses, which is a list of
-             Class `~google.rpc.status_pb2.Status`.
-        Raises:
-             One of the following:
-
-                 * (exc) `~.table._BigtableRetryableError` if any
-                   row returned a transient error.
-                 * (exc) `RuntimeError` if the number of responses doesn't
-                   match the number of rows that were retried
-        """
-        retryable_entries = []
-        index_into_all_entries = []
-        for index, status in enumerate(self.responses_statuses):
-            if self._is_retryable(status):
-                retryable_entries.append(self.retryable_entries[index])
-                index_into_all_entries.append(index)
-
-        responses = self.client.mutate_rows(
-            table_name=self.table_name, entries=retryable_entries)
-
-        num_responses = 0
-        num_retryable_responses = 0
-        for response in responses:
-            for entry in response.entries:
-                num_responses += 1
-                index = index_into_all_entries[entry.index]
-                self.responses_statuses[index] = entry.status
-                if self._is_retryable(entry.status):
-                    num_retryable_responses += 1
-
-        if len(retryable_entries) != num_responses:
-            raise RuntimeError(
-                'Unexpected number of responses', num_responses,
-                'Expected', len(retryable_entries))
-
-        if num_retryable_responses:
-            raise _BigtableRetryableError
-
-        return self.responses_statuses
-
-
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -516,7 +269,7 @@ class DirectRow(_SetDeleteRow):
         :meth:`delete_cells` methods. To actually send these mutations to the
         Google Cloud Bigtable API, you must call :meth:`commit`.
 
-    :type row_key: bytes
+    :type row_key: str
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
@@ -525,22 +278,11 @@ class DirectRow(_SetDeleteRow):
 
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
-        self._pb_mutations = []
+        self._row_mutations = mutation.RowMutations(row_key, table)
 
-    def _get_mutations(self, state):  # pylint: disable=unused-argument
-        """Gets the list of mutations for a given state.
-
-        ``state`` is unused by :class:`DirectRow` but is used by
-        subclasses.
-
-        :type state: bool
-        :param state: The state that the mutation should be
-                      applied in.
-
-        :rtype: list
-        :returns: The list to add new mutations to (for the current state).
-        """
-        return self._pb_mutations
+    @property
+    def row_mutations(self):
+        return self._row_mutations
 
     def set_cell(self, column_family_id, column, value, timestamp=None):
         """Sets a value in this row.
@@ -561,11 +303,11 @@ class DirectRow(_SetDeleteRow):
                                  Must be of the form
                                  ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type column: bytes
+        :type column: str
         :param column: The column within the column family where the cell
                        is located.
 
-        :type value: bytes or :class:`int`
+        :type value: str or :class:`int`
         :param value: The value to set in the cell. If an integer is used,
                       will be interpreted as a 64-bit big-endian signed
                       integer (8 bytes).
@@ -573,8 +315,16 @@ class DirectRow(_SetDeleteRow):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (Optional) The timestamp of the operation.
         """
-        self._set_cell(column_family_id, column, value, timestamp=timestamp,
-                       state=None)
+        if timestamp is None:
+            # Use -1 for current Bigtable server time.
+            timestamp_micros = -1
+        else:
+            timestamp_micros = _microseconds_from_datetime(timestamp)
+            # Truncate to millisecond granularity.
+            timestamp_micros -= (timestamp_micros % 1000)
+
+        self._row_mutations.set_cell(column_family_id, column, value,
+                                     timestamp=timestamp_micros)
 
     def delete(self):
         """Deletes this row from the table.
@@ -586,7 +336,7 @@ class DirectRow(_SetDeleteRow):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
         """
-        self._delete(state=None)
+        self._row_mutations.delete()
 
     def delete_cell(self, column_family_id, column, time_range=None):
         """Deletes cell in this row.
@@ -603,7 +353,7 @@ class DirectRow(_SetDeleteRow):
                                  or columns with cells being deleted. Must be
                                  of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type column: bytes
+        :type column: str
         :param column: The column within the column family that will have a
                        cell deleted.
 
@@ -611,8 +361,8 @@ class DirectRow(_SetDeleteRow):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        self._delete_cells(column_family_id, [column], time_range=time_range,
-                           state=None)
+        self._row_mutations.delete_cells(column_family_id, [column],
+                                        time_range=time_range)
 
     def delete_cells(self, column_family_id, columns, time_range=None):
         """Deletes cells in this row.
@@ -639,8 +389,8 @@ class DirectRow(_SetDeleteRow):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        self._delete_cells(column_family_id, columns, time_range=time_range,
-                           state=None)
+        self._row_mutations.delete_cells(column_family_id, columns,
+                                         time_range=time_range)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.
@@ -657,27 +407,8 @@ class DirectRow(_SetDeleteRow):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        mutations_list = self._get_mutations(None)
-        num_mutations = len(mutations_list)
-        if num_mutations == 0:
-            return
-        if num_mutations > MAX_MUTATIONS:
-            raise ValueError('%d total mutations exceed the maximum allowable '
-                             '%d.' % (num_mutations, MAX_MUTATIONS))
-
-        commit = functools.partial(
-            self._table._instance._client._table_data_client.mutate_row,
-            self._table.name, self._row_key, mutations_list)
-        retry_ = retry.Retry(
-            predicate=_retry_commit_exception,
-            deadline=30)
-        retry_(commit)()
-
-        self.clear()
-
-    def clear(self):
-        """Removes all currently accumulated mutations on the current row."""
-        del self._pb_mutations[:]
+        self._table.add_row_mutations(self.row_mutations)
+        self._table.commit()
 
 
 class ConditionalRow(_SetDeleteRow):
