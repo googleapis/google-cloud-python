@@ -54,18 +54,18 @@ def test_will_accept():
     assert batch.will_accept(message) is True
 
 
-def test_will_not_accept_status():
-    batch = create_batch(status='talk to the hand')
-    message = types.PubsubMessage()
-    assert batch.will_accept(message) is False
-
-
-def test_will_not_accept_size():
+def test_will_accept_oversize():
     batch = create_batch(
         settings=types.BatchSettings(max_bytes=10),
         status=BatchStatus.ACCEPTING_MESSAGES,
     )
     message = types.PubsubMessage(data=b'abcdefghijklmnopqrstuvwxyz')
+    assert batch.will_accept(message) is True
+
+
+def test_will_not_accept_status():
+    batch = create_batch(status='talk to the hand')
+    message = types.PubsubMessage()
     assert batch.will_accept(message) is False
 
 
