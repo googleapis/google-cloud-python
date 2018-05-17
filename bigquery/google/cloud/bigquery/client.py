@@ -603,7 +603,7 @@ class Client(ClientWithProject):
         Returns:
             Union[google.cloud.bigquery.job.LoadJob, \
                   google.cloud.bigquery.job.CopyJob, \
-                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.ExtractJob, \
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
@@ -642,7 +642,7 @@ class Client(ClientWithProject):
         Returns:
             Union[google.cloud.bigquery.job.LoadJob, \
                   google.cloud.bigquery.job.CopyJob, \
-                  google.cloud.bigquery.job.ExtractJob \
+                  google.cloud.bigquery.job.ExtractJob, \
                   google.cloud.bigquery.job.QueryJob]:
                 Job instance, based on the resource returned by the API.
         """
