@@ -14,6 +14,7 @@
 
 import base64
 import datetime
+import decimal
 import unittest
 
 
@@ -78,6 +79,30 @@ class Test_float_from_json(unittest.TestCase):
     def test_w_float_value(self):
         coerced = self._call_fut(3.1415, object())
         self.assertEqual(coerced, 3.1415)
+
+
+class Test_decimal_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _decimal_from_json
+
+        return _decimal_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        coerced = self._call_fut('3.1415', object())
+        self.assertEqual(coerced, decimal.Decimal('3.1415'))
+
+    def test_w_float_value(self):
+        coerced = self._call_fut(3.1415, object())
+        # There is no exact float representation of 3.1415.
+        self.assertEqual(coerced, decimal.Decimal(3.1415))
 
 
 class Test_bool_from_json(unittest.TestCase):
@@ -583,6 +608,23 @@ class Test_float_to_json(unittest.TestCase):
 
     def test_w_float(self):
         self.assertEqual(self._call_fut(1.23), 1.23)
+
+
+class Test_decimal_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _decimal_to_json
+
+        return _decimal_to_json(value)
+
+    def test_w_float(self):
+        self.assertEqual(self._call_fut(1.23), 1.23)
+
+    def test_w_string(self):
+        self.assertEqual(self._call_fut('1.23'), '1.23')
+
+    def test_w_decimal(self):
+        self.assertEqual(self._call_fut(decimal.Decimal('1.23')), '1.23')
 
 
 class Test_bool_to_json(unittest.TestCase):
