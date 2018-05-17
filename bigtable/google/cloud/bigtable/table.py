@@ -28,7 +28,6 @@ from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
-from google.cloud.bigtable.mutation import MutateRows
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
 
