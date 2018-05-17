@@ -50,7 +50,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path = ['_templates']
 
 # Allow markdown includes (so releases.md can include CHANGLEOG.md)
 # http://www.sphinx-doc.org/en/master/markdown.html
@@ -305,6 +305,10 @@ texinfo_documents = [
 # This pulls class descriptions from the class docstring,
 # and parameter definitions from the __init__ docstring.
 autoclass_content = 'both'
+
+# Automatically generate API reference stubs from autosummary.
+# http://www.sphinx-doc.org/en/master/ext/autosummary.html#generating-stub-pages-automatically
+autosummary_generate = True
 
 # Configuration for intersphinx:
 intersphinx_mapping = {
