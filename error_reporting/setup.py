@@ -29,7 +29,7 @@ version = '0.29.1'
 # 'Development Status :: 5 - Production/Stable'
 release_status = 'Development Status :: 3 - Alpha'
 dependencies = [
-    'google-cloud-logging<1.5dev,>=1.4.0',
+    'google-cloud-logging>=1.4.0',
 ]
 extras = {
 }
