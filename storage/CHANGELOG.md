@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.10.0
+
+### New Features
+- Add support for KMS keys (#5259)
+- Add '{Blob,Bucket}make_private' method (#5336)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
 ## 1.9.0
 
 ### Implementation Changes
