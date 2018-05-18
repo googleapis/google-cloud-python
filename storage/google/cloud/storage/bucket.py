@@ -171,7 +171,8 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    def blob(self, blob_name, chunk_size=None, encryption_key=None):
+    def blob(self, blob_name, chunk_size=None,
+             encryption_key=None, kms_key_name=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -190,11 +191,15 @@ class Bucket(_PropertyMixin):
         :param encryption_key:
             Optional 32 byte encryption key for customer-supplied encryption.
 
+        :type kms_key_name: str
+        :param kms_key_name:
+            Optional resource name of KMS key used to encrypt blob's content.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
-                    encryption_key=encryption_key)
+                    encryption_key=encryption_key, kms_key_name=kms_key_name)
 
     def notification(self, topic_name,
                      topic_project=None,
@@ -704,7 +709,7 @@ class Bucket(_PropertyMixin):
             path=api_path,
             query_params=query_params,
             _target_object=new_blob,
-            )
+        )
 
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
@@ -785,6 +790,32 @@ class Bucket(_PropertyMixin):
         :param entries: A sequence of mappings describing each CORS policy.
         """
         self._patch_property('cors', entries)
+
+    @property
+    def default_kms_key_name(self):
+        """Retrieve / set default KMS encryption key for objects in the bucket.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set default KMS encryption key for items in this bucket.
+        :getter: Get default KMS encryption key for items in this bucket.
+
+        :rtype: str
+        :returns: Default KMS encryption key, or ``None`` if not set.
+        """
+        encryption_config = self._properties.get('encryption', {})
+        return encryption_config.get('defaultKmsKeyName')
+
+    @default_kms_key_name.setter
+    def default_kms_key_name(self, value):
+        """Set default KMS encryption key for objects in the bucket.
+
+        :type value: str or None
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        encryption_config = self._properties.get('encryption', {})
+        encryption_config['defaultKmsKeyName'] = value
+        self._patch_property('encryption', encryption_config)
 
     @property
     def labels(self):
@@ -1295,6 +1326,54 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
+                blob.acl.save(client=client)
+
+    def make_private(self, recursive=False, future=False, client=None):
+        """Undo the `make_public` method and make the bucket private.
+
+        If ``recursive=True`` and the bucket contains more than 256
+        objects / blobs this will cowardly refuse to make the objects private.
+        This is to prevent extremely long runtime of this method.
+
+        :type recursive: bool
+        :param recursive: If True, this will make all blobs inside the bucket
+                          private as well.
+
+        :type future: bool
+        :param future: If True, this will make all objects created in the
+                       future private as well.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
+        if future:
+            doa = self.default_object_acl
+            if not doa.loaded:
+                doa.reload(client=client)
+            doa.all().revoke_read()
+            doa.save(client=client)
+
+        if recursive:
+            blobs = list(self.list_blobs(
+                projection='full',
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                client=client))
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+                message = (
+                    'Refusing to make private recursively with more than '
+                    '%d objects. If you actually want to make every object '
+                    'in this bucket private, please do it on the objects '
+                    'yourself.'
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                raise ValueError(message)
+
+            for blob in blobs:
+                blob.acl.all().revoke_read()
                 blob.acl.save(client=client)
 
     def generate_upload_policy(

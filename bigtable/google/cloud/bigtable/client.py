@@ -29,13 +29,21 @@ In the hierarchy of API concepts
 """
 
 
-from google.cloud.bigtable.instance import Instance
-from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+from google.api_core.gapic_v1 import client_info
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
 
+from google.cloud.bigtable import __version__
+from google.cloud.bigtable.instance import Instance
+from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 
+from google.cloud.client import ClientWithProject
+
+
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
+SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
 DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
@@ -44,7 +52,7 @@ READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 
-class Client(object):
+class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
     .. note::
@@ -81,6 +89,9 @@ class Client(object):
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
+    _table_data_client = None
+    _table_admin_client = None
+    _instance_admin_client = None
 
     def __init__(self, project=None, credentials=None,
                  read_only=False, admin=False, channel=None):
@@ -90,13 +101,11 @@ class Client(object):
 
         # NOTE: We set the scopes **before** calling the parent constructor.
         #       It **may** use those scopes in ``with_scopes_if_required``.
-        self.project = project
         self._read_only = bool(read_only)
         self._admin = bool(admin)
         self._channel = channel
-        self._credentials = credentials
         self.SCOPE = self._get_scopes()
-        super(Client, self).__init__()
+        super(Client, self).__init__(project=project, credentials=credentials)
 
     def _get_scopes(self):
         """Get the scopes corresponding to admin / read-only state.
@@ -130,21 +139,27 @@ class Client(object):
         :rtype: str
         :returns: Return a fully-qualified project string.
         """
-        instance_client = self._instance_admin_client
+        instance_client = self.instance_admin_client
         return instance_client.project_path(self.project)
 
     @property
-    def _table_data_client(self):
+    def table_data_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
-        return bigtable_v2.BigtableClient(channel=self._channel,
-                                          credentials=self._credentials)
+        if self._table_data_client is None:
+            if not self._admin:
+                raise ValueError('Client is not an admin client.')
+            self._table_data_client = (
+                bigtable_v2.BigtableClient(credentials=self._credentials,
+                                           client_info=_CLIENT_INFO))
+
+        return self._table_data_client
 
     @property
-    def _table_admin_client(self):
+    def table_admin_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableTableAdmin`
@@ -153,13 +168,17 @@ class Client(object):
                  client is not an admin client or if it has not been
                  :meth:`start`-ed.
         """
-        if not self._admin:
-            raise ValueError('Client is not an admin client.')
-        return bigtable_admin_v2.BigtableTableAdminClient(
-            channel=self._channel, credentials=self._credentials)
+        if self._table_admin_client is None:
+            if not self._admin:
+                raise ValueError('Client is not an admin client.')
+            self._table_admin_client = (
+                bigtable_admin_v2.BigtableTableAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO))
+
+        return self._table_admin_client
 
     @property
-    def _instance_admin_client(self):
+    def instance_admin_client(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableInstanceAdmin`
@@ -168,10 +187,14 @@ class Client(object):
                  client is not an admin client or if it has not been
                  :meth:`start`-ed.
         """
-        if not self._admin:
-            raise ValueError('Client is not an admin client.')
-        return bigtable_admin_v2.BigtableInstanceAdminClient(
-            channel=self._channel, credentials=self._credentials)
+        if self._instance_admin_client is None:
+            if not self._admin:
+                raise ValueError('Client is not an admin client.')
+            self._instance_admin_client = (
+                bigtable_admin_v2.BigtableInstanceAdminClient(
+                    credentials=self._credentials, client_info=_CLIENT_INFO))
+
+        return self._instance_admin_client
 
     def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None):
@@ -202,4 +225,4 @@ class Client(object):
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: A list of Instance.
         """
-        return self._instance_admin_client.list_instances(self.project_path)
+        return self.instance_admin_client.list_instances(self.project_path)
