@@ -49,8 +49,8 @@ Job Classes
     job.ExtractJob
     job.UnknownJob
 
-Job Resources
--------------
+Job-Related Types
+-----------------
 
 .. autosummary::
     :toctree: generated
@@ -84,6 +84,7 @@ Table
     table.Table
     table.TableReference
     table.Row
+    table.RowIterator
     table.EncryptionConfiguration
     table.TimePartitioning
     table.TimePartitioningType

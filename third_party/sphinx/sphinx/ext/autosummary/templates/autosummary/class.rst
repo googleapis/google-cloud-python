@@ -10,6 +10,8 @@
    {% if methods %}
    .. rubric:: Methods
 
+   {# Customized from original by adding toctree. This generates docs for the
+   listed functions. #}
    .. autosummary::
       :toctree: .
    {% for item in methods %}
