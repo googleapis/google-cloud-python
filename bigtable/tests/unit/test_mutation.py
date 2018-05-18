@@ -17,6 +17,8 @@ import unittest
 
 import mock
 
+from ._testing import _make_credentials
+
 
 class TestMutateRows(unittest.TestCase):
     from grpc import StatusCode
@@ -24,25 +26,15 @@ class TestMutateRows(unittest.TestCase):
     PROJECT_ID = 'project-id'
     INSTANCE_ID = 'instance-id'
     TABLE_ID = 'table-id'
-    ROW_KEY = b'row-key'
-    ROW_KEY_1 = b'row-key-1'
-    ROW_KEY_2 = b'row-key-2'
-    FAMILY_NAME = u'family'
-    QUALIFIER = b'qualifier'
+    ROW_KEY = 'row-key'
+    ROW_KEY_1 = 'row-key-1'
+    ROW_KEY_2 = 'row-key-2'
+    FAMILY_NAME = 'family'
+    QUALIFIER = 'qualifier'
     TIMESTAMP_MICROS = 100
-    VALUE = b'value'
+    VALUE = 'value'
     RETRYABLE = StatusCode.DEADLINE_EXCEEDED.value[0]
     SUCCESS = StatusCode.OK.value[0]
-
-    @mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-    def _make_channel(self, secure_authorized_channel):
-        from google.api_core import grpc_helpers
-        target = 'example.com:443'
-
-        channel = grpc_helpers.create_channel(
-            target, credentials=mock.sentinel.credentials)
-
-        return channel
 
     def _make_responses(self, codes):
         import six
@@ -57,234 +49,161 @@ class TestMutateRows(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigtable.mutation import MutateRows
+        from google.cloud.bigtable.mutation import RowMutations
 
-        return MutateRows
+        return RowMutations
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    def test_retry_mutation(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
+    @staticmethod
+    def _get_client_class():
+        from google.cloud.bigtable.client import Client
 
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
+        return Client
 
-        # In response_1, there is a failure for the second Entry
-        # In response_2, succeed on the retry for this second Entry
-        response_1 = self._make_responses([self.SUCCESS, self.RETRYABLE])
-        response_2 = self._make_responses([self.SUCCESS])
+    def _make_client(self, *args, **kwargs):
+        return self._get_client_class()(*args, **kwargs)
 
-        client.bigtable_stub.MutateRows.side_effect = [[response_1],
-                                                       [response_2]]
+    def test_set_cell(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
-        mutate_rows = self._make_one(table_name=table_name, client=client)
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
 
-        row_keys = [self.ROW_KEY_1, self.ROW_KEY_2]
+        credentials = _make_credentials()
+        client = self._make_client(self.PROJECT_ID, credentials=credentials,
+                                   admin=True)
+        instance = client.instance(self.INSTANCE_ID)
+        table = instance.table(self.TABLE_ID)
 
-        for row_key in row_keys:
-            mutate_rows_entry = MutateRowsEntry(row_key=row_key)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
 
-            mutate_rows_entry.set_cell(
-                self.FAMILY_NAME,
-                self.QUALIFIER,
-                self.VALUE,
-                self.TIMESTAMP_MICROS
-            )
+        mutate_rows = self._make_one(row_key=self.ROW_KEY, table=table)
 
-            mutate_rows.add_row_mutations_entry(mutate_rows_entry)
-
-        statuses = mutate_rows.mutate()
-
-        # Result has two successful responses after a retry on the second
-        # Entry (see response_1, which has self.RETRYABLE for this Entry).
-        result = [status.code for status in statuses]
-        expected_result = [self.SUCCESS, self.SUCCESS]
-
-        self.assertEqual(result, expected_result)
-
-    def test_set_cell_mutation(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
-
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
-
-        response = self._make_responses([self.SUCCESS])
-
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
-
-        mutate_rows = self._make_one(table_name=table_name, client=client)
-
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY)
-
-        mutate_rows_entry.set_cell(
+        mutate_rows.set_cell(
             self.FAMILY_NAME,
             self.QUALIFIER,
             self.VALUE,
             self.TIMESTAMP_MICROS
         )
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate(retry=False)
+        response = _MutateRowResponsePB()
 
-        result = [status.code for status in statuses]
-        expected_result = [self.SUCCESS]
+        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
+            response]])
 
-        self.assertEqual(result, expected_result)
+        expected_result = mutate_rows.mutate()
 
-    def test_delete_from_column_mutation(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
+        self.assertEqual(response, expected_result[0])
 
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
+    def test_delete_cells(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
-        response = self._make_responses([self.SUCCESS])
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
 
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
+        credentials = _make_credentials()
+        client = self._make_client(self.PROJECT_ID, credentials=credentials,
+                                   admin=True)
+        instance = client.instance(self.INSTANCE_ID)
+        table = instance.table(self.TABLE_ID)
 
-        mutate_rows = self._make_one(table_name=table_name, client=client)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY)
+        mutate_rows = self._make_one(row_key=self.ROW_KEY, table=table)
 
-        mutate_rows_entry.delete_from_column(
+        columns = ['column1', 'column2']
+
+        mutate_rows.delete_cells(
             self.FAMILY_NAME,
-            self.QUALIFIER
+            columns
         )
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate()
+        response = _MutateRowResponsePB()
 
-        result = [status.code for status in statuses]
-        expected_result = [self.SUCCESS]
+        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
+            response]])
 
-        self.assertEqual(result, expected_result)
+        expected_result = mutate_rows.mutate()
 
-    def test_delete_from_family_mutation(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
+        self.assertEqual(response, expected_result[0])
 
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
+    def test_delete_from_family(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
-        response = self._make_responses([self.SUCCESS])
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
 
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
+        credentials = _make_credentials()
+        client = self._make_client(self.PROJECT_ID, credentials=credentials,
+                                   admin=True)
+        instance = client.instance(self.INSTANCE_ID)
+        table = instance.table(self.TABLE_ID)
 
-        mutate_rows = self._make_one(table_name=table_name, client=client)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY)
+        mutate_rows = self._make_one(row_key=self.ROW_KEY, table=table)
 
-        mutate_rows_entry.delete_from_family(
+        mutate_rows.delete_from_family(
             self.FAMILY_NAME
         )
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
 
-        statuses = mutate_rows.mutate(retry=False)
+        response = _MutateRowResponsePB()
 
-        result = [status.code for status in statuses]
-        expected_result = [self.SUCCESS]
+        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
+            response]])
 
-        self.assertEqual(result, expected_result)
+        expected_result = mutate_rows.mutate()
 
-    def test_delete_from_row_mutation(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
+        self.assertEqual(response, expected_result[0])
 
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
+    def test_delete(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
-        response = self._make_responses([self.SUCCESS])
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
 
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
+        credentials = _make_credentials()
+        client = self._make_client(self.PROJECT_ID, credentials=credentials,
+                                   admin=True)
+        instance = client.instance(self.INSTANCE_ID)
+        table = instance.table(self.TABLE_ID)
 
-        mutate_rows = self._make_one(table_name=table_name, client=client)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
 
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY)
+        mutate_rows = self._make_one(row_key=self.ROW_KEY, table=table)
 
-        mutate_rows_entry.delete_from_row()
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
+        mutate_rows.delete()
 
-        statuses = mutate_rows.mutate(retry=False)
+        response = _MutateRowResponsePB()
 
-        result = [status.code for status in statuses]
-        expected_result = [self.SUCCESS]
+        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
+            response]])
 
-        self.assertEqual(result, expected_result)
+        expected_result = mutate_rows.mutate()
 
-    def test_mutation_runtime_error(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
+        self.assertEqual(response, expected_result[0])
 
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
 
-        response = self._make_responses([self.SUCCESS])
+def _MutateRowResponsePB(*args, **kw):
+    from google.cloud.bigtable_v2.proto import (
+        bigtable_pb2 as messages_v2_pb2)
 
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
-
-        mutate_rows = self._make_one(table_name=table_name, client=client)
-
-        row_keys = [self.ROW_KEY_1, self.ROW_KEY_2]
-
-        for row_key in row_keys:
-            mutate_rows_entry = MutateRowsEntry(row_key=row_key)
-
-            mutate_rows_entry.set_cell(
-                self.FAMILY_NAME,
-                self.QUALIFIER,
-                self.VALUE,
-                self.TIMESTAMP_MICROS
-            )
-
-            mutate_rows.add_row_mutations_entry(mutate_rows_entry)
-
-        with self.assertRaises(RuntimeError):
-            mutate_rows.mutate()
-
-    def test_mutation_retry_error_with_no_retry_strategy(self):
-        from google.cloud.bigtable.mutation import MutateRowsEntry
-        from google.cloud.bigtable_v2 import BigtableClient
-
-        channel = self._make_channel()
-        client = BigtableClient(channel=channel)
-        table_name = client.table_path(self.PROJECT_ID, self.INSTANCE_ID,
-                                       self.TABLE_ID)
-
-        response = self._make_responses([self.RETRYABLE])
-
-        client.bigtable_stub.MutateRows.side_effect = [[response]]
-
-        mutate_rows = self._make_one(table_name=table_name, client=client)
-
-        mutate_rows_entry = MutateRowsEntry(row_key=self.ROW_KEY)
-
-        mutate_rows_entry.set_cell(
-            self.FAMILY_NAME,
-            self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
-        )
-
-        mutate_rows.add_row_mutations_entry(mutate_rows_entry)
-
-        statuses = mutate_rows.mutate(retry=False)
-
-        result = [status.code for status in statuses]
-        expected_result = [self.RETRYABLE]
-
-        self.assertEqual(result, expected_result)
+    return messages_v2_pb2.MutateRowResponse(*args, **kw)

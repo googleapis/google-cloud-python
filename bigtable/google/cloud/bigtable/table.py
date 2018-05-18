@@ -349,9 +349,9 @@ class Table(object):
         self.commit()
 
     def commit(self):
-        retryable_mutate_rows = _RetryableMutateRowsWorker(
+        retryable_mutate_rows_status = _RetryableMutateRowsWorker(
             self._instance._client, self.name, self._mutation_rows)
-        return retryable_mutate_rows()
+        return retryable_mutate_rows_status()
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -443,6 +443,13 @@ class _RetryableMutateRowsWorker(object):
         return (status is None or
                 status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
+    def _mutate_rows_entries(self, mutation_rows):
+        entries = []
+        for mutation_row in mutation_rows:
+            entries.append(mutation_row.create_entry())
+
+        return entries
+
     def _do_mutate_retryable_rows(self):
         """Mutate all the rows that are eligible for retry.
 
@@ -470,7 +477,7 @@ class _RetryableMutateRowsWorker(object):
             # All mutations are either successful or non-retryable now.
             return self.responses_statuses
 
-        mutate_rows_entries = _mutate_rows_entries(retryable_rows)
+        mutate_rows_entries = self._mutate_rows_entries(retryable_rows)
         responses = self.client._table_data_client.mutate_rows(
             table_name=self.table_name,
             entries=mutate_rows_entries
@@ -496,6 +503,7 @@ class _RetryableMutateRowsWorker(object):
         if num_retryable_responses:
             raise _BigtableRetryableError
 
+        self.mutation_rows = []
         return self.responses_statuses
 
 
@@ -565,14 +573,6 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         message.rows.row_ranges.add(**range_kwargs)
 
     return message
-
-
-def _mutate_rows_entries(mutation_rows):
-    entries = []
-    for mutation_row in mutation_rows:
-        entries.append(mutation_row.create_entry())
-
-    return entries
 
 
 def _mutate_rows_request(table_name, rows):

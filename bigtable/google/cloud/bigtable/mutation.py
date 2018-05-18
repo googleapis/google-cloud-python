@@ -1,26 +1,8 @@
-from grpc import StatusCode
-
 from google.cloud._helpers import _to_bytes
-from google.api_core.exceptions import RetryError
-from google.api_core.retry import if_exception_type
-from google.api_core.retry import Retry
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as table_v2_pb2)
-
-
-class _BigtableRetryableError(Exception):
-    """Retry-able error expected by the default retry strategy."""
-
-
-DEFAULT_RETRY = Retry(
-    predicate=if_exception_type(_BigtableRetryableError),
-    initial=1.0,
-    maximum=15.0,
-    multiplier=2.0,
-    deadline=120.0,  # 2 minutes
-)
 
 
 class RowMutations(object):

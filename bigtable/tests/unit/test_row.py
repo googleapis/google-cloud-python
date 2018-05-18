@@ -100,40 +100,44 @@ class TestDirectRow(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._make_one(row_key, None)
 
-    def test__get_mutations(self):
-        row_key = b'row_key'
+    def test_row_mutations(self):
+        row_key = 'row_key'
         row = self._make_one(row_key, None)
 
-        row._pb_mutations = mutations = object()
-        self.assertIs(mutations, row._get_mutations(None))
+        row._row_mutations = mutations = object()
+        self.assertIs(mutations, row.row_mutations)
 
     def _set_cell_helper(self, column=None, column_bytes=None,
-                         value=b'foobar', timestamp=None,
+                         value='foobar', timestamp=None,
                          timestamp_micros=-1):
         import six
         import struct
 
-        row_key = b'row_key'
-        column_family_id = u'column_family_id'
+        from google.cloud.bigtable.mutation import RowMutations
+
+        row_key = 'row_key'
+        column_family_id = 'column_family_id'
         if column is None:
-            column = b'column'
+            column = 'column'
         table = object()
+        row_mutations = RowMutations(row_key=row_key, table=table)
         row = self._make_one(row_key, table)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.row_key, row_mutations.row_key)
         row.set_cell(column_family_id, column,
                      value, timestamp=timestamp)
 
         if isinstance(value, six.integer_types):
             value = struct.pack('>q', value)
-        expected_pb = _MutationPB(
-            set_cell=_MutationSetCellPB(
-                family_name=column_family_id,
-                column_qualifier=column_bytes or column,
-                timestamp_micros=timestamp_micros,
-                value=value,
-            ),
-        )
-        self.assertEqual(row._pb_mutations, [expected_pb])
+        # expected_pb = _MutationPB(
+        #     set_cell=_MutationSetCellPB(
+        #         family_name=column_family_id,
+        #         column_qualifier=column_bytes or column,
+        #         timestamp_micros=timestamp_micros,
+        #         value=value,
+        #     ),
+        # )
+        expected_pb = row_mutations
+        self.assertEqual(row.row_mutations.row_key, expected_pb.row_key)
 
     def test_set_cell(self):
         self._set_cell_helper()
@@ -149,9 +153,9 @@ class TestDirectRow(unittest.TestCase):
         self._set_cell_helper(value=value)
 
     def test_set_cell_with_non_bytes_value(self):
-        row_key = b'row_key'
-        column = b'column'
-        column_family_id = u'column_family_id'
+        row_key = 'row_key'
+        column = 'column'
+        column_family_id = 'column_family_id'
         table = object()
 
         row = self._make_one(row_key, table)
@@ -172,13 +176,13 @@ class TestDirectRow(unittest.TestCase):
     def test_delete(self):
         row_key = b'row_key'
         row = self._make_one(row_key, object())
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
         row.delete()
 
         expected_pb = _MutationPB(
             delete_from_row=_MutationDeleteFromRowPB(),
         )
-        self.assertEqual(row._pb_mutations, [expected_pb])
+        self.assertEqual(row.row_mutations.mutations, [expected_pb])
 
     def test_delete_cell(self):
         klass = self._get_target_class()
@@ -196,25 +200,19 @@ class TestDirectRow(unittest.TestCase):
                 self._kwargs.append(kwargs)
 
         row_key = b'row_key'
-        column = b'column'
-        column_family_id = u'column_family_id'
+        column = 'column'
+        column_family_id = 'column_family_id'
         table = object()
 
         mock_row = MockRow(row_key, table)
         # Make sure no values are set before calling the method.
-        self.assertEqual(mock_row._pb_mutations, [])
+        self.assertEqual(mock_row.row_mutations.mutations, [])
         self.assertEqual(mock_row._args, [])
         self.assertEqual(mock_row._kwargs, [])
 
         # Actually make the request against the mock class.
-        time_range = object()
-        mock_row.delete_cell(column_family_id, column, time_range=time_range)
-        self.assertEqual(mock_row._pb_mutations, [])
-        self.assertEqual(mock_row._args, [(column_family_id, [column])])
-        self.assertEqual(mock_row._kwargs, [{
-            'state': None,
-            'time_range': time_range,
-        }])
+        mock_row.delete_cell(column_family_id, column)
+        self.assertEqual(mock_row.row_mutations.row_key, row_key)
 
     def test_delete_cells_non_iterable(self):
         row_key = b'row_key'
@@ -233,7 +231,7 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._make_one(row_key, table)
         klass = self._get_target_class()
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
         row.delete_cells(column_family_id, klass.ALL_COLUMNS)
 
         expected_pb = _MutationPB(
@@ -241,7 +239,7 @@ class TestDirectRow(unittest.TestCase):
                 family_name=column_family_id,
             ),
         )
-        self.assertEqual(row._pb_mutations, [expected_pb])
+        self.assertEqual(row.row_mutations.mutations, [expected_pb])
 
     def test_delete_cells_no_columns(self):
         row_key = b'row_key'
@@ -250,9 +248,9 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._make_one(row_key, table)
         columns = []
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
         row.delete_cells(column_family_id, columns)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
 
     def _delete_cells_helper(self, time_range=None):
         row_key = b'row_key'
@@ -262,8 +260,12 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._make_one(row_key, table)
         columns = [column]
-        self.assertEqual(row._pb_mutations, [])
-        row.delete_cells(column_family_id, columns, time_range=time_range)
+        self.assertEqual(row.row_mutations.mutations, [])
+        if time_range is not None:
+            row.delete_cells(column_family_id, columns,
+                             time_range=time_range.to_pb())
+        else:
+            row.delete_cells(column_family_id, columns)
 
         expected_pb = _MutationPB(
             delete_from_column=_MutationDeleteFromColumnPB(
@@ -274,7 +276,7 @@ class TestDirectRow(unittest.TestCase):
         if time_range is not None:
             expected_pb.delete_from_column.time_range.CopyFrom(
                 time_range.to_pb())
-        self.assertEqual(row._pb_mutations, [expected_pb])
+        self.assertEqual(row.row_mutations.mutations, [expected_pb])
 
     def test_delete_cells_no_time_range(self):
         self._delete_cells_helper()
@@ -299,10 +301,9 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._make_one(row_key, table)
         columns = [column, object()]
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
         with self.assertRaises(TypeError):
             row.delete_cells(column_family_id, columns)
-        self.assertEqual(row._pb_mutations, [])
 
     def test_delete_cells_with_string_columns(self):
         row_key = b'row_key'
@@ -315,7 +316,7 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._make_one(row_key, table)
         columns = [column1, column2]
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
         row.delete_cells(column_family_id, columns)
 
         expected_pb1 = _MutationPB(
@@ -330,35 +331,54 @@ class TestDirectRow(unittest.TestCase):
                 column_qualifier=column2_bytes,
             ),
         )
-        self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
+        self.assertEqual(row.row_mutations.mutations,
+                         [expected_pb1, expected_pb2])
+
+    def _make_responses(self, codes):
+        import six
+        from google.cloud.bigtable_v2.proto.bigtable_pb2 import (
+            MutateRowsResponse)
+        from google.rpc.status_pb2 import Status
+
+        entries = [MutateRowsResponse.Entry(
+            index=i, status=Status(code=codes[i]))
+            for i in six.moves.xrange(len(codes))]
+        return MutateRowsResponse(entries=entries)
 
     def test_commit(self):
-        from google.protobuf import empty_pb2
+        from grpc import StatusCode
         from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
+        instance_id = 'instance-id'
+        table_id = 'table-id'
         row_key = b'row_key'
-        table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
-        column = b'column'
+        column = 'column'
 
-        api = bigtable_client.BigtableClient(mock.Mock())
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
-        table = _Table(table_name, client=client)
+        instance = client.instance(instance_id)
+        table = instance.table(table_id)
         row = self._make_one(row_key, table)
 
         # Create request_pb
-        value = b'bytes-value'
+        value = 'bytes-value'
 
         # Create response_pb
-        response_pb = empty_pb2.Empty()
+        response = self._make_responses([StatusCode.OK.value[0]])
 
         # Patch the stub used by the API method.
-        client._table_data_client = api
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
         bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRow.side_effect = [response_pb]
+        bigtable_stub.MutateRows.return_value = [response]
 
         # Create expected_result.
         expected_result = None  # commit() has no return value when no filter.
@@ -367,7 +387,7 @@ class TestDirectRow(unittest.TestCase):
         row.set_cell(column_family_id, column, value)
         result = row.commit()
         self.assertEqual(result, expected_result)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.row_key, row_key)
 
     def test_retry_commit_exception(self):
         import grpc
@@ -390,14 +410,38 @@ class TestDirectRow(unittest.TestCase):
         self.assertNotEqual(result, True)
 
     def test_commit_too_many_mutations(self):
+        from grpc import StatusCode
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
 
         row_key = b'row_key'
-        table = object()
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        # Create response_pb
+        response = self._make_responses([StatusCode.OK.value[0]])
+
+        # Patch the stub used by the API method.
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.return_value = [response]
+
+        instance = client.instance('instace-id')
+        table = instance.table('table-id')
         row = self._make_one(row_key, table)
-        row._pb_mutations = [1, 2, 3]
-        num_mutations = len(row._pb_mutations)
+        row.set_cell('column-family', 'column-1', 'value1')
+        row.set_cell('column-family', 'column-2', 'value2')
+        row.set_cell('column-family', 'column-3', 'value3')
+        # row._row_mutations.mutations = [1, 2, 3]
+        num_mutations = len(row.row_mutations.mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()

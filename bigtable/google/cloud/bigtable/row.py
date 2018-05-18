@@ -15,14 +15,12 @@
 """User-friendly container for Google Cloud Bigtable Row."""
 
 
-import functools
 import struct
 
 import grpc
 import six
 
 from google.api_core import exceptions
-from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -87,7 +85,7 @@ class _SetDeleteRow(Row):
     * :meth:`delete_cell`
     * :meth:`delete_cells`
 
-    :type row_key: bytes
+    :type row_key: str
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
@@ -389,8 +387,11 @@ class DirectRow(_SetDeleteRow):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        self._row_mutations.delete_cells(column_family_id, columns,
-                                         time_range=time_range)
+        if columns is self.ALL_COLUMNS:
+            self._row_mutations.delete_from_family(column_family_id)
+        else:
+            self._row_mutations.delete_cells(column_family_id, columns,
+                                             time_range=time_range)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.
