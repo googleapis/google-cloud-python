@@ -23,7 +23,7 @@ import io
 import sys
 
 install_requires = [
-    'google-api-core >= 0.1.0, < 0.2.0dev',
+    'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
     'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
 ]
