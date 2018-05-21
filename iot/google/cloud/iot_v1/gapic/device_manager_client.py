@@ -27,6 +27,7 @@ import google.api_core.path_template
 from google.cloud.iot_v1.gapic import device_manager_client_config
 from google.cloud.iot_v1.gapic import enums
 from google.cloud.iot_v1.proto import device_manager_pb2
+from google.cloud.iot_v1.proto import device_manager_pb2_grpc
 from google.cloud.iot_v1.proto import resources_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
@@ -128,7 +129,7 @@ class DeviceManagerClient(object):
 
         # Create the gRPC stubs.
         self.device_manager_stub = (
-            device_manager_pb2.DeviceManagerStub(channel))
+            device_manager_pb2_grpc.DeviceManagerStub(channel))
 
         if client_info is None:
             client_info = (
@@ -301,7 +302,7 @@ class DeviceManagerClient(object):
             device_registry=device_registry,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -352,7 +353,7 @@ class DeviceManagerClient(object):
         metadata = list(metadata)
         request = device_manager_pb2.GetDeviceRegistryRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -421,7 +422,7 @@ class DeviceManagerClient(object):
             update_mask=update_mask,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('device_registry.name', device_registry.name)], )
         metadata.append(routing_header)
 
@@ -469,7 +470,7 @@ class DeviceManagerClient(object):
         metadata = list(metadata)
         request = device_manager_pb2.DeleteDeviceRegistryRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -542,7 +543,7 @@ class DeviceManagerClient(object):
             page_size=page_size,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -617,7 +618,7 @@ class DeviceManagerClient(object):
             device=device,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -677,7 +678,7 @@ class DeviceManagerClient(object):
             field_mask=field_mask,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -746,7 +747,7 @@ class DeviceManagerClient(object):
             update_mask=update_mask,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('device.name', device.name)], )
         metadata.append(routing_header)
 
@@ -795,7 +796,7 @@ class DeviceManagerClient(object):
         metadata = list(metadata)
         request = device_manager_pb2.DeleteDeviceRequest(name=name, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -884,7 +885,7 @@ class DeviceManagerClient(object):
             page_size=page_size,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('parent', parent)], )
         metadata.append(routing_header)
 
@@ -965,7 +966,7 @@ class DeviceManagerClient(object):
             version_to_update=version_to_update,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1026,7 +1027,7 @@ class DeviceManagerClient(object):
             num_versions=num_versions,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1086,7 +1087,7 @@ class DeviceManagerClient(object):
             num_states=num_states,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('name', name)], )
         metadata.append(routing_header)
 
@@ -1152,7 +1153,7 @@ class DeviceManagerClient(object):
             policy=policy,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 
@@ -1206,7 +1207,7 @@ class DeviceManagerClient(object):
         metadata = list(metadata)
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 
@@ -1271,7 +1272,7 @@ class DeviceManagerClient(object):
             permissions=permissions,
         )
 
-        routing_header = google.api_core.gapic_v1.routing_header(
+        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
             [('resource', resource)], )
         metadata.append(routing_header)
 
