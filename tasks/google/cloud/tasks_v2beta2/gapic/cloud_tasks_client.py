@@ -38,7 +38,7 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-cloudtasks', ).version
+    'google-cloud-tasks', ).version
 
 
 class CloudTasksClient(object):
