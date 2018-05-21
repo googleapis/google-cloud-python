@@ -304,12 +304,12 @@ def test_publish_exceed_max_messages():
         assert commit.call_count == 0
 
         # When a fourth message is published, commit should be called.
+        # No future will be returned in this case.
         future = batch.publish(types.PubsubMessage(data=b'last one'))
         commit.assert_called_once_with()
 
-        futures.append(future)
+        assert future is None
         assert batch._futures == futures
-        assert len(futures) == max_messages
 
 
 def test_publish_dict():

@@ -280,25 +280,33 @@ class Batch(base.Batch):
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
 
+        future = None
+
         with self._state_lock:
             if not self.will_accept(message):
-                return None
+                return future
 
-            # Add the size to the running total of the size, so we know
-            # if future messages need to be rejected.
-            self._size += message.ByteSize()
-            # Store the actual message in the batch's message queue.
-            self._messages.append(message)
-            # Track the future on this batch (so that the result of the
-            # future can be set).
-            future = futures.Future(completed=threading.Event())
-            self._futures.append(future)
-            # Determine the number of messages before releasing the lock.
-            num_messages = len(self._messages)
+            new_size = self._size + message.ByteSize()
+            new_count = len(self._messages) + 1
+            overflow = (
+                new_size > self.settings.max_bytes or
+                new_count >= self._settings.max_messages
+            )
+
+            if not self._messages or not overflow:
+
+                # Store the actual message in the batch's message queue.
+                self._messages.append(message)
+                self._size = new_size
+
+                # Track the future on this batch (so that the result of the
+                # future can be set).
+                future = futures.Future(completed=threading.Event())
+                self._futures.append(future)
 
         # Try to commit, but it must be **without** the lock held, since
         # ``commit()`` will try to obtain the lock.
-        if num_messages >= self._settings.max_messages:
+        if overflow:
             self.commit()
 
         return future
