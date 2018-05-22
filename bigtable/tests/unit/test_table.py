@@ -284,13 +284,25 @@ class TestTable(unittest.TestCase):
         self._create_test_helper()
 
     def test_create_with_split_keys(self):
-        channel = self._make_channel()
-        client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client, bigtable_table_admin_client)
+
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
         split_keys = ['split1', 'split2', 'split3']
+
+        # Patch API calls
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
 
         # Create expected_result.
         expected_result = None  # create() has no return value.
@@ -378,8 +390,7 @@ class TestTable(unittest.TestCase):
         request_pb = object()  # Returned by our mock.
         mock_created = []
 
-        def mock_create_row_request(table_name, row_key, filter_,
-                                    app_profile_id=None):
+        def mock_create_row_request(table_name, row_key, filter_):
             mock_created.append((table_name, row_key, filter_))
             return request_pb
 
@@ -518,8 +529,7 @@ class TestTable(unittest.TestCase):
             'end_key': end_key,
             'filter_': filter_obj,
             'limit': limit,
-            'end_inclusive': False,
-            'app_profile_id': None
+            'end_inclusive': False
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
@@ -606,34 +616,6 @@ class TestTable(unittest.TestCase):
         # Perform the method and check the result.
         result = table.sample_row_keys()
         self.assertEqual(result[0], expected_result)
-
-    def test_truncate(self):
-        channel = self._make_channel()
-        client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        expected_result = None  # truncate() has no return value.
-
-        result = table.truncate()
-
-        self.assertEqual(result, expected_result)
-
-    def test_drop_by_prefix(self):
-        channel = self._make_channel()
-        client = self._make_client(project='project-id', channel=channel,
-                                   admin=True)
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        expected_result = None  # drop_by_prefix() has no return value.
-
-        row_key_prefix = 'row-key-prefix'
-
-        result = table.drop_by_prefix(row_key_prefix=row_key_prefix)
-
-        self.assertEqual(result, expected_result)
 
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
@@ -1192,14 +1174,12 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
-                  filter_=None, limit=None, end_inclusive=False,
-                  app_profile_id=None):
+                  filter_=None, limit=None, end_inclusive=False):
         from google.cloud.bigtable.table import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=app_profile_id)
+            filter_=filter_, limit=limit, end_inclusive=end_inclusive)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -1279,19 +1259,6 @@ class Test__create_row_request(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(
             table_name=table_name,
             rows_limit=limit,
-        )
-        self.assertEqual(result, expected_result)
-
-    def test_with_app_profile_id(self):
-        table_name = 'table_name'
-        limit = 1337
-        app_profile_id = 'app-profile-id'
-        result = self._call_fut(table_name, limit=limit,
-                                app_profile_id=app_profile_id)
-        expected_result = _ReadRowsRequestPB(
-            table_name=table_name,
-            rows_limit=limit,
-            app_profile_id=app_profile_id
         )
         self.assertEqual(result, expected_result)
 

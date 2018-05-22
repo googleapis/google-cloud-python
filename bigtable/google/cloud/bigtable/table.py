@@ -86,15 +86,11 @@ class Table(object):
 
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
-
-    :type: app_profile_id: str
-    :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
-    def __init__(self, table_id, instance, app_profile_id=None):
+    def __init__(self, table_id, instance):
         self.table_id = table_id
         self._instance = instance
-        self._app_profile_id = app_profile_id
 
     @property
     def name(self):
@@ -249,8 +245,7 @@ class Table(object):
                  chunk is never encountered.
         """
         request_pb = _create_row_request(
-            self.name, row_key=row_key, filter_=filter_,
-            app_profile_id=self._app_profile_id)
+            self.name, row_key=row_key, filter_=filter_)
         client = self._instance._client
         rows_data = PartialRowsData(client._table_data_client._read_rows,
                                     request_pb)
@@ -298,8 +293,7 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=self._app_profile_id)
+            limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
         return PartialRowsData(client._table_data_client._read_rows,
                                request_pb)
@@ -333,7 +327,7 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, app_profile_id=self._app_profile_id)
+            limit=limit)
         client = self._instance._client
         generator = YieldRowsData(client._table_data_client._read_rows,
                                   request_pb)
@@ -370,8 +364,7 @@ class Table(object):
                   sent. These will be in the same order as the `rows`.
         """
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows,
-            app_profile_id=self._app_profile_id)
+            self._instance._client, self.name, rows)
         return retryable_mutate_rows(retry=retry)
 
     def sample_row_keys(self):
@@ -407,49 +400,8 @@ class Table(object):
         """
         client = self._instance._client
         response_iterator = client._table_data_client.sample_row_keys(
-            self.name, app_profile_id=self._app_profile_id)
+            self.name)
         return response_iterator
-
-    def truncate(self, timeout=60):
-        """Truncate the table
-
-        :type timeout: float
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-                        for the request to complete.
-
-        :raise: google.api_core.exceptions.GoogleAPICallError: If the
-                request failed for any reason.
-                google.api_core.exceptions.RetryError: If the request failed
-                due to a retryable error and retry attempts failed.
-                ValueError: If the parameters are invalid.
-        """
-        client = self._instance._client
-        table_admin_client = client._table_admin_client
-        table_admin_client.drop_row_range(self.name,
-                                          delete_all_data_from_table=True,
-                                          timeout=timeout)
-
-    def drop_by_prefix(self, row_key_prefix, timeout=60):
-        """
-        :type row_prefix: bytes
-        :param row_prefix: Delete all rows that start with this row key
-                            prefix. Prefix cannot be zero length.
-
-        :type timeout: float
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-                        for the request to complete.
-
-        :raise: google.api_core.exceptions.GoogleAPICallError: If the
-                request failed for any reason.
-                google.api_core.exceptions.RetryError: If the request failed
-                due to a retryable error and retry attempts failed.
-                ValueError: If the parameters are invalid.
-        """
-        client = self._instance._client
-        table_admin_client = client._table_admin_client
-        table_admin_client.drop_row_range(
-            self.name, row_key_prefix=row_key_prefix.encode('utf-8'),
-            timeout=timeout)
 
 
 class _RetryableMutateRowsWorker(object):
@@ -468,11 +420,10 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, rows, app_profile_id=None):
+    def __init__(self, client, table_name, rows):
         self.client = client
         self.table_name = table_name
         self.rows = rows
-        self.app_profile_id = app_profile_id
         self.responses_statuses = [None] * len(self.rows)
 
     def __call__(self, retry=DEFAULT_RETRY):
@@ -534,8 +485,7 @@ class _RetryableMutateRowsWorker(object):
             return self.responses_statuses
 
         mutate_rows_request = _mutate_rows_request(
-            self.table_name, retryable_rows,
-            app_profile_id=self.app_profile_id)
+            self.table_name, retryable_rows)
         responses = self.client._table_data_client._mutate_rows(
             mutate_rows_request, retry=None)
 
@@ -563,8 +513,7 @@ class _RetryableMutateRowsWorker(object):
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None, end_inclusive=False,
-                        app_profile_id=None):
+                        filter_=None, limit=None, end_inclusive=False):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -596,9 +545,6 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :param end_inclusive: (Optional) Whether the ``end_key`` should be
                   considered inclusive. The default is False (exclusive).
 
-    :type: app_profile_id: str
-    :param app_profile_id: (Optional) The unique name of the AppProfile.
-
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -622,8 +568,6 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
         request_kwargs['rows_limit'] = limit
-    if app_profile_id is not None:
-        request_kwargs['app_profile_id'] = app_profile_id
 
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
@@ -636,7 +580,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     return message
 
 
-def _mutate_rows_request(table_name, rows, app_profile_id=None):
+def _mutate_rows_request(table_name, rows):
     """Creates a request to mutate rows in a table.
 
     :type table_name: str
@@ -645,16 +589,13 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
     :type rows: list
     :param rows: List or other iterable of :class:`.DirectRow` instances.
 
-    :type: app_profile_id: str
-    :param app_profile_id: (Optional) The unique name of the AppProfile.
-
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
     :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
              greater than 100,000
     """
     request_pb = data_messages_v2_pb2.MutateRowsRequest(
-        table_name=table_name, app_profile_id=app_profile_id)
+        table_name=table_name)
     mutations_count = 0
     for row in rows:
         _check_row_table_name(table_name, row)
