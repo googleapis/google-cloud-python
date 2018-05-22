@@ -589,6 +589,52 @@ class TestTable(unittest.TestCase):
         result = table.sample_row_keys()
         self.assertEqual(result[0], expected_result)
 
+    def test_truncate(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        expected_result = None  # truncate() has no return value.
+
+        result = table.truncate()
+
+        self.assertEqual(result, expected_result)
+
+    def test_drop_by_prefix(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        expected_result = None  # drop_by_prefix() has no return value.
+
+        row_key_prefix = 'row-key-prefix'
+
+        result = table.drop_by_prefix(row_key_prefix=row_key_prefix)
+
+        self.assertEqual(result, expected_result)
+
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
     from grpc import StatusCode
