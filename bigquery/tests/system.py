@@ -475,47 +475,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_local_file_then_dump_table(self):
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
-
-        TABLE_NAME = 'test_table'
-
-        dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
-        table_ref = dataset.table(TABLE_NAME)
-        table_arg = Table(table_ref, schema=SCHEMA)
-        table = retry_403(Config.CLIENT.create_table)(table_arg)
-        self.to_delete.insert(0, table)
-
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as csv_write:
-                writer = csv.writer(csv_write)
-                writer.writerow(HEADER_ROW)
-                writer.writerows(ROWS)
-
-            with open(temp.name, 'rb') as csv_read:
-                config = bigquery.LoadJobConfig()
-                config.source_format = SourceFormat.CSV
-                config.skip_leading_rows = 1
-                config.create_disposition = CreateDisposition.CREATE_NEVER
-                config.write_disposition = WriteDisposition.WRITE_EMPTY
-                config.schema = table.schema
-                job = Config.CLIENT.load_table_from_file(
-                    csv_read, table_ref, job_config=config)
-
-        # Retry until done.
-        job.result(timeout=JOB_TIMEOUT)
-
-        self.assertEqual(job.output_rows, len(ROWS))
-
-        rows = self._fetch_single_page(table)
-        row_tuples = [r.values() for r in rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
     def test_load_table_from_local_avro_file_then_dump_table(self):
         from google.cloud.bigquery.job import SourceFormat
         from google.cloud.bigquery.job import WriteDisposition
@@ -816,37 +775,6 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, destination)
         got = destination.download_as_string().decode('utf-8')
         self.assertIn('Bharney Rhubble', got)
-
-    def test_extract_table_w_job_config(self):
-        from google.cloud.storage import Client as StorageClient
-        from google.cloud.bigquery.job import DestinationFormat
-
-        storage_client = StorageClient()
-        local_id = unique_resource_id()
-        bucket_name = 'bq_extract_test' + local_id
-        blob_name = 'person_ages.csv'
-        dataset_id = _make_dataset_id('load_gcs_then_extract')
-        table_id = 'test_table'
-        table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
-        self.to_delete.insert(0, table)
-        self._load_table_for_extract_table(
-            storage_client, ROWS, bucket_name, blob_name, table_ref)
-        bucket = storage_client.bucket(bucket_name)
-        destination_blob_name = 'person_ages_out.csv'
-        destination = bucket.blob(destination_blob_name)
-        destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
-
-        config = bigquery.ExtractJobConfig()
-        config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
-        job = Config.CLIENT.extract_table(
-            table, destination_uri, job_config=config)
-        job.result()
-
-        self.to_delete.insert(0, destination)
-        got = destination.download_as_string().decode('utf-8')
-        self.assertIn('"Bharney Rhubble"', got)
-        self.assertEqual(job.destination_uri_file_counts, [1])
 
     def test_copy_table(self):
         # If we create a new table to copy from, the test won't work
@@ -1537,32 +1465,6 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(row[0], example['expected'], msg=msg)
             row = Config.CURSOR.fetchone()
             self.assertIsNone(row, msg=msg)
-
-    def test_dump_table_w_public_data(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-        table = Config.CLIENT.get_table(table_ref)
-        self._fetch_single_page(table)
-
-    def test_dump_table_w_public_data_selected_fields(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-        selected_fields = [
-            bigquery.SchemaField('year', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('month', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('day', 'INTEGER', mode='NULLABLE'),
-        ]
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-
-        rows = self._fetch_single_page(
-            table_ref, selected_fields=selected_fields)
-
-        self.assertGreater(len(rows), 0)
-        self.assertEqual(len(rows[0]), 3)
 
     def test_large_query_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
