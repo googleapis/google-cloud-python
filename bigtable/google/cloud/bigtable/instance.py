@@ -245,39 +245,16 @@ class Instance(object):
 
         return result
 
-    def create_app_profile(self, app_profile_id, etag='', description='',
-                           ignore_warnings=None, metadata=None,
-                           routing_policy_type=ROUTING_POLICY_TYPE_ANY,
-                           cluster_id=None,
-                           allow_transactional_writes=False):
+    def create_app_profile(self, app_profile_id, routing_policy_type,
+                           description='', ignore_warnings=None,
+                           cluster_id=None, allow_transactional_writes=False):
         """Creates an app profile within an instance.
 
         :type: app_profile_id: str
         :param app_profile_id: The unique name for the new app profile.
 
-        :type: etag: str
-        :param: etag: (Optional) Strongly validated etag for optimistic
-                        concurrency control. Preserve the value returned
-                        from ``GetAppProfile`` when calling
-                        ``UpdateAppProfile`` to fail the request if there
-                        has been a modification in the mean time. The
-                        ``update_mask`` of the request need not include
-                        ``etag`` for this protection to apply.
-
-        :type: description: str
-        :param: description: (Optional) Long form description of the use
-                                case for this AppProfile.
-
-        :type: ignore_warnings: bool
-        :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                    creating the app profile.
-
-        :type: metadata: [Sequence[Tuple[str, str]]]
-        :param: metadata: (Optional) Additional metadata that is provided to
-                            the method.
-
         :type: routing_policy_type: int
-        :param: routing_policy_type: (Optional) There are two routing policies
+        :param: routing_policy_type: There are two routing policies
                                     ROUTING_POLICY_TYPE_ANY = 1 and
                                     ROUTING_POLICY_TYPE_SINGLE = 2.
                                     By default it is ROUTING_POLICY_TYPE_ANY
@@ -287,6 +264,14 @@ class Instance(object):
                                     SingleClusterRouting policy will be created
                                     using the cluster_id and
                                     allow_transactional_writes parameters.
+
+        :type: description: str
+        :param: description: (Optional) Long form description of the use
+                                case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
 
         :type: cluster_id: str
         :param: cluster_id: (Optional) Unique cluster_id which is only required
@@ -319,15 +304,14 @@ class Instance(object):
                 ))
 
         app_profile = instance_pb2.AppProfile(
-            name=name, etag=etag, description=description,
+            name=name, description=description,
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
             single_cluster_routing=single_cluster_routing
         )
 
         return self._client._instance_admin_client.create_app_profile(
             parent=self.name, app_profile_id=app_profile_id,
-            app_profile=app_profile, ignore_warnings=ignore_warnings,
-            metadata=metadata)
+            app_profile=app_profile, ignore_warnings=ignore_warnings)
 
     def get_app_profile(self, app_profile_id):
         """Gets information about an app profile.
@@ -356,9 +340,9 @@ class Instance(object):
             self._client._instance_admin_client.list_app_profiles(self.name))
         return list_app_profiles
 
-    def update_app_profile(self, app_profile_id, update_mask, etag='',
-                           description='', ignore_warnings=None, metadata=None,
-                           routing_policy_type=ROUTING_POLICY_TYPE_ANY,
+    def update_app_profile(self, app_profile_id, update_mask,
+                           routing_policy_type, description='',
+                           ignore_warnings=None,
                            cluster_id=None, allow_transactional_writes=False):
         """Updates an app profile within an instance.
 
@@ -369,29 +353,8 @@ class Instance(object):
         :param: update_mask: Name of the parameters of AppProfiles that
                                 needed to update.
 
-        :type: etag: str
-        :param: etag: (Optional) Strongly validated etag for optimistic
-                        concurrency control. Preserve the value returned
-                        from ``GetAppProfile`` when calling
-                        ``UpdateAppProfile`` to fail the request if there has
-                        been a modification in the mean time. The
-                        ``update_mask`` of the request need not include
-                        ``etag`` for this protection to apply.
-
-        :type: description: str
-        :param: description: (Optional) Optional long form description of the
-                                use case for this AppProfile.
-
-        :type: ignore_warnings: bool
-        :param: ignore_warnings: (Optional) If true, ignore safety checks when
-                                    creating the app profile.
-
-        :type: metadata: [Sequence[Tuple[str, str]]]
-        :param: metadata: (Optional) Additional metadata that is provided to
-                            the method.
-
         :type: routing_policy_type: int
-        :param: routing_policy_type: (Optional) There are two routing policies
+        :param: routing_policy_type: There are two routing policies
                                     ROUTING_POLICY_TYPE_ANY = 1 and
                                     ROUTING_POLICY_TYPE_SINGLE = 2.
                                     By default it is ROUTING_POLICY_TYPE_ANY
@@ -401,6 +364,14 @@ class Instance(object):
                                     SingleClusterRouting policy will be created
                                     using the cluster_id and
                                     allow_transactional_writes parameters.
+
+        :type: description: str
+        :param: description: (Optional) Optional long form description of the
+                                use case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
 
         :type: cluster_id: str
         :param: cluster_id: (Optional) Unique cluster_id which is only required
@@ -433,7 +404,7 @@ class Instance(object):
                 ))
 
         update_app_profile = instance_pb2.AppProfile(
-            name=name, etag=etag, description=description,
+            name=name, description=description,
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
             single_cluster_routing=single_cluster_routing
         )
@@ -441,8 +412,7 @@ class Instance(object):
 
         return self._client._instance_admin_client.update_app_profile(
             app_profile=update_app_profile, update_mask=update_mask,
-            ignore_warnings=ignore_warnings, metadata=metadata
-        )
+            ignore_warnings=ignore_warnings)
 
     def delete_app_profile(self, app_profile_id, ignore_warnings=False):
         """Deletes an app profile from an instance.

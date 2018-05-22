@@ -369,7 +369,8 @@ class TestInstance(unittest.TestCase):
 
         # Perform the method and check the result.
         app_profile_id = 'appProfileId1262094415'
-        result = instance.create_app_profile(app_profile_id=app_profile_id)
+        result = instance.create_app_profile(app_profile_id=app_profile_id,
+                                             routing_policy_type=1)
 
         self.assertEqual(result, expected_response)
 
@@ -518,7 +519,8 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         app_profile_id = 'appProfileId1262094415'
         result = instance.update_app_profile(app_profile_id,
-                                             update_mask=update_mask)
+                                             update_mask=update_mask,
+                                             routing_policy_type=1)
 
         self.assertIsInstance(result, operation.Operation)
 
