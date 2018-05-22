@@ -2289,33 +2289,33 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         plan_entries = [{
             'name': 'NAME',
-            'id': 1234,
-            'inputStages': [88, 101],
-            'startMs': 1522540800000,
-            'endMs':   1522540804000,
-            'parallelInputs': 1000,
-            'completedParallelInputs': 5,
-            'waitMsAvg': 33,
-            'waitMsMax': 400,
+            'id': '1234',
+            'inputStages': ['88', '101'],
+            'startMs': '1522540800000',
+            'endMs':   '1522540804000',
+            'parallelInputs': '1000',
+            'completedParallelInputs': '5',
+            'waitMsAvg': '33',
+            'waitMsMax': '400',
             'waitRatioAvg': 2.71828,
             'waitRatioMax': 3.14159,
-            'readMsAvg': 45,
-            'readMsMax': 90,
+            'readMsAvg': '45',
+            'readMsMax': '90',
             'readRatioAvg': 1.41421,
             'readRatioMax': 1.73205,
-            'computeMsAvg': 55,
-            'computeMsMax': 99,
+            'computeMsAvg': '55',
+            'computeMsMax': '99',
             'computeRatioAvg': 0.69315,
             'computeRatioMax': 1.09861,
-            'writeMsAvg': 203,
-            'writeMsMax': 340,
+            'writeMsAvg': '203',
+            'writeMsMax': '340',
             'writeRatioAvg': 3.32193,
             'writeRatioMax': 2.30258,
             'recordsRead': '100',
             'recordsWritten': '1',
             'status': 'STATUS',
-            'shuffleOutputBytes': 1024,
-            'shuffleOutputBytesSpilled': 1,
+            'shuffleOutputBytes': '1024',
+            'shuffleOutputBytesSpilled': '1',
             'steps': [{
                 'kind': 'KIND',
                 'substeps': ['SUBSTEP1', 'SUBSTEP2'],
@@ -2342,7 +2342,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     len(found.input_stages),
                     len(expected['inputStages']))
             for f_id in found.input_stages:
-                self.assertIn(f_id, expected['inputStages'])
+                self.assertIn(f_id, [int(e) for e in expected['inputStages']])
             self.assertEqual(
                 found.start.strftime(_RFC3339_MICROS),
                 '2018-04-01T00:00:00.000000Z')
@@ -2351,39 +2351,43 @@ class TestQueryJob(unittest.TestCase, _Base):
                 '2018-04-01T00:00:04.000000Z')
             self.assertEqual(
                     found.parallel_inputs,
-                    expected['parallelInputs'])
+                    int(expected['parallelInputs']))
             self.assertEqual(
                     found.completed_parallel_inputs,
-                    expected['completedParallelInputs'])
-            self.assertEqual(found.wait_ms_avg, expected['waitMsAvg'])
-            self.assertEqual(found.wait_ms_max, expected['waitMsMax'])
+                    int(expected['completedParallelInputs']))
+            self.assertEqual(found.wait_ms_avg, int(expected['waitMsAvg']))
+            self.assertEqual(found.wait_ms_max, int(expected['waitMsMax']))
             self.assertEqual(found.wait_ratio_avg, expected['waitRatioAvg'])
             self.assertEqual(found.wait_ratio_max, expected['waitRatioMax'])
-            self.assertEqual(found.read_ms_avg, expected['readMsAvg'])
-            self.assertEqual(found.read_ms_max, expected['readMsMax'])
+            self.assertEqual(found.read_ms_avg, int(expected['readMsAvg']))
+            self.assertEqual(found.read_ms_max, int(expected['readMsMax']))
             self.assertEqual(found.read_ratio_avg, expected['readRatioAvg'])
             self.assertEqual(found.read_ratio_max, expected['readRatioMax'])
-            self.assertEqual(found.compute_ms_avg, expected['computeMsAvg'])
-            self.assertEqual(found.compute_ms_max, expected['computeMsMax'])
+            self.assertEqual(
+                found.compute_ms_avg,
+                int(expected['computeMsAvg']))
+            self.assertEqual(
+                found.compute_ms_max,
+                int(expected['computeMsMax']))
             self.assertEqual(
                 found.compute_ratio_avg, expected['computeRatioAvg'])
             self.assertEqual(
                 found.compute_ratio_max, expected['computeRatioMax'])
-            self.assertEqual(found.write_ms_avg, expected['writeMsAvg'])
-            self.assertEqual(found.write_ms_max, expected['writeMsMax'])
+            self.assertEqual(found.write_ms_avg, int(expected['writeMsAvg']))
+            self.assertEqual(found.write_ms_max, int(expected['writeMsMax']))
             self.assertEqual(found.write_ratio_avg, expected['writeRatioAvg'])
             self.assertEqual(found.write_ratio_max, expected['writeRatioMax'])
             self.assertEqual(
-                found.records_read, expected['recordsRead'])
+                found.records_read, int(expected['recordsRead']))
             self.assertEqual(
-                found.records_written, expected['recordsWritten'])
+                found.records_written, int(expected['recordsWritten']))
             self.assertEqual(found.status, expected['status'])
             self.assertEqual(
                     found.shuffle_output_bytes,
-                    expected['shuffleOutputBytes'])
+                    int(expected['shuffleOutputBytes']))
             self.assertEqual(
                     found.shuffle_output_bytes_spilled,
-                    expected['shuffleOutputBytesSpilled'])
+                    int(expected['shuffleOutputBytesSpilled']))
 
             self.assertEqual(len(found.steps), len(expected['steps']))
             for f_step, e_step in zip(found.steps, expected['steps']):
@@ -2465,6 +2469,21 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['numDmlAffectedRows'] = str(num_rows)
         self.assertEqual(job.num_dml_affected_rows, num_rows)
 
+    def test_slot_millis(self):
+        millis = 1234
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.slot_millis)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.slot_millis)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.slot_millis)
+
+        query_stats['totalSlotMs'] = millis
+        self.assertEqual(job.slot_millis, millis)
+
     def test_statement_type(self):
         statement_type = 'SELECT'
         client = _make_client(project=self.PROJECT)
@@ -2526,6 +2545,34 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.table_id, 'other-table')
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
+
+    def test_timeline(self):
+        timeline_resource = [{
+            'elapsedMs': 1,
+            'activeUnits': 22,
+            'pendingUnits': 33,
+            'completedUnits': 44,
+            'totalSlotMs': 101,
+        }]
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertEqual(job.timeline, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.timeline, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.timeline, [])
+
+        query_stats['timeline'] = timeline_resource
+
+        self.assertEqual(len(job.timeline), len(timeline_resource))
+        self.assertEqual(job.timeline[0].elapsed_ms, 1)
+        self.assertEqual(job.timeline[0].active_units, 22)
+        self.assertEqual(job.timeline[0].pending_units, 33)
+        self.assertEqual(job.timeline[0].completed_units, 44)
+        self.assertEqual(job.timeline[0].slot_millis, 101)
 
     def test_undeclared_query_parameters(self):
         from google.cloud.bigquery.query import ArrayQueryParameter
@@ -3455,3 +3502,42 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(
             entry.end.strftime(_RFC3339_MICROS),
             self.END_RFC3339_MICROS)
+
+
+class TestTimelineEntry(unittest.TestCase, _Base):
+    ELAPSED_MS = 101
+    ACTIVE_UNITS = 50
+    PENDING_UNITS = 98
+    COMPLETED_UNITS = 520
+    SLOT_MILLIS = 12029
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import TimelineEntry
+        return TimelineEntry
+
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+        entry = klass.from_api_repr({})
+        self.assertIsNone(entry.elapsed_ms)
+        self.assertIsNone(entry.active_units)
+        self.assertIsNone(entry.pending_units)
+        self.assertIsNone(entry.completed_units)
+        self.assertIsNone(entry.slot_millis)
+
+    def test_from_api_repr_normal(self):
+        resource = {
+            'elapsedMs': self.ELAPSED_MS,
+            'activeUnits': self.ACTIVE_UNITS,
+            'pendingUnits': self.PENDING_UNITS,
+            'completedUnits': self.COMPLETED_UNITS,
+            'totalSlotMs': self.SLOT_MILLIS,
+        }
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr(resource)
+        self.assertEqual(entry.elapsed_ms, self.ELAPSED_MS)
+        self.assertEqual(entry.active_units, self.ACTIVE_UNITS)
+        self.assertEqual(entry.pending_units, self.PENDING_UNITS)
+        self.assertEqual(entry.completed_units, self.COMPLETED_UNITS)
+        self.assertEqual(entry.slot_millis, self.SLOT_MILLIS)

@@ -23,7 +23,8 @@ class SchemaField(object):
 
     :type field_type: str
     :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD').
+                       'FLOAT', 'NUMERIC', 'BOOLEAN', 'TIMESTAMP' or
+                       'RECORD').
 
     :type mode: str
     :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
@@ -77,8 +78,8 @@ class SchemaField(object):
     def field_type(self):
         """str: The type of the field.
 
-        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'BOOLEAN',
-        'TIMESTAMP' or 'RECORD'.
+        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'NUMERIC',
+        'BOOLEAN', 'TIMESTAMP' or 'RECORD'.
         """
         return self._field_type
 
