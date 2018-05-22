@@ -15,11 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
-from google.cloud.spanner_admin_database_v1.proto import (
-    spanner_database_admin_pb2)
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.iam.v1.logging import audit_data_pb2
@@ -30,20 +26,36 @@ from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.spanner_admin_database_v1.proto import (
+    spanner_database_admin_pb2)
+
+
+_shared_modules = [
+    http_pb2,
+    iam_policy_pb2,
+    policy_pb2,
+    audit_data_pb2,
+    operations_pb2,
+    any_pb2,
+    descriptor_pb2,
+    empty_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
+
+_local_modules = [
+    spanner_database_admin_pb2,
+]
+
 names = []
-for module in (
-        http_pb2,
-        spanner_database_admin_pb2,
-        iam_policy_pb2,
-        policy_pb2,
-        audit_data_pb2,
-        operations_pb2,
-        any_pb2,
-        descriptor_pb2,
-        empty_pb2,
-        timestamp_pb2,
-        status_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.spanner_admin_database_v1.types'
         setattr(sys.modules[__name__], name, message)
