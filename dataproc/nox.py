@@ -74,6 +74,9 @@ def system(session, py):
 
     session.virtualenv_dirname = 'sys-' + py
 
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
+
     session.install('pytest')
     session.install('-e', '.')
 

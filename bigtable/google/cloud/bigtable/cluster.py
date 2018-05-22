@@ -69,7 +69,7 @@ class Cluster(object):
         :rtype: str
         :returns: The cluster name.
         """
-        return self._instance._client._instance_admin_client.cluster_path(
+        return self._instance._client.instance_admin_client.cluster_path(
             self._instance._client.project, self._instance.instance_id,
             self.cluster_id)
 
@@ -90,7 +90,7 @@ class Cluster(object):
 
     def reload(self):
         """Reload the metadata for this cluster."""
-        self._instance._client._instance_admin_client.get_cluster(self.name)
+        self._instance._client.instance_admin_client.get_cluster(self.name)
 
     def create(self):
         """Create this cluster.
@@ -113,7 +113,7 @@ class Cluster(object):
                   create operation.
         """
         client = self._instance._client
-        return client._instance_admin_client.create_cluster(
+        return client.instance_admin_client.create_cluster(
             self._instance.name, self.cluster_id, {})
 
     def update(self, location='', serve_nodes=0):
@@ -147,7 +147,7 @@ class Cluster(object):
                   update operation.
         """
         client = self._instance._client
-        return client._instance_admin_client.update_cluster(
+        return client.instance_admin_client.update_cluster(
             self.name, location, serve_nodes)
 
     def delete(self):
@@ -171,4 +171,4 @@ class Cluster(object):
           permanently deleted.
         """
         client = self._instance._client
-        client._instance_admin_client.delete_cluster(self.name)
+        client.instance_admin_client.delete_cluster(self.name)

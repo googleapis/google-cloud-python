@@ -16,6 +16,7 @@ import base64
 import concurrent.futures
 import csv
 import datetime
+import decimal
 import json
 import operator
 import os
@@ -385,58 +386,54 @@ class TestBigQuery(unittest.TestCase):
         page = six.next(iterator.pages)
         return list(page)
 
-    def _create_table_many_columns(self, rows):
-        # Load a table with many columns
-        dataset = self.temp_dataset(_make_dataset_id('list_rows'))
+    def _create_table_many_columns(self, rowcount):
+        # Generate a table of maximum width via CREATE TABLE AS SELECT.
+        # first column is named 'rowval', and has a value from 1..rowcount
+        # Subsequent column is named col_<N> and contains the value N*rowval,
+        # where N is between 1 and 9999 inclusive.
+        dsname = _make_dataset_id('wide_schema')
+        dataset = self.temp_dataset(dsname)
         table_id = 'many_columns'
         table_ref = dataset.table(table_id)
         self.to_delete.insert(0, table_ref)
-        schema = [
-            bigquery.SchemaField(
-                'column_{}_with_long_name'.format(col_i),
-                'INTEGER')
-            for col_i in range(len(rows[0]))]
-        body = ''
-        for row in rows:
-            body += ','.join([str(item) for item in row])
-            body += '\n'
-        config = bigquery.LoadJobConfig()
-        config.schema = schema
-        job = Config.CLIENT.load_table_from_file(
-            six.BytesIO(body.encode('ascii')), table_ref, job_config=config)
-        job.result()
-        return bigquery.Table(table_ref, schema=schema)
-
-    def test_list_rows_many_columns(self):
-        rows = [[], []]
-        # BigQuery tables can have max 10,000 columns
-        for col_i in range(9999):
-            rows[0].append(col_i)
-            rows[1].append(10000 - col_i)
-        expected_rows = frozenset([tuple(row) for row in rows])
-        table = self._create_table_many_columns(rows)
-
-        rows = list(Config.CLIENT.list_rows(table))
-
-        assert len(rows) == 2
-        rows_set = frozenset([tuple(row.values()) for row in rows])
-        assert rows_set == expected_rows
+        colprojections = ','.join(
+                ['r * {} as col_{}'.format(n, n) for n in range(1, 10000)])
+        sql = """
+            CREATE TABLE {}.{}
+            AS
+            SELECT
+                r as rowval,
+                {}
+            FROM
+              UNNEST(GENERATE_ARRAY(1,{},1)) as r
+            """.format(dsname, table_id, colprojections, rowcount)
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+        return table_ref
 
     def test_query_many_columns(self):
-        rows = [[], []]
-        # BigQuery tables can have max 10,000 columns
-        for col_i in range(9999):
-            rows[0].append(col_i)
-            rows[1].append(10000 - col_i)
-        expected_rows = frozenset([tuple(row) for row in rows])
-        table = self._create_table_many_columns(rows)
-
+        # Test working with the widest schema BigQuery supports, 10k columns.
+        row_count = 2
+        table_ref = self._create_table_many_columns(row_count)
         rows = list(Config.CLIENT.query(
-            'SELECT * FROM `{}.many_columns`'.format(table.dataset_id)))
+            'SELECT * FROM `{}.{}`'.format(
+                table_ref.dataset_id, table_ref.table_id)))
 
-        assert len(rows) == 2
-        rows_set = frozenset([tuple(row.values()) for row in rows])
-        assert rows_set == expected_rows
+        self.assertEqual(len(rows), row_count)
+
+        # check field representations adhere to expected values.
+        correctwidth = 0
+        badvals = 0
+        for r in rows:
+            vals = r._xxx_values
+            rowval = vals[0]
+            if len(vals) == 10000:
+                correctwidth = correctwidth + 1
+            for n in range(1, 10000):
+                if vals[n] != rowval * (n):
+                    badvals = badvals + 1
+        self.assertEqual(correctwidth, row_count)
+        self.assertEqual(badvals, 0)
 
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
@@ -692,33 +689,31 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             list(sorted(rows)), [('a', 3), ('b', 2), ('c', 1)])
 
-        # Can query from EU.
-        query_string = 'SELECT MAX(value) FROM `{}.letters`'.format(
+        # Verify location behavior with queries
+        query_config = bigquery.QueryJobConfig()
+        query_config.dry_run = True
+
+        query_string = 'SELECT * FROM `{}.letters` LIMIT 1'.format(
             dataset.dataset_id)
-        max_value = list(client.query(query_string, location='EU'))[0][0]
-        self.assertEqual(max_value, 3)
+
+        eu_query = client.query(
+            query_string,
+            location='EU',
+            job_config=query_config)
+        self.assertTrue(eu_query.done)
 
         # Cannot query from US.
         with self.assertRaises(BadRequest):
-            list(client.query(query_string, location='US'))
-
-        # Can copy from EU.
-        copy_job = client.copy_table(
-            table_ref, dataset.table('letters2'), location='EU')
-        copy_job.result()
+            list(client.query(
+                    query_string,
+                    location='US',
+                    job_config=query_config))
 
         # Cannot copy from US.
         with self.assertRaises(BadRequest):
             client.copy_table(
                 table_ref, dataset.table('letters2_us'),
                 location='US').result()
-
-        # Can extract from EU.
-        extract_job = client.extract_table(
-            table_ref,
-            'gs://{}/letters.csv'.format(bucket_name),
-            location='EU')
-        extract_job.result()
 
         # Cannot extract from US.
         with self.assertRaises(BadRequest):
@@ -965,6 +960,7 @@ class TestBigQuery(unittest.TestCase):
         stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
         zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
+        numeric = decimal.Decimal('123456789.123456789')
         return [
             {
                 'sql': 'SELECT 1',
@@ -1010,6 +1006,10 @@ class TestBigQuery(unittest.TestCase):
             {
                 'sql': 'SELECT TIME(TIMESTAMP "%s")' % (stamp,),
                 'expected': naive.time(),
+            },
+            {
+                'sql': 'SELECT NUMERIC "%s"' % (numeric,),
+                'expected': numeric,
             },
             {
                 'sql': 'SELECT (1, 2)',
@@ -1086,6 +1086,82 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(concurrent.futures.TimeoutError):
             # 1 second is much too short for this query.
             query_job.result(timeout=1)
+
+    def test_query_statistics(self):
+        """
+        A system test to exercise some of the extended query statistics.
+
+        Note:  We construct a query that should need at least three stages by
+        specifying a JOIN query.  Exact plan and stats are effectively
+        non-deterministic, so we're largely interested in confirming values
+        are present.
+        """
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
+        query_job = Config.CLIENT.query(
+            """
+            SELECT
+              COUNT(1)
+            FROM
+            (
+              SELECT
+                year,
+                wban_number
+              FROM `bigquery-public-data.samples.gsod`
+              LIMIT 1000
+            ) lside
+            INNER JOIN
+            (
+              SELECT
+                year,
+                state
+              FROM `bigquery-public-data.samples.natality`
+              LIMIT 1000
+            ) rside
+            ON
+            lside.year = rside.year
+            """,
+            location='US',
+            job_config=job_config)
+
+        # run the job to completion
+        query_job.result()
+
+        # Assert top-level stats
+        self.assertFalse(query_job.cache_hit)
+        self.assertIsNotNone(query_job.destination)
+        self.assertTrue(query_job.done)
+        self.assertFalse(query_job.dry_run)
+        self.assertIsNone(query_job.num_dml_affected_rows)
+        self.assertEqual(query_job.priority, 'INTERACTIVE')
+        self.assertGreater(query_job.total_bytes_billed, 1)
+        self.assertGreater(query_job.total_bytes_processed, 1)
+        self.assertEqual(query_job.statement_type, 'SELECT')
+        self.assertGreater(query_job.slot_millis, 1)
+
+        # Make assertions on the shape of the query plan.
+        plan = query_job.query_plan
+        self.assertGreaterEqual(len(plan), 3)
+        first_stage = plan[0]
+        self.assertIsNotNone(first_stage.start)
+        self.assertIsNotNone(first_stage.end)
+        self.assertIsNotNone(first_stage.entry_id)
+        self.assertIsNotNone(first_stage.name)
+        self.assertGreater(first_stage.parallel_inputs, 0)
+        self.assertGreater(first_stage.completed_parallel_inputs, 0)
+        self.assertGreater(first_stage.shuffle_output_bytes, 0)
+        self.assertEqual(first_stage.status, 'COMPLETE')
+
+        # Query plan is a digraph.  Ensure it has inter-stage links,
+        # but not every stage has inputs.
+        stages_with_inputs = 0
+        for entry in plan:
+            if len(entry.input_stages) > 0:
+                stages_with_inputs = stages_with_inputs + 1
+        self.assertGreater(stages_with_inputs, 0)
+        self.assertGreater(len(plan), stages_with_inputs)
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
@@ -1187,6 +1263,10 @@ class TestBigQuery(unittest.TestCase):
         pi = 3.1415926
         pi_param = ScalarQueryParameter(
             name='pi', type_='FLOAT64', value=pi)
+        pi_numeric = decimal.Decimal('3.141592654')
+        pi_numeric_param = ScalarQueryParameter(
+            name='pi_numeric_param', type_='NUMERIC',
+            value=pi_numeric)
         truthy = True
         truthy_param = ScalarQueryParameter(
             name='truthy', type_='BOOL', value=truthy)
@@ -1261,6 +1341,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @pi',
                 'expected': pi,
                 'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @pi_numeric_param',
+                'expected': pi_numeric,
+                'query_parameters': [pi_numeric_param],
             },
             {
                 'sql': 'SELECT @truthy',
@@ -1701,6 +1786,8 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
+            self.assertEqual(found[8],
+                             decimal.Decimal(expected['FavoriteNumber']))
 
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()

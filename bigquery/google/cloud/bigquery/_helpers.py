@@ -16,6 +16,7 @@
 
 import base64
 import datetime
+import decimal
 
 from google.api_core import retry
 from google.cloud._helpers import UTC
@@ -44,6 +45,12 @@ def _float_from_json(value, field):
     """Coerce 'value' to a float, if set or not nullable."""
     if _not_null(value, field):
         return float(value)
+
+
+def _decimal_from_json(value, field):
+    """Coerce 'value' to a Decimal, if set or not nullable."""
+    if _not_null(value, field):
+        return decimal.Decimal(value)
 
 
 def _bool_from_json(value, field):
@@ -160,6 +167,7 @@ _CELLDATA_FROM_JSON = {
     'INT64': _int_from_json,
     'FLOAT': _float_from_json,
     'FLOAT64': _float_from_json,
+    'NUMERIC': _decimal_from_json,
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
     'STRING': _string_from_json,
@@ -228,6 +236,13 @@ def _float_to_json(value):
     return value
 
 
+def _decimal_to_json(value):
+    """Coerce 'value' to a JSON-compatible representation."""
+    if isinstance(value, decimal.Decimal):
+        value = str(value)
+    return value
+
+
 def _bool_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bool):
@@ -293,6 +308,7 @@ _SCALAR_VALUE_TO_JSON_ROW = {
     'INT64': _int_to_json,
     'FLOAT': _float_to_json,
     'FLOAT64': _float_to_json,
+    'NUMERIC': _decimal_to_json,
     'BOOLEAN': _bool_to_json,
     'BOOL': _bool_to_json,
     'BYTES': _bytes_to_json,
