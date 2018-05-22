@@ -9,6 +9,7 @@ Client
 
 .. automodule:: google.cloud.bigquery.client
   :members:
+  :inherited-members:
   :show-inheritance:
 
 
@@ -17,7 +18,7 @@ Job
 
 .. automodule:: google.cloud.bigquery.job
   :members:
-  :show-inheritance:
+  :inherited-members:
 
 
 Dataset
@@ -25,7 +26,7 @@ Dataset
 
 .. automodule:: google.cloud.bigquery.dataset
   :members:
-  :show-inheritance:
+  :inherited-members:
 
 
 Table
@@ -33,6 +34,7 @@ Table
 
 .. automodule:: google.cloud.bigquery.table
   :members:
+  :inherited-members:
   :show-inheritance:
 
 
@@ -41,7 +43,7 @@ Schema
 
 .. automodule:: google.cloud.bigquery.schema
   :members:
-  :show-inheritance:
+  :inherited-members:
 
 
 Query
@@ -49,7 +51,7 @@ Query
 
 .. automodule:: google.cloud.bigquery.query
   :members:
-  :show-inheritance:
+  :inherited-members:
 
 
 External Configuration
@@ -57,7 +59,7 @@ External Configuration
 
 .. automodule:: google.cloud.bigquery.external_config
   :members:
-  :show-inheritance:
+  :inherited-members:
 
 
 Magics
@@ -65,4 +67,4 @@ Magics
 
 .. automodule:: google.cloud.bigquery.magics
   :members:
-  :show-inheritance:
+  :inherited-members:
