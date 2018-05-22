@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class MqttState(object):
+
+class MqttState(enum.IntEnum):
     """
     Indicates whether an MQTT connection is enabled or disabled. See the field
     description for details.
@@ -29,7 +31,7 @@ class MqttState(object):
     MQTT_DISABLED = 2
 
 
-class HttpState(object):
+class HttpState(enum.IntEnum):
     """
     Indicates whether DeviceService (HTTP) is enabled or disabled for the
     registry. See the field description for details.
@@ -45,7 +47,7 @@ class HttpState(object):
     HTTP_DISABLED = 2
 
 
-class PublicKeyCertificateFormat(object):
+class PublicKeyCertificateFormat(enum.IntEnum):
     """
     The supported formats for the public key.
 
@@ -60,7 +62,7 @@ class PublicKeyCertificateFormat(object):
     X509_CERTIFICATE_PEM = 1
 
 
-class PublicKeyFormat(object):
+class PublicKeyFormat(enum.IntEnum):
     """
     The supported formats for the public key.
 

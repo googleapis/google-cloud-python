@@ -11,34 +11,48 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""A setup module for the GAPIC Cloud IoT API library.
 
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
-"""
-
-from setuptools import setup, find_packages
 import io
-import sys
+import os
 
-install_requires = [
+import setuptools
+
+name = 'google-cloud-iot'
+description = 'Cloud IoT API API client library'
+version = '0.1.0'
+release_status = '3 - Alpha'
+dependencies = [
     'google-api-core[grpc] >= 1.1.0, < 2.0.0dev',
-    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
     'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
+    'enum34; python_version < "3.4"',
 ]
 
-with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
-    long_description = readme_file.read()
+package_root = os.path.abspath(os.path.dirname(__file__))
 
-setup(
-    name='google-cloud-iot',
-    version='0.1.0',
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
+    readme = readme_file.read()
+
+packages = [
+    package for package in setuptools.find_packages()
+    if package.startswith('google')
+]
+
+namespaces = ['google']
+if 'google.cloud' in packages:
+    namespaces.append('google.cloud')
+
+setuptools.setup(
+    name=name,
+    version=version,
+    description=description,
+    long_description=readme,
     author='Google LLC',
-    author_email='googleapis-packages@google.com',
+    author_email='googleapis-packages@oogle.com',
+    license='Apache 2.0',
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
     classifiers=[
-        'Intended Audience :: Developers',
-        'Development Status :: 3 - Alpha',
+        release_status,
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
@@ -48,14 +62,13 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Operating System :: OS Independent',
+        'Topic :: Internet',
     ],
-    description='GAPIC library for the Cloud IoT API',
+    platforms='Posix; MacOS X; Windows',
+    packages=packages,
+    namespace_packages=namespaces,
+    install_requires=dependencies,
     include_package_data=True,
-    long_description=long_description,
-    install_requires=install_requires,
-    license='Apache 2.0',
-    packages=find_packages(exclude=('tests*', )),
-    namespace_packages=['google', 'google.cloud'],
-    url='https://github.com/googlecloudplatform/google-cloud-python',
     zip_safe=False,
 )
