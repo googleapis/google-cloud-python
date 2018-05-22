@@ -121,6 +121,11 @@ class Blob(_PropertyMixin):
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
+
+    :type kms_key_name: str
+    :param kms_key_name:
+        Optional resource name of Cloud KMS key used to encrypt the blob's
+        contents.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -150,14 +155,23 @@ class Blob(_PropertyMixin):
        set as their 'storage_class'.
     """
 
-    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+    def __init__(self, name, bucket, chunk_size=None,
+                 encryption_key=None, kms_key_name=None):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        if encryption_key is not None and kms_key_name is not None:
+            raise ValueError(
+                "Pass at most one of 'encryption_key' "
+                "and 'kms_key_name'")
+
         self._encryption_key = encryption_key
+
+        if kms_key_name is not None:
+            self._properties['kmsKeyName'] = kms_key_name
 
     @property
     def chunk_size(self):
@@ -727,6 +741,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -813,6 +831,10 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             name_value_pairs.append(('userProject', self.user_project))
+
+        if self.kms_key_name is not None:
+            name_value_pairs.append(('kmsKeyName', self.kms_key_name))
+
         if predefined_acl is not None:
             name_value_pairs.append(('predefinedAcl', predefined_acl))
 
@@ -1324,6 +1346,18 @@ class Blob(_PropertyMixin):
         self.acl.all().grant_read()
         self.acl.save(client=client)
 
+    def make_private(self, client=None):
+        """Make this blob private by removing `allusers` read access.
+        Does not revoke access for anything other than the `allusers` group.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+        """
+        self.acl.all().revoke_read()
+        self.acl.save(client=client)
+
     def compose(self, sources, client=None):
         """Concatenate source blobs into this one.
 
@@ -1400,6 +1434,9 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
+
+        if self.kms_key_name is not None:
+            query_params['destinationKmsKeyName'] = self.kms_key_name
 
         api_response = client._connection.api_request(
             method='POST',
@@ -1688,6 +1725,16 @@ class Blob(_PropertyMixin):
         size = self._properties.get('size')
         if size is not None:
             return int(size)
+
+    @property
+    def kms_key_name(self):
+        """Resource name of Cloud KMS key used to encrypt the blob's contents.
+
+        :rtype: str or ``NoneType``
+        :returns:
+            The resource name or ``None`` if the property is not set locally.
+        """
+        return self._properties.get('kmsKeyName')
 
     storage_class = _scalar_property('storageClass')
     """Retrieve the storage class for the object.

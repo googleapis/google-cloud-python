@@ -121,18 +121,6 @@ If you need support for other Google APIs, check out the
 
 .. _Google APIs Python Client library: https://github.com/google/google-api-python-client
 
-Quick Start
------------
-
-.. code-block:: console
-
-    $ pip install --upgrade google-cloud
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
 Example Applications
 --------------------
