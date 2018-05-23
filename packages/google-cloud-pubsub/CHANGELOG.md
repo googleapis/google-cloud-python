@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.35.0
+
+### Implementation Changes
+
+- Send requests during streaming pull over a separate unary RPC (#5377)
+- Initialize references to helper threads before starting them (#5374)
+- Make leaser exit more quickly (#5373)
+- Make re-open failures bubble to callbacks (#5372)
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Normalize overflow handling for max count and bytes (#5343)
+
+### New Features
+
+- Restore the synchronous pull method (#5379)
+- Promote subscribe_experimental() to subscribe(), remove old subscriber implementation. (#5274)
+- Wire up scheduler argument for subscribe() (#5279)
+
+### Documentation
+
+- Add link to streaming pull behavior documentation (#5378)
+- Fix example in subscribe's documentation (#5375)
+
+### Internal / Testing Changes
+
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
 ## 0.34.0
 
 ### Implementation Changes
