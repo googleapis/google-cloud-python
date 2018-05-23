@@ -119,7 +119,13 @@ class Client(object):
         is encountered (such as loss of network connectivity). Cancelling the
         future will signal the process to shutdown gracefully and exit.
 
-        Example
+        .. note:: This uses Pub/Sub's *streaming pull* feature. This feature
+            properties that may be surprising. Please take a look at
+            https://cloud.google.com/pubsub/docs/pull#streamingpull for
+            more details on how streaming pull behaves compared to the
+            synchronous pull method.
+
+        Example:
 
         .. code-block:: python
 
