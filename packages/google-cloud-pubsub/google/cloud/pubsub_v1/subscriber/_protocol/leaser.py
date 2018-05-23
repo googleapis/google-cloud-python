@@ -159,7 +159,7 @@ class Leaser(object):
             # where there are many clients.
             snooze = random.uniform(0.0, p99 * 0.9)
             _LOGGER.debug('Snoozing lease management for %f seconds.', snooze)
-            time.sleep(snooze)
+            self._stop_event.wait(timeout=snooze)
 
         _LOGGER.info('%s exiting.', _LEASE_WORKER_NAME)
 
