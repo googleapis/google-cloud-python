@@ -174,8 +174,41 @@ def test_resume_not_paused():
     manager._consumer.resume.assert_not_called()
 
 
-def test_send():
+def test_send_unary():
     manager = make_manager()
+    manager._UNARY_REQUESTS = True
+
+    manager.send(types.StreamingPullRequest(
+        ack_ids=['ack_id1', 'ack_id2'],
+        modify_deadline_ack_ids=['ack_id3', 'ack_id4', 'ack_id5'],
+        modify_deadline_seconds=[10, 20, 20]))
+
+    manager._client.acknowledge.assert_called_once_with(
+        subscription=manager._subscription, ack_ids=['ack_id1', 'ack_id2'])
+
+    manager._client.modify_ack_deadline.assert_has_calls([
+        mock.call(
+            subscription=manager._subscription,
+            ack_ids=['ack_id3'], ack_deadline_seconds=10),
+        mock.call(
+            subscription=manager._subscription,
+            ack_ids=['ack_id4', 'ack_id5'], ack_deadline_seconds=20),
+        ], any_order=True)
+
+
+def test_send_unary_empty():
+    manager = make_manager()
+    manager._UNARY_REQUESTS = True
+
+    manager.send(types.StreamingPullRequest())
+
+    manager._client.acknowledge.assert_not_called()
+    manager._client.modify_ack_deadline.assert_not_called()
+
+
+def test_send_streaming():
+    manager = make_manager()
+    manager._UNARY_REQUESTS = False
     manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
 
     manager.send(mock.sentinel.request)
