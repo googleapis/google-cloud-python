@@ -408,7 +408,26 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
-    def test_create_app_profile(self):
+    def test_create_app_profile_with_wrong_routing_plicy(self):
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        app_profile_id = 'appProfileId1262094415'
+        update_mask = []
+
+        # Create AppProfile with exception
+        with self.assertRaises(ValueError):
+            instance.create_app_profile(app_profile_id=app_profile_id,
+                                        routing_policy_type=None)
+
+        with self.assertRaises(ValueError):
+            instance.update_app_profile(app_profile_id,
+                                        update_mask=update_mask,
+                                        routing_policy_type=None)
+
+    def test_create_app_profile_with_multi_routing_policy(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as instance_data_v2_pb2)
         from google.cloud.bigtable_admin_v2.gapic import (

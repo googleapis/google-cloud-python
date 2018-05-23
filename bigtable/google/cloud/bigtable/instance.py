@@ -299,10 +299,10 @@ class Instance(object):
         :param: routing_policy_type: There are two routing policies
                                     ROUTING_POLICY_TYPE_ANY = 1 and
                                     ROUTING_POLICY_TYPE_SINGLE = 2.
-                                    By default it is ROUTING_POLICY_TYPE_ANY
+                                    If ROUTING_POLICY_TYPE_ANY
                                     which will create a
-                                    MultiClusterRoutingUseAny policy.
-                                    If ROUTING_POLICY_TYPE_ANY is specified, a
+                                    MultiClusterRoutingUseAny policy and if
+                                    ROUTING_POLICY_TYPE_ANY is specified, a
                                     SingleClusterRouting policy will be created
                                     using the cluster_id and
                                     allow_transactional_writes parameters.
@@ -327,7 +327,12 @@ class Instance(object):
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` If routing
+                policy is not set.
         """
+        if not routing_policy_type:
+            raise ValueError('AppProfile required routing policy.')
+
         single_cluster_routing = None
         multi_cluster_routing_use_any = None
         instance_admin_client = self._client._instance_admin_client
@@ -399,10 +404,10 @@ class Instance(object):
         :param: routing_policy_type: There are two routing policies
                                     ROUTING_POLICY_TYPE_ANY = 1 and
                                     ROUTING_POLICY_TYPE_SINGLE = 2.
-                                    By default it is ROUTING_POLICY_TYPE_ANY
+                                    If ROUTING_POLICY_TYPE_ANY
                                     which will create a
-                                    MultiClusterRoutingUseAny policy.
-                                    If ROUTING_POLICY_TYPE_ANY is specified, a
+                                    MultiClusterRoutingUseAny policy and if
+                                    ROUTING_POLICY_TYPE_ANY is specified, a
                                     SingleClusterRouting policy will be created
                                     using the cluster_id and
                                     allow_transactional_writes parameters.
@@ -427,7 +432,12 @@ class Instance(object):
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
         :return: The AppProfile instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` If routing
+                policy is not set.
         """
+        if not routing_policy_type:
+            raise ValueError('AppProfile required routing policy.')
+
         single_cluster_routing = None
         multi_cluster_routing_use_any = None
         instance_admin_client = self._client._instance_admin_client
