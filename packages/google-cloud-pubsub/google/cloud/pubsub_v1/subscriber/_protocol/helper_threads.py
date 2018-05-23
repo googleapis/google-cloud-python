@@ -111,6 +111,6 @@ class QueueCallbackWorker(object):
             try:
                 self._callback(items)
             except Exception as exc:
-                _LOGGER.error('%s: %s', exc.__class__.__name__, exc)
+                _LOGGER.exception('Error in queue callback worker: %s', exc)
 
         _LOGGER.debug('Exiting the QueueCallbackWorker.')
