@@ -241,22 +241,26 @@ class StreamingPullManager(object):
 
         self._callback = functools.partial(_wrap_callback_errors, callback)
 
-        # Start the thread to pass the requests.
-        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
-        self._dispatcher.start()
-
-        # Start consuming messages.
+        # Create the RPC
         self._rpc = bidi.ResumableBidiRpc(
             start_rpc=self._client.api.streaming_pull,
             initial_request=self._get_initial_request,
             should_recover=self._should_recover)
         self._rpc.add_done_callback(self._on_rpc_done)
+
+        # Create references to threads
+        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
         self._consumer = bidi.BackgroundConsumer(
             self._rpc, self._on_response)
+        self._leaser = leaser.Leaser(self)
+
+        # Start the thread to pass the requests.
+        self._dispatcher.start()
+
+        # Start consuming messages.
         self._consumer.start()
 
         # Start the lease maintainer thread.
-        self._leaser = leaser.Leaser(self)
         self._leaser.start()
 
     def close(self, reason=None):
