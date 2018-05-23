@@ -170,8 +170,8 @@ class BidiRpc(object):
         self._request_queue = queue.Queue()
         self._request_generator = None
         self._is_active = False
-        self.call = None
         self._callbacks = []
+        self.call = None
 
     def add_done_callback(self, callback):
         """Adds a callback that will be called when the RPC terminates.
@@ -311,14 +311,25 @@ class ResumableBidiRpc(BidiRpc):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
         self._should_recover = should_recover
         self._operational_lock = threading.Lock()
+        self._finalized = False
+        self._finalize_lock = threading.Lock()
+
+    def _finalize(self, result):
+        with self._finalize_lock:
+            if self._finalized:
+                return
+
+            for callback in self._callbacks:
+                callback(result)
+
+            self._finalized = True
 
     def _on_call_done(self, future):
         # Unlike the base class, we only execute the callbacks on a terminal
         # error, not for errors that we can recover from. Note that grpc's
         # "future" here is also a grpc.RpcError.
         if not self._should_recover(future):
-            for callback in self._callbacks:
-                callback(future)
+            self._finalize(future)
 
     def _reopen(self):
         with self._operational_lock:
@@ -330,7 +341,14 @@ class ResumableBidiRpc(BidiRpc):
             # Request generator should exit cleanly since the RPC its bound to
             # has exited.
             self.request_generator = None
-            self.open()
+
+            try:
+                self.open()
+            # If re-opening fails, consider this a terminal error and finalize
+            # the object.
+            except Exception as exc:
+                self._finalize(exc)
+                raise
 
     def _recoverable(self, method, *args, **kwargs):
         """Wraps a method to recover the stream and retry on error.
