@@ -32,7 +32,7 @@ __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,
-                    blacklist=('pull', 'streaming_pull'))
+                    blacklist=('streaming_pull',))
 class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
