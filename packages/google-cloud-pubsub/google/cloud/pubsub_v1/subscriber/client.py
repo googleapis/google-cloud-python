@@ -135,7 +135,7 @@ class Client(object):
                 print(message)
                 message.ack()
 
-            future = subscriber.subscribe_experimental(
+            future = subscriber.subscribe(
                 subscription, callback)
 
             try:
