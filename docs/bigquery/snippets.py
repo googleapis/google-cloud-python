@@ -514,21 +514,15 @@ def test_create_partitioned_table(client, to_delete):
 
     table_ref = dataset_ref.table('my_partitioned_table')
     schema = [
-        bigquery.SchemaField('requested_url', 'STRING', mode='REQUIRED'),
-        bigquery.SchemaField('request_ts', 'TIMESTAMP', mode='REQUIRED'),
-        bigquery.SchemaField(
-            'response_info', 'RECORD', fields=[
-                bigquery.SchemaField('backend_server', 'STRING'),
-                bigquery.SchemaField('response_ms', 'INTEGER'),
-            ]
-        ),
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING'),
+        bigquery.SchemaField('date', 'DATE')
     ]
     table = bigquery.Table(table_ref, schema=schema)
-    time_partitioning = bigquery.TimePartitioning(
+    table.time_partitioning = bigquery.TimePartitioning(
         type_=bigquery.TimePartitioningType.DAY,
-        field='request_ts',        # name of column to use for partitioning
+        field='date',  # name of column to use for partitioning
         expiration_ms=7776000000)  # 90 days
-    table.time_partitioning = time_partitioning
 
     table = client.create_table(table)
 
@@ -537,32 +531,79 @@ def test_create_partitioned_table(client, to_delete):
     # [END bigquery_create_table_partitioned]
 
     assert table.time_partitioning.type_ == 'DAY'
-    assert table.time_partitioning.field == 'request_ts'
+    assert table.time_partitioning.field == 'date'
     assert table.time_partitioning.expiration_ms == 7776000000
 
 
-def test_query_partitioned_table(client, to_delete):
-    # [START bigquery_query_partitioned_table]
-    import datetime
-    import pytz
+def test_load_and_query_partitioned_table(client, to_delete):
+    dataset_id = 'load_partitioned_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_partitioned]
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    table_id = 'us_states_by_date'
 
-    sql = """
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING'),
+        bigquery.SchemaField('date', 'DATE')
+    ]
+    job_config.skip_leading_rows = 1
+    job_config.time_partitioning = bigquery.TimePartitioning(
+        type_=bigquery.TimePartitioningType.DAY,
+        field='date',  # name of column to use for partitioning
+        expiration_ms=7776000000)  # 90 days
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv'
+
+    load_job = client.load_table_from_uri(
+        uri,
+        dataset_ref.table(table_id),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    table = client.get_table(dataset_ref.table(table_id))
+    print("Loaded {} rows to table {}".format(table.num_rows, table_id))
+    # [END bigquery_load_table_partitioned]
+    assert table.num_rows == 50
+
+    project_id = client.project
+
+    # [START bigquery_query_partitioned_table]
+    import datetime
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # project_id = 'my-project'
+    # dataset_id = 'my_dataset'
+    table_id = 'us_states_by_date'
+
+    sql_template = """
         SELECT *
-        FROM `bigquery-partition-samples.samples.stackoverflow_comments`
-        WHERE creation_date > @mytime
+        FROM `{}.{}.{}`
+        WHERE date BETWEEN @start_date AND @end_date
     """
-    query_parameters = [
+    sql = sql_template.format(project_id, dataset_id, table_id)
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = [
         bigquery.ScalarQueryParameter(
-            'mytime',
-            'TIMESTAMP',
-            datetime.datetime(2016, 1, 1, 0, 0, tzinfo=pytz.UTC)
+            'start_date',
+            'DATE',
+            datetime.date(1800, 1, 1)
+        ),
+        bigquery.ScalarQueryParameter(
+            'end_date',
+            'DATE',
+            datetime.date(1899, 12, 31)
         )
     ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_parameters
-    job_config.dry_run = True
 
     query_job = client.query(
         sql,
@@ -570,12 +611,10 @@ def test_query_partitioned_table(client, to_delete):
         location='US',
         job_config=job_config)  # API request
 
-    # A dry run query completes immediately.
-    assert query_job.state == 'DONE'
-
-    print("This query will process {} bytes.".format(
-        query_job.total_bytes_processed))
+    rows = list(query_job)
+    print("{} states were admitted to the US in the 1800s".format(len(rows)))
     # [END bigquery_query_partitioned_table]
+    assert len(rows) == 29
 
 
 def test_get_table_information(client, to_delete):
