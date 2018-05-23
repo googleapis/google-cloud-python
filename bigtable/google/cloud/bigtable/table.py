@@ -20,6 +20,7 @@ from grpc import StatusCode
 from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
+from google.api_core.retry import _DEFAULT_DEADLINE
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
@@ -386,7 +387,7 @@ class Table(object):
             self.name)
         return response_iterator
 
-    def truncate(self, timeout=60):
+    def truncate(self, timeout=_DEFAULT_DEADLINE):
         """Truncate the table
 
         :type timeout: float
@@ -405,7 +406,7 @@ class Table(object):
                                           delete_all_data_from_table=True,
                                           timeout=timeout)
 
-    def drop_by_prefix(self, row_key_prefix, timeout=60):
+    def drop_by_prefix(self, row_key_prefix, timeout=_DEFAULT_DEADLINE):
         """
         :type row_prefix: bytes
         :param row_prefix: Delete all rows that start with this row key
