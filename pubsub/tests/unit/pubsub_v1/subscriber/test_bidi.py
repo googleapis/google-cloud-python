@@ -310,7 +310,7 @@ class TestResumableBidiRpc(object):
             grpc.StreamStreamMultiCallable,
             instance=True,
             side_effect=[call_1, call_2])
-        should_recover = mock.Mock(autospec=['__call__'], return_value=True)
+        should_recover = mock.Mock(spec=['__call__'], return_value=True)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -331,7 +331,7 @@ class TestResumableBidiRpc(object):
             grpc.StreamStreamMultiCallable,
             instance=True,
             return_value=call)
-        should_recover = mock.Mock(autospec=['__call__'], return_value=False)
+        should_recover = mock.Mock(spec=['__call__'], return_value=False)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -355,7 +355,7 @@ class TestResumableBidiRpc(object):
             grpc.StreamStreamMultiCallable,
             instance=True,
             side_effect=[call_1, call_2])
-        should_recover = mock.Mock(autospec=['__call__'], return_value=True)
+        should_recover = mock.Mock(spec=['__call__'], return_value=True)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -412,7 +412,7 @@ class TestResumableBidiRpc(object):
             grpc.StreamStreamMultiCallable,
             instance=True,
             return_value=call)
-        should_recover = mock.Mock(autospec=['__call__'], return_value=False)
+        should_recover = mock.Mock(spec=['__call__'], return_value=False)
         bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         bidi_rpc.open()
@@ -425,6 +425,48 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.call == call
         assert bidi_rpc.is_active is False
         assert call.cancelled is True
+
+    def test_reopen_failure_on_rpc_restart(self):
+        error1 = ValueError('1')
+        error2 = ValueError('2')
+        call = CallStub([error1])
+        # Invoking start RPC a second time will trigger an error.
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable,
+            instance=True,
+            side_effect=[call, error2])
+        should_recover = mock.Mock(spec=['__call__'], return_value=True)
+        callback = mock.Mock(spec=['__call__'])
+
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
+        bidi_rpc.add_done_callback(callback)
+
+        bidi_rpc.open()
+
+        with pytest.raises(ValueError) as exc_info:
+            bidi_rpc.recv()
+
+        assert exc_info.value == error2
+        should_recover.assert_called_once_with(error1)
+        assert bidi_rpc.call is None
+        assert bidi_rpc.is_active is False
+        callback.assert_called_once_with(error2)
+
+    def test_finalize_idempotent(self):
+        error1 = ValueError('1')
+        error2 = ValueError('2')
+        callback = mock.Mock(spec=['__call__'])
+        should_recover = mock.Mock(spec=['__call__'], return_value=False)
+
+        bidi_rpc = bidi.ResumableBidiRpc(
+            mock.sentinel.start_rpc, should_recover)
+
+        bidi_rpc.add_done_callback(callback)
+
+        bidi_rpc._on_call_done(error1)
+        bidi_rpc._on_call_done(error2)
+
+        callback.assert_called_once_with(error1)
 
 
 class TestBackgroundConsumer(object):
