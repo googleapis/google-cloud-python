@@ -283,6 +283,34 @@ class TestTable(unittest.TestCase):
     def test_create(self):
         self._create_test_helper()
 
+    def test_create_with_split_keys(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client, bigtable_table_admin_client)
+
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        split_keys = ['split1', 'split2', 'split3']
+
+        # Patch API calls
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
+
+        # Create expected_result.
+        expected_result = None  # create() has no return value.
+
+        # Perform the method and check the result.
+        result = table.create(split_keys)
+        self.assertEqual(result, expected_result)
+
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
@@ -501,7 +529,7 @@ class TestTable(unittest.TestCase):
             'end_key': end_key,
             'filter_': filter_obj,
             'limit': limit,
-            'end_inclusive': False,
+            'end_inclusive': False
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
