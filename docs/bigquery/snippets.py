@@ -33,6 +33,10 @@ try:
     import pandas
 except ImportError:
     pandas = None
+try:
+    import pyarrow
+except ImportError:
+    pandas = None
 
 from google.cloud import bigquery
 
@@ -2071,6 +2075,45 @@ def test_list_rows_as_dataframe(client):
     assert isinstance(df, pandas.DataFrame)
     assert len(list(df)) == len(table.schema)  # verify the number of columns
     assert len(df) == table.num_rows           # verify the number of rows
+
+
+@pytest.mark.skipIf(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipIf(pyarrow is None, reason='Requires `pyarrow`')
+def test_load_table_from_dataframe(client, to_delete):
+    dataset_id = 'load_table_dataframe_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_dataframe]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table('monty_python')
+    records = [
+        {'title': 'The Meaning of Life', 'release_year': 1983},
+        {'title': 'Monty Python and the Holy Grail', 'release_year': 1975},
+        {'title': 'Life of Brian', 'release_year': 1979},
+        {
+            'title': 'And Now for Something Completely Different',
+            'release_year': 1971
+        },
+    ]
+    dataframe = pandas.DataFrame(records)
+
+    job = client.load_table_from_dataframe(dataframe, table_ref, location='US')
+
+    job.result()  # Waits for table load to complete.
+
+    assert job.state == 'DONE'
+    table = client.get_table(table_ref)
+    assert table.num_rows == 4
+    # [END bigquery_load_table_dataframe]
+    column_names = [field.name for field in table.schema]
+    assert 'title' in column_names
+    assert 'release_year' in column_names
 
 
 if __name__ == '__main__':
