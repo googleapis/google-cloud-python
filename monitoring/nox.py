@@ -21,7 +21,6 @@ import nox
 
 LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
-    os.path.join('..', 'core'),
 )
 
 
@@ -36,24 +35,30 @@ def default(session):
     """
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
-    session.install('-e', '.')
+
+    # Pandas does not support Python 3.4
+    if session.interpreter == 'python3.4':
+        session.install('-e', '.')
+    else:
+        session.install('-e', '.[pandas]')
 
     # Run py.test against the unit tests.
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud.monitoring',
+        '--cov=google.cloud.monitoring_v3._dataframe',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
         '--cov-fail-under=97',
         'tests/unit',
+        *session.posargs
     )
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6'])
 def unit(session, py):
     """Run the unit test suite."""
 
@@ -81,6 +86,9 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
+
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
@@ -88,7 +96,7 @@ def system(session, py):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', 'tests/system', *session.posargs)
 
 
 @nox.session

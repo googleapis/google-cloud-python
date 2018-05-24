@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.34.0
+
+### Implementation Changes
+- Regenerate GAPIC to account for the removal of GoogleDataCollectionConfig and google_data_collection_opt_in  (#5235)
+
+## 0.33.0
+
+### New Features
+
+- Add Audio Logging and Recognition Metadata. (#5123)
+
+### Internal / Testing Changes
+
+- Fix bad trove classifier
+
 ## 0.32.1
 
 ### Dependencies

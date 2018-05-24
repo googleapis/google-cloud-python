@@ -17,46 +17,17 @@
 
 import re
 
-from google.api_core import operation
-from google.cloud.bigtable._generated import (
-    instance_pb2 as data_v2_pb2)
-from google.cloud.bigtable._generated import (
-    bigtable_instance_admin_pb2 as messages_v2_pb2)
-from google.cloud.bigtable._generated import (
-    bigtable_table_admin_pb2 as table_messages_v2_pb2)
-from google.cloud.bigtable.cluster import Cluster
-from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+
+from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
-
-
-def _prepare_create_request(instance):
-    """Creates a protobuf request for a CreateInstance request.
-
-    :type instance: :class:`Instance`
-    :param instance: The instance to be created.
-
-    :rtype: :class:`.messages_v2_pb2.CreateInstanceRequest`
-    :returns: The CreateInstance request object containing the instance info.
-    """
-    parent_name = ('projects/' + instance._client.project)
-    message = messages_v2_pb2.CreateInstanceRequest(
-        parent=parent_name,
-        instance_id=instance.instance_id,
-        instance=data_v2_pb2.Instance(
-            display_name=instance.display_name,
-        ),
-    )
-    cluster = message.clusters[instance.instance_id]
-    cluster.name = instance.name + '/clusters/' + instance.instance_id
-    cluster.location = (
-        parent_name + '/locations/' + instance._cluster_location_id)
-    cluster.serve_nodes = instance._cluster_serve_nodes
-    return message
+_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Instance(object):
@@ -95,26 +66,27 @@ class Instance(object):
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the instance's
                         cluster; used to set up the instance's cluster.
+
+    :type default_storage_type: int
+    :param default_storage_type: (Optional) The default values are
+                                    STORAGE_TYPE_UNSPECIFIED = 0: The user did
+                                    not specify a storage type.
+                                    SSD = 1: Flash (SSD) storage should be
+                                    used.
+                                    HDD = 2: Magnetic drive (HDD) storage
+                                    should be used.
     """
 
     def __init__(self, instance_id, client,
                  location_id=_EXISTING_INSTANCE_LOCATION_ID,
-                 display_name=None,
-                 serve_nodes=DEFAULT_SERVE_NODES):
+                 display_name=None, serve_nodes=DEFAULT_SERVE_NODES,
+                 default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
         self._cluster_location_id = location_id
         self._cluster_serve_nodes = serve_nodes
         self._client = client
-
-    def _update_from_pb(self, instance_pb):
-        """Refresh self from the server-provided protobuf.
-
-        Helper for :meth:`from_pb` and :meth:`reload`.
-        """
-        if not instance_pb.display_name:  # Simple field (string)
-            raise ValueError('Instance protobuf does not contain display_name')
-        self.display_name = instance_pb.display_name
+        self._default_storage_type = default_storage_type
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -144,22 +116,15 @@ class Instance(object):
         instance_id = match.group('instance_id')
 
         result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
-        result._update_from_pb(instance_pb)
         return result
 
-    def copy(self):
-        """Make a copy of this instance.
-
-        Copies the local data stored as simple types and copies the client
-        attached to this instance.
-
-        :rtype: :class:`.Instance`
-        :returns: A copy of the current instance.
+    def _update_from_pb(self, instance_pb):
+        """Refresh self from the server-provided protobuf.
+        Helper for :meth:`from_pb` and :meth:`reload`.
         """
-        new_client = self._client.copy()
-        return self.__class__(self.instance_id, new_client,
-                              self._cluster_location_id,
-                              display_name=self.display_name)
+        if not instance_pb.display_name:  # Simple field (string)
+            raise ValueError('Instance protobuf does not contain display_name')
+        self.display_name = instance_pb.display_name
 
     @property
     def name(self):
@@ -174,9 +139,10 @@ class Instance(object):
             ``"projects/{project}/instances/{instance_id}"``
 
         :rtype: str
-        :returns: The instance name.
+        :returns: Return a fully-qualified instance string.
         """
-        return self._client.project_name + '/instances/' + self.instance_id
+        return self._client._instance_admin_client.instance_path(
+            project=self._client.project, instance=self.instance_id)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -195,9 +161,8 @@ class Instance(object):
 
     def reload(self):
         """Reload the metadata for this instance."""
-        request_pb = messages_v2_pb2.GetInstanceRequest(name=self.name)
-        # We expect `data_v2_pb2.Instance`.
-        instance_pb = self._client._instance_stub.GetInstance(request_pb)
+        instance_pb = self._client._instance_admin_client.get_instance(
+            self.name)
 
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
@@ -219,20 +184,29 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :rtype: :class:`Operation`
-        :returns: The long-running operation corresponding to the
-                  create operation.
+        :rtype: :class:`~google.api_core.operation.Operation`
+        :returns: The long-running operation corresponding to the create
+                    operation.
         """
-        request_pb = _prepare_create_request(self)
-        # We expect a `google.longrunning.operations_pb2.Operation`.
-        operation_pb = self._client._instance_stub.CreateInstance(request_pb)
+        clusters = {}
+        cluster_id = '{}-cluster'.format(self.instance_id)
+        cluster_name = self._client._instance_admin_client.cluster_path(
+            self._client.project, self.instance_id, cluster_id)
+        location = self._client._instance_admin_client.location_path(
+            self._client.project, self._cluster_location_id)
+        cluster = instance_pb2.Cluster(
+            name=cluster_name, location=location,
+            serve_nodes=self._cluster_serve_nodes,
+            default_storage_type=self._default_storage_type)
+        instance = instance_pb2.Instance(
+            display_name=self.display_name
+        )
+        clusters[cluster_id] = cluster
+        parent = self._client.project_path
 
-        operation_future = operation.from_grpc(
-            operation_pb,
-            self._client._operations_stub,
-            data_v2_pb2.Instance,
-            metadata_type=messages_v2_pb2.CreateInstanceMetadata)
-        return operation_future
+        return self._client._instance_admin_client.create_instance(
+            parent=parent, instance_id=self.instance_id, instance=instance,
+            clusters=clusters)
 
     def update(self):
         """Update this instance.
@@ -248,12 +222,10 @@ class Instance(object):
 
             before calling :meth:`update`.
         """
-        request_pb = data_v2_pb2.Instance(
-            name=self.name,
-            display_name=self.display_name,
-        )
-        # Ignore the expected `data_v2_pb2.Instance`.
-        self._client._instance_stub.UpdateInstance(request_pb)
+        type = enums.Instance.Type.TYPE_UNSPECIFIED
+        self._client._instance_admin_client.update_instance(
+            name=self.name, display_name=self.display_name, type_=type,
+            labels={})
 
     def delete(self):
         """Delete this instance.
@@ -277,44 +249,7 @@ class Instance(object):
           irrevocably disappear from the API, and their data will be
           permanently deleted.
         """
-        request_pb = messages_v2_pb2.DeleteInstanceRequest(name=self.name)
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        self._client._instance_stub.DeleteInstance(request_pb)
-
-    def cluster(self, cluster_id, serve_nodes=3):
-        """Factory to create a cluster associated with this client.
-
-        :type cluster_id: str
-        :param cluster_id: The ID of the cluster.
-
-        :type serve_nodes: int
-        :param serve_nodes: (Optional) The number of nodes in the cluster.
-                            Defaults to 3.
-
-        :rtype: :class:`~.bigtable.cluster.Cluster`
-        :returns: The cluster owned by this client.
-        """
-        return Cluster(cluster_id, self, serve_nodes=serve_nodes)
-
-    def list_clusters(self):
-        """Lists clusters in this instance.
-
-        :rtype: tuple
-        :returns: A pair of results, the first is a list of
-                  :class:`~.bigtable.cluster.Cluster` objects returned and the
-                  second is a list of strings (the failed locations in the
-                  request).
-        """
-        request_pb = messages_v2_pb2.ListClustersRequest(parent=self.name)
-        # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`
-        list_clusters_response = self._client._instance_stub.ListClusters(
-            request_pb)
-
-        failed_locations = [
-            location for location in list_clusters_response.failed_locations]
-        clusters = [Cluster.from_pb(cluster_pb, self)
-                    for cluster_pb in list_clusters_response.clusters]
-        return clusters, failed_locations
+        self._client._instance_admin_client.delete_instance(name=self.name)
 
     def table(self, table_id):
         """Factory to create a table associated with this instance.
@@ -335,12 +270,10 @@ class Instance(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        request_pb = table_messages_v2_pb2.ListTablesRequest(parent=self.name)
-        # We expect a `table_messages_v2_pb2.ListTablesResponse`
-        table_list_pb = self._client._table_stub.ListTables(request_pb)
+        table_list_pb = self._client._table_admin_client.list_tables(self.name)
 
         result = []
-        for table_pb in table_list_pb.tables:
+        for table_pb in table_list_pb:
             table_prefix = self.name + '/tables/'
             if not table_pb.name.startswith(table_prefix):
                 raise ValueError('Table name %s not of expected format' % (

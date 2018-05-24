@@ -700,7 +700,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Creates an inspect template for re-using frequently used configuration
+        Creates an InspectTemplate for re-using frequently used configuration
         for inspecting content, images, and storage.
 
         Example:
@@ -761,7 +761,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Updates the inspect template.
+        Updates the InspectTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -818,7 +818,7 @@ class DlpServiceClient(object):
                              timeout=google.api_core.gapic_v1.method.DEFAULT,
                              metadata=None):
         """
-        Gets an inspect template.
+        Gets an InspectTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -864,7 +864,7 @@ class DlpServiceClient(object):
                                timeout=google.api_core.gapic_v1.method.DEFAULT,
                                metadata=None):
         """
-        Lists inspect templates.
+        Lists InspectTemplates.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -943,7 +943,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes an inspect template.
+        Deletes an InspectTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -990,8 +990,8 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Creates a de-identify template for re-using frequently used configuration
-        for Deidentifying content, images, and storage.
+        Creates a DeidentifyTemplate for re-using frequently used configuration
+        for de-identifying content, images, and storage.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1051,7 +1051,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Updates the de-identify template.
+        Updates the DeidentifyTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1109,7 +1109,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Gets a de-identify template.
+        Gets a DeidentifyTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1158,7 +1158,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Lists de-identify templates.
+        Lists DeidentifyTemplates.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1237,7 +1237,7 @@ class DlpServiceClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Deletes a de-identify template.
+        Deletes a DeidentifyTemplate.
 
         Example:
             >>> from google.cloud import dlp_v2
@@ -1284,8 +1284,8 @@ class DlpServiceClient(object):
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
         """
-        Creates a new job to inspect storage or calculate risk metrics [How-to
-        guide](/dlp/docs/compute-risk-analysis).
+        Creates a new job to inspect storage or calculate risk metrics.
+        `How-to guide <https://cloud.google.com/dlp/docs/compute-risk-analysis>`__.
 
         Example:
             >>> from google.cloud import dlp_v2

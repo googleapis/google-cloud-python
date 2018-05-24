@@ -16,6 +16,8 @@ import unittest
 
 import mock
 
+from ._testing import _make_credentials
+
 
 class TestMaxVersionsGCRule(unittest.TestCase):
 
@@ -283,6 +285,15 @@ class TestColumnFamily(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
+
     def test_constructor(self):
         column_family_id = u'column-family-id'
         table = object()
@@ -351,9 +362,11 @@ class TestColumnFamily(unittest.TestCase):
         self.assertEqual(pb_val, expected)
 
     def _create_test_helper(self, gc_rule=None):
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -363,7 +376,10 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id,
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
@@ -384,7 +400,9 @@ class TestColumnFamily(unittest.TestCase):
         response_pb = _ColumnFamilyPB()
 
         # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
+        stub = _FakeStub(response_pb)
+        client._table_admin_client = api
+        client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.
         expected_result = None  # create() has no return value.
@@ -392,13 +410,7 @@ class TestColumnFamily(unittest.TestCase):
         # Perform the method and check the result.
         self.assertEqual(stub.results, (response_pb,))
         result = column_family.create()
-        self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ModifyColumnFamilies',
-            (request_pb,),
-            {},
-        )])
 
     def test_create(self):
         self._create_test_helper(gc_rule=None)
@@ -411,8 +423,10 @@ class TestColumnFamily(unittest.TestCase):
 
     def _update_test_helper(self, gc_rule=None):
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -422,7 +436,10 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id,
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
@@ -443,7 +460,9 @@ class TestColumnFamily(unittest.TestCase):
         response_pb = _ColumnFamilyPB()
 
         # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
+        stub = _FakeStub(response_pb)
+        client._table_admin_client = api
+        client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.
         expected_result = None  # update() has no return value.
@@ -451,13 +470,7 @@ class TestColumnFamily(unittest.TestCase):
         # Perform the method and check the result.
         self.assertEqual(stub.results, (response_pb,))
         result = column_family.update()
-        self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ModifyColumnFamilies',
-            (request_pb,),
-            {},
-        )])
 
     def test_update(self):
         self._update_test_helper(gc_rule=None)
@@ -470,9 +483,11 @@ class TestColumnFamily(unittest.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -482,7 +497,10 @@ class TestColumnFamily(unittest.TestCase):
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client()
+        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id,
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         column_family = self._make_one(column_family_id, table)
 
@@ -497,7 +515,9 @@ class TestColumnFamily(unittest.TestCase):
         response_pb = empty_pb2.Empty()
 
         # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
+        stub = _FakeStub(response_pb)
+        client._table_admin_client = api
+        client._table_admin_client.bigtable_table_admin_stub = stub
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.
@@ -505,13 +525,7 @@ class TestColumnFamily(unittest.TestCase):
         # Perform the method and check the result.
         self.assertEqual(stub.results, (response_pb,))
         result = column_family.delete()
-        self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ModifyColumnFamilies',
-            (request_pb,),
-            {},
-        )])
 
 
 class Test__gc_rule_from_pb(unittest.TestCase):
@@ -589,28 +603,28 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 
 
 def _GcRulePB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_admin_v2.proto import (
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_admin_v2.proto import (
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_admin_v2.proto import (
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_admin_v2.proto import (
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.ColumnFamily(*args, **kw)

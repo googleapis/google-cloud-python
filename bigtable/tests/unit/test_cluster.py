@@ -17,6 +17,8 @@ import unittest
 
 import mock
 
+from ._testing import _make_credentials
+
 
 class TestCluster(unittest.TestCase):
 
@@ -35,6 +37,15 @@ class TestCluster(unittest.TestCase):
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
+
+    @staticmethod
+    def _get_target_client_class():
+        from google.cloud.bigtable.client import Client
+
+        return Client
+
+    def _make_client(self, *args, **kwargs):
+        return self._get_target_client_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
@@ -58,108 +69,15 @@ class TestCluster(unittest.TestCase):
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
-    def test_copy(self):
-        SERVE_NODES = 8
-
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 serve_nodes=SERVE_NODES)
-        new_cluster = cluster.copy()
-
-        # Make sure the client copy succeeded.
-        self.assertIsNot(new_cluster._instance, instance)
-        self.assertEqual(new_cluster.serve_nodes, SERVE_NODES)
-        # Make sure the client got copied to a new instance.
-        self.assertIsNot(cluster, new_cluster)
-        self.assertEqual(cluster, new_cluster)
-
-    def test__update_from_pb_success(self):
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-
-        SERVE_NODES = 8
-        cluster_pb = _ClusterPB(
-            serve_nodes=SERVE_NODES,
-        )
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-
-        cluster = self._make_one(self.CLUSTER_ID, instance)
-        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
-        cluster._update_from_pb(cluster_pb)
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-
-    def test__update_from_pb_no_serve_nodes(self):
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-
-        cluster_pb = _ClusterPB()
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-
-        cluster = self._make_one(self.CLUSTER_ID, instance)
-        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
-        with self.assertRaises(ValueError):
-            cluster._update_from_pb(cluster_pb)
-        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
-
-    def test_from_pb_success(self):
-        SERVE_NODES = 331
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-
-        cluster_pb = _ClusterPB(
-            name=self.CLUSTER_NAME,
-            serve_nodes=SERVE_NODES,
-        )
-
-        klass = self._get_target_class()
-        cluster = klass.from_pb(cluster_pb, instance)
-        self.assertIsInstance(cluster, klass)
-        self.assertIs(cluster._instance, instance)
-        self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-
-    def test_from_pb_bad_cluster_name(self):
-        BAD_CLUSTER_NAME = 'INCORRECT_FORMAT'
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-        cluster_pb = _ClusterPB(name=BAD_CLUSTER_NAME)
-
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_pb(cluster_pb, instance)
-
-    def test_from_pb_project_mistmatch(self):
-        ALT_PROJECT = 'ALT_PROJECT'
-        client = _Client(ALT_PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-
-        self.assertNotEqual(self.PROJECT, ALT_PROJECT)
-
-        cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
-
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_pb(cluster_pb, instance)
-
-    def test_from_pb_instance_mistmatch(self):
-        ALT_INSTANCE_ID = 'ALT_INSTANCE_ID'
-        client = _Client(self.PROJECT)
-        instance = _Instance(ALT_INSTANCE_ID, client)
-
-        self.assertNotEqual(self.INSTANCE_ID, ALT_INSTANCE_ID)
-
-        cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
-
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_pb(cluster_pb, instance)
-
     def test_name_property(self):
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
+        from google.cloud.bigtable.instance import Instance
 
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance)
+
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
 
     def test___eq__(self):
@@ -192,26 +110,31 @@ class TestCluster(unittest.TestCase):
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
-        SERVE_NODES = 31
         LOCATION = 'LOCATION'
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance)
-
-        # Create request_pb
-        request_pb = _GetClusterRequestPB(name=self.CLUSTER_NAME)
 
         # Create response_pb
         response_pb = _ClusterPB(
-            serve_nodes=SERVE_NODES,
+            serve_nodes=DEFAULT_SERVE_NODES,
             location=LOCATION,
         )
 
         # Patch the stub used by the API method.
-        client._instance_stub = stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
@@ -222,28 +145,21 @@ class TestCluster(unittest.TestCase):
         # Perform the method and check the result.
         result = cluster.reload()
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'GetCluster',
-            (request_pb,),
-            {},
-        )])
-
-        # Check Cluster optional config values before.
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-        self.assertEqual(cluster.location, LOCATION)
 
     def test_create(self):
         from google.api_core import operation
         from google.longrunning import operations_pb2
-        from google.cloud.bigtable._generated import (
-            bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
-        SERVE_NODES = 4
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(
-            self.CLUSTER_ID, instance, serve_nodes=SERVE_NODES)
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
 
         # Create response_pb
         OP_ID = 5678
@@ -253,7 +169,10 @@ class TestCluster(unittest.TestCase):
         response_pb = operations_pb2.Operation(name=OP_NAME)
 
         # Patch the stub used by the API method.
-        client._instance_stub = stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.CreateCluster.side_effect = [response_pb]
 
         # Perform the method and check the result.
         result = cluster.create()
@@ -262,36 +181,31 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.operation.name, OP_NAME)
         self.assertIsNone(result.metadata)
 
-        self.assertEqual(len(stub.method_calls), 1)
-        api_name, args, kwargs = stub.method_calls[0]
-        self.assertEqual(api_name, 'CreateCluster')
-        request_pb, = args
-        self.assertIsInstance(request_pb,
-                              messages_v2_pb2.CreateClusterRequest)
-        self.assertEqual(request_pb.parent, instance.name)
-        self.assertEqual(request_pb.cluster_id, self.CLUSTER_ID)
-        self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
-        self.assertEqual(kwargs, {})
-
     def test_update(self):
         import datetime
         from google.api_core import operation
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
-        from google.cloud.bigtable._generated import (
+        from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
 
         SERVE_NODES = 81
 
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  serve_nodes=SERVE_NODES)
 
@@ -318,41 +232,45 @@ class TestCluster(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
-        client._instance_stub = stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.UpdateCluster.side_effect = [response_pb]
 
         result = cluster.update()
 
         self.assertIsInstance(result, operation.Operation)
-        self.assertEqual(result.operation.name, OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
-        self.assertEqual(result.metadata.request_time, NOW_PB)
 
-        self.assertEqual(len(stub.method_calls), 1)
-        api_name, args, kwargs = stub.method_calls[0]
-        self.assertEqual(api_name, 'UpdateCluster')
-        request_pb, = args
         self.assertIsInstance(request_pb, data_v2_pb2.Cluster)
         self.assertEqual(request_pb.name, self.CLUSTER_NAME)
         self.assertEqual(request_pb.serve_nodes, SERVE_NODES)
-        self.assertEqual(kwargs, {})
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
 
-        client = _Client(self.PROJECT)
-        instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance)
-
-        # Create request_pb
-        request_pb = _DeleteClusterRequestPB(name=self.CLUSTER_NAME)
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 serve_nodes=DEFAULT_SERVE_NODES)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
 
         # Patch the stub used by the API method.
-        client._instance_stub = stub = _FakeStub(response_pb)
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.DeleteCluster.side_effect = [response_pb]
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.
@@ -361,61 +279,13 @@ class TestCluster(unittest.TestCase):
         result = cluster.delete()
 
         self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'DeleteCluster',
-            (request_pb,),
-            {},
-        )])
-
-
-class Test__prepare_create_request(unittest.TestCase):
-
-    def _call_fut(self, cluster):
-        from google.cloud.bigtable.cluster import _prepare_create_request
-
-        return _prepare_create_request(cluster)
-
-    def test_it(self):
-        from google.cloud.bigtable.cluster import Cluster
-
-        PROJECT = 'PROJECT'
-        INSTANCE_ID = 'instance-id'
-        CLUSTER_ID = 'cluster-id'
-        SERVE_NODES = 8
-
-        client = _Client(PROJECT)
-        instance = _Instance(INSTANCE_ID, client)
-        cluster = Cluster(CLUSTER_ID, instance,
-                          serve_nodes=SERVE_NODES)
-        cluster.location = u'projects/prahj-ekt/locations/zona-tres'
-
-        request_pb = self._call_fut(cluster)
-
-        self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
-        self.assertEqual(request_pb.parent, instance.name)
-        self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
-        self.assertEqual(request_pb.cluster.location, cluster.location)
 
 
 def _ClusterPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
+    from google.cloud.bigtable_admin_v2.proto import (
         instance_pb2 as instance_v2_pb2)
 
     return instance_v2_pb2.Cluster(*args, **kw)
-
-
-def _DeleteClusterRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_instance_admin_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.DeleteClusterRequest(*args, **kw)
-
-
-def _GetClusterRequestPB(*args, **kw):
-    from google.cloud.bigtable._generated import (
-        bigtable_instance_admin_pb2 as messages_v2_pb2)
-
-    return messages_v2_pb2.GetClusterRequest(*args, **kw)
 
 
 class _Instance(object):
@@ -423,14 +293,6 @@ class _Instance(object):
     def __init__(self, instance_id, client):
         self.instance_id = instance_id
         self._client = client
-
-    @property
-    def name(self):
-        return 'projects/%s/instances/%s' % (
-            self._client.project, self.instance_id)
-
-    def copy(self):
-        return self.__class__(self.instance_id, self._client)
 
     def __eq__(self, other):
         return (other.instance_id == self.instance_id and

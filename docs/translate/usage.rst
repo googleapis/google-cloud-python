@@ -5,7 +5,6 @@ Translation
   :maxdepth: 2
   :hidden:
 
-  releases
   client
 
 With `Google Cloud Translation`_, you can dynamically translate text
@@ -124,3 +123,13 @@ or to use a non-default target language:
 .. _FAQ: https://cloud.google.com/translate/faq
 .. _Identifying your application to Google: https://cloud.google.com/translate/docs/translating-text
 .. _confidence: https://cloud.google.com/translate/docs/detecting-language
+
+Changelog
+---------
+
+For a list of all ``google-cloud-translate`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

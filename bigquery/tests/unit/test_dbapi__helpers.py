@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import datetime
+import decimal
 import math
 import unittest
 
@@ -30,6 +31,7 @@ class TestQueryParameters(unittest.TestCase):
             (123, 'INT64'),
             (-123456789, 'INT64'),
             (1.25, 'FLOAT64'),
+            (decimal.Decimal('1.25'), 'NUMERIC'),
             (b'I am some bytes', 'BYTES'),
             (u'I am a string', 'STRING'),
             (datetime.date(2017, 4, 1), 'DATE'),

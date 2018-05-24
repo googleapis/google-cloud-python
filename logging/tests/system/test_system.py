@@ -427,6 +427,7 @@ class TestLogging(unittest.TestCase):
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
         sink.create()
+        self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
     def _init_bigquery_dataset(self):

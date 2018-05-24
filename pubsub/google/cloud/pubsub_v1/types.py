@@ -14,13 +14,9 @@
 
 from __future__ import absolute_import
 import collections
-import psutil
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
-from google.cloud.pubsub_v1.proto import pubsub_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.iam.v1.logging import audit_data_pb2
@@ -29,6 +25,9 @@ from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.pubsub_v1.proto import pubsub_pb2
 
 
 # Define the default values for batching.
@@ -58,34 +57,42 @@ FlowControl = collections.namedtuple(
      'max_lease_duration'],
 )
 FlowControl.__new__.__defaults__ = (
-    psutil.virtual_memory().total * 0.2,  # max_bytes: 20% of total RAM
-    float('inf'),                         # max_messages: no limit
-    0.8,                                  # resume_threshold: 80%
-    100,                                  # max_requests: 100
-    100,                                  # max_request_batch_size: 100
-    0.01,                                 # max_request_batch_latency: 0.01s
-    2 * 60 * 60,                          # max_lease_duration: 2 hours.
+    100 * 1024 * 1024,    # max_bytes: 100mb
+    100,                  # max_messages: 100
+    0.8,                  # resume_threshold: 80%
+    100,                  # max_requests: 100
+    100,                  # max_request_batch_size: 100
+    0.01,                 # max_request_batch_latency: 0.01s
+    2 * 60 * 60,          # max_lease_duration: 2 hours.
 )
 
 
+_shared_modules = [
+    http_pb2,
+    iam_policy_pb2,
+    policy_pb2,
+    audit_data_pb2,
+    descriptor_pb2,
+    duration_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    timestamp_pb2,
+]
+
+_local_modules = [
+    pubsub_pb2,
+]
+
+
 names = ['BatchSettings', 'FlowControl']
-for name, message in get_messages(pubsub_pb2).items():
-    message.__module__ = 'google.cloud.pubsub_v1.types'
-    setattr(sys.modules[__name__], name, message)
-    names.append(name)
 
 
-for module in (
-        http_pb2,
-        pubsub_pb2,
-        iam_policy_pb2,
-        policy_pb2,
-        audit_data_pb2,
-        descriptor_pb2,
-        duration_pb2,
-        empty_pb2,
-        field_mask_pb2,
-        timestamp_pb2, ):
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.pubsub_v1.types'
         setattr(sys.modules[__name__], name, message)

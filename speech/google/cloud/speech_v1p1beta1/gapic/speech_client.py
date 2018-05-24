@@ -26,6 +26,8 @@ import google.api_core.protobuf_helpers
 from google.cloud.speech_v1p1beta1.gapic import enums
 from google.cloud.speech_v1p1beta1.gapic import speech_client_config
 from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2
+from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2_grpc
+from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-speech', ).version
@@ -85,7 +87,7 @@ class SpeechClient(object):
             )
 
         # Create the gRPC stubs.
-        self.speech_stub = (cloud_speech_pb2.SpeechStub(channel))
+        self.speech_stub = (cloud_speech_pb2_grpc.SpeechStub(channel))
 
         # Operations client for methods that return long-running operations
         # futures.

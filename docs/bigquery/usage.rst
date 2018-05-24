@@ -5,11 +5,19 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
-  releases
   reference
   dbapi
 
 .. contents:: :local:
+
+.. note::
+
+    This library changed significantly before the 1.0.0 release, especially
+    between version 0.27 and 0.28. See `Migrating from the BigQuery Python
+    client library version 0.27
+    <https://cloud.google.com/bigquery/docs/python-client-migration>`__ for
+    instructions on how to migrated your code to the most recent version of
+    this library.
 
 Authentication / Configuration
 ------------------------------
@@ -106,12 +114,6 @@ Update a property in a dataset's metadata:
    :start-after: [START bigquery_update_dataset_description]
    :end-before: [END bigquery_update_dataset_description]
 
-Update multiple properties in a dataset's metadata:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_update_dataset_multiple_properties]
-   :end-before: [END bigquery_update_dataset_multiple_properties]
-
 Modify user permissions on a dataset:
 
 .. literalinclude:: snippets.py
@@ -157,29 +159,11 @@ Update a property in a table's metadata:
    :start-after: [START bigquery_update_table_description]
    :end-before: [END bigquery_update_table_description]
 
-Update multiple properties in a table's metadata:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_update_table_multiple_properties]
-   :end-before: [END bigquery_update_table_multiple_properties]
-
-Get rows from a table's data:
-
-.. literalinclude:: snippets.py
-   :start-after: [START table_list_rows]
-   :end-before: [END table_list_rows]
-
 Browse selected rows in a table:
 
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_browse_table]
    :end-before: [END bigquery_browse_table]
-
-Utilize iterator properties returned with row data:
-
-.. literalinclude:: snippets.py
-   :start-after: [START table_list_rows_iterator_properties]
-   :end-before: [END table_list_rows_iterator_properties]
 
 Insert rows into a table's data:
 
@@ -208,8 +192,8 @@ Delete a table:
 Upload table data from a file:
 
 .. literalinclude:: snippets.py
-   :start-after: [START load_table_from_file]
-   :end-before: [END load_table_from_file]
+   :start-after: [START bigquery_load_from_file]
+   :end-before: [END bigquery_load_from_file]
 
 Load table data from Google Cloud Storage
 *****************************************
@@ -234,48 +218,6 @@ Load a Parquet file from Cloud Storage:
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_load_table_gcs_parquet]
    :end-before: [END bigquery_load_table_gcs_parquet]
-
-Load a CSV file from Cloud Storage, using an autodetected schema:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_csv_autodetect]
-   :end-before: [END bigquery_load_table_gcs_csv_autodetect]
-
-Append a CSV file from Cloud Storage to an existing table:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_csv_append]
-   :end-before: [END bigquery_load_table_gcs_csv_append]
-
-Append a JSON file from Cloud Storage to an existing table:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_json_append]
-   :end-before: [END bigquery_load_table_gcs_json_append]
-
-Append a Parquet file from Cloud Storage to an existing table:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_parquet_append]
-   :end-before: [END bigquery_load_table_gcs_parquet_append]
-
-Overwrite / replace an existing table with a CSV file from Cloud Storage:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_csv_truncate]
-   :end-before: [END bigquery_load_table_gcs_csv_truncate]
-
-Overwrite / replace an existing table with a JSON file from Cloud Storage:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_json_truncate]
-   :end-before: [END bigquery_load_table_gcs_json_truncate]
-
-Overwrite / replace an existing table with a Parquet file from Cloud Storage:
-
-.. literalinclude:: snippets.py
-   :start-after: [START bigquery_load_table_gcs_parquet_truncate]
-   :end-before: [END bigquery_load_table_gcs_parquet_truncate]
 
 Customer Managed Encryption Keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -324,27 +266,15 @@ Queries
 -------
 
 
-Run a simple query
+Querying data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Run a query and wait for it to finish:
 
 .. literalinclude:: snippets.py
-   :start-after: [START client_simple_query]
-   :end-before: [END client_simple_query]
+   :start-after: [START bigquery_query]
+   :end-before: [END bigquery_query]
 
-
-Querying data
-~~~~~~~~~~~~~
-
-.. literalinclude:: snippets.py
-   :start-after: [START client_query]
-   :end-before: [END client_query]
-
-.. note::
-
-  - Use of the ``timeout`` parameter is optional. The query will continue to
-    run in the background even if it takes longer the timeout allowed.
 
 Run a dry run query
 ~~~~~~~~~~~~~~~~~~~
@@ -352,6 +282,7 @@ Run a dry run query
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_query_dry_run]
    :end-before: [END bigquery_query_dry_run]
+
 
 Writing query results to a destination table
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -371,8 +302,8 @@ See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
 
 .. literalinclude:: snippets.py
-  :start-after: [START client_query_w_param]
-  :end-before: [END client_query_w_param]
+  :start-after: [START bigquery_query_params_named]
+  :end-before: [END bigquery_query_params_named]
 
 
 List jobs for a project
@@ -386,8 +317,8 @@ Jobs describe actions performed on data in BigQuery tables:
 - Copy a table
 
 .. literalinclude:: snippets.py
-   :start-after: [START client_list_jobs]
-   :end-before: [END client_list_jobs]
+   :start-after: [START bigquery_list_jobs]
+   :end-before: [END bigquery_list_jobs]
 
 
 Using BigQuery with Pandas
@@ -421,3 +352,14 @@ To retrieve table rows as a :class:`pandas.DataFrame`:
 .. literalinclude:: snippets.py
    :start-after: [START bigquery_list_rows_dataframe]
    :end-before: [END bigquery_list_rows_dataframe]
+
+Changelog
+---------
+
+For a list of all ``google-cloud-bigquery`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog
+

@@ -308,11 +308,12 @@ An API and type reference is provided the first beta also:
   gapic/v1p1beta1/api
   gapic/v1p1beta1/types
 
-Releases
---------
+Changelog
+---------
 
 For a list of all ``google-cloud-speech`` releases:
 
 .. toctree::
+  :maxdepth: 2
 
-  releases
+  changelog
