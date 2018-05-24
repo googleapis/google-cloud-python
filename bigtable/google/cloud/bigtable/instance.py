@@ -337,7 +337,7 @@ class Instance(object):
         multi_cluster_routing_use_any = None
         instance_admin_client = self._client._instance_admin_client
         name = instance_admin_client.app_profile_path(
-            self._client.project, self.name, app_profile_id)
+            self._client.project, self.instance_id, app_profile_id)
 
         if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
             multi_cluster_routing_use_any = (
