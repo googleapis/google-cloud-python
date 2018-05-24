@@ -45,6 +45,7 @@ def test_to_user_agent_minimal():
     info = client_info.ClientInfo(
         python_version='1',
         api_core_version='2',
+        grpc_version=None
     )
 
     user_agent = info.to_user_agent()

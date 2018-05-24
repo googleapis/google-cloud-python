@@ -23,11 +23,13 @@ import platform
 import pkg_resources
 
 _PY_VERSION = platform.python_version()
+_API_CORE_VERSION = pkg_resources.get_distribution('google-api-core').version
+
 try:
     _GRPC_VERSION = pkg_resources.get_distribution('grpcio').version
-except pkg_resources.DistributionNotFound:
+except pkg_resources.DistributionNotFound:  # pragma: NO COVER
     _GRPC_VERSION = None
-_API_CORE_VERSION = pkg_resources.get_distribution('google-api-core').version
+
 METRICS_METADATA_KEY = 'x-goog-api-client'
 
 
