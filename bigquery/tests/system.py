@@ -409,6 +409,10 @@ class TestBigQuery(unittest.TestCase):
             """.format(dsname, table_id, colprojections, rowcount)
         query_job = Config.CLIENT.query(sql)
         query_job.result()
+        self.assertTrue(query_job.statement_type, 'CREATE_TABLE_AS_SELECT')
+        self.assertTrue(query_job.ddl_operation_performed, 'CREATE')
+        self.assertTrue(query_job.ddl_target_table, table_ref)
+
         return table_ref
 
     def test_query_many_columns(self):

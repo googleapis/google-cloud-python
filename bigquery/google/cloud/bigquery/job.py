@@ -2268,7 +2268,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def ddl_operation_performed(self):
-        """Union[str, None]: Return the DDL operation performed.
+        """Optional[str]: Return the DDL operation performed.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlOperationPerformed
@@ -2278,7 +2278,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def ddl_target_table(self):
-        """Union[tablereference, None]: Return the DDL target table, present
+        """Optional[TableReference]: Return the DDL target table, present
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
