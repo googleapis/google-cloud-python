@@ -2267,6 +2267,29 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get('cacheHit')
 
     @property
+    def ddl_operation_performed(self):
+        """Optional[str]: Return the DDL operation performed.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlOperationPerformed
+
+        """
+        return self._job_statistics().get('ddlOperationPerformed')
+
+    @property
+    def ddl_target_table(self):
+        """Optional[TableReference]: Return the DDL target table, present
+            for CREATE/DROP TABLE/VIEW queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlTargetTable
+        """
+        prop = self._job_statistics().get('ddlTargetTable')
+        if prop is not None:
+            prop = TableReference.from_api_repr(prop)
+        return prop
+
+    @property
     def num_dml_affected_rows(self):
         """Return the number of DML rows affected by the job.
 

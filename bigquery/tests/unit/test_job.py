@@ -2454,6 +2454,45 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['cacheHit'] = True
         self.assertTrue(job.cache_hit)
 
+    def test_ddl_operation_performed(self):
+        op = 'SKIP'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_operation_performed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.ddl_operation_performed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.ddl_operation_performed)
+
+        query_stats['ddlOperationPerformed'] = op
+        self.assertEqual(job.ddl_operation_performed, op)
+
+    def test_ddl_target_table(self):
+        from google.cloud.bigquery.table import TableReference
+
+        ref_table = {
+            'projectId': self.PROJECT,
+            'datasetId': 'ddl_ds',
+            'tableId': 'targettable',
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_target_table)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.ddl_target_table)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.ddl_target_table)
+
+        query_stats['ddlTargetTable'] = ref_table
+        self.assertIsInstance(job.ddl_target_table, TableReference)
+        self.assertEqual(job.ddl_target_table.table_id, 'targettable')
+        self.assertEqual(job.ddl_target_table.dataset_id, 'ddl_ds')
+        self.assertEqual(job.ddl_target_table.project, self.PROJECT)
+
     def test_num_dml_affected_rows(self):
         num_rows = 1234
         client = _make_client(project=self.PROJECT)
