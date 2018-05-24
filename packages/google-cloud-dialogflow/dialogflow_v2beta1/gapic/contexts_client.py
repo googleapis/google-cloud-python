@@ -106,7 +106,7 @@ class ContextsClient(object):
                                  context):
         """Return a fully-qualified environment_context string."""
         return google.api_core.path_template.expand(
-            'projects/{project}/agent/sessions/{environment}/users/{user}/{session}/contexts/{context}',
+            'projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}/contexts/{context}',
             project=project,
             environment=environment,
             user=user,
