@@ -17,8 +17,6 @@ import decimal
 import email
 import io
 import json
-import os
-import sys
 import unittest
 
 import mock
@@ -3513,14 +3511,6 @@ class TestClientUpload(object):
         with load_patch as load_table_from_file:
             client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
-        current_dir = os.path.abspath(os.path.dirname(__file__))
-        # The parquet files created by dataframe.to_parquet() differ between
-        # Python major versions
-        filename = 'monty_python{}.parquet'.format(sys.version_info.major)
-        filepath = os.path.join(current_dir, '..', 'data', filename)
-        with io.open(filepath, 'rb') as fh:
-            expected_bytes = fh.read()
-
         load_table_from_file.assert_called_once_with(
             client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
             rewind=True, job_id=None, job_id_prefix=None, location=None,
@@ -3528,7 +3518,8 @@ class TestClientUpload(object):
 
         sent_file = load_table_from_file.mock_calls[0][1][1]
         sent_bytes = sent_file.getvalue()
-        assert sent_bytes == expected_bytes
+        assert isinstance(sent_bytes, bytes)
+        assert len(sent_bytes) > 0
 
         sent_config = load_table_from_file.mock_calls[0][2]['job_config']
         assert sent_config.source_format == job.SourceFormat.PARQUET
