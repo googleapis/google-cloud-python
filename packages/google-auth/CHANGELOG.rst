@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v1.4.2
+------
+
+- Raise a helpful exception when trying to refresh credentials without a refresh token. (#262)
+- Fix links to README and CONTRIBUTING in docs/index.rst. (#260)
+- Fix a typo in credentials.py. (#256)
+- Use pytest instead of py.test per upstream recommendation, #dropthedot. (#255)
+- Fix typo on exemple of jwt usage (#245)
+
 v1.4.1
 ------
 
