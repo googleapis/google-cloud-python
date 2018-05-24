@@ -17,8 +17,10 @@ import json
 import os
 
 import mock
+import pytest
 
 from google.auth import _helpers
+from google.auth import exceptions
 from google.auth import transport
 from google.oauth2 import credentials
 
@@ -94,6 +96,16 @@ class TestCredentials(object):
         # Check that the credentials are valid (have a token and are not
         # expired)
         assert credentials.valid
+
+    def test_refresh_no_refresh_token(self):
+        request = mock.create_autospec(transport.Request)
+        credentials_ = credentials.Credentials(
+            token=None, refresh_token=None)
+
+        with pytest.raises(exceptions.RefreshError, match='necessary fields'):
+            credentials_.refresh(request)
+
+        request.assert_not_called()
 
     def test_from_authorized_user_info(self):
         info = AUTH_USER_INFO.copy()
