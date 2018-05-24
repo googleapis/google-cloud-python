@@ -55,7 +55,8 @@ class TestInstance(unittest.TestCase):
     LOCATION_ID = 'locname'
     LOCATION = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
     APP_PROFILE_PATH = (
-            'projects/'+ PROJECT +'/instances/'+ INSTANCE_ID +'/appProfiles/')
+            'projects/' + PROJECT + '/instances/' + INSTANCE_ID
+            + '/appProfiles/')
     DISPLAY_NAME = 'display_name'
     OP_ID = 8915
     OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
