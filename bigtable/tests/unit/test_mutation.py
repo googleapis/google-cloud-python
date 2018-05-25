@@ -188,7 +188,7 @@ class TestMutateRows(unittest.TestCase):
         client._table_data_client = data_api
         client._table_admin_client = table_api
 
-        mutate_rows = self._make_one(row_key=self.ROW_KEY, table=table)
+        mutate_rows = self._make_one(row_key=self.ROW_KEY)
 
         mutate_rows.delete()
 

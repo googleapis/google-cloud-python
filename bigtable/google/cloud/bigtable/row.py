@@ -276,7 +276,7 @@ class DirectRow(_SetDeleteRow):
 
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
-        self._row_mutations = mutation.RowMutations(row_key, table)
+        self._row_mutations = mutation.RowMutations(row_key)
 
     @property
     def row_mutations(self):
