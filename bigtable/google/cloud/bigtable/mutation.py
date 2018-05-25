@@ -12,9 +12,8 @@ class RowMutations(object):
             row_key (str): Key of the Row in string.
         """
 
-    def __init__(self, row_key, table, app_profile_id=None):
+    def __init__(self, row_key, app_profile_id=None):
         self.row_key = _to_bytes(row_key)
-        self.table = table
         self.app_profile_id = app_profile_id
         self.mutations = []
 
@@ -109,17 +108,3 @@ class RowMutations(object):
         for mutation in self.mutations:
             entry.mutations.add().CopyFrom(mutation)
         return entry
-
-    def mutate(self):
-        """Call the GAPIC API for MutateRows
-
-        Returns:
-            A :class:`~google.cloud.bigtable_v2.types.MutateRowResponse`
-            instance.
-        """
-        return self.table._instance._client._table_data_client.mutate_row(
-            self.table.name,
-            self.row_key,
-            self.mutations,
-            self.app_profile_id
-        )
