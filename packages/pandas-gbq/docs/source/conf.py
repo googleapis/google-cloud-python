@@ -359,8 +359,12 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+# Configuration for intersphinx:
+intersphinx_mapping = {
+    'https://docs.python.org/': None,
+    'https://pandas.pydata.org/pandas-docs/stable/': None,
+    'https://google-auth.readthedocs.io/en/latest/': None,
+}
 
 extlinks = {'issue': ('https://github.com/pydata/pandas-gbq/issues/%s',
                       'GH#'),

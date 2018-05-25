@@ -476,23 +476,12 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     The main method a user calls to execute a Query in Google BigQuery
     and read results into a pandas DataFrame.
 
-    The Google Cloud library is used.
-    Documentation is available `here
-    <https://googlecloudplatform.github.io/google-cloud-python/stable/>`__
+    This method uses the Google Cloud client library to make requests to
+    Google BigQuery, documented `here
+    <https://google-cloud-python.readthedocs.io/en/latest/bigquery/usage.html>`__.
 
-    Authentication to the Google BigQuery service is via OAuth 2.0.
-
-    - If "private_key" is not provided:
-
-      By default "application default credentials" are used.
-
-      If default application credentials are not found or are restrictive,
-      user account credentials are used. In this case, you will be asked to
-      grant permissions for product name 'pandas GBQ'.
-
-    - If "private_key" is provided:
-
-      Service account credentials will be used to authenticate.
+    See the :ref:`How to authenticate with Google BigQuery <authentication>`
+    guide for authentication instructions.
 
     Parameters
     ----------
@@ -612,29 +601,18 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
     The main method a user calls to export pandas DataFrame contents to
     Google BigQuery table.
 
-    Google BigQuery API Client Library v2 for Python is used.
-    Documentation is available `here
-    <https://developers.google.com/api-client-library/python/apis/bigquery/v2>`__
+    This method uses the Google Cloud client library to make requests to
+    Google BigQuery, documented `here
+    <https://google-cloud-python.readthedocs.io/en/latest/bigquery/usage.html>`__.
 
-    Authentication to the Google BigQuery service is via OAuth 2.0.
-
-    - If "private_key" is not provided:
-
-      By default "application default credentials" are used.
-
-      If default application credentials are not found or are restrictive,
-      user account credentials are used. In this case, you will be asked to
-      grant permissions for product name 'pandas GBQ'.
-
-    - If "private_key" is provided:
-
-      Service account credentials will be used to authenticate.
+    See the :ref:`How to authenticate with Google BigQuery <authentication>`
+    guide for authentication instructions.
 
     Parameters
     ----------
-    dataframe : DataFrame
+    dataframe : pandas.DataFrame
         DataFrame to be written
-    destination_table : string
+    destination_table : str
         Name of table to be written, in the form 'dataset.tablename'
     project_id : str (optional when available in environment)
         Google BigQuery Account project ID.

@@ -26,6 +26,7 @@ Contents:
 
    install.rst
    intro.rst
+   howto/authentication.rst
    reading.rst
    writing.rst
    tables.rst
