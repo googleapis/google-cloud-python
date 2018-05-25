@@ -397,7 +397,7 @@ class DirectRow(_SetDeleteRow):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        self._table.add_row_mutations(self.row_mutations)
+        self._table.save_mutations(self.row_mutations)
         self._table.commit()
 
 

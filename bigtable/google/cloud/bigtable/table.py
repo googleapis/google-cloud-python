@@ -318,7 +318,7 @@ class Table(object):
         for row in generator.read_rows():
             yield row
 
-    def add_row_mutations(self, row_mutations):
+    def save_mutations(self, row_mutations):
         self._mutation_rows.append(row_mutations)
 
     def mutate_rows(self, rows):
