@@ -31,12 +31,12 @@ import pytest
 import six
 try:
     import pandas
-except ImportError:
+except (ImportError, AttributeError):
     pandas = None
 try:
     import pyarrow
-except ImportError:
-    pandas = None
+except (ImportError, AttributeError):
+    pyarrow = None
 
 from google.cloud import bigquery
 
@@ -2077,8 +2077,8 @@ def test_list_rows_as_dataframe(client):
     assert len(df) == table.num_rows           # verify the number of rows
 
 
-@pytest.mark.skipIf(pandas is None, reason='Requires `pandas`')
-@pytest.mark.skipIf(pyarrow is None, reason='Requires `pyarrow`')
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipif(pyarrow is None, reason='Requires `pyarrow`')
 def test_load_table_from_dataframe(client, to_delete):
     dataset_id = 'load_table_dataframe_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -2101,9 +2101,12 @@ def test_load_table_from_dataframe(client, to_delete):
             'release_year': 1971
         },
     ]
+    # Optionally set explicit indices.
+    # If indices are not specified, a column will be created for the default
+    # indices created by pandas.
     index = ['Q24980', 'Q25043', 'Q24953', 'Q16403']
     dataframe = pandas.DataFrame(
-        records, index=pandas.Index(index, name='wikidata'))
+        records, index=pandas.Index(index, name='wikidata_id'))
 
     job = client.load_table_from_dataframe(dataframe, table_ref, location='US')
 
@@ -2114,9 +2117,7 @@ def test_load_table_from_dataframe(client, to_delete):
     assert table.num_rows == 4
     # [END bigquery_load_table_dataframe]
     column_names = [field.name for field in table.schema]
-    assert 'title' in column_names
-    assert 'release_year' in column_names
-    assert 'wikidata' in column_names
+    assert sorted(column_names) == ['release_year', 'title', 'wikidata_id']
 
 
 if __name__ == '__main__':
