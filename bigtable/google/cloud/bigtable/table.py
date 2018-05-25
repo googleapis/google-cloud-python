@@ -346,7 +346,7 @@ class Table(object):
         for row in rows:
             self._mutation_rows.append(row.row_mutations)
 
-        self.commit()
+        return self.commit()
 
     def commit(self):
         retryable_mutate_rows_status = _RetryableMutateRowsWorker(
@@ -445,8 +445,14 @@ class _RetryableMutateRowsWorker(object):
 
     def _mutate_rows_entries(self, mutation_rows):
         entries = []
+        mutations_count = 0
         for mutation_row in mutation_rows:
+            mutations_count += 1
             entries.append(mutation_row.create_entry())
+
+        if mutations_count > _MAX_BULK_MUTATIONS:
+            raise TooManyMutationsError('Maximum number of mutations is %s' %
+                                        (_MAX_BULK_MUTATIONS,))
 
         return entries
 
@@ -598,7 +604,7 @@ def _mutate_rows_request(table_name, rows):
         entry.row_key = row.row_key
         # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
         #  the mutations have no state.
-        for mutation in row._get_mutations(None):
+        for mutation in row.row_mutations.mutations:
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
     if mutations_count > _MAX_BULK_MUTATIONS:

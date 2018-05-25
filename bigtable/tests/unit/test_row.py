@@ -84,7 +84,7 @@ class TestDirectRow(unittest.TestCase):
         row = self._make_one(row_key, table)
         self.assertEqual(row._row_key, row_key)
         self.assertIs(row._table, table)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
 
     def test_constructor_with_unicode(self):
         row_key = u'row_key'
@@ -149,7 +149,7 @@ class TestDirectRow(unittest.TestCase):
                               column_bytes=column_bytes)
 
     def test_set_cell_with_integer_value(self):
-        value = 1337
+        value = '1337'
         self._set_cell_helper(value=value)
 
     def test_set_cell_with_non_bytes_value(self):
@@ -447,26 +447,35 @@ class TestDirectRow(unittest.TestCase):
                 row.commit()
 
     def test_commit_no_mutations(self):
-        from tests.unit._testing import _FakeStub
+        from grpc import StatusCode
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
 
         project_id = 'project-id'
         row_key = b'row_key'
 
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
-        table = _Table(None, client=client)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id='instance-id')
+        table = instance.table('table-id')
         row = self._make_one(row_key, table)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row.row_mutations.mutations, [])
 
         # Patch the stub used by the API method.
-        stub = _FakeStub()
+        response = self._make_responses([StatusCode.OK.value[0]])
+        bigtable_stub = client._table_data_client.bigtable_stub
+        bigtable_stub.MutateRows.return_value = [response]
 
         # Perform the method and check the result.
         result = row.commit()
         self.assertIsNone(result)
-        # Make sure no request was sent.
-        self.assertEqual(stub.method_calls, [])
 
 
 class TestConditionalRow(unittest.TestCase):
