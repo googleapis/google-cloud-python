@@ -1,0 +1,6 @@
+requirements_file: docs/requirements-docs.txt
+build:
+  image: latest
+python:
+  pip_install: true
+  version: 3.6
