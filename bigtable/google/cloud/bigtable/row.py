@@ -313,16 +313,8 @@ class DirectRow(_SetDeleteRow):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (Optional) The timestamp of the operation.
         """
-        if timestamp is None:
-            # Use -1 for current Bigtable server time.
-            timestamp_micros = -1
-        else:
-            timestamp_micros = _microseconds_from_datetime(timestamp)
-            # Truncate to millisecond granularity.
-            timestamp_micros -= (timestamp_micros % 1000)
-
         self._row_mutations.set_cell(column_family_id, column, value,
-                                     timestamp=timestamp_micros)
+                                     timestamp=timestamp)
 
     def delete(self):
         """Deletes this row from the table.
@@ -387,10 +379,7 @@ class DirectRow(_SetDeleteRow):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        if columns is self.ALL_COLUMNS:
-            self._row_mutations.delete_from_family(column_family_id)
-        else:
-            self._row_mutations.delete_cells(column_family_id, columns,
+        self._row_mutations.delete_cells(column_family_id, columns,
                                              time_range=time_range)
 
     def commit(self):
