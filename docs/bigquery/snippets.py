@@ -2101,7 +2101,9 @@ def test_load_table_from_dataframe(client, to_delete):
             'release_year': 1971
         },
     ]
-    dataframe = pandas.DataFrame(records)
+    index = ['Q24980', 'Q25043', 'Q24953', 'Q16403']
+    dataframe = pandas.DataFrame(
+        records, index=pandas.Index(index, name='wikidata'))
 
     job = client.load_table_from_dataframe(dataframe, table_ref, location='US')
 
@@ -2114,6 +2116,7 @@ def test_load_table_from_dataframe(client, to_delete):
     column_names = [field.name for field in table.schema]
     assert 'title' in column_names
     assert 'release_year' in column_names
+    assert 'wikidata' in column_names
 
 
 if __name__ == '__main__':
