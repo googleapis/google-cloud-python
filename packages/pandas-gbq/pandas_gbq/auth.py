@@ -39,8 +39,10 @@ def get_service_account_credentials(private_key):
     import google.auth.transport.requests
     from google.oauth2.service_account import Credentials
 
+    is_path = os.path.isfile(private_key)
+
     try:
-        if os.path.isfile(private_key):
+        if is_path:
             with open(private_key) as f:
                 json_key = json.loads(f.read())
         else:
@@ -64,11 +66,13 @@ def get_service_account_credentials(private_key):
         return credentials, json_key.get('project_id')
     except (KeyError, ValueError, TypeError, AttributeError):
         raise pandas_gbq.exceptions.InvalidPrivateKeyFormat(
-            "Private key is missing or invalid. It should be service "
-            "account private key JSON (file path or string contents) "
-            "with at least two keys: 'client_email' and 'private_key'. "
-            "Can be obtained from: https://console.developers.google."
-            "com/permissions/serviceaccounts")
+            'Detected private_key as {}. '.format(
+                'path' if is_path else 'contents') +
+            'Private key is missing or invalid. It should be service '
+            'account private key JSON (file path or string contents) '
+            'with at least two keys: "client_email" and "private_key". '
+            'Can be obtained from: https://console.developers.google.'
+            'com/permissions/serviceaccounts')
 
 
 def get_application_default_credentials(project_id=None):
