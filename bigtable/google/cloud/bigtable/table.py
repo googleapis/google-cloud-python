@@ -320,6 +320,7 @@ class Table(object):
 
     def save_mutations(self, row_mutations):
         self._mutation_rows.append(row_mutations)
+        return self.commit()
 
     def mutate_rows(self, rows):
         """Mutates multiple rows in bulk.

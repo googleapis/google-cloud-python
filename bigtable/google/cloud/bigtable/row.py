@@ -398,7 +398,6 @@ class DirectRow(_SetDeleteRow):
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
         self._table.save_mutations(self.row_mutations)
-        self._table.commit()
 
 
 class ConditionalRow(_SetDeleteRow):
