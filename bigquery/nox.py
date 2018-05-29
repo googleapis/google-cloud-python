@@ -41,7 +41,7 @@ def default(session):
     if session.interpreter == 'python3.4':
         session.install('-e', '.')
     else:
-        session.install('-e', '.[pandas]')
+        session.install('-e', '.[pandas, pyarrow]')
 
     # IPython does not support Python 2 after version 5.x
     if session.interpreter == 'python2.7':
@@ -142,7 +142,7 @@ def snippets(session, py):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('-e', '.[pandas]')
+    session.install('-e', '.[pandas, pyarrow]')
 
     # Run py.test against the system tests.
     session.run(

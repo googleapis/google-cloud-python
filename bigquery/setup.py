@@ -35,6 +35,7 @@ dependencies = [
 ]
 extras = {
     'pandas': 'pandas>=0.17.1',
+    'pyarrow': 'pyarrow>=0.4.1',
 }
 
 
