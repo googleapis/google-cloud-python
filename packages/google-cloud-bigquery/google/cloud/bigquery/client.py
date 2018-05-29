@@ -773,8 +773,8 @@ class Client(ClientWithProject):
             job_config=None):
         """Upload the contents of this table from a file-like object.
 
-        Like load_table_from_uri, this creates, starts and returns
-        a ``LoadJob``.
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
 
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
@@ -832,6 +832,63 @@ class Client(ClientWithProject):
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
         return self.job_from_resource(response.json())
+
+    def load_table_from_dataframe(self, dataframe, destination,
+                                  num_retries=_DEFAULT_NUM_RETRIES,
+                                  job_id=None, job_id_prefix=None,
+                                  location=None, project=None,
+                                  job_config=None):
+        """Upload the contents of a table from a pandas DataFrame.
+
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
+
+        Arguments:
+            dataframe (pandas.DataFrame):
+                A :class:`~pandas.DataFrame` containing the data to load.
+            destination (google.cloud.bigquery.table.TableReference):
+                The destination table to use for loading the data. If it is an
+                existing table, the schema of the :class:`~pandas.DataFrame`
+                must match the schema of the destination table. If the table
+                does not yet exist, the schema is inferred from the
+                :class:`~pandas.DataFrame`.
+
+        Keyword Arguments:
+            num_retries (int, optional): Number of upload retries.
+            job_id (str, optional): Name of the job.
+            job_id_prefix (str, optional):
+                The user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                destination table.
+            project (str, optional):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+                Extra configuration options for the job.
+
+        Returns:
+            google.cloud.bigquery.job.LoadJob: A new load job.
+
+        Raises:
+            ImportError:
+                If a usable parquet engine cannot be found. This method
+                requires one of :mod:`pyarrow` or :mod:`fastparquet` to be
+                installed.
+        """
+        buffer = six.BytesIO()
+        dataframe.to_parquet(buffer)
+
+        if job_config is None:
+            job_config = job.LoadJobConfig()
+        job_config.source_format = job.SourceFormat.PARQUET
+
+        return self.load_table_from_file(
+            buffer, destination, num_retries=num_retries, rewind=True,
+            job_id=job_id, job_id_prefix=job_id_prefix, location=location,
+            project=project, job_config=job_config)
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
