@@ -132,16 +132,16 @@ credentials and transports provided by this library, you need to follow a few
 additional steps:
 
 #. If you are using the :mod:`google.auth.transport.requests` transport, vendor
-   in the `requests-toolbelt`_ library into you app, and enable the App Engine
+   in the `requests-toolbelt`_ library into your app, and enable the App Engine
    monkeypatch. Refer `App Engine documentation`_ for more details on this.
-#. To make HTTPS calls, enable the ``ssl`` library for you app by adding the
+#. To make HTTPS calls, enable the ``ssl`` library for your app by adding the
    following configuration to the ``app.yaml`` file::
 
         libraries:
         - name: ssl
           version: latest
 
-#. Enable billing for you App Engine project. Then enable socket support for
+#. Enable billing for your App Engine project. Then enable socket support for
    your app. This can be achieved by setting an environment variable in the
    ``app.yaml`` file::
 
