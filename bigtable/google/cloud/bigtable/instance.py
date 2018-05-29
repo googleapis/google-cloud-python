@@ -141,7 +141,7 @@ class Instance(object):
         :rtype: str
         :returns: Return a fully-qualified instance string.
         """
-        return self._client._instance_admin_client.instance_path(
+        return self._client.instance_admin_client.instance_path(
             project=self._client.project, instance=self.instance_id)
 
     def __eq__(self, other):
@@ -161,7 +161,7 @@ class Instance(object):
 
     def reload(self):
         """Reload the metadata for this instance."""
-        instance_pb = self._client._instance_admin_client.get_instance(
+        instance_pb = self._client.instance_admin_client.get_instance(
             self.name)
 
         # NOTE: _update_from_pb does not check that the project and
@@ -190,9 +190,9 @@ class Instance(object):
         """
         clusters = {}
         cluster_id = '{}-cluster'.format(self.instance_id)
-        cluster_name = self._client._instance_admin_client.cluster_path(
+        cluster_name = self._client.instance_admin_client.cluster_path(
             self._client.project, self.instance_id, cluster_id)
-        location = self._client._instance_admin_client.location_path(
+        location = self._client.instance_admin_client.location_path(
             self._client.project, self._cluster_location_id)
         cluster = instance_pb2.Cluster(
             name=cluster_name, location=location,
@@ -204,7 +204,7 @@ class Instance(object):
         clusters[cluster_id] = cluster
         parent = self._client.project_path
 
-        return self._client._instance_admin_client.create_instance(
+        return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
             clusters=clusters)
 
@@ -223,7 +223,7 @@ class Instance(object):
             before calling :meth:`update`.
         """
         type = enums.Instance.Type.TYPE_UNSPECIFIED
-        self._client._instance_admin_client.update_instance(
+        self._client.instance_admin_client.update_instance(
             name=self.name, display_name=self.display_name, type_=type,
             labels={})
 
@@ -249,7 +249,7 @@ class Instance(object):
           irrevocably disappear from the API, and their data will be
           permanently deleted.
         """
-        self._client._instance_admin_client.delete_instance(name=self.name)
+        self._client.instance_admin_client.delete_instance(name=self.name)
 
     def table(self, table_id):
         """Factory to create a table associated with this instance.
@@ -270,7 +270,7 @@ class Instance(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        table_list_pb = self._client._table_admin_client.list_tables(self.name)
+        table_list_pb = self._client.table_admin_client.list_tables(self.name)
 
         result = []
         for table_pb in table_list_pb:

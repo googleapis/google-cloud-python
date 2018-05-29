@@ -108,7 +108,8 @@ class Table(object):
         """
         project = self._instance._client.project
         instance_id = self._instance.instance_id
-        return self._instance._client._table_admin_client.table_path(
+        table_client = self._instance._client.table_admin_client
+        return table_client.table_path(
             project=project, instance=instance_id, table=self.table_id)
 
     def column_family(self, column_family_id, gc_rule=None):
@@ -178,16 +179,16 @@ class Table(object):
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
         """
-        client = self._instance._client
+        table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
-        client._table_admin_client.create_table(parent=instance_name,
+        table_client.create_table(parent=instance_name,
                                                 table_id=self.table_id,
                                                 table={})
 
     def delete(self):
         """Delete this table."""
-        client = self._instance._client
-        client._table_admin_client.delete_table(name=self.name)
+        table_client = self._instance._client.table_admin_client
+        table_client.delete_table(name=self.name)
 
     def list_column_families(self):
         """List the column families owned by this table.
@@ -200,8 +201,8 @@ class Table(object):
                  family name from the response does not agree with the computed
                  name from the column family ID.
         """
-        client = self._instance._client
-        table_pb = client._table_admin_client.get_table(self.name)
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(self.name)
 
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
@@ -229,8 +230,8 @@ class Table(object):
         """
         request_pb = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
-        client = self._instance._client
-        rows_data = PartialRowsData(client._table_data_client._read_rows,
+        data_client = self._instance._client.table_data_client
+        rows_data = PartialRowsData(data_client._read_rows,
                                     request_pb)
 
         rows_data.consume_all()
@@ -277,8 +278,8 @@ class Table(object):
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit, end_inclusive=end_inclusive)
-        client = self._instance._client
-        return PartialRowsData(client._table_data_client._read_rows,
+        data_client = self._instance._client.table_data_client
+        return PartialRowsData(data_client._read_rows,
                                request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
@@ -311,8 +312,8 @@ class Table(object):
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
-        client = self._instance._client
-        generator = YieldRowsData(client._table_data_client._read_rows,
+        data_client = self._instance._client.table_data_client
+        generator = YieldRowsData(data_client._read_rows,
                                   request_pb)
         for row in generator.read_rows():
             yield row
@@ -381,8 +382,8 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        client = self._instance._client
-        response_iterator = client._table_data_client.sample_row_keys(
+        data_client = self._instance._client.table_data_client
+        response_iterator = data_client.sample_row_keys(
             self.name)
         return response_iterator
 
@@ -469,7 +470,8 @@ class _RetryableMutateRowsWorker(object):
 
         mutate_rows_request = _mutate_rows_request(
             self.table_name, retryable_rows)
-        responses = self.client._table_data_client._mutate_rows(
+        data_client = self.client.table_data_client
+        responses = data_client._mutate_rows(
             mutate_rows_request, retry=None)
 
         num_responses = 0
