@@ -55,6 +55,7 @@ def delete_chunks(client, results):
         chunk, results = results[:MAX_DEL_ENTITIES], results[MAX_DEL_ENTITIES:]
         client.delete_multi([result.key for result in chunk])
 
+
 def remove_kind(kind, client):
     query = client.query(kind=kind)
     query.keys_only()
