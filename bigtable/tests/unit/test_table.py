@@ -409,7 +409,7 @@ class TestTable(unittest.TestCase):
             qualifier=self.QUALIFIER,
             timestamp_micros=self.TIMESTAMP_MICROS,
             value=self.VALUE,
-            commit_row=True
+            commit_row=True,
         )
         chunks = [chunk]
         expected_result = PartialRowData(row_key=self.ROW_KEY)
