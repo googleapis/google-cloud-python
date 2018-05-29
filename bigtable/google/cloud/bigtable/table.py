@@ -181,9 +181,8 @@ class Table(object):
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
-        table_client.create_table(parent=instance_name,
-                                                table_id=self.table_id,
-                                                table={})
+        table_client.create_table(
+            parent=instance_name, table_id=self.table_id, table={})
 
     def delete(self):
         """Delete this table."""
