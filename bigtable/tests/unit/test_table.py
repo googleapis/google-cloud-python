@@ -342,7 +342,7 @@ class TestTable(unittest.TestCase):
     def test_list_column_families(self):
         self._list_column_families_helper()
 
-    def _read_row_helper(self, chunks, expected_result):
+    def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
         from google.cloud.bigtable_v2.gapic import bigtable_client
@@ -356,15 +356,16 @@ class TestTable(unittest.TestCase):
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance,
+                               app_profile_id=app_profile_id)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
         mock_created = []
 
         def mock_create_row_request(table_name, row_key, filter_,
-                                    app_profile_id=None):
-            mock_created.append((table_name, row_key, filter_))
+                                    app_profile_id=app_profile_id):
+            mock_created.append((table_name, row_key, filter_, app_profile_id))
             return request_pb
 
         # Create response_iterator
@@ -387,7 +388,8 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
         self.assertEqual(mock_created,
-                         [(table.name, self.ROW_KEY, filter_obj)])
+                         [(table.name, self.ROW_KEY, filter_obj,
+                           app_profile_id)])
 
     def test_read_row_miss_no__responses(self):
         self._read_row_helper(None, None)
@@ -400,20 +402,21 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row_data import Cell
         from google.cloud.bigtable.row_data import PartialRowData
 
+        app_profile_id = 'app-profile-id'
         chunk = _ReadRowsResponseCellChunkPB(
             row_key=self.ROW_KEY,
             family_name=self.FAMILY_NAME,
             qualifier=self.QUALIFIER,
             timestamp_micros=self.TIMESTAMP_MICROS,
             value=self.VALUE,
-            commit_row=True,
+            commit_row=True
         )
         chunks = [chunk]
         expected_result = PartialRowData(row_key=self.ROW_KEY)
         family = expected_result._cells.setdefault(self.FAMILY_NAME, {})
         column = family.setdefault(self.QUALIFIER, [])
         column.append(Cell.from_pb(chunk))
-        self._read_row_helper(chunks, expected_result)
+        self._read_row_helper(chunks, expected_result, app_profile_id)
 
     def test_read_row_still_partial(self):
         chunk = _ReadRowsResponseCellChunkPB(
@@ -471,7 +474,9 @@ class TestTable(unittest.TestCase):
         client._table_data_client = data_api
         client._table_admin_client = table_api
         instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
+        app_profile_id = 'app-profile-id'
+        table = self._make_one(self.TABLE_ID, instance,
+                               app_profile_id=app_profile_id)
 
         # Create request_pb
         request = object()  # Returned by our mock.
@@ -503,7 +508,7 @@ class TestTable(unittest.TestCase):
             'filter_': filter_obj,
             'limit': limit,
             'end_inclusive': False,
-            'app_profile_id': None
+            'app_profile_id': app_profile_id
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
