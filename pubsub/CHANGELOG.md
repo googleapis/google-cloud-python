@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.36.0
+
+### Implementation Changes
+- Catch errors when re-retying send() or recv() in addition to open() (#5402)
+
 ## 0.35.0
 
 ### Implementation Changes
