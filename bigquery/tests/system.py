@@ -1823,7 +1823,7 @@ def test_bigquery_magic():
     updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
     assert re.match("Executing query with job ID: .*", updates[0])
     assert all(re.match("Query executing: .*s", line)
-                for line in updates[1:-1])
+               for line in updates[1:-1])
     assert re.match("Query complete after .*s", updates[-1])
     assert isinstance(result, pandas.DataFrame)
     assert len(result) == 10                      # verify row count
