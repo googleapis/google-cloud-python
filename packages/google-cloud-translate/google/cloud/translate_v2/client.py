@@ -103,7 +103,7 @@ class Client(BaseClient):
         :param values: String or list of strings that will have
                        language detected.
 
-        :rtype: str or list
+        :rtype: dict or list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys
 
