@@ -206,6 +206,18 @@ class WriteDisposition(object):
     returned in the job result."""
 
 
+class SchemaUpdateOption(object):
+    """Specifies an update to the destination table schema as a side effect of
+    a load job.
+    """
+
+    ALLOW_FIELD_ADDITION = 'ALLOW_FIELD_ADDITION'
+    """Allow adding a nullable field to the schema."""
+
+    ALLOW_FIELD_RELAXATION = 'ALLOW_FIELD_RELAXATION'
+    """Allow relaxing a required field in the original schema to nullable."""
+
+
 class _JobReference(object):
     """A reference to a job.
 
