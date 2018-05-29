@@ -37,8 +37,8 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
 
-    # Pandas does not support Python 3.4
-    if session.interpreter == 'python3.4':
+    # Pandas does not support Python 3.7
+    if session.interpreter == 'python3.7':
         session.install('-e', '.')
     else:
         session.install('-e', '.[pandas, pyarrow]')
@@ -65,7 +65,7 @@ def default(session):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.5', '3.6'])
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
 def unit(session, py):
     """Run the unit test suite."""
 
