@@ -342,13 +342,7 @@ class ResumableBidiRpc(BidiRpc):
             # has exited.
             self.request_generator = None
 
-            try:
-                self.open()
-            # If re-opening fails, consider this a terminal error and finalize
-            # the object.
-            except Exception as exc:
-                self._finalize(exc)
-                raise
+            self.open()
 
     def _recoverable(self, method, *args, **kwargs):
         """Wraps a method to recover the stream and retry on error.
@@ -370,9 +364,14 @@ class ResumableBidiRpc(BidiRpc):
                 self.close()
                 raise exc
 
+        try:
             self._reopen()
-
             return method(*args, **kwargs)
+        # If re-opening or re-calling the method fails for any reason, consider
+        # it a terminal error and finalize the object.
+        except Exception as exc:
+            self._finalize(exc)
+            raise
 
     def send(self, request):
         return self._recoverable(
