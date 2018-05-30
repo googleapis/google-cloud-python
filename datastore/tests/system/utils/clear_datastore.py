@@ -17,6 +17,7 @@
 from __future__ import print_function
 
 import os
+import sys
 
 import six
 
@@ -31,23 +32,15 @@ ALL_KINDS = (
     'Person',
     'Post',
     'uuid_key',
+    'timestamp_key',
 )
 TRANSACTION_MAX_GROUPS = 5
+MAX_DEL_ENTITIES = 500
 
 
 def print_func(message):
     if os.getenv('GOOGLE_CLOUD_NO_PRINT') != 'true':
         print(message)
-
-
-def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
-    if query is None:
-        query = client.query(kind=kind)
-        query.keys_only()
-
-    iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
-    page = six.next(iterator.pages)
-    return query, list(page), iterator.next_page_token
 
 
 def get_ancestors(entities):
@@ -57,15 +50,16 @@ def get_ancestors(entities):
     return list(set(key_roots))
 
 
-def remove_kind(kind, client):
-    results = []
+def delete_chunks(client, results):
+    while results:
+        chunk, results = results[:MAX_DEL_ENTITIES], results[MAX_DEL_ENTITIES:]
+        client.delete_multi([result.key for result in chunk])
 
-    query, curr_results, cursor = fetch_keys(kind, client)
-    results.extend(curr_results)
-    while curr_results:
-        query, curr_results, cursor = fetch_keys(
-            kind, client, query=query, cursor=cursor)
-        results.extend(curr_results)
+
+def remove_kind(kind, client):
+    query = client.query(kind=kind)
+    query.keys_only()
+    results = list(query.fetch())
 
     if not results:
         return
@@ -80,26 +74,32 @@ def remove_kind(kind, client):
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
             delete_outside_transaction = True
         else:
-            client.delete_multi([result.key for result in results])
+            delete_chunks(client, results)
 
     if delete_outside_transaction:
-        client.delete_multi([result.key for result in results])
+        delete_chunks(client, results)
 
 
-def remove_all_entities(client=None):
-    if client is None:
-        # Get a client that uses the test dataset.
-        client = datastore.Client()
-    for kind in ALL_KINDS:
-        remove_kind(kind, client)
+def main():
+    client = datastore.Client()
+    kinds = sys.argv[1:]
+
+    if len(kinds) == 0:
+        kinds = ALL_KINDS
+
+    print_func('This command will remove all entities for '
+               'the following kinds:')
+    print_func('\n'.join('- ' + val for val in kinds))
+    response = six.moves.input('Is this OK [y/n]? ')
+
+    if response.lower() == 'y':
+
+        for kind in kinds:
+            remove_kind(kind, client)
+
+    else:
+        print_func('Doing nothing.')
 
 
 if __name__ == '__main__':
-    print_func('This command will remove all entities for '
-               'the following kinds:')
-    print_func('\n'.join('- ' + val for val in ALL_KINDS))
-    response = six.moves.input('Is this OK [y/n]? ')
-    if response.lower() == 'y':
-        remove_all_entities()
-    else:
-        print_func('Doing nothing.')
+    main()
