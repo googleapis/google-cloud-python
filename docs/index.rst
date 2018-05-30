@@ -23,6 +23,7 @@
   error-reporting/usage
   monitoring/index
   logging/usage
+  redis/index
   storage/client
   texttospeech/index
   translate/usage
