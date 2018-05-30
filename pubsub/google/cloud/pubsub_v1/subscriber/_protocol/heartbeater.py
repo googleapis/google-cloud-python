@@ -20,6 +20,9 @@ import threading
 
 _LOGGER = logging.getLogger(__name__)
 _HEARTBEAT_WORKER_NAME = 'Thread-Heartbeater'
+# How often to send heartbeats in seconds. Determined as half the period of
+# time where the Pub/Sub server will close the stream as inactive, which is
+# 60 seconds.
 _DEFAULT_PERIOD = 30
 
 
