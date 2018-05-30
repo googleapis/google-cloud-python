@@ -33,6 +33,7 @@ import google.cloud.pubsub_v1.subscriber.message
 import google.cloud.pubsub_v1.subscriber.scheduler
 
 _LOGGER = logging.getLogger(__name__)
+_RPC_ERROR_THREAD_NAME = 'Thread-OnRpcTerminated'
 _RETRYABLE_STREAM_ERRORS = (
     exceptions.DeadlineExceeded,
     exceptions.ServiceUnavailable,
@@ -414,11 +415,28 @@ class StreamingPullManager(object):
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
+            logging.info('Observed recoverable stream error %s', exception)
             return True
+        logging.info('Observed non-recoverable stream error %s', exception)
         return False
 
     def _on_rpc_done(self, future):
+        """Triggered whenever the underlying RPC terminates without recovery.
+
+        This is typically triggered from one of two threads: the background
+        consumer thread (when calling ``recv()`` produces a non-recoverable
+        error) or the grpc management thread (when cancelling the RPC).
+
+        This method is *non-blocking*. It will start another thread to deal
+        with shutting everything down. This is to prevent blocking in the
+        background consumer and preventing it from being ``joined()``.
+        """
         _LOGGER.info(
             'RPC termination has signaled streaming pull manager shutdown.')
         future = _maybe_wrap_exception(future)
-        self.close(reason=future)
+        thread = threading.Thread(
+            name=_RPC_ERROR_THREAD_NAME,
+            target=self.close,
+            kwargs={'reason': future})
+        thread.daemon = True
+        thread.start()
