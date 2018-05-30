@@ -1976,6 +1976,7 @@ def test_client_query_relax_column(client, to_delete):
     assert table.num_rows > 0
     # [END bigquery_relax_column_query_append]
 
+
 def test_client_query_add_column(client, to_delete):
     dataset_id = 'query_add_column_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
