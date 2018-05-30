@@ -16,3 +16,5 @@
 # A YCSB-like executable that can be integrated into PerfKitBenchmarker.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+python ${DIR}/../ycsb.py "${@:1}"
