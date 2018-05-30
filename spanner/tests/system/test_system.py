@@ -627,6 +627,46 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows)
 
+    def _generate_insert_statements(self):
+        insert_template = (
+            'INSERT INTO {table} ({column_list}) '
+            'VALUES ({row_data})'
+        )
+        for row in self.ROW_DATA:
+            yield insert_template.format(
+                table=self.TABLE,
+                column_list=', '.join(self.COLUMNS),
+                row_data='{}, "{}", "{}", "{}"'.format(*row)
+            )
+
+    @RetryErrors(exception=exceptions.ServerError)
+    @RetryErrors(exception=exceptions.Conflict)
+    def test_transaction_execute_dml_read_commit(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        with session.transaction() as transaction:
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            self.assertEqual(rows, [])
+
+            for insert_statement in self._generate_insert_statements():
+                transaction.execute_sql(insert_statement)
+
+            # Rows inserted via DML *can* be read before commit.
+            during_rows = list(
+                transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+            self._check_rows_data(during_rows)
+
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_rows_data(rows)
+
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
         NUM_THREADS = 3     # conforms to equivalent Java systest.
