@@ -114,9 +114,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         """
         self._check_state()
 
-        if not self._mutations:
-            raise ValueError("No mutations to commit")
-
         database = self._session._database
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)

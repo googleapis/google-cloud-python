@@ -238,13 +238,6 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.commit()
 
-    def test_commit_no_mutations(self):
-        session = _Session()
-        transaction = self._make_one(session)
-        transaction._transaction_id = self.TRANSACTION_ID
-        with self.assertRaises(ValueError):
-            transaction.commit()
-
     def test_commit_w_other_error(self):
         database = _Database()
         database.spanner_api = self._make_spanner_api()
@@ -259,7 +252,7 @@ class TestTransaction(unittest.TestCase):
 
         self.assertIsNone(transaction.committed)
 
-    def test_commit_ok(self):
+    def _commit_helper(self, mutate=True):
         import datetime
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner_v1.keyset import KeySet
@@ -277,7 +270,9 @@ class TestTransaction(unittest.TestCase):
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
-        transaction.delete(TABLE_NAME, keyset)
+
+        if mutate:
+            transaction.delete(TABLE_NAME, keyset)
 
         transaction.commit()
 
@@ -290,6 +285,12 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(mutations, transaction._mutations)
         self.assertEqual(
             metadata, [('google-cloud-resource-prefix', database.name)])
+
+    def test_commit_no_mutations(self):
+        self._commit_helper(mutate=False)
+
+    def test_commit_w_mutations(self):
+        self._commit_helper(mutate=True)
 
     def test_context_mgr_success(self):
         import datetime
