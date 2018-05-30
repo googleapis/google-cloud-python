@@ -26,6 +26,7 @@ from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
+from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import requests
@@ -114,6 +115,7 @@ class StreamingPullManager(object):
         self._dispatcher = None
         self._leaser = None
         self._consumer = None
+        self._heartbeater = None
 
     @property
     def is_active(self):
@@ -262,6 +264,15 @@ class StreamingPullManager(object):
         else:
             self._rpc.send(request)
 
+    def heartbeat(self):
+        """Sends an empty request over the streaming pull RPC.
+
+        This always sends over the stream, regardless of if
+        ``self._UNARY_REQUESTS`` is set or not.
+        """
+        if self._rpc is not None and self._rpc.is_active:
+            self._rpc.send(types.StreamingPullRequest())
+
     def open(self, callback):
         """Begin consuming messages.
 
@@ -291,6 +302,7 @@ class StreamingPullManager(object):
         self._consumer = bidi.BackgroundConsumer(
             self._rpc, self._on_response)
         self._leaser = leaser.Leaser(self)
+        self._heartbeater = heartbeater.Heartbeater(self)
 
         # Start the thread to pass the requests.
         self._dispatcher.start()
@@ -300,6 +312,9 @@ class StreamingPullManager(object):
 
         # Start the lease maintainer thread.
         self._leaser.start()
+
+        # Start the stream heartbeater thread.
+        self._heartbeater.start()
 
     def close(self, reason=None):
         """Stop consuming messages and shutdown all helper threads.
@@ -331,6 +346,9 @@ class StreamingPullManager(object):
             _LOGGER.debug('Stopping dispatcher.')
             self._dispatcher.stop()
             self._dispatcher = None
+            _LOGGER.debug('Stopping heartbeater.')
+            self._heartbeater.stop()
+            self._heartbeater = None
 
             self._rpc = None
             self._closed = True
