@@ -1084,8 +1084,6 @@ class RowIterator(HTTPIterator):
         page_size (int, optional): The number of items to return per page.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
-
-    .. autoattribute:: pages
     """
 
     def __init__(self, client, api_request, path, schema, page_token=None,

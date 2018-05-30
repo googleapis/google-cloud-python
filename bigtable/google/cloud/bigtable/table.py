@@ -84,12 +84,16 @@ class Table(object):
 
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
+
+    :type: app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
-    def __init__(self, table_id, instance):
+    def __init__(self, table_id, instance, app_profile_id=None):
         self.table_id = table_id
         self._instance = instance
         self._mutation_rows = []
+        self._app_profile_id = app_profile_id
 
     @property
     def name(self):
@@ -228,8 +232,9 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if a commit row
                  chunk is never encountered.
         """
-        request_pb = _create_row_request(self.name, row_key=row_key,
-                                         filter_=filter_)
+        request_pb = _create_row_request(
+            self.name, row_key=row_key, filter_=filter_,
+            app_profile_id=self._app_profile_id)
         client = self._instance._client
         rows_data = PartialRowsData(client._table_data_client._read_rows,
                                     request_pb)
@@ -277,7 +282,8 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, end_inclusive=end_inclusive)
+            limit=limit, end_inclusive=end_inclusive,
+            app_profile_id=self._app_profile_id)
         client = self._instance._client
         return PartialRowsData(client._table_data_client._read_rows,
                                request_pb)
@@ -311,7 +317,7 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit)
+            limit=limit, app_profile_id=self._app_profile_id)
         client = self._instance._client
         generator = YieldRowsData(client._table_data_client._read_rows,
                                   request_pb)
@@ -347,10 +353,10 @@ class Table(object):
         """
         for row in rows:
             self._mutation_rows.append(row.row_mutations)
-
-        retryable_mutate_rows_status = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, self._mutation_rows)
-        return retryable_mutate_rows_status()
+        retryable_mutate_rows = _RetryableMutateRowsWorker(
+            self._instance._client, self.name, rows,
+            app_profile_id=self._app_profile_id)
+        return retryable_mutate_rows()
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -385,7 +391,7 @@ class Table(object):
         """
         client = self._instance._client
         response_iterator = client._table_data_client.sample_row_keys(
-            self.name)
+            self.name, app_profile_id=self._app_profile_id)
         return response_iterator
 
 
@@ -405,11 +411,12 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, mutation_rows):
+    def __init__(self, client, table_name, rows, app_profile_id=None):
         self.client = client
         self.table_name = table_name
-        self.mutation_rows = mutation_rows
-        self.responses_statuses = [None] * len(self.mutation_rows)
+        self.rows = rows
+        self.app_profile_id = app_profile_id
+        self.responses_statuses = [None] * len(self.rows)
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -513,7 +520,8 @@ class _RetryableMutateRowsWorker(object):
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None, end_inclusive=False):
+                        filter_=None, limit=None, end_inclusive=False,
+                        app_profile_id=None):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -545,6 +553,9 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :param end_inclusive: (Optional) Whether the ``end_key`` should be
                   considered inclusive. The default is False (exclusive).
 
+    :type: app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
+
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -568,6 +579,8 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
         request_kwargs['rows_limit'] = limit
+    if app_profile_id is not None:
+        request_kwargs['app_profile_id'] = app_profile_id
 
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
@@ -580,7 +593,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     return message
 
 
-def _mutate_rows_request(table_name, rows):
+def _mutate_rows_request(table_name, rows, app_profile_id=None):
     """Creates a request to mutate rows in a table.
 
     :type table_name: str
@@ -589,12 +602,16 @@ def _mutate_rows_request(table_name, rows):
     :type rows: list
     :param rows: List or other iterable of :class:`.DirectRow` instances.
 
+    :type: app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
+
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
     :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
              greater than 100,000
     """
-    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+    request_pb = data_messages_v2_pb2.MutateRowsRequest(
+        table_name=table_name, app_profile_id=app_profile_id)
     mutations_count = 0
     for row in rows:
         _check_row_table_name(table_name, row)

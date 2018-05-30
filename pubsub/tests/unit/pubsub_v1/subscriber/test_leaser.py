@@ -119,20 +119,20 @@ def test_maintain_leases_stopped(caplog):
     assert 'exiting' in caplog.text
 
 
-def make_sleep_mark_manager_as_inactive(sleep, manager):
+def make_sleep_mark_manager_as_inactive(leaser):
     # Make sleep mark the manager as inactive so that maintain_leases
     # exits at the end of the first run.
-    def trigger_inactive(seconds):
-        assert 0 < seconds < 10
-        manager.is_active = False
-    sleep.side_effect = trigger_inactive
+    def trigger_inactive(timeout):
+        assert 0 < timeout < 10
+        leaser._manager.is_active = False
+
+    leaser._stop_event.wait = trigger_inactive
 
 
-@mock.patch('time.sleep', autospec=True)
-def test_maintain_leases_ack_ids(sleep):
+def test_maintain_leases_ack_ids():
     manager = create_manager()
-    make_sleep_mark_manager_as_inactive(sleep, manager)
     leaser_ = leaser.Leaser(manager)
+    make_sleep_mark_manager_as_inactive(leaser_)
     leaser_.add([requests.LeaseRequest(ack_id='my ack id', byte_size=50)])
 
     leaser_.maintain_leases()
@@ -143,27 +143,23 @@ def test_maintain_leases_ack_ids(sleep):
             seconds=10,
         )
     ])
-    sleep.assert_called()
 
 
-@mock.patch('time.sleep', autospec=True)
-def test_maintain_leases_no_ack_ids(sleep):
+def test_maintain_leases_no_ack_ids():
     manager = create_manager()
-    make_sleep_mark_manager_as_inactive(sleep, manager)
     leaser_ = leaser.Leaser(manager)
+    make_sleep_mark_manager_as_inactive(leaser_)
 
     leaser_.maintain_leases()
 
     manager.dispatcher.modify_ack_deadline.assert_not_called()
-    sleep.assert_called()
 
 
 @mock.patch('time.time', autospec=True)
-@mock.patch('time.sleep', autospec=True)
-def test_maintain_leases_outdated_items(sleep, time):
+def test_maintain_leases_outdated_items(time):
     manager = create_manager()
-    make_sleep_mark_manager_as_inactive(sleep, manager)
     leaser_ = leaser.Leaser(manager)
+    make_sleep_mark_manager_as_inactive(leaser_)
 
     # Add these items at the beginning of the timeline
     time.return_value = 0
@@ -190,7 +186,6 @@ def test_maintain_leases_outdated_items(sleep, time):
     manager.dispatcher.drop.assert_called_once_with([
         requests.DropRequest(ack_id='ack1', byte_size=50)
     ])
-    sleep.assert_called()
 
 
 @mock.patch('threading.Thread', autospec=True)

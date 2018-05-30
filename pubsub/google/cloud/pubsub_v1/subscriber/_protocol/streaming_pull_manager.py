@@ -14,13 +14,15 @@
 
 from __future__ import division
 
+import collections
 import functools
 import logging
 import threading
 
-from google.api_core import exceptions
 import grpc
+import six
 
+from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
@@ -83,6 +85,10 @@ class StreamingPullManager(object):
             to use to process messages. If not provided, a thread pool-based
             scheduler will be used.
     """
+
+    _UNARY_REQUESTS = True
+    """If set to True, this class will make requests over a separate unary
+    RPC instead of over the streaming RPC."""
 
     def __init__(self, client, subscription, flow_control=types.FlowControl(),
                  scheduler=None):
@@ -220,9 +226,41 @@ class StreamingPullManager(object):
         else:
             _LOGGER.debug('Did not resume, current load is %s', self.load)
 
+    def _send_unary_request(self, request):
+        """Send a request using a separate unary request instead of over the
+        stream.
+
+        Args:
+            request (types.StreamingPullRequest): The stream request to be
+                mapped into unary requests.
+        """
+        if request.ack_ids:
+            self._client.acknowledge(
+                subscription=self._subscription,
+                ack_ids=list(request.ack_ids))
+
+        if request.modify_deadline_ack_ids:
+            # Send ack_ids with the same deadline seconds together.
+            deadline_to_ack_ids = collections.defaultdict(list)
+
+            for n, ack_id in enumerate(request.modify_deadline_ack_ids):
+                deadline = request.modify_deadline_seconds[n]
+                deadline_to_ack_ids[deadline].append(ack_id)
+
+            for deadline, ack_ids in six.iteritems(deadline_to_ack_ids):
+                self._client.modify_ack_deadline(
+                    subscription=self._subscription,
+                    ack_ids=ack_ids,
+                    ack_deadline_seconds=deadline)
+
+        _LOGGER.debug('Sent request(s) over unary RPC.')
+
     def send(self, request):
         """Queue a request to be sent to the RPC."""
-        self._rpc.send(request)
+        if self._UNARY_REQUESTS:
+            self._send_unary_request(request)
+        else:
+            self._rpc.send(request)
 
     def open(self, callback):
         """Begin consuming messages.
@@ -241,22 +279,26 @@ class StreamingPullManager(object):
 
         self._callback = functools.partial(_wrap_callback_errors, callback)
 
-        # Start the thread to pass the requests.
-        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
-        self._dispatcher.start()
-
-        # Start consuming messages.
+        # Create the RPC
         self._rpc = bidi.ResumableBidiRpc(
             start_rpc=self._client.api.streaming_pull,
             initial_request=self._get_initial_request,
             should_recover=self._should_recover)
         self._rpc.add_done_callback(self._on_rpc_done)
+
+        # Create references to threads
+        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
         self._consumer = bidi.BackgroundConsumer(
             self._rpc, self._on_response)
+        self._leaser = leaser.Leaser(self)
+
+        # Start the thread to pass the requests.
+        self._dispatcher.start()
+
+        # Start consuming messages.
         self._consumer.start()
 
         # Start the lease maintainer thread.
-        self._leaser = leaser.Leaser(self)
         self._leaser.start()
 
     def close(self, reason=None):
