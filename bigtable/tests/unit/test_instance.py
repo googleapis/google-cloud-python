@@ -438,7 +438,7 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
-    def test_create_app_profile_with_wrong_routing_plicy(self):
+    def test_create_app_profile_with_wrong_routing_policy(self):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
