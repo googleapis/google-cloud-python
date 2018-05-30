@@ -319,10 +319,8 @@ class Table(object):
             yield row
 
     def save_mutations(self, row_mutations):
-        self._mutation_rows.append(row_mutations)
-
         retryable_mutate_rows_status = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, self._mutation_rows)
+            self._instance._client, self.name, [row_mutations])
         return retryable_mutate_rows_status()
 
     def mutate_rows(self, rows):
