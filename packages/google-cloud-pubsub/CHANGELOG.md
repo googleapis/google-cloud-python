@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.35.2
+
+### Implementation Changes
+- Add heartbeating to the streaming pull manager (#5413)
+- Fix retrying of bidirectional RPCs and closing the streaming pull manager (#5412)
+
 ## 0.35.1
 
 ### Implementation Changes
