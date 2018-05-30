@@ -1016,6 +1016,18 @@ class LoadJobConfig(_JobConfig):
             api_repr = value.to_api_repr()
         self._set_sub_prop('timePartitioning', api_repr)
 
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the load job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
+
 
 class LoadJob(_AsyncJob):
     """Asynchronous job for loading data into a table.
@@ -1169,6 +1181,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def schema_update_options(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.schema_update_options`.
+        """
+        return self._configuration.schema_update_options
 
     @property
     def input_file_bytes(self):

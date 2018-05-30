@@ -380,6 +380,11 @@ class TestLoadJob(unittest.TestCase, _Base):
                              config['writeDisposition'])
         else:
             self.assertIsNone(job.write_disposition)
+        if 'schemaUpdateOptions' in config:
+            self.assertEqual(
+                job.schema_update_options, config['schemaUpdateOptions'])
+        else:
+            self.assertIsNone(job.schema_update_options)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -467,6 +472,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -780,6 +786,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
         from google.cloud.bigquery.schema import SchemaField
 
@@ -817,7 +824,10 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'mode': 'REQUIRED',
                     'description': None,
                 },
-            ]}
+            ]},
+            'schemaUpdateOptions': [
+                SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            ],
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
         conn1 = _make_connection()
@@ -842,6 +852,9 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.skip_leading_rows = 1
         config.source_format = 'CSV'
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config.schema_update_options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+        ]
 
         job._begin(client=client2)
 
