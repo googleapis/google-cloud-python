@@ -320,7 +320,10 @@ class Table(object):
 
     def save_mutations(self, row_mutations):
         self._mutation_rows.append(row_mutations)
-        return self.commit()
+
+        retryable_mutate_rows_status = _RetryableMutateRowsWorker(
+            self._instance._client, self.name, self._mutation_rows)
+        return retryable_mutate_rows_status()
 
     def mutate_rows(self, rows):
         """Mutates multiple rows in bulk.
@@ -347,9 +350,6 @@ class Table(object):
         for row in rows:
             self._mutation_rows.append(row.row_mutations)
 
-        return self.commit()
-
-    def commit(self):
         retryable_mutate_rows_status = _RetryableMutateRowsWorker(
             self._instance._client, self.name, self._mutation_rows)
         return retryable_mutate_rows_status()
