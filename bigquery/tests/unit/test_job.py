@@ -2140,6 +2140,11 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'kmsKeyName'])
         else:
             self.assertIsNone(job.destination_encryption_configuration)
+        if 'schemaUpdateOptions' in query_config:
+            self.assertEqual(
+                job.schema_update_options, query_config['schemaUpdateOptions'])
+        else:
+            self.assertIsNone(job.schema_update_options)
 
     def test_ctor_defaults(self):
         client = _make_client(project=self.PROJECT)
@@ -2170,6 +2175,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2261,6 +2267,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
 
         client = _make_client(project=self.PROJECT)
@@ -2273,6 +2280,9 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': self.DS_ID,
             'tableId': self.DESTINATION_TABLE,
         }
+        query_config['schemaUpdateOptions'] = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+        ]
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
@@ -2854,6 +2864,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import QueryJobConfig
         from google.cloud.bigquery.job import QueryPriority
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -2879,7 +2890,10 @@ class TestQueryJob(unittest.TestCase, _Base):
             'useLegacySql': True,
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'maximumBillingTier': 4,
-            'maximumBytesBilled': '123456'
+            'maximumBytesBilled': '123456',
+            'schemaUpdateOptions': [
+                SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+            ]
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         RESOURCE['configuration']['dryRun'] = True
@@ -2903,6 +2917,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         config.use_query_cache = True
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.maximum_bytes_billed = 123456
+        config.schema_update_options = [
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
         job = self._make_one(
             self.JOB_ID, self.QUERY, client1, job_config=config)
 
