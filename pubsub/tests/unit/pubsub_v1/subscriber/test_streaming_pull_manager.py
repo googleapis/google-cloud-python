@@ -420,10 +420,12 @@ def test__should_recover_false():
     assert manager._should_recover(exc) is False
 
 
-def test__on_rpc_done():
+@mock.patch('threading.Thread', autospec=True)
+def test__on_rpc_done(thread):
     manager = make_manager()
 
-    with mock.patch.object(manager, 'close') as close:
-        manager._on_rpc_done(mock.sentinel.error)
+    manager._on_rpc_done(mock.sentinel.error)
 
-    close.assert_called_once_with(reason=mock.sentinel.error)
+    thread.assert_called_once_with(
+        name=mock.ANY, target=manager.close,
+        kwargs={'reason': mock.sentinel.error})

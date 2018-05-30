@@ -342,36 +342,48 @@ class ResumableBidiRpc(BidiRpc):
             # has exited.
             self.request_generator = None
 
-            self.open()
+            # Note: we do not currently do any sort of backoff here. The
+            # assumption is that re-establishing the stream under normal
+            # circumstances will happen in intervals greater than 60s.
+            # However, it is possible in a degenerative case that the server
+            # closes the stream rapidly which would lead to thrashing here,
+            # but hopefully in those cases the server would return a non-
+            # retryable error.
+
+            try:
+                self.open()
+            # If re-opening or re-calling the method fails for any reason,
+            # consider it a terminal error and finalize the stream.
+            except Exception as exc:
+                self._finalize(exc)
+                raise
+
+            _LOGGER.info('Re-established stream')
 
     def _recoverable(self, method, *args, **kwargs):
         """Wraps a method to recover the stream and retry on error.
 
-        If a recoverable error occurs, this will retry the RPC and retry the
-        method. If a second error occurs while retrying the method, it will
-        bubble up.
+        If a retryable error occurs while making the call, then the stream will
+        be re-opened and the method will be retried. This happens indefinitely
+        so long as the error is a retryable one. If an error occurs while
+        re-opening the stream, then this method will raise immediately and
+        trigger finalization of this object.
 
         Args:
             method (Callable[..., Any]): The method to call.
             args: The args to pass to the method.
             kwargs: The kwargs to pass to the method.
         """
-        try:
-            return method(*args, **kwargs)
+        while True:
+            try:
+                return method(*args, **kwargs)
 
-        except Exception as exc:
-            if not self._should_recover(exc):
-                self.close()
-                raise exc
+            except Exception as exc:
+                if not self._should_recover(exc):
+                    self.close()
+                    raise exc
 
-        try:
             self._reopen()
-            return method(*args, **kwargs)
-        # If re-opening or re-calling the method fails for any reason, consider
-        # it a terminal error and finalize the object.
-        except Exception as exc:
-            self._finalize(exc)
-            raise
 
     def send(self, request):
         return self._recoverable(
