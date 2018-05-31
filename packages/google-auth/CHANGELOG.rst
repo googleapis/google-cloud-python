@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.5.0
+------
+
+- Warn when using user credentials from the Cloud SDK (#266)
+- Add compute engine-based IDTokenCredentials (#236)
+- Corrected some typos (#265)
+
 v1.4.2
 ------
 
