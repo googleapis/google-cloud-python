@@ -40,6 +40,8 @@ import pytest
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
 TABLE_ID = 'google-cloud-python-test-table'
+APP_PROFILE_ID = 'app-profile-id'
+CLUSTER_ID = INSTANCE_ID+'-cluster'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
 COL_NAME1 = b'col-name1'
@@ -51,6 +53,8 @@ CELL_VAL3 = b'altcol-cell-val'
 CELL_VAL4 = b'foo'
 ROW_KEY = b'row-key'
 ROW_KEY_ALT = b'row-key-alt'
+ROUTING_POLICY_TYPE_ANY = 1
+ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
 
 
@@ -173,6 +177,35 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # other test cases.
         Config.INSTANCE.display_name = OLD_DISPLAY_NAME
         Config.INSTANCE.update()
+
+    def test_create_app_profile_with_multi_routing_policy(self):
+        # Create a new instance instance and reload it.
+        description = 'Foo App Profile'
+        instance = Config.INSTANCE
+
+        app_profile = instance.create_app_profile(
+            app_profile_id=APP_PROFILE_ID+'-multi',
+            routing_policy_type=ROUTING_POLICY_TYPE_ANY,
+            description=description,
+            ignore_warnings=True
+        )
+
+        self.assertEqual(app_profile.description, description)
+
+    def test_create_app_profile_with_single_routing_policy(self):
+        # Create a new instance instance and reload it.
+        description = 'Foo App Profile'
+        instance = Config.INSTANCE
+
+        app_profile = instance.create_app_profile(
+            app_profile_id=APP_PROFILE_ID+'-single',
+            routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
+            description=description,
+            cluster_id=CLUSTER_ID,
+            ignore_warnings=True
+        )
+
+        self.assertEqual(app_profile.description, description)
 
 
 class TestTableAdminAPI(unittest.TestCase):

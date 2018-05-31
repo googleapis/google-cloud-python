@@ -20,6 +20,8 @@ import re
 from google.cloud.bigtable.table import Table
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
+from google.protobuf import field_mask_pb2
+
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
@@ -27,6 +29,8 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+ROUTING_POLICY_TYPE_ANY = 1
+ROUTING_POLICY_TYPE_SINGLE = 2
 _STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
@@ -282,3 +286,199 @@ class Instance(object):
             result.append(self.table(table_id))
 
         return result
+
+    def create_app_profile(self, app_profile_id, routing_policy_type,
+                           description='', ignore_warnings=None,
+                           cluster_id=None, allow_transactional_writes=False):
+        """Creates an app profile within an instance.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name for the new app profile.
+
+        :type: routing_policy_type: int
+        :param: routing_policy_type: There are two routing policies
+                                    ROUTING_POLICY_TYPE_ANY = 1 and
+                                    ROUTING_POLICY_TYPE_SINGLE = 2.
+                                    If ROUTING_POLICY_TYPE_ANY
+                                    which will create a
+                                    MultiClusterRoutingUseAny policy and if
+                                    ROUTING_POLICY_TYPE_ANY is specified, a
+                                    SingleClusterRouting policy will be created
+                                    using the cluster_id and
+                                    allow_transactional_writes parameters.
+
+        :type: description: str
+        :param: description: (Optional) Long form description of the use
+                                case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
+
+        :type: cluster_id: str
+        :param: cluster_id: (Optional) Unique cluster_id which is only required
+                            when routing_policy_type is
+                            ROUTING_POLICY_TYPE_SINGLE.
+
+        :type: allow_transactional_writes: bool
+        :param: allow_transactional_writes: (Optional) If true, allow
+                                            transactional writes for
+                                            ROUTING_POLICY_TYPE_SINGLE.
+
+        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+        :return: The AppProfile instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` If routing
+                policy is not set.
+        """
+        if not routing_policy_type:
+            raise ValueError('AppProfile required routing policy.')
+
+        single_cluster_routing = None
+        multi_cluster_routing_use_any = None
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.instance_id, app_profile_id)
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
+            multi_cluster_routing_use_any = (
+                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+            single_cluster_routing = (
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=cluster_id,
+                    allow_transactional_writes=allow_transactional_writes
+                ))
+
+        app_profile = instance_pb2.AppProfile(
+            name=name, description=description,
+            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
+            single_cluster_routing=single_cluster_routing
+        )
+
+        return self._client._instance_admin_client.create_app_profile(
+            parent=self.name, app_profile_id=app_profile_id,
+            app_profile=app_profile, ignore_warnings=ignore_warnings)
+
+    def get_app_profile(self, app_profile_id):
+        """Gets information about an app profile.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name for the app profile.
+
+        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+        :return: The AppProfile instance.
+        """
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.instance_id, app_profile_id)
+        return self._client._instance_admin_client.get_app_profile(name)
+
+    def list_app_profiles(self):
+        """Lists information about app profiles in an instance.
+
+        :rtype: :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`]
+        :return: A :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`].
+                By default, this is a list of
+                :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+                instances.
+        """
+        list_app_profiles = list(
+            self._client._instance_admin_client.list_app_profiles(self.name))
+        return list_app_profiles
+
+    def update_app_profile(self, app_profile_id, update_mask,
+                           routing_policy_type, description='',
+                           ignore_warnings=None,
+                           cluster_id=None, allow_transactional_writes=False):
+        """Updates an app profile within an instance.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name for the new app profile.
+
+        :type: update_mask: list
+        :param: update_mask: Name of the parameters of AppProfiles that
+                                needed to update.
+
+        :type: routing_policy_type: int
+        :param: routing_policy_type: There are two routing policies
+                                    ROUTING_POLICY_TYPE_ANY = 1 and
+                                    ROUTING_POLICY_TYPE_SINGLE = 2.
+                                    If ROUTING_POLICY_TYPE_ANY
+                                    which will create a
+                                    MultiClusterRoutingUseAny policy and if
+                                    ROUTING_POLICY_TYPE_ANY is specified, a
+                                    SingleClusterRouting policy will be created
+                                    using the cluster_id and
+                                    allow_transactional_writes parameters.
+
+        :type: description: str
+        :param: description: (Optional) Optional long form description of the
+                                use case for this AppProfile.
+
+        :type: ignore_warnings: bool
+        :param: ignore_warnings: (Optional) If true, ignore safety checks when
+                                    creating the app profile.
+
+        :type: cluster_id: str
+        :param: cluster_id: (Optional) Unique cluster_id which is only required
+                            when routing_policy_type is
+                            ROUTING_POLICY_TYPE_SINGLE.
+
+        :type: allow_transactional_writes: bool
+        :param: allow_transactional_writes: (Optional) If true, allow
+                                            transactional writes for
+                                            ROUTING_POLICY_TYPE_SINGLE.
+
+        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
+        :return: The AppProfile instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` If routing
+                policy is not set.
+        """
+        if not routing_policy_type:
+            raise ValueError('AppProfile required routing policy.')
+
+        single_cluster_routing = None
+        multi_cluster_routing_use_any = None
+        instance_admin_client = self._client._instance_admin_client
+        name = instance_admin_client.app_profile_path(
+            self._client.project, self.instance_id, app_profile_id)
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
+            multi_cluster_routing_use_any = (
+                instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+
+        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+            single_cluster_routing = (
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=cluster_id,
+                    allow_transactional_writes=allow_transactional_writes
+                ))
+
+        update_app_profile = instance_pb2.AppProfile(
+            name=name, description=description,
+            multi_cluster_routing_use_any=multi_cluster_routing_use_any,
+            single_cluster_routing=single_cluster_routing
+        )
+        update_mask = field_mask_pb2.FieldMask(paths=update_mask)
+
+        return self._client._instance_admin_client.update_app_profile(
+            app_profile=update_app_profile, update_mask=update_mask,
+            ignore_warnings=ignore_warnings)
+
+    def delete_app_profile(self, app_profile_id, ignore_warnings=False):
+        """Deletes an app profile from an instance.
+
+        :type: app_profile_id: str
+        :param app_profile_id: The unique name for the app profile to delete.
+
+        :raises: google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason. google.api_core.exceptions.RetryError:
+                If the request failed due to a retryable error and retry
+                attempts failed. ValueError: If the parameters are invalid.
+        """
+        instance_admin_client = self._client._instance_admin_client
+        app_profile_path = instance_admin_client.app_profile_path(
+            self._client.project, self.instance_id, app_profile_id)
+        self._client._instance_admin_client.delete_app_profile(
+            app_profile_path, ignore_warnings)
