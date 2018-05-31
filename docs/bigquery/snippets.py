@@ -1960,13 +1960,13 @@ def test_client_query_relax_column(client, to_delete):
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    dest_table_ref = dataset_ref.table('my_table')
+    table_ref = dataset_ref.table('my_table')
     schema = [
         bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
         bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
     ]
-    dest_table = client.create_table(
-        bigquery.Table(dest_table_ref, schema=schema))
+    table = client.create_table(
+        bigquery.Table(table_ref, schema=schema))
 
     # [START bigquery_relax_column_query_append]
     # from google.cloud import bigquery
