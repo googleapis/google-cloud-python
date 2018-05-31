@@ -362,7 +362,7 @@ class DirectRow(mutation.RowMutations):
                            should be deleted.
         """
         self._row_mutations.delete_cells(column_family_id, [column],
-                                        time_range=time_range)
+                                         time_range=time_range)
 
     def delete_cells(self, column_family_id, columns, time_range=None):
         """Deletes cells in this row.
@@ -390,7 +390,7 @@ class DirectRow(mutation.RowMutations):
                            should be deleted.
         """
         self._row_mutations.delete_cells(column_family_id, columns,
-                                             time_range=time_range)
+                                         time_range=time_range)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.

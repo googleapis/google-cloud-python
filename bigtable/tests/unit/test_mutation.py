@@ -15,9 +15,6 @@
 
 import unittest
 
-import mock
-
-from ._testing import _make_credentials
 from google.cloud._helpers import _to_bytes
 
 

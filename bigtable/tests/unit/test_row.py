@@ -107,11 +107,7 @@ class TestDirectRow(unittest.TestCase):
         row._row_mutations = mutations = object()
         self.assertIs(mutations, row.row_mutations)
 
-    def _set_cell_helper(self, column=None, column_bytes=None,
-                         value='foobar', timestamp=None,
-                         timestamp_micros=-1):
-        import six
-        import struct
+    def _set_cell_helper(self, column=None, value='foobar', timestamp=None):
 
         from google.cloud.bigtable.mutation import RowMutations
 
@@ -639,8 +635,6 @@ class TestConditionalRow(unittest.TestCase):
         expected_result = predicate_matched
 
         self.assertEqual(result, expected_result)
-
-
 
     def test_commit_too_many_mutations(self):
         from google.cloud._testing import _Monkey

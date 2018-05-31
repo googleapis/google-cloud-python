@@ -444,7 +444,6 @@ class TestTable(unittest.TestCase):
 
     def test_mutate_rows(self):
         from grpc import StatusCode
-        from google.rpc.status_pb2 import Status
         from google.cloud.bigtable_v2.gapic import (
             bigtable_client)
         from google.cloud.bigtable_admin_v2.gapic import (
@@ -727,7 +726,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_callable_no_retry_strategy(self):
-        from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
