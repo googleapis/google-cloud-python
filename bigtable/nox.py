@@ -88,7 +88,7 @@ def system(session, py):
     # virtualenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install('../test_utils/')
-    session.install('.')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
