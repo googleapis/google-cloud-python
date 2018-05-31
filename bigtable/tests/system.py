@@ -233,7 +233,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(tables, [self._table])
 
     def test_create_table(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-table'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -249,7 +249,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_create_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -270,7 +270,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_update_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-update-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -293,7 +293,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
     def test_delete_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-delete-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -315,7 +315,7 @@ class TestDataAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.INSTANCE.table(TABLE_ID)
+        cls._table = table = Config.INSTANCE.table('test-data-api')
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
