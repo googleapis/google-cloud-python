@@ -15,8 +15,10 @@
 """Google Compute Engine authentication."""
 
 from google.auth.compute_engine.credentials import Credentials
+from google.auth.compute_engine.credentials import IDTokenCredentials
 
 
 __all__ = [
-    'Credentials'
+    'Credentials',
+    'IDTokenCredentials',
 ]
