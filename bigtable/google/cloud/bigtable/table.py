@@ -92,7 +92,6 @@ class Table(object):
     def __init__(self, table_id, instance, app_profile_id=None):
         self.table_id = table_id
         self._instance = instance
-        self._mutation_rows = []
         self._app_profile_id = app_profile_id
 
     @property
@@ -325,8 +324,17 @@ class Table(object):
             yield row
 
     def save_mutations(self, row_mutations):
+        """ Save row mutations
+
+        :type row_mutations: list: [`RowMutations`]
+        :param row_mutations: The list of RowMutations to save
+
+        :rtype: list: [`~google.rpc.status_pb2.Status`]
+        :return: The response statuses, which is a list of
+                 :class:`~google.rpc.status_pb2.Status`.
+        """
         retryable_mutate_rows_status = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, [row_mutations])
+            self._instance._client, self.name, row_mutations)
         return retryable_mutate_rows_status()
 
     def mutate_rows(self, rows):
@@ -351,12 +359,11 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
+        mutation_rows = []
         for row in rows:
-            self._mutation_rows.append(row.row_mutations)
-        retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows,
-            app_profile_id=self._app_profile_id)
-        return retryable_mutate_rows()
+            mutation_rows.append(row.row_mutations)
+
+        return self.save_mutations(mutation_rows)
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -482,7 +489,7 @@ class _RetryableMutateRowsWorker(object):
         index_into_all_rows = []
         for index, status in enumerate(self.responses_statuses):
             if self._is_retryable(status):
-                retryable_rows.append(self.mutation_rows[index])
+                retryable_rows.append(self.rows[index])
                 index_into_all_rows.append(index)
 
         if not retryable_rows:
@@ -492,7 +499,8 @@ class _RetryableMutateRowsWorker(object):
         mutate_rows_entries = self._mutate_rows_entries(retryable_rows)
         responses = self.client._table_data_client.mutate_rows(
             table_name=self.table_name,
-            entries=mutate_rows_entries
+            entries=mutate_rows_entries,
+            app_profile_id=self.app_profile_id
         )
 
         num_responses = 0
@@ -505,7 +513,7 @@ class _RetryableMutateRowsWorker(object):
                 if self._is_retryable(entry.status):
                     num_retryable_responses += 1
                 if entry.status.code == 0:
-                    self.mutation_rows[index] = None
+                    self.rows[index] = None
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
@@ -515,7 +523,7 @@ class _RetryableMutateRowsWorker(object):
         if num_retryable_responses:
             raise _BigtableRetryableError
 
-        self.mutation_rows = []
+        self.rows = []
         return self.responses_statuses
 
 

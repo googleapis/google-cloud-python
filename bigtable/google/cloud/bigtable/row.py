@@ -244,7 +244,7 @@ def _retry_commit_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-class DirectRow(_SetDeleteRow):
+class DirectRow(mutation.RowMutations):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
     These mutations directly set or delete cell contents:
@@ -276,11 +276,21 @@ class DirectRow(_SetDeleteRow):
 
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
+        self._table = table
         self._row_mutations = mutation.RowMutations(row_key)
 
     @property
     def row_mutations(self):
         return self._row_mutations
+
+    @property
+    def table(self):
+        """DirectRow table.
+
+        :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
+        :returns: table: The table that owns the row.
+        """
+        return self._table
 
     def set_cell(self, column_family_id, column, value, timestamp=None):
         """Sets a value in this row.
@@ -397,7 +407,13 @@ class DirectRow(_SetDeleteRow):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        self._table.save_mutations(self.row_mutations)
+        num_mutations = len(self.row_mutations.mutations)
+        if num_mutations == 0:
+            return {}
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError('%d total append mutations exceed the maximum '
+                             'allowable %d.' % (num_mutations, MAX_MUTATIONS))
+        self._table.save_mutations([self.row_mutations])
 
 
 class ConditionalRow(_SetDeleteRow):

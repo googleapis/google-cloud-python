@@ -12,7 +12,6 @@ class RowMutations(object):
         Arguments:
             row_key (str): Key of the Row in string.
     """
-
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
@@ -53,7 +52,7 @@ class RowMutations(object):
         set_cell_mutation = data_v2_pb2.Mutation.SetCell(
             family_name=family_name,
             column_qualifier=_to_bytes(column_id),
-            timestamp_micros=timestamp,
+            timestamp_micros=timestamp_micros,
             value=_to_bytes(value)
         )
         mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)

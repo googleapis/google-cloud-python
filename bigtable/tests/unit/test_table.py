@@ -178,7 +178,7 @@ class TestTable(unittest.TestCase):
         row = table.row(row_key)
 
         self.assertIsInstance(row, DirectRow)
-        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row.row_key, row_key)
         self.assertEqual(row._table, table)
 
     def test_row_factory_conditional(self):
@@ -670,6 +670,40 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             index=i, status=Status(code=codes[i]))
             for i in six.moves.xrange(len(codes))]
         return MutateRowsResponse(entries=entries)
+
+    @mock.patch('google.cloud.bigtable.table._MAX_BULK_MUTATIONS', new=2)
+    def test_max_bulk_mutations(self):
+        from grpc import StatusCode
+        from google.cloud.bigtable.table import TooManyMutationsError
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        SUCCESS = StatusCode.OK.value[0]
+        response = self._make_responses([SUCCESS, SUCCESS])
+        client._table_data_client.bigtable_stub.MutateRows.return_value = [
+            response]
+
+        row_1 = table.row(row_key=b'row_key')
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = table.row(row_key=b'row_key_2')
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = table.row(row_key=b'row_key_3')
+        row_3.set_cell('cf', b'col', b'value3')
+
+        with self.assertRaises(TooManyMutationsError):
+            table.mutate_rows([row_1, row_2, row_3])
 
     def test_callable_empty_rows(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client

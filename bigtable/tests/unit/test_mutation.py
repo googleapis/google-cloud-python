@@ -18,6 +18,7 @@ import unittest
 import mock
 
 from ._testing import _make_credentials
+from google.cloud._helpers import _to_bytes
 
 
 class TestMutateRows(unittest.TestCase):
@@ -36,17 +37,6 @@ class TestMutateRows(unittest.TestCase):
     RETRYABLE = StatusCode.DEADLINE_EXCEEDED.value[0]
     SUCCESS = StatusCode.OK.value[0]
 
-    def _make_responses(self, codes):
-        import six
-        from google.cloud.bigtable_v2.proto.bigtable_pb2 import (
-            MutateRowsResponse)
-        from google.rpc.status_pb2 import Status
-
-        entries = [MutateRowsResponse.Entry(
-            index=i, status=Status(code=codes[i]))
-            for i in six.moves.xrange(len(codes))]
-        return MutateRowsResponse(entries=entries)
-
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.mutation import RowMutations
@@ -56,104 +46,53 @@ class TestMutateRows(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    @staticmethod
-    def _get_client_class():
-        from google.cloud.bigtable.client import Client
-
-        return Client
-
-    def _make_client(self, *args, **kwargs):
-        return self._get_client_class()(*args, **kwargs)
-
     def test_set_cell(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-
-        credentials = _make_credentials()
-        client = self._make_client(self.PROJECT_ID, credentials=credentials,
-                                   admin=True)
-        instance = client.instance(self.INSTANCE_ID)
-        table = instance.table(self.TABLE_ID)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
+        request = _MutateRowsRequestPB()
+        request.SetCell(
+            family_name=self.FAMILY_NAME,
+            column_qualifier=_to_bytes(self.QUALIFIER),
+            value=_to_bytes(self.VALUE)
+        )
 
         mutate_rows = self._make_one(row_key=self.ROW_KEY)
 
         mutate_rows.set_cell(
             self.FAMILY_NAME,
             self.QUALIFIER,
-            self.VALUE,
-            self.TIMESTAMP_MICROS
+            self.VALUE
         )
 
-        response = _MutateRowResponsePB()
+        expected_result = mutate_rows.mutations[0]
 
-        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
-            response]])
-
-        expected_result = mutate_rows.mutate()
-
-        self.assertEqual(response, expected_result[0])
+        self.assertEqual(request.SetCell, expected_result.SetCell)
 
     def test_delete_cells(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-
-        credentials = _make_credentials()
-        client = self._make_client(self.PROJECT_ID, credentials=credentials,
-                                   admin=True)
-        instance = client.instance(self.INSTANCE_ID)
-        table = instance.table(self.TABLE_ID)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
+        columns = ['column1']
+        request = _MutateRowsRequestPB()
+        request.DeleteFromColumn(
+            family_name=self.FAMILY_NAME,
+            column_qualifier=_to_bytes(columns[0])
+        )
 
         mutate_rows = self._make_one(row_key=self.ROW_KEY)
 
-        columns = ['column1', 'column2']
+        columns = ['column1']
 
         mutate_rows.delete_cells(
             self.FAMILY_NAME,
             columns
         )
 
-        response = _MutateRowResponsePB()
+        expected_result = mutate_rows.mutations[0]
 
-        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
-            response]])
-
-        expected_result = mutate_rows.mutate()
-
-        self.assertEqual(response, expected_result[0])
+        self.assertEqual(request.DeleteFromColumn,
+                         expected_result.DeleteFromColumn)
 
     def test_delete_from_family(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-
-        credentials = _make_credentials()
-        client = self._make_client(self.PROJECT_ID, credentials=credentials,
-                                   admin=True)
-        instance = client.instance(self.INSTANCE_ID)
-        table = instance.table(self.TABLE_ID)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
+        request = _MutateRowsRequestPB()
+        request.DeleteFromFamily(
+            family_name=self.FAMILY_NAME
+        )
 
         mutate_rows = self._make_one(row_key=self.ROW_KEY)
 
@@ -161,49 +100,26 @@ class TestMutateRows(unittest.TestCase):
             self.FAMILY_NAME
         )
 
-        response = _MutateRowResponsePB()
+        expected_result = mutate_rows.mutations[0]
 
-        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
-            response]])
-
-        expected_result = mutate_rows.mutate()
-
-        self.assertEqual(response, expected_result[0])
+        self.assertEqual(request.DeleteFromFamily,
+                         expected_result.DeleteFromFamily)
 
     def test_delete(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-
-        credentials = _make_credentials()
-        client = self._make_client(self.PROJECT_ID, credentials=credentials,
-                                   admin=True)
-        instance = client.instance(self.INSTANCE_ID)
-        table = instance.table(self.TABLE_ID)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
+        request = _MutateRowsRequestPB()
+        request.DeleteFromRow()
 
         mutate_rows = self._make_one(row_key=self.ROW_KEY)
 
         mutate_rows.delete()
 
-        response = _MutateRowResponsePB()
+        expected_result = mutate_rows.mutations[0]
 
-        client._table_data_client.bigtable_stub.MutateRow.side_effect = ([[
-            response]])
-
-        expected_result = mutate_rows.mutate()
-
-        self.assertEqual(response, expected_result[0])
+        self.assertEqual(request.DeleteFromRow,
+                         expected_result.DeleteFromRow)
 
 
-def _MutateRowResponsePB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import (
-        bigtable_pb2 as messages_v2_pb2)
+def _MutateRowsRequestPB(*args, **kw):
+    from google.cloud.bigtable_v2.proto.data_pb2 import Mutation
 
-    return messages_v2_pb2.MutateRowResponse(*args, **kw)
+    return Mutation(*args, **kw)
