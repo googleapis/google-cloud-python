@@ -206,6 +206,18 @@ class WriteDisposition(object):
     returned in the job result."""
 
 
+class SchemaUpdateOption(object):
+    """Specifies an update to the destination table schema as a side effect of
+    a load job.
+    """
+
+    ALLOW_FIELD_ADDITION = 'ALLOW_FIELD_ADDITION'
+    """Allow adding a nullable field to the schema."""
+
+    ALLOW_FIELD_RELAXATION = 'ALLOW_FIELD_RELAXATION'
+    """Allow relaxing a required field in the original schema to nullable."""
+
+
 class _JobReference(object):
     """A reference to a job.
 
@@ -1004,6 +1016,18 @@ class LoadJobConfig(_JobConfig):
             api_repr = value.to_api_repr()
         self._set_sub_prop('timePartitioning', api_repr)
 
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the load job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
+
 
 class LoadJob(_AsyncJob):
     """Asynchronous job for loading data into a table.
@@ -1157,6 +1181,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def schema_update_options(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.schema_update_options`.
+        """
+        return self._configuration.schema_update_options
 
     @property
     def input_file_bytes(self):
@@ -1971,6 +2002,18 @@ class QueryJobConfig(_JobConfig):
             api_repr = value.to_api_repr()
         self._set_sub_prop('timePartitioning', api_repr)
 
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the query job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
+
     def to_api_repr(self):
         """Build an API representation of the query job config.
 
@@ -2148,6 +2191,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def schema_update_options(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.schema_update_options`.
+        """
+        return self._configuration.schema_update_options
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
