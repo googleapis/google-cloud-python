@@ -91,7 +91,7 @@ def system(session, py):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', 'tests/system.py', *session.posargs)
 
 
 @nox.session
