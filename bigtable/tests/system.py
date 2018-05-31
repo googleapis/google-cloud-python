@@ -91,13 +91,12 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        instances_response = retry(Config.CLIENT.list_instances)()
-
-        if len(instances_response.failed_locations) != 0:
+        if len(failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances_response.instances
+        EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
@@ -121,15 +120,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
         for instance in self.instances_to_delete:
             instance.delete()
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_list_instances(self):
-        instances_response = Config.CLIENT.list_instances()
-        self.assertEqual(instances_response.failed_locations, [])
+        instances, failed_locations = Config.CLIENT.list_instances()
+        self.assertEqual(failed_locations, [])
         # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances_response.instances),
-                         len(EXISTING_INSTANCES) + 1)
-        for instance in instances_response.instances:
+        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
+        for instance in instances:
             instance_existence = (instance in EXISTING_INSTANCES or
                                   instance == Config.INSTANCE)
             self.assertTrue(instance_existence)
