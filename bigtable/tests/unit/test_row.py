@@ -131,8 +131,7 @@ class TestDirectRow(unittest.TestCase):
     def test_set_cell_with_string_column(self):
         column_bytes = b'column'
         column_non_bytes = u'column'
-        self._set_cell_helper(column=column_non_bytes,
-                              column_bytes=column_bytes)
+        self._set_cell_helper(column=column_non_bytes)
 
     def test_set_cell_with_integer_value(self):
         value = '1337'
@@ -156,8 +155,7 @@ class TestDirectRow(unittest.TestCase):
         microseconds = 898294371
         millis_granularity = microseconds - (microseconds % 1000)
         timestamp = _EPOCH + datetime.timedelta(microseconds=microseconds)
-        self._set_cell_helper(timestamp=timestamp,
-                              timestamp_micros=millis_granularity)
+        self._set_cell_helper(timestamp=timestamp)
 
     def test_delete(self):
         row_key = b'row_key'
