@@ -21,6 +21,7 @@ import io
 import json
 import logging
 import os
+import warnings
 
 import six
 
@@ -36,12 +37,33 @@ _SERVICE_ACCOUNT_TYPE = 'service_account'
 _VALID_TYPES = (_AUTHORIZED_USER_TYPE, _SERVICE_ACCOUNT_TYPE)
 
 # Help message when no credentials can be found.
-_HELP_MESSAGE = """
-Could not automatically determine credentials. Please set {env} or
-explicitly create credential and re-run the application. For more
-information, please see
+_HELP_MESSAGE = """\
+Could not automatically determine credentials. Please set {env} or \
+explicitly create credentials and re-run the application. For more \
+information, please see \
 https://developers.google.com/accounts/docs/application-default-credentials.
 """.format(env=environment_vars.CREDENTIALS).strip()
+
+# Warning when using Cloud SDK user credentials
+_CLOUD_SDK_CREDENTIALS_WARNING = """\
+Your application has authenticated using end user credentials from Google \
+Cloud SDK. We recommend that most server applications use service accounts \
+instead. If your application continues to use end user credentials from Cloud \
+SDK, you might receive a "quota exceeded" or "API not enabled" error. For \
+more information about service accounts, see \
+https://cloud.google.com/docs/authentication/."""
+
+
+def _warn_about_problematic_credentials(credentials):
+    """Determines if the credentials are problematic.
+
+    Credentials from the Cloud SDK that are associated with Cloud SDK's project
+    are problematic because they may not have APIs enabled and have limited
+    quota. If this is the case, warn about it.
+    """
+    from google.auth import _cloud_sdk
+    if credentials.client_id == _cloud_sdk.CLOUD_SDK_CLIENT_ID:
+        warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
 
 
 def _load_credentials_from_file(filename):
@@ -90,6 +112,7 @@ def _load_credentials_from_file(filename):
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
             six.raise_from(new_exc, caught_exc)
         # Authorized user credentials do not contain the project ID.
+        _warn_about_problematic_credentials(credentials)
         return credentials, None
 
     elif credential_type == _SERVICE_ACCOUNT_TYPE:
