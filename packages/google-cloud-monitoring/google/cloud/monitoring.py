@@ -15,14 +15,21 @@
 from __future__ import absolute_import
 
 from google.cloud.monitoring_v3.query import Query
+from google.cloud.monitoring_v3 import AlertPolicyServiceClient
 from google.cloud.monitoring_v3 import GroupServiceClient
 from google.cloud.monitoring_v3 import MetricServiceClient
+from google.cloud.monitoring_v3 import NotificationChannelServiceClient
+from google.cloud.monitoring_v3 import UptimeCheckServiceClient
 from google.cloud.monitoring_v3 import enums
 from google.cloud.monitoring_v3 import types
 
 __all__ = (
     'enums',
     'types',
+    'AlertPolicyServiceClient',
     'GroupServiceClient',
+    'MetricServiceClient',
+    'NotificationChannelServiceClient',
+    'UptimeCheckServiceClient',
     'Query',
-    'MetricServiceClient', )
+)
