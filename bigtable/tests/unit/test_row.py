@@ -129,7 +129,6 @@ class TestDirectRow(unittest.TestCase):
         self._set_cell_helper()
 
     def test_set_cell_with_string_column(self):
-        column_bytes = b'column'
         column_non_bytes = u'column'
         self._set_cell_helper(column=column_non_bytes)
 
@@ -153,7 +152,6 @@ class TestDirectRow(unittest.TestCase):
         from google.cloud._helpers import _EPOCH
 
         microseconds = 898294371
-        millis_granularity = microseconds - (microseconds % 1000)
         timestamp = _EPOCH + datetime.timedelta(microseconds=microseconds)
         self._set_cell_helper(timestamp=timestamp)
 
