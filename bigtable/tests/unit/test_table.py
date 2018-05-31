@@ -595,8 +595,8 @@ class TestTable(unittest.TestCase):
             bigtable_table_admin_client)
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -604,10 +604,18 @@ class TestTable(unittest.TestCase):
         client._table_admin_client = table_api
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
+        table.name.return_value = client._table_data_client.table_path(
+            self.PROJECT_ID,  self.INSTANCE_ID, self.TABLE_ID)
 
         expected_result = None  # truncate() has no return value.
+        with mock.patch('google.cloud.bigtable.table.Table.name',
+                        new=self.TABLE_NAME):
+            result = table.truncate()
 
-        result = table.truncate()
+        table_api.drop_row_range.assert_called_once_with(
+            name=self.TABLE_NAME,
+            delete_all_data_from_table=True,
+        )
 
         self.assertEqual(result, expected_result)
 
@@ -658,7 +666,7 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
 
-    def test_drop_by_prefix_w_timestamp(self):
+    def test_drop_by_prefix_w_timeout(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
