@@ -23,6 +23,7 @@ from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber import scheduler
 from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
+from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
@@ -216,6 +217,26 @@ def test_send_streaming():
     manager._rpc.send.assert_called_once_with(mock.sentinel.request)
 
 
+def test_heartbeat():
+    manager = make_manager()
+    manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+    manager._rpc.is_active = True
+
+    manager.heartbeat()
+
+    manager._rpc.send.assert_called_once_with(types.StreamingPullRequest())
+
+
+def test_heartbeat_inactive():
+    manager = make_manager()
+    manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+    manager._rpc.is_active = False
+
+    manager.heartbeat()
+
+    manager._rpc.send.assert_not_called()
+
+
 @mock.patch(
     'google.cloud.pubsub_v1.subscriber._protocol.bidi.ResumableBidiRpc',
     autospec=True)
@@ -228,10 +249,19 @@ def test_send_streaming():
 @mock.patch(
     'google.cloud.pubsub_v1.subscriber._protocol.dispatcher.Dispatcher',
     autospec=True)
-def test_open(dispatcher, leaser, background_consumer, resumable_bidi_rpc):
+@mock.patch(
+    'google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater',
+    autospec=True)
+def test_open(
+        heartbeater, dispatcher, leaser, background_consumer,
+        resumable_bidi_rpc):
     manager = make_manager()
 
     manager.open(mock.sentinel.callback)
+
+    heartbeater.assert_called_once_with(manager)
+    heartbeater.return_value.start.assert_called_once()
+    assert manager._heartbeater == heartbeater.return_value
 
     dispatcher.assert_called_once_with(manager, manager._scheduler.queue)
     dispatcher.return_value.start.assert_called_once()
@@ -285,27 +315,32 @@ def make_running_manager():
         dispatcher.Dispatcher, instance=True)
     manager._leaser = mock.create_autospec(
         leaser.Leaser, instance=True)
+    manager._heartbeater = mock.create_autospec(
+        heartbeater.Heartbeater, instance=True)
 
     return (
         manager, manager._consumer, manager._dispatcher, manager._leaser,
-        manager._scheduler)
+        manager._heartbeater, manager._scheduler)
 
 
 def test_close():
-    manager, consumer, dispatcher, leaser, scheduler = make_running_manager()
+    manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
+        make_running_manager())
 
     manager.close()
 
     consumer.stop.assert_called_once()
     leaser.stop.assert_called_once()
     dispatcher.stop.assert_called_once()
+    heartbeater.stop.assert_called_once()
     scheduler.shutdown.assert_called_once()
 
     assert manager.is_active is False
 
 
 def test_close_inactive_consumer():
-    manager, consumer, dispatcher, leaser, scheduler = make_running_manager()
+    manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
+        make_running_manager())
     consumer.is_active = False
 
     manager.close()
@@ -313,11 +348,12 @@ def test_close_inactive_consumer():
     consumer.stop.assert_not_called()
     leaser.stop.assert_called_once()
     dispatcher.stop.assert_called_once()
+    heartbeater.stop.assert_called_once()
     scheduler.shutdown.assert_called_once()
 
 
 def test_close_idempotent():
-    manager, _, _, _, scheduler = make_running_manager()
+    manager, _, _, _, _, scheduler = make_running_manager()
 
     manager.close()
     manager.close()
@@ -326,7 +362,7 @@ def test_close_idempotent():
 
 
 def test_close_callbacks():
-    manager, _, _, _, _ = make_running_manager()
+    manager, _, _, _, _, _ = make_running_manager()
 
     callback = mock.Mock()
 
@@ -352,7 +388,7 @@ def test__get_initial_request():
 
 
 def test_on_response():
-    manager, _, dispatcher, _, scheduler = make_running_manager()
+    manager, _, dispatcher, _, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
 
     # Set up the messages.
@@ -420,10 +456,12 @@ def test__should_recover_false():
     assert manager._should_recover(exc) is False
 
 
-def test__on_rpc_done():
+@mock.patch('threading.Thread', autospec=True)
+def test__on_rpc_done(thread):
     manager = make_manager()
 
-    with mock.patch.object(manager, 'close') as close:
-        manager._on_rpc_done(mock.sentinel.error)
+    manager._on_rpc_done(mock.sentinel.error)
 
-    close.assert_called_once_with(reason=mock.sentinel.error)
+    thread.assert_called_once_with(
+        name=mock.ANY, target=manager.close,
+        kwargs={'reason': mock.sentinel.error})

@@ -20,6 +20,33 @@ import mock
 from ._testing import _make_credentials
 
 
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
+
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
+
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
+
+        return self.channel_stub.responses.pop()
+
+
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
+
+    def __init__(self, responses=[]):
+        self.responses = responses
+        self.requests = []
+
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
+
+
 class TestInstance(unittest.TestCase):
 
     PROJECT = 'project'
@@ -27,6 +54,9 @@ class TestInstance(unittest.TestCase):
     INSTANCE_NAME = 'projects/' + PROJECT + '/instances/' + INSTANCE_ID
     LOCATION_ID = 'locname'
     LOCATION = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
+    APP_PROFILE_PATH = (
+            'projects/' + PROJECT + '/instances/' + INSTANCE_ID
+            + '/appProfiles/')
     DISPLAY_NAME = 'display_name'
     OP_ID = 8915
     OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
@@ -408,6 +438,330 @@ class TestInstance(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
+    def test_create_app_profile_with_wrong_routing_policy(self):
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        app_profile_id = 'appProfileId1262094415'
+        update_mask = []
+
+        # Create AppProfile with exception
+        with self.assertRaises(ValueError):
+            instance.create_app_profile(app_profile_id=app_profile_id,
+                                        routing_policy_type=None)
+
+        with self.assertRaises(ValueError):
+            instance.update_app_profile(app_profile_id,
+                                        update_mask=update_mask,
+                                        routing_policy_type=None)
+
+    def test_create_app_profile_with_multi_routing_policy(self):
+        from google.cloud.bigtable_admin_v2.proto import instance_pb2
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        description = 'description-1724546052'
+        app_profile_id = 'appProfileId1262094415'
+        expected_response = {
+            'name': self.APP_PROFILE_PATH + app_profile_id,
+            'description': description,
+            'multi_cluster_routing_use_any':
+                instance_pb2.AppProfile.MultiClusterRoutingUseAny()
+        }
+        expected_request = {
+            'app_profile_id': app_profile_id,
+            'routing_policy_type': 1,
+            'description': description
+        }
+        expected_response = instance_pb2.AppProfile(**expected_response)
+
+        channel = ChannelStub(responses=[expected_response])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        result = instance.create_app_profile(**expected_request)
+
+        parent = client._instance_admin_client.instance_path(
+            self.PROJECT, self.INSTANCE_ID)
+        expected_request = _CreateAppProfileRequestPB(
+            parent=parent, app_profile_id=app_profile_id,
+            app_profile=expected_response,
+        )
+
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+        self.assertEqual(result, expected_response)
+
+    def test_create_app_profile_with_single_routing_policy(self):
+        from google.cloud.bigtable_admin_v2.proto import instance_pb2
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        description = 'description-1724546052'
+        app_profile_id = 'appProfileId1262094415'
+        cluster_id = 'cluster-id'
+        expected_response = {
+            'name': self.APP_PROFILE_PATH + app_profile_id,
+            'description': description,
+            'single_cluster_routing':
+                instance_pb2.AppProfile.SingleClusterRouting(
+                    cluster_id=cluster_id,
+                    allow_transactional_writes=False
+                )
+        }
+        expected_request = {
+            'app_profile_id': app_profile_id,
+            'routing_policy_type': 2,
+            'description': description,
+            'cluster_id': cluster_id
+        }
+        expected_response = instance_pb2.AppProfile(**expected_response)
+
+        channel = ChannelStub(responses=[expected_response])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        result = instance.create_app_profile(**expected_request)
+
+        parent = client._instance_admin_client.instance_path(
+            self.PROJECT, self.INSTANCE_ID)
+        expected_request = _CreateAppProfileRequestPB(
+            parent=parent, app_profile_id=app_profile_id,
+            app_profile=expected_response,
+        )
+
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+        self.assertEqual(result, expected_response)
+
+    def test_get_app_profile(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as instance_data_v2_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        name = 'name3373707'
+        etag = 'etag3123477'
+        description = 'description-1724546052'
+        expected_response = {
+            'name': name,
+            'etag': etag,
+            'description': description
+        }
+        expected_response = instance_data_v2_pb2.AppProfile(
+            **expected_response)
+
+        response_pb = instance_data_v2_pb2.AppProfile(
+            name=name,
+            etag=etag,
+            description=description
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.GetAppProfile.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.get_app_profile(app_profile_id=app_profile_id)
+
+        self.assertEqual(result, expected_response)
+
+    def test_list_app_profiles(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_messages_v1_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Setup Expected Response
+        next_page_token = ''
+        app_profiles_element = {}
+        app_profiles = [app_profiles_element]
+        expected_response = {
+            'next_page_token': next_page_token,
+            'app_profiles': app_profiles
+        }
+        expected_response = instance_messages_v1_pb2.ListAppProfilesResponse(
+            **expected_response)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        bigtable_instance_stub = (
+            client._instance_admin_client.bigtable_instance_admin_stub)
+        bigtable_instance_stub.ListAppProfiles.side_effect = [
+            expected_response]
+
+        # Perform the method and check the result.
+        response = instance.list_app_profiles()
+
+        self.assertEqual(response[0], expected_response.app_profiles[0])
+
+    def test_update_app_profile(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Create response_pb
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        stub = _FakeStub(response_pb)
+        client._instance_admin_client.bigtable_instance_admin_stub = stub
+        update_mask = []
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.update_app_profile(app_profile_id,
+                                             update_mask=update_mask,
+                                             routing_policy_type=1)
+
+        self.assertIsInstance(result, operation.Operation)
+
+    def test_update_app_profile_with_single_routing_policy(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Create response_pb
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        stub = _FakeStub(response_pb)
+        client._instance_admin_client.bigtable_instance_admin_stub = stub
+        update_mask = []
+
+        # Perform the method and check the result.
+        app_profile_id = 'appProfileId1262094415'
+        cluster_id = 'cluster-id'
+        result = instance.update_app_profile(app_profile_id,
+                                             update_mask=update_mask,
+                                             routing_policy_type=2,
+                                             cluster_id=cluster_id)
+
+        self.assertIsInstance(result, operation.Operation)
+
+    def test_delete_app_profile(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+
+        ignore_warnings = True
+
+        expected_result = None  # delete() has no return value.
+
+        app_profile_id = 'appProfileId1262094415'
+        result = instance.delete_app_profile(app_profile_id, ignore_warnings)
+
+        self.assertEqual(expected_result, result)
+
 
 class _Client(object):
 
@@ -419,3 +773,10 @@ class _Client(object):
     def __eq__(self, other):
         return (other.project == self.project and
                 other.project_name == self.project_name)
+
+
+def _CreateAppProfileRequestPB(*args, **kw):
+    from google.cloud.bigtable_admin_v2.proto import (
+        bigtable_instance_admin_pb2 as instance_v2_pb2)
+
+    return instance_v2_pb2.CreateAppProfileRequest(*args, **kw)
