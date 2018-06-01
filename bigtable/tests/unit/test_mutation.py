@@ -28,9 +28,9 @@ class TestMutateRows(unittest.TestCase):
     ROW_KEY_1 = 'row-key-1'
     ROW_KEY_2 = 'row-key-2'
     FAMILY_NAME = 'family'
-    QUALIFIER = 'qualifier'
+    QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
-    VALUE = 'value'
+    VALUE = b'value'
     RETRYABLE = StatusCode.DEADLINE_EXCEEDED.value[0]
     SUCCESS = StatusCode.OK.value[0]
 

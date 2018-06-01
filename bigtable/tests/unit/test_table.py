@@ -37,10 +37,10 @@ class Test___mutate_rows_request(unittest.TestCase):
         table.name = 'table'
         rows = [DirectRow(row_key='row_key', table=table),
                 DirectRow(row_key='row_key_2', table=table)]
-        rows[0].set_cell('cf1', 'c1', '1')
-        rows[0].set_cell('cf1', 'c1', '2')
-        rows[1].set_cell('cf1', 'c1', '3')
-        rows[1].set_cell('cf1', 'c1', '4')
+        rows[0].set_cell('cf1', b'c1', b'1')
+        rows[0].set_cell('cf1', b'c1', b'2')
+        rows[1].set_cell('cf1', b'c1', b'3')
+        rows[1].set_cell('cf1', b'c1', b'4')
         with self.assertRaises(TooManyMutationsError):
             self._call_fut('table', rows)
 
@@ -51,8 +51,8 @@ class Test___mutate_rows_request(unittest.TestCase):
         table.name = 'table'
         rows = [DirectRow(row_key='row_key', table=table),
                 DirectRow(row_key='row_key_2', table=table)]
-        rows[0].set_cell('cf1', 'c1', '1')
-        rows[1].set_cell('cf1', 'c1', '2')
+        rows[0].set_cell('cf1', b'c1', b'1')
+        rows[1].set_cell('cf1', b'c1', b'2')
         result = self._call_fut('table', rows)
 
         expected_result = _mutate_rows_request_pb(table_name='table')

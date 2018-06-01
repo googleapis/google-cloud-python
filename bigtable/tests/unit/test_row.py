@@ -107,14 +107,14 @@ class TestDirectRow(unittest.TestCase):
         row._row_mutations = mutations = object()
         self.assertIs(mutations, row.row_mutations)
 
-    def _set_cell_helper(self, column=None, value='foobar', timestamp=None):
+    def _set_cell_helper(self, column=None, value=b'foobar', timestamp=None):
 
         from google.cloud.bigtable.mutation import RowMutations
 
         row_key = 'row_key'
         column_family_id = 'column_family_id'
         if column is None:
-            column = 'column'
+            column = b'column'
         table = object()
         row_mutations = RowMutations(row_key=row_key)
         row = self._make_one(row_key, table)
@@ -133,12 +133,12 @@ class TestDirectRow(unittest.TestCase):
         self._set_cell_helper(column=column_non_bytes)
 
     def test_set_cell_with_integer_value(self):
-        value = '1337'
+        value = b'1337'
         self._set_cell_helper(value=value)
 
     def test_set_cell_with_non_bytes_value(self):
         row_key = 'row_key'
-        column = 'column'
+        column = b'column'
         column_family_id = 'column_family_id'
         table = object()
 
@@ -334,7 +334,7 @@ class TestDirectRow(unittest.TestCase):
         table_id = 'table-id'
         row_key = b'row_key'
         column_family_id = u'column_family_id'
-        column = 'column'
+        column = b'column'
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = bigtable_table_admin_client.BigtableTableAdminClient(
@@ -347,7 +347,7 @@ class TestDirectRow(unittest.TestCase):
         row = self._make_one(row_key, table)
 
         # Create request_pb
-        value = 'bytes-value'
+        value = b'bytes-value'
 
         # Create response_pb
         response = self._make_responses([StatusCode.OK.value[0]])
@@ -415,9 +415,9 @@ class TestDirectRow(unittest.TestCase):
         instance = client.instance('instace-id')
         table = instance.table('table-id')
         row = self._make_one(row_key, table)
-        row.set_cell('column-family', 'column-1', 'value1')
-        row.set_cell('column-family', 'column-2', 'value2')
-        row.set_cell('column-family', 'column-3', 'value3')
+        row.set_cell('column-family', b'column-1', b'value1')
+        row.set_cell('column-family', b'column-2', b'value2')
+        row.set_cell('column-family', b'column-3', b'value3')
         # row._row_mutations.mutations = [1, 2, 3]
         num_mutations = len(row.row_mutations.mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):

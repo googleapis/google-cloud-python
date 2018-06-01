@@ -28,10 +28,10 @@ class RowMutations(object):
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
-            column_id (str):
+            column_id (bytes):
                 The qualifier of the column into which new data should be
                 written. Can be any byte string, including the empty string.
-            value (str):
+            value (bytes):
                 The value to be written into the specified cell.
             timestamp (datetime.datetime):
                 (optional) The timestamp of the cell into which new data should
@@ -53,7 +53,7 @@ class RowMutations(object):
             family_name=family_name,
             column_qualifier=_to_bytes(column_id),
             timestamp_micros=timestamp_micros,
-            value=_to_bytes(value)
+            value=value
         )
         mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
         self.mutations.append(mutation_message)

@@ -85,7 +85,7 @@ class _SetDeleteRow(Row):
     * :meth:`delete_cell`
     * :meth:`delete_cells`
 
-    :type row_key: str
+    :type row_key: bytes
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
@@ -311,11 +311,11 @@ class DirectRow(mutation.RowMutations):
                                  Must be of the form
                                  ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type column: str
+        :type column: bytes
         :param column: The column within the column family where the cell
                        is located.
 
-        :type value: str or :class:`int`
+        :type value: bytes or :class:`int`
         :param value: The value to set in the cell. If an integer is used,
                       will be interpreted as a 64-bit big-endian signed
                       integer (8 bytes).
