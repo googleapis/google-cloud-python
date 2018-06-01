@@ -642,6 +642,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_update_read_commit(self):
+        insert_statements = list(self._generate_insert_statements())
+
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -656,17 +658,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            for insert_statement in self._generate_insert_statements():
+            for insert_statement in insert_statements[:1]:
                 result = transaction.execute_update(insert_statement)
                 print("DML: {}, stats: {}".format(insert_statement, result))
 
             # Rows inserted via DML *can* be read before commit.
             during_rows = list(
                 transaction.read(self.TABLE, self.COLUMNS, self.ALL))
-            self._check_rows_data(during_rows)
+            self._check_rows_data(during_rows, self.ROW_DATA[:1])
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_rows_data(rows)
+        self._check_rows_data(rows, self.ROW_DATA[:1])
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
