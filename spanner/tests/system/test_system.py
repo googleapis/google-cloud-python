@@ -641,7 +641,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
-    def test_transaction_execute_dml_read_commit(self):
+    def test_transaction_execute_update_read_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -657,7 +657,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(rows, [])
 
             for insert_statement in self._generate_insert_statements():
-                transaction.execute_sql(insert_statement)
+                result = transaction.execute_update(insert_statement)
+                print("DML: {}, stats: {}".format(insert_statement, result))
 
             # Rows inserted via DML *can* be read before commit.
             during_rows = list(

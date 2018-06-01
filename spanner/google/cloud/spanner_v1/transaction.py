@@ -14,11 +14,13 @@
 
 """Spanner read-write transaction support."""
 
-from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
-from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
+from google.protobuf.struct_pb2 import Struct
 
 from google.cloud._helpers import _pb_timestamp_to_datetime
+from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.batch import _BatchBase
 
@@ -124,6 +126,64 @@ class Transaction(_SnapshotBase, _BatchBase):
             response.commit_timestamp)
         del self._session._transaction
         return self.committed
+
+    def execute_update(self, dml, params=None, param_types=None,
+                       query_mode=None, partition=None):
+        """Perform an ``ExecuteSql`` API request with DML.
+
+        :type dml: str
+        :param dml: SQL DML statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``dml``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :type query_mode:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
+        :param query_mode: Mode governing return of results / query plan. See
+            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
+
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_query`.
+
+        :rtype:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.ResultSetStats`
+        :returns:
+            stats object, including count of rows affected by the DML
+            statement.
+        """
+        if params is not None:
+            if param_types is None:
+                raise ValueError(
+                    "Specify 'param_types' when passing 'params'.")
+            params_pb = Struct(fields={
+                key: _make_value_pb(value) for key, value in params.items()})
+        else:
+            params_pb = None
+
+        database = self._session._database
+        metadata = _metadata_with_prefix(database.name)
+        transaction = self._make_txn_selector()
+        api = database.spanner_api
+
+        response = api.execute_sql(
+            self._session.name,
+            dml,
+            transaction=transaction,
+            params=params_pb,
+            param_types=param_types,
+            query_mode=query_mode,
+            partition_token=partition,
+            metadata=metadata,
+        )
+
+        return response.stats
 
     def __enter__(self):
         """Begin ``with`` block."""

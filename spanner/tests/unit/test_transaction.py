@@ -24,6 +24,16 @@ VALUES = [
     ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
     ['bharney@example.com', 'Bharney', 'Rhubble', 31],
 ]
+DML_QUERY = """\
+INSERT INTO citizens(first_name, last_name, age)
+VALUES ("Phred", "Phlyntstone", 32)
+"""
+DML_QUERY_WITH_PARAM = """
+INSERT INTO citizens(first_name, last_name, age)
+VALUES ("Phred", "Phlyntstone", @age)
+"""
+PARAMS = {'age': 30}
+PARAM_TYPES = {'age': 'INT64'}
 
 
 class TestTransaction(unittest.TestCase):
@@ -291,6 +301,75 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_w_mutations(self):
         self._commit_helper(mutate=True)
+
+    def test_execute_update_other_error(self):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_sql.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        with self.assertRaises(RuntimeError):
+            transaction.execute_update(DML_QUERY)
+
+    def test_execute_update_w_params_wo_param_types(self):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
+        session = _Session()
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        with self.assertRaises(ValueError):
+            transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
+
+    def _execute_update_helper(self, partition=None):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
+            ResultSet, ResultSetStats)
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
+            TransactionSelector)
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+
+        MODE = 2  # PROFILE
+        stats_pb = ResultSetStats(
+            query_stats=Struct(fields={
+                'rows_affected': _make_value_pb(1),
+            }))
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        api.execute_sql.return_value = ResultSet(stats=stats_pb)
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        result = transaction.execute_update(
+            DML_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
+            query_mode=MODE, partition=partition)
+
+        self.assertEqual(result, stats_pb)
+
+        expected_transaction = TransactionSelector(id=self.TRANSACTION_ID)
+        expected_params = Struct(fields={
+            key: _make_value_pb(value) for (key, value) in PARAMS.items()})
+
+        api.execute_sql.assert_called_once_with(
+            self.SESSION_NAME,
+            DML_QUERY_WITH_PARAM,
+            transaction=expected_transaction,
+            params=expected_params,
+            param_types=PARAM_TYPES,
+            query_mode=MODE,
+            partition_token=partition,
+            metadata=[('google-cloud-resource-prefix', database.name)],
+        )
+
+    def test_execute_update_wo_partition(self):
+        self._execute_update_helper()
+
+    def test_execute_update_w_partition(self):
+        self._execute_update_helper(partition=b'FACEDACE')
 
     def test_context_mgr_success(self):
         import datetime
