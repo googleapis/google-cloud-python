@@ -33,6 +33,7 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -662,51 +663,61 @@ class Client(ClientWithProject):
 
     def list_jobs(
             self, project=None, max_results=None, page_token=None,
-            all_users=None, state_filter=None, retry=DEFAULT_RETRY):
+            all_users=None, state_filter=None, retry=DEFAULT_RETRY,
+            min_creation_time=None, max_creation_time=None):
         """List jobs for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
         Args:
-            project (str):
-                Optional. Project ID to use for retreiving datasets. Defaults
+            project (str, optional):
+                Project ID to use for retreiving datasets. Defaults
                 to the client's project.
-            max_results (int):
-                Optional. Maximum number of jobs to return.
-            page_token (str):
-                Optional. Opaque marker for the next "page" of jobs. If not
+            max_results (int, optional):
+                Maximum number of jobs to return.
+            page_token (str, optional):
+                Opaque marker for the next "page" of jobs. If not
                 passed, the API will return the first page of jobs. The token
                 marks the beginning of the iterator to be returned and the
                 value of the ``page_token`` can be accessed at
                 ``next_page_token`` of
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
-            all_users (bool):
+            all_users (bool, optional):
                 If true, include jobs owned by all users in the project.
-            state_filter (str):
-                Optional. If set, include only jobs matching the given
-                state. One of
-
+            state_filter (str, optional):
+                If set, include only jobs matching the given state. One of:
                     * ``"done"``
                     * ``"pending"``
                     * ``"running"``
-            retry (google.api_core.retry.Retry):
-                Optional. How to retry the RPC.
+            retry (google.api_core.retry.Retry, optional):
+                How to retry the RPC.
+            min_creation_time (int, optional):
+                Min value for job creation time, in milliseconds since the
+                POSIX epoch. If set, only jobs created after or at this
+                timestamp are returned.
+            max_creation_time (int, optional):
+                Max value for job creation time, in milliseconds since the
+                POSIX epoch. If set, only jobs created before or at this
+                timestamp are returned.
 
         Returns:
             google.api_core.page_iterator.Iterator:
                 Iterable of job instances.
         """
-        extra_params = {'projection': 'full'}
+        extra_params = {
+            'allUsers': all_users,
+            'stateFilter': state_filter,
+            'minCreationTime': _str_or_none(min_creation_time),
+            'maxCreationTime': _str_or_none(max_creation_time),
+            'projection': 'full'
+        }
+
+        extra_params = {param: value for param, value in extra_params.items()
+                        if value is not None}
 
         if project is None:
             project = self.project
-
-        if all_users is not None:
-            extra_params['allUsers'] = all_users
-
-        if state_filter is not None:
-            extra_params['stateFilter'] = state_filter
 
         path = '/projects/%s/jobs' % (project,)
         return page_iterator.HTTPIterator(
