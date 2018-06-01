@@ -1753,6 +1753,23 @@ class TestClient(unittest.TestCase):
                 'projection': 'full',
             })
 
+    def test_list_jobs_w_time_filter(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        list(client.list_jobs(
+            min_creation_time=1, max_creation_time=1527874895820))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/%s/jobs' % self.PROJECT,
+            query_params={
+                'projection': 'full',
+                'minCreationTime': '1',
+                'maxCreationTime': '1527874895820',
+            })
+
     def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob
 
