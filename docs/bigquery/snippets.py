@@ -31,8 +31,12 @@ import pytest
 import six
 try:
     import pandas
-except ImportError:
+except (ImportError, AttributeError):
     pandas = None
+try:
+    import pyarrow
+except (ImportError, AttributeError):
+    pyarrow = None
 
 from google.cloud import bigquery
 
@@ -514,21 +518,15 @@ def test_create_partitioned_table(client, to_delete):
 
     table_ref = dataset_ref.table('my_partitioned_table')
     schema = [
-        bigquery.SchemaField('requested_url', 'STRING', mode='REQUIRED'),
-        bigquery.SchemaField('request_ts', 'TIMESTAMP', mode='REQUIRED'),
-        bigquery.SchemaField(
-            'response_info', 'RECORD', fields=[
-                bigquery.SchemaField('backend_server', 'STRING'),
-                bigquery.SchemaField('response_ms', 'INTEGER'),
-            ]
-        ),
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING'),
+        bigquery.SchemaField('date', 'DATE')
     ]
     table = bigquery.Table(table_ref, schema=schema)
-    time_partitioning = bigquery.TimePartitioning(
+    table.time_partitioning = bigquery.TimePartitioning(
         type_=bigquery.TimePartitioningType.DAY,
-        field='request_ts',        # name of column to use for partitioning
+        field='date',  # name of column to use for partitioning
         expiration_ms=7776000000)  # 90 days
-    table.time_partitioning = time_partitioning
 
     table = client.create_table(table)
 
@@ -537,32 +535,79 @@ def test_create_partitioned_table(client, to_delete):
     # [END bigquery_create_table_partitioned]
 
     assert table.time_partitioning.type_ == 'DAY'
-    assert table.time_partitioning.field == 'request_ts'
+    assert table.time_partitioning.field == 'date'
     assert table.time_partitioning.expiration_ms == 7776000000
 
 
-def test_query_partitioned_table(client, to_delete):
-    # [START bigquery_query_partitioned_table]
-    import datetime
-    import pytz
+def test_load_and_query_partitioned_table(client, to_delete):
+    dataset_id = 'load_partitioned_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_partitioned]
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    table_id = 'us_states_by_date'
 
-    sql = """
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING'),
+        bigquery.SchemaField('date', 'DATE')
+    ]
+    job_config.skip_leading_rows = 1
+    job_config.time_partitioning = bigquery.TimePartitioning(
+        type_=bigquery.TimePartitioningType.DAY,
+        field='date',  # name of column to use for partitioning
+        expiration_ms=7776000000)  # 90 days
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv'
+
+    load_job = client.load_table_from_uri(
+        uri,
+        dataset_ref.table(table_id),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    table = client.get_table(dataset_ref.table(table_id))
+    print("Loaded {} rows to table {}".format(table.num_rows, table_id))
+    # [END bigquery_load_table_partitioned]
+    assert table.num_rows == 50
+
+    project_id = client.project
+
+    # [START bigquery_query_partitioned_table]
+    import datetime
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # project_id = 'my-project'
+    # dataset_id = 'my_dataset'
+    table_id = 'us_states_by_date'
+
+    sql_template = """
         SELECT *
-        FROM `bigquery-partition-samples.samples.stackoverflow_comments`
-        WHERE creation_date > @mytime
+        FROM `{}.{}.{}`
+        WHERE date BETWEEN @start_date AND @end_date
     """
-    query_parameters = [
+    sql = sql_template.format(project_id, dataset_id, table_id)
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_parameters = [
         bigquery.ScalarQueryParameter(
-            'mytime',
-            'TIMESTAMP',
-            datetime.datetime(2016, 1, 1, 0, 0, tzinfo=pytz.UTC)
+            'start_date',
+            'DATE',
+            datetime.date(1800, 1, 1)
+        ),
+        bigquery.ScalarQueryParameter(
+            'end_date',
+            'DATE',
+            datetime.date(1899, 12, 31)
         )
     ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_parameters
-    job_config.dry_run = True
 
     query_job = client.query(
         sql,
@@ -570,12 +615,10 @@ def test_query_partitioned_table(client, to_delete):
         location='US',
         job_config=job_config)  # API request
 
-    # A dry run query completes immediately.
-    assert query_job.state == 'DONE'
-
-    print("This query will process {} bytes.".format(
-        query_job.total_bytes_processed))
+    rows = list(query_job)
+    print("{} states were admitted to the US in the 1800s".format(len(rows)))
     # [END bigquery_query_partitioned_table]
+    assert len(rows) == 29
 
 
 def test_get_table_information(client, to_delete):
@@ -1322,6 +1365,148 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [END bigquery_load_table_gcs_parquet_truncate]
 
 
+def test_load_table_add_column(client, to_delete):
+    dataset_id = 'load_table_add_column_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    snippets_dir = os.path.abspath(os.path.dirname(__file__))
+    filepath = os.path.join(
+        snippets_dir, '..', '..', 'bigquery', 'tests', 'data', 'people.csv')
+    table_ref = dataset_ref.table('my_table')
+    old_schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+    ]
+    table = client.create_table(bigquery.Table(table_ref, schema=old_schema))
+
+    # [START bigquery_add_column_load_append]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # filepath = 'path/to/your_file.csv'
+
+    # Retrieves the destination table and checks the length of the schema
+    table_id = 'my_table'
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)
+    print("Table {} contains {} columns.".format(table_id, len(table.schema)))
+
+    # Configures the load job to append the data to the destination table,
+    # allowing field addition
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config.schema_update_options = [
+        bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+    ]
+    # In this example, the existing table contains only the 'full_name' column.
+    # 'REQUIRED' fields cannot be added to an existing schema, so the
+    # additional column must be 'NULLABLE'.
+    job_config.schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='NULLABLE'),
+    ]
+    job_config.source_format = bigquery.SourceFormat.CSV
+    job_config.skip_leading_rows = 1
+
+    with open(filepath, 'rb') as source_file:
+        job = client.load_table_from_file(
+            source_file,
+            table_ref,
+            location='US',  # Must match the destination dataset location.
+            job_config=job_config)  # API request
+
+    job.result()  # Waits for table load to complete.
+    print('Loaded {} rows into {}:{}.'.format(
+        job.output_rows, dataset_id, table_ref.table_id))
+
+    # Checks the updated length of the schema
+    table = client.get_table(table)
+    print("Table {} now contains {} columns.".format(
+        table_id, len(table.schema)))
+    # [END bigquery_add_column_load_append]
+    assert len(table.schema) == 2
+    assert table.num_rows > 0
+
+
+def test_load_table_relax_column(client, to_delete):
+    dataset_id = 'load_table_relax_column_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    snippets_dir = os.path.abspath(os.path.dirname(__file__))
+    filepath = os.path.join(
+        snippets_dir, '..', '..', 'bigquery', 'tests', 'data', 'people.csv')
+    table_ref = dataset_ref.table('my_table')
+    old_schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+        bigquery.SchemaField('favorite_color', 'STRING', mode='REQUIRED'),
+    ]
+    table = client.create_table(bigquery.Table(table_ref, schema=old_schema))
+
+    # [START bigquery_relax_column_load_append]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # filepath = 'path/to/your_file.csv'
+
+    # Retrieves the destination table and checks the number of required fields
+    table_id = 'my_table'
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)
+    original_required_fields = sum(
+        field.mode == 'REQUIRED' for field in table.schema)
+    # In this example, the existing table has 3 required fields.
+    print("{} fields in the schema are required.".format(
+        original_required_fields))
+
+    # Configures the load job to append the data to a destination table,
+    # allowing field relaxation
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config.schema_update_options = [
+        bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+    ]
+    # In this example, the existing table contains three required fields
+    # ('full_name', 'age', and 'favorite_color'), while the data to load
+    # contains only the first two fields.
+    job_config.schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+    ]
+    job_config.source_format = bigquery.SourceFormat.CSV
+    job_config.skip_leading_rows = 1
+
+    with open(filepath, 'rb') as source_file:
+        job = client.load_table_from_file(
+            source_file,
+            table_ref,
+            location='US',  # Must match the destination dataset location.
+            job_config=job_config)  # API request
+
+    job.result()  # Waits for table load to complete.
+    print('Loaded {} rows into {}:{}.'.format(
+        job.output_rows, dataset_id, table_ref.table_id))
+
+    # Checks the updated number of required fields
+    table = client.get_table(table)
+    current_required_fields = sum(
+        field.mode == 'REQUIRED' for field in table.schema)
+    print("{} fields in the schema are now required.".format(
+        current_required_fields))
+    # [END bigquery_relax_column_load_append]
+    assert original_required_fields - current_required_fields == 1
+    assert len(table.schema) == 3
+    assert table.schema[2].mode == 'NULLABLE'
+    assert table.num_rows > 0
+
+
 def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
     import csv
     from google.cloud._testing import _NamedTemporaryFile
@@ -1767,6 +1952,130 @@ def test_client_query_destination_table_cmek(client, to_delete):
     # [END bigquery_query_destination_table_cmek]
 
 
+def test_client_query_relax_column(client, to_delete):
+    dataset_id = 'query_relax_column_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table_ref = dataset_ref.table('my_table')
+    schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+    ]
+    table = client.create_table(
+        bigquery.Table(table_ref, schema=schema))
+
+    # [START bigquery_relax_column_query_append]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    # Retrieves the destination table and checks the number of required fields
+    table_id = 'my_table'
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)
+    original_required_fields = sum(
+        field.mode == 'REQUIRED' for field in table.schema)
+    # In this example, the existing table has 2 required fields
+    print("{} fields in the schema are required.".format(
+        original_required_fields))
+
+    # Configures the query to append the results to a destination table,
+    # allowing field relaxation
+    job_config = bigquery.QueryJobConfig()
+    job_config.schema_update_options = [
+        bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+    ]
+    job_config.destination = table_ref
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+
+    query_job = client.query(
+        # In this example, the existing table contains 'full_name' and 'age' as
+        # required columns, but the query results will omit the second column.
+        'SELECT "Beyonce" as full_name;',
+        # Location must match that of the dataset(s) referenced in the query
+        # and of the destination table.
+        location='US',
+        job_config=job_config
+    )  # API request - starts the query
+
+    query_job.result()  # Waits for the query to finish
+    print("Query job {} complete.".format(query_job.job_id))
+
+    # Checks the updated number of required fields
+    table = client.get_table(table)
+    current_required_fields = sum(
+        field.mode == 'REQUIRED' for field in table.schema)
+    print("{} fields in the schema are now required.".format(
+        current_required_fields))
+    # [END bigquery_relax_column_query_append]
+    assert original_required_fields - current_required_fields > 0
+    assert len(table.schema) == 2
+    assert table.schema[1].mode == 'NULLABLE'
+    assert table.num_rows > 0
+
+
+def test_client_query_add_column(client, to_delete):
+    dataset_id = 'query_add_column_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table_ref = dataset_ref.table('my_table')
+    schema = [
+        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+    ]
+    table = client.create_table(bigquery.Table(table_ref, schema=schema))
+
+    # [START bigquery_add_column_query_append]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    # Retrieves the destination table and checks the length of the schema
+    table_id = 'my_table'
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)
+    print("Table {} contains {} columns.".format(table_id, len(table.schema)))
+
+    # Configures the query to append the results to a destination table,
+    # allowing field addition
+    job_config = bigquery.QueryJobConfig()
+    job_config.schema_update_options = [
+        bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+    ]
+    job_config.destination = table_ref
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+
+    query_job = client.query(
+        # In this example, the existing table contains only the 'full_name' and
+        # 'age' columns, while the results of this query will contain an
+        # additional 'favorite_color' column.
+        'SELECT "Timmy" as full_name, 85 as age, "Blue" as favorite_color;',
+        # Location must match that of the dataset(s) referenced in the query
+        # and of the destination table.
+        location='US',
+        job_config=job_config
+    )  # API request - starts the query
+
+    query_job.result()  # Waits for the query to finish
+    print("Query job {} complete.".format(query_job.job_id))
+
+    # Checks the updated length of the schema
+    table = client.get_table(table)
+    print("Table {} now contains {} columns.".format(
+        table_id, len(table.schema)))
+    # [END bigquery_add_column_query_append]
+    assert len(table.schema) == 3
+    assert table.num_rows > 0
+
+
 def test_client_query_w_named_params(client, capsys):
     """Run a query using named query parameters"""
 
@@ -2032,6 +2341,49 @@ def test_list_rows_as_dataframe(client):
     assert isinstance(df, pandas.DataFrame)
     assert len(list(df)) == len(table.schema)  # verify the number of columns
     assert len(df) == table.num_rows           # verify the number of rows
+
+
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipif(pyarrow is None, reason='Requires `pyarrow`')
+def test_load_table_from_dataframe(client, to_delete):
+    dataset_id = 'load_table_dataframe_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_dataframe]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table('monty_python')
+    records = [
+        {'title': 'The Meaning of Life', 'release_year': 1983},
+        {'title': 'Monty Python and the Holy Grail', 'release_year': 1975},
+        {'title': 'Life of Brian', 'release_year': 1979},
+        {
+            'title': 'And Now for Something Completely Different',
+            'release_year': 1971
+        },
+    ]
+    # Optionally set explicit indices.
+    # If indices are not specified, a column will be created for the default
+    # indices created by pandas.
+    index = ['Q24980', 'Q25043', 'Q24953', 'Q16403']
+    dataframe = pandas.DataFrame(
+        records, index=pandas.Index(index, name='wikidata_id'))
+
+    job = client.load_table_from_dataframe(dataframe, table_ref, location='US')
+
+    job.result()  # Waits for table load to complete.
+
+    assert job.state == 'DONE'
+    table = client.get_table(table_ref)
+    assert table.num_rows == 4
+    # [END bigquery_load_table_dataframe]
+    column_names = [field.name for field in table.schema]
+    assert sorted(column_names) == ['release_year', 'title', 'wikidata_id']
 
 
 if __name__ == '__main__':

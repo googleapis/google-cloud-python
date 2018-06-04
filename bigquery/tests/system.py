@@ -409,6 +409,10 @@ class TestBigQuery(unittest.TestCase):
             """.format(dsname, table_id, colprojections, rowcount)
         query_job = Config.CLIENT.query(sql)
         query_job.result()
+        self.assertEqual(query_job.statement_type, 'CREATE_TABLE_AS_SELECT')
+        self.assertEqual(query_job.ddl_operation_performed, 'CREATE')
+        self.assertEqual(query_job.ddl_target_table, table_ref)
+
         return table_ref
 
     def test_query_many_columns(self):
@@ -1793,36 +1797,37 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
         return dataset
 
-    @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
-    @pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
-    @pytest.mark.usefixtures('ipython_interactive')
-    def test_bigquery_magic(self):
-        ip = IPython.get_ipython()
-        ip.extension_manager.load_extension('google.cloud.bigquery')
-        sql = """
-            SELECT
-              CONCAT(
-                'https://stackoverflow.com/questions/',
-                CAST(id as STRING)) as url,
-              view_count
-            FROM `bigquery-public-data.stackoverflow.posts_questions`
-            WHERE tags like '%google-bigquery%'
-            ORDER BY view_count DESC
-            LIMIT 10
-        """
-        with io.capture_output() as captured:
-            result = ip.run_cell_magic('bigquery', '', sql)
 
-        lines = re.split('\n|\r', captured.stdout)
-        # Removes blanks & terminal code (result of display clearing)
-        updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
-        assert re.match("Executing query with job ID: .*", updates[0])
-        assert all(re.match("Query executing: .*s", line)
-                   for line in updates[1:-1])
-        assert re.match("Query complete after .*s", updates[-1])
-        assert isinstance(result, pandas.DataFrame)
-        assert len(result) == 10                      # verify row count
-        assert list(result) == ['url', 'view_count']  # verify column names
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
+@pytest.mark.usefixtures('ipython_interactive')
+def test_bigquery_magic():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    sql = """
+        SELECT
+            CONCAT(
+            'https://stackoverflow.com/questions/',
+            CAST(id as STRING)) as url,
+            view_count
+        FROM `bigquery-public-data.stackoverflow.posts_questions`
+        WHERE tags like '%google-bigquery%'
+        ORDER BY view_count DESC
+        LIMIT 10
+    """
+    with io.capture_output() as captured:
+        result = ip.run_cell_magic('bigquery', '', sql)
+
+    lines = re.split('\n|\r', captured.stdout)
+    # Removes blanks & terminal code (result of display clearing)
+    updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
+    assert re.match("Executing query with job ID: .*", updates[0])
+    assert all(re.match("Query executing: .*s", line)
+               for line in updates[1:-1])
+    assert re.match("Query complete after .*s", updates[-1])
+    assert isinstance(result, pandas.DataFrame)
+    assert len(result) == 10                      # verify row count
+    assert list(result) == ['url', 'view_count']  # verify column names
 
 
 def _job_done(instance):

@@ -62,6 +62,7 @@ Job-Related Types
     job.QueryPriority
     job.SourceFormat
     job.WriteDisposition
+    job.SchemaUpdateOption
 
 
 Dataset
