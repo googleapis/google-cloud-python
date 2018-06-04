@@ -480,16 +480,17 @@ def test_create_table_then_add_schema(client, to_delete):
 
 
 def test_create_table_cmek(client, to_delete):
-    DATASET_ID = 'create_table_cmek_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'create_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
     # [START bigquery_create_table_cmek]
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
 
-    table_ref = dataset.table('my_table')
+    table_ref = client.dataset(dataset_id).table('my_table')
     table = bigquery.Table(table_ref)
 
     # Set the encryption key to use for the table.
