@@ -693,7 +693,7 @@ class Client(ClientWithProject):
                     * ``"running"``
             retry (google.api_core.retry.Retry, optional):
                 How to retry the RPC.
-            min_creation_time (datetitme.datetime, optional):
+            min_creation_time (datetime.datetime, optional):
                 Min value for job creation time. If set, only jobs created
                 after or at this timestamp are returned. If the datetime has
                 no time zone assumes UTC time.
