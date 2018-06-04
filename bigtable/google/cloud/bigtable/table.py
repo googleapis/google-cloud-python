@@ -406,7 +406,7 @@ class Table(object):
                 ValueError: If the parameters are invalid.
         """
         client = self._instance._client
-        table_admin_client = client._table_admin_client
+        table_admin_client = client.table_admin_client
         if timeout:
             table_admin_client.drop_row_range(
                 self.name, delete_all_data_from_table=True, timeout=timeout)
@@ -431,7 +431,7 @@ class Table(object):
                 ValueError: If the parameters are invalid.
         """
         client = self._instance._client
-        table_admin_client = client._table_admin_client
+        table_admin_client = client.table_admin_client
         if timeout:
             table_admin_client.drop_row_range(
                 self.name, row_key_prefix=_to_bytes(row_key_prefix),

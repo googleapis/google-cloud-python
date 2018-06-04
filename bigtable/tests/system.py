@@ -84,7 +84,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(admin=True)
+        Config.CLIENT = Client(project='grass-clump-479', admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
@@ -425,6 +425,49 @@ class TestDataAPI(unittest.TestCase):
         row2_data = self._table.read_row(ROW_KEY_ALT)
         self.assertEqual(
             row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
+
+    def test_truncate_table(self):
+        row_keys = [
+            'row_key_1', 'row_key_2', 'row_key_3', 'row_key_4', 'row_key_5',
+            'row_key_pr_1', 'row_key_pr_2', 'row_key_pr_3', 'row_key_pr_4',
+            'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.truncate(timeout=200)
+
+        read_rows = self._table.yield_rows()
+
+        for row in read_rows:
+            self.assertNotIn(row.row_key.decode('utf-8'), row_keys)
+
+    def test_drop_by_prefix_table(self):
+        row_keys = [
+            'row_key_1', 'row_key_2', 'row_key_3', 'row_key_4', 'row_key_5',
+            'row_key_pr_1', 'row_key_pr_2', 'row_key_pr_3', 'row_key_pr_4',
+            'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.drop_by_prefix(row_key_prefix='row_key_pr', timeout=200)
+
+        read_rows = self._table.yield_rows()
+        expected_rows_count = 5
+        read_rows_count = 0
+
+        for row in read_rows:
+            if row.row_key.decode('utf-8') in row_keys:
+                read_rows_count += 1
+
+        self.assertEqual(expected_rows_count, read_rows_count)
 
     @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
                               "google-cloud-python/issues/5362")
