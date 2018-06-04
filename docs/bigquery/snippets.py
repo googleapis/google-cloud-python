@@ -2309,7 +2309,7 @@ def test_client_list_jobs(client):
 
     # Use min_creation_time and/or max_creation_time to specify a time window.
     print("Jobs from the last two days:")
-    two_days_ago = datetime.datetime.now() - datetime.timedelta(days=2)
+    two_days_ago = datetime.datetime.utcnow() - datetime.timedelta(days=2)
     for job in client.list_jobs(min_creation_time=two_days_ago):
         print(job.job_id)
 
