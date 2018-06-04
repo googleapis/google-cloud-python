@@ -2291,6 +2291,30 @@ def test_client_query_dry_run(client):
     assert query_job.total_bytes_processed > 0
 
 
+def test_query_no_cache(client):
+    # [START bigquery_query_no_cache]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_query_cache = False
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+    query_job = client.query(
+        sql,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request
+
+    # Print the results.
+    for row in query_job:  # API request - fetches results
+        print(row)
+    # [END bigquery_query_no_cache]
+
+
 def test_client_list_jobs(client):
     """List jobs for a project."""
 
