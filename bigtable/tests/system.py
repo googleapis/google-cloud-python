@@ -252,6 +252,21 @@ class TestTableAdminAPI(unittest.TestCase):
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
+    def test_create_table_with_split_keys(self):
+        temp_table_id = 'foo-bar-baz-split-table'
+        initial_split_keys = ['split_key_1', 'split_key_10', 'split_key_20']
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table.create(initial_split_keys=initial_split_keys)
+
+        # Read Sample Row Keys for created splits
+        sample_row_keys = temp_table.sample_row_keys()
+
+        self.tables_to_delete.append(temp_table)
+
+        for sample_row_key in sample_row_keys:
+            self.assertIn(sample_row_key.row_key.decode('utf-8'),
+                          initial_split_keys)
+
     @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
                               "google-cloud-python/issues/5362")
     def test_create_column_family(self):
