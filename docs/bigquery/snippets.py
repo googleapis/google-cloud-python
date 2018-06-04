@@ -697,6 +697,33 @@ def test_table_exists(client, to_delete):
     assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
+def test_label_table(client, to_delete):
+    dataset_id = 'label_table_dataset_{}'.format(_millis())
+    table_id = 'label_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_label_table]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    assert table.labels == {}
+    labels = {'color': 'green'}
+    table.labels = labels
+
+    table = client.update_table(table, ['labels'])  # API request
+
+    assert table.labels == labels
+    # [END bigquery_label_table]
+
+
 def test_update_table_description(client, to_delete):
     """Update a table's description."""
     dataset_id = 'update_table_description_dataset_{}'.format(_millis())
