@@ -417,8 +417,9 @@ class DirectRow(_SetDeleteRow):
             raise ValueError('%d total mutations exceed the maximum allowable '
                              '%d.' % (num_mutations, MAX_MUTATIONS))
 
+        data_client = self._table._instance._client.table_data_client
         commit = functools.partial(
-            self._table._instance._client._table_data_client.mutate_row,
+            data_client.mutate_row,
             self._table.name, self._row_key, mutations_list)
         retry_ = retry.Retry(
             predicate=_retry_commit_exception,
@@ -532,8 +533,8 @@ class ConditionalRow(_SetDeleteRow):
                 'mutations and %d false mutations.' % (
                     MAX_MUTATIONS, num_true_mutations, num_false_mutations))
 
-        client = self._table._instance._client
-        resp = client._table_data_client.check_and_mutate_row(
+        data_client = self._table._instance._client.table_data_client
+        resp = data_client.check_and_mutate_row(
             table_name=self._table.name, row_key=self._row_key,)
         self.clear()
         return resp[0].predicate_matched
@@ -815,8 +816,8 @@ class AppendRow(Row):
             raise ValueError('%d total append mutations exceed the maximum '
                              'allowable %d.' % (num_mutations, MAX_MUTATIONS))
 
-        client = self._table._instance._client
-        row_response = client._table_data_client.read_modify_write_row(
+        data_client = self._table._instance._client.table_data_client
+        row_response = data_client.read_modify_write_row(
             table_name=self._table.name, row_key=self._row_key,
             rules=self._rule_pb_list)
 

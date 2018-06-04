@@ -16,6 +16,7 @@
 
 import re
 import threading
+import copy
 
 from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
@@ -580,7 +581,7 @@ class BatchSnapshot(object):
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        kwargs = batch['read']
+        kwargs = copy.deepcopy(batch['read'])
         keyset_dict = kwargs.pop('keyset')
         kwargs['keyset'] = KeySet._from_dict(keyset_dict)
         return self._get_snapshot().read(
