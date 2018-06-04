@@ -28,6 +28,7 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
+import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
@@ -692,14 +693,14 @@ class Client(ClientWithProject):
                     * ``"running"``
             retry (google.api_core.retry.Retry, optional):
                 How to retry the RPC.
-            min_creation_time (int, optional):
-                Min value for job creation time, in milliseconds since the
-                POSIX epoch. If set, only jobs created after or at this
-                timestamp are returned.
-            max_creation_time (int, optional):
-                Max value for job creation time, in milliseconds since the
-                POSIX epoch. If set, only jobs created before or at this
-                timestamp are returned.
+            min_creation_time (datetitme.datetime, optional):
+                Min value for job creation time. If set, only jobs created
+                after or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
+            max_creation_time (datetime.datetime, optional):
+                Max value for job creation time. If set, only jobs created
+                before or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -708,8 +709,12 @@ class Client(ClientWithProject):
         extra_params = {
             'allUsers': all_users,
             'stateFilter': state_filter,
-            'minCreationTime': _str_or_none(min_creation_time),
-            'maxCreationTime': _str_or_none(max_creation_time),
+            'minCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    min_creation_time)),
+            'maxCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    max_creation_time)),
             'projection': 'full'
         }
 
