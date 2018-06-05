@@ -286,9 +286,11 @@ class TestTable(unittest.TestCase):
     def test_create_with_split_keys(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client, bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient)
         instance_api = (
             bigtable_instance_admin_client.BigtableInstanceAdminClient(
                 mock.Mock()))
@@ -308,8 +310,19 @@ class TestTable(unittest.TestCase):
         expected_result = None  # create() has no return value.
 
         # Perform the method and check the result.
-        result = table.create(split_keys)
-        self.assertEqual(result, expected_result)
+        table.create(split_keys)
+
+        splits = []
+        for split_key in split_keys:
+            splits.append(
+                table_admin_messages_v2_pb2.CreateTableRequest.Split(
+                    key=split_key.encode('utf-8')))
+
+        table_api.create_table.assert_called_once_with(
+            parent=self.INSTANCE_NAME,
+            table={},
+            table_id=self.TABLE_ID,
+            initial_splits=splits)
 
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
