@@ -37,6 +37,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     """Timestamp at which the transaction was successfully committed."""
     _rolled_back = False
     _multi_use = True
+    _execute_sql_count = 0
 
     def __init__(self, session):
         if session._transaction is not None:
@@ -180,9 +181,11 @@ class Transaction(_SnapshotBase, _BatchBase):
             param_types=param_types,
             query_mode=query_mode,
             partition_token=partition,
+            seqno=self._execute_sql_count,
             metadata=metadata,
         )
 
+        self._execute_sql_count += 1
         return response.stats
 
     def __enter__(self):

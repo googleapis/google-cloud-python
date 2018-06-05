@@ -176,6 +176,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session()
         base = self._make_one(session)
         self.assertIs(base._session, session)
+        self.assertEqual(base._execute_sql_count, 0)
 
     def test__make_txn_selector_virtual(self):
         session = _Session()
@@ -328,7 +329,7 @@ class Test_SnapshotBase(unittest.TestCase):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
     def _execute_sql_helper(
-            self, multi_use, first=True, count=0, partition=None):
+            self, multi_use, first=True, count=0, partition=None, sql_count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -369,6 +370,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
         derived._read_request_count = count
+        derived._execute_sql_count = sql_count
         if not first:
             derived._transaction_id = TXN_ID
 
@@ -388,7 +390,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(result_set.stats, stats_pb)
 
         (r_session, sql, transaction, params, param_types,
-         resume_token, query_mode, partition_token,
+         resume_token, query_mode, partition_token, seqno,
          metadata) = api._executed_streaming_sql_with
 
         self.assertEqual(r_session, self.SESSION_NAME)
@@ -408,8 +410,11 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(query_mode, MODE)
         self.assertEqual(resume_token, b'')
         self.assertEqual(partition_token, partition)
+        self.assertEqual(seqno, sql_count)
         self.assertEqual(
             metadata, [('google-cloud-resource-prefix', database.name)])
+
+        self.assertEqual(derived._execute_sql_count, sql_count + 1)
 
     def test_execute_sql_wo_multi_use(self):
         self._execute_sql_helper(multi_use=False)
@@ -419,7 +424,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self._execute_sql_helper(multi_use=False, count=1)
 
     def test_execute_sql_w_multi_use_wo_first(self):
-        self._execute_sql_helper(multi_use=True, first=False)
+        self._execute_sql_helper(multi_use=True, first=False, sql_count=1)
 
     def test_execute_sql_w_multi_use_wo_first_w_count_gt_0(self):
         self._execute_sql_helper(multi_use=True, first=False, count=1)
@@ -977,10 +982,10 @@ class _FauxSpannerAPI(object):
     def execute_streaming_sql(self, session, sql, transaction=None,
                               params=None, param_types=None,
                               resume_token=b'', query_mode=None,
-                              partition_token=None, metadata=None):
+                              partition_token=None, seqno=0, metadata=None):
         self._executed_streaming_sql_with = (
             session, sql, transaction, params, param_types, resume_token,
-            query_mode, partition_token, metadata)
+            query_mode, partition_token, seqno, metadata)
         return self._execute_streaming_sql_response
 
     # pylint: disable=too-many-arguments

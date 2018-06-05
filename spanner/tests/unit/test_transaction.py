@@ -78,6 +78,7 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(transaction.committed)
         self.assertFalse(transaction._rolled_back)
         self.assertTrue(transaction._multi_use)
+        self.assertEqual(transaction._execute_sql_count, 0)
 
     def test__check_state_not_begun(self):
         session = _Session()
@@ -324,7 +325,7 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_update_helper(self, partition=None):
+    def _execute_update_helper(self, partition=None, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             ResultSet, ResultSetStats)
@@ -343,6 +344,7 @@ class TestTransaction(unittest.TestCase):
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
+        transaction._execute_sql_count = count
 
         result = transaction.execute_update(
             DML_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
@@ -362,13 +364,16 @@ class TestTransaction(unittest.TestCase):
             param_types=PARAM_TYPES,
             query_mode=MODE,
             partition_token=partition,
+            seqno=count,
             metadata=[('google-cloud-resource-prefix', database.name)],
         )
 
-    def test_execute_update_wo_partition(self):
-        self._execute_update_helper()
+        self.assertEqual(transaction._execute_sql_count, count + 1)
 
-    def test_execute_update_w_partition(self):
+    def test_execute_update_w_count_wo_partition(self):
+        self._execute_update_helper(count=1)
+
+    def test_execute_update_wo_count_w_partition(self):
         self._execute_update_helper(partition=b'FACEDACE')
 
     def test_context_mgr_success(self):

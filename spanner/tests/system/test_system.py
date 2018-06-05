@@ -642,8 +642,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_sql_w_dml_read_commit(self):
-        insert_statements = list(self._generate_insert_statements())
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -658,7 +656,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            for insert_statement in insert_statements[:1]:
+            for insert_statement in self._generate_insert_statements():
                 result = transaction.execute_sql(insert_statement)
                 list(result)  # iterate to get stats
                 self.assertEqual(result.stats.row_count_exact, 1)
@@ -666,10 +664,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             # Rows inserted via DML *can* be read before commit.
             during_rows = list(
                 transaction.read(self.TABLE, self.COLUMNS, self.ALL))
-            self._check_rows_data(during_rows, self.ROW_DATA[:1])
+            self._check_rows_data(during_rows)
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_rows_data(rows, self.ROW_DATA[:1])
+        self._check_rows_data(rows)
 
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
@@ -690,17 +688,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            for insert_statement in insert_statements[:1]:
+            for insert_statement in self._generate_insert_statements():
                 result = transaction.execute_update(insert_statement)
                 self.assertEqual(result.row_count_exact, 1)
 
             # Rows inserted via DML *can* be read before commit.
             during_rows = list(
                 transaction.read(self.TABLE, self.COLUMNS, self.ALL))
-            self._check_rows_data(during_rows, self.ROW_DATA[:1])
+            self._check_rows_data(during_rows)
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_rows_data(rows, self.ROW_DATA[:1])
+        self._check_rows_data(rows)
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
