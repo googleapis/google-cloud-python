@@ -672,8 +672,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @RetryErrors(exception=exceptions.ServerError)
     @RetryErrors(exception=exceptions.Conflict)
     def test_transaction_execute_update_read_commit(self):
-        insert_statements = list(self._generate_insert_statements())
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
