@@ -1987,6 +1987,33 @@ def test_client_query_standard_sql(client):
     # [END bigquery_query_standard]
 
 
+def test_client_query_legacy_sql(client):
+    """Run a query with Legacy SQL explicitly set"""
+    # [START bigquery_query_legacy]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    query = (
+        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
+        'WHERE state = "TX" '
+        'LIMIT 100')
+
+    # Set use_legacy_sql to True to use legacy SQL syntax.
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_legacy_sql = True
+
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    # Print the results.
+    for row in query_job:  # API request - fetches results
+        print(row)
+    # [END bigquery_query_legacy]
+
+
 def test_client_query_destination_table(client, to_delete):
     """Run a query"""
     dataset_id = 'query_destination_table_{}'.format(_millis())
