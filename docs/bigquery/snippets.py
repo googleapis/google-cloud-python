@@ -724,6 +724,35 @@ def test_label_table(client, to_delete):
     # [END bigquery_label_table]
 
 
+def test_delete_label_table(client, to_delete):
+    dataset_id = 'delete_label_table_dataset_{}'.format(_millis())
+    table_id = 'delete_label_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table.labels = {'color': 'green'}
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_delete_label_table]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    # This example table starts with one label
+    assert table.labels == {'color': 'green'}
+    # To delete a label from a table, set its value to None
+    table.labels['color'] = None
+
+    table = client.update_table(table, ['labels'])  # API request
+
+    assert table.labels == {}
+    # [END bigquery_delete_label_table]
+
+
 def test_update_table_description(client, to_delete):
     """Update a table's description."""
     dataset_id = 'update_table_description_dataset_{}'.format(_millis())
