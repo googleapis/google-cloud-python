@@ -40,6 +40,9 @@ def default(session):
     # Pandas does not support Python 3.7
     if session.interpreter == 'python3.7':
         session.install('-e', '.')
+    elif session.interpreter == 'python2.7' and os.name == 'nt':
+        # PyArrow does not support Python 2.7 on Windows.
+        session.install('-e', '.[pandas]')
     else:
         session.install('-e', '.[pandas, pyarrow]')
 
