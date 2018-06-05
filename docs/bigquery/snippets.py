@@ -245,36 +245,6 @@ def test_get_dataset_information(client, to_delete):
     assert tables == []
 
 
-def test_get_dataset_labels(client, to_delete):
-    dataset_id = 'get_dataset_labels_{}'.format(_millis())
-    dataset_labels = {'color': 'green'}
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.labels = dataset_labels
-    dataset = client.create_dataset(dataset)  # API request
-    to_delete.append(dataset)
-
-    # [START bigquery_get_dataset_labels]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    dataset = client.get_dataset(dataset_ref)  # API request
-
-    # View dataset labels
-    print('Dataset ID: {}'.format(dataset_id))
-    print('Labels:')
-    labels = dataset.labels
-    if labels:
-        for label, value in labels.items():
-            print('\t{}: {}'.format(label, value))
-    else:
-        print("\tDataset has no labels defined.")
-    # [END bigquery_get_dataset_labels]
-    assert labels == dataset_labels
-
-
 # [START bigquery_dataset_exists]
 def dataset_exists(client, dataset_reference):
     """Return if a dataset exists.
@@ -357,9 +327,8 @@ def test_update_dataset_default_table_expiration(client, to_delete):
     # [END bigquery_update_dataset_expiration]
 
 
-def test_update_dataset_labels(client, to_delete):
-    """Update a dataset's metadata."""
-    dataset_id = 'update_dataset_multiple_properties_{}'.format(_millis())
+def test_manage_dataset_labels(client, to_delete):
+    dataset_id = 'label_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -379,13 +348,24 @@ def test_update_dataset_labels(client, to_delete):
     assert dataset.labels == labels
     # [END bigquery_label_dataset]
 
+    # [START bigquery_get_dataset_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
 
-def test_delete_label_dataset(client, to_delete):
-    dataset_id = 'delete_label_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.labels = {'color': 'green'}
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.get_dataset(dataset_ref)  # API request
+
+    # View dataset labels
+    print('Dataset ID: {}'.format(dataset_id))
+    print('Labels:')
+    if dataset.labels:
+        for label, value in dataset.labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tDataset has no labels defined.")
+    # [END bigquery_get_dataset_labels]
+    assert dataset.labels == labels
 
     # [START bigquery_delete_label_dataset]
     # from google.cloud import bigquery
@@ -742,41 +722,6 @@ def test_get_table_information(client, to_delete):
     assert table.num_rows == 0
 
 
-def test_get_table_labels(client, to_delete):
-    dataset_id = 'get_table_labels_dataset_{}'.format(_millis())
-    table_id = 'get_table_labels_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)  # API request
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id))
-    table_labels = {'color': 'green'}
-    table.labels = table_labels
-    table = client.create_table(table)
-
-    # [START bigquery_get_table_labels]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
-
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table(table_id)
-    table = client.get_table(table_ref)  # API Request
-
-    # View table labels
-    print('Table ID: {}'.format(table_id))
-    print('Labels:')
-    labels = table.labels
-    if labels:
-        for label, value in labels.items():
-            print('\t{}: {}'.format(label, value))
-    else:
-        print("\tTable has no labels defined.")
-    # [END bigquery_get_table_labels]
-    assert labels == table_labels
-
-
 # [START bigquery_table_exists]
 def table_exists(client, table_reference):
     """Return if a table exists.
@@ -817,7 +762,7 @@ def test_table_exists(client, to_delete):
     assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
-def test_label_table(client, to_delete):
+def test_manage_table_labels(client, to_delete):
     dataset_id = 'label_table_dataset_{}'.format(_millis())
     table_id = 'label_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -843,18 +788,26 @@ def test_label_table(client, to_delete):
     assert table.labels == labels
     # [END bigquery_label_table]
 
+    # [START bigquery_get_table_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
 
-def test_delete_label_table(client, to_delete):
-    dataset_id = 'delete_label_table_dataset_{}'.format(_millis())
-    table_id = 'delete_label_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)  # API Request
 
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table.labels = {'color': 'green'}
-    table = client.create_table(table)
-    to_delete.insert(0, table)
+    # View table labels
+    print('Table ID: {}'.format(table_id))
+    print('Labels:')
+    if table.labels:
+        for label, value in table.labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tTable has no labels defined.")
+    # [END bigquery_get_table_labels]
+    assert table.labels == labels
 
     # [START bigquery_delete_label_table]
     # from google.cloud import bigquery
