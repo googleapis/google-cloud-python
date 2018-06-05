@@ -481,6 +481,11 @@ class BackgroundConsumer(object):
                 '%s caught unexpected exception %s and will exit.',
                 _BIDIRECTIONAL_CONSUMER_NAME, exc)
 
+        else:
+            _LOGGER.error(
+                'The bidirectional RPC unexpectedly exited. %s',
+                self._bidi_rpc.call)
+
         _LOGGER.info('%s exiting', _BIDIRECTIONAL_CONSUMER_NAME)
 
     def start(self):

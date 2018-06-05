@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+
 import mock
 import pytest
 
@@ -205,6 +207,21 @@ def test_send_unary_empty():
 
     manager._client.acknowledge.assert_not_called()
     manager._client.modify_ack_deadline.assert_not_called()
+
+
+def test_send_unary_error(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager = make_manager()
+    manager._UNARY_REQUESTS = True
+
+    error = exceptions.GoogleAPICallError('The front fell off')
+    manager._client.acknowledge.side_effect = error
+
+    manager.send(types.StreamingPullRequest(
+        ack_ids=['ack_id1', 'ack_id2']))
+
+    assert 'The front fell off' in caplog.text
 
 
 def test_send_streaming():
