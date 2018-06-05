@@ -306,9 +306,6 @@ class TestTable(unittest.TestCase):
         client._table_admin_client = table_api
         client._instance_admin_client = instance_api
 
-        # Create expected_result.
-        expected_result = None  # create() has no return value.
-
         # Perform the method and check the result.
         table.create(split_keys)
 
