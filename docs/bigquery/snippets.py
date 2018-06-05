@@ -319,6 +319,30 @@ def test_update_dataset_labels(client, to_delete):
     # [END bigquery_label_dataset]
 
 
+def test_delete_label_dataset(client, to_delete):
+    dataset_id = 'delete_label_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.labels = {'color': 'green'}
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_delete_label_dataset]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # dataset = client.get_dataset(dataset_ref)  # API request
+
+    # This example dataset starts with one label
+    assert dataset.labels == {'color': 'green'}
+    # To delete a label from a dataset, set its value to None
+    dataset.labels['color'] = None
+
+    dataset = client.update_dataset(dataset, ['labels'])  # API request
+
+    assert dataset.labels == {}
+    # [END bigquery_delete_label_dataset]
+
+
 def test_update_dataset_access(client, to_delete):
     """Update a dataset's access controls."""
     dataset_id = 'update_dataset_access_{}'.format(_millis())
