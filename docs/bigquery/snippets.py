@@ -194,11 +194,16 @@ def test_get_dataset_information(client, to_delete):
     dataset = client.get_dataset(dataset_ref)  # API request
 
     # View dataset properties
-    print('Dataset ID: '.format(dataset_id))
-    print('Description: '.format(dataset.description))
+    print('Dataset ID: {}'.format(dataset_id))
+    print('Description: {}'.format(dataset.description))
     print('Labels:')
-    for label, value in dataset.labels.items():
-        print('\t{}: {}'.format(label, value))
+    labels = dataset.labels
+    if labels:
+        for label, value in labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tDataset has no labels defined.")
+
     # View tables in dataset
     print('Tables:')
     tables = list(client.list_tables(dataset_ref))  # API request(s)
@@ -212,6 +217,36 @@ def test_get_dataset_information(client, to_delete):
     assert dataset.description == ORIGINAL_DESCRIPTION
     assert dataset.labels == dataset_labels
     assert tables == []
+
+
+def test_get_dataset_labels(client, to_delete):
+    dataset_id = 'get_dataset_labels_{}'.format(_millis())
+    dataset_labels = {'color': 'green'}
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.labels = dataset_labels
+    dataset = client.create_dataset(dataset)  # API request
+    to_delete.append(dataset)
+
+    # [START bigquery_get_dataset_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.get_dataset(dataset_ref)  # API request
+
+    # View dataset labels
+    print('Dataset ID: {}'.format(dataset_id))
+    print('Labels:')
+    labels = dataset.labels
+    if labels:
+        for label, value in labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tDataset has no labels defined.")
+    # [END bigquery_get_dataset_labels]
+    assert labels == dataset_labels
 
 
 # [START bigquery_dataset_exists]
