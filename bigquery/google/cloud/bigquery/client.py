@@ -686,6 +686,7 @@ class Client(ClientWithProject):
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
             all_users (bool, optional):
                 If true, include jobs owned by all users in the project.
+                Defaults to :data:`False`.
             state_filter (str, optional):
                 If set, include only jobs matching the given state. One of:
                     * ``"done"``
