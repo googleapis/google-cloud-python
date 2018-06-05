@@ -742,6 +742,41 @@ def test_get_table_information(client, to_delete):
     assert table.num_rows == 0
 
 
+def test_get_table_labels(client, to_delete):
+    dataset_id = 'get_table_labels_dataset_{}'.format(_millis())
+    table_id = 'get_table_labels_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset = client.create_dataset(dataset)  # API request
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id))
+    table_labels = {'color': 'green'}
+    table.labels = table_labels
+    table = client.create_table(table)
+
+    # [START bigquery_get_table_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)  # API Request
+
+    # View table labels
+    print('Table ID: {}'.format(table_id))
+    print('Labels:')
+    labels = table.labels
+    if labels:
+        for label, value in labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tTable has no labels defined.")
+    # [END bigquery_get_table_labels]
+    assert labels == table_labels
+
+
 # [START bigquery_table_exists]
 def table_exists(client, table_reference):
     """Return if a table exists.
