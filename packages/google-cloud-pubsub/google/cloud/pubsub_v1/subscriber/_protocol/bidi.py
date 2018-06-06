@@ -310,7 +310,7 @@ class ResumableBidiRpc(BidiRpc):
     def __init__(self, start_rpc, should_recover, initial_request=None):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
         self._should_recover = should_recover
-        self._operational_lock = threading.Lock()
+        self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
 
@@ -392,6 +392,14 @@ class ResumableBidiRpc(BidiRpc):
     def recv(self):
         return self._recoverable(
             super(ResumableBidiRpc, self).recv)
+
+    @property
+    def is_active(self):
+        """bool: True if this stream is currently open and active."""
+        # Use the operational lock. It's entirely possible for something
+        # to check the active state *while* the RPC is being retried.
+        with self._operational_lock:
+            return self.call is not None and self.call.is_active()
 
 
 class BackgroundConsumer(object):
