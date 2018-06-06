@@ -310,7 +310,7 @@ class ResumableBidiRpc(BidiRpc):
     def __init__(self, start_rpc, should_recover, initial_request=None):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
         self._should_recover = should_recover
-        self._operational_lock = threading.Lock()
+        self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
 
