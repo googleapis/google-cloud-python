@@ -1998,42 +1998,66 @@ def test_client_query_destination_table(client, to_delete):
     # [START bigquery_query_destination_table]
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'your_dataset_id'
 
     job_config = bigquery.QueryJobConfig()
-
-    # Set the destination table. Here, dataset_id is a string, such as:
-    # dataset_id = 'your_dataset_id'
+    # Set the destination table
     table_ref = client.dataset(dataset_id).table('your_table_id')
     job_config.destination = table_ref
-
-    # The write_disposition specifies the behavior when writing query results
-    # to a table that already exists. With WRITE_TRUNCATE, any existing rows
-    # in the table are overwritten by the query results.
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        'SELECT 17 AS my_col;',
+        sql,
         # Location must match that of the dataset(s) referenced in the query
         # and of the destination table.
         location='US',
         job_config=job_config)  # API request - starts the query
 
-    rows = list(query_job)  # Waits for the query to finish
-    assert len(rows) == 1
-    row = rows[0]
-    assert row[0] == row.my_col == 17
-
-    # In addition to using the results from the query, you can read the rows
-    # from the destination table directly.
-    iterator = client.list_rows(
-        table_ref, selected_fields=[bigquery.SchemaField('my_col', 'INT64')])
-
-    rows = list(iterator)
-    assert len(rows) == 1
-    row = rows[0]
-    assert row[0] == row.my_col == 17
+    query_job.result()  # Waits for the query to finish
+    print('Query results loaded to table {}'.format(table_ref.path))
     # [END bigquery_query_destination_table]
+
+
+def test_client_query_destination_table_legacy(client, to_delete):
+    dataset_id = 'query_destination_table_legacy_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    to_delete.append(dataset_ref)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'US'
+    client.create_dataset(dataset)
+
+    # [START bigquery_query_legacy_large_results]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'your_dataset_id'
+
+    job_config = bigquery.QueryJobConfig()
+    # Set use_legacy_sql to True to use legacy SQL syntax.
+    job_config.use_legacy_sql = True
+    # Set the destination table
+    table_ref = client.dataset(dataset_id).table('your_table_id')
+    job_config.destination = table_ref
+    sql = """
+        SELECT corpus
+        FROM [bigquery-public-data:samples.shakespeare]
+        GROUP BY corpus;
+    """
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        sql,
+        # Location must match that of the dataset(s) referenced in the query
+        # and of the destination table.
+        location='US',
+        job_config=job_config)  # API request - starts the query
+
+    query_job.result()  # Waits for the query to finish
+    print('Query results loaded to table {}'.format(table_ref.path))
+    # [END bigquery_query_legacy_large_results]
 
 
 def test_client_query_destination_table_cmek(client, to_delete):
