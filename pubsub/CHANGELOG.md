@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.35.4
+
+### Implementation Changes
+
+- Recover streams during the gRPC error callback. (#5446)
+- Use operational lock when checking for activity on streams. (#5445)
+
 ## 0.35.3
 
 ### Implementation Changes
