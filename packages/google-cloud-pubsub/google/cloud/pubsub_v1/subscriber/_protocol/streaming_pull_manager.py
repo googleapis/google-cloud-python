@@ -402,6 +402,7 @@ class StreamingPullManager(object):
         After the messages have all had their ack deadline updated, execute
         the callback for each message using the executor.
         """
+
         _LOGGER.debug(
             'Scheduling callbacks for %s messages.',
             len(response.received_messages))

@@ -285,13 +285,17 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.is_active is False
 
     def test_done_callbacks_recoverable(self):
-        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: True)
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
         callback = mock.Mock(spec=['__call__'])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
 
         callback.assert_not_called()
+        start_rpc.assert_called_once()
+        assert bidi_rpc.is_active
 
     def test_done_callbacks_non_recoverable(self):
         bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
