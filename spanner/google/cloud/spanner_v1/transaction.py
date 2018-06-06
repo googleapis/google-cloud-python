@@ -129,7 +129,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         return self.committed
 
     def execute_update(self, dml, params=None, param_types=None,
-                       query_mode=None, partition=None):
+                       query_mode=None):
         """Perform an ``ExecuteSql`` API request with DML.
 
         :type dml: str
@@ -148,10 +148,6 @@ class Transaction(_SnapshotBase, _BatchBase):
             :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type partition: bytes
-        :param partition: (Optional) one of the partition tokens returned
-                          from :meth:`partition_query`.
 
         :rtype:
             :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.ResultSetStats`
@@ -180,13 +176,12 @@ class Transaction(_SnapshotBase, _BatchBase):
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
-            partition_token=partition,
             seqno=self._execute_sql_count,
             metadata=metadata,
         )
 
         self._execute_sql_count += 1
-        return response.stats
+        return response.stats.row_count_exact
 
     def __enter__(self):
         """Begin ``with`` block."""

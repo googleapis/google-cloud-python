@@ -692,8 +692,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(rows, [])
 
             for insert_statement in self._generate_insert_statements():
-                result = transaction.execute_update(insert_statement)
-                self.assertEqual(result.row_count_exact, 1)
+                row_count = transaction.execute_update(insert_statement)
+                self.assertEqual(row_count, 1)
 
             # Rows inserted via DML *can* be read before commit.
             during_rows = list(
@@ -722,8 +722,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-            result = transaction.execute_update(insert_statement)
-            self.assertEqual(result.row_count_exact, 1)
+            row_count = transaction.execute_update(insert_statement)
+            self.assertEqual(row_count, 1)
 
             transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA[1:])
 

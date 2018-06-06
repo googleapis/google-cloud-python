@@ -325,7 +325,7 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_update_helper(self, partition=None, count=0):
+    def _execute_update_helper(self, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             ResultSet, ResultSetStats)
@@ -334,10 +334,7 @@ class TestTransaction(unittest.TestCase):
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         MODE = 2  # PROFILE
-        stats_pb = ResultSetStats(
-            query_stats=Struct(fields={
-                'rows_affected': _make_value_pb(1),
-            }))
+        stats_pb = ResultSetStats(row_count_exact=1)
         database = _Database()
         api = database.spanner_api = self._make_spanner_api()
         api.execute_sql.return_value = ResultSet(stats=stats_pb)
@@ -346,11 +343,10 @@ class TestTransaction(unittest.TestCase):
         transaction._transaction_id = self.TRANSACTION_ID
         transaction._execute_sql_count = count
 
-        result = transaction.execute_update(
-            DML_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, partition=partition)
+        row_count = transaction.execute_update(
+            DML_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES, query_mode=MODE)
 
-        self.assertEqual(result, stats_pb)
+        self.assertEqual(row_count, 1)
 
         expected_transaction = TransactionSelector(id=self.TRANSACTION_ID)
         expected_params = Struct(fields={
@@ -363,18 +359,17 @@ class TestTransaction(unittest.TestCase):
             params=expected_params,
             param_types=PARAM_TYPES,
             query_mode=MODE,
-            partition_token=partition,
             seqno=count,
             metadata=[('google-cloud-resource-prefix', database.name)],
         )
 
         self.assertEqual(transaction._execute_sql_count, count + 1)
 
-    def test_execute_update_w_count_wo_partition(self):
-        self._execute_update_helper(count=1)
+    def test_execute_update_new_transaction(self):
+        self._execute_update_helper()
 
-    def test_execute_update_wo_count_w_partition(self):
-        self._execute_update_helper(partition=b'FACEDACE')
+    def test_execute_update_w_count(self):
+        self._execute_update_helper(count=1)
 
     def test_context_mgr_success(self):
         import datetime
