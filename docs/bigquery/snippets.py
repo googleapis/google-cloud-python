@@ -2042,6 +2042,7 @@ def test_client_query_destination_table_legacy(client, to_delete):
     # Set the destination table
     table_ref = client.dataset(dataset_id).table('your_table_id')
     job_config.destination = table_ref
+    job_config.allow_large_results = True
     sql = """
         SELECT corpus
         FROM [bigquery-public-data:samples.shakespeare]
