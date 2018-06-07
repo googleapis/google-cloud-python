@@ -34,13 +34,13 @@ class TestRequestResponse(compliance.RequestResponseTests):
         assert http.request.call_args[1]['timeout'] == 5
 
 
-def test__make_default_http_with_certfi():
+def test__make_default_http_with_certifi():
     http = google.auth.transport.urllib3._make_default_http()
     assert 'cert_reqs' in http.connection_pool_kw
 
 
 @mock.patch.object(google.auth.transport.urllib3, 'certifi', new=None)
-def test__make_default_http_without_certfi():
+def test__make_default_http_without_certifi():
     http = google.auth.transport.urllib3._make_default_http()
     assert 'cert_reqs' not in http.connection_pool_kw
 
