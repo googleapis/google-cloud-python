@@ -222,7 +222,14 @@ class Client(ClientWithProject):
     def list_instances(self):
         """List instances owned by the project.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: A list of Instance.
+        :rtype: tuple
+        :returns:
+            (instances, failed_locations), where 'instances' is list of
+            :class:`google.cloud.bigtable.instance.Instance`, and
+            'failed_locations' is a list of locations which could not
+            be resolved.
         """
-        return self.instance_admin_client.list_instances(self.project_path)
+        resp = self.instance_admin_client.list_instances(self.project_path)
+        instances = [
+            Instance.from_pb(instance, self) for instance in resp.instances]
+        return instances, resp.failed_locations
