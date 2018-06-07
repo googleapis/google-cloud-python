@@ -2104,6 +2104,34 @@ def test_client_query_destination_table_cmek(client, to_delete):
     # [END bigquery_query_destination_table_cmek]
 
 
+def test_client_query_batch(client, to_delete):
+    # [START bigquery_query_batch]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    job_config = bigquery.QueryJobConfig()
+    # Run at batch priority, which won't count toward concurrent rate limit.
+    job_config.priority = bigquery.QueryPriority.BATCH
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+    # Location must match that of the dataset(s) referenced in the query.
+    location = 'US'
+
+    # API request - starts the query
+    query_job = client.query(sql, location=location, job_config=job_config)
+
+    # Monitor job progress until it reaches the `DONE` state by polling
+    # periodically.
+    query_job = client.get_job(
+        query_job.job_id, location=location)  # API request - fetches job
+    print('Job {} is currently in state {}'.format(
+        query_job.job_id, query_job.state))
+    # [END bigquery_query_batch]
+
+
 def test_client_query_relax_column(client, to_delete):
     dataset_id = 'query_relax_column_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
