@@ -2124,8 +2124,8 @@ def test_client_query_batch(client, to_delete):
     # API request - starts the query
     query_job = client.query(sql, location=location, job_config=job_config)
 
-    # Monitor job progress until it reaches the `DONE` state by polling
-    # periodically.
+    # Check on the progress by getting the job's updated state. Once the state
+    # is `DONE`, the results are ready.
     query_job = client.get_job(
         query_job.job_id, location=location)  # API request - fetches job
     print('Job {} is currently in state {}'.format(
