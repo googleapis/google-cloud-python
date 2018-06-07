@@ -169,6 +169,7 @@ class TestClient(unittest.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud.bigtable_admin_v2.gapic import \
             bigtable_instance_admin_client
+        from google.cloud.bigtable.instance import Instance
 
         FAILED_LOCATION = 'FAILED'
         INSTANCE_ID1 = 'instance-id1'
@@ -201,8 +202,6 @@ class TestClient(unittest.TestCase):
             ],
         )
 
-        expected_result = response_pb
-
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         bigtable_instance_stub = (
@@ -210,5 +209,16 @@ class TestClient(unittest.TestCase):
         bigtable_instance_stub.ListInstances.side_effect = [response_pb]
 
         # Perform the method and check the result.
-        response = client.list_instances()
-        self.assertEqual(response, expected_result)
+        instances, failed_locations = client.list_instances()
+
+        instance_1, instance_2 = instances
+
+        self.assertIsInstance(instance_1, Instance)
+        self.assertEqual(instance_1.name, INSTANCE_NAME1)
+        self.assertTrue(instance_1._client is client)
+
+        self.assertIsInstance(instance_2, Instance)
+        self.assertEqual(instance_2.name, INSTANCE_NAME2)
+        self.assertTrue(instance_2._client is client)
+
+        self.assertEqual(failed_locations, [FAILED_LOCATION])
