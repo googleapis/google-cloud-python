@@ -544,6 +544,40 @@ def test_create_table_then_add_schema(client, to_delete):
     # [END bigquery_add_schema_to_empty]
 
 
+def test_create_table_nested_repeated_schema(client, to_delete):
+    dataset_id = 'create_table_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_nested_repeated_schema]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    schema = [
+        bigquery.SchemaField('id', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('first_name', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('last_name', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('dob', 'DATE', mode='NULLABLE'),
+        bigquery.SchemaField('addresses', 'RECORD', mode='REPEATED', fields=[
+            bigquery.SchemaField('status', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('address', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('city', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('state', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('zip', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('numberOfYears', 'STRING', mode='NULLABLE'),
+        ]),
+    ]
+    table_ref = dataset_ref.table('my_table')
+    table = bigquery.Table(table_ref, schema=schema)
+    table = client.create_table(table)  # API request
+
+    print('Created table {}'.format(table.full_table_id))
+    # [END bigquery_create_table]
+
+
 def test_create_table_cmek(client, to_delete):
     dataset_id = 'create_table_cmek_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
