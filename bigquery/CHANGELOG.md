@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.3.0
+
+### New Features
+
+- NUMERIC type support (#5331)
+- Add timeline and top-level slot-millis to query statistics. (#5312)
+- Add additional statistics to query plan stages. (#5307)
+
+### Documentation
+
+- Use autosummary to split up API reference docs (#5340)
+- Fix typo in Client docstrings (#5342)
+
+### Internal / Testing Changes
+
+- Prune systests identified as reduntant to snippets. (#5365)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Improve system test performance (#5319)
+
 ## 1.2.0
 
 ### Implementation Changes
