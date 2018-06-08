@@ -107,21 +107,21 @@ class Operation(polling.PollingFuture):
             if not self._operation.done or self._result_set:
                 return
 
-            if self._operation.HasField('response'):
-                response = protobuf_helpers.from_any_pb(
-                    self._result_type, self._operation.response)
-                self.set_result(response)
-            elif self._operation.HasField('error'):
+            if self._operation.HasField('error'):
                 exception = exceptions.GoogleAPICallError(
                     self._operation.error.message,
                     errors=(self._operation.error,),
                     response=self._operation)
                 self.set_exception(exception)
+            elif self._operation.HasField('response'):
+                response = protobuf_helpers.from_any_pb(
+                    self._result_type, self._operation.response)
+                self.set_result(response)
             else:
-                exception = exceptions.GoogleAPICallError(
-                    'Unexpected state: Long-running operation had neither '
-                    'response nor error set.')
-                self.set_exception(exception)
+                # An empty response is indistinguishable from a result with no
+                # response set, so return a response regardless of whether the
+                # operation has the 'response' field or not.
+                self.set_result(self._result_type())
 
     def _refresh_and_update(self):
         """Refresh the operation and update the result if needed."""

@@ -127,13 +127,16 @@ def test_exception():
 def test_unexpected_result():
     responses = [
         make_operation_proto(),
-        # Second operation response is done, but has not error or response.
+        # Second operation response is done, but has no error or response.
         make_operation_proto(done=True)]
     future, _, _ = make_operation_future(responses)
 
     exception = future.exception()
+    result = future.result()
 
-    assert 'Unexpected state' in '{!r}'.format(exception)
+    assert exception is None
+    assert result == struct_pb2.Struct()
+    assert future.done()
 
 
 def test__refresh_http():
