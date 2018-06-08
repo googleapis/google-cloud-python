@@ -8,6 +8,15 @@ base.
 
 .. _Google Speech: https://cloud.google.com/speech/docs/getting-started
 
+Installation
+------------
+
+Install the ``google-cloud-speech`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-speech
+
 
 Authentication and Configuration
 --------------------------------
