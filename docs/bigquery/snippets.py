@@ -1969,6 +1969,55 @@ def test_delete_table(client, to_delete):
         client.get_table(table)  # API request
 
 
+def test_undelete_table(client, to_delete):
+    dataset_id = 'undelete_table_dataset_{}'.format(_millis())
+    table_id = 'undelete_table_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    client.create_table(table)
+
+    # [START bigquery_undelete_table]
+    # import time
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+
+    # Record the current time in milliseconds. We'll use this as the snapshot
+    # time for recovering the table.
+    snapshot_time = int(time.time() * 1000)
+
+    # "Accidentally" delete the table.
+    client.delete_table(table_ref)  # API request
+
+    # Construct the restore-from table ID using a snapshot decorator.
+    snapshot_table_id = '{}@{}'.format(table_id, snapshot_time)
+    source_table_ref = client.dataset(dataset_id).table(snapshot_table_id)
+
+    # Choose a new table ID for the recovered table data.
+    recovered_table_id = '{}_recovered'.format(table_id)
+    dest_table_ref = client.dataset(dataset_id).table(recovered_table_id)
+
+    # Construct and run a copy job.
+    job = client.copy_table(
+        source_table_ref,
+        dest_table_ref,
+        # Location must match that of the source and destination tables.
+        location='US')  # API request
+
+    job.result()  # Waits for job to complete.
+
+    print('Copied data from deleted table {} to {}'.format(
+        table_id, recovered_table_id))
+    # [END bigquery_undelete_table]
+
+
 def test_client_query(client):
     """Run a simple query."""
 
