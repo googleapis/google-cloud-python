@@ -276,6 +276,7 @@ class DirectRow(mutation.RowMutations):
 
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key)
+        self.row_key = row_key
         self._table = table
         self._row_mutations = mutation.RowMutations(row_key)
 
@@ -392,6 +393,23 @@ class DirectRow(mutation.RowMutations):
         self._row_mutations.delete_cells(column_family_id, columns,
                                          time_range=time_range)
 
+    def delete_cells_by_column_family(self, column_family_id):
+        """Deletes cells in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+        """
+        self._row_mutations.delete_from_family(column_family_id)
+
     def commit(self):
         """Makes a ``MutateRow`` API request.
 
@@ -403,17 +421,8 @@ class DirectRow(mutation.RowMutations):
 
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
-
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        num_mutations = len(self.row_mutations.mutations)
-        if num_mutations == 0:
-            raise ValueError('Commit is not allowed with %d mutations' %
-                             num_mutations)
-        if num_mutations > MAX_MUTATIONS:
-            raise ValueError('%d total append mutations exceed the maximum '
-                             'allowable %d.' % (num_mutations, MAX_MUTATIONS))
+
         self._table.save_mutations([self.row_mutations])
 
 

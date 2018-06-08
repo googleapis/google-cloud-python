@@ -35,8 +35,8 @@ class Test___mutate_rows_request(unittest.TestCase):
 
         table = mock.Mock(name='table', spec=['name'])
         table.name = 'table'
-        rows = [DirectRow(row_key='row_key', table=table),
-                DirectRow(row_key='row_key_2', table=table)]
+        rows = [DirectRow(row_key=b'row_key', table=table),
+                DirectRow(row_key=b'row_key_2', table=table)]
         rows[0].set_cell('cf1', b'c1', b'1')
         rows[0].set_cell('cf1', b'c1', b'2')
         rows[1].set_cell('cf1', b'c1', b'3')
@@ -49,8 +49,8 @@ class Test___mutate_rows_request(unittest.TestCase):
 
         table = mock.Mock(name='table', spec=['name'])
         table.name = 'table'
-        rows = [DirectRow(row_key='row_key', table=table),
-                DirectRow(row_key='row_key_2', table=table)]
+        rows = [DirectRow(row_key=b'row_key', table=table),
+                DirectRow(row_key=b'row_key_2', table=table)]
         rows[0].set_cell('cf1', b'c1', b'1')
         rows[1].set_cell('cf1', b'c1', b'2')
         result = self._call_fut('table', rows)
@@ -178,7 +178,7 @@ class TestTable(unittest.TestCase):
         row = table.row(row_key)
 
         self.assertIsInstance(row, DirectRow)
-        self.assertEqual(row.row_key, row_key)
+        self.assertEqual(row.row_mutations.mutations_entry.row_key, row_key)
         self.assertEqual(row._table, table)
 
     def test_row_factory_conditional(self):

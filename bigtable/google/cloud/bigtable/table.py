@@ -375,7 +375,7 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        mutation_rows = map(lambda row: row.row_mutations, rows)
+        mutation_rows = []
         for row in rows:
             mutation_rows.append(row.row_mutations)
 
@@ -478,7 +478,7 @@ class _RetryableMutateRowsWorker(object):
         mutations_count = 0
         for mutation_row in mutation_rows:
             mutations_count += 1
-            entries.append(mutation_row.create_entry())
+            entries.append(mutation_row.mutations_entry)
 
         if mutations_count > _MAX_BULK_MUTATIONS:
             raise TooManyMutationsError('Maximum number of mutations is %s' %
@@ -645,7 +645,7 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
         entry.row_key = row.row_key
         # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
         #  the mutations have no state.
-        for mutation in row.row_mutations.mutations:
+        for mutation in row.row_mutations.mutations_entry.mutations:
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
     if mutations_count > _MAX_BULK_MUTATIONS:

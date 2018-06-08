@@ -24,21 +24,29 @@ from google.cloud.bigtable_v2.proto import (
 
 
 class RowMutations(object):
-    """Create Entry using list of mutations
+    """ Provides methods to create row mutations, which are added to a
+        google.bigtable.v2.MutateRowsRequest.Entry
 
         Arguments:
             row_key (bytes): Key of the Row in string.
     """
-    ALL_COLUMNS = object()
-    """Sentinel value used to indicate all columns in a column family."""
 
     def __init__(self, row_key):
-        self.row_key = row_key
-        self.mutations = []
+        self.entry = table_v2_pb2.MutateRowsRequest.Entry(row_key=row_key)
+
+    @property
+    def mutations_entry(self):
+        """ The MutateRowsRequest.Entry
+
+        Returns:
+            `Entry <google.bigtable.v2.MutateRowsRequest.Entry>`
+             An ``Entry`` for a MutateRowsRequest message.
+        """
+        return self.entry
 
     def set_cell(self, family_name, column_id, value, timestamp=None):
         """Create the mutation request message for SetCell and add it to the
-            list of mutations
+            list of mutations in the MutateRowsRequest.Entry
 
         Arguments:
             family_name (str):
@@ -72,11 +80,11 @@ class RowMutations(object):
             value=value
         )
         mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
-        self.mutations.append(mutation_message)
+        self.entry.mutations.add().CopyFrom(mutation_message)
 
     def delete_cells(self, family_name, columns, time_range=None):
         """Create the mutation request message for DeleteFromColumn and
-            add it to the list of mutations
+            add it to the list of mutations in the MutateRowsRequest.Entry
 
         Arguments:
             family_name (str):
@@ -84,29 +92,25 @@ class RowMutations(object):
                 Must match ``[-_.a-zA-Z0-9]+``.
             columns (list):
                 The columns within the column family that will have cells
-                deleted. If :attr:`ALL_COLUMNS` is used then the entire
-                column family will be deleted from the row.
+                deleted.
             time_range (TimestampRange):
                 (optional) The range of timestamps within which cells should be
                 deleted.
         """
-        if columns is self.ALL_COLUMNS:
-            self.delete_from_family(family_name)
-        else:
-            for column_id in columns:
-                delete_from_column_mutation = (
-                    data_v2_pb2.Mutation.DeleteFromColumn(
-                        family_name=family_name,
-                        column_qualifier=_to_bytes(column_id),
-                        time_range=time_range))
+        for column_id in columns:
+            delete_from_column_mutation = (
+                data_v2_pb2.Mutation.DeleteFromColumn(
+                    family_name=family_name,
+                    column_qualifier=_to_bytes(column_id),
+                    time_range=time_range))
 
-                mutation_message = data_v2_pb2.Mutation(
-                    delete_from_column=delete_from_column_mutation)
-                self.mutations.append(mutation_message)
+            mutation_message = data_v2_pb2.Mutation(
+                delete_from_column=delete_from_column_mutation)
+            self.entry.mutations.add().CopyFrom(mutation_message)
 
     def delete_from_family(self, family_name):
         """Create the mutation request message for DeleteFromFamily and add
-        it to the list of mutations
+            it to the list of mutations in the MutateRowsRequest.Entry
 
         Arguments:
             family_name (str):
@@ -118,24 +122,14 @@ class RowMutations(object):
         )
         mutation_message = data_v2_pb2.Mutation(
             delete_from_family=delete_from_family_mutation)
-        self.mutations.append(mutation_message)
+        self.entry.mutations.add().CopyFrom(mutation_message)
 
     def delete_row(self):
         """Create the mutation request message for DeleteFromRow and add it
-        to the list of mutations"""
+            to the list of mutations
+
+        """
         delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
         mutation_message = data_v2_pb2.Mutation(
             delete_from_row=delete_from_row_mutation)
-        self.mutations.append(mutation_message)
-
-    def create_entry(self):
-        """Create a MutateRowsRequest Entry from the list of mutations
-
-        Returns:
-            `Entry <google.bigtable.v2.MutateRowsRequest.Entry>`
-             An ``Entry`` for a MutateRowsRequest message.
-        """
-        entry = table_v2_pb2.MutateRowsRequest.Entry(row_key=self.row_key)
-        for mutation in self.mutations:
-            entry.mutations.add().CopyFrom(mutation)
-        return entry
+        self.entry.mutations.add().CopyFrom(mutation_message)
