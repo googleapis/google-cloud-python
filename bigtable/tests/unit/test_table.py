@@ -300,7 +300,7 @@ class TestTable(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
 
-        split_keys = ['split1', 'split2', 'split3']
+        split_keys = [b'split1', b'split2', b'split3']
 
         # Patch API calls
         client._table_admin_client = table_api
@@ -313,7 +313,7 @@ class TestTable(unittest.TestCase):
         for split_key in split_keys:
             splits.append(
                 table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                    key=split_key.encode('utf-8')))
+                    key=split_key))
 
         table_api.create_table.assert_called_once_with(
             parent=self.INSTANCE_NAME,

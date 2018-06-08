@@ -186,9 +186,9 @@ class Table(object):
             this response.
 
         :type initial_split_keys: list
-        :param initial_split_keys: The optional list of row keys that will be
-                                    used to initially split the table into
-                                    several tablets.
+        :param initial_split_keys: The optional list of row keys in bytes that
+                                    will be used to initially split the table
+                                    into several tablets.
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
@@ -198,7 +198,7 @@ class Table(object):
             for initial_split_key in initial_split_keys:
                 splits.append(
                     table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                        key=initial_split_key.encode('utf-8')))
+                        key=initial_split_key))
         else:
             splits = None
 
