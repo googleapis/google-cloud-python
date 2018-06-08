@@ -12,6 +12,16 @@ messages per second (and beyond).
 
 .. _Google Cloud Pub/Sub: https://cloud.google.com/pubsub/
 
+************
+Installation
+************
+
+Install the ``google-cloud-pubsub`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-pubsub
+
 ********************************
 Authentication and Configuration
 ********************************

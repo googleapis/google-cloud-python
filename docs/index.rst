@@ -36,12 +36,6 @@ Google Cloud Client Library for Python
 Getting started
 ---------------
 
-The ``google-cloud`` library is ``pip`` install-able:
-
-.. code-block:: console
-
-    $ pip install google-cloud
-
 For more information on setting up your Python development environment,
 such as installing ``pip`` and ``virtualenv`` on your system, please refer
 to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
@@ -51,9 +45,19 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 Cloud Datastore
 ~~~~~~~~~~~~~~~
 
-`Google Cloud Datastore`_ is a fully managed, schemaless database for storing non-relational data.
+`Google Cloud Datastore`_ is a fully managed, schemaless database for storing
+non-relational data.
 
 .. _Google Cloud Datastore: https://cloud.google.com/datastore/
+
+Install the ``google-cloud-datastore`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-datastore
+
+Example
+^^^^^^^
 
 .. code-block:: python
 
@@ -73,6 +77,15 @@ Cloud Storage
 `Google Cloud Storage`_ allows you to store data on Google infrastructure.
 
 .. _Google Cloud Storage: https://cloud.google.com/storage/
+
+Install the ``google-cloud-storage`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-storage
+
+Example
+^^^^^^^
 
 .. code-block:: python
 
