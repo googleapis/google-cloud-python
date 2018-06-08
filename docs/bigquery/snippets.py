@@ -544,6 +544,40 @@ def test_create_table_then_add_schema(client, to_delete):
     # [END bigquery_add_schema_to_empty]
 
 
+def test_create_table_nested_repeated_schema(client, to_delete):
+    dataset_id = 'create_table_nested_repeated_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_nested_repeated_schema]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+
+    schema = [
+        bigquery.SchemaField('id', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('first_name', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('last_name', 'STRING', mode='NULLABLE'),
+        bigquery.SchemaField('dob', 'DATE', mode='NULLABLE'),
+        bigquery.SchemaField('addresses', 'RECORD', mode='REPEATED', fields=[
+            bigquery.SchemaField('status', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('address', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('city', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('state', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('zip', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('numberOfYears', 'STRING', mode='NULLABLE'),
+        ]),
+    ]
+    table_ref = dataset_ref.table('my_table')
+    table = bigquery.Table(table_ref, schema=schema)
+    table = client.create_table(table)  # API request
+
+    print('Created table {}'.format(table.full_table_id))
+    # [END bigquery_create_table]
+
+
 def test_create_table_cmek(client, to_delete):
     dataset_id = 'create_table_cmek_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -1933,6 +1967,55 @@ def test_delete_table(client, to_delete):
 
     with pytest.raises(NotFound):
         client.get_table(table)  # API request
+
+
+def test_undelete_table(client, to_delete):
+    dataset_id = 'undelete_table_dataset_{}'.format(_millis())
+    table_id = 'undelete_table_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.location = 'US'
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    client.create_table(table)
+
+    # [START bigquery_undelete_table]
+    # import time
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+
+    # Record the current time in milliseconds. We'll use this as the snapshot
+    # time for recovering the table.
+    snapshot_time = int(time.time() * 1000)
+
+    # "Accidentally" delete the table.
+    client.delete_table(table_ref)  # API request
+
+    # Construct the restore-from table ID using a snapshot decorator.
+    snapshot_table_id = '{}@{}'.format(table_id, snapshot_time)
+    source_table_ref = client.dataset(dataset_id).table(snapshot_table_id)
+
+    # Choose a new table ID for the recovered table data.
+    recovered_table_id = '{}_recovered'.format(table_id)
+    dest_table_ref = client.dataset(dataset_id).table(recovered_table_id)
+
+    # Construct and run a copy job.
+    job = client.copy_table(
+        source_table_ref,
+        dest_table_ref,
+        # Location must match that of the source and destination tables.
+        location='US')  # API request
+
+    job.result()  # Waits for job to complete.
+
+    print('Copied data from deleted table {} to {}'.format(
+        table_id, recovered_table_id))
+    # [END bigquery_undelete_table]
 
 
 def test_client_query(client):
