@@ -4,8 +4,8 @@
 
 .. attention:: The ``google-cloud`` package is deprecated
 
-    The ``google-cloud`` package is no longer maintained or updated. Install
-    the ``google-cloud-*`` subpackages directly, instead.
+    The ``google-cloud`` package is no longer maintained or updated. Instead,
+    install the ``google-cloud-*`` subpackages directly.
 
 
 The ``google-cloud`` package (formerly ``gcloud``) contains
