@@ -13,6 +13,16 @@ with your document storage on Google Cloud Storage.
 
 .. _Google Natural Language: https://cloud.google.com/natural-language/docs/quickstart-client-libraries
 
+************
+Installation
+************
+
+Install the ``google-cloud-language`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-language
+
 
 ********************************
 Authentication and Configuration
