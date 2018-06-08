@@ -1,3 +1,20 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""User-friendly container for Google Cloud Bigtable Instance."""
+
+
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
@@ -10,14 +27,13 @@ class RowMutations(object):
     """Create Entry using list of mutations
 
         Arguments:
-            row_key (str): Key of the Row in string.
+            row_key (bytes): Key of the Row in string.
     """
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
-    def __init__(self, row_key, app_profile_id=None):
-        self.row_key = _to_bytes(row_key)
-        self.app_profile_id = app_profile_id
+    def __init__(self, row_key):
+        self.row_key = row_key
         self.mutations = []
 
     def set_cell(self, family_name, column_id, value, timestamp=None):
@@ -104,7 +120,7 @@ class RowMutations(object):
             delete_from_family=delete_from_family_mutation)
         self.mutations.append(mutation_message)
 
-    def delete(self):
+    def delete_row(self):
         """Create the mutation request message for DeleteFromRow and add it
         to the list of mutations"""
         delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()

@@ -321,11 +321,20 @@ class Table(object):
         for row in generator.read_rows():
             yield row
 
-    def save_mutations(self, row_mutations):
+    def save_mutations(self, row_mutations, retry=DEFAULT_RETRY):
         """ Save row mutations
 
         :type row_mutations: list: [`RowMutations`]
         :param row_mutations: The list of RowMutations to save
+
+        :type retry: class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) Retry delay and deadline arguments. To
+                        override, the default value :attr:`DEFAULT_RETRY` can
+                        be used and modified with the
+                        :meth:`~google.api_core.retry.Retry.with_delay` method
+                        or the
+                        :meth:`~google.api_core.retry.Retry.with_deadline`
+                        method.
 
         :rtype: list: [`~google.rpc.status_pb2.Status`]
         :return: The response statuses, which is a list of
@@ -333,9 +342,9 @@ class Table(object):
         """
         retryable_mutate_rows_status = _RetryableMutateRowsWorker(
             self._instance._client, self.name, row_mutations)
-        return retryable_mutate_rows_status()
+        return retryable_mutate_rows_status(retry=retry)
 
-    def mutate_rows(self, rows):
+    def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
         The method tries to update all specified rows.
@@ -352,16 +361,25 @@ class Table(object):
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
+        :type retry: class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) Retry delay and deadline arguments. To
+                        override, the default value :attr:`DEFAULT_RETRY` can
+                        be used and modified with the
+                        :meth:`~google.api_core.retry.Retry.with_delay` method
+                        or the
+                        :meth:`~google.api_core.retry.Retry.with_deadline`
+                        method.
+
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        mutation_rows = []
+        mutation_rows = map(lambda row: row.row_mutations, rows)
         for row in rows:
             mutation_rows.append(row.row_mutations)
 
-        return self.save_mutations(mutation_rows)
+        return self.save_mutations(mutation_rows, retry)
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.

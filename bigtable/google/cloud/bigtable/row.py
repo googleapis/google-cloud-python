@@ -267,7 +267,7 @@ class DirectRow(mutation.RowMutations):
         :meth:`delete_cells` methods. To actually send these mutations to the
         Google Cloud Bigtable API, you must call :meth:`commit`.
 
-    :type row_key: str
+    :type row_key: bytes
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
@@ -275,7 +275,7 @@ class DirectRow(mutation.RowMutations):
     """
 
     def __init__(self, row_key, table):
-        super(DirectRow, self).__init__(row_key, table)
+        super(DirectRow, self).__init__(row_key)
         self._table = table
         self._row_mutations = mutation.RowMutations(row_key)
 
@@ -336,7 +336,7 @@ class DirectRow(mutation.RowMutations):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
         """
-        self._row_mutations.delete()
+        self._row_mutations.delete_row()
 
     def delete_cell(self, column_family_id, column, time_range=None):
         """Deletes cell in this row.
@@ -409,7 +409,8 @@ class DirectRow(mutation.RowMutations):
         """
         num_mutations = len(self.row_mutations.mutations)
         if num_mutations == 0:
-            return {}
+            raise ValueError('Commit is not allowed with %d mutations' %
+                             num_mutations)
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total append mutations exceed the maximum '
                              'allowable %d.' % (num_mutations, MAX_MUTATIONS))
