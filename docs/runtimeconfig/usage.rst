@@ -12,7 +12,7 @@ Runtimeconfig
 Installation
 ------------
 
-Install the ``google-cloud-resource-runtimeconfig`` library using ``pip``:
+Install the ``google-cloud-runtimeconfig`` library using ``pip``:
 
 .. code-block:: console
 
