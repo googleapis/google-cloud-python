@@ -84,7 +84,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(admin=True)
+        Config.CLIENT = Client(project='grass-clump-479', admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
@@ -428,9 +428,9 @@ class TestDataAPI(unittest.TestCase):
 
     def test_truncate_table(self):
         row_keys = [
-            'row_key_1', 'row_key_2', 'row_key_3', 'row_key_4', 'row_key_5',
-            'row_key_pr_1', 'row_key_pr_2', 'row_key_pr_3', 'row_key_pr_4',
-            'row_key_pr_5']
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
 
         for row_key in row_keys:
             row = self._table.row(row_key)
@@ -447,9 +447,9 @@ class TestDataAPI(unittest.TestCase):
 
     def test_drop_by_prefix_table(self):
         row_keys = [
-            'row_key_1', 'row_key_2', 'row_key_3', 'row_key_4', 'row_key_5',
-            'row_key_pr_1', 'row_key_pr_2', 'row_key_pr_3', 'row_key_pr_4',
-            'row_key_pr_5']
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
 
         for row_key in row_keys:
             row = self._table.row(row_key)
