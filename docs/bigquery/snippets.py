@@ -147,6 +147,32 @@ def test_list_datasets(client):
     # [END bigquery_list_datasets]
 
 
+def test_list_datasets_by_label(client, to_delete):
+    dataset_id = 'list_datasets_by_label_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    dataset.labels = {'color': 'green'}
+    dataset = client.create_dataset(dataset)  # API request
+    to_delete.append(dataset)
+
+    # [START bigquery_list_datasets_by_label]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    # The following label filter example will find datasets with an
+    # arbitrary 'color' label set to 'green'
+    label_filter = 'labels.color:green'
+    datasets = list(client.list_datasets(filter=label_filter))
+
+    if datasets:
+        print('Datasets filtered by {}:'.format(label_filter))
+        for dataset in datasets:  # API request(s)
+            print('\t{}'.format(dataset.dataset_id))
+    else:
+        print('No datasets found with this filter.')
+    # [END bigquery_list_datasets_by_label]
+    assert len(datasets) == 1
+
+
 def test_create_dataset(client, to_delete):
     """Create a dataset."""
     dataset_id = 'create_dataset_{}'.format(_millis())
@@ -194,11 +220,16 @@ def test_get_dataset_information(client, to_delete):
     dataset = client.get_dataset(dataset_ref)  # API request
 
     # View dataset properties
-    print('Dataset ID: '.format(dataset_id))
-    print('Description: '.format(dataset.description))
+    print('Dataset ID: {}'.format(dataset_id))
+    print('Description: {}'.format(dataset.description))
     print('Labels:')
-    for label, value in dataset.labels.items():
-        print('\t{}: {}'.format(label, value))
+    labels = dataset.labels
+    if labels:
+        for label, value in labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tDataset has no labels defined.")
+
     # View tables in dataset
     print('Tables:')
     tables = list(client.list_tables(dataset_ref))  # API request(s)
@@ -296,9 +327,8 @@ def test_update_dataset_default_table_expiration(client, to_delete):
     # [END bigquery_update_dataset_expiration]
 
 
-def test_update_dataset_labels(client, to_delete):
-    """Update a dataset's metadata."""
-    dataset_id = 'update_dataset_multiple_properties_{}'.format(_millis())
+def test_manage_dataset_labels(client, to_delete):
+    dataset_id = 'label_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -317,6 +347,41 @@ def test_update_dataset_labels(client, to_delete):
 
     assert dataset.labels == labels
     # [END bigquery_label_dataset]
+
+    # [START bigquery_get_dataset_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    dataset = client.get_dataset(dataset_ref)  # API request
+
+    # View dataset labels
+    print('Dataset ID: {}'.format(dataset_id))
+    print('Labels:')
+    if dataset.labels:
+        for label, value in dataset.labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tDataset has no labels defined.")
+    # [END bigquery_get_dataset_labels]
+    assert dataset.labels == labels
+
+    # [START bigquery_delete_label_dataset]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_ref = client.dataset('my_dataset')
+    # dataset = client.get_dataset(dataset_ref)  # API request
+
+    # This example dataset starts with one label
+    assert dataset.labels == {'color': 'green'}
+    # To delete a label from a dataset, set its value to None
+    dataset.labels['color'] = None
+
+    dataset = client.update_dataset(dataset, ['labels'])  # API request
+
+    assert dataset.labels == {}
+    # [END bigquery_delete_label_dataset]
 
 
 def test_update_dataset_access(client, to_delete):
@@ -480,16 +545,17 @@ def test_create_table_then_add_schema(client, to_delete):
 
 
 def test_create_table_cmek(client, to_delete):
-    DATASET_ID = 'create_table_cmek_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'create_table_cmek_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
     # [START bigquery_create_table_cmek]
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
 
-    table_ref = dataset.table('my_table')
+    table_ref = client.dataset(dataset_id).table('my_table')
     table = bigquery.Table(table_ref)
 
     # Set the encryption key to use for the table.
@@ -694,6 +760,70 @@ def test_table_exists(client, to_delete):
 
     assert table_exists(client, table_ref)
     assert not table_exists(client, dataset.table('i_dont_exist'))
+
+
+def test_manage_table_labels(client, to_delete):
+    dataset_id = 'label_table_dataset_{}'.format(_millis())
+    table_id = 'label_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    # [START bigquery_label_table]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    assert table.labels == {}
+    labels = {'color': 'green'}
+    table.labels = labels
+
+    table = client.update_table(table, ['labels'])  # API request
+
+    assert table.labels == labels
+    # [END bigquery_label_table]
+
+    # [START bigquery_get_table_labels]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+    # table_id = 'my_table'
+
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)  # API Request
+
+    # View table labels
+    print('Table ID: {}'.format(table_id))
+    print('Labels:')
+    if table.labels:
+        for label, value in table.labels.items():
+            print('\t{}: {}'.format(label, value))
+    else:
+        print("\tTable has no labels defined.")
+    # [END bigquery_get_table_labels]
+    assert table.labels == labels
+
+    # [START bigquery_delete_label_table]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # table_ref = client.dataset('my_dataset').table('my_table')
+    # table = client.get_table(table_ref)  # API request
+
+    # This example table starts with one label
+    assert table.labels == {'color': 'green'}
+    # To delete a label from a table, set its value to None
+    table.labels['color'] = None
+
+    table = client.update_table(table, ['labels'])  # API request
+
+    assert table.labels == {}
+    # [END bigquery_delete_label_table]
 
 
 def test_update_table_description(client, to_delete):
@@ -2291,16 +2421,60 @@ def test_client_query_dry_run(client):
     assert query_job.total_bytes_processed > 0
 
 
+def test_query_no_cache(client):
+    # [START bigquery_query_no_cache]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_query_cache = False
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+    query_job = client.query(
+        sql,
+        # Location must match that of the dataset(s) referenced in the query.
+        location='US',
+        job_config=job_config)  # API request
+
+    # Print the results.
+    for row in query_job:  # API request - fetches results
+        print(row)
+    # [END bigquery_query_no_cache]
+
+
 def test_client_list_jobs(client):
     """List jobs for a project."""
 
     # [START bigquery_list_jobs]
     # from google.cloud import bigquery
     # client = bigquery.Client(project='my_project')
+    import datetime
 
     # List the 10 most recent jobs in reverse chronological order.
     # Omit the max_results parameter to list jobs from the past 6 months.
+    print("Last 10 jobs:")
     for job in client.list_jobs(max_results=10):  # API request(s)
+        print(job.job_id)
+
+    # The following are examples of additional optional parameters:
+
+    # Use min_creation_time and/or max_creation_time to specify a time window.
+    print("Jobs from the last ten minutes:")
+    ten_mins_ago = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
+    for job in client.list_jobs(min_creation_time=ten_mins_ago):
+        print(job.job_id)
+
+    # Use all_users to include jobs run by all users in the project.
+    print("Last 10 jobs run by all users:")
+    for job in client.list_jobs(max_results=10, all_users=True):
+        print("{} run by user: {}".format(job.job_id, job.user_email))
+
+    # Use state_filter to filter by job state.
+    print("Jobs currently running:")
+    for job in client.list_jobs(state_filter='RUNNING'):
         print(job.job_id)
     # [END bigquery_list_jobs]
 

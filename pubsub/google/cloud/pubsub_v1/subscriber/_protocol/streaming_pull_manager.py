@@ -261,7 +261,13 @@ class StreamingPullManager(object):
     def send(self, request):
         """Queue a request to be sent to the RPC."""
         if self._UNARY_REQUESTS:
-            self._send_unary_request(request)
+            try:
+                self._send_unary_request(request)
+            except exceptions.GoogleAPICallError as exc:
+                _LOGGER.debug(
+                    'Exception while sending unary RPC. This is typically '
+                    'non-fatal as stream requests are best-effort.',
+                    exc_info=True)
         else:
             self._rpc.send(request)
 
@@ -396,6 +402,7 @@ class StreamingPullManager(object):
         After the messages have all had their ack deadline updated, execute
         the callback for each message using the executor.
         """
+
         _LOGGER.debug(
             'Scheduling callbacks for %s messages.',
             len(response.received_messages))
@@ -433,9 +440,9 @@ class StreamingPullManager(object):
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
-            logging.info('Observed recoverable stream error %s', exception)
+            _LOGGER.info('Observed recoverable stream error %s', exception)
             return True
-        logging.info('Observed non-recoverable stream error %s', exception)
+        _LOGGER.info('Observed non-recoverable stream error %s', exception)
         return False
 
     def _on_rpc_done(self, future):

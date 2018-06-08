@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import copy
+import datetime
 import decimal
 import email
 import io
@@ -1751,6 +1752,29 @@ class TestClient(unittest.TestCase):
             path='/projects/other-project/jobs',
             query_params={
                 'projection': 'full',
+            })
+
+    def test_list_jobs_w_time_filter(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        # One millisecond after the unix epoch.
+        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0, 1000)
+        # One millisecond after the the 2038 31-bit signed int rollover
+        end_time = datetime.datetime(2038, 1, 19, 3, 14, 7, 1000)
+        end_time_millis = (((2 ** 31) - 1) * 1000) + 1
+
+        list(client.list_jobs(
+            min_creation_time=start_time, max_creation_time=end_time))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/%s/jobs' % self.PROJECT,
+            query_params={
+                'projection': 'full',
+                'minCreationTime': '1',
+                'maxCreationTime': str(end_time_millis),
             })
 
     def test_load_table_from_uri(self):
