@@ -545,7 +545,7 @@ def test_create_table_then_add_schema(client, to_delete):
 
 
 def test_create_table_nested_repeated_schema(client, to_delete):
-    dataset_id = 'create_table_dataset_{}'.format(_millis())
+    dataset_id = 'create_table_nested_repeated_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
