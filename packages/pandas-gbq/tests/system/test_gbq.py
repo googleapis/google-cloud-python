@@ -3,7 +3,6 @@
 import sys
 from datetime import datetime
 from random import randint
-from time import sleep
 
 import numpy as np
 import pandas.util.testing as tm
@@ -50,46 +49,46 @@ def gbq_connector(project, credentials):
     return gbq.GbqConnector(project, private_key=credentials)
 
 
-def clean_gbq_environment(dataset_prefix, private_key=None, project_id=None):
-    dataset = gbq._Dataset(project_id, private_key=private_key)
-    all_datasets = dataset.datasets()
+@pytest.fixture(scope='module')
+def bigquery_client(project_id, private_key_path):
+    from google.cloud import bigquery
+    return bigquery.Client.from_service_account_json(
+        private_key_path, project=project_id)
 
-    retry = 3
-    while retry > 0:
-        try:
-            retry = retry - 1
-            for i in range(1, 10):
-                dataset_id = dataset_prefix + str(i)
-                if dataset_id in all_datasets:
-                    table = gbq._Table(project_id, dataset_id,
-                                       private_key=private_key)
 
-                    # Table listing is eventually consistent, so loop until
-                    # all tables no longer appear (max 30 seconds).
-                    table_retry = 30
-                    all_tables = dataset.tables(dataset_id)
-                    while all_tables and table_retry > 0:
-                        for table_id in all_tables:
-                            try:
-                                table.delete(table_id)
-                            except gbq.NotFoundException:
-                                pass
-                        sleep(1)
-                        table_retry = table_retry - 1
-                        all_tables = dataset.tables(dataset_id)
+@pytest.fixture(scope='module')
+def tokyo_dataset(bigquery_client):
+    from google.cloud import bigquery
+    dataset_id = 'tokyo_{}'.format(_get_dataset_prefix_random())
+    dataset_ref = bigquery_client.dataset(dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset.location = 'asia-northeast1'
+    bigquery_client.create_dataset(dataset)
+    yield dataset_id
+    bigquery_client.delete_dataset(dataset_ref, delete_contents=True)
 
-                    dataset.delete(dataset_id)
-            retry = 0
-        except gbq.GenericGBQException as ex:
-            # Build in retry logic to work around the following errors :
-            # An internal error occurred and the request could not be...
-            # Dataset ... is still in use
-            error_message = str(ex).lower()
-            if ('an internal error occurred' in error_message or
-                    'still in use' in error_message) and retry > 0:
-                sleep(30)
-            else:
-                raise ex
+
+@pytest.fixture(scope='module')
+def tokyo_table(bigquery_client, tokyo_dataset):
+    table_id = 'tokyo_table'
+    # Create a random table using DDL.
+    # https://github.com/GoogleCloudPlatform/golang-samples/blob/2ab2c6b79a1ea3d71d8f91609b57a8fbde07ae5d/bigquery/snippets/snippet.go#L739
+    bigquery_client.query(
+        """CREATE TABLE {}.{}
+        AS SELECT
+          2000 + CAST(18 * RAND() as INT64) as year,
+          IF(RAND() > 0.5,"foo","bar") as token
+        FROM UNNEST(GENERATE_ARRAY(0,5,1)) as r
+        """.format(tokyo_dataset, table_id),
+        location='asia-northeast1').result()
+    return table_id
+
+
+def clean_gbq_environment(dataset_prefix, bigquery_client):
+    for dataset in bigquery_client.list_datasets():
+        if not dataset.dataset_id.startswith(dataset_prefix):
+            continue
+        bigquery_client.delete_dataset(dataset.reference, delete_contents=True)
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -640,6 +639,16 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(df, DataFrame([[[1.1, 2.2, 3.3], 4]],
                                             columns=["a", "b"]))
 
+    def test_tokyo(self, tokyo_dataset, tokyo_table, private_key_path):
+        df = gbq.read_gbq(
+            'SELECT MAX(year) AS max_year FROM {}.{}'.format(
+                tokyo_dataset, tokyo_table),
+            dialect='standard',
+            location='asia-northeast1',
+            private_key=private_key_path)
+        print(df)
+        assert df['max_year'][0] >= 2000
+
 
 class TestToGBQIntegration(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
@@ -649,13 +658,13 @@ class TestToGBQIntegration(object):
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
     @pytest.fixture(autouse=True, scope='function')
-    def setup(self, project, credentials):
+    def setup(self, project, credentials, bigquery_client):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
 
         self.dataset_prefix = _get_dataset_prefix_random()
-        clean_gbq_environment(self.dataset_prefix, credentials, project)
+        clean_gbq_environment(self.dataset_prefix, bigquery_client)
         self.dataset = gbq._Dataset(project,
                                     private_key=credentials)
         self.table = gbq._Table(project, self.dataset_prefix + "1",
@@ -667,7 +676,7 @@ class TestToGBQIntegration(object):
         self.dataset.create(self.dataset_prefix + "1")
         self.credentials = credentials
         yield
-        clean_gbq_environment(self.dataset_prefix, self.credentials, project)
+        clean_gbq_environment(self.dataset_prefix, bigquery_client)
 
     def test_upload_data(self, project_id):
         test_id = "1"
@@ -1191,6 +1200,21 @@ class TestToGBQIntegration(object):
         dataset, table = destination_table.split('.')
         assert self.table.verify_schema(dataset, table,
                                         dict(fields=test_schema))
+
+    def test_upload_data_tokyo(
+            self, project_id, tokyo_dataset, bigquery_client):
+        test_size = 10
+        df = make_mixed_dataframe_v2(test_size)
+        tokyo_destination = '{}.to_gbq_test'.format(tokyo_dataset)
+
+        # Initialize table with sample data
+        gbq.to_gbq(
+            df, tokyo_destination, project_id, private_key=self.credentials,
+            location='asia-northeast1')
+
+        table = bigquery_client.get_table(
+            bigquery_client.dataset(tokyo_dataset).table('to_gbq_test'))
+        assert table.num_rows > 0
 
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"

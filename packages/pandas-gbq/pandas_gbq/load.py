@@ -44,7 +44,8 @@ def encode_chunks(dataframe, chunksize=None):
 
 
 def load_chunks(
-        client, dataframe, dataset_id, table_id, chunksize=None, schema=None):
+        client, dataframe, dataset_id, table_id, chunksize=None, schema=None,
+        location=None):
     destination_table = client.dataset(dataset_id).table(table_id)
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = 'WRITE_APPEND'
@@ -71,4 +72,5 @@ def load_chunks(
         client.load_table_from_file(
             chunk_buffer,
             destination_table,
-            job_config=job_config).result()
+            job_config=job_config,
+            location=location).result()

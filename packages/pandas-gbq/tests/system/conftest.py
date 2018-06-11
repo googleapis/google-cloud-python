@@ -6,13 +6,13 @@ import os.path
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def project_id():
     return (os.environ.get('GBQ_PROJECT_ID')
             or os.environ.get('GOOGLE_CLOUD_PROJECT'))  # noqa
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def private_key_path():
     path = None
     if 'TRAVIS_BUILD_DIR' in os.environ:
@@ -36,7 +36,7 @@ def private_key_path():
     return path
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def private_key_contents(private_key_path):
     if private_key_path is None:
         return None

@@ -21,7 +21,7 @@ INSTALL_REQUIRES = [
     'pandas',
     'google-auth',
     'google-auth-oauthlib',
-    'google-cloud-bigquery>=0.29.0',
+    'google-cloud-bigquery>=0.32.0',
 ]
 
 extras = {

@@ -34,7 +34,7 @@ def _check_google_client_version():
         raise ImportError('Could not import pkg_resources (setuptools).')
 
     # https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/bigquery/CHANGELOG.md
-    bigquery_minimum_version = pkg_resources.parse_version('0.29.0')
+    bigquery_minimum_version = pkg_resources.parse_version('0.32.0')
     BIGQUERY_INSTALLED_VERSION = pkg_resources.get_distribution(
         'google-cloud-bigquery').parsed_version
 
@@ -152,12 +152,13 @@ class GbqConnector(object):
 
     def __init__(self, project_id, reauth=False,
                  private_key=None, auth_local_webserver=False,
-                 dialect='legacy'):
+                 dialect='legacy', location=None):
         from google.api_core.exceptions import GoogleAPIError
         from google.api_core.exceptions import ClientError
         from pandas_gbq import auth
         self.http_error = (ClientError, GoogleAPIError)
         self.project_id = project_id
+        self.location = location
         self.reauth = reauth
         self.private_key = private_key
         self.auth_local_webserver = auth_local_webserver
@@ -215,9 +216,9 @@ class GbqConnector(object):
         raise GenericGBQException("Reason: {0}".format(ex))
 
     def run_query(self, query, **kwargs):
-        from google.auth.exceptions import RefreshError
         from concurrent.futures import TimeoutError
-        import pandas_gbq.query
+        from google.auth.exceptions import RefreshError
+        from google.cloud import bigquery
 
         job_config = {
             'query': {
@@ -243,8 +244,8 @@ class GbqConnector(object):
             logger.info('Requesting query... ')
             query_reply = self.client.query(
                 query,
-                job_config=pandas_gbq.query.query_config(
-                    job_config, BIGQUERY_INSTALLED_VERSION))
+                job_config=bigquery.QueryJobConfig.from_api_repr(job_config),
+                location=self.location)
             logger.info('ok.\nQuery running...')
         except (RefreshError, ValueError):
             if self.private_key:
@@ -319,7 +320,7 @@ class GbqConnector(object):
         try:
             chunks = load.load_chunks(self.client, dataframe, dataset_id,
                                       table_id, chunksize=chunksize,
-                                      schema=schema)
+                                      schema=schema, location=self.location)
             if progress_bar and tqdm:
                 chunks = tqdm.tqdm(chunks)
             for remaining_rows in chunks:
@@ -470,7 +471,8 @@ def _parse_data(schema, rows):
 
 def read_gbq(query, project_id=None, index_col=None, col_order=None,
              reauth=False, verbose=None, private_key=None,
-             auth_local_webserver=False, dialect='legacy', **kwargs):
+             auth_local_webserver=False, dialect='legacy', location=None,
+             configuration=None):
     r"""Load data from Google BigQuery using google-cloud-python
 
     The main method a user calls to execute a Query in Google BigQuery
@@ -520,16 +522,22 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         compliant with the SQL 2011 standard. For more information
         see `BigQuery SQL Reference
         <https://cloud.google.com/bigquery/sql-reference/>`__
-    verbose : None, deprecated
-
-    **kwargs : Arbitrary keyword arguments
-        configuration (dict): query config parameters for job processing.
+    location : str (optional)
+        Location where the query job should run. See the `BigQuery locations
+        <https://cloud.google.com/bigquery/docs/dataset-locations>
+        documentation`__ for a list of available locations. The location must
+        match that of any datasets used in the query.
+        .. versionadded:: 0.5.0
+    configuration : dict (optional)
+        Query config parameters for job processing.
         For example:
 
             configuration = {'query': {'useQueryCache': False}}
 
         For more information see `BigQuery SQL Reference
         <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__
+
+    verbose : None, deprecated
 
     Returns
     -------
@@ -550,9 +558,9 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         raise ValueError("'{0}' is not valid for dialect".format(dialect))
 
     connector = GbqConnector(
-        project_id, reauth=reauth, private_key=private_key,
-        dialect=dialect, auth_local_webserver=auth_local_webserver)
-    schema, rows = connector.run_query(query, **kwargs)
+        project_id, reauth=reauth, private_key=private_key, dialect=dialect,
+        auth_local_webserver=auth_local_webserver, location=location)
+    schema, rows = connector.run_query(query, configuration=configuration)
     final_df = _parse_data(schema, rows)
 
     # Reindex the DataFrame on the provided column
@@ -595,7 +603,8 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
 def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
            verbose=None, reauth=False, if_exists='fail', private_key=None,
-           auth_local_webserver=False, table_schema=None, progress_bar=True):
+           auth_local_webserver=False, table_schema=None, location=None,
+           progress_bar=True):
     """Write a DataFrame to a Google BigQuery table.
 
     The main method a user calls to export pandas DataFrame contents to
@@ -648,9 +657,16 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
         of DataFrame columns. See BigQuery API documentation on available
         names of a field.
         .. versionadded:: 0.3.1
-    verbose : None, deprecated
+    location : str (optional)
+        Location where the load job should run. See the `BigQuery locations
+        <https://cloud.google.com/bigquery/docs/dataset-locations>
+        documentation`__ for a list of available locations. The location must
+        match that of the target dataset.
+        .. versionadded:: 0.5.0
     progress_bar : boolean, True by default. It uses the library `tqdm` to show
         the progress bar for the upload, chunk by chunk.
+        .. versionadded:: 0.5.0
+    verbose : None, deprecated
     """
 
     _test_google_api_imports()
@@ -670,7 +686,7 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
 
     connector = GbqConnector(
         project_id, reauth=reauth, private_key=private_key,
-        auth_local_webserver=auth_local_webserver)
+        auth_local_webserver=auth_local_webserver, location=location)
     dataset_id, table_id = destination_table.rsplit('.', 1)
 
     table = _Table(project_id, dataset_id, reauth=reauth,

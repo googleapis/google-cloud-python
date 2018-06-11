@@ -7,6 +7,8 @@ Changelog
 - Project ID parameter is optional in ``read_gbq`` and ``to_gbq`` when it can
   inferred from the environment. Note: you must still pass in a project ID when
   using user-based authentication. (:issue:`103`)
+- Add location parameter to ``read_gbq`` and ``to_gbq`` so that pandas-gbq
+  can work with datasets in the Tokyo region. (:issue:`177`)
 - Progress bar added for ``to_gbq``, through an optional library `tqdm` as
   dependency. (:issue:`162`)
 

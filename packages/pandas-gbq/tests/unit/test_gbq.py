@@ -14,6 +14,12 @@ except ImportError:  # pragma: NO COVER
     from unittest import mock
 
 
+@pytest.fixture
+def min_bq_version():
+    import pkg_resources
+    return pkg_resources.parse_version('0.32.0')
+
+
 @pytest.fixture(autouse=True)
 def mock_bigquery_client(monkeypatch):
     from google.api_core.exceptions import NotFound
@@ -109,9 +115,8 @@ def test_to_gbq_with_no_project_id_given_should_fail(monkeypatch):
     assert 'Could not determine project ID' in str(exception)
 
 
-def test_to_gbq_with_verbose_new_pandas_warns_deprecation():
+def test_to_gbq_with_verbose_new_pandas_warns_deprecation(min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with pytest.warns(FutureWarning), \
             mock.patch(
@@ -128,9 +133,8 @@ def test_to_gbq_with_verbose_new_pandas_warns_deprecation():
             pass
 
 
-def test_to_gbq_with_not_verbose_new_pandas_warns_deprecation():
+def test_to_gbq_with_not_verbose_new_pandas_warns_deprecation(min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with pytest.warns(FutureWarning), \
             mock.patch(
@@ -147,9 +151,8 @@ def test_to_gbq_with_not_verbose_new_pandas_warns_deprecation():
             pass
 
 
-def test_to_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn):
+def test_to_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn, min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with mock.patch(
             'pkg_resources.Distribution.parsed_version',
@@ -163,9 +166,8 @@ def test_to_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn):
         assert len(recwarn) == 0
 
 
-def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn):
+def test_to_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.22.0')
     with mock.patch(
             'pkg_resources.Distribution.parsed_version',
@@ -240,9 +242,8 @@ def test_read_gbq_with_corrupted_private_key_json_should_fail():
             'SELECT 1', project_id='x', private_key='99999999999999999')
 
 
-def test_read_gbq_with_verbose_new_pandas_warns_deprecation():
+def test_read_gbq_with_verbose_new_pandas_warns_deprecation(min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with pytest.warns(FutureWarning), \
             mock.patch(
@@ -252,9 +253,9 @@ def test_read_gbq_with_verbose_new_pandas_warns_deprecation():
         gbq.read_gbq('SELECT 1', project_id='my-project', verbose=True)
 
 
-def test_read_gbq_with_not_verbose_new_pandas_warns_deprecation():
+def test_read_gbq_with_not_verbose_new_pandas_warns_deprecation(
+        min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with pytest.warns(FutureWarning), \
             mock.patch(
@@ -264,9 +265,8 @@ def test_read_gbq_with_not_verbose_new_pandas_warns_deprecation():
         gbq.read_gbq('SELECT 1', project_id='my-project', verbose=False)
 
 
-def test_read_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn):
+def test_read_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn, min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.23.0')
     with mock.patch(
             'pkg_resources.Distribution.parsed_version',
@@ -276,9 +276,8 @@ def test_read_gbq_wo_verbose_w_new_pandas_no_warnings(recwarn):
         assert len(recwarn) == 0
 
 
-def test_read_gbq_with_verbose_old_pandas_no_warnings(recwarn):
+def test_read_gbq_with_verbose_old_pandas_no_warnings(recwarn, min_bq_version):
     import pkg_resources
-    min_bq_version = pkg_resources.parse_version('0.29.0')
     pandas_version = pkg_resources.parse_version('0.22.0')
     with mock.patch(
             'pkg_resources.Distribution.parsed_version',
