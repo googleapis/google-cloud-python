@@ -60,6 +60,17 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertEqual([value.string_value for value in values],
                          [u'a', u'b', u'c'])
 
+    def test_w_tuple(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.protobuf.struct_pb2 import ListValue
+
+        value_pb = self._callFUT((u'a', u'b', u'c'))
+        self.assertIsInstance(value_pb, Value)
+        self.assertIsInstance(value_pb.list_value, ListValue)
+        values = value_pb.list_value.values
+        self.assertEqual([value.string_value for value in values],
+                         [u'a', u'b', u'c'])
+
     def test_w_bool(self):
         from google.protobuf.struct_pb2 import Value
 
@@ -123,6 +134,15 @@ class Test_make_value_pb(unittest.TestCase):
         value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, when.rfc3339())
+
+    def test_w_listvalue(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1._helpers import _make_list_value_pb
+
+        list_value = _make_list_value_pb([1, 2, 3])
+        value_pb = self._callFUT(list_value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.list_value, list_value)
 
     def test_w_datetime(self):
         import datetime
