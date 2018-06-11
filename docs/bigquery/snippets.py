@@ -575,7 +575,7 @@ def test_create_table_nested_repeated_schema(client, to_delete):
     table = client.create_table(table)  # API request
 
     print('Created table {}'.format(table.full_table_id))
-    # [END bigquery_create_table]
+    # [END bigquery_nested_repeated_schema]
 
 
 def test_create_table_cmek(client, to_delete):
