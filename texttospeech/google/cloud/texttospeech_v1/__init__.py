@@ -14,9 +14,9 @@
 
 from __future__ import absolute_import
 
-from google.cloud.texttospeech_v1beta1 import types
-from google.cloud.texttospeech_v1beta1.gapic import enums
-from google.cloud.texttospeech_v1beta1.gapic import text_to_speech_client
+from google.cloud.texttospeech_v1 import types
+from google.cloud.texttospeech_v1.gapic import enums
+from google.cloud.texttospeech_v1.gapic import text_to_speech_client
 
 
 class TextToSpeechClient(text_to_speech_client.TextToSpeechClient):

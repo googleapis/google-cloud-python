@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.cloud.texttospeech.v1beta1.TextToSpeech": {
+        "google.cloud.texttospeech.v1.TextToSpeech": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []
@@ -18,12 +18,12 @@ config = {
             },
             "methods": {
                 "ListVoices": {
-                    "timeout_millis": 10000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "SynthesizeSpeech": {
-                    "timeout_millis": 20000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 }

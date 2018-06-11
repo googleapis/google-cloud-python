@@ -15,8 +15,8 @@
 
 import pytest
 
-from google.cloud import texttospeech_v1beta1
-from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
+from google.cloud import texttospeech_v1
+from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
 
 
 class MultiCallableStub(object):
@@ -67,7 +67,7 @@ class TestTextToSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = texttospeech_v1beta1.TextToSpeechClient(channel=channel)
+        client = texttospeech_v1.TextToSpeechClient(channel=channel)
 
         response = client.list_voices()
         assert expected_response == response
@@ -80,7 +80,7 @@ class TestTextToSpeechClient(object):
     def test_list_voices_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = texttospeech_v1beta1.TextToSpeechClient(channel=channel)
+        client = texttospeech_v1.TextToSpeechClient(channel=channel)
 
         with pytest.raises(CustomException):
             client.list_voices()
@@ -94,7 +94,7 @@ class TestTextToSpeechClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = texttospeech_v1beta1.TextToSpeechClient(channel=channel)
+        client = texttospeech_v1.TextToSpeechClient(channel=channel)
 
         # Setup Request
         input_ = {}
@@ -113,7 +113,7 @@ class TestTextToSpeechClient(object):
     def test_synthesize_speech_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = texttospeech_v1beta1.TextToSpeechClient(channel=channel)
+        client = texttospeech_v1.TextToSpeechClient(channel=channel)
 
         # Setup request
         input_ = {}
