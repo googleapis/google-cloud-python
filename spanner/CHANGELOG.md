@@ -10,10 +10,9 @@
 - Ensure that initial resume token is bytes, not text. (#5450)
 - Prevent process_read_batch from mutating params (#5416)
 - Avoid overwriting '__module__' of messages from shared modules. (#5364)
-- BigTable: improve read rows validation performance (#5390)
 
 ### New Features
-- Modification to enable 3.7 #5282 (#5288)
+- Add support for Python 3.7 (#5288)
 - Add support for Spanner struct params. (#5463)
 
 ### Internal / Testing Changes
