@@ -422,6 +422,11 @@ class DocumentReference(object):
             [self], field_paths=field_paths, transaction=transaction)
         return _consume_single_get(snapshot_generator)
 
+    def onSnapshot(options, callback):
+        '''
+        given options and the callback, monitor this document for changes
+        '''
+        raise NotImplemented
 
 class DocumentSnapshot(object):
     """A snapshot of document data in a Firestore database.

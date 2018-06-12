@@ -34,6 +34,7 @@ from google.cloud.firestore_v1beta1.gapic import enums
 from google.cloud.firestore_v1beta1.query import Query
 from google.cloud.firestore_v1beta1.transaction import Transaction
 from google.cloud.firestore_v1beta1.transaction import transactional
+from google.cloud.firestore_v1beta1.watch import Watch
 
 
 __all__ = [
@@ -53,6 +54,7 @@ __all__ = [
     'Transaction',
     'transactional',
     'types',
+    'Watch',
     'WriteBatch',
     'WriteOption',
 ]
