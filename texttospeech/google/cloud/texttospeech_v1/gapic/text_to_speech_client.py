@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.texttospeech.v1beta1 TextToSpeech API."""
+"""Accesses the google.cloud.texttospeech.v1 TextToSpeech API."""
 
 import pkg_resources
 
@@ -21,10 +21,10 @@ import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import grpc
 
-from google.cloud.texttospeech_v1beta1.gapic import enums
-from google.cloud.texttospeech_v1beta1.gapic import text_to_speech_client_config
-from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
-from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2_grpc
+from google.cloud.texttospeech_v1.gapic import enums
+from google.cloud.texttospeech_v1.gapic import text_to_speech_client_config
+from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
+from google.cloud.texttospeech_v1.proto import cloud_tts_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-texttospeech', ).version
@@ -42,7 +42,7 @@ class TextToSpeechClient(object):
 
     # The name of the interface for this client. This is the key used to find
     # method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.texttospeech.v1beta1.TextToSpeech'
+    _INTERFACE_NAME = 'google.cloud.texttospeech.v1.TextToSpeech'
 
     def __init__(self,
                  channel=None,
@@ -133,9 +133,9 @@ class TextToSpeechClient(object):
         supported for synthesis.
 
         Example:
-            >>> from google.cloud import texttospeech_v1beta1
+            >>> from google.cloud import texttospeech_v1
             >>>
-            >>> client = texttospeech_v1beta1.TextToSpeechClient()
+            >>> client = texttospeech_v1.TextToSpeechClient()
             >>>
             >>> response = client.list_voices()
 
@@ -158,7 +158,7 @@ class TextToSpeechClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.texttospeech_v1beta1.types.ListVoicesResponse` instance.
+            A :class:`~google.cloud.texttospeech_v1.types.ListVoicesResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -193,9 +193,9 @@ class TextToSpeechClient(object):
         has been processed.
 
         Example:
-            >>> from google.cloud import texttospeech_v1beta1
+            >>> from google.cloud import texttospeech_v1
             >>>
-            >>> client = texttospeech_v1beta1.TextToSpeechClient()
+            >>> client = texttospeech_v1.TextToSpeechClient()
             >>>
             >>> # TODO: Initialize ``input_``:
             >>> input_ = {}
@@ -209,15 +209,15 @@ class TextToSpeechClient(object):
             >>> response = client.synthesize_speech(input_, voice, audio_config)
 
         Args:
-            input_ (Union[dict, ~google.cloud.texttospeech_v1beta1.types.SynthesisInput]): Required. The Synthesizer requires either plain text or SSML as input.
+            input_ (Union[dict, ~google.cloud.texttospeech_v1.types.SynthesisInput]): Required. The Synthesizer requires either plain text or SSML as input.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.texttospeech_v1beta1.types.SynthesisInput`
-            voice (Union[dict, ~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams]): Required. The desired voice of the synthesized audio.
+                message :class:`~google.cloud.texttospeech_v1.types.SynthesisInput`
+            voice (Union[dict, ~google.cloud.texttospeech_v1.types.VoiceSelectionParams]): Required. The desired voice of the synthesized audio.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams`
-            audio_config (Union[dict, ~google.cloud.texttospeech_v1beta1.types.AudioConfig]): Required. The configuration of the synthesized audio.
+                message :class:`~google.cloud.texttospeech_v1.types.VoiceSelectionParams`
+            audio_config (Union[dict, ~google.cloud.texttospeech_v1.types.AudioConfig]): Required. The configuration of the synthesized audio.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.texttospeech_v1beta1.types.AudioConfig`
+                message :class:`~google.cloud.texttospeech_v1.types.AudioConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -228,7 +228,7 @@ class TextToSpeechClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse` instance.
+            A :class:`~google.cloud.texttospeech_v1.types.SynthesizeSpeechResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
