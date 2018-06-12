@@ -446,7 +446,7 @@ class TestDataAPI(unittest.TestCase):
         read_rows_count = 0
 
         for row in read_rows:
-            if row.row_key.decode('utf-8') in row_keys:
+            if row.row_key in row_keys:
                 read_rows_count += 1
 
         self.assertEqual(expected_rows_count, read_rows_count)
