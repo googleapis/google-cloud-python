@@ -221,9 +221,6 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.GetDataSourceRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['get_data_source'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -303,9 +300,6 @@ class DataTransferServiceClient(object):
             parent=parent,
             page_size=page_size,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -401,9 +395,6 @@ class DataTransferServiceClient(object):
             transfer_config=transfer_config,
             authorization_code=authorization_code,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['create_transfer_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -489,9 +480,6 @@ class DataTransferServiceClient(object):
             update_mask=update_mask,
             authorization_code=authorization_code,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['update_transfer_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -544,9 +532,6 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.DeleteTransferConfigRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         self._inner_api_calls['delete_transfer_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -601,9 +586,6 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.GetTransferConfigRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['get_transfer_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -685,9 +667,6 @@ class DataTransferServiceClient(object):
             data_source_ids=data_source_ids,
             page_size=page_size,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -776,9 +755,6 @@ class DataTransferServiceClient(object):
             start_time=start_time,
             end_time=end_time,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['schedule_transfer_runs'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -832,9 +808,6 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.GetTransferRunRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['get_transfer_run'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -886,9 +859,6 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.DeleteTransferRunRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         self._inner_api_calls['delete_transfer_run'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -974,9 +944,6 @@ class DataTransferServiceClient(object):
             page_size=page_size,
             run_attempt=run_attempt,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1070,9 +1037,6 @@ class DataTransferServiceClient(object):
             page_size=page_size,
             message_types=message_types,
         )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1143,8 +1107,5 @@ class DataTransferServiceClient(object):
                 )
 
         request = datatransfer_pb2.CheckValidCredsRequest(name=name, )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         return self._inner_api_calls['check_valid_creds'](
             request, retry=retry, timeout=timeout, metadata=metadata)
