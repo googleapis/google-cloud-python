@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from __future__ import absolute_import
 import sys
 
@@ -30,7 +29,6 @@ from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
-
 
 _shared_modules = [
     http_pb2,
@@ -57,10 +55,9 @@ for module in _shared_modules:
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 for module in _local_modules:
-      for name, message in get_messages(module).items():
-          message.__module__ = 'google.cloud.bigquery_datatransfer_v1.types'
-          setattr(sys.modules[__name__], name, message)
-          names.append(name)
-
+    for name, message in get_messages(module).items():
+        message.__module__ = 'google.cloud.bigquery_datatransfer_v1.types'
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
 
 __all__ = tuple(sorted(names))
