@@ -121,14 +121,14 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
+        expected = set([instance.name for instance in EXISTING_INSTANCES])
+        expected.add(Config.INSTANCE.name)
+
         instances, failed_locations = Config.CLIENT.list_instances()
+
         self.assertEqual(failed_locations, [])
-        # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
-        for instance in instances:
-            instance_existence = (instance in EXISTING_INSTANCES or
-                                  instance == Config.INSTANCE)
-            self.assertTrue(instance_existence)
+        found = set([instance.name for instance in instances])
+        self.assertTrue(expected.issubset(found))
 
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
