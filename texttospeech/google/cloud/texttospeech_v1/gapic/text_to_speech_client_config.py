@@ -1,6 +1,6 @@
 config = {
     "interfaces": {
-        "google.cloud.texttospeech.v1beta1.TextToSpeech": {
+        "google.cloud.texttospeech.v1.TextToSpeech": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": []

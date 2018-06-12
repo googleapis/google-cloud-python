@@ -13,13 +13,23 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import sys
 
-from google.cloud.texttospeech_v1 import TextToSpeechClient
-from google.cloud.texttospeech_v1 import enums
-from google.cloud.texttospeech_v1 import types
+from google.api_core.protobuf_helpers import get_messages
 
-__all__ = (
-    'enums',
-    'types',
-    'TextToSpeechClient',
-)
+from google.api import http_pb2
+from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
+from google.protobuf import descriptor_pb2
+
+names = []
+for module in (
+        http_pb2,
+        cloud_tts_pb2,
+        descriptor_pb2,
+):
+    for name, message in get_messages(module).items():
+        message.__module__ = 'google.cloud.texttospeech_v1.types'
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+__all__ = tuple(sorted(names))
