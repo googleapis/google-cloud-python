@@ -445,6 +445,11 @@ class DocumentReference(object):
         iterator.item_to_value = _item_to_collection_ref
         return iterator
 
+    def onSnapshot(options, callback):
+        '''
+        given options and the callback, monitor this document for changes
+        '''
+        raise NotImplemented
 
 class DocumentSnapshot(object):
     """A snapshot of document data in a Firestore database.
