@@ -235,11 +235,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('parent', parent)], )
-            metadata.append(routing_header)
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['create_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -299,11 +301,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -381,11 +385,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('device_registry.name', device_registry.name)], )
-            metadata.append(routing_header)
+            routing_header = [('device_registry.name', device_registry.name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['update_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -442,11 +448,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         self._inner_api_calls['delete_device_registry'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -530,11 +538,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('parent', parent)], )
-            metadata.append(routing_header)
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -617,11 +627,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('parent', parent)], )
-            metadata.append(routing_header)
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['create_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -688,11 +700,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -769,11 +783,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('device.name', device.name)], )
-            metadata.append(routing_header)
+            routing_header = [('device.name', device.name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['update_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -830,11 +846,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         self._inner_api_calls['delete_device'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -933,11 +951,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('parent', parent)], )
-            metadata.append(routing_header)
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -1027,11 +1047,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['modify_cloud_to_device_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1101,11 +1123,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['list_device_config_versions'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1174,11 +1198,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('name', name)], )
-            metadata.append(routing_header)
+            routing_header = [('name', name)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['list_device_states'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1252,11 +1278,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('resource', resource)], )
-            metadata.append(routing_header)
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['set_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1318,11 +1346,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('resource', resource)], )
-            metadata.append(routing_header)
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['get_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
@@ -1396,11 +1426,13 @@ class DeviceManagerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('resource', resource)], )
-            metadata.append(routing_header)
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header)
+            metadata.append(routing_metadata)
 
         return self._inner_api_calls['test_iam_permissions'](
             request, retry=retry, timeout=timeout, metadata=metadata)
