@@ -41,8 +41,8 @@ def default(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud.bigquery_datatransfer',
-        '--cov=google.cloud.bigquery_datatransfer_v1',
+        '--cov=google.cloud.bigquery.datatransfer',
+        '--cov=google.cloud.bigquery.datatransfer_v1',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
