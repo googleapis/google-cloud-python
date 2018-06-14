@@ -102,7 +102,7 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        retry = RetryErrors(NotFound, max_tries=9)
+        retry = RetryErrors((NotFound, TooManyRequests), max_tries=9)
         for doomed in self.to_delete:
             try:
                 retry(doomed.delete)()
