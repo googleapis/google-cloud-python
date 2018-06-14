@@ -381,9 +381,10 @@ class TestLogging(unittest.TestCase):
 
         # Create the destination bucket, and set up the ACL to allow
         # Stackdriver Logging to write into it.
+        retry = RetryErrors((Conflict, TooManyRequests, ServiceUnavailable))
         storage_client = storage.Client()
         bucket = storage_client.bucket(BUCKET_NAME)
-        retry_429(bucket.create)()
+        retry(bucket.create)()
         self.to_delete.append(bucket)
         bucket.acl.reload()
         logs_group = bucket.acl.group('cloud-logs@google.com')
