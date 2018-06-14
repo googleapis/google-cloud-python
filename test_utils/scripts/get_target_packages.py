@@ -27,6 +27,8 @@ CI = os.environ.get('CI', '')
 CI_BRANCH = os.environ.get('CIRCLE_BRANCH')
 CI_PR = os.environ.get('CIRCLE_PR_NUMBER')
 CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+head_hash, head_name = subprocess.check_output(['git', 'show-ref', 'HEAD']
+).strip().decode('ascii').split()
 MAJOR_DIV = '#' * 78
 MINOR_DIV = '#' + '-' * 77
 
@@ -243,6 +245,8 @@ def main():
     print('# CircleCI branch: {}'.format(CI_BRANCH))
     print('# CircleCI pr:     {}'.format(CI_PR))
     print('# CircleCI tag:    {}'.format(CIRCLE_TAG))
+    print('# HEAD ref:        {}'.format(head_hash))
+    print('#                  {}'.format(head_name))
     print(MAJOR_DIV)
 
     packages = list(get_target_packages())
