@@ -84,19 +84,19 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(project='grass-clump-479', admin=True)
+        Config.CLIENT = Client(admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances, failed_locations = retry(Config.CLIENT.list_instances)()
+        instances_response = retry(Config.CLIENT.list_instances)()
 
-        if len(failed_locations) != 0:
+        if len(instances_response.failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances
+        EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
@@ -256,8 +256,8 @@ class TestTableAdminAPI(unittest.TestCase):
 
         self.tables_to_delete.append(temp_table)
 
-        for sample_row_key in sample_row_keys:
-            self.assertIn(sample_row_key.row_key, initial_split_keys)
+        self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
+                      set(initial_split_keys))
 
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'
