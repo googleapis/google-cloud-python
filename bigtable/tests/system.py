@@ -250,11 +250,10 @@ class TestTableAdminAPI(unittest.TestCase):
                               b'split_key_20', b'']
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
+        self.tables_to_delete.append(temp_table)
 
         # Read Sample Row Keys for created splits
         sample_row_keys = temp_table.sample_row_keys()
-
-        self.tables_to_delete.append(temp_table)
 
         self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
                       set(initial_split_keys))
