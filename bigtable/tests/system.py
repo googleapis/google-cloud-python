@@ -35,8 +35,6 @@ from test_utils.retry import RetryErrors
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
-import pytest
-
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
 TABLE_ID = 'google-cloud-python-test-table'
