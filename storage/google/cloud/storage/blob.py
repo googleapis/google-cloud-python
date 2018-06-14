@@ -1870,7 +1870,16 @@ def _raise_from_invalid_response(error):
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    raise exceptions.from_http_response(error.response)
+    response = error.response
+    error_message = str(error)
+
+    message = u'{method} {url}: {error}'.format(
+        method=response.request.method,
+        url=response.request.url,
+        error=error_message)
+
+    raise exceptions.from_http_status(
+        response.status_code, message, response=response)
 
 
 def _add_query_parameters(base_url, name_value_pairs):
