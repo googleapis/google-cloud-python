@@ -1637,18 +1637,17 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'Someone is already in this spot.'
+        message = 'Someone is already in this spot.'
         response = requests.Response()
-        response._content = message
         response.status_code = http_client.CONFLICT
         response.request = requests.Request(
             'POST', 'http://example.com').prepare()
-        side_effect = InvalidResponse(response)
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1784,17 +1783,16 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'5-oh-3 woe is me.'
+        message = '5-oh-3 woe is me.'
         response = self._mock_requests_response(
-            content=message, status_code=http_client.SERVICE_UNAVAILABLE,
-            headers={})
-        side_effect = InvalidResponse(response)
+            status_code=http_client.SERVICE_UNAVAILABLE, headers={})
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -2891,34 +2889,41 @@ class Test__maybe_rewind(unittest.TestCase):
 class Test__raise_from_invalid_response(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(*args, **kwargs):
+    def _call_fut(error):
         from google.cloud.storage.blob import _raise_from_invalid_response
 
-        return _raise_from_invalid_response(*args, **kwargs)
+        return _raise_from_invalid_response(error)
 
-    def _helper(self, message, **kwargs):
+    def _helper(self, message, code=http_client.BAD_REQUEST, args=()):
         import requests
 
         from google.resumable_media import InvalidResponse
-        from google.cloud import exceptions
+        from google.api_core import exceptions
 
         response = requests.Response()
         response.request = requests.Request(
             'GET', 'http://example.com').prepare()
-        response.status_code = http_client.BAD_REQUEST
-        response._content = message
-        error = InvalidResponse(response)
+        response.status_code = code
+        error = InvalidResponse(response, message, *args)
 
-        with self.assertRaises(exceptions.BadRequest) as exc_info:
-            self._call_fut(error, **kwargs)
+        with self.assertRaises(exceptions.GoogleAPICallError) as exc_info:
+            self._call_fut(error)
 
         return exc_info
 
     def test_default(self):
-        message = b'Failure'
+        message = 'Failure'
         exc_info = self._helper(message)
-        message_str = message.decode('utf-8')
-        expected = 'GET http://example.com/: {}'.format(message_str)
+        expected = 'GET http://example.com/: {}'.format(message)
+        self.assertEqual(exc_info.exception.message, expected)
+        self.assertEqual(exc_info.exception.errors, [])
+
+    def test_w_206_and_args(self):
+        message = 'Failure'
+        args = ('one', 'two')
+        exc_info = self._helper(
+            message, code=http_client.PARTIAL_CONTENT, args=args)
+        expected = 'GET http://example.com/: {}'.format((message,) + args)
         self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 
