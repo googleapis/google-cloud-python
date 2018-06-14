@@ -16,6 +16,7 @@ import datetime
 import logging
 import unittest
 
+from google.api_core.exceptions import BadGateway
 from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
@@ -442,9 +443,11 @@ class TestLogging(unittest.TestCase):
 
         # Create the destination dataset, and set up the ACL to allow
         # Stackdriver Logging to write into it.
+        retry = RetryErrors((TooManyRequests, BadGateway, ServiceUnavailable))
         bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset(dataset_name)
-        dataset = bigquery_client.create_dataset(bigquery.Dataset(dataset_ref))
+        dataset = retry(bigquery_client.create_dataset)(
+            bigquery.Dataset(dataset_ref))
         self.to_delete.append((bigquery_client, dataset))
         bigquery_client.get_dataset(dataset)
         access = AccessEntry(
