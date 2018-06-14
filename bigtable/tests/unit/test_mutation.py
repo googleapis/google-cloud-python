@@ -15,8 +15,6 @@
 
 import unittest
 
-from google.cloud._helpers import _to_bytes
-
 
 class TestMutateRows(unittest.TestCase):
     from grpc import StatusCode

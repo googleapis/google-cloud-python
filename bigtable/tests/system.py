@@ -91,13 +91,12 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        instances_response = retry(Config.CLIENT.list_instances)()
-
-        if len(instances_response.failed_locations) != 0:
+        if len(failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances_response.instances
+        EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
@@ -121,18 +120,15 @@ class TestInstanceAdminAPI(unittest.TestCase):
         for instance in self.instances_to_delete:
             instance.delete()
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_list_instances(self):
-        instances_response = Config.CLIENT.list_instances()
-        self.assertEqual(instances_response.failed_locations, [])
-        # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances_response.instances),
-                         len(EXISTING_INSTANCES) + 1)
-        for instance in instances_response.instances:
-            instance_existence = (instance in EXISTING_INSTANCES or
-                                  instance == Config.INSTANCE)
-            self.assertTrue(instance_existence)
+        expected = set([instance.name for instance in EXISTING_INSTANCES])
+        expected.add(Config.INSTANCE.name)
+
+        instances, failed_locations = Config.CLIENT.list_instances()
+
+        self.assertEqual(failed_locations, [])
+        found = set([instance.name for instance in instances])
+        self.assertTrue(expected.issubset(found))
 
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
@@ -226,18 +222,14 @@ class TestTableAdminAPI(unittest.TestCase):
         for table in self.tables_to_delete:
             table.delete()
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_list_tables(self):
         # Since `Config.INSTANCE` is newly created in `setUpModule`, the table
         # created in `setUpClass` here will be the only one.
         tables = Config.INSTANCE.list_tables()
         self.assertEqual(tables, [self._table])
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_create_table(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-table'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -252,10 +244,8 @@ class TestTableAdminAPI(unittest.TestCase):
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_create_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -275,10 +265,8 @@ class TestTableAdminAPI(unittest.TestCase):
                          column_family.column_family_id)
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_update_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-update-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -300,10 +288,8 @@ class TestTableAdminAPI(unittest.TestCase):
         col_fams = temp_table.list_column_families()
         self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_delete_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-delete-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -325,7 +311,7 @@ class TestDataAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.INSTANCE.table(TABLE_ID)
+        cls._table = table = Config.INSTANCE.table('test-data-api')
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
@@ -385,8 +371,6 @@ class TestDataAPI(unittest.TestCase):
         cell4 = Cell(CELL_VAL4, timestamp4_micros)
         return cell1, cell2, cell3, cell4
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_timestamp_filter_millisecond_granularity(self):
         from google.cloud.bigtable import row_filters
 
@@ -397,8 +381,6 @@ class TestDataAPI(unittest.TestCase):
         row_data = self._table.read_rows(filter_=timefilter)
         row_data.consume_all()
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_mutate_rows(self):
         row1 = self._table.row(ROW_KEY)
         row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
@@ -426,6 +408,49 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(
             row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
 
+    def test_truncate_table(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.truncate(timeout=200)
+
+        read_rows = self._table.yield_rows()
+
+        for row in read_rows:
+            self.assertNotIn(row.row_key.decode('utf-8'), row_keys)
+
+    def test_drop_by_prefix_table(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.drop_by_prefix(row_key_prefix='row_key_pr', timeout=200)
+
+        read_rows = self._table.yield_rows()
+        expected_rows_count = 5
+        read_rows_count = 0
+
+        for row in read_rows:
+            if row.row_key in row_keys:
+                read_rows_count += 1
+
+        self.assertEqual(expected_rows_count, read_rows_count)
+
     @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
                               "google-cloud-python/issues/5362")
     def test_read_large_cell_limit(self):
@@ -445,8 +470,6 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(len(column), 1)
         self.assertEqual(column[0].value, data)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_read_row(self):
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
@@ -471,8 +494,6 @@ class TestDataAPI(unittest.TestCase):
         }
         self.assertEqual(partial_row_data.cells, expected_row_contents)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_read_rows(self):
         row = self._table.row(ROW_KEY)
         row_alt = self._table.row(ROW_KEY_ALT)
@@ -518,8 +539,6 @@ class TestDataAPI(unittest.TestCase):
         }
         self.assertEqual(rows_data.rows, expected_rows)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_read_with_label_applied(self):
         self._maybe_emulator_skip('Labels not supported by Bigtable emulator')
         row = self._table.row(ROW_KEY)

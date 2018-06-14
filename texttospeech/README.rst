@@ -1,7 +1,8 @@
 Python Client for Cloud Text-to-Speech API (`Alpha`_)
 =====================================================
 
-`Cloud Text-to-Speech API`_: Cloud Text-to-Speech API.
+`Cloud Text-to-Speech API`_: Synthesizes natural-sounding speech by applying powerful neural network
+models.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

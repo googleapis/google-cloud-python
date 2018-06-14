@@ -235,7 +235,9 @@ class BidiRpc(object):
             raise ValueError(
                 'Can not send() on an RPC that has never been open()ed.')
 
-        if self.is_active:
+        # Don't use self.is_active(), as ResumableBidiRpc will overload it
+        # to mean something semantically different.
+        if self.call.is_active():
             self._request_queue.put(request)
         else:
             # calling next should cause the call to raise.
@@ -310,7 +312,7 @@ class ResumableBidiRpc(BidiRpc):
     def __init__(self, start_rpc, should_recover, initial_request=None):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request)
         self._should_recover = should_recover
-        self._operational_lock = threading.Lock()
+        self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
 
@@ -330,11 +332,15 @@ class ResumableBidiRpc(BidiRpc):
         # "future" here is also a grpc.RpcError.
         if not self._should_recover(future):
             self._finalize(future)
+        else:
+            _LOGGER.debug('Re-opening stream from gRPC callback.')
+            self._reopen()
 
     def _reopen(self):
         with self._operational_lock:
             # Another thread already managed to re-open this stream.
-            if self.is_active:
+            if self.call is not None and self.call.is_active():
+                _LOGGER.debug('Stream was already re-established.')
                 return
 
             self.call = None
@@ -379,10 +385,14 @@ class ResumableBidiRpc(BidiRpc):
                 return method(*args, **kwargs)
 
             except Exception as exc:
+                _LOGGER.debug('Call to retryable %r caused %s.', method, exc)
                 if not self._should_recover(exc):
                     self.close()
+                    _LOGGER.debug('Not retrying %r due to %s.', method, exc)
+                    self._finalize(exc)
                     raise exc
 
+            _LOGGER.debug('Re-opening stream from retryable %r.', method)
             self._reopen()
 
     def send(self, request):
@@ -392,6 +402,19 @@ class ResumableBidiRpc(BidiRpc):
     def recv(self):
         return self._recoverable(
             super(ResumableBidiRpc, self).recv)
+
+    @property
+    def is_active(self):
+        """bool: True if this stream is currently open and active."""
+        # Use the operational lock. It's entirely possible for something
+        # to check the active state *while* the RPC is being retried.
+        # Also, use finalized to track the actual terminal state here.
+        # This is because if the stream is re-established by the gRPC thread
+        # it's technically possible to check this between when gRPC marks the
+        # RPC as inactive and when gRPC executes our callback that re-opens
+        # the stream.
+        with self._operational_lock:
+            return self.call is not None and not self._finalized
 
 
 class BackgroundConsumer(object):
@@ -480,6 +503,11 @@ class BackgroundConsumer(object):
             _LOGGER.exception(
                 '%s caught unexpected exception %s and will exit.',
                 _BIDIRECTIONAL_CONSUMER_NAME, exc)
+
+        else:
+            _LOGGER.error(
+                'The bidirectional RPC unexpectedly exited. This is a truly '
+                'exceptional case. Please file a bug with your logs.')
 
         _LOGGER.info('%s exiting', _BIDIRECTIONAL_CONSUMER_NAME)
 

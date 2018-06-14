@@ -215,7 +215,6 @@ class TestDirectRow(unittest.TestCase):
         table = object()
 
         row = self._make_one(row_key, table)
-        klass = self._get_target_class()
         entry = bigtable_pb2.MutateRowsRequest.Entry()
         self.assertEqual(row.row_mutations.mutations_entry.mutations,
                          entry.mutations)
@@ -439,7 +438,7 @@ class TestDirectRow(unittest.TestCase):
         row = self._make_one(row_key, table)
         entry = bigtable_pb2.MutateRowsRequest.Entry()
         self.assertEqual(row.row_mutations.mutations_entry.mutations,
-                 entry.mutations)
+                         entry.mutations)
 
         # Patch the stub used by the API method.
         response = self._make_responses([StatusCode.OK.value[0]])
