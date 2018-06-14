@@ -2655,9 +2655,8 @@ def test_query_external_gcs_permanent_table(client, to_delete):
 def test_query_external_sheets_temporary_table(client):
     # [START bigquery_query_external_sheets_temp]
     # [START bigquery_auth_drive_scope]
-    # from google.cloud import bigquery
-
     import google.auth
+    # from google.cloud import bigquery
 
     # Create credentials with Drive & BigQuery API scopes
     # Both APIs must be enabled for your project before running this code
@@ -2665,7 +2664,7 @@ def test_query_external_sheets_temporary_table(client):
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/bigquery',
     ])
-    client = bigquery.Client(credentials=credentials)
+    client = bigquery.Client(credentials=credentials, project=project)
     # [END bigquery_auth_drive_scope]
 
     # Configure the external data source and query job
@@ -2704,10 +2703,9 @@ def test_query_external_sheets_permanent_table(client, to_delete):
     to_delete.append(dataset)
 
     # [START bigquery_query_external_sheets_perm]
+    import google.auth
     # from google.cloud import bigquery
     # dataset_id = 'my_dataset'
-
-    import google.auth
 
     # Create credentials with Drive & BigQuery API scopes
     # Both APIs must be enabled for your project before running this code
@@ -2715,7 +2713,7 @@ def test_query_external_sheets_permanent_table(client, to_delete):
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/bigquery',
     ])
-    client = bigquery.Client(credentials=credentials)
+    client = bigquery.Client(credentials=credentials, project=project)
 
     # Configure the external data source
     dataset_ref = client.dataset(dataset_id)
