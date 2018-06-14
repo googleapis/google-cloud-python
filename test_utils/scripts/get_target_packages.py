@@ -48,7 +48,6 @@ TAG_RE = re.compile(r"""
 # As of this writing, the only "real" dependency is that of error_reporting
 # (on logging), the rest are just system test dependencies.
 PKG_DEPENDENCIES = {
-    'error_reporting': {'logging'},
     'logging': {'pubsub'},
 }
 
