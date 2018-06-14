@@ -68,7 +68,7 @@ def get_baseline():
     if ci_non_master:
         if CI_PR is None and CI_BRANCH is not None:
             output = subprocess.check_output(
-                ['git', 'merge-base', 'master', CI_BRANCH])
+                ['git', 'merge-base', '--fork-point', 'master', CI_BRANCH])
             return output.strip().decode('ascii')
 
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
