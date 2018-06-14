@@ -451,8 +451,6 @@ class TestDataAPI(unittest.TestCase):
 
         self.assertEqual(expected_rows_count, read_rows_count)
 
-    @pytest.mark.xfail(reason="https://github.com/GoogleCloudPlatform/"
-                              "google-cloud-python/issues/5362")
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
