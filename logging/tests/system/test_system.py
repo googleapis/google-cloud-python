@@ -16,11 +16,12 @@ import datetime
 import logging
 import unittest
 
+from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import TooManyRequests
+from google.api_core.exceptions import ResourceExhausted
+from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import UTC
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import TooManyRequests
-from google.cloud.exceptions import ServiceUnavailable
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
@@ -63,7 +64,7 @@ def _list_entries(logger):
     :returns: List of all entries consumed.
     """
     inner = RetryResult(_has_entries)(_consume_entries)
-    outer = RetryErrors(ServiceUnavailable)(inner)
+    outer = RetryErrors((ServiceUnavailable, ResourceExhausted))(inner)
     return outer(logger)
 
 
