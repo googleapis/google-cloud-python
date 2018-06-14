@@ -71,16 +71,18 @@ def get_baseline():
     ci_non_master = (CI == 'true') and any([CI_BRANCH != 'master', CI_PR])
 
     if ci_non_master:
-        if CI_PR is None and CI_BRANCH is not None:
-            output = subprocess.check_output(
-                ['git', 'merge-base', '--fork-point', 'master', CI_BRANCH])
-            return output.strip().decode('ascii')
 
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
-        # Can we have a PR but not a branch?
+
+        if CI_PR is None and CI_BRANCH is not None:
+            output = subprocess.check_output([
+                'git', 'merge-base', '--fork-point',
+                'baseline/master', CI_BRANCH])
+            return output.strip().decode('ascii')
+
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
