@@ -19,15 +19,6 @@ Bigtable
   data-api
   changelog
 
-Installation
-------------
-
-Install the ``google-cloud-bigtable`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-bigtable
-
 API requests are sent to the `Google Cloud Bigtable`_ API via RPC over HTTP/2.
 In order to support this, we'll rely on `gRPC`_. We are working with the gRPC
 team to rapidly make the install story more user-friendly.

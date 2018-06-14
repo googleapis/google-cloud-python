@@ -19,7 +19,6 @@ import pkg_resources
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
-import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -241,9 +240,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'list_queues' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_queues'] = google.api_core.gapic_v1.method.wrap_method(
@@ -258,11 +254,6 @@ class CloudTasksClient(object):
             filter=filter_,
             page_size=page_size,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
-
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -318,9 +309,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'get_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -331,11 +319,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.GetQueueRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['get_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -405,9 +388,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'create_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'create_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -422,11 +402,6 @@ class CloudTasksClient(object):
             parent=parent,
             queue=queue,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['create_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -498,9 +473,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'update_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'update_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -515,12 +487,6 @@ class CloudTasksClient(object):
             queue=queue,
             update_mask=update_mask,
         )
-
-        if hasattr(queue, 'name'):
-            routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                [('queue.name', queue.name)], )
-            metadata.append(routing_header)
-
         return self._inner_api_calls['update_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -573,9 +539,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'delete_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'delete_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -587,11 +550,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.DeleteQueueRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         self._inner_api_calls['delete_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -641,9 +599,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'purge_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'purge_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -654,11 +609,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.PurgeQueueRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['purge_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -709,9 +659,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'pause_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'pause_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -722,11 +669,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.PauseQueueRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['pause_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -782,9 +724,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'resume_queue' not in self._inner_api_calls:
             self._inner_api_calls[
                 'resume_queue'] = google.api_core.gapic_v1.method.wrap_method(
@@ -796,11 +735,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.ResumeQueueRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['resume_queue'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -851,9 +785,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'get_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
@@ -865,11 +796,6 @@ class CloudTasksClient(object):
                 )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['get_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -932,9 +858,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'set_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
                 'set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
@@ -949,11 +872,6 @@ class CloudTasksClient(object):
             resource=resource,
             policy=policy,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['set_iam_policy'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1011,9 +929,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'test_iam_permissions' not in self._inner_api_calls:
             self._inner_api_calls[
                 'test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1029,11 +944,6 @@ class CloudTasksClient(object):
             resource=resource,
             permissions=permissions,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('resource', resource)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['test_iam_permissions'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1120,9 +1030,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'list_tasks' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_tasks'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1138,11 +1045,6 @@ class CloudTasksClient(object):
             order_by=order_by,
             page_size=page_size,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
-
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1211,9 +1113,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'get_task' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_task'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1227,11 +1126,6 @@ class CloudTasksClient(object):
             name=name,
             response_view=response_view,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['get_task'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1344,9 +1238,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'create_task' not in self._inner_api_calls:
             self._inner_api_calls[
                 'create_task'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1361,11 +1252,6 @@ class CloudTasksClient(object):
             task=task,
             response_view=response_view,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['create_task'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1411,9 +1297,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'delete_task' not in self._inner_api_calls:
             self._inner_api_calls[
                 'delete_task'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1424,11 +1307,6 @@ class CloudTasksClient(object):
                 )
 
         request = cloudtasks_pb2.DeleteTaskRequest(name=name, )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         self._inner_api_calls['delete_task'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1555,9 +1433,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'lease_tasks' not in self._inner_api_calls:
             self._inner_api_calls[
                 'lease_tasks'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1574,11 +1449,6 @@ class CloudTasksClient(object):
             response_view=response_view,
             filter=filter_,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('parent', parent)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['lease_tasks'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1650,9 +1520,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'acknowledge_task' not in self._inner_api_calls:
             self._inner_api_calls[
                 'acknowledge_task'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1668,11 +1535,6 @@ class CloudTasksClient(object):
             name=name,
             schedule_time=schedule_time,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         self._inner_api_calls['acknowledge_task'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1760,9 +1622,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'renew_lease' not in self._inner_api_calls:
             self._inner_api_calls[
                 'renew_lease'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1778,11 +1637,6 @@ class CloudTasksClient(object):
             lease_duration=lease_duration,
             response_view=response_view,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['renew_lease'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1858,9 +1712,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'cancel_lease' not in self._inner_api_calls:
             self._inner_api_calls[
                 'cancel_lease'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1876,11 +1727,6 @@ class CloudTasksClient(object):
             schedule_time=schedule_time,
             response_view=response_view,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['cancel_lease'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1964,9 +1810,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         if 'run_task' not in self._inner_api_calls:
             self._inner_api_calls[
                 'run_task'] = google.api_core.gapic_v1.method.wrap_method(
@@ -1980,10 +1823,5 @@ class CloudTasksClient(object):
             name=name,
             response_view=response_view,
         )
-
-        routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-            [('name', name)], )
-        metadata.append(routing_header)
-
         return self._inner_api_calls['run_task'](
             request, retry=retry, timeout=timeout, metadata=metadata)

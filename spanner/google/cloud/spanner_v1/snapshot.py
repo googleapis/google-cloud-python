@@ -36,7 +36,7 @@ def _restart_on_unavailable(restart):
     :type restart: callable
     :param restart: curried function returning iterator
     """
-    resume_token = b''
+    resume_token = ''
     item_buffer = []
     iterator = restart()
     while True:

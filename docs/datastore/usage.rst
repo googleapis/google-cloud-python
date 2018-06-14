@@ -13,15 +13,6 @@ Datastore
   batches
   helpers
 
-Installation
-------------
-
-Install the ``google-cloud-datastore`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-datastore
-
 Modules
 -------
 

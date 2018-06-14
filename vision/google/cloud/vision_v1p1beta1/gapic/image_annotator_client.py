@@ -1,16 +1,25 @@
-# Copyright 2018 Google LLC
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# EDITING INSTRUCTIONS
+# This file was generated from the file
+# https://github.com/google/googleapis/blob/master/google/cloud/vision/v1p1beta1/image_annotator.proto,
+# and updates to that file get reflected here through a refresh process.
+# For the short term, the refresh process will only be runnable by Google engineers.
+#
+# The only allowed edits are to method and file documentation. A 3-way
+# merge preserves those additions if the generated source changes.
 """Accesses the google.cloud.vision.v1p1beta1 ImageAnnotator API."""
 
 import pkg_resources
@@ -19,12 +28,10 @@ import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
-import grpc
 
 from google.cloud.vision_v1p1beta1.gapic import enums
 from google.cloud.vision_v1p1beta1.gapic import image_annotator_client_config
 from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2
-from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version
@@ -48,8 +55,8 @@ class ImageAnnotatorClient(object):
     )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.vision.v1p1beta1.ImageAnnotator'
+    # method configuration in the client_config dictionary
+    _INTERFACE_NAME = ('google.cloud.vision.v1p1beta1.ImageAnnotator')
 
     def __init__(self,
                  channel=None,
@@ -60,81 +67,58 @@ class ImageAnnotatorClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
-                with ``credentials``; providing both will raise an exception.
+                which to make calls. If specified, then the ``credentials``
+                argument is ignored.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+            client_config (dict):
+                A dictionary of call options for each method. If not specified
+                the default configuration is used. Generally, you only need
+                to set this if you're developing your own client library.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+                'channel and credentials arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__))
 
-        # Create the channel.
-        self.channel = channel
-        if self.channel is None:
-            self.channel = google.api_core.grpc_helpers.create_channel(
+        if channel is None:
+            channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
-            )
+                scopes=self._DEFAULT_SCOPES)
 
-        # Create the gRPC stubs.
-        self._image_annotator_stub = (
-            image_annotator_pb2_grpc.ImageAnnotatorStub(self.channel))
+        self.image_annotator_stub = (
+            image_annotator_pb2.ImageAnnotatorStub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
+
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
-        self._client_info = client_info
 
-        # Parse out the default settings for retry and timeout for each RPC
-        # from the client configuration.
-        # (Ordinarily, these are the defaults specified in the `*_config.py`
-        # file next to this one.)
-        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME], )
+        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+            interface_config)
 
-        self._inner_api_calls = {}
-
-    def _intercept_channel(self, *interceptors):
-        """ Experimental. Bind gRPC interceptors to the gRPC channel.
-
-        Args:
-            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
-              Zero or more gRPC interceptors. Interceptors are given control in the order
-              they are listed.
-        Raises:
-            TypeError: If interceptor does not derive from any of
-              UnaryUnaryClientInterceptor,
-              UnaryStreamClientInterceptor,
-              StreamUnaryClientInterceptor, or
-              StreamStreamClientInterceptor.
-        """
-        self.channel = grpc.intercept_channel(self.channel, *interceptors)
-        self._image_annotator_stub = (
-            image_annotator_pb2_grpc.ImageAnnotatorStub(self.channel))
-        self._inner_api_calls.clear()
+        self._batch_annotate_images = google.api_core.gapic_v1.method.wrap_method(
+            self.image_annotator_stub.BatchAnnotateImages,
+            default_retry=method_configs['BatchAnnotateImages'].retry,
+            default_timeout=method_configs['BatchAnnotateImages'].timeout,
+            client_info=client_info)
 
     # Service calls
     def batch_annotate_images(self,
                               requests,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT,
-                              metadata=None):
+                              timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Run image detection and annotation for a batch of images.
 
@@ -143,7 +127,6 @@ class ImageAnnotatorClient(object):
             >>>
             >>> client = vision_v1p1beta1.ImageAnnotatorClient()
             >>>
-            >>> # TODO: Initialize ``requests``:
             >>> requests = []
             >>>
             >>> response = client.batch_annotate_images(requests)
@@ -158,8 +141,6 @@ class ImageAnnotatorClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesResponse` instance.
@@ -171,18 +152,7 @@ class ImageAnnotatorClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if 'batch_annotate_images' not in self._inner_api_calls:
-            self._inner_api_calls[
-                'batch_annotate_images'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._image_annotator_stub.BatchAnnotateImages,
-                    default_retry=self._method_configs[
-                        'BatchAnnotateImages'].retry,
-                    default_timeout=self._method_configs['BatchAnnotateImages']
-                    .timeout,
-                    client_info=self._client_info,
-                )
-
         request = image_annotator_pb2.BatchAnnotateImagesRequest(
-            requests=requests, )
-        return self._inner_api_calls['batch_annotate_images'](
-            request, retry=retry, timeout=timeout, metadata=metadata)
+            requests=requests)
+        return self._batch_annotate_images(
+            request, retry=retry, timeout=timeout)

@@ -2,12 +2,6 @@
 ``google-cloud`` Releases
 #########################
 
-.. attention:: The ``google-cloud`` package is deprecated
-
-    The ``google-cloud`` package is no longer maintained or updated. Instead,
-    install the ``google-cloud-*`` subpackages directly.
-
-
 The ``google-cloud`` package (formerly ``gcloud``) contains
 **all** ``google-cloud-*`` subpackages.
 

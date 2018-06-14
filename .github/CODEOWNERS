@@ -3,65 +3,48 @@
 
 # Luke Sneeringer is the default owner for anything not explicitly
 # taken by someone else.
-*                         @theacodes
+*                         @lukesneeringer
 
 # Danny Hermes is the primary author of the original core library, as
 # well as most of the testing code.
 core/*                    @dhermes
 test_utils/*              @dhermes
 
-# Thea Flowers is the author of the new google.api_core library.
-api_core/*                @theacodes
-docs/core/*               @theacodes
+# Jon Wayne Parrott is the author of the new google.api_core library.
+api_core/*                @jonparrott
 
-# Tim Swast and Alix Hamilton share responsibility for BigQuery.
-bigquery/*                @tswast @alixhami
-docs/bigquery/*           @tswast @alixhami
+# Tres Seaver and Tim Swast share responsibility for BigQuery.
+bigquery/*                @tswast @tseaver
 
 # Danny Hermes and Tres Seaver co-authored the BigTable library.
 bigtable/*                @dhermes @tseaver
-docs/bigtable/*           @dhermes @tseaver
 
 # Danny Hermes is the primary maintainer of the Datastore library.
 datastore/*               @dhermes
-docs/datastore/*          @dhermes
 
 # Bill Prin is the primary maintainer of the Stackdriver libraries.
 error_reporting/*         @waprin
-docs/error_reporting/*    @waprin
 monitoring/*              @waprin @supriyagarg @rimey
-docs/monitoring/*         @waprin @supriyagarg @rimey
 logging/*                 @waprin @tseaver
-docs/logging/*            @waprin @tseaver
 
 # Luke Sneeringer is the primary author of the ML API clients.
-language/*                @theacodes
-docs/language/*           @theacodes
-speech/*                  @theacodes
-docs/speech/*             @theacodes
-translate/*               @theacodes
-docs/translate/*          @theacodes
-videointelligence/*       @theacodes
-docs/videointelligence/*  @theacodes
-vision/*                  @theacodes
-docs/vision/*             @theacodes
+language/*                @lukesneeringer
+speech/*                  @lukesneeringer
+translate/*               @lukesneeringer
+videointelligence/*       @lukesneeringer
+vision/*                  @lukesneeringer
 
 # Luke Sneeringer is the primary author of Pub/Sub.
-pubsub/*                  @theacodes
-docs/pubsub/*             @theacodes
+pubsub/*                  @lukesneeringer
 
 # Danny Hermes is the primary author of resource manager
 resourcemanager/*         @dhermes
-docs/resourcemanager/*    @dhermes
 
 # Tim Swast is the primary author of Runtime Config.
-runtimeconfig/*           @tswast
-docs/runtimeconfig/*      @tswast
+runtimeconfig/            @tswast
 
 # Vikas Kedia is the product owner and Tres Seaver the author for Spanner.
 spanner/*                 @vkedia @tseaver
-docs/spanner/*            @vkedia @tseaver
 
 # Doug Greiman and Angela Li are the owners of trace.
 trace/*                   @liyanhui1228 @duggelz
-docs/trace/*              @liyanhui1228 @duggelz

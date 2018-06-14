@@ -72,7 +72,6 @@ Dataset
     :toctree: generated
 
     dataset.Dataset
-    dataset.DatasetListItem
     dataset.DatasetReference
     dataset.AccessEntry
 
@@ -84,7 +83,6 @@ Table
     :toctree: generated
 
     table.Table
-    table.TableListItem
     table.TableReference
     table.Row
     table.RowIterator

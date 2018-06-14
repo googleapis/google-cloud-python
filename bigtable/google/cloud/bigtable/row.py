@@ -15,18 +15,19 @@
 """User-friendly container for Google Cloud Bigtable Row."""
 
 
+import functools
 import struct
 
 import grpc
 import six
 
 from google.api_core import exceptions
+from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
-from google.cloud.bigtable import mutation
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -244,7 +245,7 @@ def _retry_commit_exception(exc):
                             exceptions.DeadlineExceeded))
 
 
-class DirectRow(mutation.RowMutations):
+class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
     These mutations directly set or delete cell contents:
@@ -275,23 +276,23 @@ class DirectRow(mutation.RowMutations):
     """
 
     def __init__(self, row_key, table):
-        super(DirectRow, self).__init__(row_key)
-        self.row_key = row_key
-        self._table = table
-        self._row_mutations = mutation.RowMutations(row_key)
+        super(DirectRow, self).__init__(row_key, table)
+        self._pb_mutations = []
 
-    @property
-    def row_mutations(self):
-        return self._row_mutations
+    def _get_mutations(self, state):  # pylint: disable=unused-argument
+        """Gets the list of mutations for a given state.
 
-    @property
-    def table(self):
-        """DirectRow table.
+        ``state`` is unused by :class:`DirectRow` but is used by
+        subclasses.
 
-        :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
-        :returns: table: The table that owns the row.
+        :type state: bool
+        :param state: The state that the mutation should be
+                      applied in.
+
+        :rtype: list
+        :returns: The list to add new mutations to (for the current state).
         """
-        return self._table
+        return self._pb_mutations
 
     def set_cell(self, column_family_id, column, value, timestamp=None):
         """Sets a value in this row.
@@ -324,8 +325,8 @@ class DirectRow(mutation.RowMutations):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (Optional) The timestamp of the operation.
         """
-        self._row_mutations.set_cell(column_family_id, column, value,
-                                     timestamp=timestamp)
+        self._set_cell(column_family_id, column, value, timestamp=timestamp,
+                       state=None)
 
     def delete(self):
         """Deletes this row from the table.
@@ -337,7 +338,7 @@ class DirectRow(mutation.RowMutations):
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
         """
-        self._row_mutations.delete_row()
+        self._delete(state=None)
 
     def delete_cell(self, column_family_id, column, time_range=None):
         """Deletes cell in this row.
@@ -354,7 +355,7 @@ class DirectRow(mutation.RowMutations):
                                  or columns with cells being deleted. Must be
                                  of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type column: str
+        :type column: bytes
         :param column: The column within the column family that will have a
                        cell deleted.
 
@@ -362,8 +363,8 @@ class DirectRow(mutation.RowMutations):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        self._row_mutations.delete_cells(column_family_id, [column],
-                                         time_range=time_range)
+        self._delete_cells(column_family_id, [column], time_range=time_range,
+                           state=None)
 
     def delete_cells(self, column_family_id, columns, time_range=None):
         """Deletes cells in this row.
@@ -390,25 +391,8 @@ class DirectRow(mutation.RowMutations):
         :param time_range: (Optional) The range of time within which cells
                            should be deleted.
         """
-        self._row_mutations.delete_cells(column_family_id, columns,
-                                         time_range=time_range)
-
-    def delete_cells_by_column_family(self, column_family_id):
-        """Deletes cells in this row.
-
-        .. note::
-
-            This method adds a mutation to the accumulated mutations on this
-            row, but does not make an API request. To actually
-            send an API request (with the mutations) to the Google Cloud
-            Bigtable API, call :meth:`commit`.
-
-        :type column_family_id: str
-        :param column_family_id: The column family that contains the column
-                                 or columns with cells being deleted. Must be
-                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-        """
-        self._row_mutations.delete_from_family(column_family_id)
+        self._delete_cells(column_family_id, columns, time_range=time_range,
+                           state=None)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.
@@ -421,9 +405,32 @@ class DirectRow(mutation.RowMutations):
 
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
-        """
 
-        self._table.save_mutations([self.row_mutations])
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
+        """
+        mutations_list = self._get_mutations(None)
+        num_mutations = len(mutations_list)
+        if num_mutations == 0:
+            return
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError('%d total mutations exceed the maximum allowable '
+                             '%d.' % (num_mutations, MAX_MUTATIONS))
+
+        data_client = self._table._instance._client.table_data_client
+        commit = functools.partial(
+            data_client.mutate_row,
+            self._table.name, self._row_key, mutations_list)
+        retry_ = retry.Retry(
+            predicate=_retry_commit_exception,
+            deadline=30)
+        retry_(commit)()
+
+        self.clear()
+
+    def clear(self):
+        """Removes all currently accumulated mutations on the current row."""
+        del self._pb_mutations[:]
 
 
 class ConditionalRow(_SetDeleteRow):

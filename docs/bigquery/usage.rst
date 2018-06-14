@@ -10,15 +10,6 @@ BigQuery
 
 .. contents:: :local:
 
-Installation
-------------
-
-Install the ``google-cloud-bigquery`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-bigquery
-
 .. note::
 
     This library changed significantly before the 1.0.0 release, especially

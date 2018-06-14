@@ -18,15 +18,6 @@ Stackdriver Logging
   transports-thread
   transports-base
 
-Installation
-------------
-
-Install the ``google-cloud-logging`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-logging
-
 Authentication and Configuration
 --------------------------------
 

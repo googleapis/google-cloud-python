@@ -16,16 +16,6 @@ Storage.
 .. _Vision: https://cloud.google.com/vision/
 .. _Vision API docs: https://cloud.google.com/vision/reference/rest/
 
-************
-Installation
-************
-
-Install the ``google-cloud-vision`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-vision
-
 
 ********************************
 Authentication and Configuration
