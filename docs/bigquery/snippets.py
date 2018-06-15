@@ -1219,7 +1219,7 @@ def test_load_table_from_uri_json(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_json]
 
 
@@ -1291,8 +1291,38 @@ def test_load_table_from_uri_parquet(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_parquet]
+
+
+def test_load_table_from_uri_orc(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_orc]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+
+    load_job = client.load_table_from_uri(
+        uri,
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    # [END bigquery_load_table_gcs_orc]
 
 
 def test_load_table_from_uri_autodetect(client, to_delete):
@@ -1389,6 +1419,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
     # [START bigquery_load_table_gcs_parquet_append]
+    # [START bigquery_load_table_gcs_orc_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1401,6 +1432,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
+    # [END bigquery_load_table_gcs_orc_append]
 
     # Format-specific code
     # [START bigquery_load_table_gcs_csv_append]
@@ -1423,10 +1455,17 @@ def test_load_table_from_uri_append(client, to_delete):
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
     # [END bigquery_load_table_gcs_parquet_append]
 
+    # [START bigquery_load_table_gcs_orc_append]
+    # The schema of the parquet file must match the table schema in an append
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+    # [END bigquery_load_table_gcs_orc_append]
+
     # Shared code
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
     # [START bigquery_load_table_gcs_parquet_append]
+    # [START bigquery_load_table_gcs_orc_append]
     load_job = client.load_table_from_uri(
         uri,
         table_ref,
@@ -1441,6 +1480,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
+    # [END bigquery_load_table_gcs_orc_append]
 
     assert previous_rows == 1
 
@@ -1476,6 +1516,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
+    # [START bigquery_load_table_gcs_orc_truncate]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1488,6 +1529,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
+    # [END bigquery_load_table_gcs_orc_truncate]
 
     # Format-specific code
     # [START bigquery_load_table_gcs_csv_truncate]
@@ -1509,10 +1551,16 @@ def test_load_table_from_uri_truncate(client, to_delete):
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
     # [END bigquery_load_table_gcs_parquet_truncate]
 
+    # [START bigquery_load_table_gcs_orc_truncate]
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+    # [END bigquery_load_table_gcs_orc_truncate]
+
     # Shared code
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
+    # [START bigquery_load_table_gcs_orc_truncate]
     load_job = client.load_table_from_uri(
         uri,
         table_ref,
@@ -1527,6 +1575,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
+    # [END bigquery_load_table_gcs_orc_truncate]
 
 
 def test_load_table_add_column(client, to_delete):
