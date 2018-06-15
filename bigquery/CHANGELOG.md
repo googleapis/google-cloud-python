@@ -11,6 +11,7 @@
 - NUMERIC type support (#5331)
 - Add timeline and top-level slot-millis to query statistics. (#5312)
 - Add additional statistics to query plan stages. (#5307)
+- Add `client.load_table_from_dataframe()` (#5387)
 
 ### Documentation
 
