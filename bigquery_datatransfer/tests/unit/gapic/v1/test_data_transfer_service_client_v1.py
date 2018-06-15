@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,7 +75,7 @@ class TestDataTransferServiceClient(object):
         default_schedule = 'defaultSchedule-800168235'
         supports_custom_schedule = True
         help_url = 'helpUrl-789431439'
-        default_data_refresh_window_days = -1804935157
+        default_data_refresh_window_days = 1804935157
         manual_runs_disabled = True
         expected_response = {
             'name': name_2,
@@ -100,8 +100,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
-                                                '[DATA_SOURCE]')
+        name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
 
         response = client.get_data_source(name)
         assert expected_response == response
@@ -118,8 +117,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
-                                                '[DATA_SOURCE]')
+        name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
 
         with pytest.raises(CustomException):
             client.get_data_source(name)
@@ -142,7 +140,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_data_sources(parent)
         resources = list(paged_list_response)
@@ -162,7 +160,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_data_sources(parent)
         with pytest.raises(CustomException):
@@ -177,7 +175,7 @@ class TestDataTransferServiceClient(object):
         schedule = 'schedule-697920873'
         data_refresh_window_days = 327632845
         disabled = True
-        user_id = -147132913
+        user_id = 147132913
         dataset_region = 'datasetRegion959248539'
         expected_response = {
             'name': name,
@@ -198,7 +196,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
         transfer_config = {}
 
         response = client.create_transfer_config(parent, transfer_config)
@@ -217,7 +215,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
         transfer_config = {}
 
         with pytest.raises(CustomException):
@@ -232,7 +230,7 @@ class TestDataTransferServiceClient(object):
         schedule = 'schedule-697920873'
         data_refresh_window_days = 327632845
         disabled = True
-        user_id = -147132913
+        user_id = 147132913
         dataset_region = 'datasetRegion959248539'
         expected_response = {
             'name': name,
@@ -284,8 +282,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
-                                                    '[TRANSFER_CONFIG]')
+        name = client.project_transfer_config_path('[PROJECT]',
+                                                   '[TRANSFER_CONFIG]')
 
         client.delete_transfer_config(name)
 
@@ -302,8 +300,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
-                                                    '[TRANSFER_CONFIG]')
+        name = client.project_transfer_config_path('[PROJECT]',
+                                                   '[TRANSFER_CONFIG]')
 
         with pytest.raises(CustomException):
             client.delete_transfer_config(name)
@@ -317,7 +315,7 @@ class TestDataTransferServiceClient(object):
         schedule = 'schedule-697920873'
         data_refresh_window_days = 327632845
         disabled = True
-        user_id = -147132913
+        user_id = 147132913
         dataset_region = 'datasetRegion959248539'
         expected_response = {
             'name': name_2,
@@ -338,8 +336,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
-                                                    '[TRANSFER_CONFIG]')
+        name = client.project_transfer_config_path('[PROJECT]',
+                                                   '[TRANSFER_CONFIG]')
 
         response = client.get_transfer_config(name)
         assert expected_response == response
@@ -356,8 +354,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
-                                                    '[TRANSFER_CONFIG]')
+        name = client.project_transfer_config_path('[PROJECT]',
+                                                   '[TRANSFER_CONFIG]')
 
         with pytest.raises(CustomException):
             client.get_transfer_config(name)
@@ -380,7 +378,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_transfer_configs(parent)
         resources = list(paged_list_response)
@@ -400,7 +398,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_path('[PROJECT]', '[LOCATION]')
+        parent = client.project_path('[PROJECT]')
 
         paged_list_response = client.list_transfer_configs(parent)
         with pytest.raises(CustomException):
@@ -418,8 +416,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_transfer_config_path(
-            '[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
+        parent = client.project_transfer_config_path('[PROJECT]',
+                                                     '[TRANSFER_CONFIG]')
         start_time = {}
         end_time = {}
 
@@ -439,8 +437,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_transfer_config_path(
-            '[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
+        parent = client.project_transfer_config_path('[PROJECT]',
+                                                     '[TRANSFER_CONFIG]')
         start_time = {}
         end_time = {}
 
@@ -452,7 +450,7 @@ class TestDataTransferServiceClient(object):
         name_2 = 'name2-1052831874'
         destination_dataset_id = 'destinationDatasetId1541564179'
         data_source_id = 'dataSourceId-1015796374'
-        user_id = -147132913
+        user_id = 147132913
         schedule = 'schedule-697920873'
         expected_response = {
             'name': name_2,
@@ -469,8 +467,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                        '[TRANSFER_CONFIG]', '[RUN]')
+        name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                       '[RUN]')
 
         response = client.get_transfer_run(name)
         assert expected_response == response
@@ -487,8 +485,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                        '[TRANSFER_CONFIG]', '[RUN]')
+        name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                       '[RUN]')
 
         with pytest.raises(CustomException):
             client.get_transfer_run(name)
@@ -499,8 +497,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                        '[TRANSFER_CONFIG]', '[RUN]')
+        name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                       '[RUN]')
 
         client.delete_transfer_run(name)
 
@@ -516,8 +514,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                        '[TRANSFER_CONFIG]', '[RUN]')
+        name = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                       '[RUN]')
 
         with pytest.raises(CustomException):
             client.delete_transfer_run(name)
@@ -540,8 +538,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_transfer_config_path(
-            '[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
+        parent = client.project_transfer_config_path('[PROJECT]',
+                                                     '[TRANSFER_CONFIG]')
 
         paged_list_response = client.list_transfer_runs(parent)
         resources = list(paged_list_response)
@@ -561,8 +559,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_transfer_config_path(
-            '[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
+        parent = client.project_transfer_config_path('[PROJECT]',
+                                                     '[TRANSFER_CONFIG]')
 
         paged_list_response = client.list_transfer_runs(parent)
         with pytest.raises(CustomException):
@@ -586,8 +584,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        parent = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                          '[TRANSFER_CONFIG]', '[RUN]')
+        parent = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                         '[RUN]')
 
         paged_list_response = client.list_transfer_logs(parent)
         resources = list(paged_list_response)
@@ -607,8 +605,8 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        parent = client.location_run_path('[PROJECT]', '[LOCATION]',
-                                          '[TRANSFER_CONFIG]', '[RUN]')
+        parent = client.project_run_path('[PROJECT]', '[TRANSFER_CONFIG]',
+                                         '[RUN]')
 
         paged_list_response = client.list_transfer_logs(parent)
         with pytest.raises(CustomException):
@@ -627,8 +625,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup Request
-        name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
-                                                '[DATA_SOURCE]')
+        name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
 
         response = client.check_valid_creds(name)
         assert expected_response == response
@@ -645,8 +642,7 @@ class TestDataTransferServiceClient(object):
             channel=channel)
 
         # Setup request
-        name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
-                                                '[DATA_SOURCE]')
+        name = client.project_data_source_path('[PROJECT]', '[DATA_SOURCE]')
 
         with pytest.raises(CustomException):
             client.check_valid_creds(name)
