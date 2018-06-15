@@ -97,6 +97,10 @@ class BigtableClient(object):
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
+                options={
+                    'grpc.max_send_message_length': -1,
+                    'grpc.max_receive_message_length': -1,
+                }.items(),
             )
 
         # Create the gRPC stubs.
