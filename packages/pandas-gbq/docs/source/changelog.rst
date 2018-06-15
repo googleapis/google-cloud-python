@@ -1,23 +1,31 @@
 Changelog
 =========
 
-0.5.0 / TBD
------------
+0.5.0 / 2018-06-15
+------------------
 
 - Project ID parameter is optional in ``read_gbq`` and ``to_gbq`` when it can
   inferred from the environment. Note: you must still pass in a project ID when
   using user-based authentication. (:issue:`103`)
-- Add location parameter to ``read_gbq`` and ``to_gbq`` so that pandas-gbq
-  can work with datasets in the Tokyo region. (:issue:`177`)
 - Progress bar added for ``to_gbq``, through an optional library `tqdm` as
   dependency. (:issue:`162`)
+- Add location parameter to ``read_gbq`` and ``to_gbq`` so that pandas-gbq
+  can work with datasets in the Tokyo region. (:issue:`177`)
 
+Documentation
+~~~~~~~~~~~~~
+
+- Add :doc:`authentication how-to guide <howto/authentication>`. (:issue:`183`)
+- Update :doc:`contributing` guide with new paths to tests. (:issue:`154`,
+  :issue:`164`)
 
 Internal changes
 ~~~~~~~~~~~~~~~~
 
 - Tests now use `nox` to run in multiple Python environments. (:issue:`52`)
 - Renamed internal modules. (:issue:`154`)
+- Refactored auth to an internal auth module. (:issue:`176`)
+- Add unit tests for ``get_credentials()``. (:issue:`184`)
 
 0.4.1 / 2018-04-05
 ------------------

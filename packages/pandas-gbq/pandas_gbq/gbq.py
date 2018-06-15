@@ -524,9 +524,10 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         <https://cloud.google.com/bigquery/sql-reference/>`__
     location : str (optional)
         Location where the query job should run. See the `BigQuery locations
-        <https://cloud.google.com/bigquery/docs/dataset-locations>
-        documentation`__ for a list of available locations. The location must
-        match that of any datasets used in the query.
+        documentation
+        <https://cloud.google.com/bigquery/docs/dataset-locations>`__ for a
+        list of available locations. The location must match that of any
+        datasets used in the query.
         .. versionadded:: 0.5.0
     configuration : dict (optional)
         Query config parameters for job processing.
@@ -659,9 +660,10 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
         .. versionadded:: 0.3.1
     location : str (optional)
         Location where the load job should run. See the `BigQuery locations
-        <https://cloud.google.com/bigquery/docs/dataset-locations>
-        documentation`__ for a list of available locations. The location must
-        match that of the target dataset.
+        documentation
+        <https://cloud.google.com/bigquery/docs/dataset-locations>`__ for a
+        list of available locations. The location must match that of the
+        target dataset.
         .. versionadded:: 0.5.0
     progress_bar : boolean, True by default. It uses the library `tqdm` to show
         the progress bar for the upload, chunk by chunk.

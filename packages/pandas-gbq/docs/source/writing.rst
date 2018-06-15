@@ -3,7 +3,8 @@
 Writing DataFrames
 ==================
 
-Assume we want to write a DataFrame ``df`` into a BigQuery table using :func:`~to_gbq`.
+Assume we want to write a DataFrame ``df`` into a BigQuery table using
+:func:`~pandas_gbq.to_gbq`.
 
 .. ipython:: python
 
@@ -38,21 +39,10 @@ a ``TableCreationError`` if the destination table already exists.
 
 .. note::
 
-   If the ``if_exists`` argument is set to ``'append'``, the destination dataframe will
-   be written to the table using the defined table schema and column types. The
-   dataframe must contain fields (matching name and type) currently in the destination table.
-   If the ``if_exists`` argument is set to ``'replace'``, and the existing table has a
-   different schema, a delay of 2 minutes will be forced to ensure that the new schema
-   has propagated in the Google environment. See
-   `Google BigQuery issue 191 <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__.
-
-Writing large DataFrames can result in errors due to size limitations being exceeded.
-This can be avoided by setting the ``chunksize`` argument when calling :func:`~to_gbq`.
-For example, the following writes ``df`` to a BigQuery table in batches of 10000 rows at a time:
-
-.. code-block:: python
-
-   to_gbq(df, 'my_dataset.my_table', projectid, chunksize=10000)
+   If the ``if_exists`` argument is set to ``'append'``, the destination
+   dataframe will be written to the table using the defined table schema and
+   column types. The dataframe must contain fields (matching name and type)
+   currently in the destination table.
 
 .. note::
 
@@ -66,8 +56,10 @@ For example, the following writes ``df`` to a BigQuery table in batches of 10000
 
 .. note::
 
-   While BigQuery uses SQL-like syntax, it has some important differences from traditional
-   databases both in functionality, API limitations (size and quantity of queries or uploads),
-   and how Google charges for use of the service. You should refer to `Google BigQuery documentation <https://cloud.google.com/bigquery/what-is-bigquery>`__
-   often as the service seems to be changing and evolving. BiqQuery is best for analyzing large
-   sets of data quickly, but it is not a direct replacement for a transactional database.
+   While BigQuery uses SQL-like syntax, it has some important differences
+   from traditional databases both in functionality, API limitations (size
+   and quantity of queries or uploads), and how Google charges for use of the
+   service. You should refer to `Google BigQuery documentation
+   <https://cloud.google.com/bigquery/docs>`__ often as the service is always
+   evolving. BiqQuery is best for analyzing large sets of data quickly, but
+   it is not a direct replacement for a transactional database.
