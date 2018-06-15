@@ -149,11 +149,8 @@ class Transaction(_SnapshotBase, _BatchBase):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
-        :rtype:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.ResultSetStats`
-        :returns:
-            stats object, including count of rows affected by the DML
-            statement.
+        :rtype: int
+        :returns: Count of rows affected by the DML statement.
         """
         if params is not None:
             if param_types is None:
