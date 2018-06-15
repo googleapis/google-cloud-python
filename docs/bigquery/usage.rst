@@ -102,36 +102,48 @@ Dataset operations
 List datasets for the client's project:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_list_datasets]
    :end-before: [END bigquery_list_datasets]
 
 Create a new dataset for the client's project:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_create_dataset]
    :end-before: [END bigquery_create_dataset]
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_get_dataset]
    :end-before: [END bigquery_get_dataset]
 
 Update a property in a dataset's metadata:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_update_dataset_description]
    :end-before: [END bigquery_update_dataset_description]
 
 Modify user permissions on a dataset:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_update_dataset_access]
    :end-before: [END bigquery_update_dataset_access]
 
 Delete a dataset:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_delete_dataset]
    :end-before: [END bigquery_delete_dataset]
 
@@ -147,60 +159,80 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_list_tables]
    :end-before: [END bigquery_list_tables]
 
 Create a table:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_create_table]
    :end-before: [END bigquery_create_table]
 
 Get a table:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_get_table]
    :end-before: [END bigquery_get_table]
 
 Update a property in a table's metadata:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_update_table_description]
    :end-before: [END bigquery_update_table_description]
 
 Browse selected rows in a table:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_browse_table]
    :end-before: [END bigquery_browse_table]
 
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
 Copy a table:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_copy_table]
    :end-before: [END bigquery_copy_table]
 
 Extract a table to Google Cloud Storage:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_extract_table]
    :end-before: [END bigquery_extract_table]
 
 Delete a table:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_delete_table]
    :end-before: [END bigquery_delete_table]
 
 Upload table data from a file:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_load_from_file]
    :end-before: [END bigquery_load_from_file]
 
@@ -213,18 +245,24 @@ See also: `Loading JSON data from Cloud Storage
 Load a CSV file from Cloud Storage:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_load_table_gcs_csv]
    :end-before: [END bigquery_load_table_gcs_csv]
 
 Load a JSON file from Cloud Storage:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json]
    :end-before: [END bigquery_load_table_gcs_json]
 
 Load a Parquet file from Cloud Storage:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_load_table_gcs_parquet]
    :end-before: [END bigquery_load_table_gcs_parquet]
 
@@ -241,12 +279,16 @@ Create a new table, using a customer-managed encryption key from
 Cloud KMS to encrypt it.
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_create_table_cmek]
    :end-before: [END bigquery_create_table_cmek]
 
 Change the key used to encrypt a table.
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_update_table_cmek]
    :end-before: [END bigquery_update_table_cmek]
 
@@ -254,6 +296,8 @@ Load a file from Cloud Storage, using a customer-managed encryption key from
 Cloud KMS for the destination table.
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json_cmek]
    :end-before: [END bigquery_load_table_gcs_json_cmek]
 
@@ -261,6 +305,8 @@ Copy a table, using a customer-managed encryption key from Cloud KMS for the
 destination table.
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_copy_table_cmek]
    :end-before: [END bigquery_copy_table_cmek]
 
@@ -268,6 +314,8 @@ Write query results to a table, using a customer-managed encryption key from
 Cloud KMS for the destination table.
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_query_destination_table_cmek]
    :end-before: [END bigquery_query_destination_table_cmek]
 
@@ -281,6 +329,8 @@ Querying data
 Run a query and wait for it to finish:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_query]
    :end-before: [END bigquery_query]
 
@@ -289,6 +339,8 @@ Run a dry run query
 ~~~~~~~~~~~~~~~~~~~
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_query_dry_run]
    :end-before: [END bigquery_query_dry_run]
 
@@ -300,8 +352,10 @@ See BigQuery documentation for more information on
 `writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
 
 .. literalinclude:: snippets.py
-  :start-after: [START bigquery_query_destination_table]
-  :end-before: [END bigquery_query_destination_table]
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_query_destination_table]
+   :end-before: [END bigquery_query_destination_table]
 
 
 Run a query using a named query parameter
@@ -311,12 +365,14 @@ See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
 
 .. literalinclude:: snippets.py
-  :start-after: [START bigquery_query_params_named]
-  :end-before: [END bigquery_query_params_named]
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_query_params_named]
+   :end-before: [END bigquery_query_params_named]
 
 
 List jobs for a project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 Jobs describe actions performed on data in BigQuery tables:
 
@@ -326,12 +382,14 @@ Jobs describe actions performed on data in BigQuery tables:
 - Copy a table
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_list_jobs]
    :end-before: [END bigquery_list_jobs]
 
 
 Using BigQuery with Pandas
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 As of version 0.29.0, you can use the
 :func:`~google.cloud.bigquery.table.RowIterator.to_dataframe` function to
@@ -353,14 +411,32 @@ Alternatively, you can install the BigQuery python client library with
 To retrieve query results as a :class:`pandas.DataFrame`:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_query_results_dataframe]
    :end-before: [END bigquery_query_results_dataframe]
 
 To retrieve table rows as a :class:`pandas.DataFrame`:
 
 .. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
    :start-after: [START bigquery_list_rows_dataframe]
    :end-before: [END bigquery_list_rows_dataframe]
+
+As of version 1.3.0, you can use the
+:func:`~google.cloud.bigquery.client.Client.load_table_from_dataframe` function
+to load data from a :class:`pandas.DataFrame` to a
+:class:`~google.cloud.bigquery.table.Table`.
+
+The following example demonstrates how to create a :class:`pandas.DataFrame`
+and load it into a new table:
+
+.. literalinclude:: snippets.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_load_table_dataframe]
+   :end-before: [END bigquery_load_table_dataframe]
 
 Changelog
 ---------
