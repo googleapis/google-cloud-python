@@ -184,6 +184,9 @@ class SourceFormat(object):
     PARQUET = 'PARQUET'
     """Specifies Parquet format."""
 
+    ORC = 'ORC'
+    """Specifies Orc format."""
+
 
 class WriteDisposition(object):
     """Specifies the action that occurs if destination table already exists.
