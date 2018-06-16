@@ -32,6 +32,7 @@ def _get_django_request():
     """
     return getattr(_thread_locals, 'request', None)
 
+
 try:
     # Django >= 1.10
     from django.utils.deprecation import MiddlewareMixin
