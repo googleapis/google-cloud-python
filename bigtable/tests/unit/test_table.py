@@ -1256,13 +1256,13 @@ class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False,
-                  app_profile_id=None):
+                  app_profile_id=None, row_set=None):
         from google.cloud.bigtable.table import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
             filter_=filter_, limit=limit, end_inclusive=end_inclusive,
-            app_profile_id=app_profile_id)
+            app_profile_id=app_profile_id, row_set=row_set)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -1343,6 +1343,14 @@ class Test__create_row_request(unittest.TestCase):
             table_name=table_name,
             rows_limit=limit,
         )
+        self.assertEqual(result, expected_result)
+
+    def test_with_row_set(self):
+        from google.cloud.bigtable.row_set import RowSet
+        table_name = 'table_name'
+        row_set = RowSet()
+        result = self._call_fut(table_name, row_set=row_set)
+        expected_result = _ReadRowsRequestPB(table_name=table_name)
         self.assertEqual(result, expected_result)
 
     def test_with_app_profile_id(self):

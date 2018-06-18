@@ -24,6 +24,7 @@ from google.api_core import exceptions
 from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable.row_set import ReadRowsRequestManager
 
 _MISSING_COLUMN_FAMILY = (
     'Column family {} is not among the cells stored in this row.')
@@ -434,12 +435,10 @@ class YieldRowsData(object):
 
     def _create_retry_request(self):
         """Helper for :meth:`read_rows`."""
-        row_range = self.request.rows.row_ranges.pop()
-        range_kwargs = {}
-        # start AFTER the row_key of the last successfully read row
-        range_kwargs['start_key_open'] = self.last_scanned_row_key
-        range_kwargs['end_key_open'] = row_range.end_key_open
-        self.request.rows.row_ranges.add(**range_kwargs)
+        req_manager = ReadRowsRequestManager(self.request,
+                                             self.last_scanned_row_key,
+                                             self._counter)
+        self.request = req_manager.build_updated_request()
 
     def _on_error(self, exc):
         """Helper for :meth:`read_rows`."""

@@ -286,7 +286,7 @@ class Table(object):
         return PartialRowsData(data_client._read_rows, request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None):
+                   filter_=None, row_set=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -308,6 +308,10 @@ class Table(object):
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
+
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
 
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
@@ -553,7 +557,7 @@ class _RetryableMutateRowsWorker(object):
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                         filter_=None, limit=None, end_inclusive=False,
-                        app_profile_id=None):
+                        app_profile_id=None, row_set=None):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -622,8 +626,19 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     if range_kwargs:
         message.rows.row_ranges.add(**range_kwargs)
 
+    if row_set is not None:
+        row_set._update_message_request(message)
+
     return message
 
+def _get_range_kwargs(self, start_key, end_key, end_inclusive):
+    range_kwargs = {}
+    range_kwargs['start_key_closed'] = _to_bytes(start_key)
+    end_key_key = 'end_key_open'
+    if end_inclusive:
+        end_key_key = 'end_key_closed'
+    range_kwargs[end_key_key] = _to_bytes(end_key)
+    return range_kwargs
 
 def _mutate_rows_request(table_name, rows, app_profile_id=None):
     """Creates a request to mutate rows in a table.
