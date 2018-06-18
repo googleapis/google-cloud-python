@@ -13,50 +13,14 @@
 # limitations under the License.
 
 import logging
+from google.firestore.v1beta1 import DocumentChange
+
 
 """Python client for Google Cloud Firestore Watch."""
 
-'''
-You can listen to a document with the onSnapshot() method. An initial call 
-using the callback you provide creates a document snapshot immediately with the
-\current contents of the single document. Then, each time the contents change,
-another call updates the document snapshot.
-
-db.collection("cities")
-    .onSnapshot
-
-
-Internal: Count: 1, Average: 4.0
-Get Realtime Updates with Cloud Firestore
-You can listen to a document with the onSnapshot() method. An initial call using
-the callback you provide creates a document snapshot immediately with the
-current contents of the single document. Then, each time the contents change,
-another call updates the document snapshot.
-
-Note: Realtime listeners are not yet supported in the Python, Go, or PHP client
-libraries.
-
-db.collection("cities").doc("SF")
-    .onSnapshot(function(doc) {
-        console.log("Current data: ", doc.data());
-    });
-test.firestore.js
-
-Events for local changes
-Local writes in your app will invoke snapshot listeners immediately. This is
-because of an important feature called "latency compensation." When you perform
-a write, your listeners will be notified with the new data before the data is
-sent to the backend.
-
-Retrieved documents have a metadata.hasPendingWrites property that indicates
-whether the document has local changes that haven't been written to the backend
-yet. You can use this property to determine the source of events received by
-your snapshot listener:
-'''
-
 _LOGGER = logging.getLogger(__name__)
 
-WATCH_TARGET_ID = 0xf0
+WATCH_TARGET_ID = 0x5079  # "Py"
 
 GRPC_STATUS_CODE = {
     'OK': 0,
@@ -83,19 +47,23 @@ GRPC_STATUS_CODE = {
 def is_permanent_error(self, error):
     try:
         if (error.code == GRPC_STATUS_CODE['CANCELLED'] or
-            error.code == GRPC_STATUS_CODE['UNKNOWN'] or
-            error.code == GRPC_STATUS_CODE['DEADLINE_EXCEEDED'] or
-            error.code == GRPC_STATUS_CODE['RESOURCE_EXHAUSTED'] or
-            error.code == GRPC_STATUS_CODE['INTERNAL'] or
-            error.code == GRPC_STATUS_CODE['UNAVAILABLE'] or
-            error.code == GRPC_STATUS_CODE['UNAUTHENTICATED']
-        ):
+                error.code == GRPC_STATUS_CODE['UNKNOWN'] or
+                error.code == GRPC_STATUS_CODE['DEADLINE_EXCEEDED'] or
+                error.code == GRPC_STATUS_CODE['RESOURCE_EXHAUSTED'] or
+                error.code == GRPC_STATUS_CODE['INTERNAL'] or
+                error.code == GRPC_STATUS_CODE['UNAVAILABLE'] or
+                error.code == GRPC_STATUS_CODE['UNAUTHENTICATED']):
             return False
         else:
             return True
     except AttributeError:
         _LOGGER.error("Unable to determine error code")
         return False
+
+
+def document_watch_comparator(doc1, doc2):
+    assert doc1 == doc2, 'Document watches only support one document.'
+    return 0
 
 
 class Watch(object):
@@ -109,17 +77,19 @@ class Watch(object):
     @classmethod
     def for_document(cls, document_ref):
         return cls(document_ref.firestore,
-                   {documents: {documents: [document_ref.formatted_name],},
-                    target_id: WATCH_TARGET_ID,
+                   {
+                       documents: {documents: [document_ref.formatted_name]},
+                       target_id: WATCH_TARGET_ID
                    },
-                   DOCUMENT_WATCH_COMPARATOR)
-    
+                   document_watch_comparator)
+
     @classmethod
     def for_query(cls, query):
         return cls(query.firestore,
-                   {query: query.to_proto(),
-                    target_id: WATCH_TARGET_ID
-                   }
+                   {
+                       query: query.to_proto(),
+                       target_id: WATCH_TARGET_ID
+                   },
                    query.comparator())
 
     def on_snapshot(self, on_next, on_error):
@@ -132,10 +102,9 @@ class Watch(object):
         is_active = True
 
         REMOVED = {}
-        
-        request = { database: self._firestore.formatted_name,
-                    add_target: self._targets
-        }
+
+        request = {database: self._firestore.formatted_name,
+                   add_target: self._targets}
 
         stream = through.obj()
 
@@ -163,7 +132,8 @@ class Watch(object):
 
         def maybe_reopen_stream(err):
             if is_active and not is_permanent_error(err):
-                _LOGGER.error('Stream ended, re-opening after retryable error: ', err)
+                _LOGGER.error(
+                    'Stream ended, re-opening after retryable error: ', err)
                 request.add_target.resume_token = resume_token
                 change_map.clear()
 
@@ -193,18 +163,17 @@ class Watch(object):
                 request,
             )
 
-
             if not is_active:
                 _LOGGER.info('Closing inactive stream')
                 backend_stream.end()
             _LOGGER.info('Opened new stream')
             current_stream = backend_stream
-            
+
             def on_error(err):
                 maybe_reopen_stream(err)
 
             current_stream.on('error')(on_error)
-            
+
             def on_end():
                 err = Error('Stream ended unexpectedly')
                 err.code = GRPC_STATUS_CODE['UNKNOWN']
@@ -215,7 +184,7 @@ class Watch(object):
             current_stream.resume()
 
             current_stream.catch(close_stream)
-            
+
         def affects_target(target_ids, current_id):
             for target_id in target_ids:
                 if target_id == current_id:
@@ -243,7 +212,7 @@ class Watch(object):
             if len(doc_tree) != doc_map:
                 raise ValueError('The document tree and document map should'
                                  'have the same number of entries.')
-            updated_tree  = doc_tree
+            updated_tree = doc_tree
             updated_map = doc_map
 
         def delete_doc(name):
@@ -271,10 +240,10 @@ class Watch(object):
 
         def modify_doc(new_document):
             name = new_document.ref.formattedName
-            if not name in updated_map:
+            if name not in updated_map:
                 raise ValueError('Document to modify does not exsit')
             old_document = updated_map[name]
-            if old_document.update_time != new_document.update_time):
+            if old_document.update_time != new_document.update_time:
                 remove_change = delete_doc(name)
                 add_change = add_doc(new_document)
                 return DocumentChange('modified',
@@ -289,7 +258,6 @@ class Watch(object):
             return self._comparator(updated_map[name1], updated_map[name2])
         changes.deletes.sort(comparator_sort)
 
-        
         for name in changes.deletes:
             changes.delete_doc(name)
             if change:
@@ -314,16 +282,16 @@ class Watch(object):
                                'map should have the same number of '
                                'entries')
 
-
-        return {updated_tree, updated_map, applied_changes)    
+        return {updated_tree, updated_map, applied_changes}
 
         def push(read_time, next_resume_token):
             changes = extract_changes(doc_map, change_map, read_time)
             diff = compute_snapshot(doc_tree, doc_map, changes)
 
             if not has_pushed or len(diff.applied_changes) > 0:
-                _LOGGER.info('Sending snapshot with %d changes and %d documents'
-                             % (len(diff.applied_changes), len(updated_tree)))
+                _LOGGER.info(
+                    'Sending snapshot with %d changes and %d documents'
+                    % (len(diff.applied_changes), len(updated_tree)))
 
             next(read_time, diff.updatedTree.keys, diff.applied_changes)
 
@@ -333,7 +301,7 @@ class Watch(object):
             resume_token = next_resume_token
 
         def current_size():
-            changes = extract_changes(doc_map, change_map):
+            changes = extract_changes(doc_map, change_map)
             return doc_map.size + len(changes.adds) - len(changes.deletes)
 
         init_stream()
@@ -345,7 +313,7 @@ class Watch(object):
                 no_target_ids = not target_ids
                 if change.target_change_type == 'NO_CHANGE':
                     if no_target_ids and change.read_time and current:
-                        push(DocumentSnapshot.to_ISO_time(change.read_time)
+                        push(DocumentSnapshot.to_ISO_time(change.read_time),
                              change.resume_token)
                 elif change.target_change_type == 'ADD':
                     if WATCH_TARGET_ID != change.target_ids[0]:
@@ -362,11 +330,13 @@ class Watch(object):
                 elif change.target_change_type == 'CURRENT':
                     current = true
                 else:
-                    close_stream(Error('Unknown target change type: ' + str(change)))
+                    close_stream(
+                        Error('Unknown target change type: ' + str(change)))
 
         stream.on('data', proto) # ??
 
-        if change.resume_token and affects_target(change.target_ids, WATCH_TARGET_ID):
+        if change.resume_token and \
+           affects_target(change.target_ids, WATCH_TARGET_ID):
             self._backoff.reset()
 
         elif proto.document_change:
@@ -392,16 +362,19 @@ class Watch(object):
             if changed:
                 _LOGGER.info('Received document change')
                 snapshot = DocumentSnapshot.Builder()
-                snapshot.ref = DocumentReference(self._firestore,
-                                                 ResourcePath.from_slash_separated_string(name))
+                snapshot.ref = DocumentReference(
+                    self._firestore,
+                    ResourcePath.from_slash_separated_string(name))
                 snapshot.fields_proto = document.fields
-                snapshot.create_time = DocumentSnapshot.to_ISO_time(document.create_time)
-                snapshot.update_time = DocumentSnapshot.to_ISO_time(document.update_time)
+                snapshot.create_time = DocumentSnapshot.to_ISO_time(
+                    document.create_time)
+                snapshot.update_time = DocumentSnapshot.to_ISO_time(
+                    document.update_time)
                 change_map[name] = snapshot
             elif removed:
                 _LOGGER.info('Received document remove')
                 change_map[name] = REMOVED
-        elif proto.document_delete
+        elif proto.document_delete:
             _LOGGER.info('Processing remove event')
             name = proto.document_delete.document
             change_map[name] = REMOVED
