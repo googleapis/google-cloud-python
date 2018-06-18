@@ -631,15 +631,6 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
 
     return message
 
-def _get_range_kwargs(self, start_key, end_key, end_inclusive):
-    range_kwargs = {}
-    range_kwargs['start_key_closed'] = _to_bytes(start_key)
-    end_key_key = 'end_key_open'
-    if end_inclusive:
-        end_key_key = 'end_key_closed'
-    range_kwargs[end_key_key] = _to_bytes(end_key)
-    return range_kwargs
-
 def _mutate_rows_request(table_name, rows, app_profile_id=None):
     """Creates a request to mutate rows in a table.
 
