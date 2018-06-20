@@ -1275,14 +1275,6 @@ class Test__create_row_request(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._call_fut(None, row_key=object(), end_key=object())
 
-    def test_row_key_row_set_conflict(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, row_key=object(), row_set=object())
-
-    def test_row_range_row_set_conflict(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(None, end_key=object(), row_set=object())
-
     def test_row_key(self):
         table_name = 'table_name'
         row_key = b'row_key'
