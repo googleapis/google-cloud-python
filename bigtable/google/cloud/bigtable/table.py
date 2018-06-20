@@ -375,9 +375,7 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        mutation_rows = []
-        for row in rows:
-            mutation_rows.append(row.row_mutations)
+        mutation_rows = [row.row_mutations for row in rows]
 
         return self.save_mutations(mutation_rows, retry)
 

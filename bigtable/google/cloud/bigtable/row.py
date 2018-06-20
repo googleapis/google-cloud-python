@@ -354,7 +354,7 @@ class DirectRow(mutation.RowMutations):
                                  or columns with cells being deleted. Must be
                                  of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type column: str
+        :type column: bytes
         :param column: The column within the column family that will have a
                        cell deleted.
 

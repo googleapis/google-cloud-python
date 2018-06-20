@@ -107,7 +107,7 @@ class TestDirectRow(unittest.TestCase):
         from google.cloud.bigtable.mutation import RowMutations
 
         row_key = b'row_key'
-        column_family_id = 'column_family_id'
+        column_family_id = u'column_family_id'
         if column is None:
             column = b'column'
         table = object()
@@ -125,18 +125,10 @@ class TestDirectRow(unittest.TestCase):
     def test_set_cell(self):
         self._set_cell_helper()
 
-    def test_set_cell_with_string_column(self):
-        column_non_bytes = u'column'
-        self._set_cell_helper(column=column_non_bytes)
-
-    def test_set_cell_with_integer_value(self):
-        value = b'1337'
-        self._set_cell_helper(value=value)
-
     def test_set_cell_with_non_bytes_value(self):
         row_key = b'row_key'
         column = b'column'
-        column_family_id = 'column_family_id'
+        column_family_id = u'column_family_id'
         table = object()
 
         row = self._make_one(row_key, table)
@@ -165,8 +157,8 @@ class TestDirectRow(unittest.TestCase):
         expected_pb = _MutationPB(
             delete_from_row=_MutationDeleteFromRowPB(),
         )
-        self.assertEqual(row.row_mutations.mutations_entry.mutations[0],
-                         expected_pb)
+        self.assertEqual(row.row_mutations.mutations_entry.mutations,
+                         [expected_pb])
 
     def test_delete_cell(self):
         from google.cloud.bigtable_v2.proto import bigtable_pb2
@@ -181,8 +173,8 @@ class TestDirectRow(unittest.TestCase):
                 self._kwargs = []
 
         row_key = b'row_key'
-        column = 'column'
-        column_family_id = 'column_family_id'
+        column = b'column'
+        column_family_id = u'column_family_id'
         table = object()
 
         mock_row = MockRow(row_key, table)

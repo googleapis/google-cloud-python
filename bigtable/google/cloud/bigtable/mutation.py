@@ -75,7 +75,7 @@ class RowMutations(object):
 
         set_cell_mutation = data_v2_pb2.Mutation.SetCell(
             family_name=family_name,
-            column_qualifier=_to_bytes(column_id),
+            column_qualifier=column_id,
             timestamp_micros=timestamp_micros,
             value=value
         )
@@ -90,7 +90,7 @@ class RowMutations(object):
             family_name (str):
                 The name of the family into which new data should be written.
                 Must match ``[-_.a-zA-Z0-9]+``.
-            columns (list):
+            columns (list of bytes):
                 The columns within the column family that will have cells
                 deleted.
             time_range (TimestampRange):
@@ -101,7 +101,7 @@ class RowMutations(object):
             delete_from_column_mutation = (
                 data_v2_pb2.Mutation.DeleteFromColumn(
                     family_name=family_name,
-                    column_qualifier=_to_bytes(column_id),
+                    column_qualifier=column_id,
                     time_range=time_range))
 
             mutation_message = data_v2_pb2.Mutation(
