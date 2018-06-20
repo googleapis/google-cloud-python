@@ -397,6 +397,18 @@ class TestDatastoreQuery(TestDatastore):
 
         self.assertTrue(page_count > 1)
 
+    def test_query_offset_timestamp_keys(self):
+        # See issue #4675
+        max_all = 10000
+        offset = 1
+        max_offset = max_all - offset
+        query = self.CLIENT.query(kind='timestamp_key')
+        all_w_limit = list(query.fetch(limit=max_all))
+        self.assertEqual(len(all_w_limit), max_all)
+
+        offset_w_limit = list(query.fetch(offset=offset, limit=max_offset))
+        self.assertEqual(offset_w_limit, all_w_limit[offset:])
+
     def test_query_paginate_with_offset(self):
         page_query = self._base_query()
         page_query.order = 'appearances'

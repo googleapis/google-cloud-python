@@ -24,6 +24,15 @@ CURRENT_DIR = os.path.realpath(os.path.dirname(__file__))
 BASE_DIR = os.path.realpath(os.path.join(CURRENT_DIR, '..', '..'))
 GITHUB_REPO = os.environ.get('GITHUB_REPO', 'google-cloud-python')
 CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+
+head_hash, head_name = subprocess.check_output(['git', 'show-ref', 'HEAD']
+).strip().decode('ascii').split()
+rev_parse = subprocess.check_output(
+    ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
+).strip().decode('ascii')
+MAJOR_DIV = '#' * 78
+MINOR_DIV = '#' + '-' * 77
+
 # NOTE: This reg-ex is copied from ``get_tagged_packages``.
 TAG_RE = re.compile(r"""
     ^
@@ -37,7 +46,6 @@ TAG_RE = re.compile(r"""
 # As of this writing, the only "real" dependency is that of error_reporting
 # (on logging), the rest are just system test dependencies.
 PKG_DEPENDENCIES = {
-    'error_reporting': {'logging'},
     'logging': {'pubsub'},
 }
 
@@ -63,11 +71,18 @@ def get_baseline():
         ci_pr,
     ])
     if ci_non_master:
+
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
-        # Can we have a PR but not a branch?
+
+        if CI_PR is None and CI_BRANCH is not None:
+            output = subprocess.check_output([
+                'git', 'merge-base', '--fork-point',
+                'baseline/master', CI_BRANCH])
+            return output.strip().decode('ascii')
+
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
@@ -219,6 +234,29 @@ def get_target_packages():
             yield package
     else:
         yield tagged_package
+
+
+def main():
+    print(MAJOR_DIV)
+    print('# Environment')
+    print(MINOR_DIV)
+    print('# CircleCI:        {}'.format(CI))
+    print('# CircleCI branch: {}'.format(CI_BRANCH))
+    print('# CircleCI pr:     {}'.format(CI_PR))
+    print('# CircleCI tag:    {}'.format(CIRCLE_TAG))
+    print('# HEAD ref:        {}'.format(head_hash))
+    print('#                  {}'.format(head_name))
+    print('# Git branch:      {}'.format(rev_parse))
+    print(MAJOR_DIV)
+
+    packages = list(get_target_packages())
+
+    print(MAJOR_DIV)
+    print('# Target packages:')
+    print(MINOR_DIV)
+    for package in packages:
+       print(package)
+    print(MAJOR_DIV)
 
 
 if __name__ == '__main__':
