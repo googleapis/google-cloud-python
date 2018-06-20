@@ -24,7 +24,10 @@ from google.api_core import exceptions
 from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable.row_set import ReadRowsRequestManager
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_v2.proto import (
+    data_pb2 as data_v2_pb2)
 
 _MISSING_COLUMN_FAMILY = (
     'Column family {} is not among the cells stored in this row.')
@@ -435,9 +438,9 @@ class YieldRowsData(object):
 
     def _create_retry_request(self):
         """Helper for :meth:`read_rows`."""
-        req_manager = ReadRowsRequestManager(self.request,
-                                             self.last_scanned_row_key,
-                                             self._counter)
+        req_manager = _ReadRowsRequestManager(self.request,
+                                              self.last_scanned_row_key,
+                                              self._counter)
         self.request = req_manager.build_updated_request()
 
     def _on_error(self, exc):
@@ -602,6 +605,84 @@ class YieldRowsData(object):
             # NOTE: ``cell.qualifier`` **can** be empty string.
             if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
+
+
+class _ReadRowsRequestManager(object):
+    """ Update the ReadRowsRequest message in case of failures by
+        filtering the already read keys.
+
+    :type message: class:`data_messages_v2_pb2.ReadRowsRequest`
+    :param message: Original ReadRowsRequest containing all of the parameters
+                    of API call
+
+    :type last_scanned_key: bytes
+    :param last_scanned_key: last successfully scanned key
+
+    :type rows_read_so_far: int
+    :param rows_read_so_far: total no of rows successfully read so far.
+                            this will be used for updating rows_limit
+
+    """
+
+    def __init__(self, message, last_scanned_key, rows_read_so_far):
+        self.message = message
+        self.last_scanned_key = last_scanned_key
+        self.rows_read_so_far = rows_read_so_far
+        self.new_message = None
+
+    def build_updated_request(self):
+        """ Updates the given message request as per last scanned key
+        """
+        r_kwargs = {'table_name': self.message.table_name,
+                    'filter': self.message.filter}
+
+        if self.message.rows_limit != 0:
+            r_kwargs['rows_limit'] = max(1, self.message.rows_limit -
+                                         self.rows_read_so_far)
+
+        row_keys = self._filter_rows_keys()
+        row_ranges = self._filter_row_ranges()
+        r_kwargs['rows'] = data_v2_pb2.RowSet(row_keys=row_keys,
+                                              row_ranges=row_ranges)
+        return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
+
+    def _filter_rows_keys(self):
+        """ Helper for :meth:`build_updated_request`"""
+        """
+        for row_key in self.message.rows.row_keys:
+            if(row_key > self.last_scanned_key):
+                self.new_message.rows.row_keys.append(row_key)
+        """
+        return [row_key for row_key in self.message.rows.row_keys
+                if row_key > self.last_scanned_key]
+
+    def _filter_row_ranges(self):
+        """ Helper for :meth:`build_updated_request`"""
+        new_row_ranges = []
+
+        for row_range in self.message.rows.row_ranges:
+            if((row_range.end_key_open and
+                self._key_already_read(row_range.end_key_open)) or
+                (row_range.end_key_closed and
+                 self._key_already_read(row_range.end_key_closed))):
+                    continue
+
+            if ((row_range.start_key_open and
+                self._key_already_read(row_range.start_key_open)) or
+                (row_range.start_key_closed and
+                 self._key_already_read(row_range.start_key_closed))):
+                row_range.start_key_closed = _to_bytes("")
+                row_range.start_key_open = self.last_scanned_key
+
+                new_row_ranges.append(row_range)
+            else:
+                new_row_ranges.append(row_range)
+
+        return new_row_ranges
+
+    def _key_already_read(self, key):
+        """ Helper for :meth:`_filter_row_ranges`"""
+        return key <= self.last_scanned_key
 
 
 def _raise_if(predicate, *args):

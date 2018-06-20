@@ -30,6 +30,8 @@ from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
@@ -318,7 +320,7 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, app_profile_id=self._app_profile_id)
+            limit=limit, app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
         generator = YieldRowsData(data_client._read_rows, request_pb)
 
@@ -592,6 +594,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :type: app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
 
+    :type row_set: :class:`row_set.RowSet`
+    :param filter_: (Optional) The row set containing multiple row keys and
+                    row_ranges.
+
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -602,15 +608,16 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
             (start_key is not None or end_key is not None)):
         raise ValueError('Row key and row range cannot be '
                          'set simultaneously')
-    range_kwargs = {}
-    if start_key is not None or end_key is not None:
-        if start_key is not None:
-            range_kwargs['start_key_closed'] = _to_bytes(start_key)
-        if end_key is not None:
-            end_key_key = 'end_key_open'
-            if end_inclusive:
-                end_key_key = 'end_key_closed'
-            range_kwargs[end_key_key] = _to_bytes(end_key)
+
+    if (row_key is not None and row_set is not None):
+        raise ValueError('Row key and row set cannot be '
+                         'set simultaneously')
+
+    if ((start_key is not None or end_key is not None) and
+            row_set is not None):
+        raise ValueError('Row range and row set cannot be '
+                         'set simultaneously')
+
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
@@ -621,15 +628,18 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
     if row_key is not None:
-        message.rows.row_keys.append(_to_bytes(row_key))
+        row_set = RowSet()
+        row_set.add_row_key(row_key)
 
-    if range_kwargs:
-        message.rows.row_ranges.add(**range_kwargs)
-
+    if start_key is not None or end_key is not None:
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key, end_key,
+                                       end_inclusive=end_inclusive))
     if row_set is not None:
         row_set._update_message_request(message)
 
     return message
+
 
 def _mutate_rows_request(table_name, rows, app_profile_id=None):
     """Creates a request to mutate rows in a table.
