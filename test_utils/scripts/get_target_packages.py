@@ -24,6 +24,9 @@ CURRENT_DIR = os.path.realpath(os.path.dirname(__file__))
 BASE_DIR = os.path.realpath(os.path.join(CURRENT_DIR, '..', '..'))
 GITHUB_REPO = os.environ.get('GITHUB_REPO', 'google-cloud-python')
 CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+CI = os.environ.get('CI', '')
+CI_BRANCH = os.environ.get('CIRCLE_BRANCH')
+CI_PR = os.environ.get('CIRCLE_PR_NUMBER')
 
 head_hash, head_name = subprocess.check_output(['git', 'show-ref', 'HEAD']
 ).strip().decode('ascii').split()
