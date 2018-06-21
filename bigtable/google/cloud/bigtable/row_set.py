@@ -31,7 +31,7 @@ class RowSet(object):
     def add_row_key(self, row_key):
         """Add row key to row_keys list.
 
-        :type row_key: string utf-8
+        :type row_key: bytes
         :param row_key: The key of a row to read
         """
         self.row_keys.append(row_key)
@@ -61,11 +61,13 @@ class RowSet(object):
 class RowRange(object):
     """ Convenience wrapper of google.bigtable.v2.RowRange
 
-    :type start_key: string utf-8
-    :param start_key: start key of the row range
+    :type start_key: bytes
+    :param start_key: (Optional) Start key of the row range. If left empty,
+                      will be interpreted as the empty string.
 
-    :type end_key: string utf-8
-    :param end_key: end key of the row range
+    :type end_key: bytes
+    :param end_key: (Optional) End key of the row range. If left empty,
+                    will be interpreted as the infinite string.
 
     :type start_inclusive: bool
     :param start_inclusive: (Optional) Whether the ``start_key`` should be
@@ -76,9 +78,8 @@ class RowRange(object):
                   considered inclusive. The default is False (exclusive).
     """
 
-    def __init__(self, start_key, end_key,
-                 start_inclusive=True,
-                 end_inclusive=False):
+    def __init__(self, start_key=None, end_key=None,
+                 start_inclusive=True, end_inclusive=False):
         self.start_key = start_key
         self.start_inclusive = start_inclusive
         self.end_key = end_key
