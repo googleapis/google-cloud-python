@@ -9,8 +9,8 @@ models.
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/texttospeech/api.html
-.. _Product Documentation: https://cloud.google.com/texttospeech
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/texttospeech/usage.html
+.. _Product Documentation:  https://cloud.google.com/texttospeech
 
 Quick Start
 -----------
@@ -80,7 +80,6 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    api
     gapic/v1/api
     gapic/v1/types
     gapic/v1beta1/api
