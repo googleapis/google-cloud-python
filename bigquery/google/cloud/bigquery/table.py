@@ -607,7 +607,7 @@ class Table(object):
         to :data:`None`).
 
         By default, the query is treated as Standard SQL. To use Legacy
-        SQL, set view_use_legacy_sql to True.
+        SQL, set :attr:`view_use_legacy_sql` to :data:`True`.
 
         Raises:
             ValueError: For invalid value types.
