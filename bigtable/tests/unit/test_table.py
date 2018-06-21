@@ -258,10 +258,11 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client, bigtable_table_admin_client)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
-        instance_api = mock.create_autospec(
-            bigtable_instance_admin_client.BigtableInstanceAdminClient)
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -281,6 +282,44 @@ class TestTable(unittest.TestCase):
 
     def test_create(self):
         self._create_test_helper()
+
+    def test_create_with_split_keys(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client, bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient)
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        split_keys = [b'split1', b'split2', b'split3']
+
+        # Patch API calls
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        table.create(split_keys)
+
+        splits = []
+        for split_key in split_keys:
+            splits.append(
+                table_admin_messages_v2_pb2.CreateTableRequest.Split(
+                    key=split_key))
+
+        table_api.create_table.assert_called_once_with(
+            parent=self.INSTANCE_NAME,
+            table={},
+            table_id=self.TABLE_ID,
+            initial_splits=splits)
 
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
@@ -308,7 +347,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
 
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+        api = bigtable_table_admin_client.BigtableTableAdminClient(
             mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
@@ -324,7 +363,7 @@ class TestTable(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
-        client._table_admin_client = table_api
+        client._table_admin_client = api
         bigtable_table_stub = (
             client._table_admin_client.bigtable_table_admin_stub)
         bigtable_table_stub.GetTable.side_effect = [response_pb]
@@ -349,8 +388,8 @@ class TestTable(unittest.TestCase):
             bigtable_table_admin_client)
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -435,13 +474,13 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
+        api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
         instance = client.instance(instance_id=self.INSTANCE_ID)
-        client._table_admin_client = table_api
+        client._table_admin_client = api
         table = self._make_one(self.TABLE_ID, instance)
 
         response = [Status(code=0), Status(code=1)]
@@ -465,8 +504,8 @@ class TestTable(unittest.TestCase):
             bigtable_table_admin_client)
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -762,9 +801,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
 
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -943,8 +982,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)

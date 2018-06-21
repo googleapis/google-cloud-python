@@ -21,8 +21,6 @@ from google.api_core.exceptions import RetryError
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable_v2.proto import (
-    bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.row import AppendRow
@@ -30,6 +28,10 @@ from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
+from google.cloud.bigtable_v2.proto import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
@@ -174,7 +176,7 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self):
+    def create(self, initial_split_keys=None):
         """Creates this table.
 
         .. note::
@@ -182,11 +184,27 @@ class Table(object):
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
+
+        :type initial_split_keys: list
+        :param initial_split_keys: The optional list of row keys in bytes that
+                                    will be used to initially split the table
+                                    into several tablets.
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
+
+        if initial_split_keys is not None:
+            splits = []
+            for initial_split_key in initial_split_keys:
+                splits.append(
+                    table_admin_messages_v2_pb2.CreateTableRequest.Split(
+                        key=initial_split_key))
+        else:
+            splits = None
+
         table_client.create_table(
-            parent=instance_name, table_id=self.table_id, table={})
+            parent=instance_name, table_id=self.table_id, table={},
+            initial_splits=splits)
 
     def delete(self):
         """Delete this table."""
