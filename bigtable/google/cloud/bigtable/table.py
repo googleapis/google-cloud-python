@@ -202,9 +202,9 @@ class Table(object):
         else:
             splits = None
 
-        table_client.create_table(
-            parent=instance_name, table_id=self.table_id, table={},
-            initial_splits=splits)
+        table_client.create_table(parent=instance_name,
+                                  table_id=self.table_id, table={},
+                                  initial_splits=splits)
 
     def delete(self):
         """Delete this table."""
