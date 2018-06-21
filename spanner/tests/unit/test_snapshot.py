@@ -28,9 +28,7 @@ PARAMS = {'max_age': 30}
 PARAM_TYPES = {'max_age': 'INT64'}
 SQL_QUERY_WITH_BYTES_PARAM = """\
 SELECT image_name FROM images WHERE @bytes IN image_data"""
-PARAMS_WITH_BYTES = {'bytes': b'FACEDACE'}
-RESUME_TOKEN = b'DEADBEEF'
-TXN_ID = b'DEAFBEAD'
+PARAMS_WITH_BYTES = {'bytes': b'DEADBEEF'}
 
 
 class Test_restart_on_unavailable(unittest.TestCase):
@@ -40,7 +38,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
 
         return _restart_on_unavailable(restart)
 
-    def _make_item(self, value, resume_token=b''):
+    def _make_item(self, value, resume_token=''):
         return mock.Mock(
             value=value, resume_token=resume_token,
             spec=['value', 'resume_token'])
@@ -62,7 +60,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
     def test_iteration_w_raw_w_resume_tken(self):
         ITEMS = (
             self._make_item(0),
-            self._make_item(1, resume_token=RESUME_TOKEN),
+            self._make_item(1, resume_token='DEADBEEF'),
             self._make_item(2),
             self._make_item(3),
         )
@@ -72,25 +70,10 @@ class Test_restart_on_unavailable(unittest.TestCase):
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with()
 
-    def test_iteration_w_raw_raising_unavailable_no_token(self):
-        ITEMS = (
-            self._make_item(0),
-            self._make_item(1, resume_token=RESUME_TOKEN),
-            self._make_item(2),
-        )
-        before = _MockIterator(fail_after=True)
-        after = _MockIterator(*ITEMS)
-        restart = mock.Mock(spec=[], side_effect=[before, after])
-        resumable = self._call_fut(restart)
-        self.assertEqual(list(resumable), list(ITEMS))
-        self.assertEqual(
-            restart.mock_calls,
-            [mock.call(), mock.call(resume_token=b'')])
-
     def test_iteration_w_raw_raising_unavailable(self):
         FIRST = (
             self._make_item(0),
-            self._make_item(1, resume_token=RESUME_TOKEN),
+            self._make_item(1, resume_token='DEADBEEF'),
         )
         SECOND = (  # discarded after 503
             self._make_item(2),
@@ -105,12 +88,12 @@ class Test_restart_on_unavailable(unittest.TestCase):
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(
             restart.mock_calls,
-            [mock.call(), mock.call(resume_token=RESUME_TOKEN)])
+            [mock.call(), mock.call(resume_token='DEADBEEF')])
 
     def test_iteration_w_raw_raising_unavailable_after_token(self):
         FIRST = (
             self._make_item(0),
-            self._make_item(1, resume_token=RESUME_TOKEN),
+            self._make_item(1, resume_token='DEADBEEF'),
         )
         SECOND = (
             self._make_item(2),
@@ -123,7 +106,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(
             restart.mock_calls,
-            [mock.call(), mock.call(resume_token=RESUME_TOKEN)])
+            [mock.call(), mock.call(resume_token='DEADBEEF')])
 
 
 class Test_SnapshotBase(unittest.TestCase):
@@ -207,6 +190,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
+        txn_id = b'DEADBEEF'
         VALUES = [
             [u'bharney', 31],
             [u'phred', 32],
@@ -240,7 +224,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived._multi_use = multi_use
         derived._read_request_count = count
         if not first:
-            derived._transaction_id = TXN_ID
+            derived._transaction_id = txn_id
 
         if partition is not None:  # 'limit' and 'partition' incompatible
             result_set = derived.read(
@@ -274,7 +258,7 @@ class Test_SnapshotBase(unittest.TestCase):
             if first:
                 self.assertTrue(transaction.begin.read_only.strong)
             else:
-                self.assertEqual(transaction.id, TXN_ID)
+                self.assertEqual(transaction.id, txn_id)
         else:
             self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
@@ -302,7 +286,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self._read_helper(multi_use=True, first=False, count=1)
 
     def test_read_w_multi_use_w_first_w_partition(self):
-        PARTITION = b'FADEABED'
+        PARTITION = b'DEADBEEF'
         self._read_helper(multi_use=True, first=True, partition=PARTITION)
 
     def test_read_w_multi_use_w_first_w_count_gt_0(self):
@@ -338,6 +322,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
+        txn_id = b'DEADBEEF'
         VALUES = [
             [u'bharney', u'rhubbyl', 31],
             [u'phred', u'phlyntstone', 32],
@@ -370,7 +355,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived._multi_use = multi_use
         derived._read_request_count = count
         if not first:
-            derived._transaction_id = TXN_ID
+            derived._transaction_id = txn_id
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
@@ -398,7 +383,7 @@ class Test_SnapshotBase(unittest.TestCase):
             if first:
                 self.assertTrue(transaction.begin.read_only.strong)
             else:
-                self.assertEqual(transaction.id, TXN_ID)
+                self.assertEqual(transaction.id, txn_id)
         else:
             self.assertTrue(transaction.single_use.read_only.strong)
         expected_params = Struct(fields={
@@ -443,6 +428,7 @@ class Test_SnapshotBase(unittest.TestCase):
             TransactionSelector)
 
         keyset = KeySet(all_=True)
+        txn_id = b'DEADBEEF'
         new_txn_id = b'ABECAB91'
         token_1 = b'FACE0FFF'
         token_2 = b'BADE8CAF'
@@ -460,7 +446,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
         if w_txn:
-            derived._transaction_id = TXN_ID
+            derived._transaction_id = txn_id
 
         tokens = list(derived.partition_read(
             TABLE_NAME, COLUMNS, keyset,
@@ -478,7 +464,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(table, TABLE_NAME)
         self.assertEqual(key_set, keyset._to_pb())
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertEqual(transaction.id, TXN_ID)
+        self.assertEqual(transaction.id, txn_id)
         self.assertFalse(transaction.HasField('begin'))
         self.assertEqual(r_index, index)
         self.assertEqual(columns, COLUMNS)
@@ -507,7 +493,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
-        derived._transaction_id = TXN_ID
+        derived._transaction_id = b'DEADBEEF'
 
         with self.assertRaises(RuntimeError):
             list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
@@ -533,6 +519,7 @@ class Test_SnapshotBase(unittest.TestCase):
             TransactionSelector)
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
+        txn_id = b'DEADBEEF'
         new_txn_id = b'ABECAB91'
         token_1 = b'FACE0FFF'
         token_2 = b'BADE8CAF'
@@ -550,7 +537,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
         if w_txn:
-            derived._transaction_id = TXN_ID
+            derived._transaction_id = txn_id
 
         tokens = list(derived.partition_query(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
@@ -566,7 +553,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertEqual(transaction.id, TXN_ID)
+        self.assertEqual(transaction.id, txn_id)
         self.assertFalse(transaction.HasField('begin'))
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
@@ -586,7 +573,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
-        derived._transaction_id = TXN_ID
+        derived._transaction_id = b'DEADBEEF'
 
         with self.assertRaises(RuntimeError):
             list(derived.partition_query(SQL_QUERY))
@@ -596,7 +583,7 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
-        derived._transaction_id = TXN_ID
+        derived._transaction_id = b'DEADBEEF'
 
         with self.assertRaises(ValueError):
             list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
@@ -629,6 +616,7 @@ class TestSnapshot(unittest.TestCase):
     DATABASE_NAME = INSTANCE_NAME + '/databases/' + DATABASE_ID
     SESSION_ID = 'session-id'
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
+    TRANSACTION_ID = b'DEADBEEF'
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.snapshot import Snapshot
@@ -778,9 +766,9 @@ class TestSnapshot(unittest.TestCase):
     def test__make_txn_selector_w_transaction_id(self):
         session = _Session()
         snapshot = self._make_one(session)
-        snapshot._transaction_id = TXN_ID
+        snapshot._transaction_id = self.TRANSACTION_ID
         selector = snapshot._make_txn_selector()
-        self.assertEqual(selector.id, TXN_ID)
+        self.assertEqual(selector.id, self.TRANSACTION_ID)
 
     def test__make_txn_selector_strong(self):
         session = _Session()
@@ -877,7 +865,7 @@ class TestSnapshot(unittest.TestCase):
     def test_begin_w_existing_txn_id(self):
         session = _Session()
         snapshot = self._make_one(session, multi_use=True)
-        snapshot._transaction_id = TXN_ID
+        snapshot._transaction_id = self.TRANSACTION_ID
         with self.assertRaises(ValueError):
             snapshot.begin()
 
@@ -897,7 +885,7 @@ class TestSnapshot(unittest.TestCase):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
-        transaction_pb = TransactionPB(id=TXN_ID)
+        transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _begin_transaction_response=transaction_pb)
@@ -908,8 +896,8 @@ class TestSnapshot(unittest.TestCase):
 
         txn_id = snapshot.begin()
 
-        self.assertEqual(txn_id, TXN_ID)
-        self.assertEqual(snapshot._transaction_id, TXN_ID)
+        self.assertEqual(txn_id, self.TRANSACTION_ID)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
 
         session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
@@ -923,7 +911,7 @@ class TestSnapshot(unittest.TestCase):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
-        transaction_pb = TransactionPB(id=TXN_ID)
+        transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _begin_transaction_response=transaction_pb)
@@ -932,8 +920,8 @@ class TestSnapshot(unittest.TestCase):
 
         txn_id = snapshot.begin()
 
-        self.assertEqual(txn_id, TXN_ID)
-        self.assertEqual(snapshot._transaction_id, TXN_ID)
+        self.assertEqual(txn_id, self.TRANSACTION_ID)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
 
         session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)

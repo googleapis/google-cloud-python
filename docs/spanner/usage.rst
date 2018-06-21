@@ -24,15 +24,6 @@ workloads.
   advanced-session-pool-topics
   api-reference
 
-Installation
-============
-
-Install the ``google-cloud-spanner`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-spanner
-
 Spanner Client
 ==============
 

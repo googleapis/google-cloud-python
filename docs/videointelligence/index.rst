@@ -13,16 +13,6 @@ relevant information at the video, shot or per frame.
 .. _Google Cloud Video Intelligence: https://cloud.google.com/video-intelligence/
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
-************
-Installation
-************
-
-Install the ``google-cloud-videointelligence`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-videointelligence
-
 
 ********************************
 Authentication and Configuration

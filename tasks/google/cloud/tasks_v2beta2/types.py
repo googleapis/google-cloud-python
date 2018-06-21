@@ -15,13 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
-from google.cloud.tasks_v2beta2.proto import cloudtasks_pb2
-from google.cloud.tasks_v2beta2.proto import queue_pb2
-from google.cloud.tasks_v2beta2.proto import target_pb2
-from google.cloud.tasks_v2beta2.proto import task_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import any_pb2
@@ -32,7 +26,13 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
-names = []
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.tasks_v2beta2.proto import cloudtasks_pb2
+from google.cloud.tasks_v2beta2.proto import queue_pb2
+from google.cloud.tasks_v2beta2.proto import target_pb2
+from google.cloud.tasks_v2beta2.proto import task_pb2
+
+
 _shared_modules = [
     http_pb2,
     iam_policy_pb2,
@@ -53,6 +53,8 @@ _local_modules = [
     task_pb2,
 ]
 
+names = []
+
 for module in _shared_modules:
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
@@ -63,6 +65,5 @@ for module in _local_modules:
         message.__module__ = 'google.cloud.tasks_v2beta2.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
-
 
 __all__ = tuple(sorted(names))

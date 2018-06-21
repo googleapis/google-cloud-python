@@ -13,10 +13,8 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
-import enum
 
-
-class SsmlVoiceGender(enum.IntEnum):
+class SsmlVoiceGender(object):
     """
     Gender of the voice as described in
     `SSML voice element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`_.
@@ -37,7 +35,7 @@ class SsmlVoiceGender(enum.IntEnum):
     NEUTRAL = 3
 
 
-class AudioEncoding(enum.IntEnum):
+class AudioEncoding(object):
     """
     Configuration to set up audio encoder. The encoding determines the output
     audio format that we'd like.

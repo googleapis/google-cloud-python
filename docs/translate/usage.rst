@@ -13,15 +13,6 @@ lets websites and programs integrate with Google Cloud Translation
 programmatically. Google Cloud Translation is available as a
 paid service. See the `Pricing`_ and `FAQ`_ pages for details.
 
-Installation
-------------
-
-Install the ``google-cloud-translate`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-translate
-
 Authentication / Configuration
 ------------------------------
 

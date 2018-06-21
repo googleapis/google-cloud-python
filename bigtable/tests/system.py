@@ -89,12 +89,12 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances, failed_locations = retry(Config.CLIENT.list_instances)()
+        instances_response = retry(Config.CLIENT.list_instances)()
 
-        if len(failed_locations) != 0:
+        if len(instances_response.failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances
+        EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
@@ -119,14 +119,14 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        expected = set([instance.name for instance in EXISTING_INSTANCES])
-        expected.add(Config.INSTANCE.name)
-
         instances, failed_locations = Config.CLIENT.list_instances()
-
         self.assertEqual(failed_locations, [])
-        found = set([instance.name for instance in instances])
-        self.assertTrue(expected.issubset(found))
+        # We have added one new instance in `setUpModule`.
+        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
+        for instance in instances:
+            instance_existence = (instance in EXISTING_INSTANCES or
+                                  instance == Config.INSTANCE)
+            self.assertTrue(instance_existence)
 
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
@@ -241,6 +241,19 @@ class TestTableAdminAPI(unittest.TestCase):
         tables = Config.INSTANCE.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
+
+    def test_create_table_with_split_keys(self):
+        temp_table_id = 'foo-bar-baz-split-table'
+        initial_split_keys = [b'split_key_1', b'split_key_10',
+                              b'split_key_20', b'']
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table.create(initial_split_keys=initial_split_keys)
+        self.tables_to_delete.append(temp_table)
+
+        # Read Sample Row Keys for created splits
+        sample_row_keys = temp_table.sample_row_keys()
+        self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
+                         set(initial_split_keys))
 
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'

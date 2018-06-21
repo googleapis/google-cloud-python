@@ -13,10 +13,8 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
-import enum
 
-
-class Likelihood(enum.IntEnum):
+class Likelihood(object):
     """
     A bucketized representation of likelihood, which is intended to give clients
     highly stable results across model upgrades.
@@ -39,7 +37,7 @@ class Likelihood(enum.IntEnum):
 
 class TextAnnotation(object):
     class DetectedBreak(object):
-        class BreakType(enum.IntEnum):
+        class BreakType(object):
             """
             Enum to denote the type of break found. New line, space etc.
 
@@ -61,7 +59,7 @@ class TextAnnotation(object):
 
 
 class Block(object):
-    class BlockType(enum.IntEnum):
+    class BlockType(object):
         """
         Type of a block (text, image etc) as identified by OCR.
 
@@ -82,7 +80,7 @@ class Block(object):
 
 
 class Feature(object):
-    class Type(enum.IntEnum):
+    class Type(object):
         """
         Type of Google Cloud Vision API feature to be extracted.
 
@@ -119,7 +117,7 @@ class Feature(object):
 
 class FaceAnnotation(object):
     class Landmark(object):
-        class Type(enum.IntEnum):
+        class Type(object):
             """
             Face landmark (feature) type.
             Left and right are defined from the vantage of the viewer of the image
@@ -198,22 +196,3 @@ class FaceAnnotation(object):
             CHIN_GNATHION = 32
             CHIN_LEFT_GONION = 33
             CHIN_RIGHT_GONION = 34
-
-
-class OperationMetadata(object):
-    class State(enum.IntEnum):
-        """
-        Batch operation states.
-
-        Attributes:
-          STATE_UNSPECIFIED (int): Invalid.
-          CREATED (int): Request is received.
-          RUNNING (int): Request is actively being processed.
-          DONE (int): The batch processing is done.
-          CANCELLED (int): The batch processing was cancelled.
-        """
-        STATE_UNSPECIFIED = 0
-        CREATED = 1
-        RUNNING = 2
-        DONE = 3
-        CANCELLED = 4

@@ -8,15 +8,6 @@ Stackdriver Error Reporting
   client
   util
 
-Installation
-------------
-
-Install the ``google-cloud-error-reporting`` library using ``pip``:
-
-.. code-block:: console
-
-    $ pip install google-cloud-error-reporting
-
 Authentication and Configuration
 --------------------------------
 

@@ -23,10 +23,11 @@ import warnings
 CURRENT_DIR = os.path.realpath(os.path.dirname(__file__))
 BASE_DIR = os.path.realpath(os.path.join(CURRENT_DIR, '..', '..'))
 GITHUB_REPO = os.environ.get('GITHUB_REPO', 'google-cloud-python')
+CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
 CI = os.environ.get('CI', '')
 CI_BRANCH = os.environ.get('CIRCLE_BRANCH')
 CI_PR = os.environ.get('CIRCLE_PR_NUMBER')
-CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+
 head_hash, head_name = subprocess.check_output(['git', 'show-ref', 'HEAD']
 ).strip().decode('ascii').split()
 rev_parse = subprocess.check_output(
@@ -55,8 +56,7 @@ PKG_DEPENDENCIES = {
 def get_baseline():
     """Return the baseline commit.
 
-    On a pull request, or on a branch, return the common parent revision
-    with the master branch.
+    On a pull request, or on a branch, return the master tip.
 
     Locally, return a value pulled from environment variables, or None if
     the environment variables are not set.
@@ -64,11 +64,15 @@ def get_baseline():
     On a push to master, return None. This will effectively cause everything
     to be considered to be affected.
     """
+    ci_branch = os.environ.get('CIRCLE_BRANCH')
+    ci_pr = os.environ.get('CIRCLE_PR_NUMBER')
 
     # If this is a pull request or branch, return the tip for master.
     # We will test only packages which have changed since that point.
-    ci_non_master = (CI == 'true') and any([CI_BRANCH != 'master', CI_PR])
-
+    ci_non_master = os.environ.get('CI', '') == 'true' and any([
+        ci_branch != 'master',
+        ci_pr,
+    ])
     if ci_non_master:
 
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
@@ -92,7 +96,7 @@ def get_baseline():
         return '%s/%s' % (remote, branch)
 
     # If we are not in CI and we got this far, issue a warning.
-    if not CI:
+    if not os.environ.get('CI', ''):
         warnings.warn('No baseline could be determined; this means tests '
                       'will run for every package. If this is local '
                       'development, set the $GOOGLE_CLOUD_TESTING_REMOTE '
@@ -109,7 +113,6 @@ def get_changed_files():
     """
     # Get the baseline, and fail quickly if there is no baseline.
     baseline = get_baseline()
-    print('# Baseline commit: {}'.format(baseline))
     if not baseline:
         return None
 
@@ -230,11 +233,6 @@ def get_target_packages():
     tagged_package = get_tagged_package()
     if tagged_package is None:
         file_list = get_changed_files()
-        print(MAJOR_DIV)
-        print('# Changed files:')
-        print(MINOR_DIV)
-        for file_ in file_list or ():
-            print('#  {}'.format(file_))
         for package in sorted(get_changed_packages(file_list)):
             yield package
     else:
@@ -265,4 +263,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    for package in get_target_packages():
+       print(package)
