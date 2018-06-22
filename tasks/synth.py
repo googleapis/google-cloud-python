@@ -24,10 +24,9 @@ gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
 # tasks has two product names, and a poorly named artman yaml
-v2beta2_library = gapic._generate_code(
-    'tasks', 'v2beta2', 'python',
-    config_path='artman_cloudtasks.yaml',
-    artman_output_name='cloud-tasks-v2beta2')
+v2beta2_library = gapic.py_library(
+    'tasks', 'v2beta2',
+    config_path='artman_cloudtasks.yaml')
 
 s.copy(v2beta2_library)
 
