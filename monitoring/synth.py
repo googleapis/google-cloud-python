@@ -84,3 +84,11 @@ for f in files:
 s.replace("nox.py",
           "(def unit\(session, py\):\n(.*\n)*?\s+)session.install\('pytest'\)",
           "\g<1>session.install('pytest', 'mock')")
+
+
+# GAPIC-Generator is mangling some docstrings
+# Missing blank line after bulleted list
+s.replace(
+    "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py",
+    'then a new `\[CONDITION_ID\]` is created.\n',
+    '\g<0>\n')

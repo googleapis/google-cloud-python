@@ -534,6 +534,7 @@ class AlertPolicyServiceClient(object):
                     the supplied condition includes the `name` field with that
                     `[CONDITION_ID]`. If the supplied condition omits the `name` field,
                     then a new `[CONDITION_ID]` is created.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
