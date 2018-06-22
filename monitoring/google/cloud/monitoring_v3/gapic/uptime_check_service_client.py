@@ -22,6 +22,7 @@ import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import grpc
 
 from google.api import metric_pb2 as api_metric_pb2
 from google.api import monitored_resource_pb2
@@ -29,13 +30,17 @@ from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import uptime_check_service_client_config
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
+from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import common_pb2
 from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
+from google.cloud.monitoring_v3.proto import group_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import metric_pb2 as proto_metric_pb2
 from google.cloud.monitoring_v3.proto import metric_service_pb2
+from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
+from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import uptime_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2_grpc
@@ -123,69 +128,51 @@ class UptimeCheckServiceClient(object):
                 'exclusive.'.format(self.__class__.__name__), )
 
         # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
+        self.channel = channel
+        if self.channel is None:
+            self.channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
             )
 
         # Create the gRPC stubs.
-        self.uptime_check_service_stub = (
-            uptime_service_pb2_grpc.UptimeCheckServiceStub(channel))
+        self._uptime_check_service_stub = (
+            uptime_service_pb2_grpc.UptimeCheckServiceStub(self.channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_uptime_check_configs = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.ListUptimeCheckConfigs,
-            default_retry=method_configs['ListUptimeCheckConfigs'].retry,
-            default_timeout=method_configs['ListUptimeCheckConfigs'].timeout,
-            client_info=client_info,
-        )
-        self._get_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.GetUptimeCheckConfig,
-            default_retry=method_configs['GetUptimeCheckConfig'].retry,
-            default_timeout=method_configs['GetUptimeCheckConfig'].timeout,
-            client_info=client_info,
-        )
-        self._create_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.CreateUptimeCheckConfig,
-            default_retry=method_configs['CreateUptimeCheckConfig'].retry,
-            default_timeout=method_configs['CreateUptimeCheckConfig'].timeout,
-            client_info=client_info,
-        )
-        self._update_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.UpdateUptimeCheckConfig,
-            default_retry=method_configs['UpdateUptimeCheckConfig'].retry,
-            default_timeout=method_configs['UpdateUptimeCheckConfig'].timeout,
-            client_info=client_info,
-        )
-        self._delete_uptime_check_config = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.DeleteUptimeCheckConfig,
-            default_retry=method_configs['DeleteUptimeCheckConfig'].retry,
-            default_timeout=method_configs['DeleteUptimeCheckConfig'].timeout,
-            client_info=client_info,
-        )
-        self._list_uptime_check_ips = google.api_core.gapic_v1.method.wrap_method(
-            self.uptime_check_service_stub.ListUptimeCheckIps,
-            default_retry=method_configs['ListUptimeCheckIps'].retry,
-            default_timeout=method_configs['ListUptimeCheckIps'].timeout,
-            client_info=client_info,
-        )
+        self._inner_api_calls = {}
+
+    def _intercept_channel(self, *interceptors):
+        """ Experimental. Bind gRPC interceptors to the gRPC channel.
+
+        Args:
+            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
+              Zero or more gRPC interceptors. Interceptors are given control in the order
+              they are listed.
+        Raises:
+            TypeError: If interceptor does not derive from any of
+              UnaryUnaryClientInterceptor,
+              UnaryStreamClientInterceptor,
+              StreamUnaryClientInterceptor, or
+              StreamStreamClientInterceptor.
+        """
+        self.channel = grpc.intercept_channel(self.channel, *interceptors)
+        self._uptime_check_service_stub = (
+            uptime_service_pb2_grpc.UptimeCheckServiceStub(self.channel))
+        self._inner_api_calls.clear()
 
     # Service calls
     def list_uptime_check_configs(
@@ -206,13 +193,15 @@ class UptimeCheckServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_uptime_check_configs(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_uptime_check_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -252,6 +241,17 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_uptime_check_configs' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_uptime_check_configs'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.ListUptimeCheckConfigs,
+                    default_retry=self._method_configs[
+                        'ListUptimeCheckConfigs'].retry,
+                    default_timeout=self._method_configs[
+                        'ListUptimeCheckConfigs'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.ListUptimeCheckConfigsRequest(
             parent=parent,
             page_size=page_size,
@@ -259,7 +259,7 @@ class UptimeCheckServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_uptime_check_configs,
+                self._inner_api_calls['list_uptime_check_configs'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -314,8 +314,19 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'get_uptime_check_config' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_uptime_check_config'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.GetUptimeCheckConfig,
+                    default_retry=self._method_configs['GetUptimeCheckConfig']
+                    .retry,
+                    default_timeout=self._method_configs[
+                        'GetUptimeCheckConfig'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.GetUptimeCheckConfigRequest(name=name, )
-        return self._get_uptime_check_config(
+        return self._inner_api_calls['get_uptime_check_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_uptime_check_config(
@@ -369,11 +380,22 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'create_uptime_check_config' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_uptime_check_config'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.CreateUptimeCheckConfig,
+                    default_retry=self._method_configs[
+                        'CreateUptimeCheckConfig'].retry,
+                    default_timeout=self._method_configs[
+                        'CreateUptimeCheckConfig'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.CreateUptimeCheckConfigRequest(
             parent=parent,
             uptime_check_config=uptime_check_config,
         )
-        return self._create_uptime_check_config(
+        return self._inner_api_calls['create_uptime_check_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_uptime_check_config(
@@ -437,11 +459,22 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'update_uptime_check_config' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_uptime_check_config'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.UpdateUptimeCheckConfig,
+                    default_retry=self._method_configs[
+                        'UpdateUptimeCheckConfig'].retry,
+                    default_timeout=self._method_configs[
+                        'UpdateUptimeCheckConfig'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.UpdateUptimeCheckConfigRequest(
             uptime_check_config=uptime_check_config,
             update_mask=update_mask,
         )
-        return self._update_uptime_check_config(
+        return self._inner_api_calls['update_uptime_check_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_uptime_check_config(
@@ -487,9 +520,20 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'delete_uptime_check_config' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_uptime_check_config'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.DeleteUptimeCheckConfig,
+                    default_retry=self._method_configs[
+                        'DeleteUptimeCheckConfig'].retry,
+                    default_timeout=self._method_configs[
+                        'DeleteUptimeCheckConfig'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.DeleteUptimeCheckConfigRequest(
             name=name, )
-        self._delete_uptime_check_config(
+        self._inner_api_calls['delete_uptime_check_config'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_uptime_check_ips(self,
@@ -505,13 +549,15 @@ class UptimeCheckServiceClient(object):
             >>>
             >>> client = monitoring_v3.UptimeCheckServiceClient()
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_uptime_check_ips():
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_uptime_check_ips(options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -548,12 +594,23 @@ class UptimeCheckServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_uptime_check_ips' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_uptime_check_ips'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._uptime_check_service_stub.ListUptimeCheckIps,
+                    default_retry=self._method_configs[
+                        'ListUptimeCheckIps'].retry,
+                    default_timeout=self._method_configs['ListUptimeCheckIps']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = uptime_service_pb2.ListUptimeCheckIpsRequest(
             page_size=page_size, )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_uptime_check_ips,
+                self._inner_api_calls['list_uptime_check_ips'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
