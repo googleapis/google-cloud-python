@@ -23,21 +23,20 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-# tasks has two product names, and a poorly named artman yaml
-v2beta2_library = gapic.py_library(
+v3_library = gapic.py_library(
     'monitoring', 'v3',
     config_path='/google/monitoring/artman_monitoring.yaml',
     artman_output_name='monitoring-v3')
 
 # don't copy setup.py, README.rst, docs/index.rst
-s.copy(v2beta2_library / 'LICENSE')
-s.copy(v2beta2_library / 'MANIFEST.in')
-s.copy(v2beta2_library / 'nox.py')
-s.copy(v2beta2_library / 'setup.cfg')
-s.copy(v2beta2_library / 'docs/gapic')
-s.copy(v2beta2_library / 'docs/conf.py')
-s.copy(v2beta2_library / 'google')
-s.copy(v2beta2_library / 'tests')
+s.copy(v3_library / 'LICENSE')
+s.copy(v3_library / 'MANIFEST.in')
+s.copy(v3_library / 'nox.py')
+s.copy(v3_library / 'setup.cfg')
+s.copy(v3_library / 'docs/gapic')
+s.copy(v3_library / 'docs/conf.py')
+s.copy(v3_library / 'google')
+s.copy(v3_library / 'tests')
 
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
