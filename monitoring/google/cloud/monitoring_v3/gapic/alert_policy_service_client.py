@@ -206,8 +206,6 @@ class AlertPolicyServiceClient(object):
         Args:
             name (str): The project whose alert policies are to be listed. The format is
 
-                ::
-
                     projects/[PROJECT_ID]
 
                 Note that this field names the parent container in which the alerting
@@ -306,8 +304,6 @@ class AlertPolicyServiceClient(object):
 
         Args:
             name (str): The alerting policy to retrieve. The format is
-
-                ::
 
                     projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -441,8 +437,6 @@ class AlertPolicyServiceClient(object):
         Args:
             name (str): The alerting policy to delete. The format is:
 
-                ::
-
                     projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
 
                 For more information, see ``AlertPolicy``.
@@ -524,13 +518,9 @@ class AlertPolicyServiceClient(object):
                 adding the supplied policy, except for the following:
 
                 +   The new policy will have the same ``[ALERT_POLICY_ID]`` as the former
-                ::
-
                     policy. This gives you continuity with the former policy in your
                     notifications and incidents.
                 +   Conditions in the new policy will keep their former ``[CONDITION_ID]`` if
-                ::
-
                     the supplied condition includes the `name` field with that
                     `[CONDITION_ID]`. If the supplied condition omits the `name` field,
                     then a new `[CONDITION_ID]` is created.

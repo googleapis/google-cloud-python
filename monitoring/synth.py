@@ -92,3 +92,9 @@ s.replace(
     "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py",
     'then a new `\[CONDITION_ID\]` is created.\n',
     '\g<0>\n')
+
+'                ::\n\n'
+s.replace(
+    "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py",
+    '                ::\n\n',
+    '')
