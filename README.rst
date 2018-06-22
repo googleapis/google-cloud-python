@@ -5,7 +5,7 @@ Google Cloud Python Client
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
-|pypi| |circleci| |appveyor| |coverage| |versions|
+|circleci| |appveyor| |coverage|
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -178,7 +178,3 @@ Apache 2.0 - See `the LICENSE`_ for more information.
    :target: https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-python
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.svg?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud.svg
-   :target: https://pypi.org/project/google-cloud/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud.svg
-   :target: https://pypi.org/project/google-cloud/
