@@ -93,9 +93,3 @@ class TestMutateRows(unittest.TestCase):
         expected_result = mutate_rows.mutations_entry
 
         self.assertEqual(self.ROW_KEY, expected_result.row_key)
-
-
-def _MutateRowsRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto.data_pb2 import Mutation
-
-    return Mutation(*args, **kw)

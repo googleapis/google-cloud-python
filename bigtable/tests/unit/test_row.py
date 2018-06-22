@@ -108,8 +108,7 @@ class TestDirectRow(unittest.TestCase):
 
         row_key = b'row_key'
         column_family_id = u'column_family_id'
-        if column is None:
-            column = b'column'
+        column = b'column'
         table = object()
         row_mutations = RowMutations(row_key=row_key)
         row = self._make_one(row_key, table)
@@ -157,33 +156,22 @@ class TestDirectRow(unittest.TestCase):
         expected_pb = _MutationPB(
             delete_from_row=_MutationDeleteFromRowPB(),
         )
-        self.assertEqual(row.row_mutations.mutations_entry.mutations,
-                         [expected_pb])
+        self.assertEqual(row.row_mutations.mutations_entry.mutations[0],
+                         expected_pb)
 
     def test_delete_cell(self):
         from google.cloud.bigtable_v2.proto import bigtable_pb2
-
-        klass = self._get_target_class()
-
-        class MockRow(klass):
-
-            def __init__(self, *args, **kwargs):
-                super(MockRow, self).__init__(*args, **kwargs)
-                self._args = []
-                self._kwargs = []
 
         row_key = b'row_key'
         column = b'column'
         column_family_id = u'column_family_id'
         table = object()
 
-        mock_row = MockRow(row_key, table)
+        mock_row = self._make_one(row_key, table)
         # Make sure no values are set before calling the method.
         entry = bigtable_pb2.MutateRowsRequest.Entry()
         self.assertEqual(mock_row.row_mutations.mutations_entry.mutations,
                          entry.mutations)
-        self.assertEqual(mock_row._args, [])
-        self.assertEqual(mock_row._kwargs, [])
 
         # Actually make the request against the mock class.
         mock_row.delete_cell(column_family_id, column)
@@ -339,8 +327,8 @@ class TestDirectRow(unittest.TestCase):
         from google.rpc.status_pb2 import Status
 
         entries = [MutateRowsResponse.Entry(
-            index=i, status=Status(code=codes[i]))
-            for i in six.moves.xrange(len(codes))]
+            index=index, status=Status(code=code))
+            for index, code in enumerate(codes)]
         return MutateRowsResponse(entries=entries)
 
     def test_commit(self):
