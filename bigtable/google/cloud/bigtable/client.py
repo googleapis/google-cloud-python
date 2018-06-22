@@ -174,7 +174,7 @@ class Client(object):
             channel=self._channel, credentials=self._credentials)
 
     def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
-                 display_name=None):
+                 display_name=None, type=None, labels={}):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
@@ -194,7 +194,7 @@ class Client(object):
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, location, display_name=display_name)
+        return Instance(instance_id, self, location, display_name=display_name, type=type, labels=labels)
 
     def list_instances(self):
         """List instances owned by the project.

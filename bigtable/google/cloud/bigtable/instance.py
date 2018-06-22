@@ -25,7 +25,8 @@ from google.cloud.bigtable_admin_v2 import enums
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
-
+_DISPLAY_NAME_MIN_LENGTH = 4
+_DISPLAY_NAME_MAX_LENGTH = 30
 
 class Instance(object):
     """Representation of a Google Cloud Bigtable Instance.
@@ -63,11 +64,13 @@ class Instance(object):
 
     def __init__(self, instance_id, client,
                  location_id=_EXISTING_INSTANCE_LOCATION_ID,
-                 display_name=None):
+                 display_name=None, type=None, labels={}):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
         self._cluster_location_id = location_id
         self._client = client
+		self.type = type
+		self.labels = labels
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -96,7 +99,10 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
+		if display_name is not None and len(display_name) < _DISPLAY_NAME_MIN_LENGTH and len(display_name) > _DISPLAY_NAME_MAX_LENGTH:
+            raise ValueError('Display name of instance must be 4-30 characters.')
+
+        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID, display_name, type, labels)
         return result
 
     def _update_from_pb(self, instance_pb):
