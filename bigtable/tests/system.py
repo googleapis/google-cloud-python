@@ -54,6 +54,7 @@ ROW_KEY_ALT = b'row-key-alt'
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
+DEFAULT_SERVE_NODES = 3
 
 
 class Config(object):
@@ -82,7 +83,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(admin=True)
+        Config.CLIENT = Client(project='grass-clump-479', admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
@@ -97,7 +98,14 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
-        created_op = Config.INSTANCE.create()
+        clusters = {}
+        cluster = Config.INSTANCE.cluster(
+            cluster_id=CLUSTER_ID, location_id='projects/' +
+                                               Config.CLIENT.project +
+                                               '/locations/' + LOCATION_ID,
+            serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
+        clusters[CLUSTER_ID] = cluster.to_pb
+        created_op = Config.INSTANCE.create(clusters=clusters)
         created_op.result(timeout=10)
 
 
@@ -139,9 +147,29 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
     def test_create_instance(self):
+        from google.cloud.bigtable_admin_v2.gapic import enums
+
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
-        operation = instance.create()
+
+        CLUSTER_ID_1 = 'system-test-cluster-1'
+        CLUSTER_ID_2 = 'system-test-cluster-2'
+        location_id = ('projects/' + Config.CLIENT.project + '/locations/' +
+                       LOCATION_ID)
+        default_storage_type = enums.StorageType.SSD
+        clusters = {}
+        cluster1 = Config.INSTANCE.cluster(
+            cluster_id=CLUSTER_ID_1, location_id=location_id,
+            serve_nodes=DEFAULT_SERVE_NODES,
+            default_storage_type=default_storage_type)
+        cluster2 = Config.INSTANCE.cluster(
+            cluster_id=CLUSTER_ID_2, location_id=location_id,
+            serve_nodes=DEFAULT_SERVE_NODES,
+            default_storage_type=default_storage_type)
+        clusters[CLUSTER_ID_1] = cluster1.to_pb
+        clusters[CLUSTER_ID_2] = cluster2.to_pb
+
+        operation = instance.create(clusters=clusters)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
@@ -154,6 +182,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
+
+        list_clusters, failed_locations = instance.list_clusters()
+        expected_clusters = [cluster.to_pb for cluster in list_clusters]
+        self.assertIn(expected_clusters, [cluster1.to_pb, cluster1.to_pb])
 
     def test_update(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
@@ -200,6 +232,61 @@ class TestInstanceAdminAPI(unittest.TestCase):
         )
 
         self.assertEqual(app_profile.description, description)
+
+    def test_create_cluster(self):
+        # Create a new instance instance and reload it.
+        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        clusters = {}
+        cluster = Config.INSTANCE.cluster(
+            cluster_id=CLUSTER_ID, location_id='projects/' +
+                                               Config.CLIENT.project +
+                                               '/locations/' + LOCATION_ID,
+            serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
+        clusters['n-'+CLUSTER_ID] = cluster.to_pb
+        instance.create(clusters=clusters)
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
+        cluster_id = 'n-' + ALT_INSTANCE_ID + '-id'
+        location_id = 'us-central1-f'
+        location = 'projects/'+Config.CLIENT.project+'/locations/'+location_id
+        cluster = instance.cluster(
+            instance=instance, cluster_id=cluster_id, location_id=location,
+            serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
+
+        cluster.create_cluster()
+        result = cluster.get_cluster(instance, cluster_id)
+        self.assertEqual(cluster, result)
+
+    def test_update_cluster(self):
+        # Create a new instance instance and reload it.
+        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        location = ('projects/' + Config.CLIENT.project + '/locations/' +
+                    LOCATION_ID)
+        new_cluster_id = 'n-'+CLUSTER_ID
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        clusters = {}
+        cluster = Config.INSTANCE.cluster(
+            cluster_id=new_cluster_id, location_id='projects/' +
+                                               Config.CLIENT.project +
+                                               '/locations/' + LOCATION_ID,
+            serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
+        clusters[new_cluster_id] = cluster.to_pb
+        instance.create(clusters=clusters)
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
+
+        expected_cluster = instance.cluster(
+            new_cluster_id, instance, location_id=location,
+            default_storage_type=0)
+        expected_cluster.reload()
+        self.assertEqual(expected_cluster.serve_nodes, DEFAULT_SERVE_NODES)
+
+        new_serve_nodes = 5
+        expected_cluster.update_cluster(location=location,
+                                        serve_nodes=new_serve_nodes)
+        result = expected_cluster.get_cluster(instance, new_cluster_id)
+        self.assertEqual(result.serve_nodes, new_serve_nodes)
 
 
 class TestTableAdminAPI(unittest.TestCase):
