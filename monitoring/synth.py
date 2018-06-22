@@ -80,3 +80,8 @@ s.replace(
 files = ['google/cloud/monitoring_v3/proto/common_pb2.py']
 for f in files:
     s.replace(f, r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
+
+# monitoring unit tests require mock
+s.replace("nox.py",
+          "(def unit\(session, py\):\n(.*\n)*?\s+)session.install\('pytest'\)",
+          "\g<1>session.install('pytest', 'mock')")

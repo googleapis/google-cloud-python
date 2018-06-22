@@ -36,7 +36,7 @@ def unit(session, py):
     session.virtualenv_dirname = 'unit-' + py
 
     # Install all test dependencies, then install this package in-place.
-    session.install('pytest')
+    session.install('pytest', 'mock')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
