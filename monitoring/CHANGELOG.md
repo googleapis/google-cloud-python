@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.30.0
+
+### Implementation Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+
+### New Features
+- Add aliases for new V3 service clients. (#5424)
+
+### Documentation
+- Remove link to `usage` on index of monitoring (#5272)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+
 ## 0.29.0
 
 ### Implementation Changes
