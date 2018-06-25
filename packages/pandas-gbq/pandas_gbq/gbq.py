@@ -470,9 +470,9 @@ def _parse_data(schema, rows):
 
 
 def read_gbq(query, project_id=None, index_col=None, col_order=None,
-             reauth=False, verbose=None, private_key=None,
-             auth_local_webserver=False, dialect='legacy', location=None,
-             configuration=None):
+             reauth=False, private_key=None, auth_local_webserver=False,
+             dialect='legacy', location=None, configuration=None,
+             verbose=None):
     r"""Load data from Google BigQuery using google-cloud-python
 
     The main method a user calls to execute a Query in Google BigQuery
@@ -488,63 +488,69 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
     Parameters
     ----------
     query : str
-        SQL-Like Query to return data values
-    project_id : str (optional when available in environment)
-        Google BigQuery Account project ID.
-    index_col : str (optional)
-        Name of result column to use for index in results DataFrame
-    col_order : list(str) (optional)
+        SQL-Like Query to return data values.
+    project_id : str, optional
+        Google BigQuery Account project ID. Optional when available from
+        the environment.
+    index_col : str, optional
+        Name of result column to use for index in results DataFrame.
+    col_order : list(str), optional
         List of BigQuery column names in the desired order for results
-        DataFrame
-    reauth : boolean (default False)
-        Force Google BigQuery to reauthenticate the user. This is useful
+        DataFrame.
+    reauth : boolean, default False
+        Force Google BigQuery to re-authenticate the user. This is useful
         if multiple accounts are used.
-    private_key : str (optional)
+    private_key : str, optional
         Service account private key in JSON format. Can be file path
         or string contents. This is useful for remote server
-        authentication (eg. jupyter iPython notebook on remote host)
+        authentication (eg. Jupyter/IPython notebook on remote host).
     auth_local_webserver : boolean, default False
-        Use the [local webserver flow] instead of the [console flow] when
-        getting user credentials. A file named bigquery_credentials.dat will
-        be created in current dir. You can also set PANDAS_GBQ_CREDENTIALS_FILE
-        environment variable so as to define a specific path to store this
-        credential (eg. /etc/keys/bigquery.dat).
+        Use the `local webserver flow`_ instead of the `console flow`_
+        when getting user credentials.
 
-        .. [local webserver flow]
+        .. _local webserver flow:
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server
-        .. [console flow]
+        .. _console flow:
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_console
-        .. versionadded:: 0.2.0
 
-    dialect : {'legacy', 'standard'}, default 'legacy'
-        'legacy' : Use BigQuery's legacy SQL dialect.
-        'standard' : Use BigQuery's standard SQL (beta), which is
-        compliant with the SQL 2011 standard. For more information
-        see `BigQuery SQL Reference
-        <https://cloud.google.com/bigquery/sql-reference/>`__
-    location : str (optional)
+        .. versionadded:: 0.2.0
+    dialect : str, default 'legacy'
+        SQL syntax dialect to use. Value can be one of:
+
+        ``'legacy'``
+            Use BigQuery's legacy SQL dialect. For more information see
+            `BigQuery Legacy SQL Reference
+            <https://cloud.google.com/bigquery/docs/reference/legacy-sql>`__.
+        ``'standard'``
+            Use BigQuery's standard SQL, which is
+            compliant with the SQL 2011 standard. For more information
+            see `BigQuery Standard SQL Reference
+            <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__.
+    location : str, optional
         Location where the query job should run. See the `BigQuery locations
         documentation
         <https://cloud.google.com/bigquery/docs/dataset-locations>`__ for a
         list of available locations. The location must match that of any
         datasets used in the query.
+
         .. versionadded:: 0.5.0
-    configuration : dict (optional)
+    configuration : dict, optional
         Query config parameters for job processing.
         For example:
 
             configuration = {'query': {'useQueryCache': False}}
 
-        For more information see `BigQuery SQL Reference
-        <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__
-
+        For more information see `BigQuery REST API Reference
+        <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__.
     verbose : None, deprecated
+        Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
+        to adjust verbosity instead
+        <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
 
     Returns
     -------
     df: DataFrame
-        DataFrame representing results of query
-
+        DataFrame representing results of query.
     """
 
     _test_google_api_imports()
@@ -603,9 +609,9 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
 
 def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
-           verbose=None, reauth=False, if_exists='fail', private_key=None,
+           reauth=False, if_exists='fail', private_key=None,
            auth_local_webserver=False, table_schema=None, location=None,
-           progress_bar=True):
+           progress_bar=True, verbose=None):
     """Write a DataFrame to a Google BigQuery table.
 
     The main method a user calls to export pandas DataFrame contents to
@@ -621,54 +627,66 @@ def to_gbq(dataframe, destination_table, project_id=None, chunksize=None,
     Parameters
     ----------
     dataframe : pandas.DataFrame
-        DataFrame to be written
+        DataFrame to be written to a Google BigQuery table.
     destination_table : str
-        Name of table to be written, in the form 'dataset.tablename'
-    project_id : str (optional when available in environment)
-        Google BigQuery Account project ID.
-    chunksize : int (default None)
-        Number of rows to be inserted in each chunk from the dataframe. Use
-        ``None`` to load the dataframe in a single chunk.
-    reauth : boolean (default False)
-        Force Google BigQuery to reauthenticate the user. This is useful
+        Name of table to be written, in the form ``dataset.tablename``.
+    project_id : str, optional
+        Google BigQuery Account project ID. Optional when available from
+        the environment.
+    chunksize : int, optional
+        Number of rows to be inserted in each chunk from the dataframe.
+        Set to ``None`` to load the whole dataframe at once.
+    reauth : bool, default False
+        Force Google BigQuery to re-authenticate the user. This is useful
         if multiple accounts are used.
-    if_exists : {'fail', 'replace', 'append'}, default 'fail'
-        'fail': If table exists, do nothing.
-        'replace': If table exists, drop it, recreate it, and insert data.
-        'append': If table exists and the dataframe schema is a subset of
-        the destination table schema, insert data. Create destination table
-        if does not exist.
-    private_key : str (optional)
+    if_exists : str, default 'fail'
+        Behavior when the destination table exists. Value can be one of:
+
+        ``'fail'``
+            If table exists, do nothing.
+        ``'replace'``
+            If table exists, drop it, recreate it, and insert data.
+        ``'append'``
+            If table exists, insert data. Create if does not exist.
+    private_key : str, optional
         Service account private key in JSON format. Can be file path
         or string contents. This is useful for remote server
-        authentication (eg. jupyter iPython notebook on remote host)
-    auth_local_webserver : boolean, default False
-        Use the [local webserver flow] instead of the [console flow] when
-        getting user credentials.
+        authentication (eg. Jupyter/IPython notebook on remote host).
+    auth_local_webserver : bool, default False
+        Use the `local webserver flow`_ instead of the `console flow`_
+        when getting user credentials.
 
-        .. [local webserver flow]
+        .. _local webserver flow:
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server
-        .. [console flow]
+        .. _console flow:
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_console
+
         .. versionadded:: 0.2.0
-    table_schema : list of dicts
-        List of BigQuery table fields to which according DataFrame columns
-        conform to, e.g. `[{'name': 'col1', 'type': 'STRING'},...]`. If
-        schema is not provided, it will be generated according to dtypes
-        of DataFrame columns. See BigQuery API documentation on available
-        names of a field.
+    table_schema : list of dicts, optional
+        List of BigQuery table fields to which according DataFrame
+        columns conform to, e.g. ``[{'name': 'col1', 'type':
+        'STRING'},...]``. If schema is not provided, it will be
+        generated according to dtypes of DataFrame columns. See
+        BigQuery API documentation on available names of a field.
+
         .. versionadded:: 0.3.1
-    location : str (optional)
+    location : str, optional
         Location where the load job should run. See the `BigQuery locations
         documentation
         <https://cloud.google.com/bigquery/docs/dataset-locations>`__ for a
         list of available locations. The location must match that of the
         target dataset.
+
         .. versionadded:: 0.5.0
-    progress_bar : boolean, True by default. It uses the library `tqdm` to show
-        the progress bar for the upload, chunk by chunk.
+    progress_bar : bool, default True
+        Use the library `tqdm` to show the progress bar for the upload,
+        chunk by chunk.
+
         .. versionadded:: 0.5.0
-    verbose : None, deprecated
+    verbose : bool, deprecated
+        Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
+        to adjust verbosity instead
+        <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
     """
 
     _test_google_api_imports()
