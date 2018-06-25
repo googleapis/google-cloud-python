@@ -29,20 +29,7 @@ v3_library = gapic.py_library(
     artman_output_name='monitoring-v3')
 
 # don't copy setup.py, README.rst, docs/index.rst
-s.copy(v3_library / 'LICENSE')
-s.copy(v3_library / 'MANIFEST.in')
-s.copy(v3_library / 'nox.py')
-s.copy(v3_library / 'setup.cfg')
-s.copy(v3_library / 'docs/gapic')
-s.copy(v3_library / 'docs/conf.py')
-s.copy(v3_library / 'google')
-s.copy(v3_library / 'tests')
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
+s.copy(v3_library, excludes=['setup.py', 'README.rst', 'docs/index.rst'])
 
 # Correct calls to routing_header
 # https://github.com/googleapis/gapic-generator/issues/2016
