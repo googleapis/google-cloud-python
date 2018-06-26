@@ -85,18 +85,16 @@ class TestInstance(unittest.TestCase):
     def test_constructor_defaults(self):
 
         client = object()
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertIs(instance._client, client)
-        self.assertEqual(instance._cluster_location_id, self.LOCATION_ID)
 
     def test_constructor_non_default(self):
         display_name = 'display_name'
         client = object()
 
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                  display_name=display_name)
+        instance = self._make_one(self.INSTANCE_ID, client, display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
         self.assertIs(instance._client, client)
@@ -104,7 +102,7 @@ class TestInstance(unittest.TestCase):
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
 
-        instance = self._make_one(self.INSTANCE_ID, None, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, None)
 
         table = instance.table(self.TABLE_ID)
         self.assertIsInstance(table, Table)
@@ -120,7 +118,7 @@ class TestInstance(unittest.TestCase):
             display_name=display_name,
         )
 
-        instance = self._make_one(None, None, None, None)
+        instance = self._make_one(None, None)
         self.assertIsNone(instance.display_name)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
@@ -130,14 +128,12 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
 
         instance_pb = data_v2_pb2.Instance()
-        instance = self._make_one(None, None, None, None)
+        instance = self._make_one(None, None)
         self.assertIsNone(instance.display_name)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
 
     def test_from_pb_success(self):
-        from google.cloud.bigtable.instance import (
-            _EXISTING_INSTANCE_LOCATION_ID)
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
 
@@ -153,8 +149,6 @@ class TestInstance(unittest.TestCase):
         self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance._cluster_location_id,
-                         _EXISTING_INSTANCE_LOCATION_ID)
 
     def test_from_pb_bad_instance_name(self):
         from google.cloud.bigtable_admin_v2.proto import (
@@ -195,31 +189,31 @@ class TestInstance(unittest.TestCase):
         # Patch the the API method.
         client._instance_admin_client = api
 
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
 
     def test___eq__(self):
         client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
-        instance2 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client)
+        instance2 = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance1, instance2)
 
     def test___eq__type_differ(self):
         client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client)
         instance2 = object()
         self.assertNotEqual(instance1, instance2)
 
     def test___ne__same_value(self):
         client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
-        instance2 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client)
+        instance2 = self._make_one(self.INSTANCE_ID, client)
         comparison_val = (instance1 != instance2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1 = self._make_one('instance_id1', 'client1', self.LOCATION_ID)
-        instance2 = self._make_one('instance_id2', 'client2', self.LOCATION_ID)
+        instance1 = self._make_one('instance_id1', 'client1')
+        instance2 = self._make_one('instance_id2', 'client2')
         self.assertNotEqual(instance1, instance2)
 
     def test_reload(self):
@@ -233,7 +227,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Create response_pb
         DISPLAY_NAME = u'hey-hi-hello'
@@ -279,8 +273,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                  display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
@@ -300,7 +293,7 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client.bigtable_instance_admin_stub = stub
 
         # Perform the method and check the result.
-        result = instance.create()
+        result = instance.create(location_id=self.LOCATION_ID)
 
         self.assertIsInstance(result, operation.Operation)
         # self.assertEqual(result.operation.name, self.OP_NAME)
@@ -319,7 +312,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Create response_pb
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
@@ -330,7 +323,7 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client.bigtable_instance_admin_stub = stub
 
         # Perform the method and check the result.
-        result = instance.create()
+        result = instance.create(location_id=self.LOCATION_ID)
 
         self.assertIsInstance(result, operation.Operation)
 
@@ -343,8 +336,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                  display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME)
 
         # Mock api calls
         client._instance_admin_client = api
@@ -366,7 +358,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Mock api calls
         client._instance_admin_client = api
@@ -395,7 +387,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Create response_pb
         if table_name is None:
@@ -442,7 +434,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         app_profile_id = 'appProfileId1262094415'
         update_mask = []
@@ -465,7 +457,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         description = 'description-1724546052'
         app_profile_id = 'appProfileId1262094415'
@@ -512,7 +504,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         description = 'description-1724546052'
         app_profile_id = 'appProfileId1262094415'
@@ -569,7 +561,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         name = 'name3373707'
         etag = 'etag3123477'
@@ -613,7 +605,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Setup Expected Response
         next_page_token = ''
@@ -657,7 +649,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Create response_pb
         NOW = datetime.datetime.utcnow()
@@ -706,7 +698,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Create response_pb
         NOW = datetime.datetime.utcnow()
@@ -748,7 +740,7 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api
