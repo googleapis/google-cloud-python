@@ -660,7 +660,7 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, content_type):
+    def _get_upload_arguments(self, content_type, extra_headers=None):
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -672,6 +672,9 @@ class Blob(_PropertyMixin):
         :type content_type: str
         :param content_type: Type of content being uploaded (or :data:`None`).
 
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: Extension (Custom) http headers configurations
+
         :rtype: tuple
         :returns: A triple of
 
@@ -682,10 +685,13 @@ class Blob(_PropertyMixin):
         headers = _get_encryption_headers(self._encryption_key)
         object_metadata = self._get_writable_metadata()
         content_type = self._get_content_type(content_type)
+        if extra_headers is not None:
+            headers.update(extra_headers)
         return headers, object_metadata, content_type
 
     def _do_multipart_upload(self, client, stream, content_type,
-                             size, num_retries, predefined_acl):
+                             size, num_retries, predefined_acl,
+                             extra_headers):
         """Perform a multipart upload.
 
         The content type of the upload will be determined in order
@@ -717,6 +723,10 @@ class Blob(_PropertyMixin):
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
 
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the multipart
                   upload request.
@@ -732,7 +742,8 @@ class Blob(_PropertyMixin):
                 raise ValueError(msg)
 
         transport = self._get_transport(client)
-        info = self._get_upload_arguments(content_type)
+        info = self._get_upload_arguments(
+            content_type, extra_headers=extra_headers)
         headers, object_metadata, content_type = info
 
         base_url = _MULTIPART_URL_TEMPLATE.format(
@@ -852,7 +863,8 @@ class Blob(_PropertyMixin):
         return upload, transport
 
     def _do_resumable_upload(self, client, stream, content_type,
-                             size, num_retries, predefined_acl):
+                             size, num_retries, predefined_acl,
+                             extra_headers):
         """Perform a resumable upload.
 
         Assumes ``chunk_size`` is not :data:`None` on the current blob.
@@ -886,13 +898,17 @@ class Blob(_PropertyMixin):
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
 
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the final chunk
                   is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
             client, stream, content_type, size, num_retries,
-            predefined_acl=predefined_acl)
+            predefined_acl=predefined_acl, extra_headers=extra_headers)
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
@@ -900,7 +916,8 @@ class Blob(_PropertyMixin):
         return response
 
     def _do_upload(self, client, stream, content_type,
-                   size, num_retries, predefined_acl):
+                   size, num_retries, predefined_acl,
+                   extra_headers):
         """Determine an upload strategy and then perform the upload.
 
         If the size of the data to be uploaded exceeds 5 MB a resumable media
@@ -936,6 +953,10 @@ class Blob(_PropertyMixin):
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
 
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
+
         :rtype: dict
         :returns: The parsed JSON from the "200 OK" response. This will be the
                   **only** response in the multipart case and it will be the
@@ -944,17 +965,19 @@ class Blob(_PropertyMixin):
         if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type,
-                size, num_retries, predefined_acl)
+                size, num_retries, predefined_acl,
+                extra_headers=extra_headers)
         else:
             response = self._do_resumable_upload(
                 client, stream, content_type, size,
-                num_retries, predefined_acl)
+                num_retries, predefined_acl,
+                extra_headers=extra_headers)
 
         return response.json()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
                          content_type=None, num_retries=None, client=None,
-                         predefined_acl=None):
+                         predefined_acl=None, extra_headers=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will be determined in order
@@ -1015,6 +1038,10 @@ class Blob(_PropertyMixin):
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
 
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
+
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
 
@@ -1031,13 +1058,14 @@ class Blob(_PropertyMixin):
         try:
             created_json = self._do_upload(
                 client, file_obj, content_type,
-                size, num_retries, predefined_acl)
+                size, num_retries, predefined_acl,
+                extra_headers=extra_headers)
             self._set_properties(created_json)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
     def upload_from_filename(self, filename, content_type=None, client=None,
-                             predefined_acl=None):
+                             predefined_acl=None, extra_headers=None):
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will be determined in order
@@ -1074,6 +1102,10 @@ class Blob(_PropertyMixin):
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
+
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
         """
         content_type = self._get_content_type(content_type, filename=filename)
 
@@ -1081,10 +1113,11 @@ class Blob(_PropertyMixin):
             total_bytes = os.fstat(file_obj.fileno()).st_size
             self.upload_from_file(
                 file_obj, content_type=content_type, client=client,
-                size=total_bytes, predefined_acl=predefined_acl)
+                size=total_bytes, predefined_acl=predefined_acl,
+                extra_headers=extra_headers)
 
     def upload_from_string(self, data, content_type='text/plain', client=None,
-                           predefined_acl=None):
+                           predefined_acl=None, extra_headers=None):
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -1116,13 +1149,18 @@ class Blob(_PropertyMixin):
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) predefined access control list
+
+        :type extra_headers: dict or ``NoneType``
+        :param extra_headers: (Optional) Extension (Custom) http headers
+                              configurations
         """
         data = _to_bytes(data, encoding='utf-8')
         string_buffer = BytesIO(data)
         self.upload_from_file(
             file_obj=string_buffer, size=len(data),
             content_type=content_type, client=client,
-            predefined_acl=predefined_acl)
+            predefined_acl=predefined_acl,
+            extra_headers=extra_headers)
 
     def create_resumable_upload_session(
             self,
