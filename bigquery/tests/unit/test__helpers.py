@@ -376,6 +376,13 @@ class Test_record_from_json(unittest.TestCase):
         coerced = self._call_fut(value, field)
         self.assertEqual(coerced, {'age': 42})
 
+    def test_w_scalar_subfield_geography(self):
+        subfield = _Field('REQUIRED', 'geo', 'GEOGRAPHY')
+        field = _Field('REQUIRED', fields=[subfield])
+        value = {'f': [{'v': 'POINT(1, 2)'}]}
+        coerced = self._call_fut(value, field)
+        self.assertEqual(coerced, {'geo': 'POINT(1, 2)'})
+
     def test_w_repeated_subfield(self):
         subfield = _Field('REPEATED', 'color', 'STRING')
         field = _Field('REQUIRED', fields=[subfield])
@@ -443,6 +450,12 @@ class Test_row_tuple_from_json(unittest.TestCase):
         col = _Field('REQUIRED', 'col', 'INTEGER')
         row = {u'f': [{u'v': u'1'}]}
         self.assertEqual(self._call_fut(row, schema=[col]), (1,))
+
+    def test_w_single_scalar_geography_column(self):
+        # SELECT 1 AS col
+        col = _Field('REQUIRED', 'geo', 'GEOGRAPHY')
+        row = {u'f': [{u'v': u'POINT(1, 2)'}]}
+        self.assertEqual(self._call_fut(row, schema=[col]), ('POINT(1, 2)',))
 
     def test_w_single_struct_column(self):
         # SELECT (1, 2) AS col
