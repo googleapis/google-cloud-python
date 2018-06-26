@@ -95,7 +95,8 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, display_name=instance_pb.display_name)
+        result = cls(instance_id, client, 
+                     display_name=instance_pb.display_name)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -149,8 +150,8 @@ class Instance(object):
         self._update_from_pb(instance_pb)
 
     def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
-                     serve_nodes=DEFAULT_SERVE_NODES,
-                     default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
+               serve_nodes=DEFAULT_SERVE_NODES,
+               default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
         """Create this instance.
 
         .. note::
@@ -178,12 +179,12 @@ class Instance(object):
 
         :type default_storage_type: int
         :param default_storage_type: (Optional) The default values are
-                                        STORAGE_TYPE_UNSPECIFIED = 0: The user did
-                                        not specify a storage type.
-                                        SSD = 1: Flash (SSD) storage should be
-                                        used.
-                                        HDD = 2: Magnetic drive (HDD) storage
-                                        should be used.
+                                     STORAGE_TYPE_UNSPECIFIED = 0: The user
+                                     did not specify a storage type.
+                                     SSD = 1: Flash (SSD) storage should be
+                                     used.
+                                     HDD = 2: Magnetic drive (HDD) storage
+                                     should be used.
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create

@@ -94,7 +94,8 @@ class TestInstance(unittest.TestCase):
         display_name = 'display_name'
         client = object()
 
-        instance = self._make_one(self.INSTANCE_ID, client, display_name=display_name)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
         self.assertIs(instance._client, client)
@@ -273,7 +274,8 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  display_name=self.DISPLAY_NAME)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
@@ -336,7 +338,8 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  display_name=self.DISPLAY_NAME)
 
         # Mock api calls
         client._instance_admin_client = api
