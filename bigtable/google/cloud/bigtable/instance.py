@@ -95,7 +95,7 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, 
+        result = cls(instance_id, client,
                      display_name=instance_pb.display_name)
         return result
 
