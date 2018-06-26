@@ -1148,7 +1148,8 @@ class Test_Blob(unittest.TestCase):
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
                               num_retries=None, user_project=None,
-                              predefined_acl=None, kms_key_name=None):
+                              predefined_acl=None, extra_headers=None,
+                              kms_key_name=None):
         from six.moves.urllib.parse import urlencode
         bucket = _Bucket(name='w00t', user_project=user_project)
         blob = self._make_one(
@@ -1164,7 +1165,8 @@ class Test_Blob(unittest.TestCase):
         stream = io.BytesIO(data)
         content_type = u'application/xml'
         response = blob._do_multipart_upload(
-            client, stream, content_type, size, num_retries, predefined_acl)
+            client, stream, content_type, size, num_retries, predefined_acl,
+            extra_headers)
 
         # Check the mocks and the returned value.
         self.assertIs(response, transport.request.return_value)
@@ -1249,7 +1251,8 @@ class Test_Blob(unittest.TestCase):
         self.assertGreater(size, len(data))
 
         with self.assertRaises(ValueError) as exc_info:
-            blob._do_multipart_upload(None, stream, None, size, None, None)
+            blob._do_multipart_upload(None, stream, None, size, None, None,
+                None)
 
         exc_contents = str(exc_info.exception)
         self.assertIn(
@@ -1472,7 +1475,8 @@ class Test_Blob(unittest.TestCase):
             'PUT', resumable_url, data=payload, headers=expected_headers)
 
     def _do_resumable_helper(
-            self, use_size=False, num_retries=None, predefined_acl=None):
+            self, use_size=False, num_retries=None, predefined_acl=None,
+            extra_headers=None):
         bucket = _Bucket(name='yesterday')
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
@@ -1498,7 +1502,8 @@ class Test_Blob(unittest.TestCase):
         stream = io.BytesIO(data)
         content_type = u'text/html'
         response = blob._do_resumable_upload(
-            client, stream, content_type, size, num_retries, predefined_acl)
+            client, stream, content_type, size, num_retries, predefined_acl,
+            extra_headers)
 
         # Check the returned values.
         self.assertIs(response, responses[2])
@@ -1530,7 +1535,7 @@ class Test_Blob(unittest.TestCase):
 
     def _do_upload_helper(
             self, chunk_size=None, num_retries=None, predefined_acl=None,
-            size=None):
+            extra_headers=None, size=None):
         blob = self._make_one(u'blob-name', bucket=None)
 
         # Create a fake response.
@@ -1553,20 +1558,21 @@ class Test_Blob(unittest.TestCase):
             size = 12345654321
         # Make the request and check the mocks.
         created_json = blob._do_upload(
-            client, stream, content_type, size, num_retries, predefined_acl)
+            client, stream, content_type, size, num_retries, predefined_acl,
+            extra_headers)
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
         if size is not None and \
                 size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
-                predefined_acl)
+                predefined_acl, extra_headers)
             blob._do_resumable_upload.assert_not_called()
         else:
             blob._do_multipart_upload.assert_not_called()
             blob._do_resumable_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries,
-                predefined_acl)
+                predefined_acl, extra_headers)
 
     def test__do_upload_uses_multipart(self):
         self._do_upload_helper(
@@ -1598,6 +1604,7 @@ class Test_Blob(unittest.TestCase):
         content_type = u'font/woff'
         client = mock.sentinel.client
         predefined_acl = kwargs.get('predefined_acl', None)
+        extra_headers = kwargs.get('extra_headers', None)
         ret_val = blob.upload_from_file(
             stream, size=len(data), content_type=content_type,
             client=client, **kwargs)
@@ -1612,23 +1619,25 @@ class Test_Blob(unittest.TestCase):
         num_retries = kwargs.get('num_retries')
         blob._do_upload.assert_called_once_with(
             client, stream, content_type,
-            len(data), num_retries, predefined_acl)
+            len(data), num_retries, predefined_acl,
+            extra_headers)
         return stream
 
     def test_upload_from_file_success(self):
-        stream = self._upload_from_file_helper(predefined_acl='private')
+        stream = self._upload_from_file_helper(
+            predefined_acl='private', extra_headers={})
         assert stream.tell() == 2
 
     @mock.patch('warnings.warn')
     def test_upload_from_file_with_retries(self, mock_warn):
         from google.cloud.storage import blob as blob_module
 
-        self._upload_from_file_helper(num_retries=20)
+        self._upload_from_file_helper(num_retries=20, extra_headers={})
         mock_warn.assert_called_once_with(
             blob_module._NUM_RETRIES_MESSAGE, DeprecationWarning)
 
     def test_upload_from_file_with_rewind(self):
-        stream = self._upload_from_file_helper(rewind=True)
+        stream = self._upload_from_file_helper(rewind=True, extra_headers={})
         assert stream.tell() == 0
 
     def test_upload_from_file_failure(self):
@@ -1645,7 +1654,8 @@ class Test_Blob(unittest.TestCase):
         side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
-            self._upload_from_file_helper(side_effect=side_effect)
+            self._upload_from_file_helper(
+                side_effect=side_effect, extra_headers={})
 
         self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
@@ -1661,6 +1671,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(pos_args[3], size)
         self.assertIsNone(pos_args[4])  # num_retries
         self.assertIsNone(pos_args[5])  # predefined_acl
+        self.assertIsNone(pos_args[6])  # extra_headers
         self.assertEqual(kwargs, {})
 
         return pos_args[1]

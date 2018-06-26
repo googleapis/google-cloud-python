@@ -965,13 +965,11 @@ class Blob(_PropertyMixin):
         if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type,
-                size, num_retries, predefined_acl,
-                extra_headers=extra_headers)
+                size, num_retries, predefined_acl, extra_headers)
         else:
             response = self._do_resumable_upload(
                 client, stream, content_type, size,
-                num_retries, predefined_acl,
-                extra_headers=extra_headers)
+                num_retries, predefined_acl, extra_headers)
 
         return response.json()
 
@@ -1059,7 +1057,7 @@ class Blob(_PropertyMixin):
             created_json = self._do_upload(
                 client, file_obj, content_type,
                 size, num_retries, predefined_acl,
-                extra_headers=extra_headers)
+                extra_headers)
             self._set_properties(created_json)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
