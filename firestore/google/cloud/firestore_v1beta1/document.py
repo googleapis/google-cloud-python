@@ -451,15 +451,13 @@ class DocumentReference(object):
         given options and the callback, monitor this document for changes
         '''
         #google.firestore.v1beta1.Target.DocumentsTarget
-        documentsTarget = Target.DocumentsTarget(
-            documents=[self._document_path])
-                
-        Watch(
-            self._client,
-            Target(
-                documents=documentsTarget
-            ),
-            None)
+        # documentsTarget = Target.DocumentsTarget(
+        #     documents=[self._document_path])
+        Watch.for_document(self)
+        # Watch(
+        #     self._client,
+        #     Target(documents=documentsTarget),
+        #     None)
         
 
 class DocumentSnapshot(object):

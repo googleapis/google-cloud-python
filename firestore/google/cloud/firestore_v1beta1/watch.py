@@ -145,9 +145,9 @@ class Watch(object):
                 exc.code() == grpc.StatusCode.UNVAILABLE)
 
         initial_request = firestore_pb2.ListenRequest(
-            #database=firestore.database_root_path,
+            database=firestore._database_string,
             add_target=target
-            # database, add_taret, remove_target, labels
+            # database, add_target, remove_target, labels
         )
 
         rpc = ResumableBidiRpc(
@@ -164,7 +164,7 @@ class Watch(object):
 
     @classmethod
     def for_document(cls, document_ref):
-        return cls(document_ref.firestore,
+        return cls(document_ref._client,
                    {
                        'documents': {
                            'documents': [document_ref._document_path]},
@@ -174,7 +174,7 @@ class Watch(object):
 
     @classmethod
     def for_query(cls, query):
-        return cls(query.firestore,
+        return cls(query._client,
                    {
                        'query': query.to_proto(),
                        'target_id': WATCH_TARGET_ID
