@@ -876,8 +876,8 @@ class Bucket(_PropertyMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The bucket etag or ``None`` if the property is not
-                  set locally.
+        :returns: The bucket etag or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('etag')
 
@@ -888,8 +888,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The ID of the bucket or ``None`` if the property is not
-                  set locally.
+        :returns: The ID of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('id')
 
@@ -938,10 +938,13 @@ class Bucket(_PropertyMixin):
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
 
+    This can only be set at bucket **creation** time.
+
     See https://cloud.google.com/storage/docs/json_api/v1/buckets and
     https://cloud.google.com/storage/docs/bucket-locations
 
-    If the property is not set locally, returns ``None``.
+    Returns ``None`` if the property has not been set before creation,
+    or if the bucket's resource has not been loaded from the server.
 
     :rtype: str or ``NoneType``
     """
@@ -986,8 +989,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The metageneration of the bucket or ``None`` if the property
-                  is not set locally.
+        :returns: The metageneration of the bucket or ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         metageneration = self._properties.get('metageneration')
         if metageneration is not None:
@@ -1000,8 +1003,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: dict or ``NoneType``
-        :returns: Mapping of owner's role/ID. If the property is not set
-                  locally, returns ``None``.
+        :returns: Mapping of owner's role/ID. Returns ``None`` if the bucket's
+                  resource has not been loaded from the server.
         """
         return copy.deepcopy(self._properties.get('owner'))
 
@@ -1012,8 +1015,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
-        :returns: The project number that owns the bucket or ``None`` if the
-                  property is not set locally.
+        :returns: The project number that owns the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         project_number = self._properties.get('projectNumber')
         if project_number is not None:
@@ -1026,8 +1029,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
-        :returns: The self link for the bucket or ``None`` if the property is
-                  not set locally.
+        :returns: The self link for the bucket or ``None`` if
+                  the bucket's resource has not been loaded from the server.
         """
         return self._properties.get('selfLink')
 
@@ -1069,7 +1072,8 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the bucket's resource has not been loaded
+                  from the server.
         """
         value = self._properties.get('timeCreated')
         if value is not None:
