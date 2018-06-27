@@ -19,7 +19,8 @@ import copy
 import six
 
 from google.cloud.firestore_v1beta1 import _helpers
-
+from google.cloud.firestore_v1beta1.watch import Watch
+from google.cloud.firestore_v1beta1.proto.firestore_pb2 import Target
 
 class DocumentReference(object):
     """A reference to a document in a Firestore database.
@@ -445,11 +446,21 @@ class DocumentReference(object):
         iterator.item_to_value = _item_to_collection_ref
         return iterator
 
-    def onSnapshot(options, callback):
+    def on_snapshot(self, options, callback):
         '''
         given options and the callback, monitor this document for changes
         '''
-        raise NotImplemented
+        #google.firestore.v1beta1.Target.DocumentsTarget
+        documentsTarget = Target.DocumentsTarget(
+            documents=[self._document_path])
+                
+        Watch(
+            self._client,
+            Target(
+                documents=documentsTarget
+            ),
+            None)
+        
 
 class DocumentSnapshot(object):
     """A snapshot of document data in a Firestore database.
