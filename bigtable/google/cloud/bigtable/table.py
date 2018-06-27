@@ -184,6 +184,16 @@ class Table(object):
                                                 table_id=self.table_id,
                                                 table={})
 
+    def exist(self):
+        """Checks whether a table with given table ID exist
+        or not for given Bigtable instance.
+        """
+        instance = self._instance
+        for table in instance.list_tables():
+            if self.table_id == table.table_id:
+                return True
+        return False
+
     def delete(self):
         """Delete this table."""
         client = self._instance._client
