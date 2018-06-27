@@ -15,30 +15,42 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
-from google.cloud.datastore_v1.proto import query_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.type import latlng_pb2
 
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.datastore_v1.proto import datastore_pb2
+from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.proto import query_pb2
+
+
+_shared_modules = [
+    http_pb2,
+    descriptor_pb2,
+    struct_pb2,
+    timestamp_pb2,
+    wrappers_pb2,
+    latlng_pb2,
+]
+
+_local_modules = [
+    datastore_pb2,
+    entity_pb2,
+    query_pb2,
+]
+
 names = []
-for module in (
-        http_pb2,
-        datastore_pb2,
-        entity_pb2,
-        query_pb2,
-        descriptor_pb2,
-        struct_pb2,
-        timestamp_pb2,
-        wrappers_pb2,
-        latlng_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.datastore_v1.types'
         setattr(sys.modules[__name__], name, message)

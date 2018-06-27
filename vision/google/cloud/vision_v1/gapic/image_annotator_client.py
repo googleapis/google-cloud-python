@@ -19,10 +19,15 @@ import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
+import grpc
 
 from google.cloud.vision_v1.gapic import enums
 from google.cloud.vision_v1.gapic import image_annotator_client_config
 from google.cloud.vision_v1.proto import image_annotator_pb2
+from google.cloud.vision_v1.proto import image_annotator_pb2_grpc
+from google.longrunning import operations_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version
@@ -81,39 +86,60 @@ class ImageAnnotatorClient(object):
                 'exclusive.'.format(self.__class__.__name__), )
 
         # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
+        self.channel = channel
+        if self.channel is None:
+            self.channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
             )
 
         # Create the gRPC stubs.
-        self.image_annotator_stub = (
-            image_annotator_pb2.ImageAnnotatorStub(channel))
+        self._image_annotator_stub = (
+            image_annotator_pb2_grpc.ImageAnnotatorStub(self.channel))
+
+        # Operations client for methods that return long-running operations
+        # futures.
+        self._operations_client = (
+            google.api_core.operations_v1.OperationsClient(self.channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._batch_annotate_images = google.api_core.gapic_v1.method.wrap_method(
-            self.image_annotator_stub.BatchAnnotateImages,
-            default_retry=method_configs['BatchAnnotateImages'].retry,
-            default_timeout=method_configs['BatchAnnotateImages'].timeout,
-            client_info=client_info,
-        )
+        self._inner_api_calls = {}
+
+    def _intercept_channel(self, *interceptors):
+        """ Experimental. Bind gRPC interceptors to the gRPC channel.
+
+        Args:
+            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
+              Zero or more gRPC interceptors. Interceptors are given control in the order
+              they are listed.
+        Raises:
+            TypeError: If interceptor does not derive from any of
+              UnaryUnaryClientInterceptor,
+              UnaryStreamClientInterceptor,
+              StreamUnaryClientInterceptor, or
+              StreamStreamClientInterceptor.
+        """
+        self.channel = grpc.intercept_channel(self.channel, *interceptors)
+        self._image_annotator_stub = (
+            image_annotator_pb2_grpc.ImageAnnotatorStub(self.channel))
+        # Operations client for methods that return long-running operations
+        # futures.
+        self._operations_client = (
+            google.api_core.operations_v1.OperationsClient(self.channel))
+        self._inner_api_calls.clear()
 
     # Service calls
     def batch_annotate_images(self,
@@ -129,6 +155,7 @@ class ImageAnnotatorClient(object):
             >>>
             >>> client = vision_v1.ImageAnnotatorClient()
             >>>
+            >>> # TODO: Initialize ``requests``:
             >>> requests = []
             >>>
             >>> response = client.batch_annotate_images(requests)
@@ -156,10 +183,96 @@ class ImageAnnotatorClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        if 'batch_annotate_images' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_annotate_images'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._image_annotator_stub.BatchAnnotateImages,
+                    default_retry=self._method_configs[
+                        'BatchAnnotateImages'].retry,
+                    default_timeout=self._method_configs['BatchAnnotateImages']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = image_annotator_pb2.BatchAnnotateImagesRequest(
             requests=requests, )
-        return self._batch_annotate_images(
+        return self._inner_api_calls['batch_annotate_images'](
             request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def async_batch_annotate_files(
+            self,
+            requests,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
+        """
+        Run asynchronous image detection and annotation for a list of generic
+        files, such as PDF files, which may contain multiple pages and multiple
+        images per page. Progress and results can be retrieved through the
+        ``google.longrunning.Operations`` interface.
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
+
+        Example:
+            >>> from google.cloud import vision_v1
+            >>>
+            >>> client = vision_v1.ImageAnnotatorClient()
+            >>>
+            >>> # TODO: Initialize ``requests``:
+            >>> requests = []
+            >>>
+            >>> response = client.async_batch_annotate_files(requests)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            requests (list[Union[dict, ~google.cloud.vision_v1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.vision_v1.types.AsyncAnnotateFileRequest`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.vision_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if 'async_batch_annotate_files' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'async_batch_annotate_files'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._image_annotator_stub.AsyncBatchAnnotateFiles,
+                    default_retry=self._method_configs[
+                        'AsyncBatchAnnotateFiles'].retry,
+                    default_timeout=self._method_configs[
+                        'AsyncBatchAnnotateFiles'].timeout,
+                    client_info=self._client_info,
+                )
+
+        request = image_annotator_pb2.AsyncBatchAnnotateFilesRequest(
+            requests=requests, )
+        operation = self._inner_api_calls['async_batch_annotate_files'](
+            request, retry=retry, timeout=timeout, metadata=metadata)
+        return google.api_core.operation.from_gapic(
+            operation,
+            self._operations_client,
+            image_annotator_pb2.AsyncBatchAnnotateFilesResponse,
+            metadata_type=image_annotator_pb2.OperationMetadata,
+        )

@@ -21,6 +21,7 @@ error_reporting/
 monitoring/
 pubsub/
 oslogin/
+redis/
 resource_manager/
 runtimeconfig/
 spanner/

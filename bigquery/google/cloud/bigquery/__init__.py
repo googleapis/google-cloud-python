@@ -49,6 +49,7 @@ from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
+from google.cloud.bigquery.job import SchemaUpdateOption
 from google.cloud.bigquery.job import SourceFormat
 from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
@@ -113,6 +114,7 @@ __all__ = [
     'DestinationFormat',
     'Encoding',
     'QueryPriority',
+    'SchemaUpdateOption',
     'SourceFormat',
     'WriteDisposition'
 ]

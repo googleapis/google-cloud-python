@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.2.1
+
+### Implementation Changes
+- Make client_info work without gRPC installed. (#5075)
+- Rename `x-goog-header-params` to `x-goog-request-params` (#5495)
+
 ## 1.2.0
 
 ### Implementation Changes

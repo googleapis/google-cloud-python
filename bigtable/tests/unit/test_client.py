@@ -107,18 +107,15 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        LOCATION_ID = 'locname'
         credentials = _make_credentials()
         client = self._make_one(
             project=PROJECT, credentials=credentials)
 
-        instance = client.instance(
-            INSTANCE_ID, display_name=DISPLAY_NAME, location=LOCATION_ID)
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance._cluster_location_id, LOCATION_ID)
         self.assertIs(instance._client, client)
 
     def test_admin_client_w_value_error(self):
@@ -169,6 +166,7 @@ class TestClient(unittest.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud.bigtable_admin_v2.gapic import \
             bigtable_instance_admin_client
+        from google.cloud.bigtable.instance import Instance
 
         FAILED_LOCATION = 'FAILED'
         INSTANCE_ID1 = 'instance-id1'
@@ -201,8 +199,6 @@ class TestClient(unittest.TestCase):
             ],
         )
 
-        expected_result = response_pb
-
         # Patch the stub used by the API method.
         client._instance_admin_client = api
         bigtable_instance_stub = (
@@ -210,5 +206,16 @@ class TestClient(unittest.TestCase):
         bigtable_instance_stub.ListInstances.side_effect = [response_pb]
 
         # Perform the method and check the result.
-        response = client.list_instances()
-        self.assertEqual(response, expected_result)
+        instances, failed_locations = client.list_instances()
+
+        instance_1, instance_2 = instances
+
+        self.assertIsInstance(instance_1, Instance)
+        self.assertEqual(instance_1.name, INSTANCE_NAME1)
+        self.assertTrue(instance_1._client is client)
+
+        self.assertIsInstance(instance_2, Instance)
+        self.assertEqual(instance_2.name, INSTANCE_NAME2)
+        self.assertTrue(instance_2._client is client)
+
+        self.assertEqual(failed_locations, [FAILED_LOCATION])

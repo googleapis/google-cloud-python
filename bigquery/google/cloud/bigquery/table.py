@@ -607,7 +607,7 @@ class Table(object):
         to :data:`None`).
 
         By default, the query is treated as Standard SQL. To use Legacy
-        SQL, set view_use_legacy_sql to True.
+        SQL, set :attr:`view_use_legacy_sql` to :data:`True`.
 
         Raises:
             ValueError: For invalid value types.
@@ -1084,8 +1084,6 @@ class RowIterator(HTTPIterator):
         page_size (int, optional): The number of items to return per page.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
-
-    .. autoattribute:: pages
     """
 
     def __init__(self, client, api_request, path, schema, page_token=None,

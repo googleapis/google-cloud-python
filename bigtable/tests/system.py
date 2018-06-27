@@ -35,10 +35,11 @@ from test_utils.retry import RetryErrors
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
-
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'g-c-p' + unique_resource_id('-')
 TABLE_ID = 'google-cloud-python-test-table'
+APP_PROFILE_ID = 'app-profile-id'
+CLUSTER_ID = INSTANCE_ID+'-cluster'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
 COL_NAME1 = b'col-name1'
@@ -50,6 +51,8 @@ CELL_VAL3 = b'altcol-cell-val'
 CELL_VAL4 = b'foo'
 ROW_KEY = b'row-key'
 ROW_KEY_ALT = b'row-key-alt'
+ROUTING_POLICY_TYPE_ANY = 1
+ROUTING_POLICY_TYPE_SINGLE = 2
 EXISTING_INSTANCES = []
 
 
@@ -81,21 +84,20 @@ def setUpModule():
     else:
         Config.CLIENT = Client(admin=True)
 
-    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
+    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        instances_response = retry(Config.CLIENT.list_instances)()
-
-        if len(instances_response.failed_locations) != 0:
+        if len(failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances_response.instances
+        EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
-        created_op = Config.INSTANCE.create()
+        created_op = Config.INSTANCE.create(location_id=LOCATION_ID)
         created_op.result(timeout=10)
 
 
@@ -117,20 +119,19 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        instances_response = Config.CLIENT.list_instances()
-        self.assertEqual(instances_response.failed_locations, [])
-        # We have added one new instance in `setUpModule`.
-        self.assertEqual(len(instances_response.instances),
-                         len(EXISTING_INSTANCES) + 1)
-        for instance in instances_response.instances:
-            instance_existence = (instance in EXISTING_INSTANCES or
-                                  instance == Config.INSTANCE)
-            self.assertTrue(instance_existence)
+        expected = set([instance.name for instance in EXISTING_INSTANCES])
+        expected.add(Config.INSTANCE.name)
+
+        instances, failed_locations = Config.CLIENT.list_instances()
+
+        self.assertEqual(failed_locations, [])
+        found = set([instance.name for instance in instances])
+        self.assertTrue(expected.issubset(found))
 
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
+        instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -139,8 +140,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_create_instance(self):
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
-        operation = instance.create()
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        operation = instance.create(location_id=LOCATION_ID)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
@@ -148,7 +149,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation.result(timeout=10)
 
         # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
         instance_alt.reload()
 
         self.assertEqual(instance, instance_alt)
@@ -161,7 +162,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.update()
 
         # Create a new instance instance and reload it.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID, None)
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID)
         self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
         instance_alt.reload()
         self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
@@ -170,6 +171,35 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # other test cases.
         Config.INSTANCE.display_name = OLD_DISPLAY_NAME
         Config.INSTANCE.update()
+
+    def test_create_app_profile_with_multi_routing_policy(self):
+        # Create a new instance instance and reload it.
+        description = 'Foo App Profile'
+        instance = Config.INSTANCE
+
+        app_profile = instance.create_app_profile(
+            app_profile_id=APP_PROFILE_ID+'-multi',
+            routing_policy_type=ROUTING_POLICY_TYPE_ANY,
+            description=description,
+            ignore_warnings=True
+        )
+
+        self.assertEqual(app_profile.description, description)
+
+    def test_create_app_profile_with_single_routing_policy(self):
+        # Create a new instance instance and reload it.
+        description = 'Foo App Profile'
+        instance = Config.INSTANCE
+
+        app_profile = instance.create_app_profile(
+            app_profile_id=APP_PROFILE_ID+'-single',
+            routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
+            description=description,
+            cluster_id=CLUSTER_ID,
+            ignore_warnings=True
+        )
+
+        self.assertEqual(app_profile.description, description)
 
 
 class TestTableAdminAPI(unittest.TestCase):
@@ -197,7 +227,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(tables, [self._table])
 
     def test_create_table(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-table'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -213,7 +243,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_create_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-create-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -234,7 +264,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_update_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-update-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -257,7 +287,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
     def test_delete_column_family(self):
-        temp_table_id = 'foo-bar-baz-table'
+        temp_table_id = 'test-delete-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
@@ -279,7 +309,7 @@ class TestDataAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.INSTANCE.table(TABLE_ID)
+        cls._table = table = Config.INSTANCE.table('test-data-api')
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
@@ -375,6 +405,49 @@ class TestDataAPI(unittest.TestCase):
         row2_data = self._table.read_row(ROW_KEY_ALT)
         self.assertEqual(
             row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
+
+    def test_truncate_table(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.truncate(timeout=200)
+
+        read_rows = self._table.yield_rows()
+
+        for row in read_rows:
+            self.assertNotIn(row.row_key.decode('utf-8'), row_keys)
+
+    def test_drop_by_prefix_table(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_pr_1', b'row_key_pr_2', b'row_key_pr_3',
+            b'row_key_pr_4', b'row_key_pr_5']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        self._table.drop_by_prefix(row_key_prefix='row_key_pr', timeout=200)
+
+        read_rows = self._table.yield_rows()
+        expected_rows_count = 5
+        read_rows_count = 0
+
+        for row in read_rows:
+            if row.row_key in row_keys:
+                read_rows_count += 1
+
+        self.assertEqual(expected_rows_count, read_rows_count)
 
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)

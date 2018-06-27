@@ -10,6 +10,15 @@ DNS
   resource-record-set
   changes
 
+Installation
+------------
+
+Install the ``google-cloud-dns`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-dns
+
 Client
 ------
 

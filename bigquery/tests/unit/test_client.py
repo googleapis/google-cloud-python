@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import copy
+import datetime
 import decimal
 import email
 import io
@@ -23,6 +24,14 @@ import mock
 import six
 from six.moves import http_client
 import pytest
+try:
+    import pandas
+except (ImportError, AttributeError):  # pragma: NO COVER
+    pandas = None
+try:
+    import pyarrow
+except (ImportError, AttributeError):  # pragma: NO COVER
+    pyarrow = None
 
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -1743,6 +1752,29 @@ class TestClient(unittest.TestCase):
             path='/projects/other-project/jobs',
             query_params={
                 'projection': 'full',
+            })
+
+    def test_list_jobs_w_time_filter(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        # One millisecond after the unix epoch.
+        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0, 1000)
+        # One millisecond after the the 2038 31-bit signed int rollover
+        end_time = datetime.datetime(2038, 1, 19, 3, 14, 7, 1000)
+        end_time_millis = (((2 ** 31) - 1) * 1000) + 1
+
+        list(client.list_jobs(
+            min_creation_time=start_time, max_creation_time=end_time))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/%s/jobs' % self.PROJECT,
+            query_params={
+                'projection': 'full',
+                'minCreationTime': '1',
+                'maxCreationTime': str(end_time_millis),
             })
 
     def test_load_table_from_uri(self):
@@ -3483,6 +3515,68 @@ class TestClientUpload(object):
 
         with pytest.raises(ValueError):
             client.load_table_from_file(file_obj, self.TABLE_REF)
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None, job_id_prefix=None, location=None,
+            project=None, job_config=mock.ANY)
+
+        sent_file = load_table_from_file.mock_calls[0][1][1]
+        sent_bytes = sent_file.getvalue()
+        assert isinstance(sent_bytes, bytes)
+        assert len(sent_bytes) > 0
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe_w_custom_job_config(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+        job_config = job.LoadJobConfig()
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None, job_id_prefix=None, location=None,
+            project=None, job_config=mock.ANY)
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config is job_config
+        assert sent_config.source_format == job.SourceFormat.PARQUET
 
     # Low-level tests
 

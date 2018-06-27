@@ -28,11 +28,13 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
+import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -662,51 +664,66 @@ class Client(ClientWithProject):
 
     def list_jobs(
             self, project=None, max_results=None, page_token=None,
-            all_users=None, state_filter=None, retry=DEFAULT_RETRY):
+            all_users=None, state_filter=None, retry=DEFAULT_RETRY,
+            min_creation_time=None, max_creation_time=None):
         """List jobs for the project associated with this client.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
         Args:
-            project (str):
-                Optional. Project ID to use for retreiving datasets. Defaults
+            project (str, optional):
+                Project ID to use for retreiving datasets. Defaults
                 to the client's project.
-            max_results (int):
-                Optional. Maximum number of jobs to return.
-            page_token (str):
-                Optional. Opaque marker for the next "page" of jobs. If not
+            max_results (int, optional):
+                Maximum number of jobs to return.
+            page_token (str, optional):
+                Opaque marker for the next "page" of jobs. If not
                 passed, the API will return the first page of jobs. The token
                 marks the beginning of the iterator to be returned and the
                 value of the ``page_token`` can be accessed at
                 ``next_page_token`` of
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
-            all_users (bool):
+            all_users (bool, optional):
                 If true, include jobs owned by all users in the project.
-            state_filter (str):
-                Optional. If set, include only jobs matching the given
-                state. One of
-
+                Defaults to :data:`False`.
+            state_filter (str, optional):
+                If set, include only jobs matching the given state. One of:
                     * ``"done"``
                     * ``"pending"``
                     * ``"running"``
-            retry (google.api_core.retry.Retry):
-                Optional. How to retry the RPC.
+            retry (google.api_core.retry.Retry, optional):
+                How to retry the RPC.
+            min_creation_time (datetime.datetime, optional):
+                Min value for job creation time. If set, only jobs created
+                after or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
+            max_creation_time (datetime.datetime, optional):
+                Max value for job creation time. If set, only jobs created
+                before or at this timestamp are returned. If the datetime has
+                no time zone assumes UTC time.
 
         Returns:
             google.api_core.page_iterator.Iterator:
                 Iterable of job instances.
         """
-        extra_params = {'projection': 'full'}
+        extra_params = {
+            'allUsers': all_users,
+            'stateFilter': state_filter,
+            'minCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    min_creation_time)),
+            'maxCreationTime': _str_or_none(
+                google.cloud._helpers._millis_from_datetime(
+                    max_creation_time)),
+            'projection': 'full'
+        }
+
+        extra_params = {param: value for param, value in extra_params.items()
+                        if value is not None}
 
         if project is None:
             project = self.project
-
-        if all_users is not None:
-            extra_params['allUsers'] = all_users
-
-        if state_filter is not None:
-            extra_params['stateFilter'] = state_filter
 
         path = '/projects/%s/jobs' % (project,)
         return page_iterator.HTTPIterator(
@@ -773,8 +790,8 @@ class Client(ClientWithProject):
             job_config=None):
         """Upload the contents of this table from a file-like object.
 
-        Like load_table_from_uri, this creates, starts and returns
-        a ``LoadJob``.
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
 
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
@@ -832,6 +849,63 @@ class Client(ClientWithProject):
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
         return self.job_from_resource(response.json())
+
+    def load_table_from_dataframe(self, dataframe, destination,
+                                  num_retries=_DEFAULT_NUM_RETRIES,
+                                  job_id=None, job_id_prefix=None,
+                                  location=None, project=None,
+                                  job_config=None):
+        """Upload the contents of a table from a pandas DataFrame.
+
+        Similar to :meth:`load_table_from_uri`, this method creates, starts and
+        returns a :class:`~google.cloud.bigquery.job.LoadJob`.
+
+        Arguments:
+            dataframe (pandas.DataFrame):
+                A :class:`~pandas.DataFrame` containing the data to load.
+            destination (google.cloud.bigquery.table.TableReference):
+                The destination table to use for loading the data. If it is an
+                existing table, the schema of the :class:`~pandas.DataFrame`
+                must match the schema of the destination table. If the table
+                does not yet exist, the schema is inferred from the
+                :class:`~pandas.DataFrame`.
+
+        Keyword Arguments:
+            num_retries (int, optional): Number of upload retries.
+            job_id (str, optional): Name of the job.
+            job_id_prefix (str, optional):
+                The user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                destination table.
+            project (str, optional):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+                Extra configuration options for the job.
+
+        Returns:
+            google.cloud.bigquery.job.LoadJob: A new load job.
+
+        Raises:
+            ImportError:
+                If a usable parquet engine cannot be found. This method
+                requires one of :mod:`pyarrow` or :mod:`fastparquet` to be
+                installed.
+        """
+        buffer = six.BytesIO()
+        dataframe.to_parquet(buffer)
+
+        if job_config is None:
+            job_config = job.LoadJobConfig()
+        job_config.source_format = job.SourceFormat.PARQUET
+
+        return self.load_table_from_file(
+            buffer, destination, num_retries=num_retries, rewind=True,
+            job_id=job_id, job_id_prefix=job_id_prefix, location=location,
+            project=project, job_config=job_config)
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.

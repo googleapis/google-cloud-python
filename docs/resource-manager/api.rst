@@ -35,6 +35,18 @@ With this API, you can do the following:
 
 .. _projects.create() API method: https://cloud.google.com/resource-manager/docs/creating-project
 
+Installation
+------------
+
+Install the ``google-cloud-resource-manager`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-resource-manager
+
+Usage
+-----
+
 Here's a quick example of the full life-cycle:
 
 .. code-block:: python

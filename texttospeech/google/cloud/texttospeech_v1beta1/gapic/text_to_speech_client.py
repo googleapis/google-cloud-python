@@ -19,10 +19,12 @@ import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
+import grpc
 
 from google.cloud.texttospeech_v1beta1.gapic import enums
 from google.cloud.texttospeech_v1beta1.gapic import text_to_speech_client_config
 from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
+from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2_grpc
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-texttospeech', ).version
@@ -74,44 +76,51 @@ class TextToSpeechClient(object):
                 'exclusive.'.format(self.__class__.__name__), )
 
         # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
+        self.channel = channel
+        if self.channel is None:
+            self.channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
             )
 
         # Create the gRPC stubs.
-        self.text_to_speech_stub = (cloud_tts_pb2.TextToSpeechStub(channel))
+        self._text_to_speech_stub = (cloud_tts_pb2_grpc.TextToSpeechStub(
+            self.channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_voices = google.api_core.gapic_v1.method.wrap_method(
-            self.text_to_speech_stub.ListVoices,
-            default_retry=method_configs['ListVoices'].retry,
-            default_timeout=method_configs['ListVoices'].timeout,
-            client_info=client_info,
-        )
-        self._synthesize_speech = google.api_core.gapic_v1.method.wrap_method(
-            self.text_to_speech_stub.SynthesizeSpeech,
-            default_retry=method_configs['SynthesizeSpeech'].retry,
-            default_timeout=method_configs['SynthesizeSpeech'].timeout,
-            client_info=client_info,
-        )
+        self._inner_api_calls = {}
+
+    def _intercept_channel(self, *interceptors):
+        """ Experimental. Bind gRPC interceptors to the gRPC channel.
+
+        Args:
+            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
+              Zero or more gRPC interceptors. Interceptors are given control in the order
+              they are listed.
+        Raises:
+            TypeError: If interceptor does not derive from any of
+              UnaryUnaryClientInterceptor,
+              UnaryStreamClientInterceptor,
+              StreamUnaryClientInterceptor, or
+              StreamStreamClientInterceptor.
+        """
+        self.channel = grpc.intercept_channel(self.channel, *interceptors)
+        self._text_to_speech_stub = (cloud_tts_pb2_grpc.TextToSpeechStub(
+            self.channel))
+        self._inner_api_calls.clear()
 
     # Service calls
     def list_voices(self,
@@ -134,11 +143,11 @@ class TextToSpeechClient(object):
             language_code (str): Optional (but recommended)
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`_ language tag. If
                 specified, the ListVoices call will only return voices that can be used to
-                synthesize this language code. E.g. when specifying ``en-NZ``, you will get
-                supported ``en-*`` voices; when specifying ``no``, you will get supported
-                ``no-*`` (Norwegian) and ``nb-*`` (Norwegian Bokmal) voices; specifying ``zh``
-                will also get supported ``cmn-*`` voices; specifying ``zh-hk`` will also get
-                supported ``yue-*`` voices.
+                synthesize this language_code. E.g. when specifying \"en-NZ\", you will get
+                supported "en-\*" voices; when specifying \"no\", you will get supported
+                "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal) voices; specifying \"zh\"
+                will also get supported "cmn-\*" voices; specifying \"zh-hk\" will also get
+                supported "yue-\*" voices.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -158,12 +167,18 @@ class TextToSpeechClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        if 'list_voices' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_voices'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._text_to_speech_stub.ListVoices,
+                    default_retry=self._method_configs['ListVoices'].retry,
+                    default_timeout=self._method_configs['ListVoices'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = cloud_tts_pb2.ListVoicesRequest(
             language_code=language_code, )
-        return self._list_voices(
+        return self._inner_api_calls['list_voices'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def synthesize_speech(self,
@@ -222,13 +237,21 @@ class TextToSpeechClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        if 'synthesize_speech' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'synthesize_speech'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._text_to_speech_stub.SynthesizeSpeech,
+                    default_retry=self._method_configs[
+                        'SynthesizeSpeech'].retry,
+                    default_timeout=self._method_configs['SynthesizeSpeech']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = cloud_tts_pb2.SynthesizeSpeechRequest(
             input=input_,
             voice=voice,
             audio_config=audio_config,
         )
-        return self._synthesize_speech(
+        return self._inner_api_calls['synthesize_speech'](
             request, retry=retry, timeout=timeout, metadata=metadata)

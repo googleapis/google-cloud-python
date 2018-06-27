@@ -32,7 +32,7 @@ __version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,
-                    blacklist=('pull', 'streaming_pull'))
+                    blacklist=('streaming_pull',))
 class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
@@ -119,7 +119,13 @@ class Client(object):
         is encountered (such as loss of network connectivity). Cancelling the
         future will signal the process to shutdown gracefully and exit.
 
-        Example
+        .. note:: This uses Pub/Sub's *streaming pull* feature. This feature
+            properties that may be surprising. Please take a look at
+            https://cloud.google.com/pubsub/docs/pull#streamingpull for
+            more details on how streaming pull behaves compared to the
+            synchronous pull method.
+
+        Example:
 
         .. code-block:: python
 
@@ -135,7 +141,7 @@ class Client(object):
                 print(message)
                 message.ack()
 
-            future = subscriber.subscribe_experimental(
+            future = subscriber.subscribe(
                 subscription, callback)
 
             try:
