@@ -13,8 +13,19 @@
 # limitations under the License.
 
 import logging
-from google.firestore.v1beta1 import DocumentChange
 
+#from google.cloud.firestore_v1beta1 import DocumentReference, DocumentSnapshot
+
+#from google.cloud.firestore_v1beta1.document import DocumentReference
+#from google.cloud.firestore_v1beta1.document import DocumentSnapshot
+#import google.cloud.firestore_v1beta1.client as client
+from google.cloud.firestore_v1beta1.bidi import BidiRpc, ResumableBidiRpc
+from google.cloud.firestore_v1beta1.proto import firestore_pb2
+
+#from bidi import BidiRpc, ResumableBidiRpc
+import time
+import random
+import grpc
 
 """Python client for Google Cloud Firestore Watch."""
 
@@ -66,20 +77,98 @@ def document_watch_comparator(doc1, doc2):
     return 0
 
 
+class ExponentialBackOff(object):
+    _INITIAL_SLEEP = 1.0
+    """float: Initial "max" for sleep interval."""
+    _MAX_SLEEP = 30.0
+    """float: Eventual "max" sleep time."""
+    _MULTIPLIER = 2.0
+    """float: Multiplier for exponential backoff."""
+
+    def __init__(self, initial_sleep=_INITIAL_SLEEP, max_sleep=_MAX_SLEEP,
+                 multiplier=_MULTIPLIER):
+        self.initial_sleep = self.current_sleep = initial_sleep
+        self.max_sleep = max_sleep
+        self.multipler = multiplier
+
+    def back_off(self):
+        self.current_sleep = self._sleep(self.current_sleep,
+                                         self.max_sleep,
+                                         self.multipler)
+
+    def reset_to_max(self):
+        self.current_sleep = self.max_sleep
+
+    def reset(self):
+        self.current_sleep = self._INITIAL_SLEEP
+
+    def _sleep(self, current_sleep, max_sleep=_MAX_SLEEP,
+               multiplier=_MULTIPLIER):
+        """Sleep and produce a new sleep time.
+
+        .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
+                                            2015/03/backoff.html
+
+        Select a duration between zero and ``current_sleep``. It might seem
+        counterintuitive to have so much jitter, but
+        `Exponential Backoff And Jitter`_ argues that "full jitter" is
+        the best strategy.
+
+        Args:
+            current_sleep (float): The current "max" for sleep interval.
+            max_sleep (Optional[float]): Eventual "max" sleep time
+            multiplier (Optional[float]): Multiplier for exponential backoff.
+
+        Returns:
+            float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
+            is smaller)
+        """
+        actual_sleep = random.uniform(0.0, self.current_sleep)
+        time.sleep(actual_sleep)
+        return min(self.multiplier * self.current_sleep, self.max_sleep)
+
 class Watch(object):
-    def __init__(self, firestore, target, comparator):
+    def __init__(self, 
+                 firestore, #: client.Client,
+                 target,
+                 comparator):
+
         self._firestore = firestore
-        self._api = firestore.api
+        self._api = firestore._firestore_api
         self._targets = target
         self._comparator = comparator
         self._backoff = ExponentialBackOff()
+
+        def should_recover(exc):
+            return (
+                isinstance(exc, grpc.RpcError) and
+                exc.code() == grpc.StatusCode.UNVAILABLE)
+
+        initial_request = firestore_pb2.ListenRequest(
+            #database=firestore.database_root_path,
+            add_target=target
+            # database, add_taret, remove_target, labels
+        )
+
+        rpc = ResumableBidiRpc(
+            # self._api.firestore_stub.Listen,
+            #firestore_pb2.BetaFirestoreStub.Listen,
+            self._api.firestore_stub.Listen,
+            initial_request=initial_request,
+            should_recover=should_recover)
+
+        rpc.open()
+
+        while rpc.is_active:
+            print(rpc.recv())
 
     @classmethod
     def for_document(cls, document_ref):
         return cls(document_ref.firestore,
                    {
-                       documents: {documents: [document_ref.formatted_name]},
-                       target_id: WATCH_TARGET_ID
+                       'documents': {
+                           'documents': [document_ref._document_path]},
+                       'target_id': WATCH_TARGET_ID
                    },
                    document_watch_comparator)
 
@@ -87,339 +176,329 @@ class Watch(object):
     def for_query(cls, query):
         return cls(query.firestore,
                    {
-                       query: query.to_proto(),
-                       target_id: WATCH_TARGET_ID
+                       'query': query.to_proto(),
+                       'target_id': WATCH_TARGET_ID
                    },
                    query.comparator())
 
-    def on_snapshot(self, on_next, on_error):
-        doc_tree = rbtree(self.comparator)
-        doc_map = {}
-        change_map = {}
 
-        current = False
-        has_pushed = False
-        is_active = True
+    # def on_snapshot(self, on_next, on_error):
+    #     doc_dict = {}
+    #     doc_map = {}
+    #     change_map = {}
 
-        REMOVED = {}
+    #     current = False
+    #     has_pushed = False
+    #     is_active = True
 
-        request = {database: self._firestore.formatted_name,
-                   add_target: self._targets}
+    #     REMOVED = {}
 
-        stream = through.obj()
+    #     request = {'database': self._firestore.formatted_name,
+    #                'add_target': self._targets}
 
-        current_stream = None
+    #     stream = through.obj() # TODO: fix through (node holdover)
 
-        def reset_docs():
-            log()
-            change_map.clear()
-            del resume_token
-            for snapshot in doc_tree:
-                change_map.set(snapshot.ref.formatted_name, REMOVED)
-            current = False
+    #     current_stream = None
 
-        def close_stream(err):
-            if current_stream is not None:
-                current_stream.unpipe(stream)
-                current_stream.end()
-                current_stream = None
-            stream.end()
+    #     def reset_docs():
+    #         log()
+    #         change_map.clear()
+    #         del resume_token
+    #         for snapshot in doc_dict:
+    #             change_map.set(snapshot.ref.formatted_name, REMOVED)
+    #         current = False
 
-            if is_active:
-                is_active = False
-                _LOGGER.error('Invoking on_error: ', err)
-                on_error(err)
+    #     def close_stream(err):
+    #         if current_stream is not None:
+    #             current_stream.unpipe(stream)
+    #             current_stream.end()
+    #             current_stream = None
+    #         stream.end()
 
-        def maybe_reopen_stream(err):
-            if is_active and not is_permanent_error(err):
-                _LOGGER.error(
-                    'Stream ended, re-opening after retryable error: ', err)
-                request.add_target.resume_token = resume_token
-                change_map.clear()
+    #         if is_active:
+    #             is_active = False
+    #             _LOGGER.error('Invoking on_error: ', err)
+    #             on_error(err)
 
-            if is_resource_exhausted_error(err):
-                self._backoff.reset_to_max()
-                reset_stream()
-            else:
-                _LOGGER.error('Stream ended, sending error: ', err)
-                close_stream(err)
+    #     def maybe_reopen_stream(err):
+    #         if is_active and not is_permanent_error(err):
+    #             _LOGGER.error(
+    #                 'Stream ended, re-opening after retryable error: ', err)
+    #             request.add_target.resume_token = resume_token
+    #             change_map.clear()
 
-        def reset_stream():
-            _LOGGER.info('Opening new stream')
-            if current_stream:
-                current_stream.unpipe(stream)
-                current_stream.end()
-                current_stream = None
-                init_stream()
+    #         if is_resource_exhausted_error(err):
+    #             self._backoff.reset_to_max()
+    #             reset_stream()
+    #         else:
+    #             _LOGGER.error('Stream ended, sending error: ', err)
+    #             close_stream(err)
 
-        def init_stream():
-            self._backoff.back_off_and_wait()
-            if not is_active:
-                _LOGGER.info('Not initializing inactive stream')
-                return
+    #     def reset_stream():
+    #         _LOGGER.info('Opening new stream')
+    #         if current_stream:
+    #             current_stream.unpipe(stream)
+    #             current_stream.end()
+    #             current_stream = None
+    #             init_stream()
 
-            backend_stream = self._firestore.read_write_stream(
-                self._api.Firestore._listen.bind(self._api.Firestore),
-                request,
-            )
+    #     def init_stream():
+    #         self._backoff.back_off()
+    #         if not is_active:
+    #             _LOGGER.info('Not initializing inactive stream')
+    #             return
 
-            if not is_active:
-                _LOGGER.info('Closing inactive stream')
-                backend_stream.end()
-            _LOGGER.info('Opened new stream')
-            current_stream = backend_stream
+    #         backend_stream = self._firestore.read_write_stream(
+    #             self._api.Firestore._listen.bind(self._api.Firestore),
+    #             request,
+    #         )
 
-            def on_error(err):
-                maybe_reopen_stream(err)
+    #         if not is_active:
+    #             _LOGGER.info('Closing inactive stream')
+    #             backend_stream.end()
+    #         _LOGGER.info('Opened new stream')
+    #         current_stream = backend_stream
 
-            current_stream.on('error')(on_error)
+    #         def on_error(err):
+    #             maybe_reopen_stream(err)
 
-            def on_end():
-                err = Error('Stream ended unexpectedly')
-                err.code = GRPC_STATUS_CODE['UNKNOWN']
-                maybe_reopen_stream(err)
+    #         current_stream.on('error')(on_error)
 
-            current_stream.on('end')(on_end)
-            current_stream.pipe(stream)
-            current_stream.resume()
+    #         def on_end():
+    #             err = Exception('Stream ended unexpectedly')
+    #             err.code = GRPC_STATUS_CODE['UNKNOWN']
+    #             maybe_reopen_stream(err)
 
-            current_stream.catch(close_stream)
+    #         current_stream.on('end')(on_end)
+    #         current_stream.pipe(stream)
+    #         current_stream.resume()
 
-        def affects_target(target_ids, current_id):
-            for target_id in target_ids:
-                if target_id == current_id:
-                    return True
-            return False
+    #         current_stream.catch(close_stream)
 
-        def extract_changes(doc_map, changes, read_time):
-            deletes = []
-            adds = []
-            updates = []
+    #     def affects_target(target_ids, current_id):
+    #         for target_id in target_ids:
+    #             if target_id == current_id:
+    #                 return True
+    #         return False
 
-            for value, name in changes:
-                if value == REMOVED:
-                    if doc_map.has(name):
-                        deletes.append(name)
-                elif doc_map.has(name):
-                    value.read_time = read_time
-                    upates.append(value.build())
-                else:
-                    value.read_time = read_time
-                    adds.append(value.build())
-            return deletes, adds, updates
+    #     def extract_changes(doc_map, changes, read_time):
+    #         deletes = []
+    #         adds = []
+    #         updates = []
 
-        def compute_snapshot(doc_tree, doc_map, changes):
-            if len(doc_tree) != doc_map:
-                raise ValueError('The document tree and document map should'
-                                 'have the same number of entries.')
-            updated_tree = doc_tree
-            updated_map = doc_map
+    #         for value, name in changes:
+    #             if value == REMOVED:
+    #                 if doc_map.has(name):
+    #                     deletes.append(name)
+    #             elif doc_map.has(name):
+    #                 value.read_time = read_time
+    #                 updates.append(value.build())
+    #             else:
+    #                 value.read_time = read_time
+    #                 adds.append(value.build())
+    #         return deletes, adds, updates
 
-        def delete_doc(name):
-            """ raises KeyError if name not in updated_map"""
-            old_document = updated_map.pop(name) # Raises KeyError
-            existing = updated_tree.find(old_document)
-            old_index = existing.index
-            updated_tree = existing.remove()
-            return DocumentChange('removed',
-                                  old_document,
-                                  old_index,
-                                  -1)
+    #     def compute_snapshot(doc_dict, doc_map, changes):
+    #         if len(doc_dict) != doc_map:
+    #             raise ValueError('The document tree and document map should'
+    #                              'have the same number of entries.')
+    #         updated_dict = doc_dict
+    #         updated_map = doc_map
 
-        def add_doc(new_document):
-            name = new_document.ref.formatted_name
-            if name in updated_map:
-                raise ValueError('Document to add already exists')
-            updated_tree = updated_tree.insert(new_document, null)
-            new_index = updated_tree.find(new_document).index
-            updated_map[name] = new_document
-            return DocumentChange('added',
-                                  new_document,
-                                  -1,
-                                  new_index)
+    #     def delete_doc(name):
+    #         """ raises KeyError if name not in updated_map"""
+    #         old_document = updated_map.pop(name) # Raises KeyError
+    #         existing = updated_dict.find(old_document)
+    #         old_index = existing.index
+    #         updated_dict = existing.remove()
+    #         return DocumentChange('removed',
+    #                               old_document,
+    #                               old_index,
+    #                               -1)
 
-        def modify_doc(new_document):
-            name = new_document.ref.formattedName
-            if name not in updated_map:
-                raise ValueError('Document to modify does not exsit')
-            old_document = updated_map[name]
-            if old_document.update_time != new_document.update_time:
-                remove_change = delete_doc(name)
-                add_change = add_doc(new_document)
-                return DocumentChange('modified',
-                                      new_document,
-                                      remove_change.old_index,
-                                      add_change.new_index)
-            return None
+    #     def add_doc(new_document):
+    #         name = new_document.ref.formatted_name
+    #         if name in updated_map:
+    #             raise ValueError('Document to add already exists')
+    #         updated_dict = updated_dict.insert(new_document, null)
+    #         new_index = updated_dict.find(new_document).index
+    #         updated_map[name] = new_document
+    #         return DocumentChange('added',
+    #                               new_document,
+    #                               -1,
+    #                               new_index)
 
-        applied_changes = []
+    #     def modify_doc(new_document):
+    #         name = new_document.ref.formattedName
+    #         if name not in updated_map:
+    #             raise ValueError('Document to modify does not exsit')
+    #         old_document = updated_map[name]
+    #         if old_document.update_time != new_document.update_time:
+    #             remove_change = delete_doc(name)
+    #             add_change = add_doc(new_document)
+    #             return DocumentChange('modified',
+    #                                   new_document,
+    #                                   remove_change.old_index,
+    #                                   add_change.new_index)
+    #         return None
 
-        def compartor_sort(name1, name2):
-            return self._comparator(updated_map[name1], updated_map[name2])
-        changes.deletes.sort(comparator_sort)
+    #     applied_changes = []
 
-        for name in changes.deletes:
-            changes.delete_doc(name)
-            if change:
-                applied_changes.push(change)
+    #     def comparator_sort(name1, name2):
+    #         return self._comparator(updated_map[name1], updated_map[name2])
 
-        changes.adds.sort(self._compartor)
+    #     changes.deletes.sort(comparator_sort)
 
-        for snapshot in changes.adds:
-            change = add_doc(snapshot)
-            if change:
-                applied_changes.push(change)
+    #     for name in changes.deletes:
+    #         changes.delete_doc(name)
+    #         if change:
+    #             applied_changes.push(change)
 
-        changes.updates.sort(self._compartor)
+    #     changes.adds.sort(self._compartor)
 
-        for snapshot in changes.updates:
-            change = modify_doc(snapshot)
-            if change:
-                applied_changes.push(change)
+    #     for snapshot in changes.adds:
+    #         change = add_doc(snapshot)
+    #         if change:
+    #             applied_changes.push(change)
 
-        if not len(updated_tree) == len(updated_map):
-            raise RuntimeError('The update document tree and document '
-                               'map should have the same number of '
-                               'entries')
+    #     changes.updates.sort(self._compartor)
 
-        return {updated_tree, updated_map, applied_changes}
+    #     for snapshot in changes.updates:
+    #         change = modify_doc(snapshot)
+    #         if change:
+    #             applied_changes.push(change)
 
-        def push(read_time, next_resume_token):
-            changes = extract_changes(doc_map, change_map, read_time)
-            diff = compute_snapshot(doc_tree, doc_map, changes)
+    #     if not len(updated_dict) == len(updated_map):
+    #         raise RuntimeError('The update document tree and document '
+    #                            'map should have the same number of '
+    #                            'entries')
 
-            if not has_pushed or len(diff.applied_changes) > 0:
-                _LOGGER.info(
-                    'Sending snapshot with %d changes and %d documents'
-                    % (len(diff.applied_changes), len(updated_tree)))
+    #     return {updated_dict, updated_map, applied_changes}
 
-            next(read_time, diff.updatedTree.keys, diff.applied_changes)
+    #     def push(read_time, next_resume_token):
+    #         changes = extract_changes(doc_map, change_map, read_time)
+    #         diff = compute_snapshot(doc_dict, doc_map, changes)
 
-            doc_tree = diff.updated_tree
-            doc_map = diff.updated_map
-            change_map.clear()
-            resume_token = next_resume_token
+    #         if not has_pushed or len(diff.applied_changes) > 0:
+    #             _LOGGER.info(
+    #                 'Sending snapshot with %d changes and %d documents'
+    #                 % (len(diff.applied_changes), len(updated_dict)))
 
-        def current_size():
-            changes = extract_changes(doc_map, change_map)
-            return doc_map.size + len(changes.adds) - len(changes.deletes)
+    #         next(read_time, diff.updatedTree.keys, diff.applied_changes)
 
-        init_stream()
+    #         doc_dict = diff.updated_dict
+    #         doc_map = diff.updated_map
+    #         change_map.clear()
+    #         resume_token = next_resume_token
 
-        def proto():
-            if proto.target_change:
-                _LOGGER.log('Processing target change')
-                change = proto.target_change
-                no_target_ids = not target_ids
-                if change.target_change_type == 'NO_CHANGE':
-                    if no_target_ids and change.read_time and current:
-                        push(DocumentSnapshot.to_ISO_time(change.read_time),
-                             change.resume_token)
-                elif change.target_change_type == 'ADD':
-                    if WATCH_TARGET_ID != change.target_ids[0]:
-                        raise ValueError('Unexpected target ID sent by server')
-                elif change.target_change_type == 'REMOVE':
-                    code = 13
-                    message = 'internal error'
-                    if change.cause:
-                        code = change.cause.code
-                        message = change.cause.message
-                    close_stream(Error('Error ' + code + ': '  + message))
-                elif change.target_change_type == 'RESET':
-                    reset_docs()
-                elif change.target_change_type == 'CURRENT':
-                    current = true
-                else:
-                    close_stream(
-                        Error('Unknown target change type: ' + str(change)))
+    #     def current_size():
+    #         changes = extract_changes(doc_map, change_map)
+    #         return doc_map.size + len(changes.adds) - len(changes.deletes)
 
-        stream.on('data', proto) # ??
+    #     init_stream()
 
-        if change.resume_token and \
-           affects_target(change.target_ids, WATCH_TARGET_ID):
-            self._backoff.reset()
+    #     def proto():
+    #         if proto.target_change:
+    #             _LOGGER.log('Processing target change')
+    #             change = proto.target_change
+    #             no_target_ids = not target_ids
+    #             if change.target_change_type == 'NO_CHANGE':
+    #                 if no_target_ids and change.read_time and current:
+    #                     push(DocumentSnapshot.to_ISO_time(change.read_time),
+    #                          change.resume_token)
+    #             elif change.target_change_type == 'ADD':
+    #                 if WATCH_TARGET_ID != change.target_ids[0]:
+    #                     raise ValueError('Unexpected target ID sent by server')
+    #             elif change.target_change_type == 'REMOVE':
+    #                 code = 13
+    #                 message = 'internal error'
+    #                 if change.cause:
+    #                     code = change.cause.code
+    #                     message = change.cause.message
+    #                 close_stream(Error('Error ' + code + ': '  + message))
+    #             elif change.target_change_type == 'RESET':
+    #                 reset_docs()
+    #             elif change.target_change_type == 'CURRENT':
+    #                 current = true
+    #             else:
+    #                 close_stream(
+    #                     Exception('Unknown target change type: ' + str(change)))
 
-        elif proto.document_change:
-            _LOGGER.info('Processing change event')
+    #     stream.on('data', proto) # ??
 
-            target_ids = proto.document_change.target_ids
-            removed_target_ids = proto.document_change.removed_target_ids
+    #     if change.resume_token and \
+    #        affects_target(change.target_ids, WATCH_TARGET_ID):
+    #         self._backoff.reset()
 
-            changed = False
+    #     elif proto.document_change:
+    #         _LOGGER.info('Processing change event')
 
-            removed = False
-            for target_id in target_ids:
-                if target_id == WATCH_TARGET_ID:
-                    changed = True
+    #         target_ids = proto.document_change.target_ids
+    #         removed_target_ids = proto.document_change.removed_target_ids
 
-            for target_id in removed_target_ids:
-                if removed_target_ids == WATCH_TARGET_ID:
-                    removed = True
+    #         changed = False
 
-            document = proto.document_change.document
-            name = document.name
+    #         removed = False
+    #         for target_id in target_ids:
+    #             if target_id == WATCH_TARGET_ID:
+    #                 changed = True
 
-            if changed:
-                _LOGGER.info('Received document change')
-                snapshot = DocumentSnapshot.Builder()
-                snapshot.ref = DocumentReference(
-                    self._firestore,
-                    ResourcePath.from_slash_separated_string(name))
-                snapshot.fields_proto = document.fields
-                snapshot.create_time = DocumentSnapshot.to_ISO_time(
-                    document.create_time)
-                snapshot.update_time = DocumentSnapshot.to_ISO_time(
-                    document.update_time)
-                change_map[name] = snapshot
-            elif removed:
-                _LOGGER.info('Received document remove')
-                change_map[name] = REMOVED
-        elif proto.document_delete:
-            _LOGGER.info('Processing remove event')
-            name = proto.document_delete.document
-            change_map[name] = REMOVED
-        elif proto.document_remove:
-            _LOGGER.info('Processing remove event')
-            name = proto.document_remove.document
-            change_map[name] = REMOVED
-        elif proto.filter:
-            _LOGGER.info('Processing filter update')
-            if proto.filter.count != current_size():
-                reset_docs()
-                reset_stream()
-        else:
-            close_stream(Error('Unknown listen response type: ' + str(proto)))
+    #         for target_id in removed_target_ids:
+    #             if removed_target_ids == WATCH_TARGET_ID:
+    #                 removed = True
 
-        def on_end():
-            _LOGGER.info('Processing stream end')
-            if current_stream:
-                current_stream.end()
+    #         document = proto.document_change.document
+    #         name = document.name
 
-        on('end', on_end)
+    #         if changed:
+    #             _LOGGER.info('Received document change')
+    #             snapshot = DocumentSnapshot.Builder()
+    #             snapshot.ref = DocumentReference(
+    #                 self._firestore,
+    #                 ResourcePath.from_slash_separated_string(name))
+    #             snapshot.fields_proto = document.fields
+    #             snapshot.create_time = DocumentSnapshot.to_ISO_time(
+    #                 document.create_time)
+    #             snapshot.update_time = DocumentSnapshot.to_ISO_time(
+    #                 document.update_time)
+    #             change_map[name] = snapshot
+    #         elif removed:
+    #             _LOGGER.info('Received document remove')
+    #             change_map[name] = REMOVED
+    #     elif proto.document_delete:
+    #         _LOGGER.info('Processing remove event')
+    #         name = proto.document_delete.document
+    #         change_map[name] = REMOVED
+    #     elif proto.document_remove:
+    #         _LOGGER.info('Processing remove event')
+    #         name = proto.document_remove.document
+    #         change_map[name] = REMOVED
+    #     elif proto.filter:
+    #         _LOGGER.info('Processing filter update')
+    #         if proto.filter.count != current_size():
+    #             reset_docs()
+    #             reset_stream()
+    #     else:
+    #         close_stream(Error('Unknown listen response type: ' + str(proto)))
 
-        def initialize():
-            return {}
+    #     def on_end():
+    #         _LOGGER.info('Processing stream end')
+    #         if current_stream:
+    #             current_stream.end()
 
-        def end_stream():
-            _LOGGER.info('Ending stream')
-            is_active = False
-            on_next = initialize
-            on_error = initialize
-            stream.end()
+    #     on('end', on_end)
 
-        return end_stream
+    #     def initialize():
+    #         return {}
 
+    #     def end_stream():
+    #         _LOGGER.info('Ending stream')
+    #         is_active = False
+    #         on_next = initialize
+    #         on_error = initialize
+    #         stream.end()
 
-
-
+    #     return end_stream
 
 
-        
-    
-        
-                          
-                         
 
-    
-    
-    

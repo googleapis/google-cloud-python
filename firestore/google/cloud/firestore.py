@@ -31,6 +31,7 @@ from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 from google.cloud.firestore_v1beta1 import Transaction
 from google.cloud.firestore_v1beta1 import transactional
 from google.cloud.firestore_v1beta1 import types
+from google.cloud.firestore_v1beta1 import Watch
 from google.cloud.firestore_v1beta1 import WriteBatch
 from google.cloud.firestore_v1beta1 import WriteOption
 
@@ -52,6 +53,7 @@ __all__ = [
     'Transaction',
     'transactional',
     'types',
+    'Watch',
     'WriteBatch',
     'WriteOption',
 ]
