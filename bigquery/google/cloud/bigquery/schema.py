@@ -22,13 +22,12 @@ class SchemaField(object):
     :param name: the name of the field.
 
     :type field_type: str
-    :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'NUMERIC', 'BOOLEAN', 'TIMESTAMP' or
-                       'RECORD').
+    :param field_type: the type of the field. See:
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
 
     :type mode: str
-    :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
-                 or 'REPEATED').
+    :param mode: the mode of the field.  See:
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
 
     :type description: str
     :param description: optional description for the field.
@@ -78,8 +77,8 @@ class SchemaField(object):
     def field_type(self):
         """str: The type of the field.
 
-        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'NUMERIC',
-        'BOOLEAN', 'TIMESTAMP' or 'RECORD'.
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
         """
         return self._field_type
 
@@ -87,7 +86,8 @@ class SchemaField(object):
     def mode(self):
         """str: The mode of the field.
 
-        Will be one of 'NULLABLE', 'REQUIRED', or 'REPEATED'.
+        :param mode: the mode of the field.  See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
         """
         return self._mode
 
