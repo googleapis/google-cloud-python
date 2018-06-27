@@ -909,6 +909,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
 
+    def test_location_setter_fails_reset(self):
+        NAME = 'name'
+        bucket = self._make_one(name=NAME)
+        bucket.location = 'AS'
+
+        with self.assertRaises(ValueError):
+            # once set the location of a bucket cannot be altered
+            bucket.location = "EU"
+
     def test_lifecycle_rules_getter(self):
         NAME = 'name'
         LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
