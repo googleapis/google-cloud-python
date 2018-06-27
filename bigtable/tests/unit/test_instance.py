@@ -267,9 +267,7 @@ class TestInstance(unittest.TestCase):
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable_admin_v2 import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
@@ -313,7 +311,7 @@ class TestInstance(unittest.TestCase):
 
         expected_request = self._create_instance_request(
             self.DISPLAY_NAME,
-            {cluster_id : cluster}
+            {cluster_id: cluster}
         )
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
@@ -324,21 +322,17 @@ class TestInstance(unittest.TestCase):
     def test_create_w_explicit_serve_nodes(self):
         from google.api_core import operation
         from google.longrunning import operations_pb2
-        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable_admin_v2 import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
 
         serve_nodes = 10
-        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-            location_id=self.LOCATION_ID,
-            display_name=self.DISPLAY_NAME,
-            serve_nodes=serve_nodes,
+        instance = self._make_one(
+            self.INSTANCE_ID, client, location_id=self.LOCATION_ID,
+            display_name=self.DISPLAY_NAME, serve_nodes=serve_nodes,
             default_storage_type=enums.StorageType.SSD)
 
         # Create response_pb
@@ -362,7 +356,7 @@ class TestInstance(unittest.TestCase):
 
         expected_request = self._create_instance_request(
             self.DISPLAY_NAME,
-            {cluster_id : cluster}
+            {cluster_id: cluster}
         )
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
@@ -393,7 +387,6 @@ class TestInstance(unittest.TestCase):
             instance=instance,
             clusters=clusters
         )
-
 
     def test_update(self):
         from google.cloud.bigtable_admin_v2.gapic import (
