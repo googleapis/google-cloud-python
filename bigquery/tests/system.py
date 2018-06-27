@@ -1518,51 +1518,6 @@ class TestBigQuery(unittest.TestCase):
                 if not row[col] is None:
                     self.assertIsInstance(row[col], exp_datatypes[col])
 
-    def test_query_table_def(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
-
-        job_config = bigquery.QueryJobConfig()
-        table_id = 'flintstones'
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.schema = SCHEMA
-        ec.options.skip_leading_rows = 1  # skip the header row
-        job_config.table_definitions = {table_id: ec}
-        sql = 'SELECT * FROM %s' % table_id
-
-        got_rows = Config.CLIENT.query(sql, job_config=job_config)
-
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
-    def test_query_external_table(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
-        dataset_id = _make_dataset_id('query_external_table')
-        dataset = self.temp_dataset(dataset_id)
-        table_id = 'flintstones'
-        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.options.skip_leading_rows = 1  # skip the header row
-        table_arg.external_data_configuration = ec
-        table = Config.CLIENT.create_table(table_arg)
-        self.to_delete.insert(0, table)
-
-        sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
-
-        got_rows = Config.CLIENT.query(sql)
-
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
     def test_insert_rows_nested_nested(self):
         # See #2951
         SF = bigquery.SchemaField

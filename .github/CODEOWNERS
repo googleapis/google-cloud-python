@@ -1,7 +1,7 @@
 # Code owners file.
 # This file controls who is tagged for review for any given pull request.
 
-# Luke Sneeringer is the default owner for anything not explicitly
+# Thea Flowers is the default owner for anything not explicitly
 # taken by someone else.
 *                         @theacodes
 
@@ -33,22 +33,6 @@ monitoring/*              @waprin @supriyagarg @rimey
 docs/monitoring/*         @waprin @supriyagarg @rimey
 logging/*                 @waprin @tseaver
 docs/logging/*            @waprin @tseaver
-
-# Luke Sneeringer is the primary author of the ML API clients.
-language/*                @theacodes
-docs/language/*           @theacodes
-speech/*                  @theacodes
-docs/speech/*             @theacodes
-translate/*               @theacodes
-docs/translate/*          @theacodes
-videointelligence/*       @theacodes
-docs/videointelligence/*  @theacodes
-vision/*                  @theacodes
-docs/vision/*             @theacodes
-
-# Luke Sneeringer is the primary author of Pub/Sub.
-pubsub/*                  @theacodes
-docs/pubsub/*             @theacodes
 
 # Danny Hermes is the primary author of resource manager
 resourcemanager/*         @dhermes

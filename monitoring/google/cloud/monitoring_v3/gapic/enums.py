@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class ComparisonType(object):
+
+class ComparisonType(enum.IntEnum):
     """
     Specifies an ordering relationship on two arguments, here called left and
     right.
@@ -37,7 +39,7 @@ class ComparisonType(object):
     COMPARISON_NE = 6
 
 
-class ServiceTier(object):
+class ServiceTier(enum.IntEnum):
     """
     The tier of service for a Stackdriver account. Please see the
     `service tiers documentation <https://cloud.google.com/monitoring/accounts/tiers>`_
@@ -60,7 +62,7 @@ class ServiceTier(object):
     SERVICE_TIER_PREMIUM = 2
 
 
-class UptimeCheckRegion(object):
+class UptimeCheckRegion(enum.IntEnum):
     """
     The regions from which an uptime check can be run.
 
@@ -81,7 +83,7 @@ class UptimeCheckRegion(object):
     ASIA_PACIFIC = 4
 
 
-class GroupResourceType(object):
+class GroupResourceType(enum.IntEnum):
     """
     The supported resource types that can be used as values of
     group_resource.resource_type. gae_app and uptime_url are not allowed
@@ -98,7 +100,7 @@ class GroupResourceType(object):
 
 
 class LabelDescriptor(object):
-    class ValueType(object):
+    class ValueType(enum.IntEnum):
         """
         Value types that can be used as label values.
 
@@ -113,7 +115,7 @@ class LabelDescriptor(object):
 
 
 class Aggregation(object):
-    class Aligner(object):
+    class Aligner(enum.IntEnum):
         """
         The Aligner describes how to bring the data points in a single
         time series into temporal alignment.
@@ -251,7 +253,7 @@ class Aggregation(object):
         ALIGN_PERCENTILE_05 = 21
         ALIGN_PERCENT_CHANGE = 23
 
-    class Reducer(object):
+    class Reducer(enum.IntEnum):
         """
         A Reducer describes how to aggregate data points from multiple
         time series into a single time series.
@@ -331,7 +333,7 @@ class Aggregation(object):
 
 
 class NotificationChannel(object):
-    class VerificationStatus(object):
+    class VerificationStatus(enum.IntEnum):
         """
         Indicates whether the channel has been verified or not. It is illegal
         to specify this field in a
@@ -358,7 +360,7 @@ class NotificationChannel(object):
 
 
 class AlertPolicy(object):
-    class ConditionCombinerType(object):
+    class ConditionCombinerType(enum.IntEnum):
         """
         Operators for combining conditions.
 
@@ -381,7 +383,7 @@ class AlertPolicy(object):
 
 
 class MetricDescriptor(object):
-    class MetricKind(object):
+    class MetricKind(enum.IntEnum):
         """
         The kind of measurement. It describes how the data is reported.
 
@@ -400,7 +402,7 @@ class MetricDescriptor(object):
         DELTA = 2
         CUMULATIVE = 3
 
-    class ValueType(object):
+    class ValueType(enum.IntEnum):
         """
         The value type of a metric.
 
@@ -425,7 +427,7 @@ class MetricDescriptor(object):
 
 
 class ListTimeSeriesRequest(object):
-    class TimeSeriesView(object):
+    class TimeSeriesView(enum.IntEnum):
         """
         Controls which fields are returned by ``ListTimeSeries``.
 
