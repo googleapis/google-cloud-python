@@ -708,9 +708,9 @@ class _JobConfig(object):
 
             self._get_sub_prop('destinationTable')
 
-        This is equivalent to using the ``_helper.get_sub_prop`` function::
+        This is equivalent to using the ``_helpers._get_sub_prop`` function::
 
-            _helper.get_sub_prop(
+            _helpers._get_sub_prop(
                 self._properties, ['query', 'destinationTable'])
 
         Arguments:
@@ -724,7 +724,7 @@ class _JobConfig(object):
         Returns:
             object: The value if present or the default.
         """
-        return _helpers.get_sub_prop(
+        return _helpers._get_sub_prop(
             self._properties, [self._job_type, key], default=default)
 
     def _set_sub_prop(self, key, value):
@@ -736,9 +736,9 @@ class _JobConfig(object):
 
             self._set_sub_prop('useLegacySql', False)
 
-        This is equivalent to using the ``_helper.set_sub_prop`` function::
+        This is equivalent to using the ``_helper._set_sub_prop`` function::
 
-            _helper.set_sub_prop(
+            _helper._set_sub_prop(
                 self._properties, ['query', 'useLegacySql'], False)
 
         Arguments:
@@ -747,7 +747,7 @@ class _JobConfig(object):
                  dictionary.
             value (object): Value to set.
         """
-        _helpers.set_sub_prop(self._properties, [self._job_type, key], value)
+        _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
 
     def to_api_repr(self):
         """Build an API representation of the job config.
@@ -964,7 +964,7 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
         """
-        schema = _helpers.get_sub_prop(
+        schema = _helpers._get_sub_prop(
             self._properties, ['load', 'schema', 'fields'])
         if schema is None:
             return
@@ -974,7 +974,7 @@ class LoadJobConfig(_JobConfig):
     def schema(self, value):
         if not all(hasattr(field, 'to_api_repr') for field in value):
             raise ValueError('Schema items must be fields')
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             self._properties,
             ['load', 'schema', 'fields'],
             [field.to_api_repr() for field in value])
@@ -1241,9 +1241,9 @@ class LoadJob(_AsyncJob):
         """Generate a resource for :meth:`begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
-            _helpers.set_sub_prop(
+            _helpers._set_sub_prop(
                 configuration, ['load', 'sourceUris'], self.source_uris)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['load', 'destinationTable'],
             self.destination.to_api_repr())
@@ -1284,7 +1284,7 @@ class LoadJob(_AsyncJob):
             dest_config['projectId'], dest_config['datasetId'])
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
-        source_uris = _helpers.get_sub_prop(
+        source_uris = _helpers._get_sub_prop(
             config_resource, ['load', 'sourceUris'])
         job_ref = _JobReference._from_api_repr(resource['jobReference'])
         job = cls(job_ref, source_uris, destination, client, config)
@@ -1423,9 +1423,9 @@ class CopyJob(_AsyncJob):
         } for table in self.sources]
 
         configuration = self._configuration.to_api_repr()
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration, ['copy', 'sourceTables'], source_refs)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['copy', 'destinationTable'],
             {
@@ -1641,9 +1641,9 @@ class ExtractJob(_AsyncJob):
         }
 
         configuration = self._configuration.to_api_repr()
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration, ['extract', 'sourceTable'], source_ref)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['extract', 'destinationUris'],
             self.destination_uris)
@@ -1678,12 +1678,12 @@ class ExtractJob(_AsyncJob):
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = ExtractJobConfig.from_api_repr(config_resource)
-        source_config = _helpers.get_sub_prop(
+        source_config = _helpers._get_sub_prop(
             config_resource, ['extract', 'sourceTable'])
         dataset = DatasetReference(
             source_config['projectId'], source_config['datasetId'])
         source = dataset.table(source_config['tableId'])
-        destination_uris = _helpers.get_sub_prop(
+        destination_uris = _helpers._get_sub_prop(
             config_resource, ['extract', 'destinationUris'])
 
         job = cls(
@@ -2217,7 +2217,7 @@ class QueryJob(_AsyncJob):
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
-        self.query = _helpers.get_sub_prop(configuration, ['query', 'query'])
+        self.query = _helpers._get_sub_prop(configuration, ['query', 'query'])
 
     @classmethod
     def from_api_repr(cls, resource, client):
