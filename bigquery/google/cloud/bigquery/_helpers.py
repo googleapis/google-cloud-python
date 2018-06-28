@@ -330,50 +330,6 @@ def _snake_to_camel_case(value):
     return words[0] + ''.join(map(str.capitalize, words[1:]))
 
 
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
-    """
-    from google.cloud.bigquery import Row
-
-    return Row(_row_tuple_from_json(resource, iterator.schema),
-               iterator._field_to_index)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator._total_rows = total_rows
-# pylint: enable=unused-argument
-
-
 def _should_retry(exc):
     """Predicate for determining when to retry.
 
