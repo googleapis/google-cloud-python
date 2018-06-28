@@ -400,6 +400,27 @@ class Test_record_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
 
+class Test_field_to_index_mapping(unittest.TestCase):
+
+    def _call_fut(self, schema):
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        return _field_to_index_mapping(schema)
+
+    def test_w_empty_schema(self):
+        self.assertEqual(self._call_fut([]), {})
+
+    def test_w_non_empty_schema(self):
+        schema = [
+            _Field('REPEATED', 'first', 'INTEGER'),
+            _Field('REQUIRED', 'second', 'INTEGER'),
+            _Field('REPEATED', 'third', 'INTEGER'),
+        ]
+        self.assertEqual(
+            self._call_fut(schema),
+            {'first': 0, 'second': 1, 'third': 2})
+
+
 class Test_row_tuple_from_json(unittest.TestCase):
 
     def _call_fut(self, row, schema):
