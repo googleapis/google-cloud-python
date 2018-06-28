@@ -355,7 +355,7 @@ pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
 """
 
 
-def get_sub_prop(container, keys, default=None):
+def _get_sub_prop(container, keys, default=None):
     """Get a nested value from a dictionary.
 
     This method works like ``dict.get(key)``, but for nested values.
@@ -375,18 +375,18 @@ def get_sub_prop(container, keys, default=None):
     Examples:
         Get a top-level value (equivalent to ``container.get('key')``).
 
-        >>> get_sub_prop({'key': 'value'}, ['key'])
+        >>> _get_sub_prop({'key': 'value'}, ['key'])
         'value'
 
         Get a top-level value, providing a default (equivalent to
         ``container.get('key', default='default')``).
 
-        >>> get_sub_prop({'nothere': 123}, ['key'], default='not found')
+        >>> _get_sub_prop({'nothere': 123}, ['key'], default='not found')
         'not found'
 
         Get a nested value.
 
-        >>> get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
+        >>> _get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
         'value'
 
     Returns:
@@ -400,7 +400,7 @@ def get_sub_prop(container, keys, default=None):
     return sub_val
 
 
-def set_sub_prop(container, keys, value):
+def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
     Arguments:
@@ -417,21 +417,21 @@ def set_sub_prop(container, keys, value):
         Set a top-level value (equivalent to ``container['key'] = 'value'``).
 
         >>> container = {}
-        >>> set_sub_prop(container, ['key'], 'value')
+        >>> _set_sub_prop(container, ['key'], 'value')
         >>> container
         {'key': 'value'}
 
         Set a nested value.
 
         >>> container = {}
-        >>> set_sub_prop(container, ['key', 'subkey'], 'value')
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'value')
         >>> container
         {'key': {'subkey': 'value'}}
 
         Replace a nested value.
 
         >>> container = {'key': {'subkey': 'prev'}}
-        >>> set_sub_prop(container, ['key', 'subkey'], 'new')
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'new')
         >>> container
         {'key': {'subkey': 'new'}}
     """
