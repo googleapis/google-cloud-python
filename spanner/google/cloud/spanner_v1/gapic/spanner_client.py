@@ -31,9 +31,17 @@ from google.cloud.spanner_v1.proto import mutation_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
 from google.cloud.spanner_v1.proto import transaction_pb2
 from google.protobuf import struct_pb2
+from google.protobuf import text_format
+
+try:
+    import grpc_gcp
+    HAS_GRPC_GCP = True
+except ImportError:
+    HAS_GRPC_GCP = False
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-spanner', ).version
+_SPANNER_GRPC_CONFIG = 'spanner.grpc.config'
 
 
 class SpannerClient(object):
@@ -113,10 +121,22 @@ class SpannerClient(object):
 
         # Create the channel.
         if channel is None:
+            options = None
+
+            if HAS_GRPC_GCP:
+                # Initialize grpc gcp config for spanner api.
+                grpc_gcp_config = grpc_gcp.proto.grpc_gcp_pb2.ApiConfig()
+                text_format.Merge(
+                    pkg_resources.resource_string(__name__, _SPANNER_GRPC_CONFIG),
+                    grpc_gcp_config
+                )
+                options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
+
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
+                options=options,
             )
 
         # Create the gRPC stubs.

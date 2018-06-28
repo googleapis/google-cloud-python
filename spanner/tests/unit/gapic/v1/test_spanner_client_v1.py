@@ -13,6 +13,7 @@
 # limitations under the License.
 """Unit tests."""
 
+import mock
 import pytest
 
 # Manual edit to auto-generated import because we do not expose the
@@ -25,6 +26,11 @@ from google.cloud.spanner_v1.proto import spanner_pb2
 from google.cloud.spanner_v1.proto import transaction_pb2
 from google.protobuf import empty_pb2
 
+try:
+    import grpc_gcp
+    HAS_GRPC_GCP = True
+except ImportError:
+    HAS_GRPC_GCP = False
 
 class MultiCallableStub(object):
     """Stub for the grpc.UnaryUnaryMultiCallable interface."""
@@ -554,3 +560,20 @@ class TestSpannerClient(object):
 
         with pytest.raises(CustomException):
             client.partition_read(session, table, key_set)
+
+    @pytest.mark.skipif(not HAS_GRPC_GCP,
+                        reason='grpc_gcp module not available')
+    @mock.patch('google.protobuf.text_format.Merge')
+    @mock.patch('grpc_gcp.proto.grpc_gcp_pb2.ApiConfig',
+                return_value=mock.sentinel.api_config)
+    @mock.patch('grpc_gcp.secure_channel')
+    def test_client_with_grpc_gcp_channel(self,
+                                          grpc_gcp_secure_channel,
+                                          api_config,
+                                          merge):
+        spanner_target = 'spanner.googleapis.com:443'
+        client = spanner_v1.SpannerClient()
+        merge.assert_called_once_with(mock.ANY, mock.sentinel.api_config)
+        options = [('grpc_gcp.api_config', mock.sentinel.api_config)]
+        grpc_gcp_secure_channel.assert_called_once_with(
+            spanner_target, mock.ANY, options=options)
