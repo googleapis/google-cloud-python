@@ -378,15 +378,14 @@ def _should_retry(exc):
     """Predicate for determining when to retry.
 
     We retry if and only if the 'reason' is 'backendError'
-    or 'rateLimitExceeded'.
+    or 'rateLimitExceeded' or 'internalError'.
     """
-    if not hasattr(exc, 'errors'):
-        return False
-    if len(exc.errors) == 0:
-        return False
-    reason = exc.errors[0]['reason']
-    return reason == 'backendError' or reason == 'rateLimitExceeded'
+    if hasattr(exc, 'errors') and len(exc.errors) > 0:
+        reason = exc.errors[0]['reason']
+        if reason in ['backendError', 'rateLimitExceeded', 'internalError']:
+            return True
 
+    return False
 
 def get_sub_prop(container, keys, default=None):
     """Get a nested value from a dictionary.
