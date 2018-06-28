@@ -839,6 +839,31 @@ class Test_should_retry(unittest.TestCase):
         self.assertTrue(self._call_fut(exc))
 
 
+class Test__get_sub_prop(unittest.TestCase):
+
+    def _call_fut(self, container, keys, **kw):
+        from google.cloud.bigquery._helpers import _get_sub_prop
+
+        return _get_sub_prop(container, keys, **kw)
+
+    def test_w_empty_container_default_default(self):
+        self.assertIsNone(self._call_fut({}, ['key1']))
+
+    def test_w_missing_key_explicit_default(self):
+        self.assertEqual(self._call_fut({'key2': 2}, ['key1'], default=1), 1)
+
+    def test_w_matching_single_key(self):
+        self.assertEqual(self._call_fut({'key1': 1}, ['key1']), 1)
+
+    def test_w_matching_first_key_missing_second_key(self):
+        self.assertIsNone(
+            self._call_fut({'key1': {'key3': 3}}, ['key1', 'key2']))
+
+    def test_w_matching_first_key_matching_second_key(self):
+        self.assertEqual(
+            self._call_fut({'key1': {'key2': 2}}, ['key1', 'key2']), 2)
+
+
 class Test__int_or_none(unittest.TestCase):
 
     def _call_fut(self, value):
