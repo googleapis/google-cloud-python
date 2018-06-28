@@ -344,6 +344,17 @@ def _should_retry(exc):
     return reason == 'backendError' or reason == 'rateLimitExceeded'
 
 
+DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
+"""The default retry object.
+
+Any method with a ``retry`` parameter will be retried automatically,
+with reasonable defaults. To disable retry, pass ``retry=None``.
+To modify the default retry behavior, call a ``with_XXX`` method
+on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
+pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+"""
+
+
 def get_sub_prop(container, keys, default=None):
     """Get a nested value from a dictionary.
 
@@ -430,17 +441,6 @@ def set_sub_prop(container, keys, value):
             sub_val[key] = {}
         sub_val = sub_val[key]
     sub_val[keys[-1]] = value
-
-
-DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
-"""The default retry object.
-
-Any method with a ``retry`` parameter will be retried automatically,
-with reasonable defaults. To disable retry, pass ``retry=None``.
-To modify the default retry behavior, call a ``with_XXX`` method
-on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
-pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
-"""
 
 
 def _int_or_none(value):
