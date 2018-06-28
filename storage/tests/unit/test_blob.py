@@ -1251,8 +1251,7 @@ class Test_Blob(unittest.TestCase):
         self.assertGreater(size, len(data))
 
         with self.assertRaises(ValueError) as exc_info:
-            blob._do_multipart_upload(None, stream, None, size, None, None,
-                None)
+            blob._do_multipart_upload(None, stream, None, size, None, None, None)
 
         exc_contents = str(exc_info.exception)
         self.assertIn(
@@ -1294,8 +1293,8 @@ class Test_Blob(unittest.TestCase):
         content_type = u'text/plain'
         upload, transport = blob._initiate_resumable_upload(
             client, stream, content_type, size, num_retries,
-            extra_headers=extra_headers,
-            chunk_size=chunk_size, predefined_acl=predefined_acl)
+            chunk_size=chunk_size, predefined_acl=predefined_acl,
+            extra_headers=extra_headers)
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
@@ -1625,14 +1624,14 @@ class Test_Blob(unittest.TestCase):
 
     def test_upload_from_file_success(self):
         stream = self._upload_from_file_helper(
-            predefined_acl='private', extra_headers={})
+            predefined_acl='private', extra_headers={'X-Goog-Testing': 'true'})
         assert stream.tell() == 2
 
     @mock.patch('warnings.warn')
     def test_upload_from_file_with_retries(self, mock_warn):
         from google.cloud.storage import blob as blob_module
 
-        self._upload_from_file_helper(num_retries=20, extra_headers={})
+        self._upload_from_file_helper(num_retries=20)
         mock_warn.assert_called_once_with(
             blob_module._NUM_RETRIES_MESSAGE, DeprecationWarning)
 
@@ -1665,7 +1664,7 @@ class Test_Blob(unittest.TestCase):
         mock_call = blob._do_upload.mock_calls[0]
         call_name, pos_args, kwargs = mock_call
         self.assertEqual(call_name, '')
-        self.assertEqual(len(pos_args), 6)
+        self.assertEqual(len(pos_args), 7)
         self.assertEqual(pos_args[0], client)
         self.assertEqual(pos_args[2], content_type)
         self.assertEqual(pos_args[3], size)

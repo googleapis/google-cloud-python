@@ -1038,7 +1038,8 @@ class Blob(_PropertyMixin):
 
         :type extra_headers: dict or ``NoneType``
         :param extra_headers: (Optional) Extension (Custom) http headers
-                              configurations
+                              configurations. See:
+                              https://cloud.google.com/storage/docs/json_api/v1/parameters
 
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
@@ -1057,7 +1058,7 @@ class Blob(_PropertyMixin):
             created_json = self._do_upload(
                 client, file_obj, content_type,
                 size, num_retries, predefined_acl,
-                extra_headers)
+                extra_headers=extra_headers)
             self._set_properties(created_json)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
@@ -1103,7 +1104,8 @@ class Blob(_PropertyMixin):
 
         :type extra_headers: dict or ``NoneType``
         :param extra_headers: (Optional) Extension (Custom) http headers
-                              configurations
+                              configurations. See:
+                              https://cloud.google.com/storage/docs/json_api/v1/parameters
         """
         content_type = self._get_content_type(content_type, filename=filename)
 
@@ -1150,7 +1152,8 @@ class Blob(_PropertyMixin):
 
         :type extra_headers: dict or ``NoneType``
         :param extra_headers: (Optional) Extension (Custom) http headers
-                              configurations
+                              configurations. See:
+                              https://cloud.google.com/storage/docs/json_api/v1/parameters
         """
         data = _to_bytes(data, encoding='utf-8')
         string_buffer = BytesIO(data)
