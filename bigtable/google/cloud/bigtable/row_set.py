@@ -20,6 +20,7 @@ from google.cloud._helpers import _to_bytes
 
 class RowSet(object):
     """ Convenience wrapper of google.bigtable.v2.RowSet
+
         Useful for creating a set of row keys and row ranges, which can
         be passed to yield_rows method of class:`.Table.yield_rows`.
     """
@@ -67,7 +68,8 @@ class RowRange(object):
 
     :type end_key: bytes
     :param end_key: (Optional) End key of the row range. If left empty,
-                    will be interpreted as the infinite string.
+                    will be interpreted as the empty string and range will
+                    be unbounded on the high end.
 
     :type start_inclusive: bool
     :param start_inclusive: (Optional) Whether the ``start_key`` should be
