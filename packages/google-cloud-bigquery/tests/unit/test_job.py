@@ -57,23 +57,6 @@ def _make_connection(*responses):
     return mock_conn
 
 
-class Test__int_or_none(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigquery import job
-
-        return job._int_or_none(*args, **kwargs)
-
-    def test_w_int(self):
-        self.assertEqual(self._call_fut(13), 13)
-
-    def test_w_none(self):
-        self.assertIsNone(self._call_fut(None))
-
-    def test_w_str(self):
-        self.assertEqual(self._call_fut('13'), 13)
-
-
 class Test__error_result_to_exception(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
