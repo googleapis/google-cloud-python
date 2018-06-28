@@ -387,6 +387,7 @@ def _should_retry(exc):
 
     return False
 
+
 def get_sub_prop(container, keys, default=None):
     """Get a nested value from a dictionary.
 
