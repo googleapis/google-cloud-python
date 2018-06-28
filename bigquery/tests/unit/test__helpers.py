@@ -17,8 +17,6 @@ import datetime
 import decimal
 import unittest
 
-import mock
-
 
 class Test_not_null(unittest.TestCase):
 
@@ -807,36 +805,6 @@ class Test_snake_to_camel_case(unittest.TestCase):
 
     def test_w_camel_case_string(self):
         self.assertEqual(self._call_fut('friendlyName'), 'friendlyName')
-
-
-class Test_should_retry(unittest.TestCase):
-
-    def _call_fut(self, exc):
-        from google.cloud.bigquery._helpers import _should_retry
-
-        return _should_retry(exc)
-
-    def test_wo_errors_attribute(self):
-        self.assertFalse(self._call_fut(object()))
-
-    def test_w_empty_errors(self):
-        exc = mock.Mock(errors=[], spec=['errors'])
-        self.assertFalse(self._call_fut(exc))
-
-    def test_w_non_matching_reason(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'bogus'}], spec=['errors'])
-        self.assertFalse(self._call_fut(exc))
-
-    def test_w_backendError(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'backendError'}], spec=['errors'])
-        self.assertTrue(self._call_fut(exc))
-
-    def test_w_rateLimitExceeded(self):
-        exc = mock.Mock(
-            errors=[{'reason': 'rateLimitExceeded'}], spec=['errors'])
-        self.assertTrue(self._call_fut(exc))
 
 
 class Test__get_sub_prop(unittest.TestCase):
