@@ -196,8 +196,6 @@ class Table(object):
             table_client.get_table(name=self.name)
         except NotFound:
             return False
-        except StopIteration:
-            return False
         else:
             return True
 
