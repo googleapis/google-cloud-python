@@ -1102,7 +1102,8 @@ def test_manage_views(client, to_delete):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # project = 'my-project'
-    # source_dataset_ref = client.dataset('my_source_dataset')
+    # source_dataset_id = 'my_source_dataset'
+    # source_table_id = 'us_states'
     # shared_dataset_ref = client.dataset('my_shared_dataset')
 
     # This example shows how to create a shared view of a source table of
@@ -1123,7 +1124,8 @@ def test_manage_views(client, to_delete):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # project = 'my-project'
-    # source_dataset_ref = client.dataset('my_source_dataset')
+    # source_dataset_id = 'my_source_dataset'
+    # source_table_id = 'us_states'
     # shared_dataset_ref = client.dataset('my_shared_dataset')
 
     # This example shows how to update a shared view of a source table of

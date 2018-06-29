@@ -36,7 +36,6 @@ from google.cloud import bigtable_admin_v2
 
 from google.cloud.bigtable import __version__
 from google.cloud.bigtable.instance import Instance
-from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 
 from google.cloud.client import ClientWithProject
 
@@ -196,17 +195,11 @@ class Client(ClientWithProject):
 
         return self._instance_admin_client
 
-    def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
-                 display_name=None):
+    def instance(self, instance_id, display_name=None):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
         :param instance_id: The ID of the instance.
-
-        :type location: str
-        :param location: location name, in form
-                         ``projects/<project>/locations/<location>``; used to
-                         set up the instance's cluster.
 
         :type display_name: str
         :param display_name: (Optional) The display name for the instance in
@@ -217,7 +210,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, location, display_name=display_name)
+        return Instance(instance_id, self, display_name=display_name)
 
     def list_instances(self):
         """List instances owned by the project.

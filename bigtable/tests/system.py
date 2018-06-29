@@ -84,7 +84,7 @@ def setUpModule():
     else:
         Config.CLIENT = Client(admin=True)
 
-    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
+    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
@@ -97,7 +97,7 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances_response.instances
 
         # After listing, create the test instance.
-        created_op = Config.INSTANCE.create()
+        created_op = Config.INSTANCE.create(location_id=LOCATION_ID)
         created_op.result(timeout=10)
 
 
@@ -131,7 +131,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
+        instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -140,8 +140,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_create_instance(self):
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
-        operation = instance.create()
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        operation = instance.create(location_id=LOCATION_ID)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
@@ -149,7 +149,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation.result(timeout=10)
 
         # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
         instance_alt.reload()
 
         self.assertEqual(instance, instance_alt)
@@ -162,7 +162,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.update()
 
         # Create a new instance instance and reload it.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID, None)
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID)
         self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
         instance_alt.reload()
         self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)

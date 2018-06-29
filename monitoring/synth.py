@@ -23,34 +23,13 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
-# tasks has two product names, and a poorly named artman yaml
-v2beta2_library = gapic.py_library(
-    'tasks', 'v2beta2',
-    config_path='artman_cloudtasks.yaml')
+v3_library = gapic.py_library(
+    'monitoring', 'v3',
+    config_path='/google/monitoring/artman_monitoring.yaml',
+    artman_output_name='monitoring-v3')
 
-s.copy(v2beta2_library)
-
-# Set Release Status
-release_status = 'Development Status :: 3 - Alpha'
-s.replace('setup.py',
-          '(release_status = )(.*)$',
-          f"\\1'{release_status}'")
-
-# Add Dependencies
-s.replace('setup.py',
-          'dependencies = \[\n*(^.*,\n)+',
-          "\\g<0>    'grpc-google-iam-v1<0.12dev,>=0.11.4',\n")
-
-# Correct Naming of package
-s.replace('**/*.rst',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('**/*.py',
-          'google-cloud-cloud-tasks',
-          'google-cloud-tasks')
-s.replace('README.rst',
-          '/cloud-tasks',
-          '/tasks')
+# don't copy setup.py, README.rst, docs/index.rst
+s.copy(v3_library, excludes=['setup.py', 'README.rst', 'docs/index.rst'])
 
 # Correct calls to routing_header
 # https://github.com/googleapis/gapic-generator/issues/2016
@@ -82,41 +61,32 @@ s.replace(
     "\g<1>    \g<2>\g<3>    \g<4>\g<5>\g<6>    \g<7>"
 )
 
+# Issues exist where python files should defined the source encoding
+# https://github.com/googleapis/gapic-generator/issues/2097
+files = ['google/cloud/monitoring_v3/proto/common_pb2.py']
+for f in files:
+    s.replace(f, r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
-# fix the combined shared/local modules. 
-# https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5364
-# https://github.com/googleapis/gapic-generator/issues/2058
+# monitoring unit tests require mock
+s.replace("nox.py",
+          "(def unit\(session, py\):\n(.*\n)*?\s+)session.install\('pytest'\)",
+          "\g<1>session.install('pytest', 'mock')")
+
+
+# GAPIC-Generator is mangling some docstrings
+# Missing blank line after bulleted list
 s.replace(
-    "google/cloud/*/types.py",
-    "for module in \(\n(.*\n)*?\):\n(    .*\n)+",
-    """_shared_modules = [
-    http_pb2,
-    iam_policy_pb2,
-    policy_pb2,
-    any_pb2,
-    descriptor_pb2,
-    duration_pb2,
-    empty_pb2,
-    field_mask_pb2,
-    timestamp_pb2,
-    status_pb2,
-]
+    "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py",
+    'then a new `\[CONDITION_ID\]` is created.\n',
+    '\g<0>\n')
 
-_local_modules = [
-    cloudtasks_pb2,
-    queue_pb2,
-    target_pb2,
-    task_pb2,
-]
+s.replace(
+    "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py",
+    '                ::\n\n',
+    '')
 
-for module in _shared_modules:
-    for name, message in get_messages(module).items():
-        setattr(sys.modules[__name__], name, message)
-        names.append(name)
-
-for module in _local_modules:
-    for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.tasks_v2beta2.types'
-        setattr(sys.modules[__name__], name, message)
-        names.append(name)
-""")
+s.replace(
+    "google/cloud/monitoring_v3/proto/metric_service_pb2.py",
+    '^(\s+)have an ``id`` label:  ::      resource.type =\n.*',
+    '\g<1>have an ``id`` label::\n\n'
+    '\g<1>    resource.type = starts_with("gce_") AND resource.label:id\n')
