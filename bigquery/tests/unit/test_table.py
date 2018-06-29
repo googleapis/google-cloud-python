@@ -398,6 +398,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.external_data_configuration)
         self.assertEquals(table.labels, {})
         self.assertIsNone(table.encryption_configuration)
+        self.assertIsNone(table.time_partitioning)
+        self.assertIsNone(table.clustering_fields)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -863,6 +865,36 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.partitioning_type, 'DAY')
 
         assert warn_patch.called
+
+    def test_clustering_fields_setter_w_fields(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        fields = ['email', 'phone']
+
+        table.clustering_fields = fields
+        self.assertEqual(table.clustering_fields, fields)
+        self.assertEqual(table._properties['clustering'], {'fields': fields})
+
+    def test_clustering_fields_setter_w_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        fields = ['email', 'phone']
+
+        table._properties['clustering'] = {'fields': fields}
+        table.clustering_fields = None
+        self.assertEqual(table.clustering_fields, None)
+        self.assertFalse('clustering' in table._properties)
+
+    def test_clustering_fields_setter_w_none_noop(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table.clustering_fields = None
+        self.assertEqual(table.clustering_fields, None)
+        self.assertFalse('clustering' in table._properties)
 
     def test_encryption_configuration_setter(self):
         from google.cloud.bigquery.table import EncryptionConfiguration

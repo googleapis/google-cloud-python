@@ -69,6 +69,19 @@ SCHEMA = [
     bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
     bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
 ]
+TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
+    bigquery.SchemaField('transaction_time', 'TIMESTAMP', mode='REQUIRED'),
+    bigquery.SchemaField('transaction_id', 'INTEGER', mode='REQUIRED'),
+    bigquery.SchemaField('user_email', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField('store_code', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField(
+        'items', 'RECORD', mode='REPEATED', fields=[
+            bigquery.SchemaField('item_code', 'STRING', mode='REQUIRED'),
+            bigquery.SchemaField('quantity', 'INTEGER', mode='REQUIRED'),
+            bigquery.SchemaField('comments', 'STRING', mode='NULLABLE'),
+            bigquery.SchemaField('expiration_date', 'DATE', mode='REQUIRED'),
+        ]),
+]
 
 
 def _has_rows(result):
@@ -244,6 +257,31 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
+
+    def test_create_table_w_time_partitioning_w_clustering_fields(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        dataset = self.temp_dataset(_make_dataset_id('create_table_tp_cf'))
+        table_id = 'test_table'
+        table_arg = Table(
+            dataset.table(table_id),
+            schema=TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA)
+        self.assertFalse(_table_exists(table_arg))
+
+        table_arg.time_partitioning = TimePartitioning(
+            field='transaction_time')
+
+        table_arg.clustering_fields = ['user_email', 'store_code']
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        self.assertTrue(_table_exists(table))
+        self.assertEqual(table.table_id, table_id)
+        time_partitioning = table.time_partitioning
+        self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(time_partitioning.field, 'transaction_time')
+        self.assertEqual(table.clustering_fields, ['user_email', 'store_code'])
 
     def test_delete_dataset_delete_contents_true(self):
         dataset_id = _make_dataset_id('delete_table_true')
