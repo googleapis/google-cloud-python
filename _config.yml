@@ -1,3 +1,0 @@
-plugins:
-  - jekyll-redirect-from
-include: [_landing-page-static]
