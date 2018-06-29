@@ -1,0 +1,2885 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Stackdriver Monitoring API Client &#8212; google-cloud 71fa0b86ec documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Stackdriver Logging" href="../../../logging/usage.html" />
+    <link rel="prev" title="Client for Stackdriver Monitoring API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.monitoring_v3.types">
+<span id="types-for-stackdriver-monitoring-api-client"></span><h1>Types for Stackdriver Monitoring API Client<a class="headerlink" href="#module-google.cloud.monitoring_v3.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Aggregation">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Aggregation</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Aggregation" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes how to combine multiple time series to provide different views
+of the data. Aggregation consists of an alignment step on individual
+time series (<code class="docutils literal notranslate"><span class="pre">alignment_period</span></code> and <code class="docutils literal notranslate"><span class="pre">per_series_aligner</span></code>) followed
+by an optional reduction step of the data across the aligned time series
+(<code class="docutils literal notranslate"><span class="pre">cross_series_reducer</span></code> and <code class="docutils literal notranslate"><span class="pre">group_by_fields</span></code>). For more details,
+see <a class="reference external" href="/monitoring/api/learn_more#aggregation">Aggregation</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Aggregation.alignment_period">
+<code class="descname">alignment_period</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Aggregation.alignment_period" title="Permalink to this definition">#</a></dt>
+<dd><p>The alignment period for per-[time
+series][google.monitoring.v3.TimeSeries] alignment. If
+present, <code class="docutils literal notranslate"><span class="pre">alignmentPeriod</span></code> must be at least 60 seconds.
+After per-time series alignment, each time series will contain
+data points only on the period boundaries. If
+<code class="docutils literal notranslate"><span class="pre">perSeriesAligner</span></code> is not specified or equals
+<code class="docutils literal notranslate"><span class="pre">ALIGN_NONE</span></code>, then this field is ignored. If
+<code class="docutils literal notranslate"><span class="pre">perSeriesAligner</span></code> is specified and does not equal
+<code class="docutils literal notranslate"><span class="pre">ALIGN_NONE</span></code>, then this field must be defined; otherwise an
+error is returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Aggregation.per_series_aligner">
+<code class="descname">per_series_aligner</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Aggregation.per_series_aligner" title="Permalink to this definition">#</a></dt>
+<dd><p>The approach to be used to align individual time series. Not
+all alignment functions may be applied to all time series,
+depending on the metric type and value type of the original
+time series. Alignment may change the metric type or the value
+type of the time series.  Time series data must be aligned in
+order to perform cross-time series reduction. If
+<code class="docutils literal notranslate"><span class="pre">crossSeriesReducer</span></code> is specified, then <code class="docutils literal notranslate"><span class="pre">perSeriesAligner</span></code>
+must be specified and not equal <code class="docutils literal notranslate"><span class="pre">ALIGN_NONE</span></code> and
+<code class="docutils literal notranslate"><span class="pre">alignmentPeriod</span></code> must be specified; otherwise, an error is
+returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Aggregation.cross_series_reducer">
+<code class="descname">cross_series_reducer</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Aggregation.cross_series_reducer" title="Permalink to this definition">#</a></dt>
+<dd><p>The approach to be used to combine time series. Not all
+reducer functions may be applied to all time series, depending
+on the metric type and the value type of the original time
+series. Reduction may change the metric type of value type of
+the time series.  Time series data must be aligned in order to
+perform cross-time series reduction. If <code class="docutils literal notranslate"><span class="pre">crossSeriesReducer</span></code>
+is specified, then <code class="docutils literal notranslate"><span class="pre">perSeriesAligner</span></code> must be specified and
+not equal <code class="docutils literal notranslate"><span class="pre">ALIGN_NONE</span></code> and <code class="docutils literal notranslate"><span class="pre">alignmentPeriod</span></code> must be
+specified; otherwise, an error is returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Aggregation.group_by_fields">
+<code class="descname">group_by_fields</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Aggregation.group_by_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of fields to preserve when <code class="docutils literal notranslate"><span class="pre">crossSeriesReducer</span></code> is
+specified. The <code class="docutils literal notranslate"><span class="pre">groupByFields</span></code> determine how the time series
+are partitioned into subsets prior to applying the aggregation
+function. Each subset contains time series that have the same
+value for each of the grouping fields. Each individual time
+series is a member of exactly one subset. The
+<code class="docutils literal notranslate"><span class="pre">crossSeriesReducer</span></code> is applied to each subset of time
+series. It is not possible to reduce across different resource
+types, so this field implicitly contains <code class="docutils literal notranslate"><span class="pre">resource.type</span></code>.
+Fields not specified in <code class="docutils literal notranslate"><span class="pre">groupByFields</span></code> are aggregated away.
+If <code class="docutils literal notranslate"><span class="pre">groupByFields</span></code> is not specified and all the time series
+have the same resource type, then the time series are
+aggregated into a single output time series. If
+<code class="docutils literal notranslate"><span class="pre">crossSeriesReducer</span></code> is not defined, this field is ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">AlertPolicy</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>A description of the conditions under which some aspect of your system
+is considered to be “unhealthy” and the ways to notify people or
+services about this state. For an overview of alert policies, see
+<a class="reference external" href="/monitoring/alerts/">Introduction to Alerting</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required if the policy exists. The resource name for this
+policy. The syntax is:  ::
+projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
+<code class="docutils literal notranslate"><span class="pre">[ALERT_POLICY_ID]</span></code> is assigned by Stackdriver Monitoring
+when the policy is created. When calling the [alertPolicies.cr
+eate][google.monitoring.v3.AlertPolicyService.CreateAlertPolic
+y] method, do not include the <code class="docutils literal notranslate"><span class="pre">name</span></code> field in the alerting
+policy passed as part of the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A short name or phrase used to identify the policy in
+dashboards, notifications, and incidents. To avoid confusion,
+don’t use the same display name for multiple policies in the
+same project. The name is limited to 512 Unicode characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.documentation">
+<code class="descname">documentation</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.documentation" title="Permalink to this definition">#</a></dt>
+<dd><p>Documentation that is included with notifications and
+incidents related to this policy. Best practice is for the
+documentation to include information to help responders
+understand, mitigate, escalate, and correct the underlying
+problems detected by the alerting policy. Notification
+channels that have limited capacity might not show this
+documentation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.user_labels">
+<code class="descname">user_labels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.user_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>User-supplied key/value data to be used for organizing and
+identifying the <code class="docutils literal notranslate"><span class="pre">AlertPolicy</span></code> objects.  The field can
+contain up to 64 entries. Each key and value is limited to 63
+Unicode characters or 128 bytes, whichever is smaller. Labels
+and values can contain only lowercase letters, numerals,
+underscores, and dashes. Keys must begin with a letter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.conditions">
+<code class="descname">conditions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of conditions for the policy. The conditions are
+combined by AND or OR according to the <code class="docutils literal notranslate"><span class="pre">combiner</span></code> field. If
+the combined conditions evaluate to true, then an incident is
+created. A policy can have from one to six conditions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.combiner">
+<code class="descname">combiner</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.combiner" title="Permalink to this definition">#</a></dt>
+<dd><p>How to combine the results of multiple conditions to determine
+if an incident should be opened.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether or not the policy is enabled. On write, the default
+interpretation if unset is that the policy is enabled. On
+read, clients should not make any assumption about the state
+if it has not been populated. The field should always be
+populated on List and Get operations, unless a field
+projection has been specified that strips it out.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.notification_channels">
+<code class="descname">notification_channels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.notification_channels" title="Permalink to this definition">#</a></dt>
+<dd><p>Identifies the notification channels to which notifications
+should be sent when incidents are opened or closed or when new
+violations occur on an already opened incident. Each element
+of this array corresponds to the <code class="docutils literal notranslate"><span class="pre">name</span></code> field in each of the
+[<code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code>][google.monitoring.v3.NotificationCha
+nnel] objects that are returned from the [<code class="docutils literal notranslate"><span class="pre">ListNotificationCh</span>
+<span class="pre">annels</span></code>][google.monitoring.v3.NotificationChannelService.List
+NotificationChannels] method. The syntax of the entries in
+this field is:  ::
+projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.creation_record">
+<code class="descname">creation_record</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.creation_record" title="Permalink to this definition">#</a></dt>
+<dd><p>A read-only record of the creation of the alerting policy. If
+provided in a call to create or update, this field will be
+ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.mutation_record">
+<code class="descname">mutation_record</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.mutation_record" title="Permalink to this definition">#</a></dt>
+<dd><p>A read-only record of the most recent change to the alerting
+policy. If provided in a call to create or update, this field
+will be ignored.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition">
+<em class="property">class </em><code class="descname">Condition</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition" title="Permalink to this definition">#</a></dt>
+<dd><p>A condition is a true/false test that determines when an alerting policy
+should open an incident. If a condition evaluates to true, it signifies
+that something is wrong.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required if the condition exists. The unique resource name for
+this condition. Its syntax is:  ::      projects/[PROJECT_ID]/
+alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
+<code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> is assigned by Stackdriver Monitoring when
+the condition is created as part of a new or updated alerting
+policy.  When calling the [alertPolicies.create][google.monito
+ring.v3.AlertPolicyService.CreateAlertPolicy] method, do not
+include the <code class="docutils literal notranslate"><span class="pre">name</span></code> field in the conditions of the requested
+alerting policy. Stackdriver Monitoring creates the condition
+identifiers and includes them in the new policy.  When calling
+the [alertPolicies.update][google.monitoring.v3.AlertPolicySer
+vice.UpdateAlertPolicy] method to update a policy, including a
+condition <code class="docutils literal notranslate"><span class="pre">name</span></code> causes the existing condition to be
+updated. Conditions without names are added to the updated
+policy. Existing conditions are deleted if they are not
+updated.  Best practice is to preserve <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> if
+you make only small changes, such as those to condition
+thresholds, durations, or trigger values. Otherwise, treat the
+change as a new condition and let the existing condition be
+deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A short name or phrase used to identify the condition in
+dashboards, notifications, and incidents. To avoid confusion,
+don’t use the same display name for multiple conditions in the
+same policy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition">
+<code class="descname">condition</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition" title="Permalink to this definition">#</a></dt>
+<dd><p>Only one of the following condition types will be specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition_threshold">
+<code class="descname">condition_threshold</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>A condition that compares a time series against a threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition_absent">
+<code class="descname">condition_absent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.condition_absent" title="Permalink to this definition">#</a></dt>
+<dd><p>A condition that checks that a time series continues to
+receive new data points.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence">
+<em class="property">class </em><code class="descname">MetricAbsence</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence" title="Permalink to this definition">#</a></dt>
+<dd><p>A condition type that checks that monitored resources are reporting
+data. The configuration defines a metric and a set of monitored
+resources. The predicate is considered in violation when a time series
+for the specified metric of a monitored resource does not include any
+data in the specified <code class="docutils literal notranslate"><span class="pre">duration</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference external" href="/monitoring/api/v3/filters">filter</a> that identifies
+which time series should be compared with the threshold.  The
+filter is similar to the one that is specified in the
+<code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code> request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__
+(that call is useful to verify the time series that will be
+retrieved / processed) and must specify the metric type and
+optionally may contain restrictions on resource type, resource
+labels, and metric labels. This field may not exceed 2048
+Unicode characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.aggregations">
+<code class="descname">aggregations</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.aggregations" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the alignment of data points in individual time
+series as well as how to combine the retrieved time series
+together (such as when aggregating multiple streams on each
+resource to a single stream for each resource or when
+aggregating streams across all members of a group of
+resrouces). Multiple aggregations are applied in the order
+specified.  This field is similar to the one in the
+<code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code> request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__.
+It is advisable to use the <code class="docutils literal notranslate"><span class="pre">ListTimeSeries</span></code> method when
+debugging this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.duration">
+<code class="descname">duration</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.duration" title="Permalink to this definition">#</a></dt>
+<dd><p>The amount of time that a time series must fail to report new
+data to be considered failing. Currently, only values that are
+a multiple of a minute–e.g. 60, 120, or 300 seconds–are
+supported. If an invalid value is given, an error will be
+returned. The <code class="docutils literal notranslate"><span class="pre">Duration.nanos</span></code> field is ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.trigger">
+<code class="descname">trigger</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence.trigger" title="Permalink to this definition">#</a></dt>
+<dd><p>The number/percent of time series for which the comparison
+must hold in order for the condition to trigger. If
+unspecified, then the condition will trigger if the comparison
+is true for any of the time series that have been identified
+by <code class="docutils literal notranslate"><span class="pre">filter</span></code> and <code class="docutils literal notranslate"><span class="pre">aggregations</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold">
+<em class="property">class </em><code class="descname">MetricThreshold</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold" title="Permalink to this definition">#</a></dt>
+<dd><p>A condition type that compares a collection of time series against a
+threshold.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference external" href="/monitoring/api/v3/filters">filter</a> that identifies
+which time series should be compared with the threshold.  The
+filter is similar to the one that is specified in the
+<code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code> request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__
+(that call is useful to verify the time series that will be
+retrieved / processed) and must specify the metric type and
+optionally may contain restrictions on resource type, resource
+labels, and metric labels. This field may not exceed 2048
+Unicode characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.aggregations">
+<code class="descname">aggregations</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.aggregations" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the alignment of data points in individual time
+series as well as how to combine the retrieved time series
+together (such as when aggregating multiple streams on each
+resource to a single stream for each resource or when
+aggregating streams across all members of a group of
+resrouces). Multiple aggregations are applied in the order
+specified.  This field is similar to the one in the
+<code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code> request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__.
+It is advisable to use the <code class="docutils literal notranslate"><span class="pre">ListTimeSeries</span></code> method when
+debugging this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.denominator_filter">
+<code class="descname">denominator_filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.denominator_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference external" href="/monitoring/api/v3/filters">filter</a> that identifies a
+time series that should be used as the denominator of a ratio
+that will be compared with the threshold. If a
+<code class="docutils literal notranslate"><span class="pre">denominator_filter</span></code> is specified, the time series specified
+by the <code class="docutils literal notranslate"><span class="pre">filter</span></code> field will be used as the numerator.  The
+filter is similar to the one that is specified in the
+<code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code> request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__
+(that call is useful to verify the time series that will be
+retrieved / processed) and must specify the metric type and
+optionally may contain restrictions on resource type, resource
+labels, and metric labels. This field may not exceed 2048
+Unicode characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.denominator_aggregations">
+<code class="descname">denominator_aggregations</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.denominator_aggregations" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the alignment of data points in individual time
+series selected by <code class="docutils literal notranslate"><span class="pre">denominatorFilter</span></code> as well as how to
+combine the retrieved time series together (such as when
+aggregating multiple streams on each resource to a single
+stream for each resource or when aggregating streams across
+all members of a group of resources).  When computing ratios,
+the <code class="docutils literal notranslate"><span class="pre">aggregations</span></code> and <code class="docutils literal notranslate"><span class="pre">denominator_aggregations</span></code> fields
+must use the same alignment period and produce time series
+that have the same periodicity and labels.  This field is
+similar to the one in the <code class="docutils literal notranslate"><span class="pre">`MetricService.ListTimeSeries</span></code>
+request
+&lt;/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;`__.
+It is advisable to use the <code class="docutils literal notranslate"><span class="pre">ListTimeSeries</span></code> method when
+debugging this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.comparison">
+<code class="descname">comparison</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.comparison" title="Permalink to this definition">#</a></dt>
+<dd><p>The comparison to apply between the time series (indicated by
+<code class="docutils literal notranslate"><span class="pre">filter</span></code> and <code class="docutils literal notranslate"><span class="pre">aggregation</span></code>) and the threshold (indicated
+by <code class="docutils literal notranslate"><span class="pre">threshold_value</span></code>). The comparison is applied on each
+time series, with the time series on the left-hand side and
+the threshold on the right-hand side.  Only <code class="docutils literal notranslate"><span class="pre">COMPARISON_LT</span></code>
+and <code class="docutils literal notranslate"><span class="pre">COMPARISON_GT</span></code> are supported currently.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.threshold_value">
+<code class="descname">threshold_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.threshold_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A value against which to compare the time series.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.duration">
+<code class="descname">duration</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.duration" title="Permalink to this definition">#</a></dt>
+<dd><p>The amount of time that a time series must violate the
+threshold to be considered failing. Currently, only values
+that are a multiple of a minute–e.g. 60, 120, or 300 seconds
+–are supported. If an invalid value is given, an error will
+be returned. The <code class="docutils literal notranslate"><span class="pre">Duration.nanos</span></code> field is ignored. When
+choosing a duration, it is useful to keep in mind the
+frequency of the underlying time series data (which may also
+be affected by any alignments specified in the <code class="docutils literal notranslate"><span class="pre">aggregation</span></code>
+field); a good duration is long enough so that a single
+outlier does not generate spurious alerts, but short enough
+that unhealthy states are detected and alerted on quickly.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.trigger">
+<code class="descname">trigger</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.trigger" title="Permalink to this definition">#</a></dt>
+<dd><p>The number/percent of time series for which the comparison
+must hold in order for the condition to trigger. If
+unspecified, then the condition will trigger if the comparison
+is true for any of the time series that have been identified
+by <code class="docutils literal notranslate"><span class="pre">filter</span></code> and <code class="docutils literal notranslate"><span class="pre">aggregations</span></code>, or by the ratio, if
+<code class="docutils literal notranslate"><span class="pre">denominator_filter</span></code> and <code class="docutils literal notranslate"><span class="pre">denominator_aggregations</span></code> are
+specified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger">
+<em class="property">class </em><code class="descname">Trigger</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies how many time series must fail a predicate to trigger a
+condition. If not specified, then a <code class="docutils literal notranslate"><span class="pre">{count:</span> <span class="pre">1}</span></code> trigger is used.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.type" title="Permalink to this definition">#</a></dt>
+<dd><p>A type of trigger.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.count">
+<code class="descname">count</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.count" title="Permalink to this definition">#</a></dt>
+<dd><p>The absolute number of time series that must fail the
+predicate for the condition to be triggered.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.percent">
+<code class="descname">percent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Condition.Trigger.percent" title="Permalink to this definition">#</a></dt>
+<dd><p>The percentage of time series that must fail the predicate for
+the condition to be triggered.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Documentation">
+<em class="property">class </em><code class="descname">Documentation</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Documentation" title="Permalink to this definition">#</a></dt>
+<dd><p>A content string and a MIME type that describes the content string’s
+format.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Documentation.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Documentation.content" title="Permalink to this definition">#</a></dt>
+<dd><p>The text of the documentation, interpreted according to
+<code class="docutils literal notranslate"><span class="pre">mime_type</span></code>. The content may not exceed 8,192 Unicode
+characters and may not exceed more than 10,240 bytes when
+encoded in UTF-8 format, whichever is smaller.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.Documentation.mime_type">
+<code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.Documentation.mime_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The format of the <code class="docutils literal notranslate"><span class="pre">content</span></code> field. Presently, only the value
+<code class="docutils literal notranslate"><span class="pre">&quot;text/markdown&quot;</span></code> is supported. See <a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> for more
+information.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.AlertPolicy.UserLabelsEntry">
+<em class="property">class </em><code class="descname">UserLabelsEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.AlertPolicy.UserLabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.BoolValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">BoolValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.BoolValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.BytesValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">BytesValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.BytesValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateAlertPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateAlertPolicyRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateAlertPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">CreateAlertPolicy</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateAlertPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateAlertPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which to create the alerting policy. The format
+is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.  Note that this field names the
+parent container in which the alerting policy will be written,
+not the name of the created policy. The alerting policy that
+is returned will have a name that contains a normalized
+representation of this name as a prefix but adds a suffix of
+the form <code class="docutils literal notranslate"><span class="pre">/alertPolicies/[POLICY_ID]</span></code>, identifying the
+policy in the container.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateAlertPolicyRequest.alert_policy">
+<code class="descname">alert_policy</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateAlertPolicyRequest.alert_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>The requested alerting policy. You should omit the <code class="docutils literal notranslate"><span class="pre">name</span></code>
+field in this policy. The name will be returned in the new
+policy, including a new [ALERT_POLICY_ID] value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateGroupRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateGroupRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateGroupRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">CreateGroup</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateGroupRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateGroupRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which to create the group. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateGroupRequest.group">
+<code class="descname">group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateGroupRequest.group" title="Permalink to this definition">#</a></dt>
+<dd><p>A group definition. It is an error to define the <code class="docutils literal notranslate"><span class="pre">name</span></code>
+field because the system assigns the name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateGroupRequest.validate_only">
+<code class="descname">validate_only</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateGroupRequest.validate_only" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, validate this request but do not create the group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateMetricDescriptorRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">CreateMetricDescriptor</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest.metric_descriptor">
+<code class="descname">metric_descriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest.metric_descriptor" title="Permalink to this definition">#</a></dt>
+<dd><p>The new <a class="reference external" href="/monitoring/custom-metrics">custom metric</a>
+descriptor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateNotificationChannelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateNotificationChannelRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateNotificationChannelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">CreateNotificationChannel</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateNotificationChannelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateNotificationChannelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is:
+::      projects/[PROJECT_ID]  Note that this names the
+container into which the channel will be written. This does
+not name the newly created channel. The resulting channel’s
+name will have a normalized version of this field as a prefix,
+but will add <code class="docutils literal notranslate"><span class="pre">/notificationChannels/[CHANNEL_ID]</span></code> to
+identify the channel.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateNotificationChannelRequest.notification_channel">
+<code class="descname">notification_channel</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateNotificationChannelRequest.notification_channel" title="Permalink to this definition">#</a></dt>
+<dd><p>The definition of the <code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code> to create.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesError">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateTimeSeriesError</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesError" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes the result of a failed request to write data to a time series.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesError.time_series">
+<code class="descname">time_series</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesError.time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>The time series, including the <code class="docutils literal notranslate"><span class="pre">Metric</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MonitoredResource</span></code>, and <code class="docutils literal notranslate"><span class="pre">Point</span></code>s (including timestamp
+and value) that resulted in the error. This field provides all
+of the context that would be needed to retry the operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesError.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesError.status" title="Permalink to this definition">#</a></dt>
+<dd><p>The status of the requested write operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateTimeSeriesRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">CreateTimeSeries</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateTimeSeriesRequest.time_series">
+<code class="descname">time_series</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateTimeSeriesRequest.time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>The new data to be added to a list of time series. Adds at
+most one data point to each of several time series. The new
+data point must be more recent than any other point in its
+time series. Each <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> value must fully specify a
+unique time series by supplying all label values for the
+metric and the monitored resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CreateUptimeCheckConfigRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">CreateUptimeCheckConfig</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project in which to create the uptime check. The format
+is:  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.uptime_check_config">
+<code class="descname">uptime_check_config</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest.uptime_check_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The new uptime check configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DeleteAlertPolicyRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">DeleteAlertPolicy</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><dl class="docutils">
+<dt>The alerting policy to delete. The format is:  ::</dt>
+<dd>projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]  For
+more information, see
+[AlertPolicy][google.monitoring.v3.AlertPolicy].</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DeleteGroupRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DeleteGroupRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteGroupRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">DeleteGroup</span></code> request. You can only delete a group if it has no
+children.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteGroupRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteGroupRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The group to delete. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DeleteMetricDescriptorRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">DeleteMetricDescriptor</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The metric descriptor on which to execute the request. The
+format is <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors</span>
+<span class="pre">/{metric_id}&quot;</span></code>. An example of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is:
+<code class="docutils literal notranslate"><span class="pre">&quot;custom.googleapis.com/my_test_metric&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DeleteNotificationChannelRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">DeleteNotificationChannel</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The channel for which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest.force">
+<code class="descname">force</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest.force" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, the notification channel will be deleted regardless
+of its use in alert policies (the policies will be updated to
+remove the channel). If false, channels that are still
+referenced by an existing alerting policy will fail to be
+deleted in a delete operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DeleteUptimeCheckConfigRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">DeleteUptimeCheckConfig</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The uptime check configuration to delete. The format is  <code class="docutils literal notranslate"><span class="pre">pro</span>
+<span class="pre">jects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Distribution</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.BucketOptions">
+<em class="property">class </em><code class="descname">BucketOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.BucketOptions" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.BucketOptions.Explicit">
+<em class="property">class </em><code class="descname">Explicit</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.BucketOptions.Explicit" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.BucketOptions.Exponential">
+<em class="property">class </em><code class="descname">Exponential</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.BucketOptions.Exponential" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.BucketOptions.Linear">
+<em class="property">class </em><code class="descname">Linear</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.BucketOptions.Linear" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Distribution.Range">
+<em class="property">class </em><code class="descname">Range</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Distribution.Range" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.DoubleValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">DoubleValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.DoubleValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.FloatValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">FloatValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.FloatValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetAlertPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetAlertPolicyRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetAlertPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">GetAlertPolicy</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetAlertPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetAlertPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><dl class="docutils">
+<dt>The alerting policy to retrieve. The format is  ::</dt>
+<dd>projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetGroupRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetGroupRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetGroupRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetGroup</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetGroupRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetGroupRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The group to retrieve. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetMetricDescriptorRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetMetricDescriptorRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetMetricDescriptorRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetMetricDescriptor</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetMetricDescriptorRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetMetricDescriptorRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The metric descriptor on which to execute the request. The
+format is <code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/metricDescriptors</span>
+<span class="pre">/{metric_id}&quot;</span></code>. An example value of <code class="docutils literal notranslate"><span class="pre">{metric_id}</span></code> is
+<code class="docutils literal notranslate"><span class="pre">&quot;compute.googleapis.com/instance/disk/read_bytes_count&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetMonitoredResourceDescriptorRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetMonitoredResourceDescriptor</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitored resource descriptor to get. The format is <code class="docutils literal notranslate"><span class="pre">&quot;pro</span>
+<span class="pre">jects/{project_id_or_number}/monitoredResourceDescriptors/{res</span>
+<span class="pre">ource_type}&quot;</span></code>. The <code class="docutils literal notranslate"><span class="pre">{resource_type}</span></code> is a predefined type,
+such as <code class="docutils literal notranslate"><span class="pre">cloudsql_database</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetNotificationChannelDescriptorRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetNotificationChannelDescriptor</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The channel type for which to execute the request. The format
+is <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/notificationChannelDescriptors/{cha</span>
+<span class="pre">nnel_type}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetNotificationChannelRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetNotificationChannel</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The channel for which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetNotificationChannelVerificationCodeRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetNotificationChannelVerificationCode</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The notification channel for which a verification code is to
+be generated and retrieved. This must name a channel that is
+already verified; if the specified channel is not verified,
+the request will fail.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired expiration time. If specified, the API will
+guarantee that the returned code will not be valid after the
+specified timestamp; however, the API cannot guarantee that
+the returned code will be valid for at least as long as the
+requested time (the API puts an upper bound on the amount of
+time for which a code may be valid). If omitted, a default
+expiration will be used, which may be less than the max
+permissible expiration (so specifying an expiration may extend
+the code’s lifetime over omitting an expiration, even though
+the API does impose an upper limit on the maximum expiration
+that is permitted).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetNotificationChannelVerificationCodeResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">GetNotificationChannelVerificationCode</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse.code" title="Permalink to this definition">#</a></dt>
+<dd><p>The verification code, which may be used to verify other
+channels that have an equivalent identity (i.e. other channels
+of the same type with the same fingerprint such as other email
+channels with the same email address or other sms channels
+with the same number).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The expiration time associated with the code that was
+returned. If an expiration was provided in the request, this
+is the minimum of the requested expiration in the request and
+the max permitted expiration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">GetUptimeCheckConfigRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">GetUptimeCheckConfig</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The uptime check configuration to retrieve. The format is  <code class="docutils literal notranslate"><span class="pre">p</span>
+<span class="pre">rojects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Group">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group" title="Permalink to this definition">#</a></dt>
+<dd><p>The description of a dynamic collection of monitored resources. Each
+group has a filter that is matched against monitored resources and their
+associated metadata. If a group’s filter matches an available monitored
+resource, then that resource is a member of that group. Groups can
+contain any number of monitored resources, and each monitored resource
+can be a member of any number of groups.</p>
+<p>Groups can be nested in parent-child hierarchies. The <code class="docutils literal notranslate"><span class="pre">parentName</span></code>
+field identifies an optional parent for each group. If a group has a
+parent, then the only monitored resources available to be matched by the
+group’s filter are the resources contained in the parent group. In other
+words, a group contains the monitored resources that match its filter
+and the filters of all the group’s ancestors. A group without a parent
+can contain any monitored resource.</p>
+<p>For example, consider an infrastructure running a set of instances with
+two user-defined tags: <code class="docutils literal notranslate"><span class="pre">&quot;environment&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;role&quot;</span></code>. A parent group
+has a filter, <code class="docutils literal notranslate"><span class="pre">environment=&quot;production&quot;</span></code>. A child of that parent group
+has a filter, <code class="docutils literal notranslate"><span class="pre">role=&quot;transcoder&quot;</span></code>. The parent group contains all
+instances in the production environment, regardless of their roles. The
+child group contains instances that have the transcoder role <em>and</em> are
+in the production environment.</p>
+<p>The monitored resources contained in a group can change at any moment,
+depending on what resources exist and what filters are associated with
+the group and its ancestors.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Group.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The name of this group. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>. When
+creating a group, this field is ignored and a new name is
+created consisting of the project specified in the call to
+<code class="docutils literal notranslate"><span class="pre">CreateGroup</span></code> and a unique <code class="docutils literal notranslate"><span class="pre">{group_id}</span></code> that is generated
+automatically.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Group.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A user-assigned name for this group, used only for display
+purposes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Group.parent_name">
+<code class="descname">parent_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group.parent_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the group’s parent, if it has one. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>. For
+groups with no parent, <code class="docutils literal notranslate"><span class="pre">parentName</span></code> is the empty string,
+<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Group.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>The filter used to determine which monitored resources belong
+to this group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Group.is_cluster">
+<code class="descname">is_cluster</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Group.is_cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, the members of this group are considered to be a
+cluster. The system can perform additional analysis on groups
+that are clusters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Int32Value">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Int32Value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Int32Value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Int64Value">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Int64Value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Int64Value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.LabelDescriptor">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">LabelDescriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.LabelDescriptor" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListAlertPoliciesRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListAlertPolicies</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project whose alert policies are to be listed. The format
+is  ::      projects/[PROJECT_ID]  Note that this field names
+the parent container in which the alerting policies to be
+listed are stored. To retrieve a single alerting policy by
+name, use the [GetAlertPolicy][google.monitoring.v3.AlertPolic
+yService.GetAlertPolicy] operation, instead.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>If provided, this field specifies the criteria that must be
+met by alert policies to be included in the response.  For
+more details, see <a class="reference external" href="/monitoring/api/v3/sorting-and-filtering">sorting and filtering</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>A comma-separated list of fields by which to sort the result.
+Supports the same set of field references as the <code class="docutils literal notranslate"><span class="pre">filter</span></code>
+field. Entries can be prefixed with a minus sign to sort by
+the field in descending order.  For more details, see <a class="reference external" href="/monitoring/api/v3/sorting-and-filtering">sorting
+and filtering</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return more
+results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListAlertPoliciesResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListAlertPolicies</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesResponse.alert_policies">
+<code class="descname">alert_policies</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesResponse.alert_policies" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned alert policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListAlertPoliciesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListAlertPoliciesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there might be more results than were returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListGroupMembersRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListGroupMembers</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The group whose members are listed. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>A positive number that is the maximum number of results to
+return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return
+additional results from the previous method call.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional <a class="reference external" href="/monitoring/api/learn_more#filtering">list filter</a> describing the
+members to be returned. The filter may reference the type,
+labels, and metadata of monitored resources that comprise the
+group. For example, to return only resources representing
+Compute Engine VM instances, use this filter:  ::
+resource.type = “gce_instance”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersRequest.interval">
+<code class="descname">interval</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersRequest.interval" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional time interval for which results should be
+returned. Only members that were part of the group during the
+specified interval are included in the response. If no
+interval is provided then the group membership over the last
+minute is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListGroupMembersResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListGroupMembers</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersResponse.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersResponse.members" title="Permalink to this definition">#</a></dt>
+<dd><p>A set of monitored resources in the group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there are more results than have been returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupMembersResponse.total_size">
+<code class="descname">total_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupMembersResponse.total_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of elements matching this request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListGroupsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListGroup</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project whose groups are to be listed. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional filter consisting of a single group name. The
+filters limit the groups returned based on their parent-child
+relationship with the specified group. If no filter is
+specified, all groups are returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.children_of_group">
+<code class="descname">children_of_group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.children_of_group" title="Permalink to this definition">#</a></dt>
+<dd><p>A group name:
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
+Returns groups whose <code class="docutils literal notranslate"><span class="pre">parentName</span></code> field contains the group
+name. If no groups have this parent, the results are empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.ancestors_of_group">
+<code class="descname">ancestors_of_group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.ancestors_of_group" title="Permalink to this definition">#</a></dt>
+<dd><p>A group name:
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
+Returns groups that are ancestors of the specified group. The
+groups are returned in order, starting with the immediate
+parent and ending with the most distant ancestor. If the
+specified group has no immediate parent, the results are
+empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.descendants_of_group">
+<code class="descname">descendants_of_group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.descendants_of_group" title="Permalink to this definition">#</a></dt>
+<dd><p>A group name:
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}/groups/{group_id}&quot;</span></code>.
+Returns the descendants of the specified group. This is a
+superset of the results returned by the <code class="docutils literal notranslate"><span class="pre">childrenOfGroup</span></code>
+filter, and includes children-of-children, and so forth.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>A positive number that is the maximum number of results to
+return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return
+additional results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListGroupsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListGroups</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsResponse.group">
+<code class="descname">group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsResponse.group" title="Permalink to this definition">#</a></dt>
+<dd><p>The groups that match the specified filters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListGroupsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListGroupsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there are more results than have been returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListMetricDescriptorsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMetricDescriptors</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is empty, all custom and system-defined metric
+descriptors are returned. Otherwise, the <a class="reference external" href="/monitoring/api/v3/filters">filter</a> specifies which metric
+descriptors are to be returned. For example, the following
+filter matches all <a class="reference external" href="/monitoring/custom-metrics">custom metrics</a>:  ::      metric.type =
+starts_with(“custom.googleapis.com/”)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>A positive number that is the maximum number of results to
+return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return
+additional results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListMetricDescriptorsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMetricDescriptors</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse.metric_descriptors">
+<code class="descname">metric_descriptors</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse.metric_descriptors" title="Permalink to this definition">#</a></dt>
+<dd><p>The metric descriptors that are available to the project and
+that match the value of <code class="docutils literal notranslate"><span class="pre">filter</span></code>, if present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there are more results than have been returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListMonitoredResourceDescriptorsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMonitoredResourceDescriptors</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">&quot;projects/{project_id_or_number}&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional <a class="reference external" href="/monitoring/api/v3/filters">filter</a> describing
+the descriptors to be returned. The filter can reference the
+descriptor’s type and labels. For example, the following
+filter returns only Google Compute Engine descriptors that
+have an <code class="docutils literal notranslate"><span class="pre">id</span></code> label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">resource</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">starts_with</span><span class="p">(</span><span class="s2">&quot;gce_&quot;</span><span class="p">)</span> <span class="n">AND</span> <span class="n">resource</span><span class="o">.</span><span class="n">label</span><span class="p">:</span><span class="nb">id</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>A positive number that is the maximum number of results to
+return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return
+additional results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListMonitoredResourceDescriptorsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListMonitoredResourcDescriptors</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.resource_descriptors">
+<code class="descname">resource_descriptors</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.resource_descriptors" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitored resource descriptors that are available to this
+project and that match <code class="docutils literal notranslate"><span class="pre">filter</span></code>, if present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there are more results than have been returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListNotificationChannelDescriptorsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListNotificationChannelDescriptors</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The REST resource name of the parent from which to retrieve
+the notification channel descriptors. The expected syntax is:
+::      projects/[PROJECT_ID]  Note that this names the parent
+container in which to look for the descriptors; to retrieve a
+single descriptor by name, use the [GetNotificationChannelDesc
+riptor][google.monitoring.v3.NotificationChannelService.GetNot
+ificationChannelDescriptor] operation, instead.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+If not set to a positive number, a reasonable value will be
+chosen by the service.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If non-empty, <code class="docutils literal notranslate"><span class="pre">page_token</span></code> must contain a value returned as
+the <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> in a previous response to request the
+next set of results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListNotificationChannelDescriptorsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListNotificationChannelDescriptors</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse.channel_descriptors">
+<code class="descname">channel_descriptors</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse.channel_descriptors" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitored resource descriptors supported for the specified
+project, optionally filtered.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more results that
+match the request. Use the value in the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> field
+in a subsequent request to fetch the next set of results. If
+empty, all results have been returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListNotificationChannelsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListNotificationChannels</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>. That is, this names the container
+in which to look for the notification channels; it does not
+name a specific channel. To query a specific channel by REST
+resource name, use the [<code class="docutils literal notranslate"><span class="pre">GetNotificationChannel</span></code>][google.mon
+itoring.v3.NotificationChannelService.GetNotificationChannel]
+operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>If provided, this field specifies the criteria that must be
+met by notification channels to be included in the response.
+For more details, see <a class="reference external" href="/monitoring/api/v3/sorting-and-filtering">sorting and filtering</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>A comma-separated list of fields by which to sort the result.
+Supports the same set of fields as in <code class="docutils literal notranslate"><span class="pre">filter</span></code>. Entries can
+be prefixed with a minus sign to sort in descending rather
+than ascending order.  For more details, see <a class="reference external" href="/monitoring/api/v3/sorting-and-filtering">sorting and
+filtering</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+If not set to a positive number, a reasonable value will be
+chosen by the service.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If non-empty, <code class="docutils literal notranslate"><span class="pre">page_token</span></code> must contain a value returned as
+the <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> in a previous response to request the
+next set of results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListNotificationChannelsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListNotificationChannels</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsResponse.notification_channels">
+<code class="descname">notification_channels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsResponse.notification_channels" title="Permalink to this definition">#</a></dt>
+<dd><p>The notification channels defined for the specified project.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListNotificationChannelsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListNotificationChannelsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more results that
+match the request. Use the value in the <code class="docutils literal notranslate"><span class="pre">page_token</span></code> field
+in a subsequent request to fetch the next set of results. If
+empty, all results have been returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListTimeSeriesRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListTimeSeries</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The project on which to execute the request. The format is
+“projects/{project_id_or_number}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference external" href="/monitoring/api/v3/filters">monitoring filter</a> that
+specifies which time series should be returned. The filter
+must specify a single metric type, and can additionally
+specify metric labels and other information. For example:  ::
+metric.type = “compute.googleapis.com/instance/cpu/usage_time”
+AND         metric.label.instance_name = “my-instance-name”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.interval">
+<code class="descname">interval</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.interval" title="Permalink to this definition">#</a></dt>
+<dd><p>The time interval for which results should be returned. Only
+time series that contain data points in the specified interval
+are included in the response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.aggregation">
+<code class="descname">aggregation</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.aggregation" title="Permalink to this definition">#</a></dt>
+<dd><p>By default, the raw time series data is returned. Use this
+field to combine multiple time series for different views of
+the data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the order in which the points of the time series
+should be returned. By default, results are not ordered.
+Currently, this field must be left blank.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.view">
+<code class="descname">view</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.view" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies which information is returned about the time series.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>A positive number that is the maximum number of results to
+return. When <code class="docutils literal notranslate"><span class="pre">view</span></code> field sets to <code class="docutils literal notranslate"><span class="pre">FULL</span></code>, it limits the
+number of <code class="docutils literal notranslate"><span class="pre">Points</span></code> server will return; if <code class="docutils literal notranslate"><span class="pre">view</span></code> field is
+<code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>, it limits the number of <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> server
+will return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return
+additional results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListTimeSeriesResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ListTimeSeries</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesResponse.time_series">
+<code class="descname">time_series</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesResponse.time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>One or more time series that match the filter included in the
+request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListTimeSeriesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListTimeSeriesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If there are more results than have been returned, then this
+field is set to a non-empty value. To see the additional
+results, use that value as <code class="docutils literal notranslate"><span class="pre">pageToken</span></code> in the next call to
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListUptimeCheckConfigsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListUptimeCheckConfigs</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project whose uptime check configurations are listed. The
+format is  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+The server may further constrain the maximum number of results
+returned in a single page. If the page_size is &lt;=0, the
+server will decide the number of results to be returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return more
+results from the previous method call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListUptimeCheckConfigsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListUptimeCheckConfigs</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.uptime_check_configs">
+<code class="descname">uptime_check_configs</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.uptime_check_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned uptime check configurations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckConfigsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>This field represents the pagination token to retrieve the
+next page of results. If the value is empty, it means no
+further results for the request. To retrieve the next page of
+results, the value of the next_page_token is passed to the
+subsequent List method call (in the request message’s
+page_token field).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListUptimeCheckIpsRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListUptimeCheckIps</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of results to return in a single response.
+The server may further constrain the maximum number of results
+returned in a single page. If the page_size is &lt;=0, the
+server will decide the number of results to be returned. NOTE:
+this field is not yet implemented</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this field is not empty then it must contain the
+<code class="docutils literal notranslate"><span class="pre">nextPageToken</span></code> value returned by a previous call to this
+method. Using this field causes the method to return more
+results from the previous method call. NOTE: this field is not
+yet implemented</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ListUptimeCheckIpsResponse</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">ListUptimeCheckIps</span></code> response.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse.uptime_check_ips">
+<code class="descname">uptime_check_ips</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse.uptime_check_ips" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned list of IP addresses (including region and
+location) that the checkers run from.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ListUptimeCheckIpsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>This field represents the pagination token to retrieve the
+next page of results. If the value is empty, it means no
+further results for the request. To retrieve the next page of
+results, the value of the next_page_token is passed to the
+subsequent List method call (in the request message’s
+page_token field). NOTE: this field is not yet implemented</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Metric">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Metric</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Metric" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Metric.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Metric.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MetricDescriptor">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MetricDescriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MetricDescriptor" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MonitoredResource">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MonitoredResource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MonitoredResource" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MonitoredResource.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MonitoredResource.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MonitoredResourceDescriptor">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MonitoredResourceDescriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MonitoredResourceDescriptor" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.MutationRecord">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">MutationRecord</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MutationRecord" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes a change made to a configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MutationRecord.mutate_time">
+<code class="descname">mutate_time</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MutationRecord.mutate_time" title="Permalink to this definition">#</a></dt>
+<dd><p>When the change occurred.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.MutationRecord.mutated_by">
+<code class="descname">mutated_by</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.MutationRecord.mutated_by" title="Permalink to this definition">#</a></dt>
+<dd><p>The email address of the user making the change.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">NotificationChannel</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel" title="Permalink to this definition">#</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code> is a medium through which an alert is
+delivered when a policy violation is detected. Examples of channels
+include email, SMS, and third-party messaging applications. Fields
+containing sensitive information like authentication tokens or contact
+info are only partially populated on retrieval.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the notification channel. This field matches the
+value of the [NotificationChannelDescriptor.type][google.monit
+oring.v3.NotificationChannelDescriptor.type] field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The full REST resource name for this channel. The syntax is:
+::
+projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]  The
+<code class="docutils literal notranslate"><span class="pre">[CHANNEL_ID]</span></code> is automatically assigned by the server on
+creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional human-readable name for this notification channel.
+It is recommended that you specify a non-empty and unique name
+in order to make it easier to identify the channels in your
+project, though this is not enforced. The display name is
+limited to 512 Unicode characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.description" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional human-readable description of this notification
+channel. This description may provide additional details,
+beyond the display name, for the channel. This may not exceeed
+1024 Unicode characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration fields that define the channel and its behavior.
+The permissible and required labels are specified in the [Noti
+ficationChannelDescriptor.labels][google.monitoring.v3.Notific
+ationChannelDescriptor.labels] of the
+<code class="docutils literal notranslate"><span class="pre">NotificationChannelDescriptor</span></code> corresponding to the
+<code class="docutils literal notranslate"><span class="pre">type</span></code> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.user_labels">
+<code class="descname">user_labels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.user_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>User-supplied key/value data that does not need to conform to
+the corresponding <code class="docutils literal notranslate"><span class="pre">NotificationChannelDescriptor</span></code>’s schema,
+unlike the <code class="docutils literal notranslate"><span class="pre">labels</span></code> field. This field is intended to be used
+for organizing and identifying the <code class="docutils literal notranslate"><span class="pre">NotificationChannel</span></code>
+objects.  The field can contain up to 64 entries. Each key and
+value is limited to 63 Unicode characters or 128 bytes,
+whichever is smaller. Labels and values can contain only
+lowercase letters, numerals, underscores, and dashes. Keys
+must begin with a letter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.verification_status">
+<code class="descname">verification_status</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.verification_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates whether this channel has been verified or not. On a
+[<code class="docutils literal notranslate"><span class="pre">ListNotificationChannels</span></code>][google.monitoring.v3.Notificati
+onChannelService.ListNotificationChannels] or [<code class="docutils literal notranslate"><span class="pre">GetNotificati</span>
+<span class="pre">onChannel</span></code>][google.monitoring.v3.NotificationChannelService.G
+etNotificationChannel] operation, this field is expected to be
+populated.  If the value is <code class="docutils literal notranslate"><span class="pre">UNVERIFIED</span></code>, then it indicates
+that the channel is non-functioning (it both requires
+verification and lacks verification); otherwise, it is assumed
+that the channel works.  If the channel is neither
+<code class="docutils literal notranslate"><span class="pre">VERIFIED</span></code> nor <code class="docutils literal notranslate"><span class="pre">UNVERIFIED</span></code>, it implies that the channel
+is of a type that does not require verification or that this
+specific channel has been exempted from verification because
+it was created prior to verification being required for
+channels of this type.  This field cannot be modified using a
+standard [<code class="docutils literal notranslate"><span class="pre">UpdateNotificationChannel</span></code>][google.monitoring.v3.
+NotificationChannelService.UpdateNotificationChannel]
+operation. To change the value of this field, you must call [`
+<cite>VerifyNotificationChannel`</cite>][google.monitoring.v3.Notificatio
+nChannelService.VerifyNotificationChannel].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether notifications are forwarded to the described channel.
+This makes it possible to disable delivery of notifications to
+a particular channel without removing the channel from all
+alerting policies that reference the channel. This is a more
+convenient approach when the change is temporary and you want
+to receive notifications from the same set of alerting
+policies on the channel at some point in the future.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.LabelsEntry">
+<em class="property">class </em><code class="descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.LabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannel.UserLabelsEntry">
+<em class="property">class </em><code class="descname">UserLabelsEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannel.UserLabelsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">NotificationChannelDescriptor</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor" title="Permalink to this definition">#</a></dt>
+<dd><p>A description of a notification channel. The descriptor includes the
+properties of the channel and the set of labels or fields that must be
+specified to configure channels of a given type.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The full REST resource name for this descriptor. The syntax
+is:  ::
+projects/[PROJECT_ID]/notificationChannelDescriptors/[TYPE]
+In the above, <code class="docutils literal notranslate"><span class="pre">[TYPE]</span></code> is the value of the <code class="docutils literal notranslate"><span class="pre">type</span></code> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of notification channel, such as “email”, “sms”, etc.
+Notification channel types are globally unique.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A human-readable name for the notification channel type. This
+form of the name is suitable for a user interface.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.description" title="Permalink to this definition">#</a></dt>
+<dd><p>A human-readable description of the notification channel type.
+The description may include a description of the properties of
+the channel and pointers to external documentation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of labels that must be defined to identify a
+particular channel of the corresponding type. Each label
+includes a description for how that field should be populated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.NotificationChannelDescriptor.supported_tiers">
+<code class="descname">supported_tiers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.NotificationChannelDescriptor.supported_tiers" title="Permalink to this definition">#</a></dt>
+<dd><p>The tiers that support this notification channel; the project
+service tier must be one of the supported_tiers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Point">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Point</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Point" title="Permalink to this definition">#</a></dt>
+<dd><p>A single data point in a time series.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Point.interval">
+<code class="descname">interval</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Point.interval" title="Permalink to this definition">#</a></dt>
+<dd><p>The time interval to which the data point applies. For GAUGE
+metrics, only the end time of the interval is used. For DELTA
+metrics, the start and end time should specify a non-zero
+interval, with subsequent points specifying contiguous and
+non-overlapping intervals. For CUMULATIVE metrics, the start
+and end time should specify a non-zero interval, with
+subsequent points specifying the same start time and
+increasing end times, until an event resets the cumulative
+value to zero and sets a new start time for the following
+points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.Point.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Point.value" title="Permalink to this definition">#</a></dt>
+<dd><p>The value of the data point.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">SendNotificationChannelVerificationCodeRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">SendNotificationChannelVerificationCode</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The notification channel to which to send a verification code.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.StringValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">StringValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.StringValue" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.TimeInterval">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">TimeInterval</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeInterval" title="Permalink to this definition">#</a></dt>
+<dd><p>A time interval extending just after a start time through an end time.
+If the start time is the same as the end time, then the interval
+represents a single point in time.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeInterval.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeInterval.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The end of the time interval.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeInterval.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeInterval.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The beginning of the time interval. The default
+value for the start time is the end time. The start time must
+not be later than the end time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">TimeSeries</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries" title="Permalink to this definition">#</a></dt>
+<dd><p>A collection of data points that describes the time-varying values of a
+metric. A time series is identified by a combination of a
+fully-specified monitored resource and a fully-specified metric. This
+type is used for both listing and creating time series.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.metric">
+<code class="descname">metric</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.metric" title="Permalink to this definition">#</a></dt>
+<dd><p>The associated metric. A fully-specified metric used to
+identify the time series.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The associated resource. A fully-specified monitored resource
+used to identify the time series.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.metric_kind">
+<code class="descname">metric_kind</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.metric_kind" title="Permalink to this definition">#</a></dt>
+<dd><p>The metric kind of the time series. When listing time series,
+this metric kind might be different from the metric kind of
+the associated metric if this time series is an alignment or
+reduction of other time series.  When creating a time series,
+this field is optional. If present, it must be the same as the
+metric kind of the associated metric. If the associated
+metric’s descriptor must be auto-created, then this field
+specifies the metric kind of the new descriptor and must be
+either <code class="docutils literal notranslate"><span class="pre">GAUGE</span></code> (the default) or <code class="docutils literal notranslate"><span class="pre">CUMULATIVE</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.value_type">
+<code class="descname">value_type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.value_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The value type of the time series. When listing time series,
+this value type might be different from the value type of the
+associated metric if this time series is an alignment or
+reduction of other time series.  When creating a time series,
+this field is optional. If present, it must be the same as the
+type of the data in the <code class="docutils literal notranslate"><span class="pre">points</span></code> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TimeSeries.points">
+<code class="descname">points</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TimeSeries.points" title="Permalink to this definition">#</a></dt>
+<dd><p>The data points of this time series. When listing time series,
+the order of the points is specified by the list method.  When
+creating a time series, this field must contain exactly one
+point and the point’s type must be the same as the value type
+of the associated metric. If the associated metric’s
+descriptor must be auto-created, then the value type of the
+descriptor is determined by the point’s type, which must be
+<code class="docutils literal notranslate"><span class="pre">BOOL</span></code>, <code class="docutils literal notranslate"><span class="pre">INT64</span></code>, <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code>, or <code class="docutils literal notranslate"><span class="pre">DISTRIBUTION</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.TypedValue">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">TypedValue</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue" title="Permalink to this definition">#</a></dt>
+<dd><p>A single strongly-typed value.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.value" title="Permalink to this definition">#</a></dt>
+<dd><p>The typed value field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.bool_value">
+<code class="descname">bool_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.bool_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A Boolean value: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.int64_value">
+<code class="descname">int64_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.int64_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A 64-bit integer. Its range is approximately ±9.2x1018.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A 64-bit double-precision floating-point number. Its magnitude
+is approximately ±10±300 and it has 16 significant digits of
+precision.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A variable-length string value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.TypedValue.distribution_value">
+<code class="descname">distribution_value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.TypedValue.distribution_value" title="Permalink to this definition">#</a></dt>
+<dd><p>A distribution value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UInt32Value">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UInt32Value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UInt32Value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UInt64Value">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UInt64Value</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UInt64Value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UpdateAlertPolicyRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">UpdateAlertPolicy</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A list of alerting policy field names. If this field
+is not empty, each listed field in the existing alerting
+policy is set to the value of the corresponding field in the
+supplied policy (<code class="docutils literal notranslate"><span class="pre">alert_policy</span></code>), or to the field’s default
+value if the field is not in the supplied alerting policy.
+Fields not listed retain their previous value.  Examples of
+valid field masks include <code class="docutils literal notranslate"><span class="pre">display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">documentation.content</span></code>, <code class="docutils literal notranslate"><span class="pre">documentation.mime_type</span></code>,
+<code class="docutils literal notranslate"><span class="pre">user_labels</span></code>, <code class="docutils literal notranslate"><span class="pre">user_label.nameofkey</span></code>, <code class="docutils literal notranslate"><span class="pre">enabled</span></code>,
+<code class="docutils literal notranslate"><span class="pre">conditions</span></code>, <code class="docutils literal notranslate"><span class="pre">combiner</span></code>, etc.  If this field is empty,
+then the supplied alerting policy replaces the existing
+policy. It is the same as deleting the existing policy and
+adding the supplied policy, except for the following:  -  The
+new policy will have the same <code class="docutils literal notranslate"><span class="pre">[ALERT_POLICY_ID]</span></code> as the
+former    policy. This gives you continuity with the former
+policy in your    notifications and incidents. -  Conditions
+in the new policy will keep their former    <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code>
+if the supplied condition includes the <code class="docutils literal notranslate"><span class="pre">name</span></code>    field with
+that <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code>. If the supplied condition omits
+the <code class="docutils literal notranslate"><span class="pre">name</span></code> field, then a new <code class="docutils literal notranslate"><span class="pre">[CONDITION_ID]</span></code> is created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest.alert_policy">
+<code class="descname">alert_policy</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest.alert_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The updated alerting policy or the updated values
+for the fields listed in <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>. If <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>
+is not empty, any fields in this policy that are not in
+<code class="docutils literal notranslate"><span class="pre">update_mask</span></code> are ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UpdateGroupRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UpdateGroupRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateGroupRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">UpdateGroup</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateGroupRequest.group">
+<code class="descname">group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateGroupRequest.group" title="Permalink to this definition">#</a></dt>
+<dd><p>The new definition of the group. All fields of the existing
+group, excepting <code class="docutils literal notranslate"><span class="pre">name</span></code>, are replaced with the corresponding
+fields of this group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateGroupRequest.validate_only">
+<code class="descname">validate_only</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateGroupRequest.validate_only" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, validate this request but do not update the existing
+group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UpdateNotificationChannelRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">UpdateNotificationChannel</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest.notification_channel">
+<code class="descname">notification_channel</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest.notification_channel" title="Permalink to this definition">#</a></dt>
+<dd><p>A description of the changes to be applied to the specified
+notification channel. The description must provide a
+definition for fields to be updated; the names of these fields
+should also be included in the <code class="docutils literal notranslate"><span class="pre">update_mask</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UpdateUptimeCheckConfigRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The protocol for the <code class="docutils literal notranslate"><span class="pre">UpdateUptimeCheckConfig</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. If present, only the listed fields in the current
+uptime check configuration are updated with values from the
+new configuration. If this field is empty, then the current
+configuration is completely replaced with the new
+configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest.uptime_check_config">
+<code class="descname">uptime_check_config</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest.uptime_check_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. If an <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has been specified, this
+field gives the values for the set of fields mentioned in the
+<code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code>. If an <code class="docutils literal notranslate"><span class="pre">&quot;updateMask&quot;</span></code> has not been given,
+this uptime check configuration replaces the current
+configuration. If a field is mentioned in <code class="docutils literal notranslate"><span class="pre">&quot;updateMask</span></code>” but
+the corresonding field is omitted in this partial uptime check
+configuration, it has the effect of deleting/clearing the
+field from the configuration on the server.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UptimeCheckConfig</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>This message configures which resources and services to monitor for
+availability.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.name" title="Permalink to this definition">#</a></dt>
+<dd><p>A unique resource name for this UptimeCheckConfig. The format
+is:  <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_</span>
+<span class="pre">ID]</span></code>.  This field should be omitted when creating the uptime
+check configuration; on create, the resource name is assigned
+by the server and included in the response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A human-friendly name for the uptime check configuration. The
+display name should be unique within a Stackdriver Account in
+order to make it easier to identify; however, uniqueness is
+not enforced. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource the check is checking. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.monitored_resource">
+<code class="descname">monitored_resource</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.monitored_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitored resource associated with the configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.resource_group">
+<code class="descname">resource_group</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.resource_group" title="Permalink to this definition">#</a></dt>
+<dd><p>The group resource associated with the configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.check_request_type">
+<code class="descname">check_request_type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.check_request_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of uptime check request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.http_check">
+<code class="descname">http_check</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.http_check" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed to make an HTTP or HTTPS check.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.tcp_check">
+<code class="descname">tcp_check</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.tcp_check" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed to make a TCP check.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.period">
+<code class="descname">period</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.period" title="Permalink to this definition">#</a></dt>
+<dd><p>How often the uptime check is performed. Currently, only 1, 5,
+10, and 15 minutes are supported. Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.timeout">
+<code class="descname">timeout</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.timeout" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum amount of time to wait for the request to complete
+(must be between 1 and 60 seconds). Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.content_matchers">
+<code class="descname">content_matchers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.content_matchers" title="Permalink to this definition">#</a></dt>
+<dd><p>The expected content on the page the check is run against.
+Currently, only the first entry in the list is supported, and
+other entries will be ignored. The server will look for an
+exact match of the string in the page response’s content. This
+field is optional and should only be specified if a content
+match is required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.selected_regions">
+<code class="descname">selected_regions</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.selected_regions" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of regions from which the check will be run. If this
+field is specified, enough regions to include a minimum of 3
+locations must be provided, or an error message is returned.
+Not specifying this field will result in uptime checks running
+from all regions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.internal_checkers">
+<code class="descname">internal_checkers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.internal_checkers" title="Permalink to this definition">#</a></dt>
+<dd><p>The internal checkers that this check will egress from.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher">
+<em class="property">class </em><code class="descname">ContentMatcher</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher" title="Permalink to this definition">#</a></dt>
+<dd><p>Used to perform string matching. Currently, this matches on the exact
+content. In the future, it can be expanded to allow for regular
+expressions and more complex matching.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.content" title="Permalink to this definition">#</a></dt>
+<dd><p>String content to match</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck">
+<em class="property">class </em><code class="descname">HttpCheck</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck" title="Permalink to this definition">#</a></dt>
+<dd><p>Information involved in an HTTP/HTTPS uptime check request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.use_ssl">
+<code class="descname">use_ssl</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.use_ssl" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, use HTTPS instead of HTTP to run the check.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.path" title="Permalink to this definition">#</a></dt>
+<dd><p>The path to the page to run the check against. Will be
+combined with the host (specified within the
+MonitoredResource) and port to construct the full URL.
+Optional (defaults to “/”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.port">
+<code class="descname">port</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.port" title="Permalink to this definition">#</a></dt>
+<dd><p>The port to the page to run the check against. Will be
+combined with host (specified within the MonitoredResource)
+and path to construct the full URL. Optional (defaults to 80
+without SSL, or 443 with SSL).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.auth_info">
+<code class="descname">auth_info</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.auth_info" title="Permalink to this definition">#</a></dt>
+<dd><p>The authentication information. Optional when creating an HTTP
+check; defaults to empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.mask_headers">
+<code class="descname">mask_headers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.mask_headers" title="Permalink to this definition">#</a></dt>
+<dd><p>Boolean specifiying whether to encrypt the header information.
+Encryption should be specified for any headers related to
+authentication that you do not wish to be seen when retrieving
+the configuration. The server will be responsible for
+encrypting the headers. On Get/List calls, if mask_headers is
+set to True then the headers will be obscured with
+******.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.headers">
+<code class="descname">headers</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.headers" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of headers to send as part of the uptime check
+request. If two headers have the same key and different
+values, they should be entered as a single header, with the
+value being a comma-separated list of all the desired values
+as described at
+<a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616.txt">https://www.w3.org/Protocols/rfc2616/rfc2616.txt</a> (page 31).
+Entering two separate headers with the same key in a Create
+call will cause the first to be overwritten by the second.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication">
+<em class="property">class </em><code class="descname">BasicAuthentication</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication" title="Permalink to this definition">#</a></dt>
+<dd><p>A type of authentication to perform against the specified resource or
+URL that uses username and password. Currently, only Basic
+authentication is supported in Uptime Monitoring.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication.username">
+<code class="descname">username</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication.username" title="Permalink to this definition">#</a></dt>
+<dd><p>The username to authenticate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication.password">
+<code class="descname">password</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication.password" title="Permalink to this definition">#</a></dt>
+<dd><p>The password to authenticate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.HeadersEntry">
+<em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.HeadersEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker">
+<em class="property">class </em><code class="descname">InternalChecker</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker" title="Permalink to this definition">#</a></dt>
+<dd><p>Nimbus InternalCheckers.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCP project ID. Not necessarily the same as the
+project_id for the config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.network">
+<code class="descname">network</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.network" title="Permalink to this definition">#</a></dt>
+<dd><p>The internal network to perform this uptime check on.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.gcp_zone">
+<code class="descname">gcp_zone</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.gcp_zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCP zone the uptime check should egress from. Only
+respected for internal uptime checks, where internal_network
+is specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.checker_id">
+<code class="descname">checker_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.checker_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The checker ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.InternalChecker.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The checker’s human-readable name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup">
+<em class="property">class </em><code class="descname">ResourceGroup</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource submessage for group checks. It can be used instead of a
+monitored resource, when multiple resources are being monitored.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup.group_id">
+<code class="descname">group_id</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup.group_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The group of resources being monitored. Should be only the
+group_id, not projects//groups/.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup.resource_type">
+<code class="descname">resource_type</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup.resource_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource type of the group members.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.TcpCheck">
+<em class="property">class </em><code class="descname">TcpCheck</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.TcpCheck" title="Permalink to this definition">#</a></dt>
+<dd><p>Information required for a TCP uptime check request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckConfig.TcpCheck.port">
+<code class="descname">port</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckConfig.TcpCheck.port" title="Permalink to this definition">#</a></dt>
+<dd><p>The port to the page to run the check against. Will be
+combined with host (specified within the MonitoredResource) to
+construct the full URL. Required.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckIp">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">UptimeCheckIp</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckIp" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains the region, location, and list of IP addresses where checkers
+in the location run from.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckIp.region">
+<code class="descname">region</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckIp.region" title="Permalink to this definition">#</a></dt>
+<dd><p>A broad region category in which the IP address is located.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckIp.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckIp.location" title="Permalink to this definition">#</a></dt>
+<dd><p>A more specific location within the region that typically
+encodes a particular city/town/metro (and its containing
+state/province or country) within the broader umbrella region
+category.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.UptimeCheckIp.ip_address">
+<code class="descname">ip_address</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.UptimeCheckIp.ip_address" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP address from which the uptime check originates. This is
+a full IP address (not an IP address range). Most IP
+addresses, as of this publication, are in IPv4 format;
+however, one should not rely on the IP addresses being in IPv4
+format indefinitely and should support interpreting this field
+in either IPv4 or IPv6 format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring_v3.types.</code><code class="descname">VerifyNotificationChannelRequest</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">VerifyNotificationChannel</span></code> request.</p>
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The notification channel to verify.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest.code" title="Permalink to this definition">#</a></dt>
+<dd><p>The verification code that was delivered to the channel as a
+result of invoking the
+<code class="docutils literal notranslate"><span class="pre">SendNotificationChannelVerificationCode</span></code> API method or that
+was retrieved from a verified channel via
+<code class="docutils literal notranslate"><span class="pre">GetNotificationChannelVerificationCode</span></code>. For example, one
+might have “G-123456” or “TKNZGhhd2EyN3I1MnRnMjRv” (in
+general, one is only guaranteed that the code is valid UTF-8;
+one should not make any assumptions regarding the structure or
+format of the code).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Stackdriver Monitoring API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Stackdriver Monitoring API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Stackdriver Monitoring API</a></li>
+      <li>Next: <a href="../../../logging/usage.html" title="next chapter">Stackdriver Logging</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/monitoring/gapic/v3/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

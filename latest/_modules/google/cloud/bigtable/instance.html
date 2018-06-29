@@ -1,0 +1,621 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.bigtable.instance &#8212; google-cloud 71fa0b86ec documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.bigtable.instance</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2015 Google LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;User-friendly container for Google Cloud Bigtable Instance.&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
+
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigtable_admin_v2.types</span> <span class="k">import</span> <span class="n">instance_pb2</span>
+
+
+<span class="n">_EXISTING_INSTANCE_LOCATION_ID</span> <span class="o">=</span> <span class="s1">&#39;see-existing-cluster&#39;</span>
+<span class="n">_INSTANCE_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
+                               <span class="sa">r</span><span class="s1">&#39;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
+<span class="n">ROUTING_POLICY_TYPE_ANY</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ROUTING_POLICY_TYPE_SINGLE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">_STORAGE_TYPE_UNSPECIFIED</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">StorageType</span><span class="o">.</span><span class="n">STORAGE_TYPE_UNSPECIFIED</span>
+
+
+<div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of a Google Cloud Bigtable Instance.</span>
+
+<span class="sd">    We can use an :class:`Instance` to:</span>
+
+<span class="sd">    * :meth:`reload` itself</span>
+<span class="sd">    * :meth:`create` itself</span>
+<span class="sd">    * :meth:`update` itself</span>
+<span class="sd">    * :meth:`delete` itself</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        For now, we leave out the ``default_storage_type`` (an enum)</span>
+<span class="sd">        which if not sent will end up as :data:`.data_v2_pb2.STORAGE_SSD`.</span>
+
+<span class="sd">    :type instance_id: str</span>
+<span class="sd">    :param instance_id: The ID of the instance.</span>
+
+<span class="sd">    :type client: :class:`Client &lt;google.cloud.bigtable.client.Client&gt;`</span>
+<span class="sd">    :param client: The client that owns the instance. Provides</span>
+<span class="sd">                   authorization and a project ID.</span>
+
+<span class="sd">    :type location_id: str</span>
+<span class="sd">    :param location_id: ID of the location in which the instance will be</span>
+<span class="sd">                        created.  Required for instances which do not yet</span>
+<span class="sd">                        exist.</span>
+
+<span class="sd">    :type display_name: str</span>
+<span class="sd">    :param display_name: (Optional) The display name for the instance in the</span>
+<span class="sd">                         Cloud Console UI. (Must be between 4 and 30</span>
+<span class="sd">                         characters.) If this value is not set in the</span>
+<span class="sd">                         constructor, will fall back to the instance ID.</span>
+
+<span class="sd">    :type serve_nodes: int</span>
+<span class="sd">    :param serve_nodes: (Optional) The number of nodes in the instance&#39;s</span>
+<span class="sd">                        cluster; used to set up the instance&#39;s cluster.</span>
+
+<span class="sd">    :type default_storage_type: int</span>
+<span class="sd">    :param default_storage_type: (Optional) The default values are</span>
+<span class="sd">                                    STORAGE_TYPE_UNSPECIFIED = 0: The user did</span>
+<span class="sd">                                    not specify a storage type.</span>
+<span class="sd">                                    SSD = 1: Flash (SSD) storage should be</span>
+<span class="sd">                                    used.</span>
+<span class="sd">                                    HDD = 2: Magnetic drive (HDD) storage</span>
+<span class="sd">                                    should be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
+                 <span class="n">location_id</span><span class="o">=</span><span class="n">_EXISTING_INSTANCE_LOCATION_ID</span><span class="p">,</span>
+                 <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">,</span>
+                 <span class="n">default_storage_type</span><span class="o">=</span><span class="n">_STORAGE_TYPE_UNSPECIFIED</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">=</span> <span class="n">instance_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span> <span class="ow">or</span> <span class="n">instance_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_location_id</span> <span class="o">=</span> <span class="n">location_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_serve_nodes</span> <span class="o">=</span> <span class="n">serve_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_storage_type</span> <span class="o">=</span> <span class="n">default_storage_type</span>
+
+<div class="viewcode-block" id="Instance.from_pb"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance instance from a protobuf.</span>
+
+<span class="sd">        :type instance_pb: :class:`instance_pb2.Instance`</span>
+<span class="sd">        :param instance_pb: An instance protobuf object.</span>
+
+<span class="sd">        :type client: :class:`Client &lt;google.cloud.bigtable.client.Client&gt;`</span>
+<span class="sd">        :param client: The client that owns the instance.</span>
+
+<span class="sd">        :rtype: :class:`Instance`</span>
+<span class="sd">        :returns: The instance parsed from the protobuf response.</span>
+<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the instance</span>
+<span class="sd">                 name does not match</span>
+<span class="sd">                 ``projects/{project}/instances/{instance_id}``</span>
+<span class="sd">                 or if the parsed project ID does not match the project ID</span>
+<span class="sd">                 on the client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">_INSTANCE_NAME_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf name was not in the &#39;</span>
+                             <span class="s1">&#39;expected format.&#39;</span><span class="p">,</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project ID on instance does not match the &#39;</span>
+                             <span class="s1">&#39;project ID on the client&#39;</span><span class="p">)</span>
+        <span class="n">instance_id</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;instance_id&#39;</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_from_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refresh self from the server-provided protobuf.</span>
+<span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance protobuf does not contain display_name&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">instance_pb</span><span class="o">.</span><span class="n">display_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instance name used in requests.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">          This property will not change if ``instance_id`` does not,</span>
+<span class="sd">          but the return value is not cached.</span>
+
+<span class="sd">        The instance name is of the form</span>
+
+<span class="sd">            ``&quot;projects/{project}/instances/{instance_id}&quot;``</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Return a fully-qualified instance string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="c1"># NOTE: This does not compare the configuration values, such as</span>
+        <span class="c1">#       the display_name. Instead, it only compares</span>
+        <span class="c1">#       identifying values instance ID and client. This is</span>
+        <span class="c1">#       intentional, since the same instance can be in different states</span>
+        <span class="c1">#       if not synchronized. Instances with similar instance</span>
+        <span class="c1">#       settings but different clients can&#39;t be used in the same way.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_client</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+<div class="viewcode-block" id="Instance.reload"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.&quot;&quot;&quot;</span>
+        <span class="n">instance_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># NOTE: _update_from_pb does not check that the project and</span>
+        <span class="c1">#       instance ID on the response match the request.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.create"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create this instance.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            Uses the ``project`` and ``instance_id`` on the current</span>
+<span class="sd">            :class:`Instance` in addition to the ``display_name``.</span>
+<span class="sd">            To change them before creating, reset the values via</span>
+
+<span class="sd">            .. code:: python</span>
+
+<span class="sd">                instance.display_name = &#39;New display name&#39;</span>
+<span class="sd">                instance.instance_id = &#39;i-changed-my-mind&#39;</span>
+
+<span class="sd">            before calling :meth:`create`.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.operation.Operation`</span>
+<span class="sd">        :returns: The long-running operation corresponding to the create</span>
+<span class="sd">                    operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clusters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-cluster&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">)</span>
+        <span class="n">cluster_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">cluster_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_location_id</span><span class="p">)</span>
+        <span class="n">cluster</span> <span class="o">=</span> <span class="n">instance_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">cluster_name</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cluster_serve_nodes</span><span class="p">,</span>
+            <span class="n">default_storage_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_storage_type</span><span class="p">)</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">instance_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">(</span>
+            <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="p">)</span>
+        <span class="n">clusters</span><span class="p">[</span><span class="n">cluster_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project_path</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+            <span class="n">clusters</span><span class="o">=</span><span class="n">clusters</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.update"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update this instance.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            Updates the ``display_name``. To change that value before</span>
+<span class="sd">            updating, reset its values via</span>
+
+<span class="sd">            .. code:: python</span>
+
+<span class="sd">                instance.display_name = &#39;New display name&#39;</span>
+
+<span class="sd">            before calling :meth:`update`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Instance</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">TYPE_UNSPECIFIED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">update_instance</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="p">{})</span></div>
+
+<div class="viewcode-block" id="Instance.delete"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete this instance.</span>
+
+<span class="sd">        Marks an instance and all of its tables for permanent deletion</span>
+<span class="sd">        in 7 days.</span>
+
+<span class="sd">        Immediately upon completion of the request:</span>
+
+<span class="sd">        * Billing will cease for all of the instance&#39;s reserved resources.</span>
+<span class="sd">        * The instance&#39;s ``delete_time`` field will be set 7 days in</span>
+<span class="sd">          the future.</span>
+
+<span class="sd">        Soon afterward:</span>
+
+<span class="sd">        * All tables within the instance will become unavailable.</span>
+
+<span class="sd">        At the instance&#39;s ``delete_time``:</span>
+
+<span class="sd">        * The instance and **all of its tables** will immediately and</span>
+<span class="sd">          irrevocably disappear from the API, and their data will be</span>
+<span class="sd">          permanently deleted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_client</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.table"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to create a table associated with this instance.</span>
+
+<span class="sd">        :type table_id: str</span>
+<span class="sd">        :param table_id: The ID of the table.</span>
+
+<span class="sd">        :rtype: :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
+<span class="sd">        :returns: The table owned by this instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Table</span><span class="p">(</span><span class="n">table_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.list_tables"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List the tables in this instance.</span>
+
+<span class="sd">        :rtype: list of :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
+<span class="sd">        :returns: The list of tables owned by the instance.</span>
+<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if one of the</span>
+<span class="sd">                 returned tables has a name that is not of the expected format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table_list_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_admin_client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">table_pb</span> <span class="ow">in</span> <span class="n">table_list_pb</span><span class="p">:</span>
+            <span class="n">table_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/tables/&#39;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Table name </span><span class="si">%s</span><span class="s1"> not of expected format&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span>
+            <span class="n">table_id</span> <span class="o">=</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">):]</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Instance.create_app_profile"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.create_app_profile">[docs]</a>    <span class="k">def</span> <span class="nf">create_app_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">,</span> <span class="n">routing_policy_type</span><span class="p">,</span>
+                           <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">cluster_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_transactional_writes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an app profile within an instance.</span>
+
+<span class="sd">        :type: app_profile_id: str</span>
+<span class="sd">        :param app_profile_id: The unique name for the new app profile.</span>
+
+<span class="sd">        :type: routing_policy_type: int</span>
+<span class="sd">        :param: routing_policy_type: There are two routing policies</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_ANY = 1 and</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_SINGLE = 2.</span>
+<span class="sd">                                    If ROUTING_POLICY_TYPE_ANY</span>
+<span class="sd">                                    which will create a</span>
+<span class="sd">                                    MultiClusterRoutingUseAny policy and if</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_ANY is specified, a</span>
+<span class="sd">                                    SingleClusterRouting policy will be created</span>
+<span class="sd">                                    using the cluster_id and</span>
+<span class="sd">                                    allow_transactional_writes parameters.</span>
+
+<span class="sd">        :type: description: str</span>
+<span class="sd">        :param: description: (Optional) Long form description of the use</span>
+<span class="sd">                                case for this AppProfile.</span>
+
+<span class="sd">        :type: ignore_warnings: bool</span>
+<span class="sd">        :param: ignore_warnings: (Optional) If true, ignore safety checks when</span>
+<span class="sd">                                    creating the app profile.</span>
+
+<span class="sd">        :type: cluster_id: str</span>
+<span class="sd">        :param: cluster_id: (Optional) Unique cluster_id which is only required</span>
+<span class="sd">                            when routing_policy_type is</span>
+<span class="sd">                            ROUTING_POLICY_TYPE_SINGLE.</span>
+
+<span class="sd">        :type: allow_transactional_writes: bool</span>
+<span class="sd">        :param: allow_transactional_writes: (Optional) If true, allow</span>
+<span class="sd">                                            transactional writes for</span>
+<span class="sd">                                            ROUTING_POLICY_TYPE_SINGLE.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`</span>
+<span class="sd">        :return: The AppProfile instance.</span>
+<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` If routing</span>
+<span class="sd">                policy is not set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">routing_policy_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AppProfile required routing policy.&#39;</span><span class="p">)</span>
+
+        <span class="n">single_cluster_routing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">multi_cluster_routing_use_any</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">app_profile_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">routing_policy_type</span> <span class="o">==</span> <span class="n">ROUTING_POLICY_TYPE_ANY</span><span class="p">:</span>
+            <span class="n">multi_cluster_routing_use_any</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">MultiClusterRoutingUseAny</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">routing_policy_type</span> <span class="o">==</span> <span class="n">ROUTING_POLICY_TYPE_SINGLE</span><span class="p">:</span>
+            <span class="n">single_cluster_routing</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">SingleClusterRouting</span><span class="p">(</span>
+                    <span class="n">cluster_id</span><span class="o">=</span><span class="n">cluster_id</span><span class="p">,</span>
+                    <span class="n">allow_transactional_writes</span><span class="o">=</span><span class="n">allow_transactional_writes</span>
+                <span class="p">))</span>
+
+        <span class="n">app_profile</span> <span class="o">=</span> <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">multi_cluster_routing_use_any</span><span class="o">=</span><span class="n">multi_cluster_routing_use_any</span><span class="p">,</span>
+            <span class="n">single_cluster_routing</span><span class="o">=</span><span class="n">single_cluster_routing</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">create_app_profile</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="o">=</span><span class="n">app_profile_id</span><span class="p">,</span>
+            <span class="n">app_profile</span><span class="o">=</span><span class="n">app_profile</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="o">=</span><span class="n">ignore_warnings</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.get_app_profile"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.get_app_profile">[docs]</a>    <span class="k">def</span> <span class="nf">get_app_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets information about an app profile.</span>
+
+<span class="sd">        :type: app_profile_id: str</span>
+<span class="sd">        :param app_profile_id: The unique name for the app profile.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`</span>
+<span class="sd">        :return: The AppProfile instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">app_profile_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">get_app_profile</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.list_app_profiles"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_app_profiles">[docs]</a>    <span class="k">def</span> <span class="nf">list_app_profiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lists information about app profiles in an instance.</span>
+
+<span class="sd">        :rtype: :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`]</span>
+<span class="sd">        :return: A :list:[`~google.cloud.bigtable_admin_v2.types.AppProfile`].</span>
+<span class="sd">                By default, this is a list of</span>
+<span class="sd">                :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`</span>
+<span class="sd">                instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">list_app_profiles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">list_app_profiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">list_app_profiles</span></div>
+
+<div class="viewcode-block" id="Instance.update_app_profile"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.update_app_profile">[docs]</a>    <span class="k">def</span> <span class="nf">update_app_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">,</span> <span class="n">update_mask</span><span class="p">,</span>
+                           <span class="n">routing_policy_type</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                           <span class="n">ignore_warnings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">cluster_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_transactional_writes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates an app profile within an instance.</span>
+
+<span class="sd">        :type: app_profile_id: str</span>
+<span class="sd">        :param app_profile_id: The unique name for the new app profile.</span>
+
+<span class="sd">        :type: update_mask: list</span>
+<span class="sd">        :param: update_mask: Name of the parameters of AppProfiles that</span>
+<span class="sd">                                needed to update.</span>
+
+<span class="sd">        :type: routing_policy_type: int</span>
+<span class="sd">        :param: routing_policy_type: There are two routing policies</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_ANY = 1 and</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_SINGLE = 2.</span>
+<span class="sd">                                    If ROUTING_POLICY_TYPE_ANY</span>
+<span class="sd">                                    which will create a</span>
+<span class="sd">                                    MultiClusterRoutingUseAny policy and if</span>
+<span class="sd">                                    ROUTING_POLICY_TYPE_ANY is specified, a</span>
+<span class="sd">                                    SingleClusterRouting policy will be created</span>
+<span class="sd">                                    using the cluster_id and</span>
+<span class="sd">                                    allow_transactional_writes parameters.</span>
+
+<span class="sd">        :type: description: str</span>
+<span class="sd">        :param: description: (Optional) Optional long form description of the</span>
+<span class="sd">                                use case for this AppProfile.</span>
+
+<span class="sd">        :type: ignore_warnings: bool</span>
+<span class="sd">        :param: ignore_warnings: (Optional) If true, ignore safety checks when</span>
+<span class="sd">                                    creating the app profile.</span>
+
+<span class="sd">        :type: cluster_id: str</span>
+<span class="sd">        :param: cluster_id: (Optional) Unique cluster_id which is only required</span>
+<span class="sd">                            when routing_policy_type is</span>
+<span class="sd">                            ROUTING_POLICY_TYPE_SINGLE.</span>
+
+<span class="sd">        :type: allow_transactional_writes: bool</span>
+<span class="sd">        :param: allow_transactional_writes: (Optional) If true, allow</span>
+<span class="sd">                                            transactional writes for</span>
+<span class="sd">                                            ROUTING_POLICY_TYPE_SINGLE.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`</span>
+<span class="sd">        :return: The AppProfile instance.</span>
+<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` If routing</span>
+<span class="sd">                policy is not set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">routing_policy_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AppProfile required routing policy.&#39;</span><span class="p">)</span>
+
+        <span class="n">single_cluster_routing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">multi_cluster_routing_use_any</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">app_profile_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">routing_policy_type</span> <span class="o">==</span> <span class="n">ROUTING_POLICY_TYPE_ANY</span><span class="p">:</span>
+            <span class="n">multi_cluster_routing_use_any</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">MultiClusterRoutingUseAny</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">routing_policy_type</span> <span class="o">==</span> <span class="n">ROUTING_POLICY_TYPE_SINGLE</span><span class="p">:</span>
+            <span class="n">single_cluster_routing</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="o">.</span><span class="n">SingleClusterRouting</span><span class="p">(</span>
+                    <span class="n">cluster_id</span><span class="o">=</span><span class="n">cluster_id</span><span class="p">,</span>
+                    <span class="n">allow_transactional_writes</span><span class="o">=</span><span class="n">allow_transactional_writes</span>
+                <span class="p">))</span>
+
+        <span class="n">update_app_profile</span> <span class="o">=</span> <span class="n">instance_pb2</span><span class="o">.</span><span class="n">AppProfile</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">multi_cluster_routing_use_any</span><span class="o">=</span><span class="n">multi_cluster_routing_use_any</span><span class="p">,</span>
+            <span class="n">single_cluster_routing</span><span class="o">=</span><span class="n">single_cluster_routing</span>
+        <span class="p">)</span>
+        <span class="n">update_mask</span> <span class="o">=</span> <span class="n">field_mask_pb2</span><span class="o">.</span><span class="n">FieldMask</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="n">update_mask</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">update_app_profile</span><span class="p">(</span>
+            <span class="n">app_profile</span><span class="o">=</span><span class="n">update_app_profile</span><span class="p">,</span> <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
+            <span class="n">ignore_warnings</span><span class="o">=</span><span class="n">ignore_warnings</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.delete_app_profile"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.delete_app_profile">[docs]</a>    <span class="k">def</span> <span class="nf">delete_app_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deletes an app profile from an instance.</span>
+
+<span class="sd">        :type: app_profile_id: str</span>
+<span class="sd">        :param app_profile_id: The unique name for the app profile to delete.</span>
+
+<span class="sd">        :raises: google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                failed for any reason. google.api_core.exceptions.RetryError:</span>
+<span class="sd">                If the request failed due to a retryable error and retry</span>
+<span class="sd">                attempts failed. ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span>
+        <span class="n">app_profile_path</span> <span class="o">=</span> <span class="n">instance_admin_client</span><span class="o">.</span><span class="n">app_profile_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">app_profile_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_admin_client</span><span class="o">.</span><span class="n">delete_app_profile</span><span class="p">(</span>
+            <span class="n">app_profile_path</span><span class="p">,</span> <span class="n">ignore_warnings</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

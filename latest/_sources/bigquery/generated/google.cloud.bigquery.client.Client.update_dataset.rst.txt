@@ -1,0 +1,6 @@
+google.cloud.bigquery.client.Client.update\_dataset
+===================================================
+
+.. currentmodule:: google.cloud.bigquery.client
+
+.. automethod:: Client.update_dataset

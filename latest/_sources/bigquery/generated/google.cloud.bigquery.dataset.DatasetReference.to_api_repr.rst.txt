@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.DatasetReference.to\_api\_repr
+============================================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. automethod:: DatasetReference.to_api_repr

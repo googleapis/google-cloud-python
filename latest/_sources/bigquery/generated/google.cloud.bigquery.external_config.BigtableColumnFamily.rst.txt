@@ -1,0 +1,41 @@
+google.cloud.bigquery.external\_config.BigtableColumnFamily
+===========================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+.. autoclass:: BigtableColumnFamily
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~BigtableColumnFamily.from_api_repr
+      
+      
+      ~BigtableColumnFamily.to_api_repr
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~BigtableColumnFamily.columns
+      ~BigtableColumnFamily.encoding
+      ~BigtableColumnFamily.family_id
+      ~BigtableColumnFamily.only_read_latest
+      ~BigtableColumnFamily.type_
+   
+   

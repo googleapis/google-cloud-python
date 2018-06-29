@@ -1,0 +1,39 @@
+google.cloud.bigquery.job.CopyJobConfig
+=======================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoclass:: CopyJobConfig
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~CopyJobConfig.from_api_repr
+      
+      
+      ~CopyJobConfig.to_api_repr
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~CopyJobConfig.create_disposition
+      ~CopyJobConfig.destination_encryption_configuration
+      ~CopyJobConfig.write_disposition
+   
+   

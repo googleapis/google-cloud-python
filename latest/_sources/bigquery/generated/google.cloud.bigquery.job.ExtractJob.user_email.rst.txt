@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.ExtractJob.user\_email
+================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: ExtractJob.user_email

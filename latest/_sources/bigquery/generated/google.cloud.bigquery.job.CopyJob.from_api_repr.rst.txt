@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.from\_api\_repr
+=================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: CopyJob.from_api_repr

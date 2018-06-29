@@ -1,0 +1,6 @@
+google.cloud.bigquery.table.TableListItem.partition\_expiration
+===============================================================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+.. autoattribute:: TableListItem.partition_expiration

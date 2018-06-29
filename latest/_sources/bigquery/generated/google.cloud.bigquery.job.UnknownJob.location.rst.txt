@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.location
+=============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: UnknownJob.location

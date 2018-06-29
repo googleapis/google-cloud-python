@@ -1,0 +1,32 @@
+google.cloud.bigquery.magics.Context
+====================================
+
+.. currentmodule:: google.cloud.bigquery.magics
+
+.. autoclass:: Context
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~Context.credentials
+      ~Context.project
+   
+   

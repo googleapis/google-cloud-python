@@ -1,0 +1,23 @@
+google.cloud.bigquery.table.TimePartitioningType
+================================================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+.. autoclass:: TimePartitioningType
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~TimePartitioningType.DAY
+   
+   

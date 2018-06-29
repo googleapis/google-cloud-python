@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.add\_done\_callback
+=====================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.add_done_callback

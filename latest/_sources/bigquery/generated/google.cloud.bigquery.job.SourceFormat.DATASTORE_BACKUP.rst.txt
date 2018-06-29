@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.SourceFormat.DATASTORE\_BACKUP
+========================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: SourceFormat.DATASTORE_BACKUP

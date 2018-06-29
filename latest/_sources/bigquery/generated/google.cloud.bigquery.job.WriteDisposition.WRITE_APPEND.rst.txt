@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.WriteDisposition.WRITE\_APPEND
+========================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: WriteDisposition.WRITE_APPEND

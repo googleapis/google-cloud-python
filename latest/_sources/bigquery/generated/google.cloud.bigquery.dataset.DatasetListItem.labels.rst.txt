@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.DatasetListItem.labels
+====================================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: DatasetListItem.labels

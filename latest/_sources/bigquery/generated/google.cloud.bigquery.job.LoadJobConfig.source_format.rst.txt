@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJobConfig.source\_format
+======================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: LoadJobConfig.source_format

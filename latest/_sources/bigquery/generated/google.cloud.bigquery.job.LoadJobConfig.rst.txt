@@ -1,0 +1,53 @@
+google.cloud.bigquery.job.LoadJobConfig
+=======================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoclass:: LoadJobConfig
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~LoadJobConfig.from_api_repr
+      
+      
+      ~LoadJobConfig.to_api_repr
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~LoadJobConfig.allow_jagged_rows
+      ~LoadJobConfig.allow_quoted_newlines
+      ~LoadJobConfig.autodetect
+      ~LoadJobConfig.create_disposition
+      ~LoadJobConfig.destination_encryption_configuration
+      ~LoadJobConfig.encoding
+      ~LoadJobConfig.field_delimiter
+      ~LoadJobConfig.ignore_unknown_values
+      ~LoadJobConfig.max_bad_records
+      ~LoadJobConfig.null_marker
+      ~LoadJobConfig.quote_character
+      ~LoadJobConfig.schema
+      ~LoadJobConfig.schema_update_options
+      ~LoadJobConfig.skip_leading_rows
+      ~LoadJobConfig.source_format
+      ~LoadJobConfig.time_partitioning
+      ~LoadJobConfig.write_disposition
+   
+   

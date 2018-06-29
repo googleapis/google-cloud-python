@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.user\_email
+=============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: CopyJob.user_email

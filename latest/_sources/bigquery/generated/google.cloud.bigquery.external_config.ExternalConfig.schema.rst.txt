@@ -1,0 +1,6 @@
+google.cloud.bigquery.external\_config.ExternalConfig.schema
+============================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+.. autoattribute:: ExternalConfig.schema

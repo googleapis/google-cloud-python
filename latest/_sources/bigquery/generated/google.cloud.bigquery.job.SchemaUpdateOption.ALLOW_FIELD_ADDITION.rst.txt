@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.SchemaUpdateOption.ALLOW\_FIELD\_ADDITION
+===================================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: SchemaUpdateOption.ALLOW_FIELD_ADDITION

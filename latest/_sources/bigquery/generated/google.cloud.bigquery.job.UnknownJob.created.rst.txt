@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.created
+============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: UnknownJob.created

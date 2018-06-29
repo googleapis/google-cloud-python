@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.running
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.running

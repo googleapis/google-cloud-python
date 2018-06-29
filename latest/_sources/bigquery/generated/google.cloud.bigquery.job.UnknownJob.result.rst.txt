@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.result
+===========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: UnknownJob.result

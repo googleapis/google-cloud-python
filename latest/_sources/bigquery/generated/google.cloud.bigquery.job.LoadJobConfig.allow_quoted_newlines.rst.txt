@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJobConfig.allow\_quoted\_newlines
+===============================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: LoadJobConfig.allow_quoted_newlines

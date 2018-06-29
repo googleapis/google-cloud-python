@@ -1,0 +1,6 @@
+google.cloud.bigquery.query.ArrayQueryParameter.positional
+==========================================================
+
+.. currentmodule:: google.cloud.bigquery.query
+
+.. automethod:: ArrayQueryParameter.positional

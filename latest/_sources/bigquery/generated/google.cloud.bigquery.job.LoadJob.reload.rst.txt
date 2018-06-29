@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.reload
+========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.reload

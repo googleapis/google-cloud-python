@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.5.0
+
+### New Features
+- Add PublishSummaryToCscc (#5246)
+- Add configurable row limit (#5246)
+- Add EntityID added to risk stats (#5246)
+- Add dictionaries via GCS (#5246)
+
 ## 0.4.0
 
 ### Implementation Changes

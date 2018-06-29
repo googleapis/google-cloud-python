@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.destination\_encryption\_configuration
+========================================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: CopyJob.destination_encryption_configuration

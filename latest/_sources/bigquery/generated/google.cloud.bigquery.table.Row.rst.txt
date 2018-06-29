@@ -1,0 +1,36 @@
+google.cloud.bigquery.table.Row
+===============================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+.. autoclass:: Row
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~Row.get
+      
+      
+      ~Row.items
+      
+      
+      ~Row.keys
+      
+      
+      ~Row.values
+      
+   
+   
+
+   
+   
+   

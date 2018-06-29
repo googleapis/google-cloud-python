@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.result
+========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: CopyJob.result

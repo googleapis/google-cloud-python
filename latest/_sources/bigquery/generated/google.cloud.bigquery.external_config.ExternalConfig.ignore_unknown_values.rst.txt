@@ -1,0 +1,6 @@
+google.cloud.bigquery.external\_config.ExternalConfig.ignore\_unknown\_values
+=============================================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+.. autoattribute:: ExternalConfig.ignore_unknown_values

@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.error\_result
+==================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: UnknownJob.error_result

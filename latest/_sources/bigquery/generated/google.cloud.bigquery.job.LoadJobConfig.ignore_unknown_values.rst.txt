@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJobConfig.ignore\_unknown\_values
+===============================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: LoadJobConfig.ignore_unknown_values

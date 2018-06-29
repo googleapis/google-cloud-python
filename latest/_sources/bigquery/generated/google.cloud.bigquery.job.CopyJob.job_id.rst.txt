@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.job\_id
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: CopyJob.job_id

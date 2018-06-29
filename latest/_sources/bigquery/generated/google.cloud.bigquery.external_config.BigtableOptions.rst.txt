@@ -1,0 +1,39 @@
+google.cloud.bigquery.external\_config.BigtableOptions
+======================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+.. autoclass:: BigtableOptions
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~BigtableOptions.from_api_repr
+      
+      
+      ~BigtableOptions.to_api_repr
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~BigtableOptions.column_families
+      ~BigtableOptions.ignore_unspecified_column_families
+      ~BigtableOptions.read_rowkey_as_string
+   
+   

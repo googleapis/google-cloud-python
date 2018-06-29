@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.exists
+========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: CopyJob.exists

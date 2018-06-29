@@ -1,0 +1,6 @@
+google.cloud.bigquery.client.Client.cancel\_job
+===============================================
+
+.. currentmodule:: google.cloud.bigquery.client
+
+.. automethod:: Client.cancel_job

@@ -1,0 +1,23 @@
+google.cloud.bigquery.magics
+============================
+
+.. automodule:: google.cloud.bigquery.magics
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: .
+   
+      Context
+   
+   
+
+   
+   
+   

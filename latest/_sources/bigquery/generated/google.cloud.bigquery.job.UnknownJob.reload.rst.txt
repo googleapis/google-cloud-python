@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.reload
+===========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: UnknownJob.reload

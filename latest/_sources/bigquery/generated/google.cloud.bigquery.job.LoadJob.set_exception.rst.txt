@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.set\_exception
+================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.set_exception

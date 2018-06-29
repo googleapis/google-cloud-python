@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.Dataset.description
+=================================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: Dataset.description

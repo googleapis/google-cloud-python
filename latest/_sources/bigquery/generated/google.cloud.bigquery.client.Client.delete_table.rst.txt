@@ -1,0 +1,6 @@
+google.cloud.bigquery.client.Client.delete\_table
+=================================================
+
+.. currentmodule:: google.cloud.bigquery.client
+
+.. automethod:: Client.delete_table

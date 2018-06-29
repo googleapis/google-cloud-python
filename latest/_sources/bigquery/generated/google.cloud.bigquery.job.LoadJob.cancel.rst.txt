@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.LoadJob.cancel
+========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: LoadJob.cancel

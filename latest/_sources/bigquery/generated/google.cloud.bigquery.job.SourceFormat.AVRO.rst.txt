@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.SourceFormat.AVRO
+===========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: SourceFormat.AVRO

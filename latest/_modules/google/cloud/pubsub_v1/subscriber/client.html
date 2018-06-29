@@ -1,0 +1,317 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 71fa0b86ec documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.pubsub_v1.subscriber.client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">grpc</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">grpc_helpers</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">_gapic</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.gapic</span> <span class="k">import</span> <span class="n">subscriber_client</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber</span> <span class="k">import</span> <span class="n">futures</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber._protocol</span> <span class="k">import</span> <span class="n">streaming_pull_manager</span>
+
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client">[docs]</a><span class="nd">@_gapic</span><span class="o">.</span><span class="n">add_methods</span><span class="p">(</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">,</span>
+                    <span class="n">blacklist</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;streaming_pull&#39;</span><span class="p">,))</span>
+<span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A subscriber client for Google Cloud Pub/Sub.</span>
+
+<span class="sd">    This creates an object that is capable of subscribing to messages.</span>
+<span class="sd">    Generally, you can instantiate this client with no arguments, and you</span>
+<span class="sd">    get sensible defaults.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        kwargs (dict): Any additional arguments provided are sent as keyword</span>
+<span class="sd">            keyword arguments to the underlying</span>
+<span class="sd">            :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.</span>
+<span class="sd">            Generally, you should not need to set additional keyword</span>
+<span class="sd">            arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Sanity check: Is our goal to use the emulator?</span>
+        <span class="c1"># If so, create a grpc insecure channel with the emulator host</span>
+        <span class="c1"># as the target.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Use a custom channel.</span>
+        <span class="c1"># We need this in order to set appropriate default message size and</span>
+        <span class="c1"># keepalive options.</span>
+        <span class="k">if</span> <span class="s1">&#39;channel&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;credentials&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
+                <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s1">&#39;grpc.max_send_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;grpc.max_receive_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;grpc.keepalive_time_ms&#39;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+                <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Add the metrics headers, and instantiate the underlying GAPIC</span>
+        <span class="c1"># client.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the target (where the API is).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The location of the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The underlying gapic API client.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span>
+
+<div class="viewcode-block" id="Client.subscribe"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asynchronously start receiving messages on a given subscription.</span>
+
+<span class="sd">        This method starts a background thread to begin pulling messages from</span>
+<span class="sd">        a Pub/Sub subscription and scheduling them to be processed using the</span>
+<span class="sd">        provided ``callback``.</span>
+
+<span class="sd">        The ``callback`` will be called with an individual</span>
+<span class="sd">        :class:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the</span>
+<span class="sd">        responsibility of the callback to either call ``ack()`` or ``nack()``</span>
+<span class="sd">        on the message when it finished processing. If an exception occurs in</span>
+<span class="sd">        the callback during processing, the exception is logged and the message</span>
+<span class="sd">        is ``nack()`` ed.</span>
+
+<span class="sd">        The ``flow_control`` argument can be used to control the rate of at</span>
+<span class="sd">        which messages are pulled. The settings are relatively conservative by</span>
+<span class="sd">        default to prevent &quot;message hoarding&quot; - a situation where the client</span>
+<span class="sd">        pulls a large number of messages but can not process them fast enough</span>
+<span class="sd">        leading it to &quot;starve&quot; other clients of messages. Increasing these</span>
+<span class="sd">        settings may lead to faster throughput for messages that do not take</span>
+<span class="sd">        a long time to process.</span>
+
+<span class="sd">        This method starts the receiver in the background and returns a</span>
+<span class="sd">        *Future* representing its execution. Waiting on the future (calling</span>
+<span class="sd">        ``result()``) will block forever or until a non-recoverable error</span>
+<span class="sd">        is encountered (such as loss of network connectivity). Cancelling the</span>
+<span class="sd">        future will signal the process to shutdown gracefully and exit.</span>
+
+<span class="sd">        .. note:: This uses Pub/Sub&#39;s *streaming pull* feature. This feature</span>
+<span class="sd">            properties that may be surprising. Please take a look at</span>
+<span class="sd">            https://cloud.google.com/pubsub/docs/pull#streamingpull for</span>
+<span class="sd">            more details on how streaming pull behaves compared to the</span>
+<span class="sd">            synchronous pull method.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google.cloud.pubsub_v1 import subscriber</span>
+
+<span class="sd">            subscriber_client = pubsub.SubscriberClient()</span>
+
+<span class="sd">            # existing subscription</span>
+<span class="sd">            subscription = subscriber_client.subscription_path(</span>
+<span class="sd">                &#39;my-project-id&#39;, &#39;my-subscription&#39;)</span>
+
+<span class="sd">            def callback(message):</span>
+<span class="sd">                print(message)</span>
+<span class="sd">                message.ack()</span>
+
+<span class="sd">            future = subscriber.subscribe(</span>
+<span class="sd">                subscription, callback)</span>
+
+<span class="sd">            try:</span>
+<span class="sd">                future.result()</span>
+<span class="sd">            except KeyboardInterrupt:</span>
+<span class="sd">                future.cancel()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The name of the subscription. The</span>
+<span class="sd">                subscription should have already been created (for example,</span>
+<span class="sd">                by using :meth:`create_subscription`).</span>
+<span class="sd">            callback (Callable[~.pubsub_v1.subscriber.message.Message]):</span>
+<span class="sd">                The callback function. This function receives the message as</span>
+<span class="sd">                its only argument and will be called from a different thread/</span>
+<span class="sd">                process depending on the scheduling strategy.</span>
+<span class="sd">            flow_control (~.pubsub_v1.types.FlowControl): The flow control</span>
+<span class="sd">                settings. Use this to prevent situations where you are</span>
+<span class="sd">                inundated with too many messages at once.</span>
+<span class="sd">            scheduler (~.pubsub_v1.subscriber.scheduler.Scheduler): An optional</span>
+<span class="sd">                *scheduler* to use when executing the callback. This controls</span>
+<span class="sd">                how callbacks are executed concurrently.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.pubsub_v1.futures.StreamingPullFuture: A Future object</span>
+<span class="sd">                that can be used to manage the background stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flow_control</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FlowControl</span><span class="p">(</span><span class="o">*</span><span class="n">flow_control</span><span class="p">)</span>
+
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">streaming_pull_manager</span><span class="o">.</span><span class="n">StreamingPullManager</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span><span class="p">)</span>
+
+        <span class="n">future</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">StreamingPullFuture</span><span class="p">(</span><span class="n">manager</span><span class="p">)</span>
+
+        <span class="n">manager</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">future</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

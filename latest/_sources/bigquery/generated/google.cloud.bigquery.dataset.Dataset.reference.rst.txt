@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.Dataset.reference
+===============================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: Dataset.reference

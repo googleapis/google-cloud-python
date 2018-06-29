@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.ExtractJob.running
+============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: ExtractJob.running

@@ -1,0 +1,40 @@
+google.cloud.bigquery.table.TimePartitioning
+============================================
+
+.. currentmodule:: google.cloud.bigquery.table
+
+.. autoclass:: TimePartitioning
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   
+   .. autosummary::
+      :toctree: .
+   
+      
+      
+      ~TimePartitioning.from_api_repr
+      
+      
+      ~TimePartitioning.to_api_repr
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+      :toctree: .
+   
+      ~TimePartitioning.expiration_ms
+      ~TimePartitioning.field
+      ~TimePartitioning.require_partition_filter
+      ~TimePartitioning.type_
+   
+   

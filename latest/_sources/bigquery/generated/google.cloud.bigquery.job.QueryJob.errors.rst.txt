@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJob.errors
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJob.errors

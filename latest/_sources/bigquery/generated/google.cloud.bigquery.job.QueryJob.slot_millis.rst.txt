@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJob.slot\_millis
+===============================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJob.slot_millis

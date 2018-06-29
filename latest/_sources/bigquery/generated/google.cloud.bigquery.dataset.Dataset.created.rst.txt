@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.Dataset.created
+=============================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: Dataset.created

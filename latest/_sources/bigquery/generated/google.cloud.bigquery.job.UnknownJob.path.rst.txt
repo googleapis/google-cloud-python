@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.path
+=========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: UnknownJob.path

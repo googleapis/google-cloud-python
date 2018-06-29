@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.ExtractJob.set\_exception
+===================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: ExtractJob.set_exception

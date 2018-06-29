@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.WriteDisposition.WRITE\_TRUNCATE
+==========================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: WriteDisposition.WRITE_TRUNCATE

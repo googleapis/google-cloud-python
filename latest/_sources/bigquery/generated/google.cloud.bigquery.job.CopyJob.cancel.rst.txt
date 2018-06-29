@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.CopyJob.cancel
+========================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. automethod:: CopyJob.cancel

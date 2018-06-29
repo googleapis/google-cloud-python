@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJob.billing\_tier
+================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJob.billing_tier

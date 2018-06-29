@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJobConfig.priority
+=================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJobConfig.priority

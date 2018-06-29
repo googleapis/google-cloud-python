@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJobConfig.destination
+====================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJobConfig.destination

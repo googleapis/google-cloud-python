@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.UnknownJob.user\_email
+================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: UnknownJob.user_email

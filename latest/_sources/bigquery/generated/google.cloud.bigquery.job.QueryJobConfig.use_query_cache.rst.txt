@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJobConfig.use\_query\_cache
+==========================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJobConfig.use_query_cache

@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.Dataset.access\_entries
+=====================================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: Dataset.access_entries

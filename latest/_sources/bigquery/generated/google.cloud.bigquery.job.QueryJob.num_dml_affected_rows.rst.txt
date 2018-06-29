@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.QueryJob.num\_dml\_affected\_rows
+===========================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: QueryJob.num_dml_affected_rows

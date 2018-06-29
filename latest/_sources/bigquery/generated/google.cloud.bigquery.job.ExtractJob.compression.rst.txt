@@ -1,0 +1,6 @@
+google.cloud.bigquery.job.ExtractJob.compression
+================================================
+
+.. currentmodule:: google.cloud.bigquery.job
+
+.. autoattribute:: ExtractJob.compression

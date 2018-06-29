@@ -1,0 +1,6 @@
+google.cloud.bigquery.dataset.Dataset.default\_table\_expiration\_ms
+====================================================================
+
+.. currentmodule:: google.cloud.bigquery.dataset
+
+.. autoattribute:: Dataset.default_table_expiration_ms
