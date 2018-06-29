@@ -18,6 +18,7 @@
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
+from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
@@ -184,15 +185,21 @@ class Table(object):
                                                 table_id=self.table_id,
                                                 table={})
 
-    def exist(self):
-        """Checks whether a table with given table ID exist
-        or not for given Bigtable instance.
+    def exists(self):
+        """Check whether the table exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
         """
-        instance = self._instance
-        for table in instance.list_tables():
-            if self.table_id == table.table_id:
-                return True
-        return False
+        table_client = self._instance._client.table_admin_client
+        try:
+            table_client.get_table(name=self.name)
+        except NotFound:
+            return False
+        except StopIteration:
+            return False
+        else:
+            return True
 
     def delete(self):
         """Delete this table."""

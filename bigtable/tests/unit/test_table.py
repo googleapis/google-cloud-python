@@ -318,10 +318,10 @@ class TestTable(unittest.TestCase):
         table1 = instance.table(self.TABLE_ID)
         table2 = instance.table('table-id2')
 
-        result = table1.exist()
+        result = table1.exists()
         self.assertEqual(True,result)
 
-        result = table2.exist()
+        result = table2.exists()
         self.assertEqual(False, result)
 
     def test_delete(self):
