@@ -157,7 +157,7 @@ def wrap_errors(callable_):
 def _create_secure_channel(
         credentials, request, target, ssl_credentials=None, **kwargs):
     """Creates a secure authorized gRPC channel.
-    
+
     This overwrites google.auth.transport.grpc.secure_authorized_channel to
     return a secure channel using grpc_gcp.secure_channel if grpc_gcp is
     available.
@@ -172,7 +172,8 @@ def _create_secure_channel(
         target (str): The host and port of the service.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
-        kwargs: Additional arguments to pass to :func:`grpc_gcp.secure_channel`.
+        kwargs: Additional arguments to pass to
+            :func:`grpc_gcp.secure_channel`.
 
     Returns:
         grpc_gcp.Channel: The created gRPC channel.
@@ -190,7 +191,7 @@ def _create_secure_channel(
     # Combine the ssl credentials and the authorization credentials.
     composite_credentials = grpc.composite_channel_credentials(
         ssl_credentials, google_auth_credentials)
-    
+
     if HAS_GRPC_GCP:
         # If grpc_gcp module is available use grpc_gcp.secure_channel,
         # otherwise, use grpc.secure_channel to create grpc channel.
@@ -221,7 +222,7 @@ def create_channel(target, credentials=None, scopes=None, **kwargs):
     else:
         credentials = google.auth.credentials.with_scopes_if_required(
             credentials, scopes)
- 
+
     request = google.auth.transport.requests.Request()
 
     return _create_secure_channel(credentials, request, target, **kwargs)

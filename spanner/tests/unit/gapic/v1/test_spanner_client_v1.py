@@ -26,11 +26,6 @@ from google.cloud.spanner_v1.proto import spanner_pb2
 from google.cloud.spanner_v1.proto import transaction_pb2
 from google.protobuf import empty_pb2
 
-try:
-    import grpc_gcp
-    HAS_GRPC_GCP = True
-except ImportError:
-    HAS_GRPC_GCP = False
 
 class MultiCallableStub(object):
     """Stub for the grpc.UnaryUnaryMultiCallable interface."""
@@ -561,7 +556,7 @@ class TestSpannerClient(object):
         with pytest.raises(CustomException):
             client.partition_read(session, table, key_set)
 
-    @pytest.mark.skipif(not HAS_GRPC_GCP,
+    @pytest.mark.skipif(not spanner_v1.HAS_GRPC_GCP,
                         reason='grpc_gcp module not available')
     @mock.patch('google.protobuf.text_format.Merge')
     @mock.patch('grpc_gcp.proto.grpc_gcp_pb2.ApiConfig',

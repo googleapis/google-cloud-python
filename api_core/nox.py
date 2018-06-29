@@ -66,6 +66,17 @@ def unit(session, py):
 
 
 @nox.session
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
+def unit_with_grpc_gcp(session, py):
+    """Run the unit test suite with grpcio-gcp installed."""
+
+    # Install grpcio-gcp
+    session.install('grpcio-gcp')
+
+    unit(session, py)
+
+
+@nox.session
 def lint(session):
     """Run linters.
 

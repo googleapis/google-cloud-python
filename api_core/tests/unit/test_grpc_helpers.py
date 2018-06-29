@@ -21,11 +21,6 @@ from google.api_core import grpc_helpers
 import google.auth.credentials
 from google.longrunning import operations_pb2
 
-try:
-    import grpc_gcp
-    HAS_GRPC_GCP = True
-except ImportError:
-    HAS_GRPC_GCP = False
 
 def test__patch_callable_name():
     callable = mock.Mock(spec=['__class__'])
@@ -180,6 +175,7 @@ def test_wrap_errors_streaming(wrap_stream_errors):
     assert result == wrap_stream_errors.return_value
     wrap_stream_errors.assert_called_once_with(callable_)
 
+
 @mock.patch(
     'google.auth.default',
     return_value=(mock.sentinel.credentials, mock.sentinel.projet))
@@ -193,6 +189,24 @@ def test_create_channel_implicit(create_secure_channel, default):
     default.assert_called_once_with(scopes=None)
     create_secure_channel.assert_called_once_with(
         mock.sentinel.credentials, mock.ANY, target)
+
+
+@mock.patch('grpc._channel.Channel')
+@mock.patch('grpc.composite_channel_credentials')
+@mock.patch(
+    'google.auth.default',
+    return_value=(mock.sentinel.credentials, mock.sentinel.projet))
+def test_create_channel_implicit_with_ssl_creds(
+        default, composite, grpc_channel):
+    target = 'example.com:443'
+
+    ssl_creds = grpc.ssl_channel_credentials()
+
+    grpc_helpers.create_channel(target, ssl_credentials=ssl_creds)
+
+    default.assert_called_once_with(scopes=None)
+    composite.assert_called_once_with(ssl_creds, mock.ANY)
+    grpc_channel.assert_called()
 
 
 @mock.patch(
@@ -237,7 +251,8 @@ def test_create_channel_explicit_scoped(unused_create_secure_channel):
     credentials.with_scopes.assert_called_once_with(scopes)
 
 
-@pytest.mark.skipif(not HAS_GRPC_GCP, reason='grpc_gcp module not available')
+@pytest.mark.skipif(not grpc_helpers.HAS_GRPC_GCP,
+                    reason='grpc_gcp module not available')
 @mock.patch('grpc_gcp.secure_channel')
 def test_create_channel_with_grpc_gcp(grpc_gcp_secure_channel):
     target = 'example.com:443'
@@ -247,11 +262,30 @@ def test_create_channel_with_grpc_gcp(grpc_gcp_secure_channel):
         google.auth.credentials.Scoped, instance=True)
     credentials.requires_scopes = True
 
-    channel = grpc_helpers.create_channel(
+    grpc_helpers.create_channel(
         target,
         credentials=credentials,
         scopes=scopes)
     grpc_gcp_secure_channel.assert_called()
+    credentials.with_scopes.assert_called_once_with(scopes)
+
+
+@pytest.mark.skipif(grpc_helpers.HAS_GRPC_GCP,
+                    reason='grpc_gcp module not available')
+@mock.patch('grpc.secure_channel')
+def test_create_channel_without_grpc_gcp(grpc_secure_channel):
+    target = 'example.com:443'
+    scopes = ['test_scope']
+
+    credentials = mock.create_autospec(
+        google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = True
+
+    grpc_helpers.create_channel(
+        target,
+        credentials=credentials,
+        scopes=scopes)
+    grpc_secure_channel.assert_called()
     credentials.with_scopes.assert_called_once_with(scopes)
 
 
