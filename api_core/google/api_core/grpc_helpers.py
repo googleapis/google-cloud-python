@@ -154,30 +154,35 @@ def wrap_errors(callable_):
         return _wrap_unary_errors(callable_)
 
 
-def _create_secure_channel(
-        credentials, request, target, ssl_credentials=None, **kwargs):
-    """Creates a secure authorized gRPC channel.
-
-    This overwrites google.auth.transport.grpc.secure_authorized_channel to
-    return a secure channel using grpc_gcp.secure_channel if grpc_gcp is
-    available.
+def create_channel(target,
+                   credentials=None,
+                   scopes=None,
+                   ssl_credentials=None,
+                   **kwargs):
+    """Create a secure channel with credentials.
 
     Args:
-        credentials (google.auth.credentials.Credentials): The credentials to
-            add to requests.
-        request (google.auth.transport.Request): A HTTP transport request
-            object used to refresh credentials as needed. Even though gRPC
-            is a separate transport, there's no way to refresh the credentials
-            without using a standard http transport.
-        target (str): The host and port of the service.
-        ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
-            credentials. This can be used to specify different certificates.
-        kwargs: Additional arguments to pass to
-            :func:`grpc_gcp.secure_channel`.
+        target (str): The target service address in the format 'hostname:port'.
+        credentials (google.auth.credentials.Credentials): The credentials. If
+            not specified, then this function will attempt to ascertain the
+            credentials from the environment using :func:`google.auth.default`.
+        scopes (Sequence[str]): A optional list of scopes needed for this
+            service. These are only used when credentials are not specified and
+            are passed to :func:`google.auth.default`.
+        kwargs: Additional key-word args passed to
+            :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
 
     Returns:
-        grpc_gcp.Channel: The created gRPC channel.
+        grpc.Channel: The created channel.
     """
+    if credentials is None:
+        credentials, _ = google.auth.default(scopes=scopes)
+    else:
+        credentials = google.auth.credentials.with_scopes_if_required(
+            credentials, scopes)
+
+    request = google.auth.transport.requests.Request()
+
     # Create the metadata plugin for inserting the authorization header.
     metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
         credentials, request)
@@ -198,34 +203,6 @@ def _create_secure_channel(
         return grpc_gcp.secure_channel(target, composite_credentials, **kwargs)
     else:
         return grpc.secure_channel(target, composite_credentials, **kwargs)
-
-
-def create_channel(target, credentials=None, scopes=None, **kwargs):
-    """Create a secure channel with credentials.
-
-    Args:
-        target (str): The target service address in the format 'hostname:port'.
-        credentials (google.auth.credentials.Credentials): The credentials. If
-            not specified, then this function will attempt to ascertain the
-            credentials from the environment using :func:`google.auth.default`.
-        scopes (Sequence[str]): A optional list of scopes needed for this
-            service. These are only used when credentials are not specified and
-            are passed to :func:`google.auth.default`.
-        kwargs: Additional key-word args passed to
-            :func:`_create_secure_channel`.
-
-    Returns:
-        grpc.Channel: The created channel.
-    """
-    if credentials is None:
-        credentials, _ = google.auth.default(scopes=scopes)
-    else:
-        credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes)
-
-    request = google.auth.transport.requests.Request()
-
-    return _create_secure_channel(credentials, request, target, **kwargs)
 
 
 _MethodCall = collections.namedtuple(

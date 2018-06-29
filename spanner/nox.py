@@ -67,15 +67,37 @@ def unit(session, py):
 
     default(session)
 
+
 @nox.session
 @nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6', '3.7'])
-def unit_with_grpc_gcp(session, py):
+def unit_grpc_gcp(session, py):
     """Run the unit test suite with grpcio-gcp installed."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-grpc-gcp-' + py
 
     # Install grpcio-gcp
     session.install('grpcio-gcp')
 
-    unit(session, py)
+    default(session)
+
+
+def system_common(session):
+    # Use pre-release gRPC for system tests.
+    session.install('--pre', 'grpcio')
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install('mock', 'pytest', *LOCAL_DEPS)
+    session.install('../test_utils/')
+    session.install('-e', '.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', '--quiet', 'tests/system', *session.posargs)
+
 
 @nox.session
 @nox.parametrize('py', ['2.7', '3.6'])
@@ -92,17 +114,28 @@ def system(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'sys-' + py
 
-    # Use pre-release gRPC for system tests.
-    session.install('--pre', 'grpcio')
+    system_common(session)
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install('../test_utils/')
-    session.install('-e', '.')
 
-    # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system', *session.posargs)
+@nox.session
+@nox.parametrize('py', ['2.7', '3.6'])
+def system_grpc_gcp(session, py):
+    """Run the system test suite with grpcio-gcp installed."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Run the system tests against latest Python 2 and Python 3 only.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-grpc-gcp-' + py
+
+    # Install grpcio-gcp
+    session.install('grpcio-gcp')
+
+    system_common(session)
 
 
 @nox.session

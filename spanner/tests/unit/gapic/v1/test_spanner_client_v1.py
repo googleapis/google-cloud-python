@@ -558,6 +558,9 @@ class TestSpannerClient(object):
 
     @pytest.mark.skipif(not spanner_v1.HAS_GRPC_GCP,
                         reason='grpc_gcp module not available')
+    @mock.patch(
+        'google.auth.default',
+        return_value=(mock.sentinel.credentials, mock.sentinel.projet))
     @mock.patch('google.protobuf.text_format.Merge')
     @mock.patch('grpc_gcp.proto.grpc_gcp_pb2.ApiConfig',
                 return_value=mock.sentinel.api_config)
@@ -565,7 +568,8 @@ class TestSpannerClient(object):
     def test_client_with_grpc_gcp_channel(self,
                                           grpc_gcp_secure_channel,
                                           api_config,
-                                          merge):
+                                          merge,
+                                          auth_default):
         spanner_target = 'spanner.googleapis.com:443'
         client = spanner_v1.SpannerClient()
         merge.assert_called_once_with(mock.ANY, mock.sentinel.api_config)
