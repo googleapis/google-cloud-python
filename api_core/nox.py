@@ -79,7 +79,7 @@ def unit_grpc_gcp(session, py):
     # Install grpcio-gcp
     session.install('grpcio-gcp')
 
-    default(session, py)
+    default(session)
 
 
 @nox.session
