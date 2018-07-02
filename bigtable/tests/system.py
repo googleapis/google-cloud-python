@@ -233,7 +233,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Create a new instance instance and reload it.
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
-        clusters = {}
         cluster = Config.INSTANCE.cluster(
             cluster_id=CLUSTER_ID, location_id='projects/' +
                                                Config.CLIENT.project +
@@ -260,7 +259,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
                     LOCATION_ID)
         new_cluster_id = 'n-'+CLUSTER_ID
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
-        clusters = {}
         cluster = Config.INSTANCE.cluster(
             cluster_id=new_cluster_id, location_id='projects/' +
                                                Config.CLIENT.project +
