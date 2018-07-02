@@ -83,7 +83,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         Config.CLIENT = Client(admin=True, credentials=credentials)
     else:
-        Config.CLIENT = Client(project='grass-clump-479', admin=True)
+        Config.CLIENT = Client(admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID)
 
@@ -150,8 +150,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
 
-        CLUSTER_ID_1 = 'system6-test-cluster-1'
-        CLUSTER_ID_2 = 'system6-test-cluster-2'
+        CLUSTER_ID_1 = 'system-test-cluster-1'
+        CLUSTER_ID_2 = 'system-test-cluster-2'
         location_id = ('projects/' + Config.CLIENT.project + '/locations/' +
                        LOCATION_ID)
         default_storage_type = enums.StorageType.SSD
@@ -179,6 +179,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
 
+        # Compare at the protobuf level to compare all attributes
         list_clusters, failed_locations = instance.list_clusters()
         expected_clusters = [cluster.to_pb for cluster in list_clusters]
         self.assertEqual(expected_clusters, [cluster2.to_pb, cluster1.to_pb])

@@ -168,9 +168,8 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :type clusters: :class:`~Union[dict,
-                        ~google.cloud.bigtable.cluster.Cluster]`
-        :param clusters: The dict of clusters to be created.
+        :type clusters: :class:`~[~google.cloud.bigtable.cluster.Cluster]`
+        :param clusters: The list of clusters to be created.
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
