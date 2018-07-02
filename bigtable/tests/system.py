@@ -90,22 +90,20 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances_response = retry(Config.CLIENT.list_instances)()
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        if len(instances_response.failed_locations) != 0:
+        if len(failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances_response.instances
+        EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
-        clusters = {}
         cluster = Config.INSTANCE.cluster(
             cluster_id=CLUSTER_ID, location_id='projects/' +
                                                Config.CLIENT.project +
                                                '/locations/' + LOCATION_ID,
             serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
-        clusters[CLUSTER_ID] = cluster.to_pb
-        created_op = Config.INSTANCE.create(clusters=clusters)
+        created_op = Config.INSTANCE.create(clusters=[cluster])
         created_op.result(timeout=10)
 
 
@@ -152,22 +150,20 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
 
-        CLUSTER_ID_1 = 'system-test-cluster-1'
-        CLUSTER_ID_2 = 'system-test-cluster-2'
+        CLUSTER_ID_1 = 'system6-test-cluster-1'
+        CLUSTER_ID_2 = 'system6-test-cluster-2'
         location_id = ('projects/' + Config.CLIENT.project + '/locations/' +
                        LOCATION_ID)
         default_storage_type = enums.StorageType.SSD
-        clusters = {}
-        cluster1 = Config.INSTANCE.cluster(
+        cluster1 = instance.cluster(
             cluster_id=CLUSTER_ID_1, location_id=location_id,
             serve_nodes=DEFAULT_SERVE_NODES,
             default_storage_type=default_storage_type)
-        cluster2 = Config.INSTANCE.cluster(
+        cluster2 = instance.cluster(
             cluster_id=CLUSTER_ID_2, location_id=location_id,
             serve_nodes=DEFAULT_SERVE_NODES,
             default_storage_type=default_storage_type)
-        clusters[CLUSTER_ID_1] = cluster1.to_pb
-        clusters[CLUSTER_ID_2] = cluster2.to_pb
+        clusters = [cluster1, cluster2]
 
         operation = instance.create(clusters=clusters)
         # Make sure this instance gets deleted after the test case.
@@ -185,7 +181,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         list_clusters, failed_locations = instance.list_clusters()
         expected_clusters = [cluster.to_pb for cluster in list_clusters]
-        self.assertIn(expected_clusters, [cluster1.to_pb, cluster1.to_pb])
+        self.assertEqual(expected_clusters, [cluster2.to_pb, cluster1.to_pb])
 
     def test_update(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
@@ -243,8 +239,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
                                                Config.CLIENT.project +
                                                '/locations/' + LOCATION_ID,
             serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
-        clusters['n-'+CLUSTER_ID] = cluster.to_pb
-        instance.create(clusters=clusters)
+        instance.create(clusters=[cluster])
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
         cluster_id = 'n-' + ALT_INSTANCE_ID + '-id'
@@ -271,8 +266,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
                                                Config.CLIENT.project +
                                                '/locations/' + LOCATION_ID,
             serve_nodes=DEFAULT_SERVE_NODES, default_storage_type=0)
-        clusters[new_cluster_id] = cluster.to_pb
-        instance.create(clusters=clusters)
+        instance.create(clusters=[cluster])
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 

@@ -169,7 +169,7 @@ class Instance(object):
             before calling :meth:`create`.
 
         :type clusters: :class:`~Union[dict,
-                        ~google.cloud.bigtable_admin_v2.types.Cluster]`
+                        ~google.cloud.bigtable.cluster.Cluster]`
         :param clusters: The dict of clusters to be created.
 
         :rtype: :class:`~google.api_core.operation.Operation`
@@ -181,9 +181,13 @@ class Instance(object):
         )
         parent = self._client.project_path
 
+        clusters_map = {}
+        for cluster in clusters:
+            clusters_map[cluster.cluster_id] = cluster.to_pb
+
         return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters=clusters)
+            clusters=clusters_map)
 
     def update(self):
         """Update this instance.
