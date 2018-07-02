@@ -16,7 +16,7 @@ export GITHUB_TOKEN=$(cat ${KOKORO_GFILE_DIR}/${GITHUB_TOKEN_FILE})
 # Add github to known hosts.
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-# Activate the ssh key for dpebot. This is need when using synthtool to clone
+# Activate the ssh key for dpebot. This is used to clone
 # repositories using the ssh:// protocol.
 eval `ssh-agent -s`
 chmod 600 ${KOKORO_GFILE_DIR}/id_rsa

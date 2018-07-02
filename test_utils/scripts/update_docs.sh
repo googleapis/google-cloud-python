@@ -81,8 +81,8 @@ if [[ -z "$(git status --porcelain)" ]]; then
 fi
 
 # Commit to gh-pages branch to apply changes.
-git config --global user.email "googleapis-publisher@google.com"
-git config --global user.name "Google APIs Publisher"
+git config --global user.email "dpebot@google.com"
+git config --global user.name "dpebot"
 git commit -m "Update docs after merge to master."
 
 # NOTE: This may fail if two docs updates (on merges to master)
