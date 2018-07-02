@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 71fa0b86ec documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 9459fe0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1536,8 +1536,6 @@
 
 <span class="sd">    See `RFC 7234`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
-
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
 <span class="sd">    .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2</span>
@@ -1547,8 +1545,6 @@
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Disposition&#39; header for this object.</span>
 
 <span class="sd">    See `RFC 6266`_ and `API reference docs`_.</span>
-
-<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
@@ -1560,8 +1556,6 @@
 
 <span class="sd">    See `RFC 7231`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
-
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
 <span class="sd">    .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2</span>
@@ -1571,8 +1565,6 @@
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
 <span class="sd">    See `BCP47`_ and `API reference docs`_.</span>
-
-<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
@@ -1584,8 +1576,6 @@
 
 <span class="sd">    See `RFC 2616`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
-
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
 <span class="sd">    .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17</span>
@@ -1596,7 +1586,7 @@
 
 <span class="sd">    See `RFC 4960`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
+<span class="sd">    If not set before upload, the server will compute the hash.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
@@ -1611,8 +1601,9 @@
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The component count (in case of a composed object) or</span>
-<span class="sd">                  ``None`` if the property is not set locally. This property</span>
-<span class="sd">                  will not be set on objects not created via ``compose``.</span>
+<span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
+<span class="sd">                  the server.  This property will not be set on objects</span>
+<span class="sd">                  not created via ``compose``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">component_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;componentCount&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">component_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1625,7 +1616,8 @@
 <span class="sd">        See `RFC 2616 (etags)`_ and `API reference docs`_.</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The blob etag or ``None`` if the property is not set locally.</span>
+<span class="sd">        :returns: The blob etag or ``None`` if the blob&#39;s resource has not</span>
+<span class="sd">                  been loaded from the server.</span>
 
 <span class="sd">        .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1638,8 +1630,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
-<span class="sd">        :returns: The generation of the blob or ``None`` if the property</span>
-<span class="sd">                  is not set locally.</span>
+<span class="sd">        :returns: The generation of the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;generation&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1651,9 +1643,11 @@
 
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
+<span class="sd">        The ID consists of the bucket name, object name, and generation number.</span>
+
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The ID of the blob or ``None`` if the property is not</span>
-<span class="sd">                  set locally.</span>
+<span class="sd">        :returns: The ID of the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
@@ -1662,7 +1656,7 @@
 
 <span class="sd">    See `RFC 1321`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If not set before upload, the server will compute the hash.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 
@@ -1676,8 +1670,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The media link for the blob or ``None`` if the property is</span>
-<span class="sd">                  not set locally.</span>
+<span class="sd">        :returns: The media link for the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mediaLink&#39;</span><span class="p">)</span>
 
@@ -1694,7 +1688,7 @@
 
 <span class="sd">        :rtype: dict or ``NoneType``</span>
 <span class="sd">        :returns: The metadata associated with the blob or ``None`` if the</span>
-<span class="sd">                  property is not set locally.</span>
+<span class="sd">                  property is not set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">))</span>
 
@@ -1716,8 +1710,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
-<span class="sd">        :returns: The metageneration of the blob or ``None`` if the property</span>
-<span class="sd">                  is not set locally.</span>
+<span class="sd">        :returns: The metageneration of the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1730,8 +1724,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: dict or ``NoneType``</span>
-<span class="sd">        :returns: Mapping of owner&#39;s role/ID. If the property is not set</span>
-<span class="sd">                  locally, returns ``None``.</span>
+<span class="sd">        :returns: Mapping of owner&#39;s role/ID, or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;owner&#39;</span><span class="p">))</span>
 
@@ -1742,8 +1736,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The self link for the blob or ``None`` if the property is</span>
-<span class="sd">                  not set locally.</span>
+<span class="sd">        :returns: The self link for the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
 
@@ -1754,8 +1748,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
-<span class="sd">        :returns: The size of the blob or ``None`` if the property</span>
-<span class="sd">                  is not set locally.</span>
+<span class="sd">        :returns: The size of the blob or ``None`` if the blob&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1767,7 +1761,8 @@
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns:</span>
-<span class="sd">            The resource name or ``None`` if the property is not set locally.</span>
+<span class="sd">            The resource name or ``None`` if no Cloud KMS key was used,</span>
+<span class="sd">            or the blob&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kmsKeyName&#39;</span><span class="p">)</span>
 
@@ -1795,7 +1790,8 @@
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
-<span class="sd">                  ``None`` if the property is not set locally. If the blob has</span>
+<span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
+<span class="sd">                  the server (see :meth:`reload`). If the blob has</span>
 <span class="sd">                  not been deleted, this will never be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeDeleted&#39;</span><span class="p">)</span>
@@ -1810,7 +1806,8 @@
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
-<span class="sd">                  ``None`` if the property is not set locally.</span>
+<span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
+<span class="sd">                  the server (see :meth:`reload`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeCreated&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1824,7 +1821,8 @@
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
-<span class="sd">                  ``None`` if the property is not set locally.</span>
+<span class="sd">                  ``None`` if the blob&#39;s resource has not been loaded from</span>
+<span class="sd">                  the server (see :meth:`reload`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;updated&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

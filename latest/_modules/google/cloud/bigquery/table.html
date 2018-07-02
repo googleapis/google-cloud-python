@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 71fa0b86ec documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 9459fe0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1124,9 +1124,9 @@
 <div class="viewcode-block" id="RowIterator.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RowIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_item_to_row</span><span class="p">,</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
             <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_rows_page_start</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
             <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
@@ -1306,6 +1306,48 @@
 <span class="sd">                serialized form.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_item_to_row</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON row to the native object.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This assumes that the ``schema`` attribute has been</span>
+<span class="sd">        added to the iterator after being created, which</span>
+<span class="sd">        should be done by the caller.</span>
+
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: An item to be converted to a row.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Row`</span>
+<span class="sd">    :returns: The next row in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_row_tuple_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">),</span>
+               <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span><span class="p">)</span>
+
+
+<span class="c1"># pylint: disable=unused-argument</span>
+<span class="k">def</span> <span class="nf">_rows_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Grab total rows when :class:`~google.cloud.iterator.Page` starts.</span>
+
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type page: :class:`~google.api_core.page_iterator.Page`</span>
+<span class="sd">    :param page: The page that was just created.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The JSON API response for a page of rows in a table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
+    <span class="n">iterator</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
+<span class="c1"># pylint: enable=unused-argument</span>
 </pre></div>
 
           </div>

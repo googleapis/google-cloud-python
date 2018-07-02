@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.uptime_check_service_client &#8212; google-cloud 71fa0b86ec documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.uptime_check_service_client &#8212; google-cloud 9459fe0 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -57,6 +57,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">metric_pb2</span> <span class="k">as</span> <span class="n">api_metric_pb2</span>
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">monitored_resource_pb2</span>
@@ -64,13 +65,17 @@
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.gapic</span> <span class="k">import</span> <span class="n">uptime_check_service_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">group_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">group_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">group_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">metric_pb2</span> <span class="k">as</span> <span class="n">proto_metric_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">metric_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">metric_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">notification_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">notification_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">notification_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">uptime_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">uptime_service_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">uptime_service_pb2_grpc</span>
@@ -158,69 +163,51 @@
                 <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">)</span>
 
         <span class="c1"># Create the channel.</span>
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
                 <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="c1"># Create the gRPC stubs.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">uptime_service_pb2_grpc</span><span class="o">.</span><span class="n">UptimeCheckServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">uptime_service_pb2_grpc</span><span class="o">.</span><span class="n">UptimeCheckServiceStub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
         <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
         <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
         <span class="c1"># from the client configuration.</span>
         <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
         <span class="c1"># file next to this one.)</span>
-        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
             <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
-        <span class="c1"># Write the &quot;inner API call&quot; methods to the class.</span>
-        <span class="c1"># These are wrapped versions of the gRPC stub methods, with retry and</span>
-        <span class="c1"># timeout configuration applied, called by the public methods on</span>
-        <span class="c1"># this class.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_uptime_check_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">ListUptimeCheckConfigs</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListUptimeCheckConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListUptimeCheckConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_uptime_check_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">GetUptimeCheckConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_uptime_check_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">CreateUptimeCheckConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_uptime_check_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">UpdateUptimeCheckConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_uptime_check_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">DeleteUptimeCheckConfig</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_uptime_check_ips</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uptime_check_service_stub</span><span class="o">.</span><span class="n">ListUptimeCheckIps</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListUptimeCheckIps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListUptimeCheckIps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_intercept_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">interceptors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Experimental. Bind gRPC interceptors to the gRPC channel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):</span>
+<span class="sd">              Zero or more gRPC interceptors. Interceptors are given control in the order</span>
+<span class="sd">              they are listed.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If interceptor does not derive from any of</span>
+<span class="sd">              UnaryUnaryClientInterceptor,</span>
+<span class="sd">              UnaryStreamClientInterceptor,</span>
+<span class="sd">              StreamUnaryClientInterceptor, or</span>
+<span class="sd">              StreamStreamClientInterceptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">intercept_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="o">*</span><span class="n">interceptors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">uptime_service_pb2_grpc</span><span class="o">.</span><span class="n">UptimeCheckServiceStub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="UptimeCheckServiceClient.list_uptime_check_configs"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.UptimeCheckServiceClient.list_uptime_check_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_uptime_check_configs</span><span class="p">(</span>
@@ -241,13 +228,15 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_uptime_check_configs(parent):</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_uptime_check_configs(parent, options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -287,6 +276,17 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;list_uptime_check_configs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_uptime_check_configs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">ListUptimeCheckConfigs</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListUptimeCheckConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListUptimeCheckConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">ListUptimeCheckConfigsRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
@@ -294,7 +294,7 @@
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_uptime_check_configs</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_uptime_check_configs&#39;</span><span class="p">],</span>
                 <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
                 <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
@@ -349,8 +349,19 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;get_uptime_check_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;get_uptime_check_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">GetUptimeCheckConfig</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetUptimeCheckConfig&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;GetUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">GetUptimeCheckConfigRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_uptime_check_config</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;get_uptime_check_config&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UptimeCheckServiceClient.create_uptime_check_config"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.UptimeCheckServiceClient.create_uptime_check_config">[docs]</a>    <span class="k">def</span> <span class="nf">create_uptime_check_config</span><span class="p">(</span>
@@ -404,11 +415,22 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;create_uptime_check_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;create_uptime_check_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">CreateUptimeCheckConfig</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;CreateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;CreateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">CreateUptimeCheckConfigRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
             <span class="n">uptime_check_config</span><span class="o">=</span><span class="n">uptime_check_config</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_uptime_check_config</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;create_uptime_check_config&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UptimeCheckServiceClient.update_uptime_check_config"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.UptimeCheckServiceClient.update_uptime_check_config">[docs]</a>    <span class="k">def</span> <span class="nf">update_uptime_check_config</span><span class="p">(</span>
@@ -472,11 +494,22 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;update_uptime_check_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;update_uptime_check_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">UpdateUptimeCheckConfig</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;UpdateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;UpdateUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">UpdateUptimeCheckConfigRequest</span><span class="p">(</span>
             <span class="n">uptime_check_config</span><span class="o">=</span><span class="n">uptime_check_config</span><span class="p">,</span>
             <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_uptime_check_config</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;update_uptime_check_config&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UptimeCheckServiceClient.delete_uptime_check_config"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.UptimeCheckServiceClient.delete_uptime_check_config">[docs]</a>    <span class="k">def</span> <span class="nf">delete_uptime_check_config</span><span class="p">(</span>
@@ -522,9 +555,20 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;delete_uptime_check_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;delete_uptime_check_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">DeleteUptimeCheckConfig</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;DeleteUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;DeleteUptimeCheckConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">DeleteUptimeCheckConfigRequest</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_uptime_check_config</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;delete_uptime_check_config&#39;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="UptimeCheckServiceClient.list_uptime_check_ips"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.UptimeCheckServiceClient.list_uptime_check_ips">[docs]</a>    <span class="k">def</span> <span class="nf">list_uptime_check_ips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -540,13 +584,15 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = monitoring_v3.UptimeCheckServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
 <span class="sd">            &gt;&gt;&gt; for element in client.list_uptime_check_ips():</span>
 <span class="sd">            ...     # process element</span>
 <span class="sd">            ...     pass</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Alternatively:</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over results one page at a time</span>
 <span class="sd">            &gt;&gt;&gt; for page in client.list_uptime_check_ips(options=CallOptions(page_token=INITIAL_PAGE)):</span>
 <span class="sd">            ...     for element in page:</span>
 <span class="sd">            ...         # process element</span>
@@ -583,12 +629,23 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;list_uptime_check_ips&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;list_uptime_check_ips&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uptime_check_service_stub</span><span class="o">.</span><span class="n">ListUptimeCheckIps</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                        <span class="s1">&#39;ListUptimeCheckIps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListUptimeCheckIps&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">uptime_service_pb2</span><span class="o">.</span><span class="n">ListUptimeCheckIpsRequest</span><span class="p">(</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="p">)</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_list_uptime_check_ips</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;list_uptime_check_ips&#39;</span><span class="p">],</span>
                 <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
                 <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>

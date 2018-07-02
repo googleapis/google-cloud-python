@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 71fa0b86ec documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 9459fe0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -57,7 +57,6 @@
 <span class="kn">import</span> <span class="nn">google.api_core.future.polling</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_query_param_from_api_repr</span>
@@ -65,14 +64,13 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">ScalarQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">StructQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">UDFResource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">EncryptionConfiguration</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TimePartitioning</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">_helpers</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_int_or_none</span>
 
 <span class="n">_DONE_STATE</span> <span class="o">=</span> <span class="s1">&#39;DONE&#39;</span>
 <span class="n">_STOPPED_REASON</span> <span class="o">=</span> <span class="s1">&#39;stopped&#39;</span>
@@ -414,7 +412,7 @@
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">millis</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;creationTime&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">millis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -427,7 +425,7 @@
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">millis</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startTime&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">millis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ended</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -440,7 +438,7 @@
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">millis</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endTime&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">millis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="n">millis</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_job_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for job-type specific statistics-based properties.&quot;&quot;&quot;</span>
@@ -743,9 +741,9 @@
 
 <span class="sd">            self._get_sub_prop(&#39;destinationTable&#39;)</span>
 
-<span class="sd">        This is equivalent to using the ``_helper.get_sub_prop`` function::</span>
+<span class="sd">        This is equivalent to using the ``_helpers._get_sub_prop`` function::</span>
 
-<span class="sd">            _helper.get_sub_prop(</span>
+<span class="sd">            _helpers._get_sub_prop(</span>
 <span class="sd">                self._properties, [&#39;query&#39;, &#39;destinationTable&#39;])</span>
 
 <span class="sd">        Arguments:</span>
@@ -759,7 +757,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            object: The value if present or the default.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -771,9 +769,9 @@
 
 <span class="sd">            self._set_sub_prop(&#39;useLegacySql&#39;, False)</span>
 
-<span class="sd">        This is equivalent to using the ``_helper.set_sub_prop`` function::</span>
+<span class="sd">        This is equivalent to using the ``_helper._set_sub_prop`` function::</span>
 
-<span class="sd">            _helper.set_sub_prop(</span>
+<span class="sd">            _helper._set_sub_prop(</span>
 <span class="sd">                self._properties, [&#39;query&#39;, &#39;useLegacySql&#39;], False)</span>
 
 <span class="sd">        Arguments:</span>
@@ -782,7 +780,7 @@
 <span class="sd">                 dictionary.</span>
 <span class="sd">            value (object): Value to set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_type</span><span class="p">,</span> <span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an API representation of the job config.</span>
@@ -958,7 +956,7 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">))</span>
 
     <span class="nd">@skip_leading_rows</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">skip_leading_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -999,7 +997,7 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;fields&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -1009,7 +1007,7 @@
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s1">&#39;to_api_repr&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;fields&#39;</span><span class="p">],</span>
             <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
@@ -1276,9 +1274,9 @@
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`begin`.&quot;&quot;&quot;</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+            <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
                 <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span><span class="p">)</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
@@ -1319,7 +1317,7 @@
             <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
         <span class="n">destination</span> <span class="o">=</span> <span class="n">TableReference</span><span class="p">(</span><span class="n">ds_ref</span><span class="p">,</span> <span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
         <span class="c1"># sourceUris will be absent if this is a file upload.</span>
-        <span class="n">source_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span>
+        <span class="n">source_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
             <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">])</span>
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">_JobReference</span><span class="o">.</span><span class="n">_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">])</span>
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
@@ -1458,9 +1456,9 @@
         <span class="p">}</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">]</span>
 
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTables&#39;</span><span class="p">],</span> <span class="n">source_refs</span><span class="p">)</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationTable&#39;</span><span class="p">],</span>
             <span class="p">{</span>
@@ -1676,9 +1674,9 @@
         <span class="p">}</span>
 
         <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">],</span> <span class="n">source_ref</span><span class="p">)</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">set_sub_prop</span><span class="p">(</span>
+        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_sub_prop</span><span class="p">(</span>
             <span class="n">configuration</span><span class="p">,</span>
             <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span><span class="p">)</span>
@@ -1713,12 +1711,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span><span class="p">,</span> <span class="n">config_resource</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ExtractJobConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">config_resource</span><span class="p">)</span>
-        <span class="n">source_config</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span>
+        <span class="n">source_config</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
             <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceTable&#39;</span><span class="p">])</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="p">(</span>
             <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
-        <span class="n">destination_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span>
+        <span class="n">destination_uris</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span>
             <span class="n">config_resource</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;extract&#39;</span><span class="p">,</span> <span class="s1">&#39;destinationUris&#39;</span><span class="p">])</span>
 
         <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
@@ -1911,7 +1909,7 @@
 <span class="sd">        See</span>
 <span class="sd">        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">))</span>
 
     <span class="nd">@maximum_bytes_billed</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">maximum_bytes_billed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -2252,7 +2250,7 @@
     <span class="k">def</span> <span class="nf">_copy_configuration_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  assign subclass configuration properties in cleaned.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_sub_prop</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_sub_prop</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.from_api_repr.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
@@ -2396,7 +2394,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">slot_millis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Slot-milliseconds used by this query job.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalSlotMs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalSlotMs&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">statement_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2641,7 +2639,7 @@
         <span class="sd">&quot;&quot;&quot;Union[Datetime, None]: Datetime when the stage started.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startMs&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
                 <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -2649,7 +2647,7 @@
         <span class="sd">&quot;&quot;&quot;Union[Datetime, None]: Datetime when the stage ended.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endMs&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_datetime_from_microseconds</span><span class="p">(</span>
                 <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endMs&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -2657,7 +2655,7 @@
         <span class="sd">&quot;&quot;&quot;List(int): Entry IDs for stages that were inputs for this stage.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputStages&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputStages&#39;</span><span class="p">)]</span>
 
     <span class="nd">@property</span>
@@ -2665,26 +2663,27 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of parallel input segments within</span>
 <span class="sd">        the stage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parallelInputs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parallelInputs&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">completed_parallel_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of parallel input segments completed.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedParallelInputs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedParallelInputs&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wait_ms_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the average worker spent waiting to</span>
 <span class="sd">        be scheduled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;waitMsAvg&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;waitMsAvg&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wait_ms_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the slowest worker spent waiting to</span>
 <span class="sd">        be scheduled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;waitMsMax&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;waitMsMax&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wait_ratio_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2707,14 +2706,14 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the average worker spent reading</span>
 <span class="sd">        input.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readMsAvg&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readMsAvg&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">read_ms_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the slowest worker spent reading</span>
 <span class="sd">        input.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readMsMax&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;readMsMax&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">read_ratio_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2737,14 +2736,14 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the average worker spent on CPU-bound</span>
 <span class="sd">        processing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;computeMsAvg&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;computeMsAvg&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compute_ms_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the slowest worker spent on CPU-bound</span>
 <span class="sd">        processing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;computeMsMax&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;computeMsMax&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compute_ratio_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2767,14 +2766,14 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the average worker spent writing</span>
 <span class="sd">        output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;writeMsAvg&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;writeMsAvg&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">write_ms_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds the slowest worker spent writing</span>
 <span class="sd">        output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;writeMsMax&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;writeMsMax&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">write_ratio_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2795,12 +2794,12 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">records_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of records read by this stage.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recordsRead&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recordsRead&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">records_written</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of records written by this stage.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recordsWritten&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recordsWritten&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2812,14 +2811,16 @@
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of bytes written by this stage to</span>
 <span class="sd">        intermediate shuffle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytes&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytes&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shuffle_output_bytes_spilled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Number of bytes written by this stage to</span>
 <span class="sd">        intermediate shuffle and spilled to disk.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytesSpilled&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shuffleOutputBytesSpilled&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2863,31 +2864,31 @@
     <span class="k">def</span> <span class="nf">elapsed_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Milliseconds elapsed since start of query</span>
 <span class="sd">        execution.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elapsedMs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elapsedMs&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">active_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Current number of input units being processed</span>
 <span class="sd">        by workers, reported as largest value since the last sample.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;activeUnits&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;activeUnits&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pending_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Current number of input units remaining for</span>
 <span class="sd">        query stages active at this sample time.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pendingUnits&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pendingUnits&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">completed_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Current number of input units completed by</span>
 <span class="sd">        this query.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedUnits&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;completedUnits&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">slot_millis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Union[int, None]: Cumulative slot-milliseconds consumed by</span>
 <span class="sd">        this query.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalSlotMs&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_int_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalSlotMs&#39;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="UnknownJob"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.UnknownJob.html#google.cloud.bigquery.job.UnknownJob">[docs]</a><span class="k">class</span> <span class="nc">UnknownJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>

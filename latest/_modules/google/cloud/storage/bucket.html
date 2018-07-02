@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 71fa0b86ec documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 9459fe0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -911,8 +911,8 @@
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The bucket etag or ``None`` if the property is not</span>
-<span class="sd">                  set locally.</span>
+<span class="sd">        :returns: The bucket etag or ``None`` if the bucket&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
 
@@ -923,8 +923,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The ID of the bucket or ``None`` if the property is not</span>
-<span class="sd">                  set locally.</span>
+<span class="sd">        :returns: The ID of the bucket or ``None`` if the bucket&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
@@ -973,10 +973,13 @@
     <span class="n">location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
 
+<span class="sd">    This can only be set at bucket **creation** time.</span>
+
 <span class="sd">    See https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
 <span class="sd">    https://cloud.google.com/storage/docs/bucket-locations</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    Returns ``None`` if the property has not been set before creation,</span>
+<span class="sd">    or if the bucket&#39;s resource has not been loaded from the server.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1021,8 +1024,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
-<span class="sd">        :returns: The metageneration of the bucket or ``None`` if the property</span>
-<span class="sd">                  is not set locally.</span>
+<span class="sd">        :returns: The metageneration of the bucket or ``None`` if the bucket&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1035,8 +1038,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: dict or ``NoneType``</span>
-<span class="sd">        :returns: Mapping of owner&#39;s role/ID. If the property is not set</span>
-<span class="sd">                  locally, returns ``None``.</span>
+<span class="sd">        :returns: Mapping of owner&#39;s role/ID. Returns ``None`` if the bucket&#39;s</span>
+<span class="sd">                  resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;owner&#39;</span><span class="p">))</span>
 
@@ -1047,8 +1050,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
-<span class="sd">        :returns: The project number that owns the bucket or ``None`` if the</span>
-<span class="sd">                  property is not set locally.</span>
+<span class="sd">        :returns: The project number that owns the bucket or ``None`` if</span>
+<span class="sd">                  the bucket&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">project_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectNumber&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">project_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1061,8 +1064,8 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: The self link for the bucket or ``None`` if the property is</span>
-<span class="sd">                  not set locally.</span>
+<span class="sd">        :returns: The self link for the bucket or ``None`` if</span>
+<span class="sd">                  the bucket&#39;s resource has not been loaded from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
 
@@ -1104,7 +1107,8 @@
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
-<span class="sd">                  ``None`` if the property is not set locally.</span>
+<span class="sd">                  ``None`` if the bucket&#39;s resource has not been loaded</span>
+<span class="sd">                  from the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeCreated&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
