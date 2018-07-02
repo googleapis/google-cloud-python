@@ -16,6 +16,7 @@
 
 
 import re
+from google.cloud.bigtable_admin_v2 import enums
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -24,6 +25,8 @@ _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 
 DEFAULT_SERVE_NODES = 3
 """Default number of nodes to use when creating a cluster."""
+
+_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Cluster(object):
@@ -172,3 +175,42 @@ class Cluster(object):
         """
         client = self._instance._client
         client.instance_admin_client.delete_cluster(self.name)
+
+
+class ClusterMetaData(object):
+    """ Helper for creating cluster meta data.
+    
+    This class instance should be provided while creating new instance.
+    
+    :type cluster_id: str
+    :param cluster_id: The ID of the cluster. 
+    
+    :type location_id: str
+    :param location_id: ID of the location in which the cluster will be
+                        created. 
+            
+    :type serve_nodes: int
+    :param serve_nodes: (Optional) The number of nodes in the instance's
+                        cluster; used to set up the instance's cluster.
+                        
+    :type default_storage_type: int
+    :param default_storage_type: (Optional) The default values are
+                                 STORAGE_TYPE_UNSPECIFIED = 0: The user
+                                 did not specify a storage type.
+                                 SSD = 1: Flash (SSD) storage should be
+                                 used.
+                                 HDD = 2: Magnetic drive (HDD) storage
+                                 should be used.
+    """
+    
+    def __init__(self, cluster_id, location_id,
+                 server_nodes=DEFAULT_SERVE_NODES,
+                 storage_type=_STORAGE_TYPE_UNSPECIFIED):
+        
+        self.cluster_id = cluster_id
+        self.location_id = location_id
+        self.server_nodes = server_nodes
+        self.default_storage_type = storage_type
+    
+        
+

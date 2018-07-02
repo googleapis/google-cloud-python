@@ -148,10 +148,8 @@ class Instance(object):
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
-
-    def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
-               serve_nodes=DEFAULT_SERVE_NODES,
-               default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
+    
+    def create(self, clusters):
         """Create this instance.
 
         .. note::
@@ -167,48 +165,35 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :type location_id: str
-        :param location_id: ID of the location in which the instance will be
-                            created.  Required for instances which do not yet
-                            exist.
-
-
-        :type serve_nodes: int
-        :param serve_nodes: (Optional) The number of nodes in the instance's
-                            cluster; used to set up the instance's cluster.
-
-        :type default_storage_type: int
-        :param default_storage_type: (Optional) The default values are
-                                     STORAGE_TYPE_UNSPECIFIED = 0: The user
-                                     did not specify a storage type.
-                                     SSD = 1: Flash (SSD) storage should be
-                                     used.
-                                     HDD = 2: Magnetic drive (HDD) storage
-                                     should be used.
+        :type clusters: list
+        :param clusters: Array of cluster. Its a list of instances of class:
+                        `ClusterMetaData
+                        <google.cloud.bigtable.cluster.ClusterMetaData>`
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
         """
-        clusters = {}
-        cluster_id = '{}-cluster'.format(self.instance_id)
-        cluster_name = self._client.instance_admin_client.cluster_path(
-            self._client.project, self.instance_id, cluster_id)
-        location = self._client.instance_admin_client.location_path(
-            self._client.project, location_id)
-        cluster = instance_pb2.Cluster(
-            name=cluster_name, location=location,
-            serve_nodes=serve_nodes,
-            default_storage_type=default_storage_type)
-        instance = instance_pb2.Instance(
-            display_name=self.display_name
-        )
-        clusters[cluster_id] = cluster
+        clusters_dict = {}
+        for cluster_metadata in clusters:
+            cluster_id = cluster_metadata.cluster_id
+            cluster_name = self._client.instance_admin_client.cluster_path(
+                self._client.project, self.instance_id, cluster_id)
+            location = self._client.instance_admin_client.location_path(
+                self._client.project, cluster_metadata.location_id)
+            cluster = instance_pb2.Cluster(
+                name=cluster_name, location=location,
+                serve_nodes=cluster_metadata.serve_nodes,
+                default_storage_type=cluster_metadata.default_storage_type)
+            clusters_dict[cluster_id] = cluster
+            
+        instance = instance_pb2.Instance(display_name=self.display_name)
+        
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters=clusters)
+            clusters=clusters_dict)
 
     def update(self):
         """Update this instance.
