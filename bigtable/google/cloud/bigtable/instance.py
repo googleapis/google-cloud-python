@@ -60,6 +60,13 @@ class Instance(object):
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+	:type type: str
+    :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
+
+	:type labels: dict
+    :param type: (Optional) Keys and values must both be under 128 bytes.
+				 (Label keys must be between 1 and 63 characters long)
     """
 
     def __init__(self, instance_id, client,

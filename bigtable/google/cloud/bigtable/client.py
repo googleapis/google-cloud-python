@@ -191,6 +191,12 @@ class Client(object):
                              characters.) If this value is not set in the
                              constructor, will fall back to the instance ID.
 
+		:type type: str
+        :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
+
+		:type labels: dict
+        :param type: (Optional) Keys and values must both be under 128 bytes.
+
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
