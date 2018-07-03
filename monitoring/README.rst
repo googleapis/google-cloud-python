@@ -9,9 +9,9 @@ noted on the individual method pages.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
-.. _Product Documentation:  https://cloud.google.com/monitoring
+.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
+.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
+.. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
 -----------
@@ -25,7 +25,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring
+.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring/api/enable-api
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
@@ -92,8 +92,6 @@ MetricServiceClient
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Stackdriver Monitoring API
-   API to see other available methods on the client.
 -  Read the `Stackdriver Monitoring API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
