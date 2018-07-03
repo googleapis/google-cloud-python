@@ -19,6 +19,7 @@ from google.protobuf import descriptor_pb2
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import headers_pb2
 
 
 def test_service_properties():
@@ -60,7 +61,7 @@ def test_service_pb2_modules():
 
 
 def test_service_pb2_modules_lro():
-    service = make_lro_service()
+    service = make_service_with_method_options()
     assert service.pb2_modules == [
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
@@ -75,8 +76,18 @@ def test_service_no_lro():
 
 
 def test_service_has_lro():
-    service = make_lro_service()
+    service = make_service_with_method_options()
     assert service.has_lro
+
+
+def test_service_no_field_headers():
+    service = make_service()
+    assert service.has_field_headers is False
+
+
+def test_service_has_field_headers():
+    service = make_service_with_method_options()
+    assert service.has_field_headers
 
 
 def test_module_name():
@@ -108,14 +119,16 @@ def make_service(name: str = 'Placeholder', host: str = '',
     )
 
 
-def make_lro_service() -> wrappers.Service:
-    # Declare a long-running method.
+def make_service_with_method_options() -> wrappers.Service:
+    # Declare a method with options enabled for long-running operations and
+    # field headers.
     method = get_method(
         'DoBigThing',
         'foo.bar.ThingRequest',
         'google.longrunning.operations.Operation',
         lro_payload_type='foo.baz.ThingResponse',
         lro_metadata_type='foo.qux.ThingMetadata',
+        field_headers=(headers_pb2.FieldHeader(),)
     )
 
     # Define a service descriptor.
@@ -129,19 +142,26 @@ def make_lro_service() -> wrappers.Service:
 
 
 def get_method(name: str,
-               in_type: str,
-               out_type: str,
-               lro_payload_type: str = '',
-               lro_metadata_type: str = '') -> wrappers.Method:
+        in_type: str,
+        out_type: str,
+        lro_payload_type: str = '',
+        lro_metadata_type: str = '',
+        field_headers: typing.Tuple[str] = (),
+        ) -> wrappers.Method:
     input_ = get_message(in_type)
     output = get_message(out_type)
     lro_payload = get_message(lro_payload_type) if lro_payload_type else None
     lro_metadata = get_message(lro_metadata_type) if lro_metadata_type else None
+
+    # Define a method descriptor. Set the field headers if appropriate.
     method_pb = descriptor_pb2.MethodDescriptorProto(
         name=name,
         input_type=input_.proto_path,
         output_type=output.proto_path,
     )
+    ext_key = headers_pb2.field_headers
+    method_pb.options.Extensions[ext_key].extend(field_headers)
+
     return wrappers.Method(
         method_pb=method_pb,
         input=input_,

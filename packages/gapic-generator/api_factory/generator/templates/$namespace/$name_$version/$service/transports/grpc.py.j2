@@ -78,8 +78,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # Return the client from cache.
         return self.__dict__['operations_client']
     {%- endif %}
+    {%- for method in service.methods.values() %}
 
-    {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -115,6 +115,5 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         # Return the response.
         return stub(request, metadata=metadata)
-
-    {% endfor -%}
+    {%- endfor %}
 {%- endblock -%}

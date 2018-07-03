@@ -62,8 +62,8 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         # Return the client from cache.
         return self.__dict__['operations_client']
     {%- endif %}
+    {%- for method in service.methods.values() %}
 
-    {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -99,5 +99,5 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         return {{ method.output.pb2_module }}.{{ method.output.name }}.FromString(
             response.content,
         )
-    {% endfor %}
+    {%- endfor %}
 {% endblock %}

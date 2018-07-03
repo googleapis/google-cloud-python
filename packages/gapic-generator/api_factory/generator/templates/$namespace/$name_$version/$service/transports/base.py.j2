@@ -52,13 +52,13 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         """Return the client designed to process long-running operations."""
         raise NotImplementedError
     {%- endif %}
+    {%- for method in service.methods.values() %}
 
-    {% for method in service.methods.values() -%}
     @abc.abstractmethod
     def {{ method.name|snake_case }}(
             self,
             request: {{ method.input.pb2_module }}.{{ method.input.name }},
             ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
         raise NotImplementedError
-    {% endfor -%}
+    {%- endfor %}
 {% endblock %}

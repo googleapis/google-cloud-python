@@ -28,13 +28,14 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import dataclasses
-from typing import List, Mapping, Sequence, Tuple
+from typing import Callable, List, Mapping, Sequence, Tuple
 
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
 from api_factory.schema.metadata import Metadata
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import headers_pb2
 from api_factory.schema.pb import overload_pb2
 
 
@@ -107,6 +108,11 @@ class Method:
     def overloads(self):
         """Return the overloads defined for this method."""
         return self.method_pb.options.Extensions[overload_pb2.overloads]
+
+    @property
+    def field_headers(self):
+        """Return the field headers defined for this method."""
+        return self.method_pb.options.Extensions[headers_pb2.field_headers]
 
 
 @dataclasses.dataclass(frozen=True)
@@ -187,4 +193,22 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any(method.lro_payload for method in self.methods.values())
+        return self._any_method(lambda m: getattr(m, 'lro_payload'))
+
+    @property
+    def has_field_headers(self) -> bool:
+        """Return whether the service has a method containing field headers."""
+        return self._any_method(lambda m: getattr(m, 'field_headers'))
+
+    def _any_method(self, predicate: Callable) -> bool:
+        """Return whether the service has a method that fulfills ``predicate``.
+
+        Args:
+            predicate (Callable[Method]): Function specifying the criteria
+                testing the methods in the service.
+
+        Returns:
+            bool: True if any method of the service contains the specified
+                attribute.
+        """
+        return any(predicate(method) for method in self.methods.values())

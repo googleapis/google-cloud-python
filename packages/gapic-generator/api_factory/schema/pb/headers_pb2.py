@@ -20,23 +20,70 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/api/experimental/headers.proto',
   package='google.api.experimental',
   syntax='proto3',
-  serialized_pb=_b('\n%google/api/experimental/headers.proto\x12\x17google.api.experimental\x1a google/protobuf/descriptor.proto:5\n\x0cheader_param\x12\x1d.google.protobuf.FieldOptions\x18\xf0\x8c\x03 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n%google/api/experimental/headers.proto\x12\x17google.api.experimental\x1a google/protobuf/descriptor.proto\",\n\x0b\x46ieldHeader\x12\r\n\x05\x66ield\x18\x01 \x01(\t\x12\x0e\n\x06header\x18\x02 \x01(\t:]\n\rfield_headers\x12\x1e.google.protobuf.MethodOptions\x18\xf0\x8c\x03 \x03(\x0b\x32$.google.api.experimental.FieldHeaderb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_descriptor__pb2.DESCRIPTOR,])
 
 
-HEADER_PARAM_FIELD_NUMBER = 50800
-header_param = _descriptor.FieldDescriptor(
-  name='header_param', full_name='google.api.experimental.header_param', index=0,
-  number=50800, type=9, cpp_type=9, label=1,
-  has_default_value=False, default_value=_b("").decode('utf-8'),
+FIELD_HEADERS_FIELD_NUMBER = 50800
+field_headers = _descriptor.FieldDescriptor(
+  name='field_headers', full_name='google.api.experimental.field_headers', index=0,
+  number=50800, type=11, cpp_type=10, label=3,
+  has_default_value=False, default_value=[],
   message_type=None, enum_type=None, containing_type=None,
   is_extension=True, extension_scope=None,
   options=None, file=DESCRIPTOR)
 
-DESCRIPTOR.extensions_by_name['header_param'] = header_param
+
+_FIELDHEADER = _descriptor.Descriptor(
+  name='FieldHeader',
+  full_name='google.api.experimental.FieldHeader',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='field', full_name='google.api.experimental.FieldHeader.field', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='header', full_name='google.api.experimental.FieldHeader.header', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=100,
+  serialized_end=144,
+)
+
+DESCRIPTOR.message_types_by_name['FieldHeader'] = _FIELDHEADER
+DESCRIPTOR.extensions_by_name['field_headers'] = field_headers
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-google_dot_protobuf_dot_descriptor__pb2.FieldOptions.RegisterExtension(header_param)
+FieldHeader = _reflection.GeneratedProtocolMessageType('FieldHeader', (_message.Message,), dict(
+  DESCRIPTOR = _FIELDHEADER,
+  __module__ = 'google.api.experimental.headers_pb2'
+  # @@protoc_insertion_point(class_scope:google.api.experimental.FieldHeader)
+  ))
+_sym_db.RegisterMessage(FieldHeader)
+
+field_headers.message_type = _FIELDHEADER
+google_dot_protobuf_dot_descriptor__pb2.MethodOptions.RegisterExtension(field_headers)
 
 # @@protoc_insertion_point(module_scope)

@@ -16,6 +16,7 @@ from google.protobuf import descriptor_pb2
 
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
+from api_factory.schema.pb import headers_pb2
 from api_factory.schema.pb import overload_pb2
 
 
@@ -35,6 +36,10 @@ def get_method() -> wrappers.Method:
     # Set an overload in the method descriptor.
     ext_key = overload_pb2.overloads
     method_pb.options.Extensions[ext_key].extend([overload_pb2.Overload()])
+
+    # Set a field header in the method descriptor.
+    ext_key = headers_pb2.field_headers
+    method_pb.options.Extensions[ext_key].extend([headers_pb2.FieldHeader()])
 
     # Instantiate the wrapper class.
     return wrappers.Method(
@@ -70,3 +75,9 @@ def test_method_overloads():
     method = get_method()
     for overload in method.overloads:
         assert isinstance(overload, overload_pb2.Overload)
+
+
+def test_method_field_headers():
+    method = get_method()
+    for field_header in method.field_headers:
+        assert isinstance(field_header, headers_pb2.FieldHeader)

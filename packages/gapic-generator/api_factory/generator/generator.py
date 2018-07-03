@@ -14,7 +14,7 @@
 
 import io
 import os
-from typing import Any, Callable, Iterable, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
 import jinja2
 

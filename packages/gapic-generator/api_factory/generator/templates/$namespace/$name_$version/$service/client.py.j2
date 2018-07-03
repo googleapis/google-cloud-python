@@ -4,6 +4,9 @@
 import functools
 import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
+{%- if service.has_field_headers %}
+from urllib import parse
+{%- endif %}
 
 from google.api_core import gapic_v1
 {%- if service.has_lro %}
@@ -54,8 +57,8 @@ class {{ service.name }}:
         else:
             Transport = get_transport_class(transport)
             self._transport = Transport(credentials=credentials)
+    {%- for method in service.methods.values() %}
 
-    {% for method in service.methods.values() -%}
     @functools.singledispatch
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
@@ -97,6 +100,29 @@ class {{ service.name }}:
             default_timeout=None,  # FIXME
             client_info=self.client_info,
         )
+        {%- if method.field_headers %}
+
+        # Ensure metadata is a mutable sequence.
+        metadata = list(metadata)
+
+        # Add request headers to metadata.
+        {%- for field_header in method.field_headers %}
+
+        try:
+            header_value = request.{{ field_header.field }}
+        except AttributeError:
+            # Suppress when attribute missing.
+            pass
+        else:
+            metadata.append((
+                '{{ field_header.header }}',
+                '{}={}'.format(
+                    parse.quote_plus('{{ field_header.field }}'),
+                    parse.quote_plus(header_value),
+                ),
+            ))
+        {%- endfor %}
+        {%- endif %}
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
