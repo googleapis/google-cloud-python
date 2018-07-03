@@ -106,9 +106,9 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        if display_name is not None and 
-           len(display_name) < _DISPLAY_NAME_MIN_LENGTH and
-           len(display_name) > _DISPLAY_NAME_MAX_LENGTH:
+        if (display_name is not None and
+            len(display_name) < _DISPLAY_NAME_MIN_LENGTH and
+            len(display_name) > _DISPLAY_NAME_MAX_LENGTH):
             raise ValueError('Display name of instance must be 4-30 characters.')
 
         result = cls(instance_id, client, instance_pb.display_name,
