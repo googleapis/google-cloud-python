@@ -18,7 +18,6 @@ import base64
 import datetime
 import decimal
 
-from google.api_core import retry
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
@@ -330,65 +329,7 @@ def _snake_to_camel_case(value):
     return words[0] + ''.join(map(str.capitalize, words[1:]))
 
 
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
-    """
-    from google.cloud.bigquery import Row
-
-    return Row(_row_tuple_from_json(resource, iterator.schema),
-               iterator._field_to_index)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator._total_rows = total_rows
-# pylint: enable=unused-argument
-
-
-def _should_retry(exc):
-    """Predicate for determining when to retry.
-
-    We retry if and only if the 'reason' is 'backendError'
-    or 'rateLimitExceeded'.
-    """
-    if not hasattr(exc, 'errors'):
-        return False
-    if len(exc.errors) == 0:
-        return False
-    reason = exc.errors[0]['reason']
-    return reason == 'backendError' or reason == 'rateLimitExceeded'
-
-
-def get_sub_prop(container, keys, default=None):
+def _get_sub_prop(container, keys, default=None):
     """Get a nested value from a dictionary.
 
     This method works like ``dict.get(key)``, but for nested values.
@@ -408,18 +349,18 @@ def get_sub_prop(container, keys, default=None):
     Examples:
         Get a top-level value (equivalent to ``container.get('key')``).
 
-        >>> get_sub_prop({'key': 'value'}, ['key'])
+        >>> _get_sub_prop({'key': 'value'}, ['key'])
         'value'
 
         Get a top-level value, providing a default (equivalent to
         ``container.get('key', default='default')``).
 
-        >>> get_sub_prop({'nothere': 123}, ['key'], default='not found')
+        >>> _get_sub_prop({'nothere': 123}, ['key'], default='not found')
         'not found'
 
         Get a nested value.
 
-        >>> get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
+        >>> _get_sub_prop({'key': {'subkey': 'value'}}, ['key', 'subkey'])
         'value'
 
     Returns:
@@ -433,7 +374,7 @@ def get_sub_prop(container, keys, default=None):
     return sub_val
 
 
-def set_sub_prop(container, keys, value):
+def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
     Arguments:
@@ -450,21 +391,21 @@ def set_sub_prop(container, keys, value):
         Set a top-level value (equivalent to ``container['key'] = 'value'``).
 
         >>> container = {}
-        >>> set_sub_prop(container, ['key'], 'value')
+        >>> _set_sub_prop(container, ['key'], 'value')
         >>> container
         {'key': 'value'}
 
         Set a nested value.
 
         >>> container = {}
-        >>> set_sub_prop(container, ['key', 'subkey'], 'value')
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'value')
         >>> container
         {'key': {'subkey': 'value'}}
 
         Replace a nested value.
 
         >>> container = {'key': {'subkey': 'prev'}}
-        >>> set_sub_prop(container, ['key', 'subkey'], 'new')
+        >>> _set_sub_prop(container, ['key', 'subkey'], 'new')
         >>> container
         {'key': {'subkey': 'new'}}
     """
@@ -474,17 +415,6 @@ def set_sub_prop(container, keys, value):
             sub_val[key] = {}
         sub_val = sub_val[key]
     sub_val[keys[-1]] = value
-
-
-DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
-"""The default retry object.
-
-Any method with a ``retry`` parameter will be retried automatically,
-with reasonable defaults. To disable retry, pass ``retry=None``.
-To modify the default retry behavior, call a ``with_XXX`` method
-on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
-pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
-"""
 
 
 def _int_or_none(value):

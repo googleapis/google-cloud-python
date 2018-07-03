@@ -1072,6 +1072,126 @@ def test_browse_table_data(client, to_delete, capsys):
     assert len(out) == 11
 
 
+def test_manage_views(client, to_delete):
+    project = client.project
+    source_dataset_id = 'source_dataset_{}'.format(_millis())
+    source_dataset_ref = client.dataset(source_dataset_id)
+    source_dataset = bigquery.Dataset(source_dataset_ref)
+    source_dataset = client.create_dataset(source_dataset)
+    to_delete.append(source_dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    job_config.skip_leading_rows = 1
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.csv'
+    source_table_id = 'us_states'
+    load_job = client.load_table_from_uri(
+        uri, source_dataset.table(source_table_id), job_config=job_config)
+    load_job.result()
+
+    shared_dataset_id = 'shared_dataset_{}'.format(_millis())
+    shared_dataset_ref = client.dataset(shared_dataset_id)
+    shared_dataset = bigquery.Dataset(shared_dataset_ref)
+    shared_dataset = client.create_dataset(shared_dataset)
+    to_delete.append(shared_dataset)
+
+    # [START bigquery_create_view]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # project = 'my-project'
+    # source_dataset_id = 'my_source_dataset'
+    # source_table_id = 'us_states'
+    # shared_dataset_ref = client.dataset('my_shared_dataset')
+
+    # This example shows how to create a shared view of a source table of
+    # US States. The source table contains all 50 states, while the view will
+    # contain only states with names starting with 'W'.
+    view_ref = shared_dataset_ref.table('my_shared_view')
+    view = bigquery.Table(view_ref)
+    sql_template = (
+        'SELECT name, post_abbr FROM `{}.{}.{}` WHERE name LIKE "W%"')
+    view.view_query = sql_template.format(
+        project, source_dataset_id, source_table_id)
+    view = client.create_table(view)  # API request
+
+    print('Successfully created view at {}'.format(view.full_table_id))
+    # [END bigquery_create_view]
+
+    # [START bigquery_update_view_query]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # project = 'my-project'
+    # source_dataset_id = 'my_source_dataset'
+    # source_table_id = 'us_states'
+    # shared_dataset_ref = client.dataset('my_shared_dataset')
+
+    # This example shows how to update a shared view of a source table of
+    # US States. The view's query will be updated to contain only states with
+    # names starting with 'M'.
+    view_ref = shared_dataset_ref.table('my_shared_view')
+    view = bigquery.Table(view_ref)
+    sql_template = (
+        'SELECT name, post_abbr FROM `{}.{}.{}` WHERE name LIKE "M%"')
+    view.view_query = sql_template.format(
+        project, source_dataset_id, source_table_id)
+    view = client.update_table(view, ['view_query'])  # API request
+    # [END bigquery_update_view_query]
+
+    # [START bigquery_get_view]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # shared_dataset_id = 'my_shared_dataset'
+
+    view_ref = client.dataset(shared_dataset_id).table('my_shared_view')
+    view = client.get_table(view_ref)  # API Request
+
+    # Display view properties
+    print('View at {}'.format(view.full_table_id))
+    print('View Query:\n{}'.format(view.view_query))
+    # [END bigquery_get_view]
+    assert view.view_query is not None
+
+    analyst_group_email = 'example-analyst-group@google.com'
+    # [START bigquery_grant_view_access]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    # Assign access controls to the dataset containing the view
+    # shared_dataset_id = 'my_shared_dataset'
+    # analyst_group_email = 'data_analysts@example.com'
+    shared_dataset = client.get_dataset(
+        client.dataset(shared_dataset_id))  # API request
+    access_entries = shared_dataset.access_entries
+    access_entries.append(
+        bigquery.AccessEntry('READER', 'groupByEmail', analyst_group_email)
+    )
+    shared_dataset.access_entries = access_entries
+    shared_dataset = client.update_dataset(
+        shared_dataset, ['access_entries'])  # API request
+
+    # Authorize the view to access the source dataset
+    # project = 'my-project'
+    # source_dataset_id = 'my_source_dataset'
+    source_dataset = client.get_dataset(
+        client.dataset(source_dataset_id))  # API request
+    view_reference = {
+        'projectId': project,
+        'datasetId': shared_dataset_id,
+        'tableId': 'my_shared_view',
+    }
+    access_entries = source_dataset.access_entries
+    access_entries.append(
+        bigquery.AccessEntry(None, 'view', view_reference)
+    )
+    source_dataset.access_entries = access_entries
+    source_dataset = client.update_dataset(
+        source_dataset, ['access_entries'])  # API request
+    # [END bigquery_grant_view_access]
+
+
 def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
     dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
@@ -1219,7 +1339,7 @@ def test_load_table_from_uri_json(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_json]
 
 
@@ -1291,8 +1411,38 @@ def test_load_table_from_uri_parquet(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
     # [END bigquery_load_table_gcs_parquet]
+
+
+def test_load_table_from_uri_orc(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_orc]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+
+    load_job = client.load_table_from_uri(
+        uri,
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    # [END bigquery_load_table_gcs_orc]
 
 
 def test_load_table_from_uri_autodetect(client, to_delete):
@@ -1389,6 +1539,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
     # [START bigquery_load_table_gcs_parquet_append]
+    # [START bigquery_load_table_gcs_orc_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1401,6 +1552,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
+    # [END bigquery_load_table_gcs_orc_append]
 
     # Format-specific code
     # [START bigquery_load_table_gcs_csv_append]
@@ -1423,10 +1575,17 @@ def test_load_table_from_uri_append(client, to_delete):
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
     # [END bigquery_load_table_gcs_parquet_append]
 
+    # [START bigquery_load_table_gcs_orc_append]
+    # The schema of the parquet file must match the table schema in an append
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+    # [END bigquery_load_table_gcs_orc_append]
+
     # Shared code
     # [START bigquery_load_table_gcs_csv_append]
     # [START bigquery_load_table_gcs_json_append]
     # [START bigquery_load_table_gcs_parquet_append]
+    # [START bigquery_load_table_gcs_orc_append]
     load_job = client.load_table_from_uri(
         uri,
         table_ref,
@@ -1441,6 +1600,7 @@ def test_load_table_from_uri_append(client, to_delete):
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
+    # [END bigquery_load_table_gcs_orc_append]
 
     assert previous_rows == 1
 
@@ -1476,6 +1636,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
+    # [START bigquery_load_table_gcs_orc_truncate]
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # table_ref = client.dataset('my_dataset').table('existing_table')
@@ -1488,6 +1649,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
+    # [END bigquery_load_table_gcs_orc_truncate]
 
     # Format-specific code
     # [START bigquery_load_table_gcs_csv_truncate]
@@ -1509,10 +1671,16 @@ def test_load_table_from_uri_truncate(client, to_delete):
     uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.parquet'
     # [END bigquery_load_table_gcs_parquet_truncate]
 
+    # [START bigquery_load_table_gcs_orc_truncate]
+    job_config.source_format = bigquery.SourceFormat.ORC
+    uri = 'gs://cloud-samples-data/bigquery/us-states/us-states.orc'
+    # [END bigquery_load_table_gcs_orc_truncate]
+
     # Shared code
     # [START bigquery_load_table_gcs_csv_truncate]
     # [START bigquery_load_table_gcs_json_truncate]
     # [START bigquery_load_table_gcs_parquet_truncate]
+    # [START bigquery_load_table_gcs_orc_truncate]
     load_job = client.load_table_from_uri(
         uri,
         table_ref,
@@ -1527,6 +1695,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
+    # [END bigquery_load_table_gcs_orc_truncate]
 
 
 def test_load_table_add_column(client, to_delete):
@@ -2577,6 +2746,176 @@ def test_query_no_cache(client):
     for row in query_job:  # API request - fetches results
         print(row)
     # [END bigquery_query_no_cache]
+
+
+def test_query_external_gcs_temporary_table(client):
+    # [START bigquery_query_external_gcs_temp]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+
+    # Configure the external data source and query job
+    external_config = bigquery.ExternalConfig('CSV')
+    external_config.source_uris = [
+        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+    ]
+    external_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    external_config.options.skip_leading_rows = 1  # optionally skip header row
+    table_id = 'us_states'
+    job_config = bigquery.QueryJobConfig()
+    job_config.table_definitions = {table_id: external_config}
+
+    # Example query to find states starting with 'W'
+    sql = 'SELECT * FROM `{}` WHERE name LIKE "W%"'.format(table_id)
+
+    query_job = client.query(sql, job_config=job_config)  # API request
+
+    w_states = list(query_job)  # Waits for query to finish
+    print('There are {} states with names starting with W.'.format(
+        len(w_states)))
+    # [END bigquery_query_external_gcs_temp]
+    assert len(w_states) == 4
+
+
+def test_query_external_gcs_permanent_table(client, to_delete):
+    dataset_id = 'query_external_gcs_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_query_external_gcs_perm]
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # dataset_id = 'my_dataset'
+
+    # Configure the external data source
+    dataset_ref = client.dataset(dataset_id)
+    table_id = 'us_states'
+    schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table = bigquery.Table(dataset_ref.table(table_id), schema=schema)
+    external_config = bigquery.ExternalConfig('CSV')
+    external_config.source_uris = [
+        'gs://cloud-samples-data/bigquery/us-states/us-states.csv',
+    ]
+    external_config.options.skip_leading_rows = 1  # optionally skip header row
+    table.external_data_configuration = external_config
+
+    # Create a permanent table linked to the GCS file
+    table = client.create_table(table)  # API request
+
+    # Example query to find states starting with 'W'
+    sql = 'SELECT * FROM `{}.{}` WHERE name LIKE "W%"'.format(
+        dataset_id, table_id)
+
+    query_job = client.query(sql)  # API request
+
+    w_states = list(query_job)  # Waits for query to finish
+    print('There are {} states with names starting with W.'.format(
+        len(w_states)))
+    # [END bigquery_query_external_gcs_perm]
+    assert len(w_states) == 4
+
+
+def test_query_external_sheets_temporary_table(client):
+    # [START bigquery_query_external_sheets_temp]
+    # [START bigquery_auth_drive_scope]
+    import google.auth
+    # from google.cloud import bigquery
+
+    # Create credentials with Drive & BigQuery API scopes
+    # Both APIs must be enabled for your project before running this code
+    credentials, project = google.auth.default(scopes=[
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/bigquery',
+    ])
+    client = bigquery.Client(credentials=credentials, project=project)
+    # [END bigquery_auth_drive_scope]
+
+    # Configure the external data source and query job
+    external_config = bigquery.ExternalConfig('GOOGLE_SHEETS')
+    # Use a shareable link or grant viewing access to the email address you
+    # used to authenticate with BigQuery (this example Sheet is public)
+    sheet_url = (
+        'https://docs.google.com/spreadsheets'
+        '/d/1i_QCL-7HcSyUZmIbP9E6lO_T5u3HnpLe7dnpHaijg_E/edit?usp=sharing')
+    external_config.source_uris = [sheet_url]
+    external_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    external_config.options.skip_leading_rows = 1  # optionally skip header row
+    table_id = 'us_states'
+    job_config = bigquery.QueryJobConfig()
+    job_config.table_definitions = {table_id: external_config}
+
+    # Example query to find states starting with 'W'
+    sql = 'SELECT * FROM `{}` WHERE name LIKE "W%"'.format(table_id)
+
+    query_job = client.query(sql, job_config=job_config)  # API request
+
+    w_states = list(query_job)  # Waits for query to finish
+    print('There are {} states with names starting with W.'.format(
+        len(w_states)))
+    # [END bigquery_query_external_sheets_temp]
+    assert len(w_states) == 4
+
+
+def test_query_external_sheets_permanent_table(client, to_delete):
+    dataset_id = 'query_external_sheets_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_query_external_sheets_perm]
+    import google.auth
+    # from google.cloud import bigquery
+    # dataset_id = 'my_dataset'
+
+    # Create credentials with Drive & BigQuery API scopes
+    # Both APIs must be enabled for your project before running this code
+    credentials, project = google.auth.default(scopes=[
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/bigquery',
+    ])
+    client = bigquery.Client(credentials=credentials, project=project)
+
+    # Configure the external data source
+    dataset_ref = client.dataset(dataset_id)
+    table_id = 'us_states'
+    schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table = bigquery.Table(dataset_ref.table(table_id), schema=schema)
+    external_config = bigquery.ExternalConfig('GOOGLE_SHEETS')
+    # Use a shareable link or grant viewing access to the email address you
+    # used to authenticate with BigQuery (this example Sheet is public)
+    sheet_url = (
+        'https://docs.google.com/spreadsheets'
+        '/d/1i_QCL-7HcSyUZmIbP9E6lO_T5u3HnpLe7dnpHaijg_E/edit?usp=sharing')
+    external_config.source_uris = [sheet_url]
+    external_config.options.skip_leading_rows = 1  # optionally skip header row
+    table.external_data_configuration = external_config
+
+    # Create a permanent table linked to the Sheets file
+    table = client.create_table(table)  # API request
+
+    # Example query to find states starting with 'W'
+    sql = 'SELECT * FROM `{}.{}` WHERE name LIKE "W%"'.format(
+        dataset_id, table_id)
+
+    query_job = client.query(sql)  # API request
+
+    w_states = list(query_job)  # Waits for query to finish
+    print('There are {} states with names starting with W.'.format(
+        len(w_states)))
+    # [END bigquery_query_external_sheets_perm]
+    assert len(w_states) == 4
 
 
 def test_client_list_jobs(client):

@@ -27,6 +27,11 @@ CI = os.environ.get('CI', '')
 CI_BRANCH = os.environ.get('CIRCLE_BRANCH')
 CI_PR = os.environ.get('CIRCLE_PR_NUMBER')
 CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+head_hash, head_name = subprocess.check_output(['git', 'show-ref', 'HEAD']
+).strip().decode('ascii').split()
+rev_parse = subprocess.check_output(
+    ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
+).strip().decode('ascii')
 MAJOR_DIV = '#' * 78
 MINOR_DIV = '#' + '-' * 77
 
@@ -43,7 +48,6 @@ TAG_RE = re.compile(r"""
 # As of this writing, the only "real" dependency is that of error_reporting
 # (on logging), the rest are just system test dependencies.
 PKG_DEPENDENCIES = {
-    'error_reporting': {'logging'},
     'logging': {'pubsub'},
 }
 
@@ -66,16 +70,18 @@ def get_baseline():
     ci_non_master = (CI == 'true') and any([CI_BRANCH != 'master', CI_PR])
 
     if ci_non_master:
-        if CI_PR is None and CI_BRANCH is not None:
-            output = subprocess.check_output(
-                ['git', 'merge-base', 'master', CI_BRANCH])
-            return output.strip().decode('ascii')
 
         repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
         subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
-        # Can we have a PR but not a branch?
+
+        if CI_PR is None and CI_BRANCH is not None:
+            output = subprocess.check_output([
+                'git', 'merge-base', '--fork-point',
+                'baseline/master', CI_BRANCH])
+            return output.strip().decode('ascii')
+
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
@@ -243,6 +249,9 @@ def main():
     print('# CircleCI branch: {}'.format(CI_BRANCH))
     print('# CircleCI pr:     {}'.format(CI_PR))
     print('# CircleCI tag:    {}'.format(CIRCLE_TAG))
+    print('# HEAD ref:        {}'.format(head_hash))
+    print('#                  {}'.format(head_name))
+    print('# Git branch:      {}'.format(rev_parse))
     print(MAJOR_DIV)
 
     packages = list(get_target_packages())

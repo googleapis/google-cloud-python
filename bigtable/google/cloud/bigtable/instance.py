@@ -56,41 +56,17 @@ class Instance(object):
     :param client: The client that owns the instance. Provides
                    authorization and a project ID.
 
-    :type location_id: str
-    :param location_id: ID of the location in which the instance will be
-                        created.  Required for instances which do not yet
-                        exist.
-
     :type display_name: str
     :param display_name: (Optional) The display name for the instance in the
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
-
-    :type serve_nodes: int
-    :param serve_nodes: (Optional) The number of nodes in the instance's
-                        cluster; used to set up the instance's cluster.
-
-    :type default_storage_type: int
-    :param default_storage_type: (Optional) The default values are
-                                    STORAGE_TYPE_UNSPECIFIED = 0: The user did
-                                    not specify a storage type.
-                                    SSD = 1: Flash (SSD) storage should be
-                                    used.
-                                    HDD = 2: Magnetic drive (HDD) storage
-                                    should be used.
     """
 
-    def __init__(self, instance_id, client,
-                 location_id=_EXISTING_INSTANCE_LOCATION_ID,
-                 display_name=None, serve_nodes=DEFAULT_SERVE_NODES,
-                 default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
+    def __init__(self, instance_id, client, display_name=None):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
-        self._cluster_location_id = location_id
-        self._cluster_serve_nodes = serve_nodes
         self._client = client
-        self._default_storage_type = default_storage_type
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -119,7 +95,8 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
+        result = cls(instance_id, client,
+                     display_name=instance_pb.display_name)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -172,7 +149,9 @@ class Instance(object):
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
 
-    def create(self):
+    def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
+               serve_nodes=DEFAULT_SERVE_NODES,
+               default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
         """Create this instance.
 
         .. note::
@@ -188,6 +167,25 @@ class Instance(object):
 
             before calling :meth:`create`.
 
+        :type location_id: str
+        :param location_id: ID of the location in which the instance will be
+                            created.  Required for instances which do not yet
+                            exist.
+
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the instance's
+                            cluster; used to set up the instance's cluster.
+
+        :type default_storage_type: int
+        :param default_storage_type: (Optional) The default values are
+                                     STORAGE_TYPE_UNSPECIFIED = 0: The user
+                                     did not specify a storage type.
+                                     SSD = 1: Flash (SSD) storage should be
+                                     used.
+                                     HDD = 2: Magnetic drive (HDD) storage
+                                     should be used.
+
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
@@ -197,11 +195,11 @@ class Instance(object):
         cluster_name = self._client.instance_admin_client.cluster_path(
             self._client.project, self.instance_id, cluster_id)
         location = self._client.instance_admin_client.location_path(
-            self._client.project, self._cluster_location_id)
+            self._client.project, location_id)
         cluster = instance_pb2.Cluster(
             name=cluster_name, location=location,
-            serve_nodes=self._cluster_serve_nodes,
-            default_storage_type=self._default_storage_type)
+            serve_nodes=serve_nodes,
+            default_storage_type=default_storage_type)
         instance = instance_pb2.Instance(
             display_name=self.display_name
         )

@@ -15,10 +15,9 @@
 
 import pytest
 
-from google.api import monitored_resource_pb2
 from google.cloud import monitoring_v3
-from google.cloud.monitoring_v3.proto import group_pb2
-from google.cloud.monitoring_v3.proto import group_service_pb2
+from google.cloud.monitoring_v3.proto import uptime_pb2
+from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.protobuf import empty_pb2
 
 
@@ -61,241 +60,215 @@ class CustomException(Exception):
     pass
 
 
-class TestGroupServiceClient(object):
-    def test_list_groups(self):
+class TestUptimeCheckServiceClient(object):
+    def test_list_uptime_check_configs(self):
         # Setup Expected Response
         next_page_token = ''
-        group_element = {}
-        group = [group_element]
+        uptime_check_configs_element = {}
+        uptime_check_configs = [uptime_check_configs_element]
         expected_response = {
             'next_page_token': next_page_token,
-            'group': group
+            'uptime_check_configs': uptime_check_configs
         }
-        expected_response = group_service_pb2.ListGroupsResponse(
+        expected_response = uptime_service_pb2.ListUptimeCheckConfigsResponse(
             **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup Request
-        name = client.project_path('[PROJECT]')
+        parent = client.project_path('[PROJECT]')
 
-        paged_list_response = client.list_groups(name)
+        paged_list_response = client.list_uptime_check_configs(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
-        assert expected_response.group[0] == resources[0]
+        assert expected_response.uptime_check_configs[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = group_service_pb2.ListGroupsRequest(name=name)
+        expected_request = uptime_service_pb2.ListUptimeCheckConfigsRequest(
+            parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_list_groups_exception(self):
+    def test_list_uptime_check_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup request
-        name = client.project_path('[PROJECT]')
+        parent = client.project_path('[PROJECT]')
 
-        paged_list_response = client.list_groups(name)
+        paged_list_response = client.list_uptime_check_configs(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
 
-    def test_get_group(self):
+    def test_get_uptime_check_config(self):
         # Setup Expected Response
         name_2 = 'name2-1052831874'
         display_name = 'displayName1615086568'
-        parent_name = 'parentName1015022848'
-        filter_ = 'filter-1274492040'
-        is_cluster = False
-        expected_response = {
-            'name': name_2,
-            'display_name': display_name,
-            'parent_name': parent_name,
-            'filter': filter_,
-            'is_cluster': is_cluster
-        }
-        expected_response = group_pb2.Group(**expected_response)
+        expected_response = {'name': name_2, 'display_name': display_name}
+        expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup Request
-        name = client.group_path('[PROJECT]', '[GROUP]')
+        name = client.uptime_check_config_path('[PROJECT]',
+                                               '[UPTIME_CHECK_CONFIG]')
 
-        response = client.get_group(name)
+        response = client.get_uptime_check_config(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = group_service_pb2.GetGroupRequest(name=name)
+        expected_request = uptime_service_pb2.GetUptimeCheckConfigRequest(
+            name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_get_group_exception(self):
+    def test_get_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup request
-        name = client.group_path('[PROJECT]', '[GROUP]')
+        name = client.uptime_check_config_path('[PROJECT]',
+                                               '[UPTIME_CHECK_CONFIG]')
 
         with pytest.raises(CustomException):
-            client.get_group(name)
+            client.get_uptime_check_config(name)
 
-    def test_create_group(self):
-        # Setup Expected Response
-        name_2 = 'name2-1052831874'
-        display_name = 'displayName1615086568'
-        parent_name = 'parentName1015022848'
-        filter_ = 'filter-1274492040'
-        is_cluster = False
-        expected_response = {
-            'name': name_2,
-            'display_name': display_name,
-            'parent_name': parent_name,
-            'filter': filter_,
-            'is_cluster': is_cluster
-        }
-        expected_response = group_pb2.Group(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
-
-        # Setup Request
-        name = client.project_path('[PROJECT]')
-        group = {}
-
-        response = client.create_group(name, group)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = group_service_pb2.CreateGroupRequest(
-            name=name, group=group)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_create_group_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
-
-        # Setup request
-        name = client.project_path('[PROJECT]')
-        group = {}
-
-        with pytest.raises(CustomException):
-            client.create_group(name, group)
-
-    def test_update_group(self):
+    def test_create_uptime_check_config(self):
         # Setup Expected Response
         name = 'name3373707'
         display_name = 'displayName1615086568'
-        parent_name = 'parentName1015022848'
-        filter_ = 'filter-1274492040'
-        is_cluster = False
-        expected_response = {
-            'name': name,
-            'display_name': display_name,
-            'parent_name': parent_name,
-            'filter': filter_,
-            'is_cluster': is_cluster
-        }
-        expected_response = group_pb2.Group(**expected_response)
+        expected_response = {'name': name, 'display_name': display_name}
+        expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup Request
-        group = {}
+        parent = client.project_path('[PROJECT]')
+        uptime_check_config = {}
 
-        response = client.update_group(group)
+        response = client.create_uptime_check_config(parent,
+                                                     uptime_check_config)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = group_service_pb2.UpdateGroupRequest(group=group)
+        expected_request = uptime_service_pb2.CreateUptimeCheckConfigRequest(
+            parent=parent, uptime_check_config=uptime_check_config)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_update_group_exception(self):
+    def test_create_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup request
-        group = {}
+        parent = client.project_path('[PROJECT]')
+        uptime_check_config = {}
 
         with pytest.raises(CustomException):
-            client.update_group(group)
+            client.create_uptime_check_config(parent, uptime_check_config)
 
-    def test_delete_group(self):
-        channel = ChannelStub()
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+    def test_update_uptime_check_config(self):
+        # Setup Expected Response
+        name = 'name3373707'
+        display_name = 'displayName1615086568'
+        expected_response = {'name': name, 'display_name': display_name}
+        expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup Request
-        name = client.group_path('[PROJECT]', '[GROUP]')
+        uptime_check_config = {}
 
-        client.delete_group(name)
+        response = client.update_uptime_check_config(uptime_check_config)
+        assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = group_service_pb2.DeleteGroupRequest(name=name)
+        expected_request = uptime_service_pb2.UpdateUptimeCheckConfigRequest(
+            uptime_check_config=uptime_check_config)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_delete_group_exception(self):
+    def test_update_uptime_check_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
         # Setup request
-        name = client.group_path('[PROJECT]', '[GROUP]')
+        uptime_check_config = {}
 
         with pytest.raises(CustomException):
-            client.delete_group(name)
+            client.update_uptime_check_config(uptime_check_config)
 
-    def test_list_group_members(self):
+    def test_delete_uptime_check_config(self):
+        channel = ChannelStub()
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+
+        # Setup Request
+        name = client.uptime_check_config_path('[PROJECT]',
+                                               '[UPTIME_CHECK_CONFIG]')
+
+        client.delete_uptime_check_config(name)
+
+        assert len(channel.requests) == 1
+        expected_request = uptime_service_pb2.DeleteUptimeCheckConfigRequest(
+            name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_uptime_check_config_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
+
+        # Setup request
+        name = client.uptime_check_config_path('[PROJECT]',
+                                               '[UPTIME_CHECK_CONFIG]')
+
+        with pytest.raises(CustomException):
+            client.delete_uptime_check_config(name)
+
+    def test_list_uptime_check_ips(self):
         # Setup Expected Response
         next_page_token = ''
-        total_size = 705419236
-        members_element = {}
-        members = [members_element]
+        uptime_check_ips_element = {}
+        uptime_check_ips = [uptime_check_ips_element]
         expected_response = {
             'next_page_token': next_page_token,
-            'total_size': total_size,
-            'members': members
+            'uptime_check_ips': uptime_check_ips
         }
-        expected_response = group_service_pb2.ListGroupMembersResponse(
+        expected_response = uptime_service_pb2.ListUptimeCheckIpsResponse(
             **expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
-        # Setup Request
-        name = client.group_path('[PROJECT]', '[GROUP]')
-
-        paged_list_response = client.list_group_members(name)
+        paged_list_response = client.list_uptime_check_ips()
         resources = list(paged_list_response)
         assert len(resources) == 1
 
-        assert expected_response.members[0] == resources[0]
+        assert expected_response.uptime_check_ips[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = group_service_pb2.ListGroupMembersRequest(name=name)
+        expected_request = uptime_service_pb2.ListUptimeCheckIpsRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_list_group_members_exception(self):
+    def test_list_uptime_check_ips_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = monitoring_v3.GroupServiceClient(channel=channel)
+        client = monitoring_v3.UptimeCheckServiceClient(channel=channel)
 
-        # Setup request
-        name = client.group_path('[PROJECT]', '[GROUP]')
-
-        paged_list_response = client.list_group_members(name)
+        paged_list_response = client.list_uptime_check_ips()
         with pytest.raises(CustomException):
             list(paged_list_response)

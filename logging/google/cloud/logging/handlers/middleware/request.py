@@ -33,8 +33,20 @@ def _get_django_request():
     return getattr(_thread_locals, 'request', None)
 
 
-class RequestMiddleware(object):
+try:
+    # Django >= 1.10
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    # Not required for Django <= 1.9, see:
+    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
+    MiddlewareMixin = object
+
+
+class RequestMiddleware(MiddlewareMixin):
     """Saves the request in thread local"""
+
+    def __init__(self, get_response=None):
+        self.get_response = get_response
 
     def process_request(self, request):
         """Called on each request, before Django decides which view to execute.

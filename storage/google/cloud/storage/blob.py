@@ -1501,8 +1501,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 7234`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2
@@ -1512,8 +1510,6 @@ class Blob(_PropertyMixin):
     """HTTP 'Content-Disposition' header for this object.
 
     See `RFC 6266`_ and `API reference docs`_.
-
-    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
 
@@ -1525,8 +1521,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 7231`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2
@@ -1536,8 +1530,6 @@ class Blob(_PropertyMixin):
     """HTTP 'Content-Language' header for this object.
 
     See `BCP47`_ and `API reference docs`_.
-
-    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
 
@@ -1549,8 +1541,6 @@ class Blob(_PropertyMixin):
 
     See `RFC 2616`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
-
     :rtype: str or ``NoneType``
 
     .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17
@@ -1561,7 +1551,7 @@ class Blob(_PropertyMixin):
 
     See `RFC 4960`_ and `API reference docs`_.
 
-    If the property is not set locally, returns :data:`None`.
+    If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
 
@@ -1576,8 +1566,9 @@ class Blob(_PropertyMixin):
 
         :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
-                  ``None`` if the property is not set locally. This property
-                  will not be set on objects not created via ``compose``.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server.  This property will not be set on objects
+                  not created via ``compose``.
         """
         component_count = self._properties.get('componentCount')
         if component_count is not None:
@@ -1590,7 +1581,8 @@ class Blob(_PropertyMixin):
         See `RFC 2616 (etags)`_ and `API reference docs`_.
 
         :rtype: str or ``NoneType``
-        :returns: The blob etag or ``None`` if the property is not set locally.
+        :returns: The blob etag or ``None`` if the blob's resource has not
+                  been loaded from the server.
 
         .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11
         """
@@ -1603,8 +1595,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The generation of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The generation of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         generation = self._properties.get('generation')
         if generation is not None:
@@ -1616,9 +1608,11 @@ class Blob(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
+        The ID consists of the bucket name, object name, and generation number.
+
         :rtype: str or ``NoneType``
-        :returns: The ID of the blob or ``None`` if the property is not
-                  set locally.
+        :returns: The ID of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('id')
 
@@ -1627,7 +1621,7 @@ class Blob(_PropertyMixin):
 
     See `RFC 1321`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
 
@@ -1641,8 +1635,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
-        :returns: The media link for the blob or ``None`` if the property is
-                  not set locally.
+        :returns: The media link for the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('mediaLink')
 
@@ -1659,7 +1653,7 @@ class Blob(_PropertyMixin):
 
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
-                  property is not set locally.
+                  property is not set.
         """
         return copy.deepcopy(self._properties.get('metadata'))
 
@@ -1681,8 +1675,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The metageneration of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The metageneration of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         metageneration = self._properties.get('metageneration')
         if metageneration is not None:
@@ -1695,8 +1689,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: dict or ``NoneType``
-        :returns: Mapping of owner's role/ID. If the property is not set
-                  locally, returns ``None``.
+        :returns: Mapping of owner's role/ID, or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return copy.deepcopy(self._properties.get('owner'))
 
@@ -1707,8 +1701,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
-        :returns: The self link for the blob or ``None`` if the property is
-                  not set locally.
+        :returns: The self link for the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         return self._properties.get('selfLink')
 
@@ -1719,8 +1713,8 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
-        :returns: The size of the blob or ``None`` if the property
-                  is not set locally.
+        :returns: The size of the blob or ``None`` if the blob's
+                  resource has not been loaded from the server.
         """
         size = self._properties.get('size')
         if size is not None:
@@ -1732,7 +1726,8 @@ class Blob(_PropertyMixin):
 
         :rtype: str or ``NoneType``
         :returns:
-            The resource name or ``None`` if the property is not set locally.
+            The resource name or ``None`` if no Cloud KMS key was used,
+            or the blob's resource has not been loaded from the server.
         """
         return self._properties.get('kmsKeyName')
 
@@ -1760,7 +1755,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally. If the blob has
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`). If the blob has
                   not been deleted, this will never be set.
         """
         value = self._properties.get('timeDeleted')
@@ -1775,7 +1771,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`).
         """
         value = self._properties.get('timeCreated')
         if value is not None:
@@ -1789,7 +1786,8 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
-                  ``None`` if the property is not set locally.
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`).
         """
         value = self._properties.get('updated')
         if value is not None:
@@ -1870,7 +1868,16 @@ def _raise_from_invalid_response(error):
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    raise exceptions.from_http_response(error.response)
+    response = error.response
+    error_message = str(error)
+
+    message = u'{method} {url}: {error}'.format(
+        method=response.request.method,
+        url=response.request.url,
+        error=error_message)
+
+    raise exceptions.from_http_status(
+        response.status_code, message, response=response)
 
 
 def _add_query_parameters(base_url, name_value_pairs):

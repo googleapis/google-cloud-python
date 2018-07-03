@@ -23,11 +23,13 @@ import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
 import google.api_core.protobuf_helpers
+import grpc
 
 from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import group_service_client_config
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
+from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import common_pb2
 from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
@@ -120,69 +122,51 @@ class GroupServiceClient(object):
                 'exclusive.'.format(self.__class__.__name__), )
 
         # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
+        self.channel = channel
+        if self.channel is None:
+            self.channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
             )
 
         # Create the gRPC stubs.
-        self.group_service_stub = (
-            group_service_pb2_grpc.GroupServiceStub(channel))
+        self._group_service_stub = (group_service_pb2_grpc.GroupServiceStub(
+            self.channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_groups = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.ListGroups,
-            default_retry=method_configs['ListGroups'].retry,
-            default_timeout=method_configs['ListGroups'].timeout,
-            client_info=client_info,
-        )
-        self._get_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.GetGroup,
-            default_retry=method_configs['GetGroup'].retry,
-            default_timeout=method_configs['GetGroup'].timeout,
-            client_info=client_info,
-        )
-        self._create_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.CreateGroup,
-            default_retry=method_configs['CreateGroup'].retry,
-            default_timeout=method_configs['CreateGroup'].timeout,
-            client_info=client_info,
-        )
-        self._update_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.UpdateGroup,
-            default_retry=method_configs['UpdateGroup'].retry,
-            default_timeout=method_configs['UpdateGroup'].timeout,
-            client_info=client_info,
-        )
-        self._delete_group = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.DeleteGroup,
-            default_retry=method_configs['DeleteGroup'].retry,
-            default_timeout=method_configs['DeleteGroup'].timeout,
-            client_info=client_info,
-        )
-        self._list_group_members = google.api_core.gapic_v1.method.wrap_method(
-            self.group_service_stub.ListGroupMembers,
-            default_retry=method_configs['ListGroupMembers'].retry,
-            default_timeout=method_configs['ListGroupMembers'].timeout,
-            client_info=client_info,
-        )
+        self._inner_api_calls = {}
+
+    def _intercept_channel(self, *interceptors):
+        """ Experimental. Bind gRPC interceptors to the gRPC channel.
+
+        Args:
+            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
+              Zero or more gRPC interceptors. Interceptors are given control in the order
+              they are listed.
+        Raises:
+            TypeError: If interceptor does not derive from any of
+              UnaryUnaryClientInterceptor,
+              UnaryStreamClientInterceptor,
+              StreamUnaryClientInterceptor, or
+              StreamStreamClientInterceptor.
+        """
+        self.channel = grpc.intercept_channel(self.channel, *interceptors)
+        self._group_service_stub = (group_service_pb2_grpc.GroupServiceStub(
+            self.channel))
+        self._inner_api_calls.clear()
 
     # Service calls
     def list_groups(self,
@@ -204,13 +188,15 @@ class GroupServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_groups(name):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_groups(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -261,6 +247,15 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_groups' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_groups'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.ListGroups,
+                    default_retry=self._method_configs['ListGroups'].retry,
+                    default_timeout=self._method_configs['ListGroups'].timeout,
+                    client_info=self._client_info,
+                )
+
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
@@ -279,7 +274,7 @@ class GroupServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_groups,
+                self._inner_api_calls['list_groups'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -332,8 +327,17 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'get_group' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_group'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.GetGroup,
+                    default_retry=self._method_configs['GetGroup'].retry,
+                    default_timeout=self._method_configs['GetGroup'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = group_service_pb2.GetGroupRequest(name=name, )
-        return self._get_group(
+        return self._inner_api_calls['get_group'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_group(self,
@@ -388,12 +392,22 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'create_group' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_group'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.CreateGroup,
+                    default_retry=self._method_configs['CreateGroup'].retry,
+                    default_timeout=self._method_configs['CreateGroup']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = group_service_pb2.CreateGroupRequest(
             name=name,
             group=group,
             validate_only=validate_only,
         )
-        return self._create_group(
+        return self._inner_api_calls['create_group'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_group(self,
@@ -444,11 +458,21 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'update_group' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_group'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.UpdateGroup,
+                    default_retry=self._method_configs['UpdateGroup'].retry,
+                    default_timeout=self._method_configs['UpdateGroup']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = group_service_pb2.UpdateGroupRequest(
             group=group,
             validate_only=validate_only,
         )
-        return self._update_group(
+        return self._inner_api_calls['update_group'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_group(self,
@@ -490,8 +514,18 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'delete_group' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_group'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.DeleteGroup,
+                    default_retry=self._method_configs['DeleteGroup'].retry,
+                    default_timeout=self._method_configs['DeleteGroup']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = group_service_pb2.DeleteGroupRequest(name=name, )
-        self._delete_group(
+        self._inner_api_calls['delete_group'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_group_members(self,
@@ -512,13 +546,15 @@ class GroupServiceClient(object):
             >>>
             >>> name = client.group_path('[PROJECT]', '[GROUP]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_group_members(name):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_group_members(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -572,6 +608,17 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_group_members' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_group_members'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._group_service_stub.ListGroupMembers,
+                    default_retry=self._method_configs[
+                        'ListGroupMembers'].retry,
+                    default_timeout=self._method_configs['ListGroupMembers']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = group_service_pb2.ListGroupMembersRequest(
             name=name,
             page_size=page_size,
@@ -581,7 +628,7 @@ class GroupServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_group_members,
+                self._inner_api_calls['list_group_members'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
