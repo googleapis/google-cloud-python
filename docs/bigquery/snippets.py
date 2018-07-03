@@ -1271,7 +1271,7 @@ def test_load_table_from_file(client, to_delete):
     assert row2 in rows
 
 
-def test_load_table_from_uri_csv(client, to_delete):
+def test_load_table_from_uri_csv(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1297,17 +1297,20 @@ def test_load_table_from_uri_csv(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_json(client, to_delete):
+
+def test_load_table_from_uri_json(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset.location = 'US'
@@ -1333,14 +1336,17 @@ def test_load_table_from_uri_json(client, to_delete):
         dataset_ref.table('us_states'),
         location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_json]
+
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
 
 def test_load_table_from_uri_cmek(client, to_delete):
@@ -1385,7 +1391,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     # [END bigquery_load_table_gcs_json_cmek]
 
 
-def test_load_table_from_uri_parquet(client, to_delete):
+def test_load_table_from_uri_parquet(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1405,17 +1411,20 @@ def test_load_table_from_uri_parquet(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_parquet]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_orc(client, to_delete):
+
+def test_load_table_from_uri_orc(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1435,17 +1444,20 @@ def test_load_table_from_uri_orc(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_orc]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_autodetect(client, to_delete):
+
+def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     """Load table from a GCS URI using various formats and auto-detected schema
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1497,18 +1509,21 @@ def test_load_table_from_uri_autodetect(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv_autodetect]
     # [END bigquery_load_table_gcs_json_autodetect]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_append(client, to_delete):
+
+def test_load_table_from_uri_append(client, to_delete, capsys):
     """Appends data to a table from a GCS URI using various formats
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1590,22 +1605,24 @@ def test_load_table_from_uri_append(client, to_delete):
         uri,
         table_ref,
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == previous_rows + 50
+    destination_table = client.get_table(table_ref)
+    print('Loaded {} rows.'.format(destination_table.num_rows - previous_rows))
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
     # [END bigquery_load_table_gcs_orc_append]
 
+    out, _ = capsys.readouterr()
     assert previous_rows == 1
+    assert 'Loaded 50 rows.' in out
 
 
-def test_load_table_from_uri_truncate(client, to_delete):
+def test_load_table_from_uri_truncate(client, to_delete, capsys):
     """Replaces table data with data from a GCS URI using various formats
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1685,17 +1702,20 @@ def test_load_table_from_uri_truncate(client, to_delete):
         uri,
         table_ref,
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == 50
+    destination_table = client.get_table(table_ref)
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
     # [END bigquery_load_table_gcs_orc_truncate]
+
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
 
 def test_load_table_add_column(client, to_delete):
