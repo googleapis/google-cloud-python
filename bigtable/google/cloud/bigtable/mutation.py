@@ -79,8 +79,7 @@ class RowMutations(object):
             timestamp_micros=timestamp_micros,
             value=value
         )
-        mutation_message = data_v2_pb2.Mutation(set_cell=set_cell_mutation)
-        self.entry.mutations.add().CopyFrom(mutation_message)
+        self.entry.mutations.add(set_cell=set_cell_mutation)
 
     def delete_cells(self, family_name, columns, time_range=None):
         """Create the mutation request message for DeleteFromColumn and
@@ -104,9 +103,7 @@ class RowMutations(object):
                     column_qualifier=column_id,
                     time_range=time_range))
 
-            mutation_message = data_v2_pb2.Mutation(
-                delete_from_column=delete_from_column_mutation)
-            self.entry.mutations.add().CopyFrom(mutation_message)
+            self.entry.mutations.add(delete_from_column=delete_from_column_mutation)
 
     def delete_from_family(self, family_name):
         """Create the mutation request message for DeleteFromFamily and add
@@ -122,7 +119,7 @@ class RowMutations(object):
         )
         mutation_message = data_v2_pb2.Mutation(
             delete_from_family=delete_from_family_mutation)
-        self.entry.mutations.add().CopyFrom(mutation_message)
+        self.entry.mutations.add(delete_from_family=delete_from_family_mutation)
 
     def delete_row(self):
         """Create the mutation request message for DeleteFromRow and add it
@@ -130,6 +127,4 @@ class RowMutations(object):
 
         """
         delete_from_row_mutation = data_v2_pb2.Mutation.DeleteFromRow()
-        mutation_message = data_v2_pb2.Mutation(
-            delete_from_row=delete_from_row_mutation)
-        self.entry.mutations.add().CopyFrom(mutation_message)
+        self.entry.mutations.add(delete_from_row=delete_from_row_mutation)
