@@ -28,7 +28,7 @@ You'll typically use these to get started with the API:
    >>> entity['question'] = u'Life, universe?'  # Explicit unicode for text
    >>> entity['answer'] = 42
    >>> entity
-   <Entity('EntityKind', 1234) {'answer': 42}>
+   <Entity('EntityKind', 1234) {'question': 'Life, universe?', 'answer': 42}>
    >>> query = client.query(kind='EntityKind')
 
 The main concepts with this API are:

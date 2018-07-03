@@ -22,6 +22,7 @@ import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import grpc
 
 from google.api import metric_pb2 as api_metric_pb2
 from google.api import monitored_resource_pb2
@@ -29,11 +30,14 @@ from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import notification_channel_service_client_config
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
+from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import common_pb2
 from google.cloud.monitoring_v3.proto import group_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2
+from google.cloud.monitoring_v3.proto import group_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import metric_pb2 as proto_metric_pb2
 from google.cloud.monitoring_v3.proto import metric_service_pb2
+from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
@@ -125,84 +129,53 @@ class NotificationChannelServiceClient(object):
                 'exclusive.'.format(self.__class__.__name__), )
 
         # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
+        self.channel = channel
+        if self.channel is None:
+            self.channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
                 scopes=self._DEFAULT_SCOPES,
             )
 
         # Create the gRPC stubs.
-        self.notification_channel_service_stub = (
-            notification_service_pb2_grpc.NotificationChannelServiceStub(channel))
+        self._notification_channel_service_stub = (
+            notification_service_pb2_grpc.NotificationChannelServiceStub(
+                self.channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_notification_channel_descriptors = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.
-            ListNotificationChannelDescriptors,
-            default_retry=method_configs[
-                'ListNotificationChannelDescriptors'].retry,
-            default_timeout=method_configs[
-                'ListNotificationChannelDescriptors'].timeout,
-            client_info=client_info,
-        )
-        self._get_notification_channel_descriptor = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.
-            GetNotificationChannelDescriptor,
-            default_retry=method_configs[
-                'GetNotificationChannelDescriptor'].retry,
-            default_timeout=method_configs[
-                'GetNotificationChannelDescriptor'].timeout,
-            client_info=client_info,
-        )
-        self._list_notification_channels = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.ListNotificationChannels,
-            default_retry=method_configs['ListNotificationChannels'].retry,
-            default_timeout=method_configs['ListNotificationChannels'].timeout,
-            client_info=client_info,
-        )
-        self._get_notification_channel = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.GetNotificationChannel,
-            default_retry=method_configs['GetNotificationChannel'].retry,
-            default_timeout=method_configs['GetNotificationChannel'].timeout,
-            client_info=client_info,
-        )
-        self._create_notification_channel = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.CreateNotificationChannel,
-            default_retry=method_configs['CreateNotificationChannel'].retry,
-            default_timeout=method_configs['CreateNotificationChannel']
-            .timeout,
-            client_info=client_info,
-        )
-        self._update_notification_channel = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.UpdateNotificationChannel,
-            default_retry=method_configs['UpdateNotificationChannel'].retry,
-            default_timeout=method_configs['UpdateNotificationChannel']
-            .timeout,
-            client_info=client_info,
-        )
-        self._delete_notification_channel = google.api_core.gapic_v1.method.wrap_method(
-            self.notification_channel_service_stub.DeleteNotificationChannel,
-            default_retry=method_configs['DeleteNotificationChannel'].retry,
-            default_timeout=method_configs['DeleteNotificationChannel']
-            .timeout,
-            client_info=client_info,
-        )
+        self._inner_api_calls = {}
+
+    def _intercept_channel(self, *interceptors):
+        """ Experimental. Bind gRPC interceptors to the gRPC channel.
+
+        Args:
+            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
+              Zero or more gRPC interceptors. Interceptors are given control in the order
+              they are listed.
+        Raises:
+            TypeError: If interceptor does not derive from any of
+              UnaryUnaryClientInterceptor,
+              UnaryStreamClientInterceptor,
+              StreamUnaryClientInterceptor, or
+              StreamStreamClientInterceptor.
+        """
+        self.channel = grpc.intercept_channel(self.channel, *interceptors)
+        self._notification_channel_service_stub = (
+            notification_service_pb2_grpc.NotificationChannelServiceStub(
+                self.channel))
+        self._inner_api_calls.clear()
 
     # Service calls
     def list_notification_channel_descriptors(
@@ -223,13 +196,15 @@ class NotificationChannelServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_notification_channel_descriptors(name):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_notification_channel_descriptors(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -277,6 +252,18 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_notification_channel_descriptors' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_notification_channel_descriptors'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    ListNotificationChannelDescriptors,
+                    default_retry=self._method_configs[
+                        'ListNotificationChannelDescriptors'].retry,
+                    default_timeout=self._method_configs[
+                        'ListNotificationChannelDescriptors'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.ListNotificationChannelDescriptorsRequest(
             name=name,
             page_size=page_size,
@@ -284,7 +271,7 @@ class NotificationChannelServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_notification_channel_descriptors,
+                self._inner_api_calls['list_notification_channel_descriptors'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -339,9 +326,21 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'get_notification_channel_descriptor' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_notification_channel_descriptor'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    GetNotificationChannelDescriptor,
+                    default_retry=self._method_configs[
+                        'GetNotificationChannelDescriptor'].retry,
+                    default_timeout=self._method_configs[
+                        'GetNotificationChannelDescriptor'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.GetNotificationChannelDescriptorRequest(
             name=name, )
-        return self._get_notification_channel_descriptor(
+        return self._inner_api_calls['get_notification_channel_descriptor'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_notification_channels(
@@ -363,13 +362,15 @@ class NotificationChannelServiceClient(object):
             >>>
             >>> name = client.project_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_notification_channels(name):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_notification_channels(name, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -423,6 +424,18 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'list_notification_channels' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_notification_channels'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    ListNotificationChannels,
+                    default_retry=self._method_configs[
+                        'ListNotificationChannels'].retry,
+                    default_timeout=self._method_configs[
+                        'ListNotificationChannels'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.ListNotificationChannelsRequest(
             name=name,
             filter=filter_,
@@ -432,7 +445,7 @@ class NotificationChannelServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_notification_channels,
+                self._inner_api_calls['list_notification_channels'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -490,9 +503,21 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'get_notification_channel' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_notification_channel'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    GetNotificationChannel,
+                    default_retry=self._method_configs[
+                        'GetNotificationChannel'].retry,
+                    default_timeout=self._method_configs[
+                        'GetNotificationChannel'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.GetNotificationChannelRequest(
             name=name, )
-        return self._get_notification_channel(
+        return self._inner_api_calls['get_notification_channel'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_notification_channel(
@@ -554,11 +579,23 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'create_notification_channel' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_notification_channel'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    CreateNotificationChannel,
+                    default_retry=self._method_configs[
+                        'CreateNotificationChannel'].retry,
+                    default_timeout=self._method_configs[
+                        'CreateNotificationChannel'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.CreateNotificationChannelRequest(
             name=name,
             notification_channel=notification_channel,
         )
-        return self._create_notification_channel(
+        return self._inner_api_calls['create_notification_channel'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_notification_channel(
@@ -614,11 +651,23 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'update_notification_channel' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_notification_channel'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    UpdateNotificationChannel,
+                    default_retry=self._method_configs[
+                        'UpdateNotificationChannel'].retry,
+                    default_timeout=self._method_configs[
+                        'UpdateNotificationChannel'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.UpdateNotificationChannelRequest(
             notification_channel=notification_channel,
             update_mask=update_mask,
         )
-        return self._update_notification_channel(
+        return self._inner_api_calls['update_notification_channel'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_notification_channel(
@@ -666,9 +715,21 @@ class NotificationChannelServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        if 'delete_notification_channel' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_notification_channel'] = google.api_core.gapic_v1.method.wrap_method(
+                    self._notification_channel_service_stub.
+                    DeleteNotificationChannel,
+                    default_retry=self._method_configs[
+                        'DeleteNotificationChannel'].retry,
+                    default_timeout=self._method_configs[
+                        'DeleteNotificationChannel'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = notification_service_pb2.DeleteNotificationChannelRequest(
             name=name,
             force=force,
         )
-        self._delete_notification_channel(
+        self._inner_api_calls['delete_notification_channel'](
             request, retry=retry, timeout=timeout, metadata=metadata)

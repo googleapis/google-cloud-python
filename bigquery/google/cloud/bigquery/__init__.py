@@ -31,7 +31,6 @@ The main concepts with this API are:
 from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-bigquery').version
 
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
@@ -49,6 +48,7 @@ from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
+from google.cloud.bigquery.job import SchemaUpdateOption
 from google.cloud.bigquery.job import SourceFormat
 from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
@@ -56,6 +56,7 @@ from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
@@ -113,6 +114,7 @@ __all__ = [
     'DestinationFormat',
     'Encoding',
     'QueryPriority',
+    'SchemaUpdateOption',
     'SourceFormat',
     'WriteDisposition'
 ]

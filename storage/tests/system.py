@@ -94,7 +94,7 @@ class TestStorageBuckets(unittest.TestCase):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        created = Config.CLIENT.create_bucket(new_bucket_name)
+        created = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 

@@ -16,6 +16,7 @@ import base64
 import concurrent.futures
 import csv
 import datetime
+import decimal
 import json
 import operator
 import os
@@ -408,6 +409,10 @@ class TestBigQuery(unittest.TestCase):
             """.format(dsname, table_id, colprojections, rowcount)
         query_job = Config.CLIENT.query(sql)
         query_job.result()
+        self.assertEqual(query_job.statement_type, 'CREATE_TABLE_AS_SELECT')
+        self.assertEqual(query_job.ddl_operation_performed, 'CREATE')
+        self.assertEqual(query_job.ddl_target_table, table_ref)
+
         return table_ref
 
     def test_query_many_columns(self):
@@ -469,47 +474,6 @@ class TestBigQuery(unittest.TestCase):
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
-        row_tuples = [r.values() for r in rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
-    def test_load_table_from_local_file_then_dump_table(self):
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
-
-        TABLE_NAME = 'test_table'
-
-        dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
-        table_ref = dataset.table(TABLE_NAME)
-        table_arg = Table(table_ref, schema=SCHEMA)
-        table = retry_403(Config.CLIENT.create_table)(table_arg)
-        self.to_delete.insert(0, table)
-
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as csv_write:
-                writer = csv.writer(csv_write)
-                writer.writerow(HEADER_ROW)
-                writer.writerows(ROWS)
-
-            with open(temp.name, 'rb') as csv_read:
-                config = bigquery.LoadJobConfig()
-                config.source_format = SourceFormat.CSV
-                config.skip_leading_rows = 1
-                config.create_disposition = CreateDisposition.CREATE_NEVER
-                config.write_disposition = WriteDisposition.WRITE_EMPTY
-                config.schema = table.schema
-                job = Config.CLIENT.load_table_from_file(
-                    csv_read, table_ref, job_config=config)
-
-        # Retry until done.
-        job.result(timeout=JOB_TIMEOUT)
-
-        self.assertEqual(job.output_rows, len(ROWS))
-
-        rows = self._fetch_single_page(table)
         row_tuples = [r.values() for r in rows]
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(row_tuples, key=by_age),
@@ -816,37 +780,6 @@ class TestBigQuery(unittest.TestCase):
         got = destination.download_as_string().decode('utf-8')
         self.assertIn('Bharney Rhubble', got)
 
-    def test_extract_table_w_job_config(self):
-        from google.cloud.storage import Client as StorageClient
-        from google.cloud.bigquery.job import DestinationFormat
-
-        storage_client = StorageClient()
-        local_id = unique_resource_id()
-        bucket_name = 'bq_extract_test' + local_id
-        blob_name = 'person_ages.csv'
-        dataset_id = _make_dataset_id('load_gcs_then_extract')
-        table_id = 'test_table'
-        table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
-        self.to_delete.insert(0, table)
-        self._load_table_for_extract_table(
-            storage_client, ROWS, bucket_name, blob_name, table_ref)
-        bucket = storage_client.bucket(bucket_name)
-        destination_blob_name = 'person_ages_out.csv'
-        destination = bucket.blob(destination_blob_name)
-        destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
-
-        config = bigquery.ExtractJobConfig()
-        config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
-        job = Config.CLIENT.extract_table(
-            table, destination_uri, job_config=config)
-        job.result()
-
-        self.to_delete.insert(0, destination)
-        got = destination.download_as_string().decode('utf-8')
-        self.assertIn('"Bharney Rhubble"', got)
-        self.assertEqual(job.destination_uri_file_counts, [1])
-
     def test_copy_table(self):
         # If we create a new table to copy from, the test won't work
         # because the new rows will be stored in the streaming buffer,
@@ -959,6 +892,7 @@ class TestBigQuery(unittest.TestCase):
         stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
         zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
+        numeric = decimal.Decimal('123456789.123456789')
         return [
             {
                 'sql': 'SELECT 1',
@@ -1004,6 +938,10 @@ class TestBigQuery(unittest.TestCase):
             {
                 'sql': 'SELECT TIME(TIMESTAMP "%s")' % (stamp,),
                 'expected': naive.time(),
+            },
+            {
+                'sql': 'SELECT NUMERIC "%s"' % (numeric,),
+                'expected': numeric,
             },
             {
                 'sql': 'SELECT (1, 2)',
@@ -1257,6 +1195,10 @@ class TestBigQuery(unittest.TestCase):
         pi = 3.1415926
         pi_param = ScalarQueryParameter(
             name='pi', type_='FLOAT64', value=pi)
+        pi_numeric = decimal.Decimal('3.141592654')
+        pi_numeric_param = ScalarQueryParameter(
+            name='pi_numeric_param', type_='NUMERIC',
+            value=pi_numeric)
         truthy = True
         truthy_param = ScalarQueryParameter(
             name='truthy', type_='BOOL', value=truthy)
@@ -1331,6 +1273,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @pi',
                 'expected': pi,
                 'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @pi_numeric_param',
+                'expected': pi_numeric,
+                'query_parameters': [pi_numeric_param],
             },
             {
                 'sql': 'SELECT @truthy',
@@ -1523,32 +1470,6 @@ class TestBigQuery(unittest.TestCase):
             row = Config.CURSOR.fetchone()
             self.assertIsNone(row, msg=msg)
 
-    def test_dump_table_w_public_data(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-        table = Config.CLIENT.get_table(table_ref)
-        self._fetch_single_page(table)
-
-    def test_dump_table_w_public_data_selected_fields(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-        selected_fields = [
-            bigquery.SchemaField('year', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('month', 'INTEGER', mode='NULLABLE'),
-            bigquery.SchemaField('day', 'INTEGER', mode='NULLABLE'),
-        ]
-        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
-
-        rows = self._fetch_single_page(
-            table_ref, selected_fields=selected_fields)
-
-        self.assertGreater(len(rows), 0)
-        self.assertEqual(len(rows[0]), 3)
-
     def test_large_query_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
         DATASET_ID = 'samples'
@@ -1596,51 +1517,6 @@ class TestBigQuery(unittest.TestCase):
                 # all the schema fields are nullable, so None is acceptable
                 if not row[col] is None:
                     self.assertIsInstance(row[col], exp_datatypes[col])
-
-    def test_query_table_def(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
-
-        job_config = bigquery.QueryJobConfig()
-        table_id = 'flintstones'
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.schema = SCHEMA
-        ec.options.skip_leading_rows = 1  # skip the header row
-        job_config.table_definitions = {table_id: ec}
-        sql = 'SELECT * FROM %s' % table_id
-
-        got_rows = Config.CLIENT.query(sql, job_config=job_config)
-
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
-
-    def test_query_external_table(self):
-        gs_url = self._write_csv_to_storage(
-            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            HEADER_ROW, ROWS)
-        dataset_id = _make_dataset_id('query_external_table')
-        dataset = self.temp_dataset(dataset_id)
-        table_id = 'flintstones'
-        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
-        ec = bigquery.ExternalConfig('CSV')
-        ec.source_uris = [gs_url]
-        ec.options.skip_leading_rows = 1  # skip the header row
-        table_arg.external_data_configuration = ec
-        table = Config.CLIENT.create_table(table_arg)
-        self.to_delete.insert(0, table)
-
-        sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
-
-        got_rows = Config.CLIENT.query(sql)
-
-        row_tuples = [r.values() for r in got_rows]
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(ROWS, key=by_age))
 
     def test_insert_rows_nested_nested(self):
         # See #2951
@@ -1771,6 +1647,8 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
+            self.assertEqual(found[8],
+                             decimal.Decimal(expected['FavoriteNumber']))
 
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()
@@ -1874,36 +1752,37 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
         return dataset
 
-    @pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
-    @pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
-    @pytest.mark.usefixtures('ipython_interactive')
-    def test_bigquery_magic(self):
-        ip = IPython.get_ipython()
-        ip.extension_manager.load_extension('google.cloud.bigquery')
-        sql = """
-            SELECT
-              CONCAT(
-                'https://stackoverflow.com/questions/',
-                CAST(id as STRING)) as url,
-              view_count
-            FROM `bigquery-public-data.stackoverflow.posts_questions`
-            WHERE tags like '%google-bigquery%'
-            ORDER BY view_count DESC
-            LIMIT 10
-        """
-        with io.capture_output() as captured:
-            result = ip.run_cell_magic('bigquery', '', sql)
 
-        lines = re.split('\n|\r', captured.stdout)
-        # Removes blanks & terminal code (result of display clearing)
-        updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
-        assert re.match("Executing query with job ID: .*", updates[0])
-        assert all(re.match("Query executing: .*s", line)
-                   for line in updates[1:-1])
-        assert re.match("Query complete after .*s", updates[-1])
-        assert isinstance(result, pandas.DataFrame)
-        assert len(result) == 10                      # verify row count
-        assert list(result) == ['url', 'view_count']  # verify column names
+@pytest.mark.skipif(pandas is None, reason='Requires `pandas`')
+@pytest.mark.skipif(IPython is None, reason='Requires `ipython`')
+@pytest.mark.usefixtures('ipython_interactive')
+def test_bigquery_magic():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension('google.cloud.bigquery')
+    sql = """
+        SELECT
+            CONCAT(
+            'https://stackoverflow.com/questions/',
+            CAST(id as STRING)) as url,
+            view_count
+        FROM `bigquery-public-data.stackoverflow.posts_questions`
+        WHERE tags like '%google-bigquery%'
+        ORDER BY view_count DESC
+        LIMIT 10
+    """
+    with io.capture_output() as captured:
+        result = ip.run_cell_magic('bigquery', '', sql)
+
+    lines = re.split('\n|\r', captured.stdout)
+    # Removes blanks & terminal code (result of display clearing)
+    updates = list(filter(lambda x: bool(x) and x != '\x1b[2K', lines))
+    assert re.match("Executing query with job ID: .*", updates[0])
+    assert all(re.match("Query executing: .*s", line)
+               for line in updates[1:-1])
+    assert re.match("Query complete after .*s", updates[-1])
+    assert isinstance(result, pandas.DataFrame)
+    assert len(result) == 10                      # verify row count
+    assert list(result) == ['url', 'view_count']  # verify column names
 
 
 def _job_done(instance):

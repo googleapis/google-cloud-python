@@ -15,32 +15,44 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
 from google.api import label_pb2
 from google.api import monitored_resource_pb2
-from google.cloud.errorreporting_v1beta1.proto import common_pb2
-from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2
-from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2
-from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.errorreporting_v1beta1.proto import common_pb2
+from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2
+from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2
+from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
+
+
+_shared_modules = [
+    http_pb2,
+    label_pb2,
+    monitored_resource_pb2,
+    report_errors_service_pb2,
+    descriptor_pb2,
+    duration_pb2,
+    timestamp_pb2,
+]
+
+_local_modules = [
+    common_pb2,
+    error_group_service_pb2,
+    error_stats_service_pb2,
+]
+
 names = []
-for module in (
-        http_pb2,
-        label_pb2,
-        monitored_resource_pb2,
-        common_pb2,
-        error_group_service_pb2,
-        error_stats_service_pb2,
-        report_errors_service_pb2,
-        descriptor_pb2,
-        duration_pb2,
-        timestamp_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.errorreporting_v1beta1.types'
         setattr(sys.modules[__name__], name, message)

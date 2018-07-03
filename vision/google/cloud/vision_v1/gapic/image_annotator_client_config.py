@@ -21,6 +21,11 @@ config = {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
+                },
+                "AsyncBatchAnnotateFiles": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
                 }
             }
         }

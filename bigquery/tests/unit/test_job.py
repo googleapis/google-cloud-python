@@ -57,23 +57,6 @@ def _make_connection(*responses):
     return mock_conn
 
 
-class Test__int_or_none(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigquery import job
-
-        return job._int_or_none(*args, **kwargs)
-
-    def test_w_int(self):
-        self.assertEqual(self._call_fut(13), 13)
-
-    def test_w_none(self):
-        self.assertIsNone(self._call_fut(None))
-
-    def test_w_str(self):
-        self.assertEqual(self._call_fut('13'), 13)
-
-
 class Test__error_result_to_exception(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
@@ -380,6 +363,11 @@ class TestLoadJob(unittest.TestCase, _Base):
                              config['writeDisposition'])
         else:
             self.assertIsNone(job.write_disposition)
+        if 'schemaUpdateOptions' in config:
+            self.assertEqual(
+                job.schema_update_options, config['schemaUpdateOptions'])
+        else:
+            self.assertIsNone(job.schema_update_options)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -467,6 +455,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -780,6 +769,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
         from google.cloud.bigquery.schema import SchemaField
 
@@ -817,7 +807,10 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'mode': 'REQUIRED',
                     'description': None,
                 },
-            ]}
+            ]},
+            'schemaUpdateOptions': [
+                SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            ],
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
         conn1 = _make_connection()
@@ -842,6 +835,9 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.skip_leading_rows = 1
         config.source_format = 'CSV'
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config.schema_update_options = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+        ]
 
         job._begin(client=client2)
 
@@ -2127,6 +2123,11 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'kmsKeyName'])
         else:
             self.assertIsNone(job.destination_encryption_configuration)
+        if 'schemaUpdateOptions' in query_config:
+            self.assertEqual(
+                job.schema_update_options, query_config['schemaUpdateOptions'])
+        else:
+            self.assertIsNone(job.schema_update_options)
 
     def test_ctor_defaults(self):
         client = _make_client(project=self.PROJECT)
@@ -2157,6 +2158,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2248,6 +2250,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
 
         client = _make_client(project=self.PROJECT)
@@ -2260,6 +2263,9 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': self.DS_ID,
             'tableId': self.DESTINATION_TABLE,
         }
+        query_config['schemaUpdateOptions'] = [
+            SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+        ]
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
@@ -2453,6 +2459,45 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         query_stats['cacheHit'] = True
         self.assertTrue(job.cache_hit)
+
+    def test_ddl_operation_performed(self):
+        op = 'SKIP'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_operation_performed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.ddl_operation_performed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.ddl_operation_performed)
+
+        query_stats['ddlOperationPerformed'] = op
+        self.assertEqual(job.ddl_operation_performed, op)
+
+    def test_ddl_target_table(self):
+        from google.cloud.bigquery.table import TableReference
+
+        ref_table = {
+            'projectId': self.PROJECT,
+            'datasetId': 'ddl_ds',
+            'tableId': 'targettable',
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_target_table)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.ddl_target_table)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.ddl_target_table)
+
+        query_stats['ddlTargetTable'] = ref_table
+        self.assertIsInstance(job.ddl_target_table, TableReference)
+        self.assertEqual(job.ddl_target_table.table_id, 'targettable')
+        self.assertEqual(job.ddl_target_table.dataset_id, 'ddl_ds')
+        self.assertEqual(job.ddl_target_table.project, self.PROJECT)
 
     def test_num_dml_affected_rows(self):
         num_rows = 1234
@@ -2802,6 +2847,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import QueryJobConfig
         from google.cloud.bigquery.job import QueryPriority
+        from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -2827,7 +2873,10 @@ class TestQueryJob(unittest.TestCase, _Base):
             'useLegacySql': True,
             'writeDisposition': WriteDisposition.WRITE_TRUNCATE,
             'maximumBillingTier': 4,
-            'maximumBytesBilled': '123456'
+            'maximumBytesBilled': '123456',
+            'schemaUpdateOptions': [
+                SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+            ]
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         RESOURCE['configuration']['dryRun'] = True
@@ -2851,6 +2900,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         config.use_query_cache = True
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.maximum_bytes_billed = 123456
+        config.schema_update_options = [
+            SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ]
         job = self._make_one(
             self.JOB_ID, self.QUERY, client1, job_config=config)
 

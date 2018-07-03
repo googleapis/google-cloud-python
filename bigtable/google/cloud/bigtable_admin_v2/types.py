@@ -15,13 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.api_core.protobuf_helpers import get_messages
-
 from google.api import http_pb2
-from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
-from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2
-from google.cloud.bigtable_admin_v2.proto import instance_pb2
-from google.cloud.bigtable_admin_v2.proto import table_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.iam.v1.logging import audit_data_pb2
@@ -34,25 +28,43 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
+from google.api_core.protobuf_helpers import get_messages
+from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import instance_pb2
+from google.cloud.bigtable_admin_v2.proto import table_pb2
+
+
+_shared_modules = [
+    http_pb2,
+    iam_policy_pb2,
+    policy_pb2,
+    audit_data_pb2,
+    operations_pb2,
+    any_pb2,
+    descriptor_pb2,
+    duration_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
+
+_local_modules = [
+    bigtable_instance_admin_pb2,
+    bigtable_table_admin_pb2,
+    instance_pb2,
+    table_pb2,
+]
+
 names = []
-for module in (
-        http_pb2,
-        bigtable_instance_admin_pb2,
-        bigtable_table_admin_pb2,
-        instance_pb2,
-        table_pb2,
-        iam_policy_pb2,
-        policy_pb2,
-        audit_data_pb2,
-        operations_pb2,
-        any_pb2,
-        descriptor_pb2,
-        duration_pb2,
-        empty_pb2,
-        field_mask_pb2,
-        timestamp_pb2,
-        status_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.bigtable_admin_v2.types'
         setattr(sys.modules[__name__], name, message)

@@ -5,7 +5,7 @@ Google Cloud Python Client
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
-|pypi| |circleci| |appveyor| |coverage| |versions|
+|circleci| |appveyor| |coverage|
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -63,6 +63,7 @@ Cloud Platform services:
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
+-  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
@@ -115,24 +116,14 @@ updates. See `versioning`_ for more details.
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
+.. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
+.. _Redis README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/redis
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
 
 .. _Google APIs Python Client library: https://github.com/google/google-api-python-client
 
-Quick Start
------------
-
-.. code-block:: console
-
-    $ pip install --upgrade google-cloud
-
-For more information on setting up your Python development environment,
-such as installing ``pip`` and ``virtualenv`` on your system, please refer
-to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
-
-.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
 Example Applications
 --------------------
@@ -187,7 +178,3 @@ Apache 2.0 - See `the LICENSE`_ for more information.
    :target: https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-python
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.svg?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud.svg
-   :target: https://pypi.org/project/google-cloud/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud.svg
-   :target: https://pypi.org/project/google-cloud/
