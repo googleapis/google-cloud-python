@@ -251,6 +251,15 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.time_partitioning = None
         self.assertIsNone(config.time_partitioning)
 
+    def test_clustering_fields(self):
+        fields = ['email', 'postal_code']
+        config = self._get_target_class()()
+        config.clustering_fields = fields
+        self.assertEqual(config.clustering_fields, fields)
+
+        config.clustering_fields = None
+        self.assertIsNone(config.clustering_fields)
+
     def test_api_repr(self):
         resource = self._make_resource()
         config = self._get_target_class().from_api_repr(resource)
@@ -455,6 +464,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_config(self):
@@ -1875,6 +1885,15 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         config.time_partitioning = None
         self.assertIsNone(config.time_partitioning)
 
+    def test_clustering_fields(self):
+        fields = ['email', 'postal_code']
+        config = self._get_target_class()()
+        config.clustering_fields = fields
+        self.assertEqual(config.clustering_fields, fields)
+
+        config.clustering_fields = None
+        self.assertIsNone(config.clustering_fields)
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})
@@ -2158,6 +2177,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.time_partitioning)
+        self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
 
     def test_ctor_w_udf_resources(self):
