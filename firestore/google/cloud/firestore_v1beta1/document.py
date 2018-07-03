@@ -446,18 +446,11 @@ class DocumentReference(object):
         iterator.item_to_value = _item_to_collection_ref
         return iterator
 
-    def on_snapshot(self, options, callback):
+    def on_snapshot(self, callback):
         '''
         given options and the callback, monitor this document for changes
         '''
-        #google.firestore.v1beta1.Target.DocumentsTarget
-        # documentsTarget = Target.DocumentsTarget(
-        #     documents=[self._document_path])
-        Watch.for_document(self)
-        # Watch(
-        #     self._client,
-        #     Target(documents=documentsTarget),
-        #     None)
+        Watch.for_document(self, callback)
         
 
 class DocumentSnapshot(object):

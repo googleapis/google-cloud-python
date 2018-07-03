@@ -32,6 +32,7 @@ from google.cloud._helpers import UTC
 from google.cloud import firestore
 from test_utils.system import unique_resource_id
 
+from time import sleep
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
 FIRESTORE_PROJECT = os.environ.get('GCLOUD_PROJECT')
@@ -795,15 +796,40 @@ def test_batch(client, cleanup):
 
     assert not document3.get().exists
 def test_watch_document(client, cleanup):
-    # Add a new document
     db = client
-    doc_ref = db.collection(u'users').document(u'alovelace')
+    doc_ref = db.collection(u'users').document(
+        u'alovelace' + unique_resource_id())
+
+    # Initial setting
+    doc_ref.set({
+        u'first': u'Jane',
+        u'last': u'Doe',
+        u'born': 1900
+    })
+
+    sleep(1)
+
+    # Setup listener
+    def on_response(response):
+        on_response.called_count += 1
+        print(f'Response: {response}')
+        print(type(response))
+
+    on_response.called_count = 0
+
+    doc_ref.on_snapshot(on_response)
+
+    # Alter document
     doc_ref.set({
         u'first': u'Ada',
         u'last': u'Lovelace',
         u'born': 1815
     })
-    doc_ref.on_snapshot(None, None)
+
+    sleep(1)
+    if on_response.called_count != 1:
+        raise AssertionError("Failed to get exactly one document change")
+
 
 
 # def test_create_document(client, cleanup):
