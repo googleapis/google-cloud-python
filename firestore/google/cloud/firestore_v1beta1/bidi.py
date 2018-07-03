@@ -196,6 +196,7 @@ class BidiRpc(object):
 
         request_generator = _RequestQueueGenerator(
             self._request_queue, initial_request=self._initial_request)
+        print('request generator created')
         call = self._start_rpc(iter(request_generator))
 
         request_generator.call = call
@@ -442,7 +443,7 @@ class BackgroundConsumer(object):
             print(response)
 
         consumer = BackgroundConsumer(rpc, on_response)
-        consume.start()
+        consumer.start()
 
     Note that error handling *must* be done by using the provided
     ``bidi_rpc``'s ``add_done_callback``. This helper will automatically exit

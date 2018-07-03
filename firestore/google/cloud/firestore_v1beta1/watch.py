@@ -13,16 +13,15 @@
 # limitations under the License.
 
 import logging
+import threading
 
-#from google.cloud.firestore_v1beta1 import DocumentReference, DocumentSnapshot
-
-#from google.cloud.firestore_v1beta1.document import DocumentReference
-#from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 #import google.cloud.firestore_v1beta1.client as client
-from google.cloud.firestore_v1beta1.bidi import BidiRpc, ResumableBidiRpc
+from google.cloud.firestore_v1beta1.bidi import BidiRpc, ResumableBidiRpc, BackgroundConsumer
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
+from google.api_core import exceptions
 
-#from bidi import BidiRpc, ResumableBidiRpc
+
+# from bidi import BidiRpc, ResumableBidiRpc
 import time
 import random
 import grpc
@@ -53,6 +52,21 @@ GRPC_STATUS_CODE = {
     'DATA_LOSS': 15,
     'DO_NOT_USE': -1
 }
+_RPC_ERROR_THREAD_NAME = 'Thread-OnRpcTerminated'
+_RETRYABLE_STREAM_ERRORS = (
+    exceptions.DeadlineExceeded,
+    exceptions.ServiceUnavailable,
+    exceptions.InternalServerError,
+    exceptions.Unknown,
+    exceptions.GatewayTimeout
+)
+
+
+def _maybe_wrap_exception(exception):
+    """Wraps a gRPC exception class, if needed."""
+    if isinstance(exception, grpc.RpcError):
+        return exceptions.from_grpc_error(exception)
+    return exception
 
 
 def is_permanent_error(self, error):
@@ -127,12 +141,24 @@ class ExponentialBackOff(object):
         time.sleep(actual_sleep)
         return min(self.multiplier * self.current_sleep, self.max_sleep)
 
+
 class Watch(object):
     def __init__(self, 
-                 firestore, #: client.Client,
+                 document_reference,
+                 firestore,
                  target,
-                 comparator):
-
+                 comparator,
+                 on_response):
+        """
+        Args:
+            firestore:
+            target: ß
+            comparator:
+            on_response: Callback method that reveives a
+                `google.cloud.firestore_v1beta1.types.ListenResponse` object to
+                be acted on.
+        """
+        self._document_reference = document_reference
         self._firestore = firestore
         self._api = firestore._firestore_api
         self._targets = target
@@ -145,360 +171,218 @@ class Watch(object):
                 exc.code() == grpc.StatusCode.UNVAILABLE)
 
         initial_request = firestore_pb2.ListenRequest(
-            database=firestore._database_string,
-            add_target=target
+            database=self._firestore._database_string,
+            add_target=self._targets
             # database, add_target, remove_target, labels
         )
 
         rpc = ResumableBidiRpc(
-            # self._api.firestore_stub.Listen,
-            #firestore_pb2.BetaFirestoreStub.Listen,
             self._api.firestore_stub.Listen,
             initial_request=initial_request,
             should_recover=should_recover)
 
-        rpc.open()
+        rpc.add_done_callback(self._on_rpc_done)
 
-        while rpc.is_active:
-            print(rpc.recv())
+        def consumer_callback(response):
+            processed_response = self.process_response(response)
+            if processed_response:
+                _LOGGER.debug("running provided callback")
+                on_response(processed_response)
+
+        self._consumer = BackgroundConsumer(rpc, consumer_callback)
+        self._consumer.start()
+
+    def _on_rpc_done(self, future):
+        """Triggered whenever the underlying RPC terminates without recovery.
+
+        This is typically triggered from one of two threads: the background
+        consumer thread (when calling ``recv()`` produces a non-recoverable
+        error) or the grpc management thread (when cancelling the RPC).
+
+        This method is *non-blocking*. It will start another thread to deal
+        with shutting everything down. This is to prevent blocking in the
+        background consumer and preventing it from being ``joined()``.
+        """
+        # TODO: look at pushing this down into the background consumer
+        _LOGGER.info(
+            'RPC termination has signaled shutdown.')
+        future = _maybe_wrap_exception(future)
+        thread = threading.Thread(
+            name=_RPC_ERROR_THREAD_NAME,
+            target=self.close,
+            kwargs={'reason': future})
+        thread.daemon = True
+        thread.start()
 
     @classmethod
-    def for_document(cls, document_ref):
-        return cls(document_ref._client,
+    def for_document(cls, document_ref, on_response):
+        """
+        Creates a watch snapshot listener for a document. on_response receives
+        a DocumentChange object, but may also start to get targetChange and such
+        soon
+        """
+
+
+        return cls(document_ref,
+                   document_ref._client,
                    {
                        'documents': {
                            'documents': [document_ref._document_path]},
                        'target_id': WATCH_TARGET_ID
                    },
-                   document_watch_comparator)
+                   document_watch_comparator,
+                   on_response)
 
-    @classmethod
-    def for_query(cls, query):
-        return cls(query._client,
-                   {
-                       'query': query.to_proto(),
-                       'target_id': WATCH_TARGET_ID
-                   },
-                   query.comparator())
+    # @classmethod
+    # def for_query(cls, query, on_response):
+    #     return cls(query._client,
+    #                {
+    #                    'query': query.to_proto(),
+    #                    'target_id': WATCH_TARGET_ID
+    #                },
+    #                query.comparator(),
+    #                on_response)
+    
+    def process_response(self, proto):
+        """
+        Args:
+            listen_response(`google.cloud.firestore_v1beta1.types.ListenResponse`):
+                Callback method that reveives a object to
+        """
+        _LOGGER.debug('process_response')
+        TargetChange = firestore_pb2.TargetChange
+        
+        # TODO FIGURE OUT CONDITIONAL OF THIS
+        _LOGGER.debug(f"STATE: document_change: {proto.document_change} target_change: {proto.target_change} target_change_type: {proto.target_change.target_change_type}")
+        if str(proto.document_change):
+            _LOGGER.debug("Document Change")
+        if str(proto.target_change):
+            _LOGGER.debug("Target Change")
 
+        if str(proto.target_change):
+            _LOGGER.info('process_response: Processing target change')
+            change = proto.target_change
 
-    # def on_snapshot(self, on_next, on_error):
-    #     doc_dict = {}
-    #     doc_map = {}
-    #     change_map = {}
+            notarget_ids = change.target_ids is None or len(change.target_ids)
+            if change.target_change_type == TargetChange.NO_CHANGE:
+                _LOGGER.info("process_response: "
+                             "Processing target change NO_CHANGE")
+                # if notarget_ids and change.read_time and current) {
+                #   // This means everything is up-to-date, so emit the current set of
+                #   // docs as a snapshot, if there were changes.
+                #   push(
+                #     DocumentSnapshot.toISOTime(change.readTime),
+                #     change.resumeToken
+                #   );
+                # }
+            elif change.target_change_type == TargetChange.ADD:
+                _LOGGER.info('process_response: Processing target change ADD')
+                assert WATCH_TARGET_ID == change.target_ids[0], 'Unexpected target ID sent by server'
 
-    #     current = False
-    #     has_pushed = False
-    #     is_active = True
+            elif change.target_change_type == TargetChange.REMOVE:
+                _LOGGER.info("process_response: "
+                             "Processing target change REMOVE")
+                # let code = 13;
+                # let message = 'internal error';
+                # if (change.cause) {
+                #   code = change.cause.code;
+                #   message = change.cause.message;
+                # }
+                # // @todo: Surface a .code property on the exception.
+                # closeStream(new Error('Error ' + code + ': ' + message));
+            elif change.target_change_type == TargetChange.RESET:
+                _LOGGER.info("process_response: "
+                             "Processing target change RESET")
+                # // Whatever changes have happened so far no longer matter.
+                # resetDocs();
+            elif change.target_change_type == TargetChange.CURRENT:
+                _LOGGER.info("process_response: "
+                             "Processing target change CURRENT")
+                # current = True
+            else:
+                _LOGGER.info('process_response: Processing target change ELSE')
+                _LOGGER.info('process_response: Unknown target change ' +
+                             str(change.target_change_type))
 
-    #     REMOVED = {}
+                # closeStream(
+                #   new Error('Unknown target change type: ' + JSON.stringify(change))    
 
-    #     request = {'database': self._firestore.formatted_name,
-    #                'add_target': self._targets}
+            #   if (
+            #     change.resumeToken and affectsTarget(change.target_ids, WATCH_TARGET_ID)
+            #   ) {
+            #     this._backoff.reset();
+            #   }
 
-    #     stream = through.obj() # TODO: fix through (node holdover)
+        elif str(proto.document_change):
+            _LOGGER.debug('Watch.onSnapshot Processing document_change event')
 
-    #     current_stream = None
+            # No other target_ids can show up here, but we still need to see if the
+            # targetId was in the added list or removed list.
+            target_ids = proto.document_change.target_ids or []
+            removed_target_ids = proto.document_change.removed_target_ids or []
+            changed = False
+            removed = False
 
-    #     def reset_docs():
-    #         log()
-    #         change_map.clear()
-    #         del resume_token
-    #         for snapshot in doc_dict:
-    #             change_map.set(snapshot.ref.formatted_name, REMOVED)
-    #         current = False
+            for target in target_ids:
+                if target == WATCH_TARGET_ID:
+                    changed = True
 
-    #     def close_stream(err):
-    #         if current_stream is not None:
-    #             current_stream.unpipe(stream)
-    #             current_stream.end()
-    #             current_stream = None
-    #         stream.end()
+            for target in removed_target_ids:
+                if target == WATCH_TARGET_ID:
+                    removed = True
 
-    #         if is_active:
-    #             is_active = False
-    #             _LOGGER.error('Invoking on_error: ', err)
-    #             on_error(err)
+            document = proto.document_change.document
+            # name = document.name
 
-    #     def maybe_reopen_stream(err):
-    #         if is_active and not is_permanent_error(err):
-    #             _LOGGER.error(
-    #                 'Stream ended, re-opening after retryable error: ', err)
-    #             request.add_target.resume_token = resume_token
-    #             change_map.clear()
+            if changed:
+                _LOGGER.debug('Received document change')
 
-    #         if is_resource_exhausted_error(err):
-    #             self._backoff.reset_to_max()
-    #             reset_stream()
-    #         else:
-    #             _LOGGER.error('Stream ended, sending error: ', err)
-    #             close_stream(err)
+                # reference = DocumentReference(
+                #     self._firestore,
+                #     ResourcePath.fromSlashSeparatedString(name))
+                reference = self._document_reference
+                #create_time = DocumentSnapshot.toISOTime(document.create_time)
+                #update_time = DocumentSnapshot.toISOTime(document.update_time)
+                #read_time = DocumentSnapshot.toISOTime(document.read_time)
+                create_time = document.create_time
+                update_time = document.update_time
+                
+                #read_time = document.read_time
 
-    #     def reset_stream():
-    #         _LOGGER.info('Opening new stream')
-    #         if current_stream:
-    #             current_stream.unpipe(stream)
-    #             current_stream.end()
-    #             current_stream = None
-    #             init_stream()
+                # TODO: other clients seem to return snapshots
+                # snapshot = DocumentSnapshot(
+                #             reference,
+                #             document.fields,  # DATA?
+                #             exists=True,
+                #             read_time=read_time,
+                #             create_time=create_time,
+                #             update_time=update_time)
+                # #changeMap.set(name, snapshot);
+                # return snapshot
+                return document
+                
+            elif removed:
+                _LOGGER.debug('Watch.onSnapshot Received document remove')
+                # changeMap.set(name, REMOVED);
+            
 
-    #     def init_stream():
-    #         self._backoff.back_off()
-    #         if not is_active:
-    #             _LOGGER.info('Not initializing inactive stream')
-    #             return
+        # Document Delete or Document Remove?
+        elif (proto.document_delete or proto.document_remove):
+            _LOGGER.debug('Watch.onSnapshot Processing remove event')
+            #   const name = (proto.document_delete || proto.document_remove).document
+            #   changeMap.set(name, REMOVED);
 
-    #         backend_stream = self._firestore.read_write_stream(
-    #             self._api.Firestore._listen.bind(self._api.Firestore),
-    #             request,
-    #         )
-
-    #         if not is_active:
-    #             _LOGGER.info('Closing inactive stream')
-    #             backend_stream.end()
-    #         _LOGGER.info('Opened new stream')
-    #         current_stream = backend_stream
-
-    #         def on_error(err):
-    #             maybe_reopen_stream(err)
-
-    #         current_stream.on('error')(on_error)
-
-    #         def on_end():
-    #             err = Exception('Stream ended unexpectedly')
-    #             err.code = GRPC_STATUS_CODE['UNKNOWN']
-    #             maybe_reopen_stream(err)
-
-    #         current_stream.on('end')(on_end)
-    #         current_stream.pipe(stream)
-    #         current_stream.resume()
-
-    #         current_stream.catch(close_stream)
-
-    #     def affects_target(target_ids, current_id):
-    #         for target_id in target_ids:
-    #             if target_id == current_id:
-    #                 return True
-    #         return False
-
-    #     def extract_changes(doc_map, changes, read_time):
-    #         deletes = []
-    #         adds = []
-    #         updates = []
-
-    #         for value, name in changes:
-    #             if value == REMOVED:
-    #                 if doc_map.has(name):
-    #                     deletes.append(name)
-    #             elif doc_map.has(name):
-    #                 value.read_time = read_time
-    #                 updates.append(value.build())
-    #             else:
-    #                 value.read_time = read_time
-    #                 adds.append(value.build())
-    #         return deletes, adds, updates
-
-    #     def compute_snapshot(doc_dict, doc_map, changes):
-    #         if len(doc_dict) != doc_map:
-    #             raise ValueError('The document tree and document map should'
-    #                              'have the same number of entries.')
-    #         updated_dict = doc_dict
-    #         updated_map = doc_map
-
-    #     def delete_doc(name):
-    #         """ raises KeyError if name not in updated_map"""
-    #         old_document = updated_map.pop(name) # Raises KeyError
-    #         existing = updated_dict.find(old_document)
-    #         old_index = existing.index
-    #         updated_dict = existing.remove()
-    #         return DocumentChange('removed',
-    #                               old_document,
-    #                               old_index,
-    #                               -1)
-
-    #     def add_doc(new_document):
-    #         name = new_document.ref.formatted_name
-    #         if name in updated_map:
-    #             raise ValueError('Document to add already exists')
-    #         updated_dict = updated_dict.insert(new_document, null)
-    #         new_index = updated_dict.find(new_document).index
-    #         updated_map[name] = new_document
-    #         return DocumentChange('added',
-    #                               new_document,
-    #                               -1,
-    #                               new_index)
-
-    #     def modify_doc(new_document):
-    #         name = new_document.ref.formattedName
-    #         if name not in updated_map:
-    #             raise ValueError('Document to modify does not exsit')
-    #         old_document = updated_map[name]
-    #         if old_document.update_time != new_document.update_time:
-    #             remove_change = delete_doc(name)
-    #             add_change = add_doc(new_document)
-    #             return DocumentChange('modified',
-    #                                   new_document,
-    #                                   remove_change.old_index,
-    #                                   add_change.new_index)
-    #         return None
-
-    #     applied_changes = []
-
-    #     def comparator_sort(name1, name2):
-    #         return self._comparator(updated_map[name1], updated_map[name2])
-
-    #     changes.deletes.sort(comparator_sort)
-
-    #     for name in changes.deletes:
-    #         changes.delete_doc(name)
-    #         if change:
-    #             applied_changes.push(change)
-
-    #     changes.adds.sort(self._compartor)
-
-    #     for snapshot in changes.adds:
-    #         change = add_doc(snapshot)
-    #         if change:
-    #             applied_changes.push(change)
-
-    #     changes.updates.sort(self._compartor)
-
-    #     for snapshot in changes.updates:
-    #         change = modify_doc(snapshot)
-    #         if change:
-    #             applied_changes.push(change)
-
-    #     if not len(updated_dict) == len(updated_map):
-    #         raise RuntimeError('The update document tree and document '
-    #                            'map should have the same number of '
-    #                            'entries')
-
-    #     return {updated_dict, updated_map, applied_changes}
-
-    #     def push(read_time, next_resume_token):
-    #         changes = extract_changes(doc_map, change_map, read_time)
-    #         diff = compute_snapshot(doc_dict, doc_map, changes)
-
-    #         if not has_pushed or len(diff.applied_changes) > 0:
-    #             _LOGGER.info(
-    #                 'Sending snapshot with %d changes and %d documents'
-    #                 % (len(diff.applied_changes), len(updated_dict)))
-
-    #         next(read_time, diff.updatedTree.keys, diff.applied_changes)
-
-    #         doc_dict = diff.updated_dict
-    #         doc_map = diff.updated_map
-    #         change_map.clear()
-    #         resume_token = next_resume_token
-
-    #     def current_size():
-    #         changes = extract_changes(doc_map, change_map)
-    #         return doc_map.size + len(changes.adds) - len(changes.deletes)
-
-    #     init_stream()
-
-    #     def proto():
-    #         if proto.target_change:
-    #             _LOGGER.log('Processing target change')
-    #             change = proto.target_change
-    #             no_target_ids = not target_ids
-    #             if change.target_change_type == 'NO_CHANGE':
-    #                 if no_target_ids and change.read_time and current:
-    #                     push(DocumentSnapshot.to_ISO_time(change.read_time),
-    #                          change.resume_token)
-    #             elif change.target_change_type == 'ADD':
-    #                 if WATCH_TARGET_ID != change.target_ids[0]:
-    #                     raise ValueError('Unexpected target ID sent by server')
-    #             elif change.target_change_type == 'REMOVE':
-    #                 code = 13
-    #                 message = 'internal error'
-    #                 if change.cause:
-    #                     code = change.cause.code
-    #                     message = change.cause.message
-    #                 close_stream(Error('Error ' + code + ': '  + message))
-    #             elif change.target_change_type == 'RESET':
-    #                 reset_docs()
-    #             elif change.target_change_type == 'CURRENT':
-    #                 current = true
-    #             else:
-    #                 close_stream(
-    #                     Exception('Unknown target change type: ' + str(change)))
-
-    #     stream.on('data', proto) # ??
-
-    #     if change.resume_token and \
-    #        affects_target(change.target_ids, WATCH_TARGET_ID):
-    #         self._backoff.reset()
-
-    #     elif proto.document_change:
-    #         _LOGGER.info('Processing change event')
-
-    #         target_ids = proto.document_change.target_ids
-    #         removed_target_ids = proto.document_change.removed_target_ids
-
-    #         changed = False
-
-    #         removed = False
-    #         for target_id in target_ids:
-    #             if target_id == WATCH_TARGET_ID:
-    #                 changed = True
-
-    #         for target_id in removed_target_ids:
-    #             if removed_target_ids == WATCH_TARGET_ID:
-    #                 removed = True
-
-    #         document = proto.document_change.document
-    #         name = document.name
-
-    #         if changed:
-    #             _LOGGER.info('Received document change')
-    #             snapshot = DocumentSnapshot.Builder()
-    #             snapshot.ref = DocumentReference(
-    #                 self._firestore,
-    #                 ResourcePath.from_slash_separated_string(name))
-    #             snapshot.fields_proto = document.fields
-    #             snapshot.create_time = DocumentSnapshot.to_ISO_time(
-    #                 document.create_time)
-    #             snapshot.update_time = DocumentSnapshot.to_ISO_time(
-    #                 document.update_time)
-    #             change_map[name] = snapshot
-    #         elif removed:
-    #             _LOGGER.info('Received document remove')
-    #             change_map[name] = REMOVED
-    #     elif proto.document_delete:
-    #         _LOGGER.info('Processing remove event')
-    #         name = proto.document_delete.document
-    #         change_map[name] = REMOVED
-    #     elif proto.document_remove:
-    #         _LOGGER.info('Processing remove event')
-    #         name = proto.document_remove.document
-    #         change_map[name] = REMOVED
-    #     elif proto.filter:
-    #         _LOGGER.info('Processing filter update')
-    #         if proto.filter.count != current_size():
-    #             reset_docs()
-    #             reset_stream()
-    #     else:
-    #         close_stream(Error('Unknown listen response type: ' + str(proto)))
-
-    #     def on_end():
-    #         _LOGGER.info('Processing stream end')
-    #         if current_stream:
-    #             current_stream.end()
-
-    #     on('end', on_end)
-
-    #     def initialize():
-    #         return {}
-
-    #     def end_stream():
-    #         _LOGGER.info('Ending stream')
-    #         is_active = False
-    #         on_next = initialize
-    #         on_error = initialize
-    #         stream.end()
-
-    #     return end_stream
-
-
-
+        elif (proto.filter):
+            _LOGGER.debug('Watch.onSnapshot Processing filter update')
+            #   if (proto.filter.count !== currentSize()) {
+            #     // We need to remove all the current results.
+            #     resetDocs();
+            #     // The filter didn't match, so re-issue the query.
+            #     resetStream();
+          
+        else:
+            _LOGGER.debug("UNKNOWN TYPE. UHOH")
+        #   closeStream(
+        #     new Error('Unknown listen response type: ' + JSON.stringify(proto))
+        #   )
+   
