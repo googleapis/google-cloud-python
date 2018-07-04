@@ -28,6 +28,8 @@ class TestCluster(unittest.TestCase):
     CLUSTER_NAME = ('projects/' + PROJECT +
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
+    LOCATION_ID = 'locname'
+    LOCATION = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
 
     @staticmethod
     def _get_target_class():
@@ -79,6 +81,28 @@ class TestCluster(unittest.TestCase):
         cluster = self._make_one(self.CLUSTER_ID, instance)
 
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
+
+    def test_to_pb(self):
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.proto import instance_pb2
+
+        SERVE_NODES = 4
+        DEFAULT_STORAGE_TYPE = 0
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(
+            self.CLUSTER_ID, instance, location_id=self.LOCATION,
+            serve_nodes=SERVE_NODES, default_storage_type=DEFAULT_STORAGE_TYPE)
+
+        expected_result = instance_pb2.Cluster(
+            name=self.CLUSTER_NAME, location=self.LOCATION,
+            serve_nodes=SERVE_NODES, default_storage_type=DEFAULT_STORAGE_TYPE)
+
+        result = cluster.to_pb
+
+        self.assertEqual(expected_result, result)
 
     def test___eq__(self):
         client = _Client(self.PROJECT)
@@ -146,6 +170,138 @@ class TestCluster(unittest.TestCase):
         result = cluster.reload()
         self.assertEqual(result, expected_result)
 
+    def test_reload_w_value_error(self):
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        LOCATION = 'LOCATION'
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
+
+        # Create response_pb
+        response_pb = _ClusterPB(
+            location=LOCATION
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [response_pb]
+
+        # Check Cluster optional config values before.
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+
+        # Perform the method and check the result.
+        with self.assertRaises(ValueError):
+            cluster.reload()
+
+    def test_get_cluster(self):
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
+
+        # Create response_pb
+        response_pb = _ClusterPB(
+            name=self.CLUSTER_NAME
+        )
+
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [response_pb]
+
+        result = cluster.get_cluster(instance, self.CLUSTER_ID)
+
+        self.assertEqual(cluster, result)
+
+    def test_from_pb(self):
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        LOCATION = 'LOCATION'
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
+
+        # Create response_pb
+        response_pb = _ClusterPB(
+            name=self.CLUSTER_NAME,
+            serve_nodes=DEFAULT_SERVE_NODES,
+            location=LOCATION
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [response_pb]
+
+        # Check Cluster optional config values before.
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+
+        # Perform the method and check the result.
+        expected_result = cluster.from_pb(response_pb, instance)
+        self.assertEqual(cluster, expected_result)
+
+    def test_from_pb_w_exceptions(self):
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+
+        LOCATION = 'LOCATION'
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
+
+        # Create response_pb
+        response_pb = _ClusterPB(
+            # name=self.CLUSTER_NAME,
+            serve_nodes=DEFAULT_SERVE_NODES,
+            location=LOCATION
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [response_pb]
+
+        # Check Cluster optional config values before.
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+
+        # Perform the method and check the result.
+        with self.assertRaises(ValueError):
+            cluster.from_pb(response_pb, instance)
+
+
+
     def test_create(self):
         from google.api_core import operation
         from google.longrunning import operations_pb2
@@ -175,7 +331,7 @@ class TestCluster(unittest.TestCase):
         instance_stub.CreateCluster.side_effect = [response_pb]
 
         # Perform the method and check the result.
-        result = cluster.create()
+        result = cluster.create_cluster()
 
         self.assertIsInstance(result, operation.Operation)
         self.assertEqual(result.operation.name, OP_NAME)
@@ -237,7 +393,7 @@ class TestCluster(unittest.TestCase):
         instance_stub = instance_admin_client.bigtable_instance_admin_stub
         instance_stub.UpdateCluster.side_effect = [response_pb]
 
-        result = cluster.update()
+        result = cluster.update_cluster()
 
         self.assertIsInstance(result, operation.Operation)
         self.assertIsInstance(result.metadata,
@@ -276,7 +432,7 @@ class TestCluster(unittest.TestCase):
         expected_result = None  # delete() has no return value.
 
         # Perform the method and check the result.
-        result = cluster.delete()
+        result = cluster.delete_cluster()
 
         self.assertEqual(result, expected_result)
 
