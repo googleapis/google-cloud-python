@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 69b6bdd documentation</title>
+    <title>BigQuery &#8212; google-cloud 696b307 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -487,13 +487,13 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="n">uri</span><span class="p">,</span>
     <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
     <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="mi">50</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Load a JSON file from Cloud Storage:</p>
@@ -515,13 +515,13 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
     <span class="n">location</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span>  <span class="c1"># Location must match that of the destination dataset.</span>
     <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="mi">50</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Load a Parquet file from Cloud Storage:</p>
@@ -538,13 +538,13 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
     <span class="n">uri</span><span class="p">,</span>
     <span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">),</span>
     <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
-
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting job {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
 <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Job finished.&#39;</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
-<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">==</span> <span class="mi">50</span>
+<span class="n">destination_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;us_states&#39;</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Loaded {} rows.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination_table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
