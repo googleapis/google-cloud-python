@@ -15,14 +15,10 @@
 """User-friendly container for Google Cloud Bigtable Row."""
 
 
-import functools
 import struct
 
-import grpc
 import six
 
-from google.api_core import exceptions
-from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -53,7 +49,7 @@ class Row(object):
     :param table: The table that owns the row.
     """
 
-    def __init__(self, row_key, table):
+    def __init__(self, row_key, table=None):
         self._row_key = _to_bytes(row_key)
         self._table = table
 
@@ -96,7 +92,7 @@ class _SetDeleteRow(Row):
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
-    def _get_mutations(self, state):
+    def _get_mutations(self, state=None):
         """Gets the list of mutations for a given state.
 
         This method intended to be implemented by subclasses.
@@ -238,13 +234,6 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
-def _retry_commit_exception(exc):
-    if isinstance(exc, grpc.RpcError):
-        exc = exceptions.from_grpc_error(exc)
-    return isinstance(exc, (exceptions.ServiceUnavailable,
-                            exceptions.DeadlineExceeded))
-
-
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -275,11 +264,11 @@ class DirectRow(_SetDeleteRow):
     :param table: The table that owns the row.
     """
 
-    def __init__(self, row_key, table):
+    def __init__(self, row_key, table=None):
         super(DirectRow, self).__init__(row_key, table)
         self._pb_mutations = []
 
-    def _get_mutations(self, state):  # pylint: disable=unused-argument
+    def _get_mutations(self, state=None):  # pylint: disable=unused-argument
         """Gets the list of mutations for a given state.
 
         ``state`` is unused by :class:`DirectRow` but is used by
@@ -406,26 +395,10 @@ class DirectRow(_SetDeleteRow):
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
 
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the :data:`MAX_MUTATIONS`.
+        :raises: :exc:`~.table.TooManyMutationsError` if the number of
+                 mutations is greater than 100,000.
         """
-        mutations_list = self._get_mutations(None)
-        num_mutations = len(mutations_list)
-        if num_mutations == 0:
-            return
-        if num_mutations > MAX_MUTATIONS:
-            raise ValueError('%d total mutations exceed the maximum allowable '
-                             '%d.' % (num_mutations, MAX_MUTATIONS))
-
-        data_client = self._table._instance._client.table_data_client
-        commit = functools.partial(
-            data_client.mutate_row,
-            self._table.name, self._row_key, mutations_list)
-        retry_ = retry.Retry(
-            predicate=_retry_commit_exception,
-            deadline=30)
-        retry_(commit)()
-
+        self._table.mutate_rows([self])
         self.clear()
 
     def clear(self):
@@ -475,7 +448,7 @@ class ConditionalRow(_SetDeleteRow):
         self._true_pb_mutations = []
         self._false_pb_mutations = []
 
-    def _get_mutations(self, state):
+    def _get_mutations(self, state=None):
         """Gets the list of mutations for a given state.
 
         Over-ridden so that the state can be used in:
