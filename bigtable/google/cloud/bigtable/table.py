@@ -336,6 +336,29 @@ class Table(object):
         for row in generator.read_rows():
             yield row
 
+    def save_mutations(self, row_mutations, retry=DEFAULT_RETRY):
+        """ Save row mutations
+
+        :type row_mutations: list: [`RowMutations`]
+        :param row_mutations: The list of RowMutations to save
+
+        :type retry: class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) Retry delay and deadline arguments. To
+                        override, the default value :attr:`DEFAULT_RETRY` can
+                        be used and modified with the
+                        :meth:`~google.api_core.retry.Retry.with_delay` method
+                        or the
+                        :meth:`~google.api_core.retry.Retry.with_deadline`
+                        method.
+
+        :rtype: list: [`~google.rpc.status_pb2.Status`]
+        :return: The response statuses, which is a list of
+                 :class:`~google.rpc.status_pb2.Status`.
+        """
+        retryable_mutate_rows_status = _RetryableMutateRowsWorker(
+            self._instance._client, self.name, row_mutations)
+        return retryable_mutate_rows_status(retry=retry)
+
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
 
@@ -353,22 +376,23 @@ class Table(object):
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
-        :type retry: :class:`~google.api_core.retry.Retry`
-        :param retry:
-            (Optional) Retry delay and deadline arguments. To override, the
-            default value :attr:`DEFAULT_RETRY` can be used and modified with
-            the :meth:`~google.api_core.retry.Retry.with_delay` method or the
-            :meth:`~google.api_core.retry.Retry.with_deadline` method.
+        :type retry: class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) Retry delay and deadline arguments. To
+                        override, the default value :attr:`DEFAULT_RETRY` can
+                        be used and modified with the
+                        :meth:`~google.api_core.retry.Retry.with_delay` method
+                        or the
+                        :meth:`~google.api_core.retry.Retry.with_deadline`
+                        method.
 
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows,
-            app_profile_id=self._app_profile_id)
-        return retryable_mutate_rows(retry=retry)
+        mutation_rows = [row.row_mutations for row in rows]
+
+        return self.save_mutations(mutation_rows, retry)
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -510,6 +534,19 @@ class _RetryableMutateRowsWorker(object):
         return (status is None or
                 status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
+    def _mutate_rows_entries(self, mutation_rows):
+        entries = []
+        mutations_count = 0
+        for mutation_row in mutation_rows:
+            mutations_count += 1
+            entries.append(mutation_row.mutations_entry)
+
+        if mutations_count > _MAX_BULK_MUTATIONS:
+            raise TooManyMutationsError('Maximum number of mutations is %s' %
+                                        (_MAX_BULK_MUTATIONS,))
+
+        return entries
+
     def _do_mutate_retryable_rows(self):
         """Mutate all the rows that are eligible for retry.
 
@@ -537,11 +574,12 @@ class _RetryableMutateRowsWorker(object):
             # All mutations are either successful or non-retryable now.
             return self.responses_statuses
 
-        mutate_rows_request = _mutate_rows_request(
-            self.table_name, retryable_rows,
-            app_profile_id=self.app_profile_id)
-        data_client = self.client.table_data_client
-        responses = data_client._mutate_rows(mutate_rows_request, retry=None)
+        mutate_rows_entries = self._mutate_rows_entries(retryable_rows)
+        responses = self.client._table_data_client.mutate_rows(
+            table_name=self.table_name,
+            entries=mutate_rows_entries,
+            app_profile_id=self.app_profile_id
+        )
 
         num_responses = 0
         num_retryable_responses = 0
@@ -553,7 +591,7 @@ class _RetryableMutateRowsWorker(object):
                 if self._is_retryable(entry.status):
                     num_retryable_responses += 1
                 if entry.status.code == 0:
-                    self.rows[index].clear()
+                    self.rows[index] = None
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
@@ -563,6 +601,7 @@ class _RetryableMutateRowsWorker(object):
         if num_retryable_responses:
             raise _BigtableRetryableError
 
+        self.rows = []
         return self.responses_statuses
 
 
@@ -667,7 +706,7 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
         entry.row_key = row.row_key
         # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
         #  the mutations have no state.
-        for mutation in row._get_mutations(None):
+        for mutation in row.row_mutations.mutations_entry.mutations:
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
     if mutations_count > _MAX_BULK_MUTATIONS:
