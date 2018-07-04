@@ -18,6 +18,7 @@
 from grpc import StatusCode
 
 from google.api_core.exceptions import RetryError
+from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
@@ -176,35 +177,31 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, initial_split_keys=None):
+    def create(self):
         """Creates this table.
-
         .. note::
-
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
-
-        :type initial_split_keys: list
-        :param initial_split_keys: The optional list of row keys in bytes that
-                                    will be used to initially split the table
-                                    into several tablets.
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
+        table_client.create_table(
+            parent=instance_name, table_id=self.table_id, table={})
 
-        if initial_split_keys is not None:
-            splits = []
-            for initial_split_key in initial_split_keys:
-                splits.append(
-                    table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                        key=initial_split_key))
+    def exists(self):
+        """Check whether the table exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
+        """
+        table_client = self._instance._client.table_admin_client
+        try:
+            table_client.get_table(name=self.name)
+        except NotFound:
+            return False
         else:
-            splits = None
-
-        table_client.create_table(parent=instance_name,
-                                  table_id=self.table_id, table={},
-                                  initial_splits=splits)
+            return True
 
     def delete(self):
         """Delete this table."""
