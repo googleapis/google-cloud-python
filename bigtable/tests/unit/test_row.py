@@ -333,7 +333,6 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
 
     def test_commit(self):
-        from google.protobuf import empty_pb2
         from google.cloud.bigtable_v2.gapic import bigtable_client
 
         project_id = 'project-id'
@@ -342,7 +341,6 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         column = b'column'
 
-        api = bigtable_client.BigtableClient(mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=project_id,
                                    credentials=credentials, admin=True)
