@@ -206,16 +206,17 @@ class Client(ClientWithProject):
                              characters.) If this value is not set in the
                              constructor, will fall back to the instance ID.
 
-		:type type: str
+        :type type: str
         :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
 
-		:type labels: dict
+        :type labels: dict
         :param type: (Optional) Keys and values must both be under 128 bytes.
 
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, display_name=display_name, type=type, labels=labels)
+        return Instance(instance_id, self, display_name=display_name, 
+                        type=type, labels=labels)
 
     def list_instances(self):
         """List instances owned by the project.
