@@ -333,8 +333,6 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
 
     def test_commit(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-
         project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
