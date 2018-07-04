@@ -107,8 +107,8 @@ class Instance(object):
         instance_id = match.group('instance_id')
 
         if instance_pb.display_name is not None:
-	    display_name_len = len(instance_pb.display_name)
-	    if (display_name_len < _DISPLAY_NAME_MIN_LENGTH and
+            display_name_len = len(instance_pb.display_name)
+            if (display_name_len < _DISPLAY_NAME_MIN_LENGTH and
                 display_name_len > _DISPLAY_NAME_MAX_LENGTH):
                 raise ValueError('Display name of instance must be 4-30 characters.')
 
