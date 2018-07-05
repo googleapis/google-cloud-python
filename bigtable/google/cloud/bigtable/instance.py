@@ -63,7 +63,7 @@ class Instance(object):
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
 
-	:type type: str
+	:type type: enums.Instance.Type
     :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
 
 	:type labels: dict
