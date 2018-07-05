@@ -192,10 +192,9 @@ class Client(ClientWithProject):
             self._instance_admin_client = (
                 bigtable_admin_v2.BigtableInstanceAdminClient(
                     credentials=self._credentials, client_info=_CLIENT_INFO))
-
         return self._instance_admin_client
 
-    def instance(self, instance_id, display_name=None):
+    def instance(self, instance_id, display_name=None, type=None, labels={}):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
@@ -207,10 +206,17 @@ class Client(ClientWithProject):
                              characters.) If this value is not set in the
                              constructor, will fall back to the instance ID.
 
+        :type type: str
+        :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
+
+        :type labels: dict
+        :param type: (Optional) Keys and values must both be under 128 bytes.
+
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, display_name=display_name)
+        return Instance(instance_id, self, display_name=display_name, 
+                        type=type, labels=labels)
 
     def list_instances(self):
         """List instances owned by the project.

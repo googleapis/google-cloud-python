@@ -29,10 +29,11 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+_DISPLAY_NAME_MIN_LENGTH = 4
+_DISPLAY_NAME_MAX_LENGTH = 30
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
 _STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
-
 
 class Instance(object):
     """Representation of a Google Cloud Bigtable Instance.
@@ -61,12 +62,22 @@ class Instance(object):
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+	:type type: enums.Instance.Type
+    :param type: (Optional) The type of the instance. Defaults to 'PRODUCTION'.
+
+	:type labels: dict
+    :param type: (Optional) Keys and values must both be under 128 bytes.
+				 (Label keys must be between 1 and 63 characters long)
     """
 
-    def __init__(self, instance_id, client, display_name=None):
+    def __init__(self, instance_id, client, display_name=None, 
+                 type=None, labels={}):
         self.instance_id = instance_id
-        self.display_name = display_name or instance_id
         self._client = client
+        self.display_name = display_name or instance_id
+        self.type = type
+        self.labels = labels
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -95,8 +106,14 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client,
-                     display_name=instance_pb.display_name)
+        if instance_pb.display_name is not None:
+            display_name_len = len(instance_pb.display_name)
+            if (display_name_len < _DISPLAY_NAME_MIN_LENGTH and
+                display_name_len > _DISPLAY_NAME_MAX_LENGTH):
+                raise ValueError('Display name of instance must be 4-30 characters.')
+
+        result = cls(instance_id, client, instance_pb.display_name,
+                     instance_pb.type, instance_pb.labels)
         return result
 
     def _update_from_pb(self, instance_pb):
