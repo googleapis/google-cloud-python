@@ -44,7 +44,7 @@ class RowSet(object):
         :param row_range: The row range object having start and end key
         """
         self.row_ranges.append(row_range)
-    
+
     def add_row_range_from_keys(self, start_key=None, end_key=None,
                                 start_inclusive=True, end_inclusive=False):
         """Add row range to row_ranges list from the row keys
