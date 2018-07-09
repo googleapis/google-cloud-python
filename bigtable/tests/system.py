@@ -242,6 +242,22 @@ class TestTableAdminAPI(unittest.TestCase):
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
+    def test_create_table_with_failies(self):
+        temp_table_id = 'test-create-table-with-failies'
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        gc_rule = MaxVersionsGCRule(1)
+        temp_table.create(column_families={COLUMN_FAMILY_ID1: gc_rule})
+        self.tables_to_delete.append(temp_table)
+
+        col_fams = temp_table.list_column_families()
+
+        self.assertEqual(len(col_fams), 1)
+        retrieved_col_fam = col_fams[COLUMN_FAMILY_ID1]
+        self.assertIs(retrieved_col_fam._table, temp_table)
+        self.assertEqual(retrieved_col_fam.column_family_id,
+                         COLUMN_FAMILY_ID1)
+        self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
+
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'
         temp_table = Config.INSTANCE.table(temp_table_id)

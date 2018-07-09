@@ -22,6 +22,7 @@ from google.api_core.exceptions import NotFound
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable_admin_v2.proto import table_pb2
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
@@ -86,7 +87,7 @@ class Table(object):
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
 
-    :type: app_profile_id: str
+    :type app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
@@ -175,10 +176,15 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self):
+    def create(self, column_families={}):
         """Creates this table.
 
         .. note::
+
+            :type column_families: dict
+            :param column_failies:
+                  (Optional) A map columns to create.  The key is
+                  the column_id str and the value is a `GarbageCollectionRule`
 
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
@@ -186,8 +192,12 @@ class Table(object):
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
+        families = {id: ColumnFamily(id, self, rule).to_pb()
+                    for (id, rule) in column_families.items()}
+        table = table_pb2.Table(column_families=families)
+
         table_client.create_table(
-            parent=instance_name, table_id=self.table_id, table={})
+            parent=instance_name, table_id=self.table_id, table=table)
 
     def exists(self):
         """Check whether the table exists.
