@@ -27,7 +27,6 @@ versions = ['v1p1beta1', 'v1']
 for version in versions:
     library = gapic.py_library('speech', version)
 
-    s.move(library / f'google/cloud/speech_{version}/speech')
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
     s.move(library / f'google/cloud/speech_{version}/types.py')
@@ -76,6 +75,14 @@ s.replace(
     '**/gapic/*_client.py',
     r'\\"(.+?)-\*\\"',
     r'"\1-\\*"')
+
+
+# Issues exist where python files should define the source encoding
+# https://github.com/googleapis/gapic-generator/issues/2097
+s.replace(
+    '**/proto/*_pb2.py',
+    r"(^.*$\n)*",
+    r"# -*- coding: utf-8 -*-\n\g<0>")
 
 
 # Fix tests to use the direct gapic client instead of the wrapped helper
