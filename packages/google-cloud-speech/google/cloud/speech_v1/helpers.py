@@ -73,7 +73,7 @@ class SpeechHelpers(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        return self._streaming_recognize(
+        return super(SpeechHelpers, self).streaming_recognize(
             self._streaming_request_iterable(config, requests),
             retry=retry, timeout=timeout
         )
