@@ -283,7 +283,7 @@ class TestTable(unittest.TestCase):
 
     def _create_test_helper(self, column_families={}):
         from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client, bigtable_table_admin_client)
+            bigtable_table_admin_client)
         from google.cloud.bigtable_admin_v2.proto import (
             table_pb2)
         from google.cloud.bigtable_admin_v2.proto import (
