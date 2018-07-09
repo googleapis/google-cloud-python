@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 0.35.0
+
+### Implementation Changes
+
+- Re-generated the library to pick up new API features. (#5577)
+
+### Internal / Testing Changes
+
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
 ## 0.34.0
 
 ### Implementation Changes
