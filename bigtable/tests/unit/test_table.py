@@ -132,6 +132,7 @@ class TestTable(unittest.TestCase):
     ROW_KEY = b'row-key'
     ROW_KEY_1 = b'row-key-1'
     ROW_KEY_2 = b'row-key-2'
+    ROW_KEY_3 = b'row-key-3'
     FAMILY_NAME = u'family'
     QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
@@ -564,6 +565,74 @@ class TestTable(unittest.TestCase):
 
         result = rows[1]
         self.assertEqual(result.row_key, self.ROW_KEY_2)
+
+    def test_yield_rows_with_row_set(self):
+        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_table_admin_client)
+        from google.cloud.bigtable.row_set import RowSet
+        from google.cloud.bigtable.row_set import RowRange
+
+        data_api = bigtable_client.BigtableClient(mock.Mock())
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        client._table_data_client = data_api
+        client._table_admin_client = table_api
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create response_iterator
+        chunk_1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_1,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        chunk_2 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_2,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        chunk_3 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY_3,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True
+        )
+
+        response_1 = _ReadRowsResponseV2([chunk_1])
+        response_2 = _ReadRowsResponseV2([chunk_2])
+        response_3 = _ReadRowsResponseV2([chunk_3])
+        response_iterator = _MockReadRowsIterator(response_1, response_2,
+                                                  response_3)
+
+        # Patch the stub used by the API method.
+        client._table_data_client.bigtable_stub.ReadRows.side_effect = [
+            response_iterator]
+
+        rows = []
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key=self.ROW_KEY_1,
+                                       end_key=self.ROW_KEY_2))
+        row_set.add_row_key(self.ROW_KEY_3)
+        for row in table.yield_rows(row_set=row_set):
+            rows.append(row)
+
+        self.assertEqual(rows[0].row_key, self.ROW_KEY_1)
+        self.assertEqual(rows[1].row_key, self.ROW_KEY_2)
+        self.assertEqual(rows[2].row_key, self.ROW_KEY_3)
 
     def test_sample_row_keys(self):
         from google.cloud.bigtable_v2.gapic import bigtable_client

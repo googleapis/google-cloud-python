@@ -40,18 +40,26 @@ class TestRowSet(unittest.TestCase):
 
     def test_add_row_range(self):
         row_set = self._make_one()
-        row_range1 = RowRange("row_key1", "row_key9")
-        row_range2 = RowRange("row_key21", "row_key29")
+        row_range1 = RowRange(b"row_key1", b"row_key9")
+        row_range2 = RowRange(b"row_key21", b"row_key29")
         row_set.add_row_range(row_range1)
         row_set.add_row_range(row_range2)
         expected = [row_range1, row_range2]
         self.assertEqual(expected, row_set.row_ranges)
 
+    def test_add_row_range_from_keys(self):
+        row_set = self._make_one()
+        row_set.add_row_range_from_keys(start_key=b"row_key1",
+                                        end_key=b"row_key9",
+                                        start_inclusive=False,
+                                        end_inclusive=True)
+        self.assertEqual(row_set.row_ranges[0].end_key, b"row_key9")
+
     def test__update_message_request(self):
         row_set = self._make_one()
         table_name = 'table_name'
         row_set.add_row_key("row_key1")
-        row_range1 = RowRange("row_key21", "row_key29")
+        row_range1 = RowRange(b"row_key21", b"row_key29")
         row_set.add_row_range(row_range1)
 
         request = _ReadRowsRequestPB(table_name=table_name)
@@ -85,19 +93,19 @@ class TestRowRange(unittest.TestCase):
         self.assertFalse(row_range.end_inclusive)
 
     def test_get_range_kwargs_closed_open(self):
-        start_key = "row_key1"
-        end_key = "row_key9"
-        expected_result = {'start_key_closed': _to_bytes(start_key),
-                           'end_key_open': _to_bytes(end_key)}
+        start_key = b"row_key1"
+        end_key = b"row_key9"
+        expected_result = {'start_key_closed': start_key,
+                           'end_key_open': end_key}
         row_range = self._make_one(start_key, end_key)
         actual_result = row_range.get_range_kwargs()
         self.assertEqual(expected_result, actual_result)
 
     def test_get_range_kwargs_open_closed(self):
-        start_key = "row_key1"
-        end_key = "row_key9"
-        expected_result = {'start_key_open': _to_bytes(start_key),
-                           'end_key_closed': _to_bytes(end_key)}
+        start_key = b"row_key1"
+        end_key = b"row_key9"
+        expected_result = {'start_key_open': start_key,
+                           'end_key_closed': end_key}
         row_range = self._make_one(start_key, end_key, False, True)
         actual_result = row_range.get_range_kwargs()
         self.assertEqual(expected_result, actual_result)

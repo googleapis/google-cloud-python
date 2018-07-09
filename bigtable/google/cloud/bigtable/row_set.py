@@ -44,6 +44,31 @@ class RowSet(object):
         :param row_range: The row range object having start and end key
         """
         self.row_ranges.append(row_range)
+    
+    def add_row_range_from_keys(self, start_key=None, end_key=None,
+                                start_inclusive=True, end_inclusive=False):
+        """Add row range to row_ranges list from the row keys
+
+        :type start_key: bytes
+        :param start_key: (Optional) Start key of the row range. If left empty,
+                          will be interpreted as the empty string.
+
+        :type end_key: bytes
+        :param end_key: (Optional) End key of the row range. If left empty,
+                        will be interpreted as the empty string and range will
+                        be unbounded on the high end.
+
+        :type start_inclusive: bool
+        :param start_inclusive: (Optional) Whether the ``start_key`` should be
+                        considered inclusive. The default is True (inclusive).
+
+        :type end_inclusive: bool
+        :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                  considered inclusive. The default is False (exclusive).
+        """
+        row_range = RowRange(start_key, end_key,
+                             start_inclusive, end_inclusive)
+        self.row_ranges.append(row_range)
 
     def _update_message_request(self, message):
         """Add row keys and row range to given request message

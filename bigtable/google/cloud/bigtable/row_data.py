@@ -628,7 +628,6 @@ class _ReadRowsRequestManager(object):
         self.message = message
         self.last_scanned_key = last_scanned_key
         self.rows_read_so_far = rows_read_so_far
-        self.new_message = None
 
     def build_updated_request(self):
         """ Updates the given message request as per last scanned key

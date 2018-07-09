@@ -18,7 +18,6 @@ import unittest
 import mock
 
 from ._testing import _make_credentials
-from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as data_v2_pb2)
@@ -713,9 +712,9 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.table_name = 'table_name'
-        cls.row_range1 = RowRange("row_key21", "row_key29")
-        cls.row_range2 = RowRange("row_key31", "row_key39")
-        cls.row_range3 = RowRange("row_key41", "row_key49")
+        cls.row_range1 = RowRange(b"row_key21", b"row_key29")
+        cls.row_range2 = RowRange(b"row_key31", b"row_key39")
+        cls.row_range3 = RowRange(b"row_key41", b"row_key49")
 
         cls.request = _ReadRowsRequestPB(table_name=cls.table_name)
         cls.request.rows.row_ranges.add(**cls.row_range1.get_range_kwargs())
@@ -740,7 +739,6 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         self.assertEqual(request, request_manager.message)
         self.assertEqual(last_scanned_key, request_manager.last_scanned_key)
         self.assertEqual(rows_read_so_far, request_manager.rows_read_so_far)
-        self.assertEqual(None, request_manager.new_message)
 
     def test__filter_row_key(self):
         table_name = 'table_name'
@@ -750,17 +748,14 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
 
         last_scanned_key = b"row_key2"
         request_manager = self._make_one(request, last_scanned_key, 2)
-        request_manager.new_message = _ReadRowsRequestPB(table_name=table_name)
         row_keys = request_manager._filter_rows_keys()
 
         expected_row_keys = [b'row_key3', b'row_key4']
         self.assertEqual(expected_row_keys, row_keys)
 
     def test__filter_row_ranges_all_ranges_added_back(self):
-        last_scanned_key = _to_bytes("row_key14")
+        last_scanned_key = b"row_key14"
         request_manager = self._make_one(self.request, last_scanned_key, 2)
-        request_manager.new_message = _ReadRowsRequestPB(
-            table_name=self.table_name)
         row_ranges = request_manager._filter_row_ranges()
 
         exp_row_range1 = data_v2_pb2.RowRange(start_key_closed=b"row_key21",
@@ -774,20 +769,18 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         self.assertEqual(exp_row_ranges, row_ranges)
 
     def test__filter_row_ranges_all_ranges_already_read(self):
-        last_scanned_key = _to_bytes("row_key54")
+        last_scanned_key = b"row_key54"
         request_manager = self._make_one(self.request, last_scanned_key, 2)
-        request_manager.new_message = _ReadRowsRequestPB(
-            table_name=self.table_name)
         row_ranges = request_manager._filter_row_ranges()
 
         self.assertEqual(row_ranges, [])
 
     def test__filter_row_ranges_all_ranges_already_read_open_closed(self):
-        last_scanned_key = _to_bytes("row_key54")
+        last_scanned_key = b"row_key54"
 
-        row_range1 = RowRange("row_key21", "row_key29", False, True)
-        row_range2 = RowRange("row_key31", "row_key39")
-        row_range3 = RowRange("row_key41", "row_key49", False, True)
+        row_range1 = RowRange(b"row_key21", b"row_key29", False, True)
+        row_range2 = RowRange(b"row_key31", b"row_key39")
+        row_range3 = RowRange(b"row_key41", b"row_key49", False, True)
 
         request = _ReadRowsRequestPB(table_name=self.table_name)
         request.rows.row_ranges.add(**row_range1.get_range_kwargs())
@@ -802,7 +795,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         self.assertEqual(row_ranges, [])
 
     def test__filter_row_ranges_some_ranges_already_read(self):
-        last_scanned_key = _to_bytes("row_key22")
+        last_scanned_key = b"row_key22"
         request_manager = self._make_one(self.request, last_scanned_key, 2)
         request_manager.new_message = _ReadRowsRequestPB(
             table_name=self.table_name)
@@ -821,7 +814,7 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
     def test_build_updated_request(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
         row_filter = RowSampleFilter(0.33)
-        last_scanned_key = _to_bytes("row_key14")
+        last_scanned_key = b"row_key14"
         request = _ReadRowsRequestPB(filter=row_filter.to_pb(),
                                      rows_limit=8,
                                      table_name=self.table_name)
@@ -840,14 +833,12 @@ class Test_ReadRowsRequestManager(unittest.TestCase):
         self.assertEqual(expected_result, result)
 
     def test__key_already_read(self):
-        last_scanned_key = _to_bytes("row_key14")
+        last_scanned_key = b"row_key14"
         request = _ReadRowsRequestPB(table_name=self.table_name)
         request_manager = self._make_one(request, last_scanned_key, 2)
 
-        self.assertTrue(request_manager._key_already_read(
-                                    _to_bytes("row_key11")))
-        self.assertFalse(request_manager._key_already_read(
-                                    _to_bytes("row_key16")))
+        self.assertTrue(request_manager._key_already_read(b"row_key11"))
+        self.assertFalse(request_manager._key_already_read(b"row_key16"))
 
 
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
