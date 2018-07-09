@@ -95,3 +95,14 @@ Next Steps
 
 .. _Google Cloud Speech API Product documentation:  https://cloud.google.com/speech
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+
+Api Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v1/api
+    gapic/v1/types
+    gapic/v1p1beta1/api
+    gapic/v1p1beta1/types
+    changelog
