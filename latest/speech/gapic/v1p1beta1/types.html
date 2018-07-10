@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud 696b307 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud b2daafe documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -336,11 +336,53 @@ ognitionConfig.AudioEncoding].</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.audio_channel_count">
+<code class="descname">audio_channel_count</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.audio_channel_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> The number of channels in the input audio data.
+ONLY set this for MULTI-CHANNEL recognition. Valid values for
+LINEAR16 and FLAC are <code class="docutils literal notranslate"><span class="pre">1</span></code>-<code class="docutils literal notranslate"><span class="pre">8</span></code>. Valid values for OGG_OPUS
+are ‘1’-‘254’. Valid value for MULAW, AMR, AMR_WB and
+SPEEX_WITH_HEADER_BYTE is only <code class="docutils literal notranslate"><span class="pre">1</span></code>. If <code class="docutils literal notranslate"><span class="pre">0</span></code> or omitted,
+defaults to one channel (mono). NOTE: We only recognize the
+first channel by default. To perform independent recognition
+on each channel set
+enable_separate_recognition_per_channel to ‘true’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_separate_recognition_per_channel">
+<code class="descname">enable_separate_recognition_per_channel</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_separate_recognition_per_channel" title="Permalink to this definition">#</a></dt>
+<dd><p>This needs to be set to ‘true’ explicitly and
+audio_channel_count &gt; 1 to get each channel recognized
+separately. The recognition result will contain a channel_tag
+field to state which channel that result belongs to. If this
+is not ‘true’, we will only recognize the first channel. NOTE:
+The request is also billed cumulatively for all channels
+recognized: (audio_channel_count times the audio length)</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.language_code">
 <code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Required</em> The language of the supplied audio as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
 tag. Example: “en-US”. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
 of the currently supported language codes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.alternative_language_codes">
+<code class="descname">alternative_language_codes</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.alternative_language_codes" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> A list of up to 3 additional <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
+tags, listing possible alternative languages of the supplied
+audio. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
+of the currently supported language codes. If alternative
+languages are listed, recognition result will contain
+recognition in the most likely language detected including the
+main language_code. The recognition result will include the
+language tag of the language detected in the audio. NOTE: This
+feature is only supported for Voice Command and Voice Search
+use cases and performance may vary for other use cases (e.g.,
+phone call transcription).</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -382,6 +424,15 @@ information is returned. The default is <code class="docutils literal notranslat
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_word_confidence">
+<code class="descname">enable_word_confidence</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_word_confidence" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the top result includes a list of
+words and the confidence for those words. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, no
+word-level confidence information is returned. The default is
+<code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_automatic_punctuation">
 <code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
@@ -392,6 +443,27 @@ punctuation to result hypotheses. NOTE: “This is currently
 offered as an experimental service, complimentary to all
 users. In the future this may be exclusively available as a
 premium feature.”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_speaker_diarization">
+<code class="descname">enable_speaker_diarization</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.enable_speaker_diarization" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, enables speaker detection for each
+recognized word in the top alternative of the recognition
+result using a speaker_tag provided in the WordInfo. Note:
+When this is true, we send all the words from the beginning of
+the audio for the top alternative in every consecutive
+responses. This is done in order to improve our speaker tags
+as our models learn to identify the speakers in the
+conversation over time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_speaker_count">
+<code class="descname">diarization_speaker_count</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_speaker_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If set, specifies the estimated number of speakers
+in the conversation. If not set, defaults to ‘2’. Ignored
+unless enable_speaker_diarization is set to true.”</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -641,6 +713,23 @@ alternatives are ordered in terms of accuracy, with the top
 recognizer.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.channel_tag">
+<code class="descname">channel_tag</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.channel_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>For multi-channel audio, this is the channel number
+corresponding to the recognized result for the audio from that
+channel. For audio_channel_count = N, its output values can
+range from ‘1’ to ‘N’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechRecognitionResult.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag of the language
+in this result. This language code was detected to have the
+most likelihood of being spoken in the audio.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -724,6 +813,23 @@ range from 0.0 (completely unstable) to 1.0 (completely
 stable). This field is only provided for interim results
 (<code class="docutils literal notranslate"><span class="pre">is_final=false</span></code>). The default of 0.0 is a sentinel value
 indicating <code class="docutils literal notranslate"><span class="pre">stability</span></code> was not set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.channel_tag">
+<code class="descname">channel_tag</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.channel_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>For multi-channel audio, this is the channel number
+corresponding to the recognized result for the audio from that
+channel. For audio_channel_count = N, its output values can
+range from ‘1’ to ‘N’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.StreamingRecognitionResult.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag of the language
+in this result. This language code was detected to have the
+most likelihood of being spoken in the audio.</p>
 </dd></dl>
 
 </dd></dl>
@@ -880,6 +986,30 @@ and the accuracy of the time offset can vary.</p>
 <code class="descname">word</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The word corresponding to this set of
 information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.WordInfo.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The confidence estimate between 0.0 and 1.0. A
+higher number indicates an estimated greater likelihood that
+the recognized words are correct. This field is set only for
+the top alternative of a non-streaming result or, of a
+streaming result where <code class="docutils literal notranslate"><span class="pre">is_final=true</span></code>. This field is not
+guaranteed to be accurate and users should not rely on it to
+be always provided. The default of 0.0 is a sentinel value
+indicating <code class="docutils literal notranslate"><span class="pre">confidence</span></code> was not set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.WordInfo.speaker_tag">
+<code class="descname">speaker_tag</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.WordInfo.speaker_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A distinct integer value is assigned for every
+speaker within the audio. This field specifies which one of
+those speakers was detected to have spoken this word. Value
+ranges from ‘1’ to diarization_speaker_count. speaker_tag
+is set if enable_speaker_diarization = ‘true’ and only in
+the top alternative.</p>
 </dd></dl>
 
 </dd></dl>
