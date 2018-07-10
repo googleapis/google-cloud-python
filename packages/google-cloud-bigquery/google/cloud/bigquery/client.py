@@ -892,8 +892,7 @@ class Client(ClientWithProject):
         Raises:
             ImportError:
                 If a usable parquet engine cannot be found. This method
-                requires one of :mod:`pyarrow` or :mod:`fastparquet` to be
-                installed.
+                requires :mod:`pyarrow` to be installed.
         """
         buffer = six.BytesIO()
         dataframe.to_parquet(buffer)
