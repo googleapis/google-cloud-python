@@ -288,8 +288,10 @@ Queue = _reflection.GeneratedProtocolMessageType('Queue', (_message.Message,), d
   
   Attributes:
       name:
-          The queue name.  The queue name must have the following
-          format:
+          Caller-specified and required in [CreateQueue][google.cloud.ta
+          sks.v2beta2.CloudTasks.CreateQueue], after which it becomes
+          output only.  The queue name.  The queue name must have the
+          following format:
           ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
           -  ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
           ([0-9]),    hyphens (-), colons (:), or periods (.). For more
@@ -302,15 +304,13 @@ Queue = _reflection.GeneratedProtocolMessageType('Queue', (_message.Message,), d
           more information, see
           https://cloud.google.com/about/locations/. -  ``QUEUE_ID`` can
           contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
-          (-). The maximum length is 100 characters.  Caller-specified
-          and required in [CreateQueue][google.cloud.tasks.v2beta2.Cloud
-          Tasks.CreateQueue], after which it becomes output only.
+          (-). The maximum length is 100 characters.
       target_type:
-          The queue's target.  The target applies to all tasks in the
-          queue.  Caller-specified and required in [CreateQueue][google.
-          cloud.tasks.v2beta2.CloudTasks.CreateQueue][], after which the
-          queue config type becomes output only, though fields within
-          the config are mutable.
+          Caller-specified and required in [CreateQueue][google.cloud.ta
+          sks.v2beta2.CloudTasks.CreateQueue][], after which the queue
+          config type becomes output only, though fields within the
+          config are mutable.  The queue's target.  The target applies
+          to all tasks in the queue.
       app_engine_http_target:
           App Engine HTTP target.  An App Engine queue is a queue that
           has an [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEng

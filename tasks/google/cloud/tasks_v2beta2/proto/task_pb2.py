@@ -269,12 +269,14 @@ Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), dic
   
   Attributes:
       name:
-          The task name.  The task name must have the following format: 
-          ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/ta
-          sks/TASK_ID``  -  ``PROJECT_ID`` can contain letters
-          ([A-Za-z]), numbers ([0-9]),    hyphens (-), colons (:), or
-          periods (.). For more information, see    `Identifying
-          projects </resource-manager/docs/creating-managing-
+          Optionally caller-specified in [CreateTask][google.cloud.tasks
+          .v2beta2.CloudTasks.CreateTask].  The task name.  The task
+          name must have the following format: ``projects/PROJECT_ID/loc
+          ations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``  -
+          ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
+          ([0-9]),    hyphens (-), colons (:), or periods (.). For more
+          information, see    `Identifying    projects </resource-
+          manager/docs/creating-managing-
           projects#identifying_projects>`__ -  ``LOCATION_ID`` is the
           canonical ID for the task's location. The list    of available
           locations can be obtained by calling    [ListLocations][google
@@ -284,8 +286,7 @@ Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), dic
           or    hyphens (-). The maximum length is 100 characters. -
           ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
           ([0-9]),    hyphens (-), or underscores (\_). The maximum
-          length is 500    characters.  Optionally caller-specified in [
-          CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+          length is 500    characters.
       payload_type:
           Required.  The task's payload is used by the task's target to
           process the task. A payload is valid only if it is compatible
