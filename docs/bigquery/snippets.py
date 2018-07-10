@@ -3020,6 +3020,7 @@ def test_load_table_from_dataframe(client, to_delete):
 
     # [START bigquery_load_table_dataframe]
     # from google.cloud import bigquery
+    # import pandas
     # client = bigquery.Client()
     # dataset_id = 'my_dataset'
 
