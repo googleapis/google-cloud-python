@@ -52,6 +52,13 @@ s.replace('README.rst',
           '/cloud-tasks',
           '/tasks')
 
+# Fix the enable API link
+s.replace(
+    'README.rst',
+    r'.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks',
+    '.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/'
+    'library/cloudtasks.googleapis.com')
+
 # Correct calls to routing_header
 # https://github.com/googleapis/gapic-generator/issues/2016
 s.replace(

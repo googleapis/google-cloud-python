@@ -563,9 +563,9 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
   Attributes:
       service:
           App service.  By default, the task is sent to the service
-          which is the default service when the task is attempted
-          ("default").  For some queues or tasks which were created
-          using the App Engine Task Queue API,
+          which is the default service when the task is attempted.  For
+          some queues or tasks which were created using the App Engine
+          Task Queue API,
           [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is
           not parsable into [service][google.cloud.tasks.v2beta2.AppEngi
           neRouting.service], [version][google.cloud.tasks.v2beta2.AppEn
@@ -580,9 +580,9 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
           a2.AppEngineRouting.instance] are the empty string.
       version:
           App version.  By default, the task is sent to the version
-          which is the default version when the task is attempted
-          ("default").  For some queues or tasks which were created
-          using the App Engine Task Queue API,
+          which is the default version when the task is attempted.  For
+          some queues or tasks which were created using the App Engine
+          Task Queue API,
           [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is
           not parsable into [service][google.cloud.tasks.v2beta2.AppEngi
           neRouting.service], [version][google.cloud.tasks.v2beta2.AppEn
@@ -653,19 +653,12 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
           the default version when the task is attempted.  If [instance]
           [google.cloud.tasks.v2beta2.AppEngineRouting.instance] is
           empty, then the task will be sent to an instance which is
-          available when the task is attempted.  When
-          [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
-          is "default",
-          [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-          is "default", and [instance][google.cloud.tasks.v2beta2.AppEng
-          ineRouting.instance] is empty,
-          [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is
-          shortened to just the ``application_domain_name``.  If [servic
-          e][google.cloud.tasks.v2beta2.AppEngineRouting.service], [vers
-          ion][google.cloud.tasks.v2beta2.AppEngineRouting.version], or 
-          [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instanc
-          e] is invalid, then the task will be sent to the default
-          version of the default service when the task is attempted.
+          available when the task is attempted.  If [service][google.clo
+          ud.tasks.v2beta2.AppEngineRouting.service], [version][google.c
+          loud.tasks.v2beta2.AppEngineRouting.version], or [instance][go
+          ogle.cloud.tasks.v2beta2.AppEngineRouting.instance] is
+          invalid, then the task will be sent to the default version of
+          the default service when the task is attempted.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.AppEngineRouting)
   ))

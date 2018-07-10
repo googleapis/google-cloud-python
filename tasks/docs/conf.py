@@ -234,8 +234,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'google-cloud-tasks.tex',
-     u'google-cloud-tasks Documentation', author, 'manual'),
+    (master_doc, 'google-cloud-tasks.tex', u'google-cloud-tasks Documentation',
+     author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -274,9 +274,8 @@ man_pages = [(master_doc, 'google-cloud-tasks',
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'google-cloud-tasks',
-     u'google-cloud-tasks Documentation', author,
-     'google-cloud-tasks',
+    (master_doc, 'google-cloud-tasks', u'google-cloud-tasks Documentation',
+     author, 'google-cloud-tasks',
      'GAPIC library for the {metadata.shortName} v2beta2 service', 'APIs'),
 ]
 
