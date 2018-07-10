@@ -1,8 +1,7 @@
 Python Client for Cloud Tasks API (`Alpha`_)
 ============================================
 
-`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests. Cloud Tasks
-is in Alpha.
+`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
