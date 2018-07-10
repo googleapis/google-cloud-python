@@ -39,7 +39,7 @@ config = {
                 },
                 "DeleteQueue": {
                     "timeout_millis": 10000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "PurgeQueue": {
