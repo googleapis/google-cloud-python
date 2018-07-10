@@ -14,11 +14,13 @@
 
 import logging
 import threading
+from enum import Enum
 
-#import google.cloud.firestore_v1beta1.client as client
-from google.cloud.firestore_v1beta1.bidi import BidiRpc, ResumableBidiRpc, BackgroundConsumer
+from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
+from google.cloud.firestore_v1beta1.bidi import BackgroundConsumer
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
 from google.api_core import exceptions
+from google.protobuf import json_format
 
 
 # from bidi import BidiRpc, ResumableBidiRpc
@@ -142,21 +144,36 @@ class ExponentialBackOff(object):
         return min(self.multiplier * self.current_sleep, self.max_sleep)
 
 
+class WatchChangeType(Enum):
+    ADDED = 0
+    MODIFIED = 1
+    REMOVED = 2
+
+
+class WatchResult(object):
+    def __init__(self, snapshot, name, change_type):
+        self.snapshot = snapshot
+        self.name = name
+        self.change_type = change_type
+
+
 class Watch(object):
-    def __init__(self, 
+    def __init__(self,
                  document_reference,
                  firestore,
                  target,
                  comparator,
-                 on_response):
+                 on_snapshot,
+                 DocumentSnapshotCls):
         """
         Args:
             firestore:
-            target: ß
+            target:
             comparator:
-            on_response: Callback method that reveives a
-                `google.cloud.firestore_v1beta1.types.ListenResponse` object to
-                be acted on.
+            on_snapshot: Callback method that receives two arguments,
+                            list(snapshots) and
+                            list(tuple(document_id, change_type))
+            DocumentSnapshotCls: instance of the DocumentSnapshot class
         """
         self._document_reference = document_reference
         self._firestore = firestore
@@ -164,6 +181,7 @@ class Watch(object):
         self._targets = target
         self._comparator = comparator
         self._backoff = ExponentialBackOff()
+        self.DocumentSnapshot = DocumentSnapshotCls
 
         def should_recover(exc):
             return (
@@ -173,23 +191,22 @@ class Watch(object):
         initial_request = firestore_pb2.ListenRequest(
             database=self._firestore._database_string,
             add_target=self._targets
-            # database, add_target, remove_target, labels
         )
 
-        rpc = ResumableBidiRpc(
+        self.rpc = ResumableBidiRpc(
             self._api.firestore_stub.Listen,
             initial_request=initial_request,
             should_recover=should_recover)
 
-        rpc.add_done_callback(self._on_rpc_done)
+        self.rpc.add_done_callback(self._on_rpc_done)
 
         def consumer_callback(response):
             processed_response = self.process_response(response)
             if processed_response:
                 _LOGGER.debug("running provided callback")
-                on_response(processed_response)
+                on_snapshot(processed_response)
 
-        self._consumer = BackgroundConsumer(rpc, consumer_callback)
+        self._consumer = BackgroundConsumer(self.rpc, consumer_callback)
         self._consumer.start()
 
     def _on_rpc_done(self, future):
@@ -215,14 +232,19 @@ class Watch(object):
         thread.start()
 
     @classmethod
-    def for_document(cls, document_ref, on_response):
+    def for_document(cls, document_ref, on_snapshot, snapshot_class_instance):
         """
-        Creates a watch snapshot listener for a document. on_response receives
+        Creates a watch snapshot listener for a document. on_snapshot receives
         a DocumentChange object, but may also start to get targetChange and such
         soon
+
+        Args:
+            document_ref: Reference to Document
+            on_snapshot: callback to be called on snapshot
+            snapshot_class_instance: instance of snapshot cls to make snapshots with to 
+                pass to on_snapshot
+
         """
-
-
         return cls(document_ref,
                    document_ref._client,
                    {
@@ -231,90 +253,93 @@ class Watch(object):
                        'target_id': WATCH_TARGET_ID
                    },
                    document_watch_comparator,
-                   on_response)
+                   on_snapshot,
+                   snapshot_class_instance)
 
     # @classmethod
-    # def for_query(cls, query, on_response):
+    # def for_query(cls, query, on_snapshot):
     #     return cls(query._client,
     #                {
     #                    'query': query.to_proto(),
     #                    'target_id': WATCH_TARGET_ID
     #                },
     #                query.comparator(),
-    #                on_response)
-    
+    #                on_snapshot)
+
     def process_response(self, proto):
         """
         Args:
             listen_response(`google.cloud.firestore_v1beta1.types.ListenResponse`):
-                Callback method that reveives a object to
+                Callback method that receives a object to
         """
-        _LOGGER.debug('process_response')
         TargetChange = firestore_pb2.TargetChange
-        
-        # TODO FIGURE OUT CONDITIONAL OF THIS
-        _LOGGER.debug(f"STATE: document_change: {proto.document_change} target_change: {proto.target_change} target_change_type: {proto.target_change.target_change_type}")
-        if str(proto.document_change):
-            _LOGGER.debug("Document Change")
-        if str(proto.target_change):
-            _LOGGER.debug("Target Change")
 
         if str(proto.target_change):
-            _LOGGER.info('process_response: Processing target change')
-            change = proto.target_change
+            _LOGGER.debug('process_response: Processing target change')
+
+            change = proto.target_change  # google.cloud.firestore_v1beta1.types.TargetChange
 
             notarget_ids = change.target_ids is None or len(change.target_ids)
             if change.target_change_type == TargetChange.NO_CHANGE:
-                _LOGGER.info("process_response: "
-                             "Processing target change NO_CHANGE")
-                # if notarget_ids and change.read_time and current) {
-                #   // This means everything is up-to-date, so emit the current set of
-                #   // docs as a snapshot, if there were changes.
-                #   push(
-                #     DocumentSnapshot.toISOTime(change.readTime),
-                #     change.resumeToken
-                #   );
-                # }
+                _LOGGER.debug("process_response: target change: NO_CHANGE")
+                if notarget_ids and change.read_time: # and current:  # current is used to reflect if the local copy of tree is accurate?
+                    # This means everything is up-to-date, so emit the current set of
+                    # docs as a snapshot, if there were changes.
+                    #   push(
+                    #     DocumentSnapshot.toISOTime(change.readTime),
+                    #     change.resumeToken
+                    #   );
+                    # }
+                    # For now, we can do nothing here since there isn't anything to do
+                    # eventually it seems it makes sens to record this as a snapshot?
+                    # TODO : node calls the callback with no change?
+                    pass
             elif change.target_change_type == TargetChange.ADD:
-                _LOGGER.info('process_response: Processing target change ADD')
+                _LOGGER.debug("process_response: target change: ADD")
                 assert WATCH_TARGET_ID == change.target_ids[0], 'Unexpected target ID sent by server'
+                # TODO : do anything here?
 
+                return WatchResult(
+                    None,
+                    self._document_reference.id,
+                    WatchChangeType.ADDED)
             elif change.target_change_type == TargetChange.REMOVE:
-                _LOGGER.info("process_response: "
-                             "Processing target change REMOVE")
-                # let code = 13;
-                # let message = 'internal error';
-                # if (change.cause) {
-                #   code = change.cause.code;
-                #   message = change.cause.message;
-                # }
-                # // @todo: Surface a .code property on the exception.
-                # closeStream(new Error('Error ' + code + ': ' + message));
+                _LOGGER.debug("process_response: target change: REMOVE")
+
+                code = 13
+                message = 'internal error'
+                if change.cause:
+                    code = change.cause.code
+                    message = change.cause.message
+
+                # TODO: Surface a .code property on the exception.
+                raise Exception('Error ' + code + ': ' + message)
             elif change.target_change_type == TargetChange.RESET:
-                _LOGGER.info("process_response: "
-                             "Processing target change RESET")
+                _LOGGER.debug("process_response: target change: RESET")
+
                 # // Whatever changes have happened so far no longer matter.
-                # resetDocs();
+                # resetDocs(); # TODO
+                # TODO : do something here?
             elif change.target_change_type == TargetChange.CURRENT:
-                _LOGGER.info("process_response: "
-                             "Processing target change CURRENT")
-                # current = True
+                _LOGGER.debug("process_response: target change: CURRENT")
+
+                # current = True # TODO
+                # TODO: do something here?
             else:
-                _LOGGER.info('process_response: Processing target change ELSE')
                 _LOGGER.info('process_response: Unknown target change ' +
                              str(change.target_change_type))
 
                 # closeStream(
-                #   new Error('Unknown target change type: ' + JSON.stringify(change))    
+                #   new Error('Unknown target change type: ' + JSON.stringify(change))
+                # TODO : make this exit the inner function and stop processing?
+                raise Exception('Unknown target change type: ' + str(change))
 
-            #   if (
-            #     change.resumeToken and affectsTarget(change.target_ids, WATCH_TARGET_ID)
-            #   ) {
-            #     this._backoff.reset();
-            #   }
+            if change.resume_token and self._affects_target(change.target_ids,
+                                                            WATCH_TARGET_ID):
+                self._backoff.reset()
 
         elif str(proto.document_change):
-            _LOGGER.debug('Watch.onSnapshot Processing document_change event')
+            _LOGGER.debug('process_response: Processing document change')
 
             # No other target_ids can show up here, but we still need to see if the
             # targetId was in the added list or removed list.
@@ -331,47 +356,40 @@ class Watch(object):
                 if target == WATCH_TARGET_ID:
                     removed = True
 
-            document = proto.document_change.document
-            # name = document.name
-
             if changed:
                 _LOGGER.debug('Received document change')
 
-                # reference = DocumentReference(
-                #     self._firestore,
-                #     ResourcePath.fromSlashSeparatedString(name))
-                reference = self._document_reference
-                #create_time = DocumentSnapshot.toISOTime(document.create_time)
-                #update_time = DocumentSnapshot.toISOTime(document.update_time)
-                #read_time = DocumentSnapshot.toISOTime(document.read_time)
-                create_time = document.create_time
-                update_time = document.update_time
-                
-                #read_time = document.read_time
+                # google.cloud.firestore_v1beta1.types.DocumentChange
+                document_change = proto.document_change
+                # google.cloud.firestore_v1beta1.types.Document
+                document = document_change.document
 
-                # TODO: other clients seem to return snapshots
-                # snapshot = DocumentSnapshot(
-                #             reference,
-                #             document.fields,  # DATA?
-                #             exists=True,
-                #             read_time=read_time,
-                #             create_time=create_time,
-                #             update_time=update_time)
-                # #changeMap.set(name, snapshot);
-                # return snapshot
-                return document
-                
+                data = json_format.MessageToDict(document)
+
+                snapshot = self.DocumentSnapshot(
+                    reference=self._document_reference,
+                    data=data['fields'],
+                    exists=True,
+                    read_time=None,
+                    create_time=document.create_time,
+                    update_time=document.update_time)
+
+                return WatchResult(snapshot,
+                                   self._document_reference.id,
+                                   WatchChangeType.MODIFIED)
+
             elif removed:
                 _LOGGER.debug('Watch.onSnapshot Received document remove')
                 # changeMap.set(name, REMOVED);
-            
 
         # Document Delete or Document Remove?
         elif (proto.document_delete or proto.document_remove):
             _LOGGER.debug('Watch.onSnapshot Processing remove event')
             #   const name = (proto.document_delete || proto.document_remove).document
             #   changeMap.set(name, REMOVED);
-
+            return WatchResult(None,
+                               self._document_reference.id,
+                               WatchChangeType.REMOVED)
         elif (proto.filter):
             _LOGGER.debug('Watch.onSnapshot Processing filter update')
             #   if (proto.filter.count !== currentSize()) {
@@ -379,10 +397,19 @@ class Watch(object):
             #     resetDocs();
             #     // The filter didn't match, so re-issue the query.
             #     resetStream();
-          
+
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
         #   closeStream(
         #     new Error('Unknown listen response type: ' + JSON.stringify(proto))
         #   )
-   
+
+    def _affects_target(self, target_ids, current_id):
+        if target_ids is None or len(target_ids) == 0:
+            return True
+
+        for target_id in target_ids:
+            if target_id == current_id:
+                return True
+
+        return False

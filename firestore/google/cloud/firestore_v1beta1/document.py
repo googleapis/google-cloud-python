@@ -20,7 +20,7 @@ import six
 
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1.watch import Watch
-from google.cloud.firestore_v1beta1.proto.firestore_pb2 import Target
+
 
 class DocumentReference(object):
     """A reference to a document in a Firestore database.
@@ -450,8 +450,8 @@ class DocumentReference(object):
         '''
         given options and the callback, monitor this document for changes
         '''
-        Watch.for_document(self, callback)
-        
+        Watch.for_document(self, callback, DocumentSnapshot)
+
 
 class DocumentSnapshot(object):
     """A snapshot of document data in a Firestore database.
