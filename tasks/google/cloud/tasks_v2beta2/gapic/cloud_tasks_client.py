@@ -257,9 +257,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'list_queues' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -342,9 +339,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'get_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -437,9 +431,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'create_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -538,9 +529,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'update_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -620,9 +608,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'delete_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -696,9 +681,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'purge_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -772,9 +754,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'pause_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -853,9 +832,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'resume_queue' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -930,9 +906,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'get_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1019,9 +992,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'set_iam_policy' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1106,9 +1076,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'test_iam_permissions' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1225,9 +1192,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'list_tasks' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1324,9 +1288,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'get_task' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1460,9 +1421,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'create_task' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1535,9 +1493,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'delete_task' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1691,9 +1646,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'lease_tasks' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1789,9 +1741,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'acknowledge_task' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -1907,9 +1856,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'renew_lease' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -2013,9 +1959,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'cancel_lease' not in self._inner_api_calls:
             self._inner_api_calls[
@@ -2127,9 +2070,6 @@ class CloudTasksClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
         if 'run_task' not in self._inner_api_calls:
             self._inner_api_calls[
