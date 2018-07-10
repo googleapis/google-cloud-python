@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import logging
+import collections
 import threading
+import datetime
 from enum import Enum
 
 from google.cloud.firestore_v1beta1.bidi import ResumableBidiRpc
@@ -62,6 +64,62 @@ _RETRYABLE_STREAM_ERRORS = (
     exceptions.Unknown,
     exceptions.GatewayTimeout
 )
+
+DocTreeEntry = collections.namedtuple('DocTreeEntry', ['value', 'index'])
+
+
+class WatchDocTree(object):
+    def __init__(self):
+        self._dict = {}
+        self._index = 0
+
+    def keys(self):
+        return list(self._dict.keys())
+
+    def insert(self, key, value):
+        self._dict[key] = DocTreeEntry(value, self._index)
+        self._index += 1
+        return self
+
+    def find(self, key):
+        return self._dict[key]
+
+    def remove(self, key):
+        del self._dict[key]
+        return self
+
+    def __len__(self):
+        return len(self._dict)
+
+
+class ChangeType(Enum):
+    ADDED = 0
+    MODIFIED = 1
+    REMOVED = 2
+
+
+class DocumentChange(object):
+    def __init__(self, type, document, old_index, new_index):
+        """DocumentChange
+
+        Args:
+            type (ChangeType):
+            document (document.DocumentSnapshot):
+            old_index (int):
+            new_index (int):
+        """
+        # TODO: spec indicated an isEqual param also
+        self.type = type
+        self.document = document
+        self.old_index = old_index
+        self.new_index = new_index
+
+
+class WatchResult(object):
+    def __init__(self, snapshot, name, change_type):
+        self.snapshot = snapshot
+        self.name = name
+        self.change_type = change_type
 
 
 def _maybe_wrap_exception(exception):
@@ -122,8 +180,8 @@ class ExponentialBackOff(object):
                multiplier=_MULTIPLIER):
         """Sleep and produce a new sleep time.
 
-        .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
-                                            2015/03/backoff.html
+        .. _Exponential Backoff And Jitter:
+            https://www.awsarchitectureblog.com/2015/03/backoff.html
 
         Select a duration between zero and ``current_sleep``. It might seem
         counterintuitive to have so much jitter, but
@@ -144,35 +202,30 @@ class ExponentialBackOff(object):
         return min(self.multiplier * self.current_sleep, self.max_sleep)
 
 
-class WatchChangeType(Enum):
-    ADDED = 0
-    MODIFIED = 1
-    REMOVED = 2
-
-
-class WatchResult(object):
-    def __init__(self, snapshot, name, change_type):
-        self.snapshot = snapshot
-        self.name = name
-        self.change_type = change_type
-
-
 class Watch(object):
     def __init__(self,
                  document_reference,
                  firestore,
                  target,
                  comparator,
-                 on_snapshot,
+                 snapshot_callback,
                  DocumentSnapshotCls):
         """
         Args:
             firestore:
             target:
             comparator:
-            on_snapshot: Callback method that receives two arguments,
-                            list(snapshots) and
-                            list(tuple(document_id, change_type))
+            snapshot_callback: Callback method to process snapshots.
+                Args:
+                    docs (List(DocumentSnapshot)): A callback that returns the
+                        ordered list of documents stored in this snapshot.
+                    changes (List(str)): A callback that returns the list of
+                        changed documents since the last snapshot delivered for
+                        this watch.
+                    read_time (string): The ISO 8601 time at which this
+                        snapshot was obtained.
+                    # TODO: Go had an err here and node.js provided size.
+                    # TODO: do we want to include either?                    
             DocumentSnapshotCls: instance of the DocumentSnapshot class
         """
         self._document_reference = document_reference
@@ -180,8 +233,8 @@ class Watch(object):
         self._api = firestore._firestore_api
         self._targets = target
         self._comparator = comparator
-        self._backoff = ExponentialBackOff()
         self.DocumentSnapshot = DocumentSnapshotCls
+        self._snapshot_callback = snapshot_callback
 
         def should_recover(exc):
             return (
@@ -200,13 +253,32 @@ class Watch(object):
 
         self.rpc.add_done_callback(self._on_rpc_done)
 
-        def consumer_callback(response):
-            processed_response = self.process_response(response)
-            if processed_response:
-                _LOGGER.debug("running provided callback")
-                on_snapshot(processed_response)
+        # Initialize state for on_snapshot
+        # The sorted tree of QueryDocumentSnapshots as sent in the last
+        # snapshot. We only look at the keys.
+        # TODO: using ordered dict right now but not great maybe
+        self.doc_tree = WatchDocTree()  # TODO: rbtree(this._comparator)
 
-        self._consumer = BackgroundConsumer(self.rpc, consumer_callback)
+        # A map of document names to QueryDocumentSnapshots for the last sent
+        # snapshot.
+        self.doc_map = {}
+
+        # The accumulates map of document changes (keyed by document name) for
+        # the current snapshot.
+        self.change_map = {}
+
+        # The current state of the query results.
+        self.current = False
+        
+        # We need this to track whether we've pushed an initial set of changes,
+        # since we should push those even when there are no changes, if there
+        # aren't docs.
+        self.has_pushed = False
+
+        # The server assigns and updates the resume token.
+        self.resume_token = None
+
+        self._consumer = BackgroundConsumer(self.rpc, self.on_snapshot)
         self._consumer.start()
 
     def _on_rpc_done(self, future):
@@ -232,17 +304,18 @@ class Watch(object):
         thread.start()
 
     @classmethod
-    def for_document(cls, document_ref, on_snapshot, snapshot_class_instance):
+    def for_document(cls, document_ref, snapshot_callback,
+                     snapshot_class_instance):
         """
-        Creates a watch snapshot listener for a document. on_snapshot receives
-        a DocumentChange object, but may also start to get targetChange and such
-        soon
+        Creates a watch snapshot listener for a document. snapshot_callback
+        receives a DocumentChange object, but may also start to get
+        targetChange and such soon
 
         Args:
             document_ref: Reference to Document
-            on_snapshot: callback to be called on snapshot
-            snapshot_class_instance: instance of snapshot cls to make snapshots with to 
-                pass to on_snapshot
+            snapshot_callback: callback to be called on snapshot
+            snapshot_class_instance: instance of snapshot cls to make 
+                snapshots with to pass to snapshot_callback
 
         """
         return cls(document_ref,
@@ -253,21 +326,25 @@ class Watch(object):
                        'target_id': WATCH_TARGET_ID
                    },
                    document_watch_comparator,
-                   on_snapshot,
+                   snapshot_callback,
                    snapshot_class_instance)
 
     # @classmethod
-    # def for_query(cls, query, on_snapshot):
+    # def for_query(cls, query, snapshot_callback):
     #     return cls(query._client,
     #                {
     #                    'query': query.to_proto(),
     #                    'target_id': WATCH_TARGET_ID
     #                },
     #                query.comparator(),
-    #                on_snapshot)
+    #                snapshot_callback)
 
-    def process_response(self, proto):
+    def on_snapshot(self, proto):
         """
+        Called everytime there is a response from listen. Collect changes
+        and 'push' the changes in a batch to the customer when we receive
+        'current' from the listen response.
+
         Args:
             listen_response(`google.cloud.firestore_v1beta1.types.ListenResponse`):
                 Callback method that receives a object to
@@ -275,36 +352,34 @@ class Watch(object):
         TargetChange = firestore_pb2.TargetChange
 
         if str(proto.target_change):
-            _LOGGER.debug('process_response: Processing target change')
+            _LOGGER.debug('on_snapshot: target change')
 
-            change = proto.target_change  # google.cloud.firestore_v1beta1.types.TargetChange
+            # google.cloud.firestore_v1beta1.types.TargetChange
+            change = proto.target_change
 
-            notarget_ids = change.target_ids is None or len(change.target_ids)
+            no_target_ids = change.target_ids is None or \
+                len(change.target_ids) == 0
             if change.target_change_type == TargetChange.NO_CHANGE:
-                _LOGGER.debug("process_response: target change: NO_CHANGE")
-                if notarget_ids and change.read_time: # and current:  # current is used to reflect if the local copy of tree is accurate?
-                    # This means everything is up-to-date, so emit the current set of
-                    # docs as a snapshot, if there were changes.
-                    #   push(
-                    #     DocumentSnapshot.toISOTime(change.readTime),
-                    #     change.resumeToken
-                    #   );
-                    # }
-                    # For now, we can do nothing here since there isn't anything to do
-                    # eventually it seems it makes sens to record this as a snapshot?
-                    # TODO : node calls the callback with no change?
-                    pass
+                _LOGGER.debug('on_snapshot: target change: NO_CHANGE')
+                if no_target_ids and change.read_time and self.current: 
+                    # TargetChange.CURRENT followed by TargetChange.NO_CHANGE
+                    # signals a consistent state. Invoke the onSnapshot
+                    # callback as specified by the user.
+                    self.push(change.read_time, change.resume_token)
             elif change.target_change_type == TargetChange.ADD:
-                _LOGGER.debug("process_response: target change: ADD")
-                assert WATCH_TARGET_ID == change.target_ids[0], 'Unexpected target ID sent by server'
-                # TODO : do anything here?
+                _LOGGER.debug("on_snapshot: target change: ADD")
+                assert WATCH_TARGET_ID == change.target_ids[0], \
+                    'Unexpected target ID sent by server'
+                # TODO : do anything here? Node didn't so I think this isn't
+                # the right thing to do
+                # wr = WatchResult(
+                #     None,
+                #     self._document_reference.id,
+                #     ChangeType.ADDED)
+                # self._snapshot_callback(wr)
 
-                return WatchResult(
-                    None,
-                    self._document_reference.id,
-                    WatchChangeType.ADDED)
             elif change.target_change_type == TargetChange.REMOVE:
-                _LOGGER.debug("process_response: target change: REMOVE")
+                _LOGGER.debug("on_snapshot: target change: REMOVE")
 
                 code = 13
                 message = 'internal error'
@@ -315,34 +390,34 @@ class Watch(object):
                 # TODO: Surface a .code property on the exception.
                 raise Exception('Error ' + code + ': ' + message)
             elif change.target_change_type == TargetChange.RESET:
-                _LOGGER.debug("process_response: target change: RESET")
-
-                # // Whatever changes have happened so far no longer matter.
-                # resetDocs(); # TODO
-                # TODO : do something here?
+                # Whatever changes have happened so far no longer matter.
+                _LOGGER.debug("on_snapshot: target change: RESET")
+                self._reset_docs()
             elif change.target_change_type == TargetChange.CURRENT:
-                _LOGGER.debug("process_response: target change: CURRENT")
-
-                # current = True # TODO
-                # TODO: do something here?
+                _LOGGER.debug("on_snapshot: target change: CURRENT")
+                self.current = True
             else:
-                _LOGGER.info('process_response: Unknown target change ' +
+                _LOGGER.info('on_snapshot: Unknown target change ' +
                              str(change.target_change_type))
 
+                self._consumer.stop()
                 # closeStream(
-                #   new Error('Unknown target change type: ' + JSON.stringify(change))
+                #   new Error('Unknown target change type: ' +
+                #       JSON.stringify(change))
                 # TODO : make this exit the inner function and stop processing?
                 raise Exception('Unknown target change type: ' + str(change))
 
             if change.resume_token and self._affects_target(change.target_ids,
                                                             WATCH_TARGET_ID):
-                self._backoff.reset()
+                # TODO: they node version resets backoff here. We allow
+                # bidi rpc to do its thing.
+                pass
 
         elif str(proto.document_change):
-            _LOGGER.debug('process_response: Processing document change')
+            _LOGGER.debug('on_snapshot: document change')
 
-            # No other target_ids can show up here, but we still need to see if the
-            # targetId was in the added list or removed list.
+            # No other target_ids can show up here, but we still need to see 
+            # if the targetId was in the added list or removed list.
             target_ids = proto.document_change.target_ids or []
             removed_target_ids = proto.document_change.removed_target_ids or []
             changed = False
@@ -357,7 +432,7 @@ class Watch(object):
                     removed = True
 
             if changed:
-                _LOGGER.debug('Received document change')
+                _LOGGER.debug('on_snapshot: document change: CHANGED')
 
                 # google.cloud.firestore_v1beta1.types.DocumentChange
                 document_change = proto.document_change
@@ -374,35 +449,215 @@ class Watch(object):
                     create_time=document.create_time,
                     update_time=document.update_time)
 
-                return WatchResult(snapshot,
-                                   self._document_reference.id,
-                                   WatchChangeType.MODIFIED)
+                self.change_map[document.name] = snapshot
+                # TODO: ensure we call this later, on current returend.
+                # wr = WatchResult(snapshot,
+                #                    self._document_reference.id,
+                #                    ChangeType.MODIFIED)
+                # self._snapshot_callback(wr)
 
             elif removed:
-                _LOGGER.debug('Watch.onSnapshot Received document remove')
-                # changeMap.set(name, REMOVED);
+                _LOGGER.debug('on_snapshot: document change: REMOVED')
+                self.change_map[document.name] = ChangeType.REMOVED
 
-        # Document Delete or Document Remove?
         elif (proto.document_delete or proto.document_remove):
-            _LOGGER.debug('Watch.onSnapshot Processing remove event')
-            #   const name = (proto.document_delete || proto.document_remove).document
-            #   changeMap.set(name, REMOVED);
-            return WatchResult(None,
-                               self._document_reference.id,
-                               WatchChangeType.REMOVED)
+            _LOGGER.debug('on_snapshot: document change: DELETE/REMOVE')
+            name = (proto.document_delete or proto.document_remove).document
+            self.change_map[name] = ChangeType.REMOVED
+            # wr = WatchResult(None,
+            #                    self._document_reference.id,
+            #                    ChangeType.REMOVED)
+            # self._snapshot_callback(wr)
+
         elif (proto.filter):
-            _LOGGER.debug('Watch.onSnapshot Processing filter update')
-            #   if (proto.filter.count !== currentSize()) {
-            #     // We need to remove all the current results.
-            #     resetDocs();
-            #     // The filter didn't match, so re-issue the query.
-            #     resetStream();
+            _LOGGER.debug('on_snapshot: filter update')
+            if proto.filter.count != self._current_size():
+                # We need to remove all the current results.
+                self._reset_docs()
+                # The filter didn't match, so re-issue the query.
+                # TODO: reset stream method?
+                # self._reset_stream();
 
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
-        #   closeStream(
-        #     new Error('Unknown listen response type: ' + JSON.stringify(proto))
-        #   )
+            self._consumer.stop()
+            raise Exception(
+                'Unknown listen response type: ' + proto)
+            # TODO: can we stop but raise an error?
+            #   closeStream(
+            #     new Error('Unknown listen response type: ' +
+            #        JSON.stringify(proto))
+            #   )
+
+    def push(self, read_time, next_resume_token):
+        """
+        Assembles a new snapshot from the current set of changes and invokes
+        the user's callback. Clears the current changes on completion.
+        """
+        # TODO: may need to lock here to avoid races on collecting snapshots
+        # and sending them to the user.
+
+        deletes, adds, updates = Watch._extract_changes(
+            self.doc_map, self.change_map, read_time)
+        updated_tree, updated_map, appliedChanges = \
+            Watch._compute_snapshot(
+                self.doc_tree, self.doc_map, deletes, adds, updates)
+#         _LOGGER.debug(f"""push
+#     self.doc_map {self.doc_map}
+#     self.change_map {self.change_map}
+#     read_time {read_time}
+#     deletes {deletes}
+#     adds {adds}
+#     updates {updates}
+#     updated_tree {updated_tree}
+# """)
+        if not self.has_pushed or len(appliedChanges):
+            _LOGGER.debug(
+                f'Sending snapshot with {len(appliedChanges)} changes'
+                f' and {len(updated_tree)} documents')
+
+            _LOGGER.debug(f"updatedTree:{updated_tree}")
+            self._snapshot_callback(
+                updated_tree.keys(),
+                appliedChanges,
+                datetime.datetime.fromtimestamp(read_time.seconds)
+            )
+            self.has_pushed = True
+
+        self.doc_tree = updated_tree
+        self.doc_map = updated_map
+        self.change_map.clear()
+        self.resume_token = next_resume_token
+
+    def _extract_changes(doc_map, changes, read_time):
+        deletes = []
+        adds = []
+        updates = []
+
+        for name, value in changes.items():
+            if value == ChangeType.REMOVED:
+                if name in doc_map:
+                    deletes.append(name)
+            elif name in doc_map:
+                value.read_time = read_time
+                updates.append(value)
+            else:
+                value.read_time = read_time
+                adds.append(value)
+        _LOGGER.debug(f'deletes:{len(deletes)} adds:{len(adds)}')
+        return (deletes, adds, updates)
+
+    def _compute_snapshot(doc_tree, doc_map, delete_changes, add_changes,
+                          update_changes):
+        # TODO: ACTUALLY NEED TO CALCULATE
+        # return {updated_tree, updated_map, appliedChanges};
+        # return doc_tree, doc_map, changes
+
+        updated_tree = doc_tree
+        updated_map = doc_map
+
+        assert len(doc_tree) == len(doc_map), \
+            'The document tree and document map should have the same ' + \
+            'number of entries.'
+
+        def delete_doc(name, updated_tree, updated_map):
+            """
+            Applies a document delete to the document tree and document map.
+            Returns the corresponding DocumentChange event.
+            """
+            assert name in updated_map(name), 'Document to delete does not exist'
+            old_document = updated_map.get(name)
+            existing = updated_tree.find(old_document)
+            old_index = existing.index
+            # TODO: was existing.remove returning tree (presumably immuatable?)
+            updated_tree = updated_tree.remove(old_document)
+            updated_map.delete(name)
+            return (DocumentChange(ChangeType.REMOVED,
+                                   old_document,
+                                   old_index,
+                                   -1),
+                    updated_tree, updated_map)
+
+        def add_doc(new_document, updated_tree, updated_map):
+            """
+            Applies a document add to the document tree and the document map.
+            Returns the corresponding DocumentChange event.
+            """
+            name = new_document.reference._document_path
+            assert name not in updated_map, 'Document to add already exists'
+            updated_tree = updated_tree.insert(new_document, None)
+            new_index = updated_tree.find(new_document).index
+            updated_map[name] = new_document
+            return (DocumentChange(ChangeType.ADDED,
+                                   new_document,
+                                   -1,
+                                   new_index),
+                    updated_tree, updated_map)
+
+        def modify_doc(new_document, updated_tree, updated_map):
+            """
+            Applies a document modification to the document tree and the
+            document map.
+            Returns the DocumentChange event for successful modifications.
+            """
+            name = new_document.ref.formattedName
+            assert updated_map.has(name), 'Document to modify does not exist'
+            oldDocument = updated_map.get(name)
+            if oldDocument.updateTime != new_document.updateTime:
+                removeChange, updated_tree, updated_map = delete_doc(
+                    name, updated_tree, updated_map)
+                addChange, updated_tree, updated_map = add_doc(
+                    new_document, updated_tree, updated_map)
+                return (DocumentChange(ChangeType.MODIFIED,
+                                       new_document,
+                                       removeChange.old_index,
+                                       addChange.new_index),
+                        updated_tree, updated_map)
+
+            return None
+
+        # Process the sorted changes in the order that is expected by our
+        # clients (removals, additions, and then modifications). We also need
+        # to sort the individual changes to assure that old_index/new_index
+        # keep incrementing.
+        appliedChanges = []
+
+        # Deletes are sorted based on the order of the existing document.
+
+        # TODO: SORT
+        # delete_changes.sort(
+        #     lambda name1, name2:
+        #     self._comparator(updated_map.get(name1), updated_map.get(name2)))
+
+        for name in delete_changes:
+            change, updated_tree, updated_map = delete_doc(
+                name, updated_tree, updated_map)
+            if change:
+                appliedChanges.append(change)
+
+        # TODO: SORT
+        # add_changes.sort(self._comparator)
+        _LOGGER.debug('walk over add_changes')
+        for snapshot in add_changes:
+            _LOGGER.debug('in add_changes')
+            change, updated_tree, updated_map = add_doc(
+                snapshot, updated_tree, updated_map)
+            if change:
+                appliedChanges.append(change)
+
+        # TODO: SORT
+        # update_changes.sort(self._comparator)
+        for snapshot in update_changes:
+            change, updated_tree, updated_map = modify_doc(
+                snapshot, updated_tree, updated_map)
+            if change:
+                appliedChanges.append(change)
+
+        assert len(updated_tree) == len(updated_map), \
+            'The update document ' + \
+            'tree and document map should have the same number of entries.'
+        _LOGGER.debug(f"tree:{updated_tree}, map:{updated_map}, applied:{appliedChanges}")
+        return (updated_tree, updated_map, appliedChanges)
 
     def _affects_target(self, target_ids, current_id):
         if target_ids is None or len(target_ids) == 0:
@@ -413,3 +668,29 @@ class Watch(object):
                 return True
 
         return False
+
+    def _current_size(self):
+        """
+        Returns the current count of all documents, including the changes from
+        the current changeMap.
+        """
+        deletes, adds, _ = Watch._extract_changes(self.docMap, self.changeMap)
+        return self.docMap.size + len(adds) - len(deletes)
+
+    def _reset_docs(self):
+        """
+        Helper to clear the docs on RESET or filter mismatch.
+        """
+        _LOGGER.debug("resetting documents")
+        self.change_map.clear()
+        self.resume_token = None
+
+        # TODO: mark each document as deleted. If documents are not delete
+        # they will be sent again by the server.
+        #   docTree.forEach(snapshot => {
+        #     // Mark each document as deleted. If documents are not deleted,
+        #     // they
+        #     // will be send again by the server.
+        #     changeMap.set(snapshot.ref.formattedName, REMOVED);
+
+        self.current = False
