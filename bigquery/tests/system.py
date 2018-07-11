@@ -176,7 +176,8 @@ class TestBigQuery(unittest.TestCase):
 
     @pytest.mark.skip(reason=(
         'update_dataset() is flaky '
-        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588'))
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5588'))
     def test_update_dataset(self):
         dataset = self.temp_dataset(_make_dataset_id('update_dataset'))
         self.assertTrue(_dataset_exists(dataset))
@@ -323,7 +324,8 @@ class TestBigQuery(unittest.TestCase):
 
     @pytest.mark.skip(reason=(
         'update_table() is flaky '
-        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5589'))
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
@@ -365,7 +367,8 @@ class TestBigQuery(unittest.TestCase):
 
     @pytest.mark.skip(reason=(
         'update_table() is flaky '
-        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5589'))
     def test_update_table_schema(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
