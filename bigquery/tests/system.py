@@ -1720,6 +1720,20 @@ class TestBigQuery(unittest.TestCase):
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
 
+    def test_list_rows_empty_table(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        dataset_id = _make_dataset_id('empty_table')
+        dataset = self.temp_dataset(dataset_id)
+        table_ref = dataset.table('empty_table')
+        table = Config.CLIENT.create_table(bigquery.Table(table_ref))
+
+        # It's a bit silly to list rows for an empty table, but this does
+        # happen as the result of a DDL query from an IPython magic command.
+        rows = Config.CLIENT.list_rows(table)
+        self.assertIsInstance(rows, RowIterator)
+        self.assertEqual(tuple(rows), ())
+
     def test_list_rows_page_size(self):
         from google.cloud.bigquery.job import SourceFormat
         from google.cloud.bigquery.job import WriteDisposition
