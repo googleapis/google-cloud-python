@@ -3079,6 +3079,25 @@ class TestClient(unittest.TestCase):
             path='/%s' % PATH,
             query_params={})
 
+    def test_list_rows_empty_table(self):
+        from google.cloud.bigquery.table import Table
+
+        response = {
+            'totalRows': '0',
+            'rows': [],
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = _make_connection(response, response)
+
+        # Table that has no schema because it's an empty table.
+        table = Table(self.TABLE_REF)
+        table._properties['creationTime'] = '1234567890'
+        rows = tuple(client.list_rows(table))
+        self.assertEqual(rows, ())
+
     def test_list_rows_query_params(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
