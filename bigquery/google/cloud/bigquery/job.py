@@ -2508,6 +2508,9 @@ class QueryJob(_AsyncJob):
         schema = self._query_results.schema
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
+        # Set creation time to non-null to indicate this is actually the
+        # fetched schema to list_rows().
+        dest_table._properties['creationTime'] = '0'
         return self._client.list_rows(dest_table, retry=retry)
 
     def to_dataframe(self):
