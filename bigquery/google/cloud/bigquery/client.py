@@ -1400,8 +1400,6 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table.schema) == 0:
-                raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:
             raise TypeError('table should be Table or TableReference')
