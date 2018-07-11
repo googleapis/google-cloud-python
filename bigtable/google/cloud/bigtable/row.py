@@ -46,7 +46,7 @@ class Row(object):
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
-    :param table: The table that owns the row.
+    :param table: (Optional) The table that owns the row.
     """
 
     def __init__(self, row_key, table=None):
@@ -261,7 +261,10 @@ class DirectRow(_SetDeleteRow):
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
-    :param table: The table that owns the row.
+    :param table: (Optional) The table that owns the row. This is
+                  used for the :meth: `commit` only.  Alternatively, 
+                  DirectRows can be persisted via 
+                  :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
     """
 
     def __init__(self, row_key, table=None):
