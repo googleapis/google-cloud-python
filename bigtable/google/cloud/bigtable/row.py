@@ -262,8 +262,8 @@ class DirectRow(_SetDeleteRow):
 
     :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: (Optional) The table that owns the row. This is
-                  used for the :meth: `commit` only.  Alternatively, 
-                  DirectRows can be persisted via 
+                  used for the :meth: `commit` only.  Alternatively,
+                  DirectRows can be persisted via
                   :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
     """
 
