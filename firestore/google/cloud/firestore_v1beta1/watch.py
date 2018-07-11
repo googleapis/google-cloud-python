@@ -76,7 +76,15 @@ class WatchDocTree(object):
     def keys(self):
         return list(self._dict.keys())
 
+    def _copy(self):
+        wdt = WatchDocTree()
+        wdt._dict = self._dict.copy()
+        wdt._index = self._index
+        self = wdt
+        return self
+
     def insert(self, key, value):
+        self = self._copy()
         self._dict[key] = DocTreeEntry(value, self._index)
         self._index += 1
         return self
@@ -85,6 +93,7 @@ class WatchDocTree(object):
         return self._dict[key]
 
     def remove(self, key):
+        self = self._copy()
         del self._dict[key]
         return self
 
@@ -565,13 +574,13 @@ class Watch(object):
             Applies a document delete to the document tree and document map.
             Returns the corresponding DocumentChange event.
             """
-            assert name in updated_map(name), 'Document to delete does not exist'
+            assert name in updated_map, 'Document to delete does not exist'
             old_document = updated_map.get(name)
             existing = updated_tree.find(old_document)
             old_index = existing.index
             # TODO: was existing.remove returning tree (presumably immuatable?)
             updated_tree = updated_tree.remove(old_document)
-            updated_map.delete(name)
+            del updated_map[name]
             return (DocumentChange(ChangeType.REMOVED,
                                    old_document,
                                    old_index,
