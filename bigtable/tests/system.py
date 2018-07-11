@@ -30,6 +30,8 @@ from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
 
 from test_utils.retry import RetryErrors
 from test_utils.system import EmulatorCreds
@@ -445,6 +447,35 @@ class TestDataAPI(unittest.TestCase):
 
         for row in read_rows:
             if row.row_key in row_keys:
+                read_rows_count += 1
+
+        self.assertEqual(expected_rows_count, read_rows_count)
+
+    def test_yield_rows_with_row_set(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_6', b'row_key_7', b'row_key_8',
+            b'row_key_9']
+
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            row.commit()
+            self.rows_to_delete.append(row)
+
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key=b'row_key_3',
+                                       end_key=b'row_key_7'))
+        row_set.add_row_key(b'row_key_1')
+
+        read_rows = self._table.yield_rows()
+        expected_rows_count = 5
+        read_rows_count = 0
+
+        expected_rows_key = [b'row_key_1', b'row_key_3', b'row_key_4',
+                             b'row_key_5', b'row_key_6']
+        for row in read_rows:
+            if row.row_key in expected_rows_key:
                 read_rows_count += 1
 
         self.assertEqual(expected_rows_count, read_rows_count)
