@@ -107,18 +107,15 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        LOCATION_ID = 'locname'
         credentials = _make_credentials()
         client = self._make_one(
             project=PROJECT, credentials=credentials)
 
-        instance = client.instance(
-            INSTANCE_ID, display_name=DISPLAY_NAME, location=LOCATION_ID)
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance._cluster_location_id, LOCATION_ID)
         self.assertIs(instance._client, client)
 
     def test_admin_client_w_value_error(self):

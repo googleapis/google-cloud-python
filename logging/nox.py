@@ -35,7 +35,7 @@ UNIT_TEST_DEPS = (
 
 
 @nox.session
-def default(session):
+def default(session, django_dep=('django',)):
     """Default unit test session.
 
     This is intended to be run **without** an interpreter set, so
@@ -45,12 +45,11 @@ def default(session):
     """
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
-    if session.interpreter == 'python2.7':
-        deps += ('django >= 1.11.0, < 2.0.0dev',)
-    elif session.interpreter is None and sys.version_info[:2] == (2, 7):
+
+    if session.interpreter is None and sys.version_info[:2] == (2, 7):
         deps += ('django >= 1.11.0, < 2.0.0dev',)
     else:
-        deps += ('django',)
+        deps += django_dep
 
     deps += LOCAL_DEPS
     session.install(*deps)
@@ -82,7 +81,17 @@ def unit(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'unit-' + py
 
-    default(session)
+    # Testing multiple version of django
+    # See https://www.djangoproject.com/download/ for supported version
+    django_deps_27 = [
+        ('django==1.8.19',),
+        ('django >= 1.11.0, < 2.0.0dev',),
+    ]
+
+    if session.interpreter == 'python2.7':
+        [default(session, django_dep=django) for django in django_deps_27]
+    else:
+        default(session)
 
 
 @nox.session

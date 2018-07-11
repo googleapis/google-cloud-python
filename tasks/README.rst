@@ -1,8 +1,7 @@
 Python Client for Cloud Tasks API (`Alpha`_)
 ============================================
 
-`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests. Cloud Tasks
-is in Alpha.
+`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -24,7 +23,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks
+.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
