@@ -201,7 +201,7 @@ class Table(object):
 
         families = {id: ColumnFamily(id, self, rule).to_pb()
                     for (id, rule) in column_families.items()}
-        table = table_pb2.Table(column_families=families)
+        table = table_admin_messages_v2_pb2.Table(column_families=families)
 
         if initial_split_keys is not None:
             splits = []
