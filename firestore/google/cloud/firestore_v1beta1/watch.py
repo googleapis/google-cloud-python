@@ -609,7 +609,7 @@ class Watch(object):
             document map.
             Returns the DocumentChange event for successful modifications.
             """
-            name = new_document.ref.formattedName
+            name = new_document.reference.formattedName
             assert updated_map.has(name), 'Document to modify does not exist'
             oldDocument = updated_map.get(name)
             if oldDocument.updateTime != new_document.updateTime:
@@ -696,10 +696,8 @@ class Watch(object):
 
         # TODO: mark each document as deleted. If documents are not delete
         # they will be sent again by the server.
-        #   docTree.forEach(snapshot => {
-        #     // Mark each document as deleted. If documents are not deleted,
-        #     // they
-        #     // will be send again by the server.
-        #     changeMap.set(snapshot.ref.formattedName, REMOVED);
+        for snapshot in self.doc_tree:
+            document_name = snapshot.reference.formattedName
+            self.change_map[document_name] = ChangeType.REMOVED
 
         self.current = False
