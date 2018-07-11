@@ -1,15 +1,15 @@
-Python Client for Cloud Tasks API (`Alpha`_)
-============================================
+Python Client for Google Cloud Speech API (`Beta`_)
+====================================================
 
-`Cloud Tasks API`_: Manages the execution of large numbers of distributed requests.
+`Google Cloud Speech API`_: Google Cloud Speech API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Cloud Tasks API: https://cloud.google.com/tasks
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/tasks/usage.html
-.. _Product Documentation:  https://cloud.google.com/tasks
+.. _Google Cloud Speech API: https://cloud.google.com/speech
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
+.. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
 -----------
@@ -18,12 +18,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Tasks API.`_
+3. `Enable the Google Cloud Speech API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks
+.. _Enable the Google Cloud Speech API.:  https://cloud.google.com/speech
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
@@ -48,7 +48,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-tasks
+    <your-env>/bin/pip install google-cloud-speech
 
 
 Windows
@@ -59,19 +59,41 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-tasks
+    <your-env>\Scripts\pip.exe install google-cloud-speech
+
+Preview
+~~~~~~~
+
+SpeechClient
+^^^^^^^^^^^^
+
+.. code:: py
+
+    from google.cloud import speech_v1
+    from google.cloud.speech_v1 import enums
+
+    client = speech_v1.SpeechClient()
+
+    encoding = enums.RecognitionConfig.AudioEncoding.FLAC
+    sample_rate_hertz = 44100
+    language_code = 'en-US'
+    config = {'encoding': encoding, 'sample_rate_hertz': sample_rate_hertz, 'language_code': language_code}
+    uri = 'gs://bucket_name/file_name.flac'
+    audio = {'uri': uri}
+
+    response = client.recognize(config, audio)
 
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Tasks API
+-  Read the `Client Library Documentation`_ for Google Cloud Speech API
    API to see other available methods on the client.
--  Read the `Cloud Tasks API Product documentation`_ to learn
+-  Read the `Google Cloud Speech API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Tasks API Product documentation:  https://cloud.google.com/tasks
+.. _Google Cloud Speech API Product documentation:  https://cloud.google.com/speech
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 
 Api Reference
@@ -79,5 +101,8 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    gapic/v2beta2/api
-    gapic/v2beta2/types
+    gapic/v1/api
+    gapic/v1/types
+    gapic/v1p1beta1/api
+    gapic/v1p1beta1/types
+    changelog

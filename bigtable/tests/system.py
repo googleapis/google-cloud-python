@@ -242,7 +242,7 @@ class TestTableAdminAPI(unittest.TestCase):
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
-    def test_create_table_with_failies(self):
+    def test_create_table_with_families(self):
         temp_table_id = 'test-create-table-with-failies'
         temp_table = Config.INSTANCE.table(temp_table_id)
         gc_rule = MaxVersionsGCRule(1)
@@ -257,6 +257,19 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(retrieved_col_fam.column_family_id,
                          COLUMN_FAMILY_ID1)
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
+
+    def test_create_table_with_split_keys(self):
+        temp_table_id = 'foo-bar-baz-split-table'
+        initial_split_keys = [b'split_key_1', b'split_key_10',
+                              b'split_key_20', b'']
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        temp_table.create(initial_split_keys=initial_split_keys)
+        self.tables_to_delete.append(temp_table)
+
+        # Read Sample Row Keys for created splits
+        sample_row_keys = temp_table.sample_row_keys()
+        self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
+                         set(initial_split_keys))
 
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'
