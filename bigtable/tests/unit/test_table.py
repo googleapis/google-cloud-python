@@ -283,6 +283,89 @@ class TestTable(unittest.TestCase):
     def test_create(self):
         self._create_test_helper()
 
+    def test_create_with_split_keys(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client, bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient)
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        split_keys = [b'split1', b'split2', b'split3']
+
+        # Patch API calls
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        table.create(split_keys)
+
+        splits = []
+        for split_key in split_keys:
+            splits.append(
+                table_admin_messages_v2_pb2.CreateTableRequest.Split(
+                    key=split_key))
+
+        table_api.create_table.assert_called_once_with(
+            parent=self.INSTANCE_NAME,
+            table={},
+            table_id=self.TABLE_ID,
+            initial_splits=splits)
+
+    def test_exists(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            table_pb2 as table_data_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2 as table_messages_v1_pb2)
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client, bigtable_table_admin_client)
+        from google.api_core.exceptions import NotFound
+
+        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
+            mock.Mock())
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project='project-id',
+                                   credentials=credentials, admin=True)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        # Create response_pb
+        response_pb = table_messages_v1_pb2.ListTablesResponse(
+            tables=[
+                table_data_v2_pb2.Table(name=self.TABLE_NAME),
+            ],
+        )
+
+        # Patch API calls
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
+        bigtable_table_stub = (
+            client._table_admin_client.bigtable_table_admin_stub)
+        bigtable_table_stub.ListTables.side_effect = [
+            response_pb,
+            NotFound('testing'),
+        ]
+
+        # Perform the method and check the result.
+        table1 = instance.table(self.TABLE_ID)
+        table2 = instance.table('table-id2')
+
+        result = table1.exists()
+        self.assertEqual(True, result)
+
+        result = table2.exists()
+        self.assertEqual(False, result)
+
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)

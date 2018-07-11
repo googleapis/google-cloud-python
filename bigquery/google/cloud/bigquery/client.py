@@ -32,7 +32,6 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
@@ -41,6 +40,7 @@ from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
 from google.cloud.bigquery.query import _QueryResults
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -892,8 +892,7 @@ class Client(ClientWithProject):
         Raises:
             ImportError:
                 If a usable parquet engine cannot be found. This method
-                requires one of :mod:`pyarrow` or :mod:`fastparquet` to be
-                installed.
+                requires :mod:`pyarrow` to be installed.
         """
         buffer = six.BytesIO()
         dataframe.to_parquet(buffer)
