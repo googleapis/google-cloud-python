@@ -3312,6 +3312,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '4',
             'schema': {
                 'fields': [
                     {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
@@ -3348,6 +3349,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '0',
             'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
