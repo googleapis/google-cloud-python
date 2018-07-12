@@ -15,6 +15,7 @@
 
 import functools
 import pkg_resources
+import warnings
 
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
@@ -27,6 +28,7 @@ import grpc
 
 from google.cloud.monitoring_v3.gapic import enums
 from google.cloud.monitoring_v3.gapic import group_service_client_config
+from google.cloud.monitoring_v3.gapic.transports import group_service_grpc_transport
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
@@ -60,17 +62,8 @@ class GroupServiceClient(object):
     SERVICE_ADDRESS = 'monitoring.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/monitoring',
-        'https://www.googleapis.com/auth/monitoring.read',
-        'https://www.googleapis.com/auth/monitoring.write',
-    )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.monitoring.v3.GroupService'
 
     @classmethod
@@ -91,6 +84,7 @@ class GroupServiceClient(object):
         )
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=group_service_client_config.config,
@@ -98,41 +92,63 @@ class GroupServiceClient(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.GroupServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.GroupServiceGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        self.channel = channel
-        if self.channel is None:
-            self.channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
-                credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
-            )
-
-        # Create the gRPC stubs.
-        self._group_service_stub = (group_service_pb2_grpc.GroupServiceStub(
-            self.channel))
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=group_service_grpc_transport.
+                    GroupServiceGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        self.transport = group_service_grpc_transport.GroupServiceGrpcTransport(
+            address=self.SERVICE_ADDRESS,
+            channel=channel,
+            credentials=credentials,
+        )
 
         if client_info is None:
             client_info = (
@@ -147,26 +163,11 @@ class GroupServiceClient(object):
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
         self._inner_api_calls = {}
-
-    def _intercept_channel(self, *interceptors):
-        """ Experimental. Bind gRPC interceptors to the gRPC channel.
-
-        Args:
-            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):
-              Zero or more gRPC interceptors. Interceptors are given control in the order
-              they are listed.
-        Raises:
-            TypeError: If interceptor does not derive from any of
-              UnaryUnaryClientInterceptor,
-              UnaryStreamClientInterceptor,
-              StreamUnaryClientInterceptor, or
-              StreamStreamClientInterceptor.
-        """
-        self.channel = grpc.intercept_channel(self.channel, *interceptors)
-        self._group_service_stub = (group_service_pb2_grpc.GroupServiceStub(
-            self.channel))
-        self._inner_api_calls.clear()
 
     # Service calls
     def list_groups(self,
@@ -247,10 +248,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_groups' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_groups'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.ListGroups,
+                    self.transport.list_groups,
                     default_retry=self._method_configs['ListGroups'].retry,
                     default_timeout=self._method_configs['ListGroups'].timeout,
                     client_info=self._client_info,
@@ -327,10 +329,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'get_group' not in self._inner_api_calls:
             self._inner_api_calls[
                 'get_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.GetGroup,
+                    self.transport.get_group,
                     default_retry=self._method_configs['GetGroup'].retry,
                     default_timeout=self._method_configs['GetGroup'].timeout,
                     client_info=self._client_info,
@@ -392,10 +395,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'create_group' not in self._inner_api_calls:
             self._inner_api_calls[
                 'create_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.CreateGroup,
+                    self.transport.create_group,
                     default_retry=self._method_configs['CreateGroup'].retry,
                     default_timeout=self._method_configs['CreateGroup']
                     .timeout,
@@ -458,10 +462,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'update_group' not in self._inner_api_calls:
             self._inner_api_calls[
                 'update_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.UpdateGroup,
+                    self.transport.update_group,
                     default_retry=self._method_configs['UpdateGroup'].retry,
                     default_timeout=self._method_configs['UpdateGroup']
                     .timeout,
@@ -514,10 +519,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'delete_group' not in self._inner_api_calls:
             self._inner_api_calls[
                 'delete_group'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.DeleteGroup,
+                    self.transport.delete_group,
                     default_retry=self._method_configs['DeleteGroup'].retry,
                     default_timeout=self._method_configs['DeleteGroup']
                     .timeout,
@@ -608,10 +614,11 @@ class GroupServiceClient(object):
         if metadata is None:
             metadata = []
         metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
         if 'list_group_members' not in self._inner_api_calls:
             self._inner_api_calls[
                 'list_group_members'] = google.api_core.gapic_v1.method.wrap_method(
-                    self._group_service_stub.ListGroupMembers,
+                    self.transport.list_group_members,
                     default_retry=self._method_configs[
                         'ListGroupMembers'].retry,
                     default_timeout=self._method_configs['ListGroupMembers']
