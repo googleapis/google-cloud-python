@@ -681,13 +681,9 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
     for row in rows:
         _check_row_table_name(table_name, row)
         _check_row_type(row)
-        entry = request_pb.entries.add()
-        entry.row_key = row.row_key
-        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
-        #  the mutations have no state.
-        for mutation in row._get_mutations(None):
-            mutations_count += 1
-            entry.mutations.add().CopyFrom(mutation)
+        mutations = row._get_mutations()
+        request_pb.entries.add(row_key=row.row_key, mutations=mutations)
+        mutations_count += len(mutations)
     if mutations_count > _MAX_BULK_MUTATIONS:
         raise TooManyMutationsError('Maximum number of mutations is %s' %
                                     (_MAX_BULK_MUTATIONS,))
