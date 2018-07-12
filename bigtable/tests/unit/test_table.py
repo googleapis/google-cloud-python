@@ -334,6 +334,7 @@ class TestTable(unittest.TestCase):
             bigtable_instance_admin_client, bigtable_table_admin_client)
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import table_pb2
 
         table_api = mock.create_autospec(
             bigtable_table_admin_client.BigtableTableAdminClient)
@@ -363,7 +364,7 @@ class TestTable(unittest.TestCase):
 
         table_api.create_table.assert_called_once_with(
             parent=self.INSTANCE_NAME,
-            table={},
+            table=table_pb2.Table(),
             table_id=self.TABLE_ID,
             initial_splits=splits)
 

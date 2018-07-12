@@ -32,6 +32,8 @@ from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
 
@@ -182,26 +184,26 @@ class Table(object):
 
         .. note::
 
-            :type column_families: dict
-            :param column_failies:
-                  (Optional) A map columns to create.  The key is
-                  the column_id str and the value is a `GarbageCollectionRule`
+        A create request returns a
+        :class:`._generated.table_pb2.Table` but we don't use
+        this response.
 
-            A create request returns a
-            :class:`._generated.table_pb2.Table` but we don't use
-            this response.
+        :type column_families: dict
+        :param column_failies: (Optional) A map columns to create.  The key is
+                               the column_id str and the value is a
+                               :class:`GarbageCollectionRule`
 
         :type initial_split_keys: list
-        :param initial_split_keys: The optional list of row keys in bytes that
-                                    will be used to initially split the table
-                                    into several tablets.
+        :param initial_split_keys: (Optional) list of row keys in bytes that
+                                   will be used to initially split the table
+                                   into several tablets.
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
 
         families = {id: ColumnFamily(id, self, rule).to_pb()
                     for (id, rule) in column_families.items()}
-        table = table_admin_messages_v2_pb2.Table(column_families=families)
+        table = admin_messages_v2_pb2.Table(column_families=families)
 
         if initial_split_keys is not None:
             splits = []
