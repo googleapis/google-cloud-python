@@ -16,6 +16,13 @@
 from google.api_core import retry
 
 
+_RETRYABLE_REASONS = frozenset([
+    'backendError',
+    'rateLimitExceeded',
+    'internalError',
+])
+
+
 def _should_retry(exc):
     """Predicate for determining when to retry.
 
@@ -27,7 +34,7 @@ def _should_retry(exc):
     if len(exc.errors) == 0:
         return False
     reason = exc.errors[0]['reason']
-    return reason == 'backendError' or reason == 'rateLimitExceeded'
+    return reason in _RETRYABLE_REASONS
 
 
 DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
