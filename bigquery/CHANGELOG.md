@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.4.0
+
+### Implementation Changes
+
+- Add 'internalError' to retryable error reasons. (#5599)
+- Don't raise exception if viewing CREATE VIEW DDL results (#5602)
+
+### New Features
+
+- Add Orc source format support and samples (#5500)
+- Move 'DEFAULT_RETRY' (w/ its predicate) to a new public 'retry' module. (#5552)
+- Allow listing rows on an empty table. (#5584)
+
+### Documentation
+
+- Adds load_table_from_dataframe() to usage docs and changelog and dedents snippets in usage page (#5501)
+- Adds samples for query external data sources (GCS & Sheets) (#5491)
+- Adds BigQuery authorized view samples (#5515)
+- update docs to show pyarrow as the only dependency of load_table_from_dataframe() (#5582)
+
+### Internal / Testing Changes
+
+- BigQuery: add missing explict coverage for '_helpers' (#5550)
+- Skip update_table and update_dataset tests until etag issue is resolved. (#5590)
+
 ## 1.3.0
 
 ### New Features
