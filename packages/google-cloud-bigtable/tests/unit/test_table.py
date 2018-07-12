@@ -254,14 +254,16 @@ class TestTable(unittest.TestCase):
         table2 = self._make_one('table_id2', None)
         self.assertNotEqual(table1, table2)
 
-    def _create_test_helper(self):
+    def _create_test_helper(self, split_keys=[], column_families={}):
         from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client, bigtable_table_admin_client)
+            bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import table_pb2
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+        from google.cloud.bigtable.column_family import ColumnFamily
 
         table_api = mock.create_autospec(
             bigtable_table_admin_client.BigtableTableAdminClient)
-        instance_api = mock.create_autospec(
-            bigtable_instance_admin_client.BigtableInstanceAdminClient)
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -270,55 +272,34 @@ class TestTable(unittest.TestCase):
 
         # Patch API calls
         client._table_admin_client = table_api
-        client._instance_admin_client = instance_api
-
-        # Create expected_result.
-        expected_result = None  # create() has no return value.
 
         # Perform the method and check the result.
-        result = table.create()
-        self.assertEqual(result, expected_result)
+        table.create(column_families=column_families,
+                     initial_split_keys=split_keys)
+
+        families = {id: ColumnFamily(id, self, rule).to_pb()
+                    for (id, rule) in column_families.items()}
+
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=split_key) for split_key in split_keys]
+
+        table_api.create_table.assert_called_once_with(
+            parent=self.INSTANCE_NAME,
+            table=table_pb2.Table(column_families=families),
+            table_id=self.TABLE_ID,
+            initial_splits=splits)
 
     def test_create(self):
         self._create_test_helper()
 
+    def test_create_with_families(self):
+        from google.cloud.bigtable.column_family import MaxVersionsGCRule
+
+        families = {"family": MaxVersionsGCRule(5)}
+        self._create_test_helper(column_families=families)
+
     def test_create_with_split_keys(self):
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client, bigtable_table_admin_client)
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                mock.Mock()))
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        split_keys = [b'split1', b'split2', b'split3']
-
-        # Patch API calls
-        client._table_admin_client = table_api
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        table.create(split_keys)
-
-        splits = []
-        for split_key in split_keys:
-            splits.append(
-                table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                    key=split_key))
-
-        table_api.create_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            table={},
-            table_id=self.TABLE_ID,
-            initial_splits=splits)
+        self._create_test_helper(split_keys=[b'split1', b'split2', b'split3'])
 
     def test_exists(self):
         from google.cloud.bigtable_admin_v2.proto import (

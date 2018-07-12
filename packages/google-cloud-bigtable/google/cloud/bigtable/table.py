@@ -32,6 +32,8 @@ from google.cloud.bigtable.row_data import YieldRowsData
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
 
@@ -88,7 +90,7 @@ class Table(object):
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
 
-    :type: app_profile_id: str
+    :type app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
@@ -177,7 +179,7 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, initial_split_keys=None):
+    def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
 
         .. note::
@@ -187,25 +189,27 @@ class Table(object):
             this response.
 
         :type initial_split_keys: list
-        :param initial_split_keys: The optional list of row keys in bytes that
-                                    will be used to initially split the table
-                                    into several tablets.
+        :param initial_split_keys: (Optional) list of row keys in bytes that
+                                   will be used to initially split the table
+                                   into several tablets.
+
+        :type column_families: dict
+        :param column_failies: (Optional) A map columns to create.  The key is
+                               the column_id str and the value is a
+                               :class:`GarbageCollectionRule`
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
 
-        if initial_split_keys is not None:
-            splits = []
-            for initial_split_key in initial_split_keys:
-                splits.append(
-                    table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                        key=initial_split_key))
-        else:
-            splits = None
+        families = {id: ColumnFamily(id, self, rule).to_pb()
+                    for (id, rule) in column_families.items()}
+        table = admin_messages_v2_pb2.Table(column_families=families)
 
-        table_client.create_table(parent=instance_name,
-                                  table_id=self.table_id, table={},
-                                  initial_splits=splits)
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=key) for key in initial_split_keys]
+
+        table_client.create_table(parent=instance_name, table_id=self.table_id,
+                                  table=table, initial_splits=splits)
 
     def exists(self):
         """Check whether the table exists.
