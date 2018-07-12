@@ -21,33 +21,6 @@ import mock
 from ._testing import _make_credentials
 
 
-class MultiCallableStub(object):
-    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
-
-    def __init__(self, method, channel_stub):
-        self.method = method
-        self.channel_stub = channel_stub
-
-    def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self.channel_stub.requests.append((self.method, request))
-
-        return self.channel_stub.responses.pop()
-
-
-class ChannelStub(object):
-    """Stub for the grpc.Channel interface."""
-
-    def __init__(self, responses=[]):
-        self.responses = responses
-        self.requests = []
-
-    def unary_unary(self,
-                    method,
-                    request_serializer=None,
-                    response_deserializer=None):
-        return MultiCallableStub(method, self)
-
-
 class Test___mutate_rows_request(unittest.TestCase):
 
     def _call_fut(self, table_name, rows):
@@ -281,18 +254,16 @@ class TestTable(unittest.TestCase):
         table2 = self._make_one('table_id2', None)
         self.assertNotEqual(table1, table2)
 
-    def _create_test_helper(self, column_families={}):
+    def _create_test_helper(self, split_keys=[], column_families={}):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_table_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import table_pb2
         from google.cloud.bigtable_admin_v2.proto import (
-            table_pb2)
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2)
+            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
         from google.cloud.bigtable.column_family import ColumnFamily
 
-        channel = ChannelStub(responses=[None])
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-                channel=channel)
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
@@ -302,71 +273,33 @@ class TestTable(unittest.TestCase):
         # Patch API calls
         client._table_admin_client = table_api
 
-        # Create expected_result.
-        expected_result = None  # create() has no return value.
-
         # Perform the method and check the result.
-        result = table.create(column_families=column_families)
+        table.create(column_families=column_families,
+                     initial_split_keys=split_keys)
 
-        actual_request = channel.requests[0][1]
         families = {id: ColumnFamily(id, self, rule).to_pb()
                     for (id, rule) in column_families.items()}
-        expected_table = table_pb2.Table(column_families=families)
-        expected_request = bigtable_table_admin_pb2.CreateTableRequest(
-            parent=instance.name,
+
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=split_key) for split_key in split_keys]
+
+        table_api.create_table.assert_called_once_with(
+            parent=self.INSTANCE_NAME,
+            table=table_pb2.Table(column_families=families),
             table_id=self.TABLE_ID,
-            table=expected_table,
-        )
-        self.assertEqual(expected_request, actual_request)
-        self.assertEqual(result, expected_result)
+            initial_splits=splits)
 
     def test_create(self):
         self._create_test_helper()
 
     def test_create_with_families(self):
-        from google.cloud.bigtable.column_family import (
-            MaxVersionsGCRule)
+        from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
-        self._create_test_helper({"family": MaxVersionsGCRule(5)})
+        families = {"family": MaxVersionsGCRule(5)}
+        self._create_test_helper(column_families=families)
 
     def test_create_with_split_keys(self):
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client, bigtable_table_admin_client)
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-        from google.cloud.bigtable_admin_v2.proto import table_pb2
-
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                mock.Mock()))
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        split_keys = [b'split1', b'split2', b'split3']
-
-        # Patch API calls
-        client._table_admin_client = table_api
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        table.create(split_keys)
-
-        splits = []
-        for split_key in split_keys:
-            splits.append(
-                table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                    key=split_key))
-
-        table_api.create_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            table=table_pb2.Table(),
-            table_id=self.TABLE_ID,
-            initial_splits=splits)
+        self._create_test_helper(split_keys=[b'split1', b'split2', b'split3'])
 
     def test_exists(self):
         from google.cloud.bigtable_admin_v2.proto import (

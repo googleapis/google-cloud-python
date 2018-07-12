@@ -179,7 +179,7 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self, initial_split_keys=None, column_families={}):
+    def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
 
         .. note::
@@ -205,18 +205,11 @@ class Table(object):
                     for (id, rule) in column_families.items()}
         table = admin_messages_v2_pb2.Table(column_families=families)
 
-        if initial_split_keys is not None:
-            splits = []
-            for initial_split_key in initial_split_keys:
-                splits.append(
-                    table_admin_messages_v2_pb2.CreateTableRequest.Split(
-                        key=initial_split_key))
-        else:
-            splits = None
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=key) for key in initial_split_keys]
 
-        table_client.create_table(parent=instance_name,
-                                  table_id=self.table_id, table=table,
-                                  initial_splits=splits)
+        table_client.create_table(parent=instance_name, table_id=self.table_id,
+                                  table=table, initial_splits=splits)
 
     def exists(self):
         """Check whether the table exists.
