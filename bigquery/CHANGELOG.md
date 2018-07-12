@@ -19,14 +19,14 @@
 
 ### Documentation
 
-- Adds load_table_from_dataframe() to usage docs and changelog and dedents snippets in usage page (#5501)
-- Adds samples for query external data sources (GCS & Sheets) (#5491)
-- Adds BigQuery authorized view samples (#5515)
-- update docs to show pyarrow as the only dependency of load_table_from_dataframe() (#5582)
+- Add load_table_from_dataframe() to usage docs and changelog and dedents snippets in usage page (#5501)
+- Add samples for query external data sources (GCS & Sheets) (#5491)
+- Add BigQuery authorized view samples (#5515)
+- Update docs to show pyarrow as the only dependency of load_table_from_dataframe() (#5582)
 
 ### Internal / Testing Changes
 
-- BigQuery: add missing explict coverage for '_helpers' (#5550)
+- Add missing explict coverage for '_helpers' (#5550)
 - Skip update_table and update_dataset tests until etag issue is resolved. (#5590)
 
 ## 1.3.0
