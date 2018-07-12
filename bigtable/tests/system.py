@@ -485,8 +485,8 @@ class TestDataAPI(unittest.TestCase):
 
         read_rows = self._table.yield_rows(row_set=row_set)
 
-        expected_row_keys = [b'row_key_1', b'row_key_3', b'row_key_4',
-                             b'row_key_5', b'row_key_6']
+        expected_row_keys = set([b'row_key_1', b'row_key_3', b'row_key_4',
+                                 b'row_key_5', b'row_key_6'])
         found_row_keys = set([row.row_key for row in read_rows])
         self.assertEqual(found_row_keys, expected_row_keys)
 
