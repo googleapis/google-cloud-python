@@ -184,19 +184,19 @@ class Table(object):
 
         .. note::
 
-        A create request returns a
-        :class:`._generated.table_pb2.Table` but we don't use
-        this response.
-
-        :type column_families: dict
-        :param column_failies: (Optional) A map columns to create.  The key is
-                               the column_id str and the value is a
-                               :class:`GarbageCollectionRule`
+            A create request returns a
+            :class:`._generated.table_pb2.Table` but we don't use
+            this response.
 
         :type initial_split_keys: list
         :param initial_split_keys: (Optional) list of row keys in bytes that
                                    will be used to initially split the table
                                    into several tablets.
+
+        :type column_families: dict
+        :param column_failies: (Optional) A map columns to create.  The key is
+                               the column_id str and the value is a
+                               :class:`GarbageCollectionRule`
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
