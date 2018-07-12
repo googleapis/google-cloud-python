@@ -2974,6 +2974,59 @@ def test_query_external_sheets_permanent_table(client, to_delete):
     assert len(w_states) == 4
 
 
+def test_ddl_create_view(client, to_delete, capsys):
+    """Create a view via a DDL query."""
+    project = client.project
+    dataset_id = 'ddl_view_{}'.format(_millis())
+    table_id = 'new_view'
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_ddl_create_view]
+    # from google.cloud import bigquery
+    # project = 'my-project'
+    # dataset_id = 'my_dataset'
+    # table_id = 'new_view'
+    # client = bigquery.Client(project=project)
+
+    sql = """
+    CREATE VIEW `{}.{}.{}`
+    OPTIONS(
+        expiration_timestamp=TIMESTAMP_ADD(
+            CURRENT_TIMESTAMP(), INTERVAL 48 HOUR),
+        friendly_name="new_view",
+        description="a view that expires in 2 days",
+        labels=[("org_unit", "development")]
+    )
+    AS SELECT name, state, year, number
+        FROM `bigquery-public-data.usa_names.usa_1910_current`
+        WHERE state LIKE 'W%'
+    """.format(project, dataset_id, table_id)
+
+    job = client.query(sql)  # API request.
+    job.result()  # Waits for the query to finish.
+
+    print('Created new view "{}.{}.{}".'.format(
+        job.destination.project,
+        job.destination.dataset_id,
+        job.destination.table_id))
+    # [END bigquery_ddl_create_view]
+
+    out, _ = capsys.readouterr()
+    assert 'Created new view "{}.{}.{}".'.format(
+        project, dataset_id, table_id) in out
+
+    # Test that listing query result rows succeeds so that generic query
+    # processing tools work with DDL statements.
+    rows = list(job)
+    assert len(rows) == 0
+
+    if pandas is not None:
+        df = job.to_dataframe()
+        assert len(df) == 0
+
+
 def test_client_list_jobs(client):
     """List jobs for a project."""
 
