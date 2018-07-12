@@ -37,7 +37,11 @@ from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
 
 
-_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
+_NO_PANDAS_ERROR = (
+    'The pandas library is not installed, please install '
+    'pandas to use the to_dataframe() function.'
+)
+_TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
 
 
@@ -1137,14 +1141,32 @@ class RowIterator(HTTPIterator):
 
         """
         if pandas is None:
-            raise ValueError('The pandas library is not installed, please '
-                             'install pandas to use the to_dataframe() '
-                             'function.')
+            raise ValueError(_NO_PANDAS_ERROR)
 
         column_headers = [field.name for field in self.schema]
         rows = [row.values() for row in iter(self)]
 
         return pandas.DataFrame(rows, columns=column_headers)
+
+
+class _EmptyRowIterator(object):
+    """An empty row iterator.
+
+    This class prevents API requests when there are no rows to fetch or rows
+    are impossible to fetch, such as with query results for DDL CREATE VIEW
+    statements.
+    """
+    schema = ()
+    pages = ()
+    total_rows = 0
+
+    def to_dataframe(self):
+        if pandas is None:
+            raise ValueError(_NO_PANDAS_ERROR)
+        return pandas.DataFrame()
+
+    def __iter__(self):
+        return iter(())
 
 
 class TimePartitioningType(object):
