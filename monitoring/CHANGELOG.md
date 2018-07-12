@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.31.0
+
+### New Features
+- Monitoring: Add Transports Layer, Remove gRPC size restrictions (4MB default) (#5594)
+
+### Documentation
+- Monitoring. Update documentation links. (#5557)
+
 ## 0.30.0
 
 ### Implementation Changes
