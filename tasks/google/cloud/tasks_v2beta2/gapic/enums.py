@@ -190,6 +190,39 @@ class Code(enum.IntEnum):
     DATA_LOSS = 15
 
 
+class Task(object):
+    class View(enum.IntEnum):
+        """
+        The view specifies a subset of ``Task`` data.
+
+        When a task is returned in a response, not all
+        information is retrieved by default because some data, such as
+        payloads, might be desirable to return only when needed because
+        of its large size or because of the sensitivity of data that it
+        contains.
+
+        Attributes:
+          VIEW_UNSPECIFIED (int): Unspecified. Defaults to BASIC.
+          BASIC (int): The basic view omits fields which can be large or can contain
+          sensitive data.
+
+          This view does not include the
+          (``payload in AppEngineHttpRequest`` and
+          ``payload in PullMessage``). These payloads are
+          desirable to return only when needed, because they can be large
+          and because of the sensitivity of the data that you choose to
+          store in it.
+          FULL (int): All information is returned.
+
+          Authorization for ``FULL`` requires
+          ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+          permission on the ``Queue`` resource.
+        """
+        VIEW_UNSPECIFIED = 0
+        BASIC = 1
+        FULL = 2
+
+
 class Queue(object):
     class State(enum.IntEnum):
         """
@@ -229,36 +262,3 @@ class Queue(object):
         RUNNING = 1
         PAUSED = 2
         DISABLED = 3
-
-
-class Task(object):
-    class View(enum.IntEnum):
-        """
-        The view specifies a subset of ``Task`` data.
-
-        When a task is returned in a response, not all
-        information is retrieved by default because some data, such as
-        payloads, might be desirable to return only when needed because
-        of its large size or because of the sensitivity of data that it
-        contains.
-
-        Attributes:
-          VIEW_UNSPECIFIED (int): Unspecified. Defaults to BASIC.
-          BASIC (int): The basic view omits fields which can be large or can contain
-          sensitive data.
-
-          This view does not include the
-          (``payload in AppEngineHttpRequest`` and
-          ``payload in PullMessage``). These payloads are
-          desirable to return only when needed, because they can be large
-          and because of the sensitivity of the data that you choose to
-          store in it.
-          FULL (int): All information is returned.
-
-          Authorization for ``FULL`` requires
-          ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
-          permission on the ``Queue`` resource.
-        """
-        VIEW_UNSPECIFIED = 0
-        BASIC = 1
-        FULL = 2

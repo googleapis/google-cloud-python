@@ -17,6 +17,7 @@ import functools
 import pkg_resources
 import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -56,6 +57,27 @@ class CloudTasksClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.tasks.v2beta2.CloudTasks'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudTasksClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def project_path(cls, project):
@@ -381,7 +403,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -480,7 +502,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -575,7 +597,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -797,7 +819,7 @@ class CloudTasksClient(object):
         WARNING: Resuming many high-QPS queues at the same time can
         lead to target overloading. If you are resuming high-QPS
         queues, follow the 500/50/5 pattern described in
-        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/cloud-tasks/pdfs/managing-cloud-tasks-scaling-risks-2017-06-05.pdf>`_.
+        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`_.
 
         Example:
             >>> from google.cloud import tasks_v2beta2
@@ -1110,7 +1132,6 @@ class CloudTasksClient(object):
     def list_tasks(self,
                    parent,
                    response_view=None,
-                   order_by=None,
                    page_size=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1161,10 +1182,6 @@ class CloudTasksClient(object):
                 Authorization for ``FULL`` requires
                 ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
                 ``Task`` resource.
-            order_by (str): Sort order used for the query. The only fields supported for sorting
-                are ``schedule_time`` and ``pull_message.tag``. All results will be
-                returned in approximately ascending order. The default ordering is by
-                ``schedule_time``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1205,7 +1222,6 @@ class CloudTasksClient(object):
         request = cloudtasks_pb2.ListTasksRequest(
             parent=parent,
             response_view=response_view,
-            order_by=order_by,
             page_size=page_size,
         )
         if metadata is None:
