@@ -91,12 +91,12 @@ def setUpModule():
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
                             error_predicate=_retry_on_unavailable)
-        instances_response = retry(Config.CLIENT.list_instances)()
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-        if len(instances_response.failed_locations) != 0:
+        if len(failed_locations) != 0:
             raise ValueError('List instances failed in module set up.')
 
-        EXISTING_INSTANCES[:] = instances_response.instances
+        EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create(location_id=LOCATION_ID)
@@ -263,15 +263,17 @@ class TestTableAdminAPI(unittest.TestCase):
     def test_create_table_with_split_keys(self):
         temp_table_id = 'foo-bar-baz-split-table'
         initial_split_keys = [b'split_key_1', b'split_key_10',
-                              b'split_key_20', b'']
+                              b'split_key_20']
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
         self.tables_to_delete.append(temp_table)
 
         # Read Sample Row Keys for created splits
         sample_row_keys = temp_table.sample_row_keys()
-        self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
-                         set(initial_split_keys))
+        # Remove blank row_key value from sample_row_keys results
+        expected_split_keys = [srk.row_key for srk in sample_row_keys if
+                               srk.row_key.decode('utf-8') != '']
+        self.assertEqual(set(expected_split_keys), set(initial_split_keys))
 
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'
