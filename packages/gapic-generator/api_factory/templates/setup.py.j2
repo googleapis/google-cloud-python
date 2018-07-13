@@ -7,30 +7,19 @@ import os
 from setuptools import setup
 
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
-with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
-    README = file_obj.read()
-
-
 setup(
-    name='{{ api.warehouse_package_name }}',
-    author='{{ api.client.copyright.fullname }}',
+    name='{{ api.naming.warehouse_package_name }}',
     version='0.0.1',
-    description='{{ api.client.documentation.tagline|wrap(width=70, initial_width=50, subsequent_indent="        '", antecedent_trailer=" '") }}',
-    long_description=README,
-    license={% if api.client.license %}'{{ api.client.license.replace('-', ' ') }}'{% else %}None{% endif %},
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
         'google-api-core >= 0.1.4, < 0.2.0dev',
+        'googleapis-common-protos >= 1.6.0b4',
         'grpcio >= 1.10.0',
     ),
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        {%- if api.client.license %}
-        'License :: OSI Approved :: {{ api.client.license }}',
-        {%- endif %}
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',

@@ -24,13 +24,13 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 setup(
-    name='python-api-factory',
-    version='0.0.2',
+    name='gapic-generator',
+    version='0.0.4',
     license='Apache 2.0',
     author='Luke Sneeringer',
     author_email='lukesneeringer@google.com',
-    url='https://github.com/googleapis/python-api-factory.git',
-    packages=find_packages(exclude=['protos', 'tests']),
+    url='https://github.com/googleapis/gapic-generator-python.git',
+    packages=find_packages(exclude=['docs', 'tests']),
     description='Python client library generator for APIs defined by protocol'
                 'buffers',
     long_description=README,
@@ -42,7 +42,7 @@ setup(
     include_package_data=True,
     install_requires=(
         'click >= 6.7',
-        'googleapis-common-protos >= 1.5.3',
+        'googleapis-common-protos >= 1.6.0b4',
         'grpcio >= 1.9.1',
         'jinja2 >= 2.10',
         'protobuf >= 3.5.1',
@@ -56,8 +56,8 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: POSIX',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),

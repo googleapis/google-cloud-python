@@ -29,8 +29,21 @@ rather dense. The key point to grasp is that each ``.proto`` *file* compiles
 into one of these proto messages (called *descriptors*), and this plugin's
 job is to parse those descriptors.
 
+That said, you should not need to know the ins and outs of the ``protoc``
+contract model to be able to follow what this library is doing.
+
 .. _plugin.proto: https://github.com/google/protobuf/blob/master/src/google/protobuf/compiler/plugin.proto
 .. _descriptor.proto: https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto
+
+
+Entry Point
+~~~~~~~~~~~
+
+The entry point to this tool is ``api_factory/cli/generate.py``. The function
+in this module is responsible for accepting CLI input, building the internal
+API schema, and then rendering templates and using them to build a response
+object.
+
 
 Parse
 ~~~~~
@@ -39,11 +52,17 @@ As mentioned, this plugin is divided into two steps. The first step is
 parsing. The guts of this is handled by the :class:`~.schema.api.API` object,
 which is this plugin's internal representation of the full API client.
 
-In particular, this class has a :meth:`~.schema.api.API.load` method which
-accepts a `FileDescriptor`_ (remember, this is ``protoc``'s internal
-representation of each proto file). The method is called once for each proto
-file you send to be compiled as well as each dependency. (``protoc`` itself
-is smart enough to de-duplicate and send everything in the right order.)
+In particular, this class has a :meth:`~.schema.api.API.build` method which
+accepts a sequence of `FileDescriptor`_ objects (remember, this is ``protoc``'s
+internal representation of each proto file). That method iterates over each
+file and creates a :class:`~.schema.api.Proto` object for each one.
+
+.. note::
+
+  An :class:`~.schema.api.API` object will not only be given the descriptors
+  for the files you specify, but also all of their dependencies.
+  ``protoc`` is smart enough to de-duplicate and send everything in the
+  correct order.
 
 The :class:`~.schema.api.API` object's primary purpose is to make sure all
 the information from the proto files is in one place, and reasonably
@@ -71,7 +90,10 @@ These wrapper classes follow a consistent structure:
   desctiptor unless the wrapper itself provides something, making the wrappers
   themselves transparent to templates.
 * They provide a ``meta`` attribute with metadata (package information and
-  documentation).
+  documentation). That means templates can consistently access the name
+  for the module where an object can be found, or an object's documentation,
+  in predictable and consistent places (``thing.meta.doc``, for example,
+  prints the comments for ``thing``).
 
 Translation
 ~~~~~~~~~~~
@@ -79,10 +101,10 @@ Translation
 The translation step follows a straightfoward process to write the contents
 of client library files.
 
-First, it loads every template in the ``generator/templates/`` directory.
-These are `Jinja`_ templates. There is no master list of templates;
+First, it loads every template in the ``templates/`` directory.
+These are `Jinja`_ templates. **There is no master list of templates**;
 it is assumed that every template in this directory should be rendered
-(unless its name begins with an underscore).
+(unless its name begins with a single underscore).
 
 The name of the output file is based on the name of the template, with
 the following string replacements applied:
@@ -90,11 +112,17 @@ the following string replacements applied:
 * The ``.j2`` suffix is removed.
 * ``$namespace`` is replaced with the namespace specified in the client,
   converted to appropriate Python module case. If there is no namespace,
-  this segment is dropped.
+  this segment is dropped. If the namespace has more than one element,
+  this is expanded out in the directory structure. (For example, a namespace
+  of ``['Acme', 'Manufacturing']`` will translate into ``acme/manufacturing/``
+  directories.)
 * ``$name`` is replaced with the client name. This is expected to be
   present.
 * ``$version`` is replaced with the client version (the version of the API).
   If there is no specified version, this is dropped.
+* ``$name_$version`` is a special case: It is replaced with the client
+  name, followed by the version. However, if there is no version, both it
+  and the underscore are dropped.
 * ``$service`` is replaced with the service name, converted to appropriate
   Python module case. There may be more than one service in an API; read on
   for more about this.

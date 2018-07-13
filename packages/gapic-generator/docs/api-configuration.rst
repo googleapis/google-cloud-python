@@ -15,8 +15,11 @@ published protocol buffers.
 This plugin *will* successfully publish a library on a valid protobuf API
 even without any additional information set, but may require some
 post-processing work by a human in this case before the resulting client
-library will install or work. (Look for values enclosed by ``<<<`` and
-``>>>`` to quickly spot these.)
+library will work.
+
+Look for values enclosed by ``<<<`` and ``>>>`` to quickly spot these.
+As of this writing, these are the ``SERVICE_ADDRESS`` and ``OAUTH_SCOPES``
+constants defined in ``base.py`` files.
 
 Reading further assumes you are at least nominally familiar with protocol
 buffers and their syntax. You may not be familiar with `options`_ yet; it is
@@ -37,54 +40,66 @@ When specifying an annotation, your proto will need to import the file
 where the annotation is defined. If you try to use an annotation without
 importing the dependency proto, then ``protoc`` will give you an error.
 
-All of the protos discussed here are in the `googleapis`_ repository,
-on the ``annotated`` branch, and they are consistently in the
-``google.api.experimental`` package. While this remains experimental,
-the best course is probably to clone the repository:
+These protos live on the ``input-contract`` branch in the
+`api-common-protos`_ repository.
+
+Your best bet is to likely clone this repository:
 
 .. code-block:: shell
 
-  $ git clone git@github.com:googleapis/googleapis.git
-  $ cd googleapis
-  $ git checkout --track -b annotated origin/annotated
+  $ git clone git@github.com:googleapis/api-common-protos.git
+  $ cd api-common-protos
+  $ git checkout --track -b input-contract origin/input-contract
 
 Once this is done, you will need to specify the root of this repository
 on disk as a ``--proto_path`` whenever invoking ``protoc``.
 
-.. _googleapis: https://github.com/googleapis/googleapis/
+.. _api-common-protos: https://github.com/googleapis/api-common-protos/tree/input-contract
+
 
 
 API Client Information
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The most important piece of information this plugin requires is information
-about the client library itself: what should it be called, how is it licensed,
-and so on.
+about the client library itself: what should it be called, what is its proper
+namespace, and so on.
 
-This is rolled up into a strcuture spelled ``Client``, and the annotation
-is defined in `google/api/experimental/client.proto`_.
+This is rolled up into a structure called ``Metadata``, and the annotation
+is defined in `google/api/metadata.proto`_.
 
 The option may be defined as a full structure at the top level of the proto
 file. It is recommended that this be declared other under ``option``
 directives, and above services or messages.
 
-You really need ``name`` (otherwise the plugin will use a placeholder), but
-everything else is fundamentally optional. Here is a complete annotation:
+This annotation is optional, and you may not need it. The generator will
+infer a proper name, namespace and version from the ``package`` statement:
 
 .. code-block:: protobuf
 
-  option (google.api.experimental.client) = {
-    name: "News"
-    namespace: ["Daily Planet"]
-    version: "v1"
-    documentation: {
-      overview: "The News API allows you to retrieve and search articles posted to the Daily Planet, the most trusted newspaper in Metropolis."
-      summary: "All the news fit to print."
-      documentation_root_url: "bogus://dailyplanet.com/news-api/docs/"
-    }
-    copyright: { fullname: "Perry White" year: "2018" }
-    license: "Apache-2.0"
+  // This will come out to be:
+  //   package namespace: ['Acme', 'Manufacturing']
+  //   package name: 'Anvils'
+  //   version: 'v1'
+  package acme.manufacturing.anvils.v1;
+
+If the inferred package name is wrong for some reason, then the annotation
+is important.
+
+.. code-block:: protobuf
+
+  package acme.anvils.v1;
+
+  // The namespace provided here will take precedence over the
+  // inferred one.
+  option (google.api.metadata) = {
+    "package_namespace": ["Acme", "Manufacturing"]
   };
+
+.. note::
+
+  The ``google.api.metadata`` annotation can be used to specify a
+  namespace or name, but the version *must* be specified in the proto package.
 
 
 Service Information
@@ -95,7 +110,7 @@ where the API service is running, as well as what (if anything) else is
 required in order to properly connect.
 
 This plugin understands two options for this, which are also defined in
-`google/api/experimental/client.proto`_. Rather than being options on
+`google/api/metadata.proto`_. Rather than being options on
 top level files, however, these are both options on `services`_. If an API
 defines more than one service, these options do *not* need to match between
 them.
@@ -104,8 +119,8 @@ The first option is the **host** where the service can be reached:
 
 .. code-block:: protobuf
 
-  service News {
-    option (google.api.experimental.host) = "newsapi.dailyplanet.com"
+  service AnvilService {
+    option (google.api.default_host) = "anvils.acme.com"
   }
 
 The second option is any oauth scopes which are needed. Google's auth
@@ -114,22 +129,59 @@ this plugin uses) expect that credentials declare what scopes they believe
 they need, and the auth libraries do the right thing in the situation where
 authorization is needed, access has been revoked, and so on.
 
-These are a list, which is accomplished by specifying the option more than
-once:
-
 .. code-block:: protobuf
 
-  service News {
-    option (google.api.experimental.oauth_scopes) = "https://newsapi.dailyplanet.com/auth/list-articles"
-    option (google.api.experimental.oauth_scopes) = "https://newsapi.dailyplanet.com/auth/read-article"
+  service AnvilService {
+    option (google.api.oauth) = {
+      scopes: ["https://anvils.acme.com/auth/browse-anvils",
+               "https://anvils.acme.com/auth/drop-anvils"]
+    };
   }
 
 .. _services: https://developers.google.com/protocol-buffers/docs/proto3#services
-.. _google/api/experimental/client.proto: https://github.com/googleapis/googleapis/blob/annotated/google/api/experimental/client.proto#L35
+.. _google/api/metadata.proto: https://github.com/googleapis/api-common-protos/blob/input-contract/google/api/metadata.proto
 .. _google-auth: https://github.com/GoogleCloudPlatform/google-auth-library-python
+
+
+Long-Running Operations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Occasionally, API requests may take a long time. In this case, APIs may
+run a task in the background and provide the client with a token to
+retrieve the result later.
+
+The ``google.longrunning.Operation`` message is intended for this purpose.
+It is defined in `google/longrunning/operations.proto`_ and can be used
+as the return type of an RPC.
+
+However, when doing this, the ultimate return type is lost. Therefore,
+it is important to annotate the return type (and metadata type, if applicable)
+so that client libraries are able to deserialize the message.
+
+.. code-block:: protobuf
+
+  import "google/longrunning/operations.proto";
+
+  package acme.anvils.v1;
+
+  service AnvilService {
+    rpc DeliverAnvil(DeliverAnvilRequest)
+        returns (google.longrunning.Operation) {
+      option (google.longrunning.operation_types) = {
+        response: "acme.anvils.v1.DeliverAnvilResponse"
+        metadata: "acme.anvils.v1.DeliverAnvilMetadata"
+      };
+    }
+  }
+
+The ``response`` field here is mandatory; the ``metadata`` field is optional,
+and ``google.longrunning.OperationMetadata`` is assumed if it is not set.
+
+.. _google/longrunning/operations.proto: https://github.com/googleapis/api-common-protos/blob/input-contract/google/longrunning/operations.proto
+
 
 Future Work
 ~~~~~~~~~~~
 
-Support for other annotated behavior, such as overloads, long-running
-operations, samples, and header values is a work in progress.
+Support for other annotated behavior, such as overloads, samples, and
+header values is a work in progress.

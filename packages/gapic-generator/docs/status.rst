@@ -17,8 +17,10 @@ As this is experimental work, please note the following limitations:
 - gRPC must be installed even if you are not using it (this is due to
   some minor issues in ``api-core``).
 - Only unary calls are implemented at this point.
-- No support for GAPIC features (e.g. LRO, method argument flattening) yet.
+- No support for method argument flattening yet.
 - No support for samples yet.
+- Request headers based on ``google.api.http`` annotations are not implemented
+  yet.
 - No tests are implemented.
 
-.. _an awkward location: https://github.com/googleapis/googleapis/blob/annotated/google/api/experimental/
+.. _an awkward location: https://github.com/googleapis/api-common-protos/blob/input-contract/google/api/

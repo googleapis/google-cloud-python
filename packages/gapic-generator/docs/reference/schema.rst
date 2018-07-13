@@ -15,6 +15,13 @@ metadata
 .. automodule:: api_factory.schema.metadata
     :members:
 
+naming
+~~~~~~
+
+.. automodule:: api_factory.schema.naming
+    :members:
+
+
 wrappers
 ~~~~~~~~
 

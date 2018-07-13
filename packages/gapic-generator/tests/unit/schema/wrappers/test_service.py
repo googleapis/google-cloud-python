@@ -14,12 +14,12 @@
 
 import typing
 
+from google.api import annotations_pb2
+from google.api import http_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
-from api_factory.schema.pb import client_pb2
-from api_factory.schema.pb import headers_pb2
 
 
 def test_service_properties():
@@ -34,7 +34,7 @@ def test_service_host():
 
 def test_service_no_host():
     service = make_service()
-    assert service.host == '<<< HOSTNAME >>>'
+    assert service.host == '<<< SERVICE ADDRESS >>>'
     assert bool(service.host) is False
 
 
@@ -51,23 +51,23 @@ def test_service_no_scopes():
 
 def test_service_pb2_modules():
     service = make_service()
-    assert service.pb2_modules == [
+    assert service.pb2_modules == (
         ('a.b.v1', 'c_pb2'),
         ('foo', 'bacon_pb2'),
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
         ('x.y.v1', 'z_pb2'),
-    ]
+    )
 
 
 def test_service_pb2_modules_lro():
     service = make_service_with_method_options()
-    assert service.pb2_modules == [
+    assert service.pb2_modules == (
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
         ('foo', 'qux_pb2'),
         ('google.longrunning', 'operations_pb2'),
-    ]
+    )
 
 
 def test_service_no_lro():
@@ -86,7 +86,8 @@ def test_service_no_field_headers():
 
 
 def test_service_has_field_headers():
-    service = make_service_with_method_options()
+    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
+    service = make_service_with_method_options(http_rule=http_rule)
     assert service.has_field_headers
 
 
@@ -108,9 +109,8 @@ def make_service(name: str = 'Placeholder', host: str = '',
     # appropriate.
     service_pb = descriptor_pb2.ServiceDescriptorProto(name=name)
     if host:
-        service_pb.options.Extensions[client_pb2.host] = host
-    if scopes:
-        service_pb.options.Extensions[client_pb2.oauth_scopes].extend(scopes)
+        service_pb.options.Extensions[annotations_pb2.default_host] = host
+    service_pb.options.Extensions[annotations_pb2.oauth].scopes.extend(scopes)
 
     # Return a service object to test.
     return wrappers.Service(
@@ -119,7 +119,9 @@ def make_service(name: str = 'Placeholder', host: str = '',
     )
 
 
-def make_service_with_method_options() -> wrappers.Service:
+def make_service_with_method_options(*,
+        http_rule: http_pb2.HttpRule = None,
+        ) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
     # field headers.
     method = get_method(
@@ -128,7 +130,7 @@ def make_service_with_method_options() -> wrappers.Service:
         'google.longrunning.operations.Operation',
         lro_payload_type='foo.baz.ThingResponse',
         lro_metadata_type='foo.qux.ThingMetadata',
-        field_headers=(headers_pb2.FieldHeader(),)
+        http_rule=http_rule,
     )
 
     # Define a service descriptor.
@@ -146,12 +148,12 @@ def get_method(name: str,
         out_type: str,
         lro_payload_type: str = '',
         lro_metadata_type: str = '',
-        field_headers: typing.Tuple[str] = (),
+        http_rule: http_pb2.HttpRule = None,
         ) -> wrappers.Method:
     input_ = get_message(in_type)
     output = get_message(out_type)
     lro_payload = get_message(lro_payload_type) if lro_payload_type else None
-    lro_metadata = get_message(lro_metadata_type) if lro_metadata_type else None
+    lro_meta = get_message(lro_metadata_type) if lro_metadata_type else None
 
     # Define a method descriptor. Set the field headers if appropriate.
     method_pb = descriptor_pb2.MethodDescriptorProto(
@@ -159,13 +161,14 @@ def get_method(name: str,
         input_type=input_.proto_path,
         output_type=output.proto_path,
     )
-    ext_key = headers_pb2.field_headers
-    method_pb.options.Extensions[ext_key].extend(field_headers)
+    if http_rule:
+        ext_key = annotations_pb2.http
+        method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
 
     return wrappers.Method(
         method_pb=method_pb,
         input=input_,
-        lro_metadata=lro_metadata,
+        lro_metadata=lro_meta,
         lro_payload=lro_payload,
         output=output,
     )

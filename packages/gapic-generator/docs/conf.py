@@ -24,9 +24,9 @@ copyright = '2018, Google LLC'
 author = 'Luke Sneeringer'
 
 # The short X.Y version
-version = '0.0.2'
+version = '0.0.4'
 # The full version, including alpha/beta/rc tags
-release = '0.0.2'
+release = '0.0.4'
 
 
 # -- General configuration ---------------------------------------------------

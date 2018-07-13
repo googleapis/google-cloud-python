@@ -4,10 +4,11 @@ workflows:
   version: 2
   tests:
     jobs:
-      - unit
+      - unit-3.6
+      - unit-3.7
       - docs
 jobs:
-  unit:
+  unit-3.6:
     docker:
       - image: 'python:3.6'
     steps:
@@ -17,7 +18,22 @@ jobs:
           command: pip install nox-automation codecov
       - run:
           name: Run unit tests.
-          command: nox -s unit
+          command: nox -s "unit(python_version='3.6')"
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-3.7:
+    docker:
+      - image: 'python:3.7'
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s "unit(python_version='3.7')"
       - run:
           name: Submit coverage data to codecov.
           command: codecov

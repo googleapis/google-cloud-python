@@ -12,77 +12,76 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Sequence
 from unittest import mock
 
-import pytest
-
+from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import metadata
+from api_factory.schema import api
+from api_factory.schema import naming
 from api_factory.schema import wrappers
-from api_factory.schema.api import API
-from api_factory.schema.pb import client_pb2
-from api_factory.schema.pb import lro_pb2
 
 
-def test_long_name():
-    api = make_api(
-        client=make_client(name='Genie', namespace=['Agrabah', 'Lamp']),
+def test_api_build():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='dep.proto',
+            package='google.dep',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(name='imported_message', number=1,
+                                   type_name='google.dep.ImportedMessasge'),
+                )),
+                make_message_pb2(name='GetFooResponse', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='google.example.v1.Foo'),
+                )),
+            ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='GetFoo',
+                        input_type='google.example.v1.GetFooRequest',
+                        output_type='google.example.v1.GetFooResponse',
+                    ),
+                ),
+            ),),
+        ),
     )
-    assert api.long_name == 'Agrabah Lamp Genie'
+
+    # Create an API with those protos.
+    api_schema = api.API.build(fd, package='google.example.v1')
+
+    # Establish that the API has the data expected.
+    assert isinstance(api_schema, api.API)
+    assert len(api_schema.protos) == 2
+    assert 'google.dep.ImportedMessage' in api_schema.messages
+    assert 'google.example.v1.Foo' in api_schema.messages
+    assert 'google.example.v1.GetFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooResponse' in api_schema.messages
+    assert 'google.example.v1.FooService' in api_schema.services
+    assert len(api_schema.enums) == 0
 
 
-def test_module_name():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-    ))
-    assert api.module_name == 'genie'
+def test_proto_build():
+    fdp = descriptor_pb2.FileDescriptorProto(
+        name='my_proto_file.proto',
+        package='google.example.v1',
+    )
+    proto = api.Proto.build(fdp, file_to_generate=True)
+    assert isinstance(proto, api.Proto)
 
 
-def test_versioned_module_name_no_version():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-        version='',
-    ))
-    assert api.versioned_module_name == 'genie'
-
-
-def test_versioned_module_name():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-        version='v2',
-    ))
-    assert api.versioned_module_name == 'genie_v2'
-
-
-def test_warehouse_package_name_placeholder():
-    api = make_api(client=make_client(name=''))
-    assert api.warehouse_package_name == '<<< PACKAGE NAME >>>'
-    assert bool(api.warehouse_package_name) is False
-
-
-def test_warehouse_package_name_no_namespace():
-    api = make_api(client=make_client(name='BigQuery', namespace=[]))
-    assert api.warehouse_package_name == 'bigquery'
-
-
-def test_warehouse_package_name_with_namespace():
-    api = make_api(client=make_client(
-        name='BigQuery',
-        namespace=('Google', 'Cloud'),
-    ))
-    assert api.warehouse_package_name == 'google-cloud-bigquery'
-
-
-def test_warehouse_package_name_multiple_words():
-    api = make_api(client=make_client(name='Big Query', namespace=[]))
-    assert api.warehouse_package_name == 'big-query'
-
-
-def test_load():
+def test_proto_builder_constructor():
     sentinel_message = descriptor_pb2.DescriptorProto()
     sentinel_enum = descriptor_pb2.EnumDescriptorProto()
     sentinel_service = descriptor_pb2.ServiceDescriptorProto()
@@ -90,277 +89,300 @@ def test_load():
     # Create a file descriptor proto. It does not matter that none
     # of the sentinels have actual data because this test just ensures
     # they are sent off to the correct methods unmodified.
-    fdp = descriptor_pb2.FileDescriptorProto(
-        name='my_proto_file.proto',
-        package='google.example.v1',
-        message_type=[sentinel_message],
-        enum_type=[sentinel_enum],
-        service=[sentinel_service],
+    fdp = make_file_pb2(
+        messages=(sentinel_message,),
+        enums=(sentinel_enum,),
+        services=(sentinel_service,),
     )
 
-    # Create an API object.
-    api = make_api()
-
     # Test the load function.
-    with mock.patch.object(api, '_load_children') as lc:
-        api.load(fdp)
+    with mock.patch.object(api._ProtoBuilder, '_load_children') as lc:
+        pb = api._ProtoBuilder(fdp, file_to_generate=True)
 
         # There should be three total calls to load the different types
         # of children.
         assert lc.call_count == 3
 
         # The message type should come first.
-        _, args, kwargs = lc.mock_calls[0]
+        _, args, _ = lc.mock_calls[0]
         assert args[0][0] == sentinel_message
-        assert kwargs['loader'] == api._load_descriptor
+        assert args[1] == pb._load_message
 
         # The enum type should come second.
-        _, args, kwargs = lc.mock_calls[1]
+        _, args, _ = lc.mock_calls[1]
         assert args[0][0] == sentinel_enum
-        assert kwargs['loader'] == api._load_enum
+        assert args[1] == pb._load_enum
 
         # The services should come third.
-        _, args, kwargs = lc.mock_calls[2]
+        _, args, _ = lc.mock_calls[2]
         assert args[0][0] == sentinel_service
-        assert kwargs['loader'] == api._load_service
+        assert args[1] == pb._load_service
 
 
-def test_load_comments_top_level():
+def test_not_target_file():
+    """Establish that services are not ignored for untargeted protos."""
+    message_pb = make_message_pb2(name='Foo',
+        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
+    service_pb = descriptor_pb2.ServiceDescriptorProto()
+    fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
+
+    # Actually make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=False)
+
+    # The proto object should have the message, but no service.
+    assert len(proto.messages) == 1
+    assert len(proto.services) == 0
+
+
+def test_messages():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    # Create a file descriptor proto.
-    # This has comments which should be largely sharded and ferried off to the
-    # correct sub-methods.
-    locations = [
-        L(path=[4, 0], leading_comments='foo'),
-        L(path=[4, 0, 2, 0], leading_comments='bar'),
-        L(path=[6, 0], leading_comments='baz'),
-    ]
-    fdp = descriptor_pb2.FileDescriptorProto(
-        name='my_proto_file.proto',
-        package='google.example.v1',
-        source_code_info=descriptor_pb2.SourceCodeInfo(location=locations)
+    message_pb = make_message_pb2(name='Foo',
+        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
+    locations = (
+        L(path=(4, 0), leading_comments='This is the Foo message.'),
+        L(path=(4, 0, 2, 0), leading_comments='This is the bar field.'),
+    )
+    fdp = make_file_pb2(
+        messages=(message_pb,),
+        locations=locations,
+        package='google.example.v2',
     )
 
-    # Create an API object.
-    api = make_api()
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
 
-    # Test the load function. This sends empty arrays to each of the
-    # individual child-processing function, but sends meaningful slices of
-    # documentation (which is what this test is trying to confirm).
-    with mock.patch.object(api, '_load_children') as lc:
-        api.load(fdp)
-
-        # There are still three total calls, like above.
-        assert lc.call_count == 3
-
-        # The `message_type` field has the ID of 4 in `FileDescriptorProto`,
-        # so the two whose path begins with 4 should be sent, and in the
-        # ad hoc dictionary that this method creates.
-        _, args, kwargs = lc.mock_calls[0]
-        assert kwargs['loader'] == api._load_descriptor
-        assert kwargs['info'] == {
-            0: {'TERMINAL': locations[0], 2: {0: {'TERMINAL': locations[1]}}},
-        }
-
-        # The `enum_type` field has the ID of 5 in `FileDescriptorProto`,
-        # but no location objects were sent with a matching path, so it
-        # will just get an empty dictionary.
-        _, args, kwargs = lc.mock_calls[1]
-        assert kwargs['loader'] == api._load_enum
-        assert kwargs['info'] == {}
-
-        # The `service_type` field has the ID of 6 in `FileDescriptorProto`,
-        # so it will get the one location object that begins with 6.
-        _, args, kwargs = lc.mock_calls[2]
-        assert kwargs['loader'] == api._load_service
-        assert kwargs['info'] == {0: {'TERMINAL': locations[2]}}
+    # Get the message.
+    assert len(proto.messages) == 1
+    message = proto.messages['google.example.v2.Foo']
+    assert isinstance(message, wrappers.MessageType)
+    assert message.meta.doc == 'This is the Foo message.'
+    assert len(message.fields) == 1
+    assert message.fields['bar'].meta.doc == 'This is the bar field.'
 
 
-def test_load_children():
-    # Set up the data to be sent to the method.
-    children = (mock.sentinel.child_zero, mock.sentinel.child_one)
-    address = metadata.Address()
-    info = {0: mock.sentinel.info_zero, 1: mock.sentinel.info_one}
-    loader = mock.Mock(create_autospec=lambda child, address, info: None)
-
-    # Run the `_load_children` method.
-    make_api()._load_children(children, loader, address, info)
-
-    # Assert that the loader ran in the expected way (twice, once per child).
-    assert loader.call_count == 2
-    _, args, kwargs = loader.mock_calls[0]
-    assert args[0] == mock.sentinel.child_zero
-    assert kwargs['info'] == mock.sentinel.info_zero
-    _, args, kwargs = loader.mock_calls[1]
-    assert args[0] == mock.sentinel.child_one
-    assert kwargs['info'] == mock.sentinel.info_one
-
-
-def test_get_fields():
+def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    # Set up data to test with.
-    field_pbs = [
-        descriptor_pb2.FieldDescriptorProto(name='spam'),
-        descriptor_pb2.FieldDescriptorProto(name='eggs'),
-    ]
-    address = metadata.Address(package=['foo', 'bar'], module='baz')
-    info = {1: {'TERMINAL': L(leading_comments='Eggs.')}}
-
-    # Run the method under test.
-    fields = make_api()._get_fields(field_pbs, address=address, info=info)
-
-    # Test that we get two field objects back.
-    assert len(fields) == 2
-    for field in fields.values():
-        assert isinstance(field, wrappers.Field)
-    items = iter(fields.items())
-
-    # Test that the first field is spam, and it has no documentation
-    # (since `info` has no `0` key).
-    field_name, field = next(items)
-    assert field_name == 'spam'
-    assert field.meta.doc == ''
-
-    # Test that the second field is eggs, and it does have documentation
-    # (since `info` has a `1` key).
-    field_name, field = next(items)
-    assert field_name == 'eggs'
-    assert field.meta.doc == 'Eggs.'
-
-    # Done.
-    with pytest.raises(StopIteration):
-        next(items)
-
-
-def test_get_methods():
-    # Start with an empty API object.
-    api = make_api()
-
-    # Load the input and output type for a method into the API object.
-    address = metadata.Address(package=['foo', 'bar'], module='baz')
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='In'),
-                         address=address, info={})
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Out'),
-                         address=address, info={})
-
-    # Run the method under test.
-    method_pb = descriptor_pb2.MethodDescriptorProto(
-        name='DoThings',
-        input_type='foo.bar.In',
-        output_type='foo.bar.Out',
+    # Set up messages for our RPC.
+    request_message_pb = make_message_pb2(name='GetFooRequest',
+        fields=(make_field_pb2(name='name', type=9, number=1),)
     )
-    methods = api._get_methods([method_pb], address=address, info={})
+    response_message_pb = make_message_pb2(name='GetFooResponse', fields=())
 
-    # Test that we get a method object back.
-    assert len(methods) == 1
-    for method in methods.values():
-        assert isinstance(method, wrappers.Method)
-    items = iter(methods.items())
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='FooService',
+        method=(descriptor_pb2.MethodDescriptorProto(
+            name='GetFoo',
+            input_type='google.example.v2.GetFooRequest',
+            output_type='google.example.v2.GetFooResponse',
+        ),),
+    )
 
-    # Test that the method has what we expect, an input and output type
-    # and appropriate name.
-    method_key, method = next(items)
-    assert method_key == 'DoThings'
+    # Fake-document our fake stuff.
+    locations = (
+        L(path=(6, 0), leading_comments='This is the FooService service.'),
+        L(path=(6, 0, 2, 0), leading_comments='This is the GetFoo method.'),
+        L(path=(4, 0), leading_comments='This is the GetFooRequest message.'),
+        L(path=(4, 1), leading_comments='This is the GetFooResponse message.'),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v2',
+        messages=(request_message_pb, response_message_pb),
+        services=(service_pb,),
+        locations=locations,
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Establish that our data looks correct.
+    assert len(proto.services) == 1
+    assert len(proto.messages) == 2
+    service = proto.services['google.example.v2.FooService']
+    assert service.meta.doc == 'This is the FooService service.'
+    assert len(service.methods) == 1
+    method = service.methods['GetFoo']
+    assert method.meta.doc == 'This is the GetFoo method.'
     assert isinstance(method.input, wrappers.MessageType)
-    assert method.input.name == 'In'
     assert isinstance(method.output, wrappers.MessageType)
-    assert method.output.name == 'Out'
+    assert method.input.name == 'GetFooRequest'
+    assert method.input.meta.doc == 'This is the GetFooRequest message.'
+    assert method.output.name == 'GetFooResponse'
+    assert method.output.meta.doc == 'This is the GetFooResponse message.'
 
-    # Done.
-    with pytest.raises(StopIteration):
-        next(items)
 
+def test_prior_protos():
+    L = descriptor_pb2.SourceCodeInfo.Location
 
-def test_get_methods_lro():
-    # Start with an empty API object.
-    api = make_api()
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    empty_proto = api.Proto.build(make_file_pb2(
+        name='empty.proto', package='google.protobuf',
+        messages=(make_message_pb2(name='Empty'),),
+    ), file_to_generate=False)
 
-    # Load the message types for a method into the API object, including LRO
-    # payload and metadata.
-    address = metadata.Address(package=['foo', 'bar'], module='baz')
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='In'),
-                         address=address, info={})
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Out'),
-                         address=address, info={})
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Progress'),
-                         address=address, info={})
-    operations_address = metadata.Address(
-        package=['google', 'longrunning'],
-        module='operations',
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='PingService',
+        method=(descriptor_pb2.MethodDescriptorProto(
+            name='Ping',
+            input_type='google.protobuf.Empty',
+            output_type='google.protobuf.Empty',
+        ),),
     )
-    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Operation'),
-                         address=operations_address, info={})
-    method_pb = descriptor_pb2.MethodDescriptorProto(
-        name='DoBigThings',
-        input_type='foo.bar.In',
+
+    # Fake-document our fake stuff.
+    locations = (
+        L(path=(6, 0), leading_comments='This is the PingService service.'),
+        L(path=(6, 0, 2, 0), leading_comments='This is the Ping method.'),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v1',
+        services=(service_pb,),
+        locations=locations,
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        'google/protobuf/empty.proto': empty_proto,
+    })
+
+    # Establish that our data looks correct.
+    assert len(proto.services) == 1
+    assert len(empty_proto.messages) == 1
+    assert len(proto.messages) == 0
+    service = proto.services['google.example.v1.PingService']
+    assert service.meta.doc == 'This is the PingService service.'
+    assert len(service.methods) == 1
+    method = service.methods['Ping']
+    assert isinstance(method.input, wrappers.MessageType)
+    assert isinstance(method.output, wrappers.MessageType)
+    assert method.input.name == 'Empty'
+    assert method.output.name == 'Empty'
+    assert method.meta.doc == 'This is the Ping method.'
+
+
+def test_lro():
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False)
+
+    # Set up a method with LRO annotations.
+    method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='AsyncDoThing',
+        input_type='google.example.v3.AsyncDoThingRequest',
         output_type='google.longrunning.Operation',
     )
-    method_pb.options.Extensions[lro_pb2.types].MergeFrom(lro_pb2.MethodTypes(
-        lro_return_type='foo.bar.Out',
-        lro_metadata_type='foo.bar.Progress',
-    ))
-
-    # Run the method under test.
-    methods = api._get_methods([method_pb], address=address, info={})
-
-    # Test that the method has the expected lro output, payload, and metadata.
-    method = next(iter(methods.values()))
-    assert method.output.name == 'Operation'
-    assert isinstance(method.lro_payload, wrappers.MessageType)
-    assert method.lro_payload.name == 'Out'
-    assert isinstance(method.lro_metadata, wrappers.MessageType)
-    assert method.lro_metadata.name == 'Progress'
-
-
-def test_load_descriptor():
-    message_pb = descriptor_pb2.DescriptorProto(name='Riddle')
-    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
-    api = make_api()
-    api._load_descriptor(message_pb=message_pb, address=address, info={})
-    assert 'foo.bar.v1.Riddle' in api.messages
-    assert isinstance(api.messages['foo.bar.v1.Riddle'], wrappers.MessageType)
-    assert api.messages['foo.bar.v1.Riddle'].message_pb == message_pb
-
-
-def test_load_enum():
-    # Set up the appropriate protos.
-    enum_value_pb = descriptor_pb2.EnumValueDescriptorProto(name='A', number=0)
-    enum_pb = descriptor_pb2.EnumDescriptorProto(
-        name='Enum',
-        value=[enum_value_pb],
+    method_pb2.options.Extensions[operations_pb2.operation_types].MergeFrom(
+        operations_pb2.OperationTypes(
+            response='google.example.v3.AsyncDoThingResponse',
+            metadata='google.example.v3.AsyncDoThingMetadata',
+        ),
     )
 
-    # Load it into the API.
-    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
-    api = make_api()
-    api._load_enum(enum_pb, address=address, info={})
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='LongRunningService',
+        method=(method_pb2,),
+    )
 
-    # Assert we got back the right stuff.
-    assert 'foo.bar.v1.Enum' in api.enums
-    assert isinstance(api.enums['foo.bar.v1.Enum'], wrappers.EnumType)
-    assert api.enums['foo.bar.v1.Enum'].enum_pb == enum_pb
-    assert len(api.enums['foo.bar.v1.Enum'].values) == 1
+    # Set up the messages, including the annotated ones.
+    messages = (
+        make_message_pb2(name='AsyncDoThingRequest', fields=()),
+        make_message_pb2(name='AsyncDoThingResponse', fields=()),
+        make_message_pb2(name='AsyncDoThingMetadata', fields=()),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v3',
+        messages=messages,
+        services=(service_pb,),
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        'google/longrunning/operations.proto': lro_proto,
+    })
+
+    # Establish that our data looks correct.
+    assert len(proto.services) == 1
+    assert len(proto.messages) == 3
+    assert len(lro_proto.messages) == 1
 
 
-def test_load_service():
-    service_pb = descriptor_pb2.ServiceDescriptorProto(name='RiddleService')
-    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
-    api = make_api()
-    api._load_service(service_pb, address=address, info={})
-    assert 'foo.bar.v1.RiddleService' in api.services
-    assert isinstance(api.services['foo.bar.v1.RiddleService'],
-                      wrappers.Service)
-    assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
+def test_enums():
+    L = descriptor_pb2.SourceCodeInfo.Location
+    enum_pb = descriptor_pb2.EnumDescriptorProto(name='Silly', value=(
+        descriptor_pb2.EnumValueDescriptorProto(name='ZERO', number=0),
+        descriptor_pb2.EnumValueDescriptorProto(name='ONE', number=1),
+        descriptor_pb2.EnumValueDescriptorProto(name='THREE', number=3),
+    ))
+    fdp = make_file_pb2(package='google.enum.v1', enums=(enum_pb,), locations=(
+        L(path=(5, 0), leading_comments='This is the Silly enum.'),
+        L(path=(5, 0, 2, 0), leading_comments='This is the zero value.'),
+        L(path=(5, 0, 2, 1), leading_comments='This is the one value.'),
+    ))
+    proto = api.Proto.build(fdp, file_to_generate=True)
+    assert len(proto.enums) == 1
+    enum = proto.enums['google.enum.v1.Silly']
+    assert enum.meta.doc == 'This is the Silly enum.'
+    assert isinstance(enum, wrappers.EnumType)
+    assert len(enum.values) == 3
+    assert all([isinstance(i, wrappers.EnumValueType) for i in enum.values])
+    assert enum.values[0].name == 'ZERO'
+    assert enum.values[0].meta.doc == 'This is the zero value.'
+    assert enum.values[1].name == 'ONE'
+    assert enum.values[1].meta.doc == 'This is the one value.'
+    assert enum.values[2].name == 'THREE'
+    assert enum.values[2].meta.doc == ''
 
 
-def make_api(client: client_pb2.Client = None) -> API:
-    return API(client=client or make_client())
+def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
+        messages: Sequence[descriptor_pb2.DescriptorProto] = (),
+        enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
+        services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
+        locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
+        ) -> descriptor_pb2.FileDescriptorProto:
+    return descriptor_pb2.FileDescriptorProto(
+        name=name,
+        package=package,
+        message_type=messages,
+        enum_type=enums,
+        service=services,
+        source_code_info=descriptor_pb2.SourceCodeInfo(location=locations),
+    )
 
 
-def make_client(**kwargs) -> client_pb2.Client:
+def make_message_pb2(name: str, fields=()) -> descriptor_pb2.DescriptorProto:
+    return descriptor_pb2.DescriptorProto(name=name, field=fields)
+
+
+def make_field_pb2(name: str, number: int,
+        type: int = 11,  # 11 == message
+        type_name: str = None,
+        ) -> descriptor_pb2.FieldDescriptorProto:
+    return descriptor_pb2.FieldDescriptorProto(
+        name=name,
+        number=number,
+        type=type,
+        type_name=type_name,
+    )
+
+
+def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('name', 'Hatstand')
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
-    return client_pb2.Client(**kwargs)
+    kwargs.setdefault('product_name', 'Hatstand')
+    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
+    return naming.Naming(**kwargs)

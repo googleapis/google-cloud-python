@@ -22,13 +22,15 @@ The `release page`_ on GitHub contains the download you need.
 
 It is likely preferable to install ``protoc`` somewhere on your shell's path,
 but this is not a strict requirement (as you will be invoking it directly).
+``protoc`` is also quirky about how it handles well-known protos; you probably
+also want to copy them into ``/usr/local/include``
 
 To ensure it is installed propertly:
 
 .. code-block:: shell
 
   $ protoc --version
-  libprotoc 3.5.1
+  libprotoc 3.6.0
 
 
 API Generator for Python
@@ -39,9 +41,10 @@ the usual ways. It fundamentally provides a CLI command,
 ``protoc-gen-pyclient``, so you will want to install using a mechanism
 that is conducive to making CLI commands available.
 
-Additionally, this program currently only runs against Python 3.6, so you
-will need that installed. (Most Linux distributions ship with earlier
-versions.) Use `pyenv`_ to get Python 3.6 installed in a friendly way.
+Additionally, this program currently only runs against Python 3.6 or
+Python 3.7, so you will need that installed. (Most Linux distributions ship
+with earlier versions.) Use `pyenv`_ to get Python 3.7 installed in a
+friendly way.
 
 As for this library itself, the recommended installation approach is
 `pipsi`_.
@@ -58,7 +61,7 @@ As for this library itself, the recommended installation approach is
     # make an appropriately-aliased executable.
     # The `--editable` flag is only necessary if you want to work on the
     # tool (as opposed to just use it).
-    pipsi install --editable --python=`which python3.6` .
+    pipsi install --editable --python=`which python3.7` .
 
 To ensure the tool is installed properly:
 

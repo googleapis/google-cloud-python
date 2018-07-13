@@ -2,14 +2,11 @@
 
 {% block content %}
 from typing import Sequence, Tuple
-
-from google.api_core import grpc_helpers
-{%- if service.has_lro %}
+{% if service.has_lro %}
 from google.api_core import operations_v1
 {%- endif %}
 from google.auth import credentials
-
-import grpc
+from google.auth.transport.requests import AuthorizedSession
 
 {% for package, pb2_module in service.pb2_modules -%}
 from {{ package }} import {{ pb2_module }}
@@ -17,8 +14,8 @@ from {{ package }} import {{ pb2_module }}
 from .base import {{ service.name }}Transport
 
 
-class {{ service.name }}GrpcTransport({{ service.name }}Transport):
-    """gRPC backend transport for {{ service.name }}.
+class {{ service.name }}HttpTransport({{ service.name }}Transport):
+    """HTTP backend transport for {{ service.name }}.
 
     {{ service.meta.doc|wrap(width=72, subsequent_indent='    ') }}
 
@@ -26,10 +23,11 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     primary client can load the underlying transport implementation
     and call it.
 
-    It sends protocol buffers over the wire using gRPC (which is built on
-    top of HTTP/2); the ``grpcio`` package must be installed.
+    It sends protocol buffers over the wire, but uses HTTP/1.1.
     """
-    def __init__(self, *, credentials: credentials.Credentials = None) -> None:
+    def __init__(self, *,
+        credentials: credentials.Credentials = None,
+        ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -40,26 +38,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 credentials from the environment.
         """
         super().__init__(credentials=credentials)
-        self._stubs = {}
-
-    @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
-        """
-        # Sanity check: Only create a new channel if we do not already
-        # have one.
-        if 'grpc_channel' not in self.__dict__:
-            self.__dict__['grpc_channel'] = grpc_helpers.create_channel(
-                '{0}:443'.format(self.SERVICE_ADDRESS),
-                credentials=self._credentials,
-                scopes=self.AUTH_SCOPES,
-            )
-
-        # Return the channel from cache.
-        return self.__dict__['grpc_channel']
+        self._session = AuthorizedSession(self._credentials)
     {%- if service.has_lro %}
 
     @property
@@ -71,8 +50,13 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if 'operations_client' not in self.__dict__:
+            from google.api_core import grpc_helpers
             self.__dict__['operations_client'] = operations_v1.OperationsClient(
-                self.grpc_channel
+                grpc_helpers.create_channel(
+                    '{0}:443'.format(self.SERVICE_ADDRESS),
+                    credentials=self._credentials,
+                    scopes=self.AUTH_SCOPES,
+                )
             )
 
         # Return the client from cache.
@@ -85,12 +69,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
         """Call the {{ (method.name|snake_case).replace('_',' ')|wrap(width=70,
-        initial_width=25, subsequent_indent="        ") }} method over gRPC.
-
-        {{ method.meta.doc|wrap(width=72, subsequent_indent=' ' * 8) }}
+        initial_width=25, subsequent_indent="        ") }} method over HTTP.
 
         Args:
-            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}:
+            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}):
                 The request object. {{ method.input.meta.doc|wrap(width=72,
                 initial_width=36, subsequent_indent=' ' * 16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -101,19 +83,26 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 {{ method.output.meta.doc|wrap(width=72, initial_width=56,
                                                subsequent_indent=' ' * 16) }}
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if '{{ method.name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.unary_unary(
-                '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.pb2_module }}.{{ method.input.name }}.SerializeToString,
-                response_deserializer={{ method.output.pb2_module }}.{{ method.output.name }}.FromString,
-            )
-        stub = self._stubs['{{ method.name|snake_case }}']
+        # Serialize the input.
+        data = request.SerializeToString()
+
+        # Send the request.
+        response = self._session.post(
+            'https://{host}/$rpc/{package}.{service}/{method}'.format(
+                host=self.SERVICE_ADDRESS,
+                method='{{ method.name }}',
+                package='{{ '.'.join(method.meta.address.package) }}',
+                service='{{ service.name }}',
+            ),
+            data=data,
+            headers={
+                'content-type': 'application/x-protobuf',
+            },
+        )
 
         # Return the response.
-        return stub(request, metadata=metadata)
+        return {{ method.output.pb2_module }}.{{ method.output.name }}.FromString(
+            response.content,
+        )
     {%- endfor %}
-{%- endblock -%}
+{% endblock %}

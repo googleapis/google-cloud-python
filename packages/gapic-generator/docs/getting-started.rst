@@ -20,16 +20,26 @@ a special branch:
 
   $ git clone git@github.com:googleapis/googleapis.git
   $ cd googleapis
-  $ git checkout --track -b annotated origin/annotated
+  $ git checkout --track -b input-contract origin/input-contract
+  $ cd ..
 
 The API available as an example (thus far) is the `Google Cloud Vision`_ API,
 available in the ``google/cloud/vision/v1/`` subdirectory. This will be used
 for the remainder of the examples on this page.
 
-This branch also makes available the proto specification of the configuration
-itself, which is explained in :ref:`api-configuration`.
+You will also need the common protos, currently in experimental status,
+which define certain client-specific annotations. These are in the
+`api-common-protos`_ repository. Clone this from GitHub also:
 
-.. _googleapis: https://github.com/googleapis/googleapis/
+.. code-block:: shell
+
+  $ git clone git@github.com:googleapis/api-common-protos.git
+  $ cd api-common-protos
+  $ git checkout --track -b input-contract origin/input-contract
+  $ cd ..
+
+.. _googleapis: https://github.com/googleapis/googleapis/tree/input-contract
+.. _api-common-protos: https://github.com/googleapis/api-common-protos/tree/input-contract
 .. _Google Cloud Vision: https://cloud.google.com/vision/
 
 
@@ -45,31 +55,20 @@ for each plugin invoked; you just want these to match:
 
 .. code-block:: shell
 
+  # This is assumed to be in the `googleapis` project root, and we also
+  # assume that api-common-protos is next to it.
   $ protoc google/cloud/vision/v1/*.proto \
-      --python_out=/dest/ \
-      --pyclient_out=/dest/
+      --proto_path=../api-common-protos/ --proto_path=. \
+      --python_out=/dest/ --pyclient_out=/dest/
 
 .. note::
 
   **A reminder about paths.**
 
-  Remember that ``protoc`` is particular about paths. It expects to be run
-  from the "base path" used for imports within the protos. If you are
-  running ``protoc`` from any other location, you will need to provide
-  ``--proto_path``.
+  Remember that ``protoc`` is particular about paths. It requires all paths
+  where it expects to find protos, and *order matters*. In this case,
+  the common protos must come first, and then the path to the API being built.
 
-Because the generator is experimental, you need to compile the experimental
-version of google-common-protos as well:
-
-.. code-block:: shell
-
-  $ protoc google/api/*.proto \
-      google/api/experimental/*.proto \
-      google/api/expr/v1/*.proto \
-      --python_out=/dest/ \
-
-Create a blank file ``/dest/google/api/__init__.py`` to use ``google.api`` as a
-package.
 
 Running a Client Library
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +80,7 @@ Create a virtual environment for the library:
 
 .. code-block:: shell
 
-  $ virtualenv ~/.local/client-lib --python=`which python3.6`
+  $ virtualenv ~/.local/client-lib --python=`which python3.7`
   $ source ~/.local/client-lib/bin/activate
 
 Next, install the library:
@@ -128,8 +127,6 @@ Here is a test script:
   # Send the request to the server and get the response.
   response = ia.batch_annotate_images(request)
   print(response)
-
-
 
 
 .. _Google API design conventions: https://cloud.google.com/apis/design/

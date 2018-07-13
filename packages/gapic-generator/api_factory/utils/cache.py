@@ -31,7 +31,7 @@ def cached_property(fx):
     def inner(self):
         # Sanity check: If there is no cache at all, create an empty cache.
         if not hasattr(self, '_cached_values'):
-            setattr(self, '_cached_values', {})
+            object.__setattr__(self, '_cached_values', {})
 
         # If and only if the function's result is not in the cache,
         # run the function.

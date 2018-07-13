@@ -21,9 +21,9 @@ import jinja2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
-from api_factory.schema.api import API
-from api_factory.generator.loader import TemplateLoader
 from api_factory import utils
+from api_factory.generator.loader import TemplateLoader
+from api_factory.schema import api
 
 
 class Generator:
@@ -40,15 +40,12 @@ class Generator:
         request (CodeGeneratorRequest): A request protocol buffer as provided
             by protoc. See ``plugin.proto``.
     """
-    def __init__(self, request: CodeGeneratorRequest) -> None:
-        # Parse the CodeGeneratorRequest into this plugin's internal schema.
-        self._api = API()
-        for fdp in request.proto_file:
-            self._api.load(fdp)
+    def __init__(self, api_schema: api.API) -> None:
+        self._api = api_schema
 
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(loader=TemplateLoader(
-            searchpath=os.path.join(_dirname, 'templates'),
+            searchpath=os.path.join(_dirname, '..', 'templates'),
         ))
 
         # Add filters which templates require.
@@ -79,13 +76,6 @@ class Generator:
                 self._env.loader.service_templates,
                 additional_context={'service': service},
             )
-
-        # Some files are direct files and not templates; simply read them
-        # into output files directly.
-        #
-        # Rather than expect an enumeration of these, we simply grab everything
-        # in the `files/` directory automatically.
-        output_files += self._read_flat_files(os.path.join(_dirname, 'files'))
 
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=output_files)
@@ -132,32 +122,6 @@ class Generator:
         # Done; return the File objects based on these templates.
         return answer
 
-    def _read_flat_files(
-            self,
-            target_dir: str,
-            ) -> Sequence[CodeGeneratorResponse.File]:
-        answer = []
-
-        # Iterate over all files in the directory.
-        for path, _, filenames in os.walk(target_dir):
-            relative_path = path[len(target_dir):]
-            for filename in filenames:
-                # Determine the "relative filename" (the filename against the
-                # files/ subdirectory and repository root).
-                relative_filename = filename
-                if relative_path:
-                    relative_filename = os.path.join(relative_path, filename)
-
-                # Read the file from disk and create an appropriate OutputFile.
-                with io.open(os.path.join(path, filename), 'r') as f:
-                    answer.append(CodeGeneratorResponse.File(
-                        content=f.read(),
-                        name=relative_filename,
-                    ))
-
-        # Done; return the File objects.
-        return answer
-
     def _get_output_filename(
             self,
             template_name: str, *,
@@ -187,13 +151,13 @@ class Generator:
         # Replace the $namespace variable.
         filename = filename.replace(
             '$namespace',
-            '/'.join([i.lower() for i in self._api.client.namespace]),
+            '/'.join([i.lower() for i in self._api.naming.namespace]),
         ).lstrip('/')
 
         # Replace the $name and $version variables.
         filename = filename.replace('$name_$version',
-                                    self._api.versioned_module_name)
-        filename = filename.replace('$name', self._api.module_name)
+                                    self._api.naming.versioned_module_name)
+        filename = filename.replace('$name', self._api.naming.module_name)
 
         # Replace the $service variable if applicable.
         if context and 'service' in context:
