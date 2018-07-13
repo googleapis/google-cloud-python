@@ -17,6 +17,7 @@ import functools
 import pkg_resources
 import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -57,6 +58,27 @@ class AlertPolicyServiceClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.monitoring.v3.AlertPolicyService'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AlertPolicyServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def project_path(cls, project):
