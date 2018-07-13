@@ -174,6 +174,10 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.friendly_name, 'Friendly')
         self.assertEqual(got.description, 'Description')
 
+    @pytest.mark.skip(reason=(
+        'update_dataset() is flaky '
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5588'))
     def test_update_dataset(self):
         dataset = self.temp_dataset(_make_dataset_id('update_dataset'))
         self.assertTrue(_dataset_exists(dataset))
@@ -318,6 +322,10 @@ class TestBigQuery(unittest.TestCase):
                        table.dataset_id == DATASET_ID)]
         self.assertEqual(len(created), len(tables_to_create))
 
+    @pytest.mark.skip(reason=(
+        'update_table() is flaky '
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5589'))
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
@@ -357,6 +365,10 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(PreconditionFailed):
             Config.CLIENT.update_table(table2, ['description'])
 
+    @pytest.mark.skip(reason=(
+        'update_table() is flaky '
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5589'))
     def test_update_table_schema(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
@@ -1707,6 +1719,20 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             row['record_col']['nested_record']['nested_nested_string'],
             'some deep insight')
+
+    def test_list_rows_empty_table(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        dataset_id = _make_dataset_id('empty_table')
+        dataset = self.temp_dataset(dataset_id)
+        table_ref = dataset.table('empty_table')
+        table = Config.CLIENT.create_table(bigquery.Table(table_ref))
+
+        # It's a bit silly to list rows for an empty table, but this does
+        # happen as the result of a DDL query from an IPython magic command.
+        rows = Config.CLIENT.list_rows(table)
+        self.assertIsInstance(rows, RowIterator)
+        self.assertEqual(tuple(rows), ())
 
     def test_list_rows_page_size(self):
         from google.cloud.bigquery.job import SourceFormat

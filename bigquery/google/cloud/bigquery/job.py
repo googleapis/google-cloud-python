@@ -31,6 +31,7 @@ from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
@@ -2505,6 +2506,14 @@ class QueryJob(_AsyncJob):
             self._query_results = self._client._get_query_results(
                 self.job_id, retry, project=self.project,
                 location=self.location)
+
+        # If the query job is complete but there are no query results, this was
+        # special job, such as a DDL query. Return an empty result set to
+        # indicate success and avoid calling tabledata.list on a table which
+        # can't be read (such as a view table).
+        if self._query_results.total_rows is None:
+            return _EmptyRowIterator()
+
         schema = self._query_results.schema
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)

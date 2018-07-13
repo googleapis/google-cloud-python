@@ -46,3 +46,8 @@ class Test_should_retry(unittest.TestCase):
         exc = mock.Mock(
             errors=[{'reason': 'rateLimitExceeded'}], spec=['errors'])
         self.assertTrue(self._call_fut(exc))
+
+    def test_w_internalError(self):
+        exc = mock.Mock(
+            errors=[{'reason': 'internalError'}], spec=['errors'])
+        self.assertTrue(self._call_fut(exc))

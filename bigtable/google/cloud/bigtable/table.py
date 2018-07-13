@@ -29,8 +29,12 @@ from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 from google.cloud.bigtable.row_data import YieldRowsData
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.proto import (
     bigtable_pb2 as data_messages_v2_pb2)
+from google.cloud.bigtable_admin_v2.proto import (
+    table_pb2 as admin_messages_v2_pb2)
 from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 
@@ -88,7 +92,7 @@ class Table(object):
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
 
-    :type: app_profile_id: str
+    :type app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
     """
 
@@ -177,17 +181,35 @@ class Table(object):
     def __ne__(self, other):
         return not self == other
 
-    def create(self):
+    def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
         .. note::
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
+
+        :type initial_split_keys: list
+        :param initial_split_keys: (Optional) list of row keys in bytes that
+                                   will be used to initially split the table
+                                   into several tablets.
+
+        :type column_families: dict
+        :param column_failies: (Optional) A map columns to create.  The key is
+                               the column_id str and the value is a
+                               :class:`GarbageCollectionRule`
         """
         table_client = self._instance._client.table_admin_client
         instance_name = self._instance.name
-        table_client.create_table(
-            parent=instance_name, table_id=self.table_id, table={})
+
+        families = {id: ColumnFamily(id, self, rule).to_pb()
+                    for (id, rule) in column_families.items()}
+        table = admin_messages_v2_pb2.Table(column_families=families)
+
+        split = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        splits = [split(key=key) for key in initial_split_keys]
+
+        table_client.create_table(parent=instance_name, table_id=self.table_id,
+                                  table=table, initial_splits=splits)
 
     def exists(self):
         """Check whether the table exists.
@@ -301,7 +323,7 @@ class Table(object):
         return PartialRowsData(data_client._read_rows, request_pb)
 
     def yield_rows(self, start_key=None, end_key=None, limit=None,
-                   filter_=None):
+                   filter_=None, row_set=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -324,12 +346,16 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
+        :type row_set: :class:`row_set.RowSet`
+        :param filter_: (Optional) The row set containing multiple row keys and
+                        row_ranges.
+
         :rtype: :class:`.PartialRowData`
         :returns: A :class:`.PartialRowData` for each row returned
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit, app_profile_id=self._app_profile_id)
+            limit=limit, app_profile_id=self._app_profile_id, row_set=row_set)
         data_client = self._instance._client.table_data_client
         generator = YieldRowsData(data_client._read_rows, request_pb)
 
@@ -568,7 +594,7 @@ class _RetryableMutateRowsWorker(object):
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                         filter_=None, limit=None, end_inclusive=False,
-                        app_profile_id=None):
+                        app_profile_id=None, row_set=None):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -603,6 +629,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :type: app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
 
+    :type row_set: :class:`row_set.RowSet`
+    :param filter_: (Optional) The row set containing multiple row keys and
+                    row_ranges.
+
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -613,15 +643,16 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
             (start_key is not None or end_key is not None)):
         raise ValueError('Row key and row range cannot be '
                          'set simultaneously')
-    range_kwargs = {}
-    if start_key is not None or end_key is not None:
-        if start_key is not None:
-            range_kwargs['start_key_closed'] = _to_bytes(start_key)
-        if end_key is not None:
-            end_key_key = 'end_key_open'
-            if end_inclusive:
-                end_key_key = 'end_key_closed'
-            range_kwargs[end_key_key] = _to_bytes(end_key)
+
+    if (row_key is not None and row_set is not None):
+        raise ValueError('Row key and row set cannot be '
+                         'set simultaneously')
+
+    if ((start_key is not None or end_key is not None) and
+            row_set is not None):
+        raise ValueError('Row range and row set cannot be '
+                         'set simultaneously')
+
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
@@ -632,10 +663,16 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
     if row_key is not None:
-        message.rows.row_keys.append(_to_bytes(row_key))
+        row_set = RowSet()
+        row_set.add_row_key(row_key)
 
-    if range_kwargs:
-        message.rows.row_ranges.add(**range_kwargs)
+    if start_key is not None or end_key is not None:
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key, end_key,
+                                       end_inclusive=end_inclusive))
+
+    if row_set is not None:
+        row_set._update_message_request(message)
 
     return message
 
@@ -663,13 +700,9 @@ def _mutate_rows_request(table_name, rows, app_profile_id=None):
     for row in rows:
         _check_row_table_name(table_name, row)
         _check_row_type(row)
-        entry = request_pb.entries.add()
-        entry.row_key = row.row_key
-        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
-        #  the mutations have no state.
-        for mutation in row._get_mutations(None):
-            mutations_count += 1
-            entry.mutations.add().CopyFrom(mutation)
+        mutations = row._get_mutations()
+        request_pb.entries.add(row_key=row.row_key, mutations=mutations)
+        mutations_count += len(mutations)
     if mutations_count > _MAX_BULK_MUTATIONS:
         raise TooManyMutationsError('Maximum number of mutations is %s' %
                                     (_MAX_BULK_MUTATIONS,))

@@ -30,6 +30,8 @@ from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
 
 from test_utils.retry import RetryErrors
 from test_utils.system import EmulatorCreds
@@ -241,6 +243,22 @@ class TestTableAdminAPI(unittest.TestCase):
         tables = Config.INSTANCE.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
+
+    def test_create_table_with_families(self):
+        temp_table_id = 'test-create-table-with-failies'
+        temp_table = Config.INSTANCE.table(temp_table_id)
+        gc_rule = MaxVersionsGCRule(1)
+        temp_table.create(column_families={COLUMN_FAMILY_ID1: gc_rule})
+        self.tables_to_delete.append(temp_table)
+
+        col_fams = temp_table.list_column_families()
+
+        self.assertEqual(len(col_fams), 1)
+        retrieved_col_fam = col_fams[COLUMN_FAMILY_ID1]
+        self.assertIs(retrieved_col_fam._table, temp_table)
+        self.assertEqual(retrieved_col_fam.column_family_id,
+                         COLUMN_FAMILY_ID1)
+        self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_create_table_with_split_keys(self):
         temp_table_id = 'foo-bar-baz-split-table'
@@ -461,6 +479,32 @@ class TestDataAPI(unittest.TestCase):
                 read_rows_count += 1
 
         self.assertEqual(expected_rows_count, read_rows_count)
+
+    def test_yield_rows_with_row_set(self):
+        row_keys = [
+            b'row_key_1', b'row_key_2', b'row_key_3', b'row_key_4',
+            b'row_key_5', b'row_key_6', b'row_key_7', b'row_key_8',
+            b'row_key_9']
+
+        rows = []
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            rows.append(row)
+            self.rows_to_delete.append(row)
+        self._table.mutate_rows(rows)
+
+        row_set = RowSet()
+        row_set.add_row_range(RowRange(start_key=b'row_key_3',
+                                       end_key=b'row_key_7'))
+        row_set.add_row_key(b'row_key_1')
+
+        read_rows = self._table.yield_rows(row_set=row_set)
+
+        expected_row_keys = set([b'row_key_1', b'row_key_3', b'row_key_4',
+                                 b'row_key_5', b'row_key_6'])
+        found_row_keys = set([row.row_key for row in read_rows])
+        self.assertEqual(found_row_keys, set(expected_row_keys))
 
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)

@@ -892,8 +892,7 @@ class Client(ClientWithProject):
         Raises:
             ImportError:
                 If a usable parquet engine cannot be found. This method
-                requires one of :mod:`pyarrow` or :mod:`fastparquet` to be
-                installed.
+                requires :mod:`pyarrow` to be installed.
         """
         buffer = six.BytesIO()
         dataframe.to_parquet(buffer)
@@ -1401,7 +1400,7 @@ class Client(ClientWithProject):
         elif isinstance(table, TableReference):
             raise ValueError('need selected_fields with TableReference')
         elif isinstance(table, Table):
-            if len(table.schema) == 0:
+            if len(table.schema) == 0 and table.created is None:
                 raise ValueError(_TABLE_HAS_NO_SCHEMA)
             schema = table.schema
         else:

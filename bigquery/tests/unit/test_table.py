@@ -1123,6 +1123,24 @@ class TestRow(unittest.TestCase):
             row['z']
 
 
+class Test_EmptyRowIterator(unittest.TestCase):
+
+    @mock.patch('google.cloud.bigquery.table.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe()
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        df = row_iterator.to_dataframe()
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+
+
 class TestRowIterator(unittest.TestCase):
 
     def test_constructor(self):

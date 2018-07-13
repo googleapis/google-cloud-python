@@ -2712,6 +2712,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertEqual(list(result), [])
 
+    def test_result_w_empty_schema(self):
+        # Destination table may have no schema for some DDL and DML queries.
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'schema': {'fields': []},
+        }
+        connection = _make_connection(query_resource, query_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result()
+
+        self.assertEqual(list(result), [])
+
     def test_result_invokes_begins(self):
         begun_resource = self._make_resource()
         incomplete_resource = {
@@ -3293,6 +3312,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '4',
             'schema': {
                 'fields': [
                     {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
@@ -3329,6 +3349,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '0',
             'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)
