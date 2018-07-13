@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.alert_policy_service_client &#8212; google-cloud 9695a8045a documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.alert_policy_service_client &#8212; google-cloud 32ba71d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,6 +52,7 @@
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
@@ -92,6 +93,27 @@
     <span class="c1"># The name of the interface for this client. This is the key used to</span>
     <span class="c1"># find the method configuration in the client_config dictionary.</span>
     <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.monitoring.v3.AlertPolicyService&#39;</span>
+
+<div class="viewcode-block" id="AlertPolicyServiceClient.from_service_account_file"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.AlertPolicyServiceClient.from_service_account_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_service_account_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance of this client using the provided credentials</span>
+<span class="sd">        file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The path to the service account private key json</span>
+<span class="sd">                file.</span>
+<span class="sd">            args: Additional arguments to pass to the constructor.</span>
+<span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AlertPolicyServiceClient: The constructed client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
 <div class="viewcode-block" id="AlertPolicyServiceClient.project_path"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.AlertPolicyServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
