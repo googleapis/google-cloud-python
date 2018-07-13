@@ -103,12 +103,14 @@ class TestInstance(unittest.TestCase):
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
 
+        app_profile_id = 'appProfileId1262094415'
         instance = self._make_one(self.INSTANCE_ID, None)
 
-        table = instance.table(self.TABLE_ID)
+        table = instance.table(self.TABLE_ID, app_profile_id=app_profile_id)
         self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table._instance, instance)
+        self.assertEqual(table._app_profile_id, app_profile_id)
 
     def test__update_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (

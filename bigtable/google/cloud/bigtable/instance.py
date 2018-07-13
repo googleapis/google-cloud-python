@@ -253,16 +253,19 @@ class Instance(object):
         """
         self._client.instance_admin_client.delete_instance(name=self.name)
 
-    def table(self, table_id):
+    def table(self, table_id, app_profile_id=None):
         """Factory to create a table associated with this instance.
 
         :type table_id: str
         :param table_id: The ID of the table.
 
+        :type app_profile_id: str
+        :param app_profile_id: (Optional) The unique name of the AppProfile.
+
         :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
         """
-        return Table(table_id, self)
+        return Table(table_id, self, app_profile_id=app_profile_id)
 
     def list_tables(self):
         """List the tables in this instance.
