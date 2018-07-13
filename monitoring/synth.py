@@ -91,11 +91,13 @@ s.replace(
     '\g<1>have an ``id`` label::\n\n'
     '\g<1>    resource.type = starts_with("gce_") AND resource.label:id\n')
 
-# the metric service grpc transport channel shouldn't limit the size of a grpc message at the default 4mb
-s.replace("google/cloud/monitoring_v3/gapic/transports/*_service_grpc_transport.py", 
-    "channel =.*\n(\s+)address=.*\n\s+credentials=.*,\n",
+# the metric service grpc transport channel shouldn't limit the size of
+# a grpc message at the default 4mb
+s.replace(
+    "google/cloud/monitoring_v3/gapic/transports/*_service_grpc_transport.py",
+    "return google.api_core.grpc_helpers.create_channel\(\n(\s+)address,\n"
+    "\s+credentials=.*,\n\s+scopes=.*,\n",
     "\g<0>\g<1>options={\n"
     "\g<1>    'grpc.max_send_message_length': -1,\n"
     "\g<1>    'grpc.max_receive_message_length': -1,\n"
     "\g<1>}.items(),\n")
-

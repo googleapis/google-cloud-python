@@ -63,10 +63,6 @@ class NotificationChannelServiceGrpcTransport(object):
             channel = self.create_channel(
                 address=address,
                 credentials=credentials,
-                options={
-                    'grpc.max_send_message_length': -1,
-                    'grpc.max_receive_message_length': -1,
-                }.items(),
             )
 
         # gRPC uses objects called "stubs" that are bound to the
@@ -98,6 +94,10 @@ class NotificationChannelServiceGrpcTransport(object):
             address,
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
+            options={
+                'grpc.max_send_message_length': -1,
+                'grpc.max_receive_message_length': -1,
+            }.items(),
         )
 
     @property
