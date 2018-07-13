@@ -208,7 +208,7 @@ class Table(object):
         table = admin_messages_v2_pb2.Table(column_families=families)
 
         split = table_admin_messages_v2_pb2.CreateTableRequest.Split
-        splits = [split(key=key) for key in initial_split_keys]
+        splits = [split(key=_to_bytes(key)) for key in initial_split_keys]
 
         table_client.create_table(parent=instance_name, table_id=self.table_id,
                                   table=table, initial_splits=splits)

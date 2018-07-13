@@ -263,15 +263,19 @@ class TestTableAdminAPI(unittest.TestCase):
     def test_create_table_with_split_keys(self):
         temp_table_id = 'foo-bar-baz-split-table'
         initial_split_keys = [b'split_key_1', b'split_key_10',
-                              b'split_key_20', b'']
+                              b'split_key_20']
         temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create(initial_split_keys=initial_split_keys)
         self.tables_to_delete.append(temp_table)
 
         # Read Sample Row Keys for created splits
         sample_row_keys = temp_table.sample_row_keys()
-        self.assertEqual(set([srk.row_key for srk in sample_row_keys]),
-                         set(initial_split_keys))
+        actual_keys = [srk.row_key for srk in sample_row_keys]
+
+        expected_keys = initial_split_keys
+        expected_keys.append(b'')
+
+        self.assertEqual(actual_keys, expected_keys)
 
     def test_create_column_family(self):
         temp_table_id = 'test-create-column-family'
