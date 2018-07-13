@@ -169,6 +169,8 @@ def create_channel(target,
         scopes (Sequence[str]): A optional list of scopes needed for this
             service. These are only used when credentials are not specified and
             are passed to :func:`google.auth.default`.
+        ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
+            credentials. This can be used to specify different certificates.
         kwargs: Additional key-word args passed to
             :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
 
