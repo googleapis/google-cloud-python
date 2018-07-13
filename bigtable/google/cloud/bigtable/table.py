@@ -183,7 +183,9 @@ class Table(object):
 
     def create(self, initial_split_keys=[], column_families={}):
         """Creates this table.
+
         .. note::
+
             A create request returns a
             :class:`._generated.table_pb2.Table` but we don't use
             this response.
