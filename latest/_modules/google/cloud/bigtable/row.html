@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row &#8212; google-cloud bced108 documentation</title>
+    <title>google.cloud.bigtable.row &#8212; google-cloud 9695a8045a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -50,14 +50,10 @@
 <span class="sd">&quot;&quot;&quot;User-friendly container for Google Cloud Bigtable Row.&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 
-<span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
-<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">retry</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
@@ -85,10 +81,10 @@
 <span class="sd">    :param row_key: The key for the current row.</span>
 
 <span class="sd">    :type table: :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
-<span class="sd">    :param table: The table that owns the row.</span>
+<span class="sd">    :param table: (Optional) The table that owns the row.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
 
@@ -131,7 +127,7 @@
     <span class="n">ALL_COLUMNS</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
     <span class="sd">&quot;&quot;&quot;Sentinel value used to indicate all columns in a column family.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the list of mutations for a given state.</span>
 
 <span class="sd">        This method intended to be implemented by subclasses.</span>
@@ -273,13 +269,6 @@
             <span class="n">mutations_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">to_append</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_retry_commit_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">RpcError</span><span class="p">):</span>
-        <span class="n">exc</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_grpc_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span>
-                            <span class="n">exceptions</span><span class="o">.</span><span class="n">DeadlineExceeded</span><span class="p">))</span>
-
-
 <div class="viewcode-block" id="DirectRow"><a class="viewcode-back" href="../../../../bigtable/row.html#google.cloud.bigtable.row.DirectRow">[docs]</a><span class="k">class</span> <span class="nc">DirectRow</span><span class="p">(</span><span class="n">_SetDeleteRow</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Google Cloud Bigtable Row for sending &quot;direct&quot; mutations.</span>
 
@@ -307,14 +296,17 @@
 <span class="sd">    :param row_key: The key for the current row.</span>
 
 <span class="sd">    :type table: :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
-<span class="sd">    :param table: The table that owns the row.</span>
+<span class="sd">    :param table: (Optional) The table that owns the row. This is</span>
+<span class="sd">                  used for the :meth: `commit` only.  Alternatively,</span>
+<span class="sd">                  DirectRows can be persisted via</span>
+<span class="sd">                  :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DirectRow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="sd">&quot;&quot;&quot;Gets the list of mutations for a given state.</span>
 
 <span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
@@ -441,26 +433,10 @@
 <span class="sd">        After committing the accumulated mutations, resets the local</span>
 <span class="sd">        mutations to an empty list.</span>
 
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the number of</span>
-<span class="sd">                 mutations exceeds the :data:`MAX_MUTATIONS`.</span>
+<span class="sd">        :raises: :exc:`~.table.TooManyMutationsError` if the number of</span>
+<span class="sd">                 mutations is greater than 100,000.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutations_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="n">num_mutations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mutations_list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">num_mutations</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="n">num_mutations</span> <span class="o">&gt;</span> <span class="n">MAX_MUTATIONS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> total mutations exceed the maximum allowable &#39;</span>
-                             <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_mutations</span><span class="p">,</span> <span class="n">MAX_MUTATIONS</span><span class="p">))</span>
-
-        <span class="n">data_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">table_data_client</span>
-        <span class="n">commit</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-            <span class="n">data_client</span><span class="o">.</span><span class="n">mutate_row</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span><span class="p">,</span> <span class="n">mutations_list</span><span class="p">)</span>
-        <span class="n">retry_</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span>
-            <span class="n">predicate</span><span class="o">=</span><span class="n">_retry_commit_exception</span><span class="p">,</span>
-            <span class="n">deadline</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-        <span class="n">retry_</span><span class="p">(</span><span class="n">commit</span><span class="p">)()</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">mutate_rows</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DirectRow.clear"><a class="viewcode-back" href="../../../../bigtable/row.html#google.cloud.bigtable.row.DirectRow.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -510,7 +486,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_true_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_false_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the list of mutations for a given state.</span>
 
 <span class="sd">        Over-ridden so that the state can be used in:</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud bced108 documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.group_service_client &#8212; google-cloud 9695a8045a documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -50,6 +50,7 @@
 
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
@@ -62,6 +63,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.gapic</span> <span class="k">import</span> <span class="n">group_service_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.gapic.transports</span> <span class="k">import</span> <span class="n">group_service_grpc_transport</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_service_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">alert_service_pb2_grpc</span>
@@ -95,17 +97,8 @@
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;monitoring.googleapis.com:443&#39;</span>
     <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
 
-    <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
-    <span class="c1"># this service</span>
-    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/monitoring&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/monitoring.read&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/monitoring.write&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
-    <span class="c1"># method configuration in the client_config dictionary.</span>
+    <span class="c1"># The name of the interface for this client. This is the key used to</span>
+    <span class="c1"># find the method configuration in the client_config dictionary.</span>
     <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.monitoring.v3.GroupService&#39;</span>
 
 <div class="viewcode-block" id="GroupServiceClient.project_path"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.GroupServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
@@ -126,6 +119,7 @@
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">client_config</span><span class="o">=</span><span class="n">group_service_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
@@ -133,41 +127,63 @@
         <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
-<span class="sd">                which to make calls. This argument is mutually exclusive</span>
+<span class="sd">            transport (Union[~.GroupServiceGrpcTransport,</span>
+<span class="sd">                    Callable[[~.Credentials, type], ~.GroupServiceGrpcTransport]): A transport</span>
+<span class="sd">                instance, responsible for actually making the API calls.</span>
+<span class="sd">                The default transport uses the gRPC protocol.</span>
+<span class="sd">                This argument may also be a callable which returns a</span>
+<span class="sd">                transport instance. Callables will be sent the credentials</span>
+<span class="sd">                as the first argument and the default transport class as</span>
+<span class="sd">                the second argument.</span>
+<span class="sd">            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance</span>
+<span class="sd">                through which to make calls. This argument is mutually exclusive</span>
 <span class="sd">                with ``credentials``; providing both will raise an exception.</span>
 <span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
 <span class="sd">                authorization credentials to attach to requests. These</span>
 <span class="sd">                credentials identify this application to the service. If none</span>
 <span class="sd">                are specified, the client will attempt to ascertain the</span>
 <span class="sd">                credentials from the environment.</span>
-<span class="sd">            client_config (dict): A dictionary of call options for each</span>
-<span class="sd">                method. If not specified, the default configuration is used.</span>
+<span class="sd">                This argument is mutually exclusive with providing a</span>
+<span class="sd">                transport instance to ``transport``; doing so will raise</span>
+<span class="sd">                an exception.</span>
+<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">                each method. If not specified, the default configuration is used.</span>
 <span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
 <span class="sd">                The client info used to send a user-agent string along with</span>
 <span class="sd">                API requests. If ``None``, then default info will be used.</span>
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># If both `channel` and `credentials` are specified, raise an</span>
-        <span class="c1"># exception (channels come with credentials baked in already).</span>
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;The `channel` and `credentials` arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
-                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">)</span>
+        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
+        <span class="k">if</span> <span class="n">client_config</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `client_config` argument is deprecated.&#39;</span><span class="p">,</span>
+                          <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` argument is deprecated; use &#39;</span>
+                <span class="s1">&#39;`transport` instead.&#39;</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
 
-        <span class="c1"># Create the channel.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Create the gRPC stubs.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">group_service_pb2_grpc</span><span class="o">.</span><span class="n">GroupServiceStub</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
+        <span class="c1"># Instantiate the transport.</span>
+        <span class="c1"># The transport is responsible for handling serialization and</span>
+        <span class="c1"># deserialization and actually sending data to the service.</span>
+        <span class="k">if</span> <span class="n">transport</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">transport</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                    <span class="n">default_class</span><span class="o">=</span><span class="n">group_service_grpc_transport</span><span class="o">.</span>
+                    <span class="n">GroupServiceGrpcTransport</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Received both a transport instance and &#39;</span>
+                        <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">group_service_grpc_transport</span><span class="o">.</span><span class="n">GroupServiceGrpcTransport</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
@@ -182,26 +198,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
             <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
+        <span class="c1"># Save a dictionary of cached API call functions.</span>
+        <span class="c1"># These are the actual callables which invoke the proper</span>
+        <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
+        <span class="c1"># timeout, and the like.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">def</span> <span class="nf">_intercept_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">interceptors</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Experimental. Bind gRPC interceptors to the gRPC channel.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            interceptors (*Union[grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamingClientInterceptor, grpc.StreamingUnaryClientInterceptor, grpc.StreamingStreamingClientInterceptor]):</span>
-<span class="sd">              Zero or more gRPC interceptors. Interceptors are given control in the order</span>
-<span class="sd">              they are listed.</span>
-<span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If interceptor does not derive from any of</span>
-<span class="sd">              UnaryUnaryClientInterceptor,</span>
-<span class="sd">              UnaryStreamClientInterceptor,</span>
-<span class="sd">              StreamUnaryClientInterceptor, or</span>
-<span class="sd">              StreamStreamClientInterceptor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">intercept_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="o">*</span><span class="n">interceptors</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">group_service_pb2_grpc</span><span class="o">.</span><span class="n">GroupServiceStub</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="GroupServiceClient.list_groups"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.GroupServiceClient.list_groups">[docs]</a>    <span class="k">def</span> <span class="nf">list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -282,10 +283,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;list_groups&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;list_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">ListGroups</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_groups</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroups&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroups&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
@@ -362,10 +364,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;get_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;get_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">GetGroup</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;GetGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
                     <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
@@ -427,10 +430,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;create_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;create_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">CreateGroup</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">create_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;CreateGroup&#39;</span><span class="p">]</span>
                     <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
@@ -493,10 +497,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;update_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;update_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">UpdateGroup</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">update_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateGroup&#39;</span><span class="p">]</span>
                     <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
@@ -549,10 +554,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;delete_group&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;delete_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">DeleteGroup</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_group</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteGroup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteGroup&#39;</span><span class="p">]</span>
                     <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
@@ -643,10 +649,11 @@
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
         <span class="k">if</span> <span class="s1">&#39;list_group_members&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
                 <span class="s1">&#39;list_group_members&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_group_service_stub</span><span class="o">.</span><span class="n">ListGroupMembers</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">list_group_members</span><span class="p">,</span>
                     <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
                         <span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
                     <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;ListGroupMembers&#39;</span><span class="p">]</span>

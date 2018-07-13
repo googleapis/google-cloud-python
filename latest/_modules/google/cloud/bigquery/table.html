@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud bced108 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 9695a8045a documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -72,7 +72,11 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
 
 
-<span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;client.get_table()&#39;&quot;</span>
+<span class="n">_NO_PANDAS_ERROR</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The pandas library is not installed, please install &#39;</span>
+    <span class="s1">&#39;pandas to use the to_dataframe() function.&#39;</span>
+<span class="p">)</span>
+<span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s1">&#39;Table has no schema:  call &quot;client.get_table()&quot;&#39;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
 
 
@@ -1172,14 +1176,32 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The pandas library is not installed, please &#39;</span>
-                             <span class="s1">&#39;install pandas to use the to_dataframe() &#39;</span>
-                             <span class="s1">&#39;function.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_PANDAS_ERROR</span><span class="p">)</span>
 
         <span class="n">column_headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
 
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_headers</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_EmptyRowIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An empty row iterator.</span>
+
+<span class="sd">    This class prevents API requests when there are no rows to fetch or rows</span>
+<span class="sd">    are impossible to fetch, such as with query results for DDL CREATE VIEW</span>
+<span class="sd">    statements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_PANDAS_ERROR</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(())</span>
 
 
 <div class="viewcode-block" id="TimePartitioningType"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.TimePartitioningType.html#google.cloud.bigquery.table.TimePartitioningType">[docs]</a><span class="k">class</span> <span class="nc">TimePartitioningType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
