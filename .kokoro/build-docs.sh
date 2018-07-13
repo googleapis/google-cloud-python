@@ -22,5 +22,8 @@ eval `ssh-agent -s`
 chmod 600 ${KOKORO_GFILE_DIR}/id_rsa
 ssh-add ${KOKORO_GFILE_DIR}/id_rsa
 
+# Install Requirements
+pip install --upgrade -r docs/requirements.txt
+
 # Build and Publish Documentation
 bash test_utils/scripts/update_docs.sh kokoro
