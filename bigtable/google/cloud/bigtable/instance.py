@@ -29,8 +29,16 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+
+INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
+INSTANCE_TYPE_DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
+INSTANCE_TYPE_UNSPECIFIED = enums.Instance.Type.TYPE_UNSPECIFIED
+
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
+
+STORAGE_TYPE_SSD = enums.StorageType.SSD
+STORAGE_TYPE_HDD = enums.StorageType.HDD
 _STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
@@ -61,12 +69,39 @@ class Instance(object):
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+    :type instance_type: int
+    :param instance_type: (Optional) The type of the instance.
+                          Possible values are represented
+                          by the following constants:
+                          :data:`INSTANCE_TYPE_PRODUCTION`.
+                          :data:`INSTANCE_TYPE_DEVELOPMENT`,
+                          Defaults to
+                          :data:`INSTANCE_TYPE_UNSPECIFIED`.
+
+    :type labels: dict
+    :param type: (Optional) Labels are a flexible and lightweight mechanism
+                 for organizing cloud resources into groups that reflect a
+                 customer's organizational needs and deployment strategies.
+                 They can be used to filter resources and aggregate metrics.
+                 Label keys must be between 1 and 63 characters long.
+                 Maximum 64 labels can be associated with a given resource.
+                 Label values must be between 0 and 63 characters long.
+                 Keys and values must both be under 128 bytes.
+
     """
 
-    def __init__(self, instance_id, client, display_name=None):
+    def __init__(self,
+                 instance_id,
+                 client,
+                 display_name=None,
+                 instance_type=None,
+                 labels=None):
         self.instance_id = instance_id
-        self.display_name = display_name or instance_id
         self._client = client
+        self.display_name = display_name or instance_id
+        self.instance_type = instance_type
+        self.labels = labels
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -95,8 +130,8 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client,
-                     display_name=instance_pb.display_name)
+        result = cls(instance_id, client, instance_pb.display_name,
+                     instance_pb.type, instance_pb.labels)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -106,6 +141,8 @@ class Instance(object):
         if not instance_pb.display_name:  # Simple field (string)
             raise ValueError('Instance protobuf does not contain display_name')
         self.display_name = instance_pb.display_name
+        self.instance_type = instance_pb.type
+        self.labels = instance_pb.labels
 
     @property
     def name(self):
@@ -201,8 +238,8 @@ class Instance(object):
             serve_nodes=serve_nodes,
             default_storage_type=default_storage_type)
         instance = instance_pb2.Instance(
-            display_name=self.display_name
-        )
+            display_name=self.display_name, type=self.instance_type,
+            labels=self.labels)
         clusters[cluster_id] = cluster
         parent = self._client.project_path
 
@@ -224,10 +261,10 @@ class Instance(object):
 
             before calling :meth:`update`.
         """
-        type = enums.Instance.Type.TYPE_UNSPECIFIED
         self._client.instance_admin_client.update_instance(
-            name=self.name, display_name=self.display_name, type_=type,
-            labels={})
+            name=self.name, display_name=self.display_name,
+            type_=self.instance_type,
+            labels=self.labels)
 
     def delete(self):
         """Delete this instance.

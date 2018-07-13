@@ -39,7 +39,12 @@ from google.cloud.bigtable.instance import Instance
 
 from google.cloud.client import ClientWithProject
 
+from google.cloud.bigtable_admin_v2 import enums
 
+
+INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
+INSTANCE_TYPE_DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
+INSTANCE_TYPE_UNSPECIFIED = enums.Instance.Type.TYPE_UNSPECIFIED
 _CLIENT_INFO = client_info.ClientInfo(
     client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
@@ -192,10 +197,10 @@ class Client(ClientWithProject):
             self._instance_admin_client = (
                 bigtable_admin_v2.BigtableInstanceAdminClient(
                     credentials=self._credentials, client_info=_CLIENT_INFO))
-
         return self._instance_admin_client
 
-    def instance(self, instance_id, display_name=None):
+    def instance(self, instance_id, display_name=None,
+                 instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
@@ -207,10 +212,30 @@ class Client(ClientWithProject):
                              characters.) If this value is not set in the
                              constructor, will fall back to the instance ID.
 
+        :type instance_type: int
+        :param instance_type: (Optional) The type of the instance.
+                               Possible values are represented
+                               by the following constants:
+                               :data:`INSTANCE_TYPE_PRODUCTION`.
+                               :data:`INSTANCE_TYPE_DEVELOPMENT`,
+                               Defaults to
+                               :data:`INSTANCE_TYPE_UNSPECIFIED`.
+
+        :type labels: dict
+        :param type: (Optional) Labels are a flexible and lightweight mechanism
+                 for organizing cloud resources into groups that reflect a
+                 customer's organizational needs and deployment strategies.
+                 They can be used to filter resources and aggregate metrics.
+                 Label keys must be between 1 and 63 characters long.
+                 Maximum 64 labels can be associated with a given resource.
+                 Label values must be between 0 and 63 characters long.
+                 Keys and values must both be under 128 bytes.
+
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, display_name=display_name)
+        return Instance(instance_id, self, display_name=display_name,
+                        instance_type=instance_type, labels=labels)
 
     def list_instances(self):
         """List instances owned by the project.
