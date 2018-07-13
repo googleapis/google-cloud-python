@@ -363,12 +363,12 @@ PullMessage = _reflection.GeneratedProtocolMessageType('PullMessage', (_message.
           user ID.  The task's tag can only be set when the [task is
           created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
           The tag must be less than 500 characters.  SDK compatibility:
-          Although the SDK allows tags to be either string or `bytes </a
-          ppengine/docs/standard/java/javadoc/com/google/appengine/api/t
-          askqueue/TaskOptions.html#tag-byte:A->`__, only UTF-8 encoded
-          tags can be used in Cloud Tasks. If a tag isn't UTF-8 encoded,
-          the tag will be empty when the task is returned by Cloud
-          Tasks.
+          Although the SDK allows tags to be either string or `bytes <ht
+          tps://cloud.google.com/appengine/docs/standard/java/javadoc/co
+          m/google/appengine/api/taskqueue/TaskOptions.html#tag-
+          byte:A->`__, only UTF-8 encoded tags can be used in Cloud
+          Tasks. If a tag isn't UTF-8 encoded, the tag will be empty
+          when the task is returned by Cloud Tasks.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullMessage)
   ))
@@ -392,7 +392,7 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType('AppEngineHttpTar
   Using
   [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget]
   requires
-  ```appengine.applications.get`` </appengine/docs/admin-api/access-control>`__
+  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`__
   Google IAM permission for the project and the following scope:
   
   ``https://www.googleapis.com/auth/cloud-platform``
@@ -434,16 +434,16 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRe
   Using
   [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
   requires
-  ```appengine.applications.get`` </appengine/docs/admin-api/access-control>`__
+  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`__
   Google IAM permission for the project and the following scope:
   
   ``https://www.googleapis.com/auth/cloud-platform``
   
   The task will be delivered to the App Engine app which belongs to the
   same project as the queue. For more information, see `How Requests are
-  Routed </appengine/docs/standard/python/how-requests-are-routed>`__ and
-  how routing is affected by `dispatch
-  files </appengine/docs/python/config/dispatchref>`__.
+  Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__
+  and how routing is affected by `dispatch
+  files <https://cloud.google.com/appengine/docs/python/config/dispatchref>`__.
   
   The [AppEngineRouting][google.cloud.tasks.v2beta2.AppEngineRouting] used
   to construct the URL that the task is delivered to can be set at the
@@ -476,12 +476,13 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRe
           The app's request handler for the task's target URL must be
           able to handle HTTP requests with this http\_method, otherwise
           the task attempt will fail with error code 405 (Method Not
-          Allowed). See `Writing a push task request handler
-          </appengine/docs/java/taskqueue/push/creating-
+          Allowed). See `Writing a push task request handler <https://cl
+          oud.google.com/appengine/docs/java/taskqueue/push/creating-
           handlers#writing_a_push_task_request_handler>`__ and the
           documentation for the request handlers in the language your
-          app is written in e.g. `Python Request Handler
-          </appengine/docs/python/tools/webapp/requesthandlerclass>`__.
+          app is written in e.g. `Python Request Handler <https://cloud.
+          google.com/appengine/docs/python/tools/webapp/requesthandlercl
+          ass>`__.
       app_engine_routing:
           Task-level setting for App Engine routing.  If set, [app\_engi
           ne\_routing\_override][google.cloud.tasks.v2beta2.AppEngineHtt
@@ -497,8 +498,8 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRe
           maximum length allowed is 2083 characters.
       headers:
           HTTP request headers.  This map contains the header field
-          names and values. Headers can be set when the `task is created
-          <google.cloud.tasks.v2beta2.CloudTasks.CreateTask>`__.
+          names and values. Headers can be set when the [task is
+          created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
           Repeated headers are not supported but a header value can
           contain commas.  Cloud Tasks sets some headers to default
           values:  -  ``User-Agent``: By default, this header is
@@ -511,17 +512,17 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType('AppEngineHttpRe
           default, the ``Content-Type`` header is set to
           ``"application/octet-stream"``. The default can be overridden
           by    explicitly setting ``Content-Type`` to a particular
-          media type when    the `task is    created
-          <google.cloud.tasks.v2beta2.CloudTasks.CreateTask>`__. For
-          example, ``Content-Type`` can be set to
+          media type when    the [task is
+          created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+          For    example, ``Content-Type`` can be set to
           ``"application/json"``. -  ``Content-Length``: This is
           computed by Cloud Tasks. This value is    output only. It
           cannot be changed.  The headers below cannot be set or
           overridden:  -  ``Host`` -  ``X-Google-*`` -
           ``X-AppEngine-*``  In addition, Cloud Tasks sets some headers
           when the task is dispatched, such as headers containing
-          information about the task; see `request headers
-          </appengine/docs/python/taskqueue/push/creating-
+          information about the task; see `request headers <https://clou
+          d.google.com/appengine/docs/python/taskqueue/push/creating-
           handlers#reading_request_headers>`__. These headers are set
           only when the task is dispatched, so they are not visible when
           the task is returned in a Cloud Tasks response.  Although
@@ -551,13 +552,13 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
   
   For more information about services, versions, and instances see `An
   Overview of App
-  Engine </appengine/docs/python/an-overview-of-app-engine>`__,
+  Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`__,
   `Microservices Architecture on Google App
-  Engine </appengine/docs/python/microservices-on-app-engine>`__, `App
-  Engine Standard request
-  routing </appengine/docs/standard/python/how-requests-are-routed>`__,
+  Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`__,
+  `App Engine Standard request
+  routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__,
   and `App Engine Flex request
-  routing </appengine/docs/flexible/python/how-requests-are-routed>`__.
+  routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
   
   
   Attributes:
@@ -599,20 +600,22 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType('AppEngineRouting', 
           App instance.  By default, the task is sent to an instance
           which is available when the task is attempted.  Requests can
           only be sent to a specific instance if `manual scaling is used
-          in App Engine Standard </appengine/docs/python/an-overview-of-
-          app-engine?hl=en_US#scaling_types_and_instance_classes>`__.
+          in App Engine Standard
+          <https://cloud.google.com/appengine/docs/python/an-overview-
+          of-app-engine?hl=en_US#scaling_types_and_instance_classes>`__.
           App Engine Flex does not support instances. For more
           information, see `App Engine Standard request routing
-          </appengine/docs/standard/python/how-requests-are-routed>`__
-          and `App Engine Flex request routing
-          </appengine/docs/flexible/python/how-requests-are-routed>`__.
+          <https://cloud.google.com/appengine/docs/standard/python/how-
+          requests-are-routed>`__ and `App Engine Flex request routing
+          <https://cloud.google.com/appengine/docs/flexible/python/how-
+          requests-are-routed>`__.
       host:
           Output only. The host that the task is sent to.  For more
           information, see `How Requests are Routed
-          </appengine/docs/standard/python/how-requests-are-routed>`__.
-          The host is constructed as:  -  ``host =
-          [application_domain_name]``\     ``| [service] + '.' +
-          [application_domain_name]``\     ``| [version] + '.' +
+          <https://cloud.google.com/appengine/docs/standard/python/how-
+          requests-are-routed>`__.  The host is constructed as:  -
+          ``host = [application_domain_name]``\     ``| [service] + '.'
+          + [application_domain_name]``\     ``| [version] + '.' +
           [application_domain_name]``\     ``| [version_dot_service]+
           '.' + [application_domain_name]``\     ``| [instance] + '.' +
           [application_domain_name]``\     ``| [instance_dot_service] +

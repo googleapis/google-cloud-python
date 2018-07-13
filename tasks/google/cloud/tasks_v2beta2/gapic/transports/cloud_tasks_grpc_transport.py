@@ -130,7 +130,7 @@ class CloudTasksGrpcTransport(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Returns:
@@ -156,7 +156,7 @@ class CloudTasksGrpcTransport(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Returns:
@@ -180,7 +180,7 @@ class CloudTasksGrpcTransport(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Returns:
@@ -242,7 +242,7 @@ class CloudTasksGrpcTransport(object):
         WARNING: Resuming many high-QPS queues at the same time can
         lead to target overloading. If you are resuming high-QPS
         queues, follow the 500/50/5 pattern described in
-        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/cloud-tasks/pdfs/managing-cloud-tasks-scaling-risks-2017-06-05.pdf>`_.
+        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`_.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -259,8 +259,9 @@ class CloudTasksGrpcTransport(object):
         Returns an empty policy if the resource exists and does not have a policy
         set.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
-        specified resource parent:
+        Authorization requires the following
+        `Google IAM <https://cloud.google.com/iam>`_ permission on the specified
+        resource parent:
 
         * ``cloudtasks.queues.getIamPolicy``
 
@@ -281,8 +282,9 @@ class CloudTasksGrpcTransport(object):
         Note: The Cloud Console does not check queue-level IAM permissions yet.
         Project-level permissions are required to use the Cloud Console.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
-        specified resource parent:
+        Authorization requires the following
+        `Google IAM <https://cloud.google.com/iam>`_ permission on the specified
+        resource parent:
 
         * ``cloudtasks.queues.setIamPolicy``
 
@@ -323,6 +325,9 @@ class CloudTasksGrpcTransport(object):
         ``response_view`` controls the
         subset of information which is returned.
 
+        The tasks may be returned in any order. The ordering may change at any
+        time.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -351,10 +356,9 @@ class CloudTasksGrpcTransport(object):
 
         Tasks cannot be updated after creation; there is no UpdateTask command.
 
-        * For `App Engine queues <https://cloud.google.comgoogle.cloud.tasks.v2beta2.AppEngineHttpTarget>`_,
-        the maximum task size is 100KB.
-        * For `pull queues <https://cloud.google.comgoogle.cloud.tasks.v2beta2.PullTarget>`_, this
-        the maximum task size is 1MB.
+        * For ``App Engine queues``, the maximum task size is
+        100KB.
+        * For ``pull queues``, the maximum task size is 1MB.
 
         Returns:
             Callable: A callable which accepts the appropriate
