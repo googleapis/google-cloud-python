@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,6 @@ class TransferState(object):
 
     Attributes:
       TRANSFER_STATE_UNSPECIFIED (int): State placeholder.
-      INACTIVE (int): Data transfer is inactive.
       PENDING (int): Data transfer is scheduled and is waiting to be picked up by
       data transfer backend.
       RUNNING (int): Data transfer is in progress.
@@ -57,7 +56,6 @@ class TransferState(object):
       CANCELLED (int): Data transfer is cancelled.
     """
     TRANSFER_STATE_UNSPECIFIED = 0
-    INACTIVE = 1
     PENDING = 2
     RUNNING = 3
     SUCCEEDED = 4

@@ -1339,7 +1339,7 @@ DataSource = _reflection.GeneratedProtocolMessageType('DataSource', (_message.Me
           Disables backfilling and manual run scheduling for the data
           source.
       minimum_schedule_interval:
-          The minimum interval between two consecutive scheduled runs.
+          The minimum interval for scheduler to schedule runs.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.DataSource)
   ))
@@ -1423,10 +1423,9 @@ CreateTransferConfigRequest = _reflection.GeneratedProtocolMessageType('CreateTr
       parent:
           The BigQuery project id where the transfer configuration
           should be created. Must be in the format
-          /projects/{project\_id}/locations/{location\_id} or
-          /projects/{project\_id}/locations/- In case when '-' is
-          specified as location\_id, location is infered from the
-          destination dataset region.
+          /projects/{project\_id}/locations/{location\_id} If specified
+          location and location of the destination bigquery dataset do
+          not match - the request will fail.
       transfer_config:
           Data transfer configuration to create.
       authorization_code:
@@ -1930,7 +1929,7 @@ try:
       raise NotImplementedError('Method not implemented!')
 
     def ScheduleTransferRuns(self, request, context):
-      """Creates transfer runs for a time range [range_start_time, range_end_time].
+      """Creates transfer runs for a time range [start_time, end_time].
       For each date - or whatever granularity the data source supports - in the
       range, one transfer run is created.
       Note that runs are created per UTC time in the time range.
@@ -2097,7 +2096,7 @@ try:
       """
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def ScheduleTransferRuns(self, request, context):
-      """Creates transfer runs for a time range [range_start_time, range_end_time].
+      """Creates transfer runs for a time range [start_time, end_time].
       For each date - or whatever granularity the data source supports - in the
       range, one transfer run is created.
       Note that runs are created per UTC time in the time range.
@@ -2181,7 +2180,7 @@ try:
       raise NotImplementedError()
     ListTransferConfigs.future = None
     def ScheduleTransferRuns(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates transfer runs for a time range [range_start_time, range_end_time].
+      """Creates transfer runs for a time range [start_time, end_time].
       For each date - or whatever granularity the data source supports - in the
       range, one transfer run is created.
       Note that runs are created per UTC time in the time range.

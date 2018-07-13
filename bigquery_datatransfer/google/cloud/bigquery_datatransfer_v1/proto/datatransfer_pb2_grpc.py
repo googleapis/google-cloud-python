@@ -147,7 +147,7 @@ class DataTransferServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def ScheduleTransferRuns(self, request, context):
-    """Creates transfer runs for a time range [range_start_time, range_end_time].
+    """Creates transfer runs for a time range [start_time, end_time].
     For each date - or whatever granularity the data source supports - in the
     range, one transfer run is created.
     Note that runs are created per UTC time in the time range.
