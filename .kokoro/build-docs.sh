@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-cd ${KOKORO_ARTIFACTS_DIR}/git/google-cloud-python
+cd ${KOKORO_ARTIFACTS_DIR}/github/google-cloud-python
 pwd
 ls
 env
