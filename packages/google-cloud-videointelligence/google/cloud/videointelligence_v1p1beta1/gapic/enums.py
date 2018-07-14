@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class Feature(object):
+
+class Feature(enum.IntEnum):
     """
     Video annotation feature.
 
@@ -32,7 +34,7 @@ class Feature(object):
     SPEECH_TRANSCRIPTION = 6
 
 
-class LabelDetectionMode(object):
+class LabelDetectionMode(enum.IntEnum):
     """
     Label detection mode.
 
@@ -48,7 +50,7 @@ class LabelDetectionMode(object):
     SHOT_AND_FRAME_MODE = 3
 
 
-class Likelihood(object):
+class Likelihood(enum.IntEnum):
     """
     Bucketized representation of likelihood.
 
