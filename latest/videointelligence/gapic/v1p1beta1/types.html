@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 4c8944b documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud f2c49c8b07 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Video Intelligence Beta 1 Client API" href="../v1beta1/api.html" />
+    <link rel="next" title="Client for Google Cloud Video Intelligence API" href="../v1beta1/api.html" />
     <link rel="prev" title="Client for Cloud Video Intelligence API" href="api.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
@@ -449,37 +449,6 @@ corresponding to the video frame for this location.</p>
 <dd></dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p1beta1.types.</code><code class="descname">NormalizedBoundingBox</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox" title="Permalink to this definition">#</a></dt>
-<dd><p>Normalized bounding box. The normalized vertex coordinates are relative
-to the original image. Range: [0, 1].</p>
-<dl class="attribute">
-<dt id="google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.left">
-<code class="descname">left</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.left" title="Permalink to this definition">#</a></dt>
-<dd><p>Left X coordinate.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.top">
-<code class="descname">top</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.top" title="Permalink to this definition">#</a></dt>
-<dd><p>Top Y coordinate.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.right">
-<code class="descname">right</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.right" title="Permalink to this definition">#</a></dt>
-<dd><p>Right X coordinate.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.bottom">
-<code class="descname">bottom</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.NormalizedBoundingBox.bottom" title="Permalink to this definition">#</a></dt>
-<dd><p>Bottom Y coordinate.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.OneofDescriptorProto">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p1beta1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -637,6 +606,19 @@ recognition.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1p1beta1.types.SpeechTranscriptionConfig.enable_automatic_punctuation">
+<code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.SpeechTranscriptionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
+hypotheses. This feature is only available in select
+languages. Setting this for requests in other languages has no
+effect at all. The default ‘false’ value does not add
+punctuation to result hypotheses. NOTE: “This is currently
+offered as an experimental service, complimentary to all
+users. In the future this may be exclusively available as a
+premium feature.”</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.SpeechTranscriptionConfig.audio_tracks">
 <code class="descname">audio_tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.SpeechTranscriptionConfig.audio_tracks" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> For file formats, such as MXF or MKV, supporting
@@ -673,26 +655,26 @@ track 0.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.input_uri">
 <code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.input_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
+<dd><p>Output only. Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.progress_percent">
 <code class="descname">progress_percent</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.progress_percent" title="Permalink to this definition">#</a></dt>
-<dd><p>Approximate percentage processed thus far. Guaranteed to be
-100 when fully processed.</p>
+<dd><p>Output only. Approximate percentage processed thus far.
+Guaranteed to be 100 when fully processed.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.start_time">
 <code class="descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.start_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Time when the request was received.</p>
+<dd><p>Output only. Time when the request was received.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.update_time">
 <code class="descname">update_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationProgress.update_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Time of the most recent update.</p>
+<dd><p>Output only. Time of the most recent update.</p>
 </dd></dl>
 
 </dd></dl>
@@ -704,7 +686,7 @@ track 0.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationResults.input_uri">
 <code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationResults.input_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
+<dd><p>Output only. Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -749,9 +731,9 @@ for each unique label.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationResults.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p1beta1.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
-<dd><p>If set, indicates an error. Note that for a single
-<code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code> some videos may succeed and some may
-fail.</p>
+<dd><p>Output only. If set, indicates an error. Note that for a
+single <code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code> some videos may succeed and
+some may fail.</p>
 </dd></dl>
 
 </dd></dl>
@@ -921,7 +903,7 @@ information.</p>
   <li><a href="../../../index.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Video Intelligence</a><ul>
       <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud Video Intelligence API</a></li>
-      <li>Next: <a href="../v1beta1/api.html" title="next chapter">Video Intelligence Beta 1 Client API</a></li>
+      <li>Next: <a href="../v1beta1/api.html" title="next chapter">Client for Google Cloud Video Intelligence API</a></li>
   </ul></li>
   </ul></li>
 </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.videointelligence_v1.gapic.video_intelligence_service_client &#8212; google-cloud 4c8944b documentation</title>
+    <title>google.cloud.videointelligence_v1.gapic.video_intelligence_service_client &#8212; google-cloud f2c49c8b07 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -33,46 +33,42 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.videointelligence_v1.gapic.video_intelligence_service_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2018 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
 <span class="c1"># You may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-<span class="c1">#</span>
-<span class="c1"># EDITING INSTRUCTIONS</span>
-<span class="c1"># This file was generated from the file</span>
-<span class="c1"># https://github.com/google/googleapis/blob/master/google/cloud/videointelligence/v1/video_intelligence.proto,</span>
-<span class="c1"># and updates to that file get reflected here through a refresh process.</span>
-<span class="c1"># For the short term, the refresh process will only be runnable by Google engineers.</span>
-<span class="c1">#</span>
-<span class="c1"># The only allowed edits are to method and file documentation. A 3-way</span>
-<span class="c1"># merge preserves those additions if the generated source changes.</span>
 <span class="sd">&quot;&quot;&quot;Accesses the google.cloud.videointelligence.v1 VideoIntelligenceService API.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.operation</span>
 <span class="kn">import</span> <span class="nn">google.api_core.operations_v1</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.videointelligence_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.videointelligence_v1.gapic</span> <span class="k">import</span> <span class="n">video_intelligence_service_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.videointelligence_v1.gapic.transports</span> <span class="k">import</span> <span class="n">video_intelligence_service_grpc_transport</span>
 <span class="kn">from</span> <span class="nn">google.cloud.videointelligence_v1.proto</span> <span class="k">import</span> <span class="n">video_intelligence_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.videointelligence_v1.proto</span> <span class="k">import</span> <span class="n">video_intelligence_pb2_grpc</span>
+<span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span>
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
-    <span class="s1">&#39;google-cloud-videointelligence&#39;</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">version</span>
+    <span class="s1">&#39;google-cloud-videointelligence&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
 
 <span class="k">class</span> <span class="nc">VideoIntelligenceServiceClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -81,16 +77,33 @@
     <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;videointelligence.googleapis.com:443&#39;</span>
     <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
 
-    <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
-    <span class="c1"># this service</span>
-    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span> <span class="p">)</span>
+    <span class="c1"># The name of the interface for this client. This is the key used to</span>
+    <span class="c1"># find the method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.videointelligence.v1.VideoIntelligenceService&#39;</span>
 
-    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
-    <span class="c1"># method configuration in the client_config dictionary</span>
-    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;google.cloud.videointelligence.v1.VideoIntelligenceService&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="VideoIntelligenceServiceClient.from_service_account_file"><a class="viewcode-back" href="../../../../../videointelligence/gapic/v1/api.html#google.cloud.videointelligence_v1.VideoIntelligenceServiceClient.from_service_account_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_service_account_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an instance of this client using the provided credentials</span>
+<span class="sd">        file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The path to the service account private key json</span>
+<span class="sd">                file.</span>
+<span class="sd">            args: Additional arguments to pass to the constructor.</span>
+<span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            VideoIntelligenceServiceClient: The constructed client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">client_config</span><span class="o">=</span><span class="n">video_intelligence_service_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
@@ -98,58 +111,82 @@
         <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
-<span class="sd">                which to make calls. If specified, then the ``credentials``</span>
-<span class="sd">                argument is ignored.</span>
+<span class="sd">            transport (Union[~.VideoIntelligenceServiceGrpcTransport,</span>
+<span class="sd">                    Callable[[~.Credentials, type], ~.VideoIntelligenceServiceGrpcTransport]): A transport</span>
+<span class="sd">                instance, responsible for actually making the API calls.</span>
+<span class="sd">                The default transport uses the gRPC protocol.</span>
+<span class="sd">                This argument may also be a callable which returns a</span>
+<span class="sd">                transport instance. Callables will be sent the credentials</span>
+<span class="sd">                as the first argument and the default transport class as</span>
+<span class="sd">                the second argument.</span>
+<span class="sd">            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance</span>
+<span class="sd">                through which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
 <span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
 <span class="sd">                authorization credentials to attach to requests. These</span>
 <span class="sd">                credentials identify this application to the service. If none</span>
 <span class="sd">                are specified, the client will attempt to ascertain the</span>
 <span class="sd">                credentials from the environment.</span>
-<span class="sd">            client_config (dict):</span>
-<span class="sd">                A dictionary of call options for each method. If not specified</span>
-<span class="sd">                the default configuration is used. Generally, you only need</span>
-<span class="sd">                to set this if you&#39;re developing your own client library.</span>
+<span class="sd">                This argument is mutually exclusive with providing a</span>
+<span class="sd">                transport instance to ``transport``; doing so will raise</span>
+<span class="sd">                an exception.</span>
+<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">                each method. If not specified, the default configuration is used.</span>
 <span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
 <span class="sd">                The client info used to send a user-agent string along with</span>
 <span class="sd">                API requests. If ``None``, then default info will be used.</span>
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;channel and credentials arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
-                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
+        <span class="k">if</span> <span class="n">client_config</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `client_config` argument is deprecated.&#39;</span><span class="p">,</span>
+                          <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` argument is deprecated; use &#39;</span>
+                <span class="s1">&#39;`transport` instead.&#39;</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">video_intelligence_service_stub</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">video_intelligence_pb2</span><span class="o">.</span><span class="n">VideoIntelligenceServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
-
-        <span class="c1"># Operations client for methods that return long-running operations</span>
-        <span class="c1"># futures.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+        <span class="c1"># Instantiate the transport.</span>
+        <span class="c1"># The transport is responsible for handling serialization and</span>
+        <span class="c1"># deserialization and actually sending data to the service.</span>
+        <span class="k">if</span> <span class="n">transport</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">transport</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                    <span class="n">default_class</span><span class="o">=</span><span class="n">video_intelligence_service_grpc_transport</span><span class="o">.</span>
+                    <span class="n">VideoIntelligenceServiceGrpcTransport</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s1">&#39;Received both a transport instance and &#39;</span>
+                        <span class="s1">&#39;credentials; these are mutually exclusive.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">video_intelligence_service_grpc_transport</span><span class="o">.</span><span class="n">VideoIntelligenceServiceGrpcTransport</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
-
         <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span> <span class="o">=</span> <span class="n">client_info</span>
 
-        <span class="n">interface_config</span> <span class="o">=</span> <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">]</span>
-        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
-            <span class="n">interface_config</span><span class="p">)</span>
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_annotate_video</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">video_intelligence_service_stub</span><span class="o">.</span><span class="n">AnnotateVideo</span><span class="p">,</span>
-            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;AnnotateVideo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;AnnotateVideo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
-            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="c1"># Save a dictionary of cached API call functions.</span>
+        <span class="c1"># These are the actual callables which invoke the proper</span>
+        <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
+        <span class="c1"># timeout, and the like.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="VideoIntelligenceServiceClient.annotate_video"><a class="viewcode-back" href="../../../../../videointelligence/gapic/v1/api.html#google.cloud.videointelligence_v1.VideoIntelligenceServiceClient.annotate_video">[docs]</a>    <span class="k">def</span> <span class="nf">annotate_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -160,7 +197,8 @@
                        <span class="n">output_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
-                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs asynchronous video annotation. Progress and results can be</span>
 <span class="sd">        retrieved through the ``google.longrunning.Operations`` interface.</span>
@@ -169,10 +207,15 @@
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import videointelligence_v1</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud.videointelligence_v1 import enums</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = videointelligence_v1.VideoIntelligenceServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; response = client.annotate_video()</span>
+<span class="sd">            &gt;&gt;&gt; input_uri = &#39;gs://demomaker/cat.mp4&#39;</span>
+<span class="sd">            &gt;&gt;&gt; features_element = enums.Feature.LABEL_DETECTION</span>
+<span class="sd">            &gt;&gt;&gt; features = [features_element]</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.annotate_video(input_uri=input_uri, features=features)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
 <span class="sd">            ...     # Handle result.</span>
@@ -216,6 +259,8 @@
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.videointelligence_v1.types._OperationFuture` instance.</span>
@@ -227,19 +272,33 @@
 <span class="sd">                    to a retryable error and retry attempts failed.</span>
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s1">&#39;annotate_video&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s1">&#39;annotate_video&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">annotate_video</span><span class="p">,</span>
+                    <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;AnnotateVideo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                    <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s1">&#39;AnnotateVideo&#39;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+                <span class="p">)</span>
+
         <span class="n">request</span> <span class="o">=</span> <span class="n">video_intelligence_pb2</span><span class="o">.</span><span class="n">AnnotateVideoRequest</span><span class="p">(</span>
             <span class="n">input_uri</span><span class="o">=</span><span class="n">input_uri</span><span class="p">,</span>
             <span class="n">input_content</span><span class="o">=</span><span class="n">input_content</span><span class="p">,</span>
             <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
             <span class="n">video_context</span><span class="o">=</span><span class="n">video_context</span><span class="p">,</span>
             <span class="n">output_uri</span><span class="o">=</span><span class="n">output_uri</span><span class="p">,</span>
-            <span class="n">location_id</span><span class="o">=</span><span class="n">location_id</span><span class="p">)</span>
-        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_annotate_video</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+            <span class="n">location_id</span><span class="o">=</span><span class="n">location_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s1">&#39;annotate_video&#39;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
             <span class="n">operation</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
             <span class="n">video_intelligence_pb2</span><span class="o">.</span><span class="n">AnnotateVideoResponse</span><span class="p">,</span>
-            <span class="n">metadata_type</span><span class="o">=</span><span class="n">video_intelligence_pb2</span><span class="o">.</span><span class="n">AnnotateVideoProgress</span><span class="p">)</span></div>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">video_intelligence_pb2</span><span class="o">.</span><span class="n">AnnotateVideoProgress</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>
