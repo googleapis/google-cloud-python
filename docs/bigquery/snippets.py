@@ -280,6 +280,9 @@ def test_dataset_exists(client, to_delete):
     assert not dataset_exists(client, client.dataset('i_dont_exist'))
 
 
+@pytest.mark.skip(reason=(
+    'update_dataset() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588'))
 def test_update_dataset_description(client, to_delete):
     """Update a dataset's description."""
     dataset_id = 'update_dataset_description_{}'.format(_millis())
@@ -303,6 +306,9 @@ def test_update_dataset_description(client, to_delete):
     # [END bigquery_update_dataset_description]
 
 
+@pytest.mark.skip(reason=(
+    'update_dataset() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588'))
 def test_update_dataset_default_table_expiration(client, to_delete):
     """Update a dataset's default table expiration."""
     dataset_id = 'update_dataset_default_expiration_{}'.format(_millis())
@@ -327,6 +333,9 @@ def test_update_dataset_default_table_expiration(client, to_delete):
     # [END bigquery_update_dataset_expiration]
 
 
+@pytest.mark.skip(reason=(
+    'update_dataset() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588'))
 def test_manage_dataset_labels(client, to_delete):
     dataset_id = 'label_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -384,6 +393,9 @@ def test_manage_dataset_labels(client, to_delete):
     # [END bigquery_delete_label_dataset]
 
 
+@pytest.mark.skip(reason=(
+    'update_dataset() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588'))
 def test_update_dataset_access(client, to_delete):
     """Update a dataset's access controls."""
     dataset_id = 'update_dataset_access_{}'.format(_millis())
@@ -504,6 +516,9 @@ def test_create_table(client, to_delete):
     to_delete.insert(0, table)
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_create_table_then_add_schema(client, to_delete):
     """Create a table without specifying a schema"""
     dataset_id = 'create_table_without_schema_dataset_{}'.format(_millis())
@@ -796,6 +811,9 @@ def test_table_exists(client, to_delete):
     assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_manage_table_labels(client, to_delete):
     dataset_id = 'label_table_dataset_{}'.format(_millis())
     table_id = 'label_table_{}'.format(_millis())
@@ -860,6 +878,9 @@ def test_manage_table_labels(client, to_delete):
     # [END bigquery_delete_label_table]
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_update_table_description(client, to_delete):
     """Update a table's description."""
     dataset_id = 'update_table_description_dataset_{}'.format(_millis())
@@ -888,6 +909,9 @@ def test_update_table_description(client, to_delete):
     # [END bigquery_update_table_description]
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_update_table_expiration(client, to_delete):
     """Update a table's expiration time."""
     dataset_id = 'update_table_expiration_dataset_{}'.format(_millis())
@@ -922,6 +946,9 @@ def test_update_table_expiration(client, to_delete):
     # [END bigquery_update_table_expiration]
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_add_empty_column(client, to_delete):
     """Adds an empty column to an existing table."""
     dataset_id = 'add_empty_column_dataset_{}'.format(_millis())
@@ -954,6 +981,9 @@ def test_add_empty_column(client, to_delete):
     # [END bigquery_add_empty_column]
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_relax_column(client, to_delete):
     """Updates a schema field from required to nullable."""
     dataset_id = 'relax_column_dataset_{}'.format(_millis())
@@ -992,6 +1022,9 @@ def test_relax_column(client, to_delete):
     to_delete.insert(0, table)
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_update_table_cmek(client, to_delete):
     """Patch a table's metadata."""
     dataset_id = 'update_table_cmek_{}'.format(_millis())
@@ -1072,6 +1105,9 @@ def test_browse_table_data(client, to_delete, capsys):
     assert len(out) == 11
 
 
+@pytest.mark.skip(reason=(
+    'update_table() is flaky '
+    'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589'))
 def test_manage_views(client, to_delete):
     project = client.project
     source_dataset_id = 'source_dataset_{}'.format(_millis())
@@ -1271,7 +1307,7 @@ def test_load_table_from_file(client, to_delete):
     assert row2 in rows
 
 
-def test_load_table_from_uri_csv(client, to_delete):
+def test_load_table_from_uri_csv(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1297,17 +1333,20 @@ def test_load_table_from_uri_csv(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_json(client, to_delete):
+
+def test_load_table_from_uri_json(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset.location = 'US'
@@ -1333,14 +1372,17 @@ def test_load_table_from_uri_json(client, to_delete):
         dataset_ref.table('us_states'),
         location='US',  # Location must match that of the destination dataset.
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_json]
+
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
 
 def test_load_table_from_uri_cmek(client, to_delete):
@@ -1385,7 +1427,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     # [END bigquery_load_table_gcs_json_cmek]
 
 
-def test_load_table_from_uri_parquet(client, to_delete):
+def test_load_table_from_uri_parquet(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1405,17 +1447,20 @@ def test_load_table_from_uri_parquet(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_parquet]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_orc(client, to_delete):
+
+def test_load_table_from_uri_orc(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
@@ -1435,17 +1480,20 @@ def test_load_table_from_uri_orc(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_orc]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_autodetect(client, to_delete):
+
+def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     """Load table from a GCS URI using various formats and auto-detected schema
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1497,18 +1545,21 @@ def test_load_table_from_uri_autodetect(client, to_delete):
         uri,
         dataset_ref.table('us_states'),
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(dataset_ref.table('us_states')).num_rows == 50
+    destination_table = client.get_table(dataset_ref.table('us_states'))
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv_autodetect]
     # [END bigquery_load_table_gcs_json_autodetect]
 
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
-def test_load_table_from_uri_append(client, to_delete):
+
+def test_load_table_from_uri_append(client, to_delete, capsys):
     """Appends data to a table from a GCS URI using various formats
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1590,22 +1641,24 @@ def test_load_table_from_uri_append(client, to_delete):
         uri,
         table_ref,
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == previous_rows + 50
+    destination_table = client.get_table(table_ref)
+    print('Loaded {} rows.'.format(destination_table.num_rows - previous_rows))
     # [END bigquery_load_table_gcs_csv_append]
     # [END bigquery_load_table_gcs_json_append]
     # [END bigquery_load_table_gcs_parquet_append]
     # [END bigquery_load_table_gcs_orc_append]
 
+    out, _ = capsys.readouterr()
     assert previous_rows == 1
+    assert 'Loaded 50 rows.' in out
 
 
-def test_load_table_from_uri_truncate(client, to_delete):
+def test_load_table_from_uri_truncate(client, to_delete, capsys):
     """Replaces table data with data from a GCS URI using various formats
 
     Each file format has its own tested load from URI sample. Because most of
@@ -1685,17 +1738,20 @@ def test_load_table_from_uri_truncate(client, to_delete):
         uri,
         table_ref,
         job_config=job_config)  # API request
-
-    assert load_job.job_type == 'load'
+    print('Starting job {}'.format(load_job.job_id))
 
     load_job.result()  # Waits for table load to complete.
+    print('Job finished.')
 
-    assert load_job.state == 'DONE'
-    assert client.get_table(table_ref).num_rows == 50
+    destination_table = client.get_table(table_ref)
+    print('Loaded {} rows.'.format(destination_table.num_rows))
     # [END bigquery_load_table_gcs_csv_truncate]
     # [END bigquery_load_table_gcs_json_truncate]
     # [END bigquery_load_table_gcs_parquet_truncate]
     # [END bigquery_load_table_gcs_orc_truncate]
+
+    out, _ = capsys.readouterr()
+    assert 'Loaded 50 rows.' in out
 
 
 def test_load_table_add_column(client, to_delete):
@@ -2918,6 +2974,59 @@ def test_query_external_sheets_permanent_table(client, to_delete):
     assert len(w_states) == 4
 
 
+def test_ddl_create_view(client, to_delete, capsys):
+    """Create a view via a DDL query."""
+    project = client.project
+    dataset_id = 'ddl_view_{}'.format(_millis())
+    table_id = 'new_view'
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_ddl_create_view]
+    # from google.cloud import bigquery
+    # project = 'my-project'
+    # dataset_id = 'my_dataset'
+    # table_id = 'new_view'
+    # client = bigquery.Client(project=project)
+
+    sql = """
+    CREATE VIEW `{}.{}.{}`
+    OPTIONS(
+        expiration_timestamp=TIMESTAMP_ADD(
+            CURRENT_TIMESTAMP(), INTERVAL 48 HOUR),
+        friendly_name="new_view",
+        description="a view that expires in 2 days",
+        labels=[("org_unit", "development")]
+    )
+    AS SELECT name, state, year, number
+        FROM `bigquery-public-data.usa_names.usa_1910_current`
+        WHERE state LIKE 'W%'
+    """.format(project, dataset_id, table_id)
+
+    job = client.query(sql)  # API request.
+    job.result()  # Waits for the query to finish.
+
+    print('Created new view "{}.{}.{}".'.format(
+        job.destination.project,
+        job.destination.dataset_id,
+        job.destination.table_id))
+    # [END bigquery_ddl_create_view]
+
+    out, _ = capsys.readouterr()
+    assert 'Created new view "{}.{}.{}".'.format(
+        project, dataset_id, table_id) in out
+
+    # Test that listing query result rows succeeds so that generic query
+    # processing tools work with DDL statements.
+    rows = list(job)
+    assert len(rows) == 0
+
+    if pandas is not None:
+        df = job.to_dataframe()
+        assert len(df) == 0
+
+
 def test_client_list_jobs(client):
     """List jobs for a project."""
 
@@ -3000,6 +3109,7 @@ def test_load_table_from_dataframe(client, to_delete):
 
     # [START bigquery_load_table_dataframe]
     # from google.cloud import bigquery
+    # import pandas
     # client = bigquery.Client()
     # dataset_id = 'my_dataset'
 

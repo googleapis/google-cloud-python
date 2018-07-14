@@ -1123,12 +1123,30 @@ class TestRow(unittest.TestCase):
             row['z']
 
 
+class Test_EmptyRowIterator(unittest.TestCase):
+
+    @mock.patch('google.cloud.bigquery.table.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe()
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        df = row_iterator.to_dataframe()
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+
+
 class TestRowIterator(unittest.TestCase):
 
     def test_constructor(self):
         from google.cloud.bigquery.table import RowIterator
-        from google.cloud.bigquery._helpers import _item_to_row
-        from google.cloud.bigquery._helpers import _rows_page_start
+        from google.cloud.bigquery.table import _item_to_row
+        from google.cloud.bigquery.table import _rows_page_start
 
         client = mock.sentinel.client
         api_request = mock.sentinel.api_request
@@ -1143,7 +1161,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(iterator._items_key, 'rows')
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator.extra_params, {})
-        self.assertEqual(iterator._page_start, _rows_page_start)
+        self.assertIs(iterator._page_start, _rows_page_start)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)

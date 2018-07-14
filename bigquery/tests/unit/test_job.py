@@ -57,23 +57,6 @@ def _make_connection(*responses):
     return mock_conn
 
 
-class Test__int_or_none(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigquery import job
-
-        return job._int_or_none(*args, **kwargs)
-
-    def test_w_int(self):
-        self.assertEqual(self._call_fut(13), 13)
-
-    def test_w_none(self):
-        self.assertIsNone(self._call_fut(None))
-
-    def test_w_str(self):
-        self.assertEqual(self._call_fut('13'), 13)
-
-
 class Test__error_result_to_exception(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
@@ -2729,6 +2712,25 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertEqual(list(result), [])
 
+    def test_result_w_empty_schema(self):
+        # Destination table may have no schema for some DDL and DML queries.
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'schema': {'fields': []},
+        }
+        connection = _make_connection(query_resource, query_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result()
+
+        self.assertEqual(list(result), [])
+
     def test_result_invokes_begins(self):
         begun_resource = self._make_resource()
         incomplete_resource = {
@@ -3310,6 +3312,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '4',
             'schema': {
                 'fields': [
                     {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
@@ -3346,6 +3349,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_ID,
             },
+            'totalRows': '0',
             'schema': {'fields': [{'name': 'col1', 'type': 'STRING'}]},
         }
         done_resource = copy.deepcopy(begun_resource)

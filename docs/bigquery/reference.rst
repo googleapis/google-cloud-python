@@ -114,6 +114,15 @@ Query
     query.UDFResource
 
 
+Retries
+=======
+
+.. autosummary::
+    :toctree: generated
+
+    retry.DEFAULT_RETRY
+
+
 External Configuration
 ======================
 

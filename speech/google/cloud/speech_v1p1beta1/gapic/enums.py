@@ -13,9 +13,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class RecognitionConfig(object):
-    class AudioEncoding(object):
+    class AudioEncoding(enum.IntEnum):
         """
         The encoding of the audio data sent in the request.
 
@@ -78,7 +80,7 @@ class RecognitionConfig(object):
 
 
 class RecognitionMetadata(object):
-    class InteractionType(object):
+    class InteractionType(enum.IntEnum):
         """
         Use case categories that the audio recognition request can be described
         by.
@@ -111,7 +113,7 @@ class RecognitionMetadata(object):
         VOICE_COMMAND = 7
         DICTATION = 8
 
-    class MicrophoneDistance(object):
+    class MicrophoneDistance(enum.IntEnum):
         """
         Enumerates the types of capture settings describing an audio file.
 
@@ -128,7 +130,7 @@ class RecognitionMetadata(object):
         MIDFIELD = 2
         FARFIELD = 3
 
-    class OriginalMediaType(object):
+    class OriginalMediaType(enum.IntEnum):
         """
         The original media the speech was recorded on.
 
@@ -141,7 +143,7 @@ class RecognitionMetadata(object):
         AUDIO = 1
         VIDEO = 2
 
-    class RecordingDeviceType(object):
+    class RecordingDeviceType(enum.IntEnum):
         """
         The type of device the speech was recorded with.
 
@@ -164,7 +166,7 @@ class RecognitionMetadata(object):
 
 
 class StreamingRecognizeResponse(object):
-    class SpeechEventType(object):
+    class SpeechEventType(enum.IntEnum):
         """
         Indicates the type of speech event.
 

@@ -37,7 +37,11 @@ from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
 
 
-_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
+_NO_PANDAS_ERROR = (
+    'The pandas library is not installed, please install '
+    'pandas to use the to_dataframe() function.'
+)
+_TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 _MARKER = object()
 
 
@@ -1089,9 +1093,9 @@ class RowIterator(HTTPIterator):
     def __init__(self, client, api_request, path, schema, page_token=None,
                  max_results=None, page_size=None, extra_params=None):
         super(RowIterator, self).__init__(
-            client, api_request, path, item_to_value=_helpers._item_to_row,
+            client, api_request, path, item_to_value=_item_to_row,
             items_key='rows', page_token=page_token, max_results=max_results,
-            extra_params=extra_params, page_start=_helpers._rows_page_start,
+            extra_params=extra_params, page_start=_rows_page_start,
             next_token='pageToken')
         self._schema = schema
         self._field_to_index = _helpers._field_to_index_mapping(schema)
@@ -1137,14 +1141,32 @@ class RowIterator(HTTPIterator):
 
         """
         if pandas is None:
-            raise ValueError('The pandas library is not installed, please '
-                             'install pandas to use the to_dataframe() '
-                             'function.')
+            raise ValueError(_NO_PANDAS_ERROR)
 
         column_headers = [field.name for field in self.schema]
         rows = [row.values() for row in iter(self)]
 
         return pandas.DataFrame(rows, columns=column_headers)
+
+
+class _EmptyRowIterator(object):
+    """An empty row iterator.
+
+    This class prevents API requests when there are no rows to fetch or rows
+    are impossible to fetch, such as with query results for DDL CREATE VIEW
+    statements.
+    """
+    schema = ()
+    pages = ()
+    total_rows = 0
+
+    def to_dataframe(self):
+        if pandas is None:
+            raise ValueError(_NO_PANDAS_ERROR)
+        return pandas.DataFrame()
+
+    def __iter__(self):
+        return iter(())
 
 
 class TimePartitioningType(object):
@@ -1271,3 +1293,45 @@ class TimePartitioning(object):
                 serialized form.
         """
         return self._properties
+
+
+def _item_to_row(iterator, resource):
+    """Convert a JSON row to the native object.
+
+    .. note::
+
+        This assumes that the ``schema`` attribute has been
+        added to the iterator after being created, which
+        should be done by the caller.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: An item to be converted to a row.
+
+    :rtype: :class:`~google.cloud.bigquery.table.Row`
+    :returns: The next row in the page.
+    """
+    return Row(_helpers._row_tuple_from_json(resource, iterator.schema),
+               iterator._field_to_index)
+
+
+# pylint: disable=unused-argument
+def _rows_page_start(iterator, page, response):
+    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type page: :class:`~google.api_core.page_iterator.Page`
+    :param page: The page that was just created.
+
+    :type response: dict
+    :param response: The JSON API response for a page of rows in a table.
+    """
+    total_rows = response.get('totalRows')
+    if total_rows is not None:
+        total_rows = int(total_rows)
+    iterator._total_rows = total_rows
+# pylint: enable=unused-argument
