@@ -18,7 +18,6 @@
 import re
 
 from google.cloud.bigtable.table import Table
-from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
 from google.protobuf import field_mask_pb2
 
@@ -148,7 +147,7 @@ class Instance(object):
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
-    
+
     def create(self, clusters):
         """Create this instance.
 
@@ -165,30 +164,19 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :type clusters: list
-        :param clusters: Array of cluster. Its a list of instances of class:
-                        `ClusterMetaData
-                        <google.cloud.bigtable.cluster.ClusterMetaData>`
+        :type clusters: class:`~[~google.cloud.bigtable.cluster.Cluster]`
+        :param clusters: List of clusters to be created
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
         """
         clusters_dict = {}
-        for cluster_metadata in clusters:
-            cluster_id = cluster_metadata.cluster_id
-            cluster_name = self._client.instance_admin_client.cluster_path(
-                self._client.project, self.instance_id, cluster_id)
-            location = self._client.instance_admin_client.location_path(
-                self._client.project, cluster_metadata.location_id)
-            cluster = instance_pb2.Cluster(
-                name=cluster_name, location=location,
-                serve_nodes=cluster_metadata.serve_nodes,
-                default_storage_type=cluster_metadata.default_storage_type)
-            clusters_dict[cluster_id] = cluster
-            
+        for cluster in clusters:
+            clusters_dict[cluster.cluster_id] = cluster.create_pb_request()
+
         instance = instance_pb2.Instance(display_name=self.display_name)
-        
+
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
