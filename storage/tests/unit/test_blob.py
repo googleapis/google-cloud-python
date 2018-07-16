@@ -384,12 +384,12 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper(credentials=credentials)
 
     def test_generate_signed_url_non_ascii(self):
-        BLOB_NAME = u'Caf\xe9.txt'
+        BLOB_NAME = u'\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME.encode('utf-8'), bucket=bucket)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
         URI = (u'http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                u'&Expiration=2014-10-16T20:34:37.000Z')
 
@@ -404,7 +404,7 @@ class Test_Blob(unittest.TestCase):
             'api_access_endpoint': 'https://storage.googleapis.com',
             'expiration': EXPIRATION,
             'method': 'GET',
-            'resource': '/name/Caf%C3%A9.txt',
+            'resource': '/name/%D0%90%D0%BA%D0%BA%D0%BE%D1%80%D0%B4%D1%8B.txt',
             'content_type': None,
             'response_type': None,
             'response_disposition': None,
