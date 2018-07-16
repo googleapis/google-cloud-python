@@ -383,6 +383,35 @@ class Test_Blob(unittest.TestCase):
         credentials = object()
         self._basic_generate_signed_url_helper(credentials=credentials)
 
+    def test_generate_signed_url_non_ascii(self):
+        BLOB_NAME = u'Caf\xe9.txt'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME.encode('utf-8'), bucket=bucket)
+        URI = (u'http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+               u'&Expiration=2014-10-16T20:34:37.000Z')
+
+        SIGNER = _Signer()
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
+            signed_url = blob.generate_signed_url(EXPIRATION)
+            self.assertEqual(signed_url, URI)
+
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': '/name/Caf%C3%A9.txt',
+            'content_type': None,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+
     def test_generate_signed_url_w_slash_in_name(self):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
