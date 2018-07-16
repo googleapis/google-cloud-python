@@ -1325,23 +1325,6 @@ def test_load_table_from_uri_csv(client, to_delete, capsys):
     out, _ = capsys.readouterr()
     assert 'Loaded 50 rows.' in out
 
-    job_id = load_job.job_id
-    location = 'us'
-    # [START bigquery_get_job]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
-    # location = 'us'                         # replace with your location
-
-    job = client.get_job(job_id, location=location)  # API request
-
-    # Print selected job properties
-    print('Details for job {} running in {}:'.format(job_id, location))
-    print('\tType: {}\n\tState: {}\n\tCreated: {}'.format(
-        job.job_type, job.state, job.created))
-    # [END bigquery_get_job]
-
 
 def test_load_table_from_uri_json(client, to_delete, capsys):
     dataset_id = 'load_table_dataset_{}'.format(_millis())
@@ -2256,6 +2239,42 @@ def test_client_query_legacy_sql(client):
     for row in query_job:  # API request - fetches results
         print(row)
     # [END bigquery_query_legacy]
+
+
+def test_manage_job(client, to_delete, capsys):
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+    location = 'us'
+    job = client.query(sql, location=location)
+    job_id = job.job_id
+
+    # [START bigquery_cancel_job]
+    # TODO(developer): Uncomment the lines below and replace with your values.
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
+    # location = 'us'                         # replace with your location
+
+    job = client.cancel_job(job_id, location=location)
+    # [END bigquery_cancel_job]
+
+    # [START bigquery_get_job]
+    # TODO(developer): Uncomment the lines below and replace with your values.
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
+    # location = 'us'                         # replace with your location
+
+    job = client.get_job(job_id, location=location)  # API request
+
+    # Print selected job properties
+    print('Details for job {} running in {}:'.format(job_id, location))
+    print('\tType: {}\n\tState: {}\n\tCreated: {}'.format(
+        job.job_type, job.state, job.created))
+    # [END bigquery_get_job]
 
 
 def test_client_query_destination_table(client, to_delete):
