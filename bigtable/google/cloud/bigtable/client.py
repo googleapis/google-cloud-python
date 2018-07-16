@@ -216,20 +216,21 @@ class Client(ClientWithProject):
         :param instance_type: (Optional) The type of the instance.
                                Possible values are represented
                                by the following constants:
-                               :data:`INSTANCE_TYPE_PRODUCTION`.
-                               :data:`INSTANCE_TYPE_DEVELOPMENT`,
+                               :data:`google.cloud.bigtable.enums.InstanceType.PRODUCTION`.
+                               :data:`google.cloud.bigtable.enums.InstanceType.DEVELOPMENT`,
                                Defaults to
-                               :data:`INSTANCE_TYPE_UNSPECIFIED`.
+                               :data:`google.cloud.bigtable.enums.InstanceType.UNSPECIFIED`.
 
         :type labels: dict
-        :param type: (Optional) Labels are a flexible and lightweight mechanism
-                 for organizing cloud resources into groups that reflect a
-                 customer's organizational needs and deployment strategies.
-                 They can be used to filter resources and aggregate metrics.
-                 Label keys must be between 1 and 63 characters long.
-                 Maximum 64 labels can be associated with a given resource.
-                 Label values must be between 0 and 63 characters long.
-                 Keys and values must both be under 128 bytes.
+        :param labels: (Optional) Labels are a flexible and lightweight
+                       mechanism for organizing cloud resources into groups
+                       that reflect a customer's organizational needs and
+                       deployment strategies. They can be used to filter
+                       resources and aggregate metrics. Label keys must be
+                       between 1 and 63 characters long. Maximum 64 labels can
+                       be associated with a given resource. Label values must
+                       be between 0 and 63 characters long. Keys and values
+                       must both be under 128 bytes.
 
         :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.

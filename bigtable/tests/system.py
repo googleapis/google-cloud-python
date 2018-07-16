@@ -130,8 +130,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertTrue(expected.issubset(found))
 
     def test_reload(self):
-        from google.cloud.bigtable_admin_v2 import enums
-        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        from google.cloud.bigtable import enums
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
         instance = Config.CLIENT.instance(INSTANCE_ID)
@@ -141,13 +140,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance.reload()
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
         self.assertEqual(instance.labels, Config.INSTANCE.labels)
-        self.assertEqual(instance.instance_type, _PRODUCTION)
+        self.assertEqual(instance.type, enums.InstanceType.PRODUCTION)
 
     def test_create_instance_defaults(self):
-        from google.cloud.bigtable_admin_v2 import enums
-        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        from google.cloud.bigtable import enums
 
-        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        ALT_INSTANCE_ID = 'new-def' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
         operation = instance.create(location_id=LOCATION_ID)
         # Make sure this instance gets deleted after the test case.
@@ -163,20 +161,20 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
         # Make sure that by default a PRODUCTION type instance is created
-        self.assertIsNone(instance.instance_type)
-        self.assertEqual(instance_alt.instance_type, _PRODUCTION)
+        self.assertIsNone(instance.type)
+        self.assertEqual(instance_alt.type, enums.InstanceType.PRODUCTION)
         self.assertIsNone(instance.labels)
         self.assertFalse(instance_alt.labels)
 
     def test_create_instance(self):
-        from google.cloud.bigtable_admin_v2 import enums
-        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        from google.cloud.bigtable import enums
+        _DEVELOPMENT = enums.InstanceType.DEVELOPMENT
 
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                          instance_type=_PRODUCTION,
+                                          instance_type=_DEVELOPMENT,
                                           labels=LABELS)
-        operation = instance.create(location_id=LOCATION_ID)
+        operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
@@ -189,7 +187,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
-        self.assertEqual(instance.instance_type, instance_alt.instance_type)
+        self.assertEqual(instance.type, instance_alt.type)
         self.assertEqual(instance.labels, instance_alt.labels)
 
     def test_update(self):

@@ -22,7 +22,6 @@ from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
 from google.protobuf import field_mask_pb2
 
-from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
@@ -30,16 +29,9 @@ _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 
-INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
-INSTANCE_TYPE_DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
-INSTANCE_TYPE_UNSPECIFIED = enums.Instance.Type.TYPE_UNSPECIFIED
 
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
-
-STORAGE_TYPE_SSD = enums.StorageType.SSD
-STORAGE_TYPE_HDD = enums.StorageType.HDD
-_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Instance(object):
@@ -74,21 +66,21 @@ class Instance(object):
     :param instance_type: (Optional) The type of the instance.
                           Possible values are represented
                           by the following constants:
-                          :data:`INSTANCE_TYPE_PRODUCTION`.
-                          :data:`INSTANCE_TYPE_DEVELOPMENT`,
+                          :data:`google.cloud.bigtable.enums.InstanceType.PRODUCTION`.
+                          :data:`google.cloud.bigtable.enums.InstanceType.DEVELOPMENT`,
                           Defaults to
-                          :data:`INSTANCE_TYPE_UNSPECIFIED`.
+                          :data:`google.cloud.bigtable.enums.InstanceType.UNSPECIFIED`.
 
     :type labels: dict
-    :param type: (Optional) Labels are a flexible and lightweight mechanism
-                 for organizing cloud resources into groups that reflect a
-                 customer's organizational needs and deployment strategies.
-                 They can be used to filter resources and aggregate metrics.
-                 Label keys must be between 1 and 63 characters long.
-                 Maximum 64 labels can be associated with a given resource.
-                 Label values must be between 0 and 63 characters long.
-                 Keys and values must both be under 128 bytes.
-
+    :param labels: (Optional) Labels are a flexible and lightweight
+                   mechanism for organizing cloud resources into groups
+                   that reflect a customer's organizational needs and
+                   deployment strategies. They can be used to filter
+                   resources and aggregate metrics. Label keys must be
+                   between 1 and 63 characters long. Maximum 64 labels can
+                   be associated with a given resource. Label values must
+                   be between 0 and 63 characters long. Keys and values
+                   must both be under 128 bytes.
     """
 
     def __init__(self,
@@ -100,7 +92,7 @@ class Instance(object):
         self.instance_id = instance_id
         self._client = client
         self.display_name = display_name or instance_id
-        self.instance_type = instance_type
+        self.type = instance_type
         self.labels = labels
 
     @classmethod
@@ -141,7 +133,7 @@ class Instance(object):
         if not instance_pb.display_name:  # Simple field (string)
             raise ValueError('Instance protobuf does not contain display_name')
         self.display_name = instance_pb.display_name
-        self.instance_type = instance_pb.type
+        self.type = instance_pb.type
         self.labels = instance_pb.labels
 
     @property
@@ -188,7 +180,7 @@ class Instance(object):
 
     def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
                serve_nodes=DEFAULT_SERVE_NODES,
-               default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
+               default_storage_type=None):
         """Create this instance.
 
         .. note::
@@ -215,13 +207,14 @@ class Instance(object):
                             cluster; used to set up the instance's cluster.
 
         :type default_storage_type: int
-        :param default_storage_type: (Optional) The default values are
-                                     STORAGE_TYPE_UNSPECIFIED = 0: The user
-                                     did not specify a storage type.
-                                     SSD = 1: Flash (SSD) storage should be
-                                     used.
-                                     HDD = 2: Magnetic drive (HDD) storage
-                                     should be used.
+        :param default_storage_type: (Optional) The storage media type for
+                                      persisting Bigtable data.
+                                      Possible values are represented
+                                      by the following constants:
+                                      :data:`google.cloud.bigtable.enums.StorageType.SSD`.
+                                      :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                      Defaults to
+                                      :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
@@ -238,7 +231,7 @@ class Instance(object):
             serve_nodes=serve_nodes,
             default_storage_type=default_storage_type)
         instance = instance_pb2.Instance(
-            display_name=self.display_name, type=self.instance_type,
+            display_name=self.display_name, type=self.type,
             labels=self.labels)
         clusters[cluster_id] = cluster
         parent = self._client.project_path
@@ -263,7 +256,7 @@ class Instance(object):
         """
         self._client.instance_admin_client.update_instance(
             name=self.name, display_name=self.display_name,
-            type_=self.instance_type,
+            type_=self.type,
             labels=self.labels)
 
     def delete(self):
