@@ -18,6 +18,7 @@ import time
 import mock
 import pytz
 from six.moves import queue
+from google.protobuf import timestamp_pb2
 
 from google.api_core import datetime_helpers
 from google.cloud.pubsub_v1 import types
@@ -27,7 +28,9 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=pytz.utc)
 RECEIVED_SECONDS = datetime_helpers.to_milliseconds(RECEIVED) // 1000
-PUBLISHED = RECEIVED + datetime.timedelta(days=1)
+PUBLISHED_MICROS = 123456
+PUBLISHED = RECEIVED + datetime.timedelta(
+    days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
@@ -39,8 +42,10 @@ def create_message(data, ack_id='ACKID', **attrs):
                 attributes=attrs,
                 data=data,
                 message_id='message_id',
-                publish_time=types.Timestamp(
-                    seconds=PUBLISHED_SECONDS),
+                publish_time=timestamp_pb2.Timestamp(
+                    seconds=PUBLISHED_SECONDS,
+                    nanos=PUBLISHED_MICROS * 1000,
+                ),
             ), ack_id, queue.Queue())
             lease.assert_called_once_with()
             return msg
@@ -58,8 +63,7 @@ def test_data():
 
 def test_publish_time():
     msg = create_message(b'foo')
-    assert msg.publish_time == types.Timestamp(
-        seconds=PUBLISHED_SECONDS)
+    assert msg.publish_time == PUBLISHED
 
 
 def check_call_types(mock, *args, **kwargs):
@@ -91,7 +95,7 @@ def test_ack():
         msg.ack()
         put.assert_called_once_with(requests.AckRequest(
             ack_id='bogus_ack_id',
-            byte_size=25,
+            byte_size=30,
             time_to_ack=mock.ANY,
         ))
         check_call_types(put, requests.AckRequest)
@@ -103,7 +107,7 @@ def test_drop():
         msg.drop()
         put.assert_called_once_with(requests.DropRequest(
             ack_id='bogus_ack_id',
-            byte_size=25,
+            byte_size=30,
         ))
         check_call_types(put, requests.DropRequest)
 
@@ -114,7 +118,7 @@ def test_lease():
         msg.lease()
         put.assert_called_once_with(requests.LeaseRequest(
             ack_id='bogus_ack_id',
-            byte_size=25,
+            byte_size=30,
         ))
         check_call_types(put, requests.LeaseRequest)
 
@@ -136,7 +140,7 @@ def test_nack():
         msg.nack()
         put.assert_called_once_with(requests.NackRequest(
             ack_id='bogus_ack_id',
-            byte_size=25,
+            byte_size=30,
         ))
         check_call_types(put, requests.NackRequest)
 
