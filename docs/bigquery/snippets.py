@@ -1896,31 +1896,6 @@ def test_load_table_relax_column(client, to_delete):
     assert table.num_rows > 0
 
 
-def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
-    import csv
-    from google.cloud._testing import _NamedTemporaryFile
-    from google.cloud.storage import Client as StorageClient
-
-    storage_client = StorageClient()
-
-    # In the **very** rare case the bucket name is reserved, this
-    # fails with a ConnectionError.
-    bucket = storage_client.create_bucket(bucket_name)
-
-    blob = bucket.blob(blob_name)
-
-    with _NamedTemporaryFile() as temp:
-        with open(temp.name, 'w') as csv_write:
-            writer = csv.writer(csv_write)
-            writer.writerow(header_row)
-            writer.writerows(data_rows)
-
-        with open(temp.name, 'rb') as csv_read:
-            blob.upload_from_file(csv_read, content_type='text/csv')
-
-    return bucket, blob
-
-
 def test_copy_table(client, to_delete):
     dataset_id = 'copy_table_dataset_{}'.format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
