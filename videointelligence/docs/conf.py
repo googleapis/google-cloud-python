@@ -277,7 +277,7 @@ texinfo_documents = [
     (master_doc, 'google-cloud-video-intelligence',
      u'google-cloud-video-intelligence Documentation', author,
      'google-cloud-video-intelligence',
-     'GAPIC library for the {metadata.shortName} v1p1beta1 service', 'APIs'),
+     'GAPIC library for the {metadata.shortName} v1 service', 'APIs'),
 ]
 
 # Documents to append as an appendix to all manuals.
