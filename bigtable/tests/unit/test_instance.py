@@ -18,6 +18,7 @@ import unittest
 import mock
 
 from ._testing import _make_credentials
+from google.cloud.bigtable.cluster import Cluster
 
 
 class MultiCallableStub(object):
@@ -298,17 +299,24 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        result = instance.create(location_id=self.LOCATION_ID)
+        result = instance.create([Cluster('cluster-id1', instance,
+                                          'location-id1'),
+                                 Cluster('cluster-id2', instance,
+                                         'location-id2')])
         actual_request = channel.requests[0][1]
 
-        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
-        cluster = self._create_cluster(
-            instance_api, cluster_id, self.LOCATION_ID, DEFAULT_SERVE_NODES,
+        cluster1 = self._create_cluster(
+            instance_api, 'cluster-id1', 'location-id1', DEFAULT_SERVE_NODES,
+            enums.StorageType.STORAGE_TYPE_UNSPECIFIED)
+
+        cluster2 = self._create_cluster(
+            instance_api, 'cluster-id2', 'location-id2', DEFAULT_SERVE_NODES,
             enums.StorageType.STORAGE_TYPE_UNSPECIFIED)
 
         expected_request = self._create_instance_request(
             self.DISPLAY_NAME,
-            {cluster_id: cluster}
+            {'cluster-id1': cluster1,
+             'cluster-id2': cluster2}
         )
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
@@ -339,14 +347,14 @@ class TestInstance(unittest.TestCase):
             bigtable_instance_admin_client.BigtableInstanceAdminClient(
                 channel=channel))
         client._instance_admin_client = instance_api
+        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
 
         # Perform the method and check the result.
         result = instance.create(
-            location_id=self.LOCATION_ID, serve_nodes=serve_nodes,
-            default_storage_type=enums.StorageType.SSD)
+            [Cluster(cluster_id, instance, self.LOCATION_ID,
+             serve_nodes=serve_nodes, storage_type=enums.StorageType.SSD)])
         actual_request = channel.requests[0][1]
 
-        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
         cluster = self._create_cluster(
             instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
             enums.StorageType.SSD)
