@@ -532,22 +532,6 @@ def test_create_table_then_add_schema(client, to_delete):
 
     assert table.table_id == 'my_table'
     # [END bigquery_create_table_without_schema]
-    # [START bigquery_add_schema_to_empty]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    table_ref = client.dataset(dataset_id).table('my_table')
-    schema = [
-        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
-    ]
-    table = bigquery.Table(table_ref, schema=schema)
-
-    table = client.update_table(table, ['schema'])  # API request
-
-    assert table.schema == schema
-    # [END bigquery_add_schema_to_empty]
 
 
 def test_create_table_nested_repeated_schema(client, to_delete):
