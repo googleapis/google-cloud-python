@@ -635,7 +635,7 @@ class Client(ClientWithProject):
 
         Keyword Arguments:
             project (str):
-                (Optional) ID of the project which ownsthe job (defaults to
+                (Optional) ID of the project which owns the job (defaults to
                 the client's project).
             location (str): Location where the job was run.
             retry (google.api_core.retry.Retry):
