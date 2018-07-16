@@ -104,6 +104,28 @@ def test_create_document(client, cleanup):
     assert stored_data == expected_data
 
 
+def test_create_document_w_subcollection(client, cleanup):
+    document_id = 'shun' + unique_resource_id('-')
+    document = client.document('collek', document_id)
+    # Add to clean-up before API request (in case ``create()`` fails).
+    cleanup(document)
+
+    data = {
+        'now': firestore.SERVER_TIMESTAMP,
+    }
+    document.create(data)
+
+    child_ids = ['child1', 'child2']
+
+    for child_id in child_ids:
+        subcollection = document.collection(child_id)
+        _, subdoc = subcollection.add({'foo': 'bar'})
+        cleanup(subdoc)
+
+    children = document.collections()
+    assert sorted(child.id for child in children) == sorted(child_ids)
+
+
 def test_cannot_use_foreign_key(client, cleanup):
     document_id = 'cannot' + unique_resource_id('-')
     document = client.document('foreign-key', document_id)
