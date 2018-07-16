@@ -335,7 +335,7 @@ class Blob(_PropertyMixin):
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name))
+            quoted_name=quote(self.name.encode('utf-8')))
 
         if credentials is None:
             client = self._require_client(client)
