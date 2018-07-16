@@ -2241,7 +2241,7 @@ def test_client_query_legacy_sql(client):
     # [END bigquery_query_legacy]
 
 
-def test_manage_job(client, to_delete, capsys):
+def test_manage_job(client):
     sql = """
         SELECT corpus
         FROM `bigquery-public-data.samples.shakespeare`
