@@ -511,6 +511,51 @@ class TestDocumentReference(unittest.TestCase):
         client.get_all.assert_called_once_with(
             [document], field_paths=field_paths, transaction=None)
 
+    def _collections_helper(self, page_size=None):
+        from google.api_core import grpc_helpers
+        from google.cloud.firestore_v1beta1.collection import (
+            CollectionReference)
+        from google.cloud.firestore_v1beta1.gapic.firestore_client import (
+            FirestoreClient)
+        from google.cloud.firestore_v1beta1.proto import firestore_pb2
+
+        collection_ids = ['coll-1', 'coll-2']
+        list_coll_response = firestore_pb2.ListCollectionIdsResponse(
+            collection_ids=collection_ids)
+        channel = grpc_helpers.ChannelStub()
+        api_client = FirestoreClient(channel=channel)
+        channel.ListCollectionIds.response = list_coll_response
+
+        client = _make_client()
+        client._firestore_api_internal = api_client
+
+        # Actually make a document and call delete().
+        document = self._make_one('where', 'we-are', client=client)
+        if page_size is not None:
+            collections = list(document.collections(page_size=page_size))
+        else:
+            collections = list(document.collections())
+
+        # Verify the response and the mocks.
+        self.assertEqual(len(collections), len(collection_ids))
+        for collection, collection_id in zip(collections, collection_ids):
+            self.assertIsInstance(collection, CollectionReference)
+            self.assertEqual(collection.parent, document)
+            self.assertEqual(collection.id, collection_id)
+
+        request, = channel.ListCollectionIds.requests
+        self.assertEqual(request.parent, document._document_path)
+        if page_size is None:
+            self.assertEqual(request.page_size, 0)
+        else:
+            self.assertEqual(request.page_size, page_size)
+
+    def test_collections_wo_page_size(self):
+        self._collections_helper()
+
+    def test_collections_w_page_size(self):
+        self._collections_helper(page_size=10)
+
 
 class TestDocumentSnapshot(unittest.TestCase):
 
