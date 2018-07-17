@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud 00f022fd4d documentation</title>
+    <title>Client &#8212; google-cloud f5982ed documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -97,7 +97,7 @@ and <code class="docutils literal notranslate"><span class="pre">admin</span></c
 </table>
 <dl class="method">
 <dt id="google.cloud.bigtable.client.Client.instance">
-<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>display_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
+<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>display_name=None</em>, <em>instance_type=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a instance associated with this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -109,6 +109,22 @@ and <code class="docutils literal notranslate"><span class="pre">admin</span></c
 the Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the instance ID.</li>
+<li><strong>instance_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The type of the instance.
+Possible values are represented
+by the following constants:
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.PRODUCTION</span></code>.
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.DEVELOPMENT</span></code>,
+Defaults to
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.UNSPECIFIED</span></code>.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Labels are a flexible and lightweight
+mechanism for organizing cloud resources into groups
+that reflect a customer’s organizational needs and
+deployment strategies. They can be used to filter
+resources and aggregate metrics. Label keys must be
+between 1 and 63 characters long. Maximum 64 labels can
+be associated with a given resource. Label values must
+be between 0 and 63 characters long. Keys and values
+must both be under 128 bytes.</li>
 </ul>
 </td>
 </tr>
