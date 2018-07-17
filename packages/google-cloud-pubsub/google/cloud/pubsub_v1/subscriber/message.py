@@ -14,10 +14,12 @@
 
 from __future__ import absolute_import
 
+import datetime
 import json
 import math
 import time
 
+from google.api_core import datetime_helpers
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
@@ -151,7 +153,11 @@ class Message(object):
         Returns:
             datetime: The date and time that the message was published.
         """
-        return self._message.publish_time
+        timestamp = self._message.publish_time
+        delta = datetime.timedelta(
+            seconds=timestamp.seconds,
+            microseconds=timestamp.nanos // 1000)
+        return datetime_helpers._UTC_EPOCH + delta
 
     @property
     def size(self):
