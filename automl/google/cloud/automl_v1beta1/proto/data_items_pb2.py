@@ -191,8 +191,10 @@ Image = _reflection.GeneratedProtocolMessageType('Image', (_message.Message,), d
   Attributes:
       data:
           Input only. The data representing the image. For Predict calls
-          [image\_bytes][] must be set. You can read the contents of an
-          uploaded image by using the [content\_uri][] field.
+          [image\_bytes][] must be set, as other options are not
+          currently supported by prediction API. You can read the
+          contents of an uploaded image by using the [content\_uri][]
+          field.
       image_bytes:
           Image content represented as a stream of bytes. Note: As with
           all ``bytes`` fields, protobuffers use a pure binary
@@ -238,7 +240,7 @@ ExamplePayload = _reflection.GeneratedProtocolMessageType('ExamplePayload', (_me
   
   Attributes:
       payload:
-          Input only . The example data.
+          Required. Input only. The example data.
       image:
           An example image.
       text_snippet:

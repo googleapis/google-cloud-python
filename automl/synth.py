@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator(private=True)
+gapic = gcp.GAPICGenerator()
 
 versions = ['v1beta1']
 
@@ -26,7 +26,7 @@ for version in versions:
     library = gapic.py_library('automl', version)
     s.move(library / f'google/cloud/automl_{version}')
     s.move(library / f'tests/unit/gapic/{version}')
-    s.move(library / f'docs/automl/{version}')
+    s.move(library / f'docs/gapic/automl/{version}')
 
 # Use the highest version library to generate documentation index, README, and
 # import alias.

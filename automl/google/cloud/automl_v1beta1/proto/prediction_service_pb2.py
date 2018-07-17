@@ -218,13 +218,7 @@ PredictRequest = _reflection.GeneratedProtocolMessageType('PredictRequest', (_me
           match the problem type that the model was trained to solve.
       params:
           Additional domain-specific parameters, any string must be up
-          to 25000 characters long.  -  For Translation:
-          ``translation_allow_fallback`` - If specified, AutoML will
-          fallback to use a Google translation model for translation
-          requests if the the specified AutoML translation model cannot
-          serve the request. The [PredictResponse.metadata][google.cloud
-          .automl.v1beta1.PredictResponse.metadata] field provides
-          additional data to the caller.  -  For Image Classification:
+          to 25000 characters long.  -  For Image Classification:
           ``score_threshold`` - (float) A value from 0.0 to 1.0. When
           the model makes predictions for an image, it will only produce
           results that have at least this confidence score threshold.
@@ -258,13 +252,7 @@ PredictResponse = _reflection.GeneratedProtocolMessageType('PredictResponse', (_
       payload:
           Prediction result.
       metadata:
-          Additional domain-specific prediction response metadata. \*
-          For Translation:  ``translation_fallback_model`` - When [Predi
-          ctRequest.params][google.cloud.automl.v1beta1.PredictRequest.p
-          arams] has ``translation_allow_fallback`` specified, the
-          caller can check the value of ``translation_fallback_model``
-          in the metadata to determine whether a translation fallback
-          model was used and which model was used.
+          Additional domain-specific prediction response metadata.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictResponse)
   ))

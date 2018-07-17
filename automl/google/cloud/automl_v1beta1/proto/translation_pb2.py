@@ -212,9 +212,9 @@ TranslationEvaluationMetrics = _reflection.GeneratedProtocolMessageType('Transla
   
   Attributes:
       bleu_score:
-          BLEU score.
+          Output only. BLEU score.
       base_bleu_score:
-          BLEU score for base model.
+          Output only. BLEU score for base model.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TranslationEvaluationMetrics)
   ))

@@ -175,8 +175,9 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
   
   Attributes:
       model_metadata:
-          Required. Problem type specific model metadata. This has to
-          match the problem type of the dataset used to train the model.
+          Required. The model metadata that is specific to the problem
+          type. Must match the metadata type of the dataset used to
+          train the model.
       image_classification_model_metadata:
           Metadata for image classification models.
       text_classification_model_metadata:
@@ -184,15 +185,17 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
       translation_model_metadata:
           Metadata for translation models.
       name:
-          Output only. Resource name of the model. Format: "projects/{pr
-          oject\_id}/locations/{location\_id}/models/{model\_id}"
+          Output only. Resource name of the model. Format: ``projects/{p
+          roject_id}/locations/{location_id}/models/{model_id}``
       display_name:
-          Required. Interface visible name of the model, up to 32
-          characters long and can consist only of ASCII Latin letters
-          A-Z and a-z, an underscore (\_), and ASCII digits 0-9.
+          Required. The name of the model to show in the interface. The
+          name can be up to 32 characters long and can consist only of
+          ASCII Latin letters A-Z and a-z, underscores (\_), and ASCII
+          digits 0-9.
       dataset_id:
-          Required. Resource ID of the dataset used to create the model,
-          which comes from the same ancestor project and location.
+          Required. The resource ID of the dataset used to create the
+          model. The dataset must come from the same ancestor project
+          and location.
       create_time:
           Output only. Timestamp when this model was created.
       update_time:

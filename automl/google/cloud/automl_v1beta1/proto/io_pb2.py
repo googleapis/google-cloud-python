@@ -179,7 +179,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType('InputConfig', (_message.
   
   Attributes:
       source:
-          The source of the input.
+          Required. The source of the input.
       gcs_source:
           The GCS location for the input content.
   """,
@@ -196,7 +196,7 @@ OutputConfig = _reflection.GeneratedProtocolMessageType('OutputConfig', (_messag
   
   Attributes:
       destination:
-          The destination of the output.
+          Required. The destination of the output.
       gcs_destination:
           The GCS location where the output must be written to.
   """,
@@ -213,7 +213,7 @@ GcsSource = _reflection.GeneratedProtocolMessageType('GcsSource', (_message.Mess
   
   Attributes:
       input_uris:
-          Google Cloud Storage URIs to input files, up to 2000
+          Required. Google Cloud Storage URIs to input files, up to 2000
           characters long. Accepted forms: \* Full object path:
           gs://bucket/directory/object.csv
   """,
@@ -230,8 +230,8 @@ GcsDestination = _reflection.GeneratedProtocolMessageType('GcsDestination', (_me
   
   Attributes:
       output_uri_prefix:
-          Google Cloud Storage URI to output directory, up to 2000
-          characters long. Accepted forms: \* Prefix path:
+          Required. Google Cloud Storage URI to output directory, up to
+          2000 characters long. Accepted forms: \* Prefix path:
           gs://bucket/directory The requesting user must have write
           permission to the bucket. The directory is created if it
           doesn't exist.

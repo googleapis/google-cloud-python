@@ -21,7 +21,7 @@ class ClassificationType(enum.IntEnum):
     Type of the classification problem.
 
     Attributes:
-      CLASSIFICATION_TYPE_UNSPECIFIED (int): Unspecified classification type.
+      CLASSIFICATION_TYPE_UNSPECIFIED (int): Should not be used, an un-set enum has this value by default.
       MULTICLASS (int): At most one label is allowed per example.
       MULTILABEL (int): Multiple labels are allowed for one example.
     """
@@ -36,7 +36,7 @@ class Model(object):
         Deployment state of the model.
 
         Attributes:
-          DEPLOYMENT_STATE_UNSPECIFIED (int): Not specified.
+          DEPLOYMENT_STATE_UNSPECIFIED (int): Should not be used, an un-set enum has this value by default.
           DEPLOYED (int): Model is deployed.
           UNDEPLOYED (int): Model is not deployed.
         """

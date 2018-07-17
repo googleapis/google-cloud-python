@@ -129,8 +129,7 @@ Dataset = _reflection.GeneratedProtocolMessageType('Dataset', (_message.Message,
   __module__ = 'google.cloud.automl_v1beta1.proto.dataset_pb2'
   ,
   __doc__ = """A workspace for solving a single, particular machine learning (ML)
-  problem. A workspace contains examples that may be annotated. (- Next
-  ID: 27 -)
+  problem. A workspace contains examples that may be annotated.
   
   
   Attributes:

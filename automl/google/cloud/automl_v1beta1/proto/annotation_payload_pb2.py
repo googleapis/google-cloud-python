@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/automl_v1beta1/proto/annotation_payload.proto',
   package='google.cloud.automl.v1beta1',
   syntax='proto3',
-  serialized_pb=_b('\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\"\xd5\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\tB\x08\n\x06\x64\x65tailBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3')
+  serialized_pb=_b('\n:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/translation.proto\"\xeb\x01\n\x11\x41nnotationPayload\x12I\n\x0btranslation\x18\x02 \x01(\x0b\x32\x32.google.cloud.automl.v1beta1.TranslationAnnotationH\x00\x12O\n\x0e\x63lassification\x18\x03 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotationH\x00\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x05 \x01(\tB\x08\n\x06\x64\x65tailBf\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automlb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2.DESCRIPTOR,])
 
@@ -57,6 +57,13 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='display_name', full_name='google.cloud.automl.v1beta1.AnnotationPayload.display_name', index=3,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -73,7 +80,7 @@ _ANNOTATIONPAYLOAD = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=231,
-  serialized_end=444,
+  serialized_end=466,
 )
 
 _ANNOTATIONPAYLOAD.fields_by_name['translation'].message_type = google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_translation__pb2._TRANSLATIONANNOTATION
@@ -107,6 +114,13 @@ AnnotationPayload = _reflection.GeneratedProtocolMessageType('AnnotationPayload'
           annotation pertains to. The annotation spec comes from either
           an ancestor dataset, or the dataset that was used to train the
           model in use.
+      display_name:
+          Output only. The value of [AnnotationSpec.display\_name][googl
+          e.cloud.automl.v1beta1.AnnotationSpec.display\_name] when the
+          model was trained. Because this field returns a value at model
+          training time, for different models trained using the same
+          dataset, the returned value could be different as model owner
+          could update the display\_name between any two model training.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.AnnotationPayload)
   ))
