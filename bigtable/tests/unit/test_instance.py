@@ -58,6 +58,7 @@ class TestInstance(unittest.TestCase):
             'projects/' + PROJECT + '/instances/' + INSTANCE_ID
             + '/appProfiles/')
     DISPLAY_NAME = 'display_name'
+    LABELS = {'foo': 'bar'}
     OP_ID = 8915
     OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
                (PROJECT, INSTANCE_ID, OP_ID))
@@ -88,16 +89,25 @@ class TestInstance(unittest.TestCase):
         instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
+        self.assertIsNone(instance.type_)
+        self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
 
     def test_constructor_non_default(self):
-        display_name = 'display_name'
+        from google.cloud.bigtable import enums
+
+        instance_type = enums.InstanceType.DEVELOPMENT
+        labels = {'test': 'test'}
         client = object()
 
         instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=display_name)
+                                  display_name=self.DISPLAY_NAME,
+                                  instance_type=instance_type,
+                                  labels=labels)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance.display_name, display_name)
+        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.type_, instance_type)
+        self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
 
     def test_table_factory(self):
@@ -115,16 +125,42 @@ class TestInstance(unittest.TestCase):
     def test__update_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable import enums
 
-        display_name = 'display_name'
+        instance_type = enums.InstanceType.PRODUCTION
         instance_pb = data_v2_pb2.Instance(
-            display_name=display_name,
+            display_name=self.DISPLAY_NAME,
+            type=instance_type,
+            labels=self.LABELS
         )
 
         instance = self._make_one(None, None)
         self.assertIsNone(instance.display_name)
+        self.assertIsNone(instance.type_)
+        self.assertIsNone(instance.labels)
         instance._update_from_pb(instance_pb)
-        self.assertEqual(instance.display_name, display_name)
+        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.type_, instance_type)
+        self.assertEqual(instance.labels, self.LABELS)
+
+    def test__update_from_pb_success_defaults(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable import enums
+
+        instance_pb = data_v2_pb2.Instance(
+            display_name=self.DISPLAY_NAME,
+        )
+
+        instance = self._make_one(None, None)
+        self.assertIsNone(instance.display_name)
+        self.assertIsNone(instance.type_)
+        self.assertIsNone(instance.labels)
+        instance._update_from_pb(instance_pb)
+        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.type_,
+                         enums.InstanceType.UNSPECIFIED)
+        self.assertFalse(instance.labels)
 
     def test__update_from_pb_no_display_name(self):
         from google.cloud.bigtable_admin_v2.proto import (
@@ -139,12 +175,16 @@ class TestInstance(unittest.TestCase):
     def test_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable import enums
 
         client = _Client(project=self.PROJECT)
 
+        instance_type = enums.InstanceType.PRODUCTION
         instance_pb = data_v2_pb2.Instance(
             name=self.INSTANCE_NAME,
             display_name=self.INSTANCE_ID,
+            type=instance_type,
+            labels=self.LABELS
         )
 
         klass = self._get_target_class()
@@ -152,6 +192,9 @@ class TestInstance(unittest.TestCase):
         self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
+        self.assertEqual(instance.display_name, self.INSTANCE_ID)
+        self.assertEqual(instance.type_, instance_type)
+        self.assertEqual(instance.labels, self.LABELS)
 
     def test_from_pb_bad_instance_name(self):
         from google.cloud.bigtable_admin_v2.proto import (
@@ -224,6 +267,7 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.cloud.bigtable import enums
 
         api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
             mock.Mock())
@@ -234,8 +278,11 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         DISPLAY_NAME = u'hey-hi-hello'
+        instance_type = enums.InstanceType.PRODUCTION
         response_pb = data_v2_pb2.Instance(
             display_name=DISPLAY_NAME,
+            type=instance_type,
+            labels=self.LABELS
         )
 
         # Patch the stub used by the API method.
@@ -265,7 +312,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.bigtable_admin_v2 import enums
+        from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
@@ -276,7 +323,9 @@ class TestInstance(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME)
+                                  self.DISPLAY_NAME,
+                                  enums.InstanceType.PRODUCTION,
+                                  self.LABELS)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
@@ -304,12 +353,9 @@ class TestInstance(unittest.TestCase):
         cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
         cluster = self._create_cluster(
             instance_api, cluster_id, self.LOCATION_ID, DEFAULT_SERVE_NODES,
-            enums.StorageType.STORAGE_TYPE_UNSPECIFIED)
+            enums.StorageType.UNSPECIFIED)
 
-        expected_request = self._create_instance_request(
-            self.DISPLAY_NAME,
-            {cluster_id: cluster}
-        )
+        expected_request = self._create_instance_request({cluster_id: cluster})
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
         # self.assertEqual(result.operation.name, self.OP_NAME)
@@ -319,7 +365,7 @@ class TestInstance(unittest.TestCase):
     def test_create_w_explicit_serve_nodes(self):
         from google.api_core import operation
         from google.longrunning import operations_pb2
-        from google.cloud.bigtable_admin_v2 import enums
+        from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
 
@@ -328,8 +374,9 @@ class TestInstance(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME)
-
+                                  self.DISPLAY_NAME,
+                                  enums.InstanceType.PRODUCTION,
+                                  self.LABELS)
         # Create response_pb
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
@@ -351,10 +398,7 @@ class TestInstance(unittest.TestCase):
             instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
             enums.StorageType.SSD)
 
-        expected_request = self._create_instance_request(
-            self.DISPLAY_NAME,
-            {cluster_id: cluster}
-        )
+        expected_request = self._create_instance_request({cluster_id: cluster})
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
 
@@ -371,12 +415,15 @@ class TestInstance(unittest.TestCase):
             serve_nodes=server_nodes,
             default_storage_type=storage_type)
 
-    def _create_instance_request(self, display_name, clusters):
+    def _create_instance_request(self, clusters):
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud.bigtable_admin_v2.types import instance_pb2
+        from google.cloud.bigtable import enums
 
-        instance = instance_pb2.Instance(display_name=display_name)
+        instance = instance_pb2.Instance(display_name=self.DISPLAY_NAME,
+                                         type=enums.InstanceType.PRODUCTION,
+                                         labels=self.LABELS)
 
         return messages_v2_pb2.CreateInstanceRequest(
             parent='projects/%s' % (self.PROJECT),
