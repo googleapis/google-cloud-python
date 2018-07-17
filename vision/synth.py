@@ -19,15 +19,65 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
-versions = ['v1', 'v1p1beta1', 'v1p2beta1']
+versions = ['v1', 'v1p1beta1', 'v1p2beta1', 'v1p3beta1']
 
 
 for version in versions:
     library = gapic.py_library('vision', version)
 
     s.move(library / f'google/cloud/vision_{version}/gapic')
-    # Don't move over __init__.py, as we modify it to make ImageAnnotatorClient
-    # use vision_helpers.
+    s.move(library / f'google/cloud/vision_{version}/__init__.py')
     s.move(library / f'google/cloud/vision_{version}/types.py')
     s.move(library / f'google/cloud/vision_{version}/proto')
     s.move(library / f'tests/unit/gapic/{version}')
+    s.move(library / f'docs/gapic/{version}')
+
+    # Add vision helpers to each version
+    s.replace(
+        f'google/cloud/vision_{version}/__init__.py',
+        f'from __future__ import absolute_import', f'\g<0>\n\n'
+        f'from google.cloud.vision_helpers.decorators import '
+        f'add_single_feature_methods\n'
+        f'from google.cloud.vision_helpers import VisionHelpers')
+
+    s.replace(
+        f'google/cloud/vision_{version}/__init__.py',
+        f'image_annotator_client',
+        f'iac')
+
+    s.replace(
+        f'google/cloud/vision_{version}/__init__.py',
+        f'from google.cloud.vision_{version}.gapic import iac',
+        f'from google.cloud.vision_{version}.gapic import '
+        f'image_annotator_client as iac')
+
+    s.replace(
+        f'google/cloud/vision_{version}/__init__.py',
+        f'class ImageAnnotatorClient\(iac.ImageAnnotatorClient\):',
+        f'@add_single_feature_methods\n'
+        f'class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):'
+    )
+
+    # Fix import of operations
+    s.replace(
+        [f'google/cloud/vision_{version}/**/*.py',
+         f'tests/system/gapic/{version}/**/*.py'],
+        f'import google.api_core.operations_v1',
+        f'from google.api_core import operations_v1')
+
+    # fix issues with imports of vision from wrong directory
+    s.replace(
+        [f'google/cloud/vision_{version}/**/*.py',
+         f'tests/system/gapic/{version}/**/*.py'],
+        f'from google.cloud.gapic.vision import enums',
+        f'from google.cloud.vision_{version}.gapic import enums')
+
+    s.replace(
+        f'tests/system/gapic/{version}/**/*.py',
+        f'from google.cloud.gapic import vision',
+        f'import google.cloud.vision_{version} as vision')
+
+    s.replace(
+        f'google/cloud/vision_{version}/**/*.py',
+        f'from google.cloud.gapic.vision.{version}',
+        f'from google.cloud.vision_{version}')

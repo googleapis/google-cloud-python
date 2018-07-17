@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.vision.v1p2beta1 ImageAnnotator API."""
+"""Accesses the google.cloud.vision.v1p3beta1 ImageAnnotator API."""
 
 import pkg_resources
 import warnings
@@ -25,12 +25,16 @@ import google.api_core.operation
 from google.api_core import operations_v1
 import grpc
 
-from google.cloud.vision_v1p2beta1.gapic import enums
-from google.cloud.vision_v1p2beta1.gapic import image_annotator_client_config
-from google.cloud.vision_v1p2beta1.gapic.transports import image_annotator_grpc_transport
-from google.cloud.vision_v1p2beta1.proto import image_annotator_pb2
-from google.cloud.vision_v1p2beta1.proto import image_annotator_pb2_grpc
+from google.cloud.vision_v1p3beta1.gapic import enums
+from google.cloud.vision_v1p3beta1.gapic import image_annotator_client_config
+from google.cloud.vision_v1p3beta1.gapic.transports import image_annotator_grpc_transport
+from google.cloud.vision_v1p3beta1.proto import image_annotator_pb2
+from google.cloud.vision_v1p3beta1.proto import image_annotator_pb2_grpc
+from google.cloud.vision_v1p3beta1.proto import product_search_service_pb2
+from google.cloud.vision_v1p3beta1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version
@@ -48,7 +52,7 @@ class ImageAnnotatorClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.cloud.vision.v1p2beta1.ImageAnnotator'
+    _INTERFACE_NAME = 'google.cloud.vision.v1p3beta1.ImageAnnotator'
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -167,9 +171,9 @@ class ImageAnnotatorClient(object):
         Run image detection and annotation for a batch of images.
 
         Example:
-            >>> from google.cloud import vision_v1p2beta1
+            >>> from google.cloud import vision_v1p3beta1
             >>>
-            >>> client = vision_v1p2beta1.ImageAnnotatorClient()
+            >>> client = vision_v1p3beta1.ImageAnnotatorClient()
             >>>
             >>> # TODO: Initialize ``requests``:
             >>> requests = []
@@ -177,9 +181,9 @@ class ImageAnnotatorClient(object):
             >>> response = client.batch_annotate_images(requests)
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p2beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.vision_v1p2beta1.types.AnnotateImageRequest`
+                message :class:`~google.cloud.vision_v1p3beta1.types.AnnotateImageRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -190,7 +194,7 @@ class ImageAnnotatorClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesResponse` instance.
+            A :class:`~google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -223,17 +227,17 @@ class ImageAnnotatorClient(object):
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             metadata=None):
         """
-        Run async image detection and annotation for a list of generic files (e.g.
-        PDF) which may contain multiple pages and multiple images per page.
-        Progress and results can be retrieved through the
+        Run asynchronous image detection and annotation for a list of generic
+        files, such as PDF files, which may contain multiple pages and multiple
+        images per page. Progress and results can be retrieved through the
         ``google.longrunning.Operations`` interface.
         ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
         ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Example:
-            >>> from google.cloud import vision_v1p2beta1
+            >>> from google.cloud import vision_v1p3beta1
             >>>
-            >>> client = vision_v1p2beta1.ImageAnnotatorClient()
+            >>> client = vision_v1p3beta1.ImageAnnotatorClient()
             >>>
             >>> # TODO: Initialize ``requests``:
             >>> requests = []
@@ -250,9 +254,9 @@ class ImageAnnotatorClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest`
+                message :class:`~google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -263,7 +267,7 @@ class ImageAnnotatorClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.vision_v1p2beta1.types._OperationFuture` instance.
+            A :class:`~google.cloud.vision_v1p3beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
