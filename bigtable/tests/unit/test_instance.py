@@ -89,7 +89,7 @@ class TestInstance(unittest.TestCase):
         instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertIsNone(instance.type)
+        self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
 
@@ -106,7 +106,7 @@ class TestInstance(unittest.TestCase):
                                   labels=labels)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type, instance_type)
+        self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
 
@@ -134,11 +134,11 @@ class TestInstance(unittest.TestCase):
 
         instance = self._make_one(None, None)
         self.assertIsNone(instance.display_name)
-        self.assertIsNone(instance.type)
+        self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type, instance_type)
+        self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, self.LABELS)
 
     def test__update_from_pb_success_defaults(self):
@@ -152,11 +152,11 @@ class TestInstance(unittest.TestCase):
 
         instance = self._make_one(None, None)
         self.assertIsNone(instance.display_name)
-        self.assertIsNone(instance.type)
+        self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type,
+        self.assertEqual(instance.type_,
                          enums.InstanceType.UNSPECIFIED)
         self.assertFalse(instance.labels)
 
@@ -191,7 +191,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertEqual(instance.type, instance_type)
+        self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, self.LABELS)
 
     def test_from_pb_bad_instance_name(self):

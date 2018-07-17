@@ -92,7 +92,7 @@ class Instance(object):
         self.instance_id = instance_id
         self._client = client
         self.display_name = display_name or instance_id
-        self.type = instance_type
+        self.type_ = instance_type
         self.labels = labels
 
     @classmethod
@@ -133,7 +133,7 @@ class Instance(object):
         if not instance_pb.display_name:  # Simple field (string)
             raise ValueError('Instance protobuf does not contain display_name')
         self.display_name = instance_pb.display_name
-        self.type = instance_pb.type
+        self.type_ = instance_pb.type
         self.labels = instance_pb.labels
 
     @property
@@ -231,7 +231,7 @@ class Instance(object):
             serve_nodes=serve_nodes,
             default_storage_type=default_storage_type)
         instance = instance_pb2.Instance(
-            display_name=self.display_name, type=self.type,
+            display_name=self.display_name, type=self.type_,
             labels=self.labels)
         clusters[cluster_id] = cluster
         parent = self._client.project_path
@@ -256,7 +256,7 @@ class Instance(object):
         """
         self._client.instance_admin_client.update_instance(
             name=self.name, display_name=self.display_name,
-            type_=self.type,
+            type_=self.type_,
             labels=self.labels)
 
     def delete(self):

@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, INSTANCE_ID)
-        self.assertIsNone(instance.type)
+        self.assertIsNone(instance.type_)
         self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
 
@@ -121,7 +121,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance.type, instance_type)
+        self.assertEqual(instance.type_, instance_type)
         self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
 

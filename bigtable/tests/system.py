@@ -140,7 +140,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance.reload()
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
         self.assertEqual(instance.labels, Config.INSTANCE.labels)
-        self.assertEqual(instance.type, enums.InstanceType.PRODUCTION)
+        self.assertEqual(instance.type_, enums.InstanceType.PRODUCTION)
 
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
@@ -161,8 +161,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
         # Make sure that by default a PRODUCTION type instance is created
-        self.assertIsNone(instance.type)
-        self.assertEqual(instance_alt.type, enums.InstanceType.PRODUCTION)
+        self.assertIsNone(instance.type_)
+        self.assertEqual(instance_alt.type_, enums.InstanceType.PRODUCTION)
         self.assertIsNone(instance.labels)
         self.assertFalse(instance_alt.labels)
 
@@ -187,7 +187,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
-        self.assertEqual(instance.type, instance_alt.type)
+        self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance.labels, instance_alt.labels)
 
     def test_update(self):
