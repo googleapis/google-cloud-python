@@ -147,7 +147,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
 
-        ALT_INSTANCE_ID = 'new-def' + unique_resource_id('-')
+        ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
         operation = instance.create(location_id=LOCATION_ID)
         # Make sure this instance gets deleted after the test case.
