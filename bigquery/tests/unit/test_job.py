@@ -13,21 +13,14 @@
 # limitations under the License.
 
 import copy
-
-from six.moves import http_client
 import unittest
+
+import mock
+from six.moves import http_client
 try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
-from google.cloud.bigquery.job import CopyJobConfig
-from google.cloud.bigquery.job import ExtractJobConfig
-from google.cloud.bigquery.job import LoadJobConfig
-from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.table import EncryptionConfiguration
-from google.cloud._helpers import _RFC3339_MICROS
-
-import mock
 
 
 def _make_credentials():
@@ -257,6 +250,8 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(config.to_api_repr(), resource)
 
     def test_to_api_repr_with_encryption(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
             kms_key_name=self.KMS_KEY_NAME)
@@ -459,6 +454,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.job import LoadJobConfig
 
         client = _make_client(project=self.PROJECT)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
@@ -512,11 +508,14 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(reload_request[1]['method'], 'GET')
 
     def test_schema_setter_non_list(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
         config = LoadJobConfig()
         with self.assertRaises(TypeError):
             config.schema = object()
 
     def test_schema_setter_invalid_field(self):
+        from google.cloud.bigquery.job import LoadJobConfig
         from google.cloud.bigquery.schema import SchemaField
 
         config = LoadJobConfig()
@@ -525,6 +524,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             config.schema = [full_name, object()]
 
     def test_schema_setter(self):
+        from google.cloud.bigquery.job import LoadJobConfig
         from google.cloud.bigquery.schema import SchemaField
 
         config = LoadJobConfig()
@@ -728,6 +728,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_autodetect(self):
+        from google.cloud.bigquery.job import LoadJobConfig
+
         path = '/projects/{}/jobs'.format(self.PROJECT)
         resource = self._make_resource()
         resource['configuration']['load']['autodetect'] = True
@@ -769,6 +771,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import LoadJobConfig
         from google.cloud.bigquery.job import SchemaUpdateOption
         from google.cloud.bigquery.job import WriteDisposition
         from google.cloud.bigquery.schema import SchemaField
@@ -1053,6 +1056,8 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         return CopyJobConfig
 
     def test_to_api_repr_with_encryption(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
             kms_key_name=self.KMS_KEY_NAME)
@@ -1355,6 +1360,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
+        from google.cloud.bigquery.job import CopyJobConfig
+
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import WriteDisposition
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1682,6 +1689,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bound_client(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
@@ -1720,8 +1729,10 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
+        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.job import Compression
         from google.cloud.bigquery.job import DestinationFormat
+        from google.cloud.bigquery.job import ExtractJobConfig
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._make_resource(ended=True)
@@ -1801,6 +1812,8 @@ class TestExtractJob(unittest.TestCase, _Base):
             query_params={'fields': 'id'})
 
     def test_reload_w_bound_client(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn = _make_connection(RESOURCE)
@@ -1817,6 +1830,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn1 = _make_connection()
@@ -1885,6 +1900,8 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.destination_encryption_configuration)
 
     def test_from_api_repr_normal(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
         resource = {
             'query': {
                 'useLegacySql': True,
@@ -1914,6 +1931,8 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
             'I should be saved, too.')
 
     def test_to_api_repr_normal(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
         config = self._make_one()
         config.use_legacy_sql = True
         config.default_dataset = DatasetReference(
@@ -1934,6 +1953,8 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
             resource['someNewProperty'], 'Woohoo, alpha stuff.')
 
     def test_to_api_repr_with_encryption(self):
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
             kms_key_name=self.KMS_KEY_NAME)
@@ -2290,6 +2311,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertTrue(job.done())
 
     def test_query_plan(self):
+        from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud.bigquery.job import QueryPlanEntry
         from google.cloud.bigquery.job import QueryPlanEntryStep
 
@@ -3551,6 +3573,8 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.steps, steps)
 
     def test_start(self):
+        from google.cloud._helpers import _RFC3339_MICROS
+
         klass = self._get_target_class()
 
         entry = klass.from_api_repr({})
@@ -3564,6 +3588,8 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
             self.START_RFC3339_MICROS)
 
     def test_end(self):
+        from google.cloud._helpers import _RFC3339_MICROS
+
         klass = self._get_target_class()
 
         entry = klass.from_api_repr({})
