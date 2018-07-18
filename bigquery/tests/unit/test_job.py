@@ -73,6 +73,50 @@ class Test__error_result_to_exception(unittest.TestCase):
         self.assertEqual(exception.code, http_client.INTERNAL_SERVER_ERROR)
 
 
+class Test_JobReference(unittest.TestCase):
+    JOB_ID = 'job-id'
+    PROJECT = 'test-project-123'
+    LOCATION = 'us-central'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery import job
+
+        return job._JobReference
+
+    def _make_one(self, job_id, project, location):
+        return self._get_target_class()(job_id, project, location)
+
+    def test_ctor(self):
+        job_ref = self._make_one(self.JOB_ID, self.PROJECT, self.LOCATION)
+
+        self.assertEqual(job_ref.job_id, self.JOB_ID)
+        self.assertEqual(job_ref.project, self.PROJECT)
+        self.assertEqual(job_ref.location, self.LOCATION)
+
+    def test__to_api_repr(self):
+        job_ref = self._make_one(self.JOB_ID, self.PROJECT, self.LOCATION)
+
+        self.assertEqual(job_ref._to_api_repr(), {
+            'jobId': self.JOB_ID,
+            'projectId': self.PROJECT,
+            'location': self.LOCATION,
+        })
+
+    def test_from_api_repr(self):
+        api_repr = {
+            'jobId': self.JOB_ID,
+            'projectId': self.PROJECT,
+            'location': self.LOCATION,
+        }
+
+        job_ref = self._get_target_class()._from_api_repr(api_repr)
+
+        self.assertEqual(job_ref.job_id, self.JOB_ID)
+        self.assertEqual(job_ref.project, self.PROJECT)
+        self.assertEqual(job_ref.location, self.LOCATION)
+
+
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
