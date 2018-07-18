@@ -241,12 +241,16 @@ class Instance(object):
             clusters=clusters)
 
     def update(self):
-        """Update this instance.
+        """Partially updates an instance within a project.
 
         .. note::
 
-            Updates the ``display_name``. To change that value before
-            updating, reset its values via
+            Apdates any or all of the following values:
+            ``display_name``
+            ``type``
+            ``labels``
+            To change a value before
+            updating, reset that values via
 
             .. code:: python
 
@@ -254,10 +258,20 @@ class Instance(object):
 
             before calling :meth:`update`.
         """
-        self._client.instance_admin_client.update_instance(
+        update_mask = field_mask_pb2.FieldMask()
+        if self.display_name is not None:
+            update_mask.paths.append('display_name')
+        if self.type_ is not None:
+            update_mask.paths.append('type')
+        if self.labels is not None:
+            update_mask.paths.append('labels')
+        update_instance = instance_pb2.Instance(
             name=self.name, display_name=self.display_name,
-            type_=self.type_,
-            labels=self.labels)
+            type=self.type_, labels=self.labels)
+
+        self._client.instance_admin_client.partial_update_instance(
+            instance=update_instance,
+            update_mask=update_mask)
 
     def delete(self):
         """Delete this instance.
