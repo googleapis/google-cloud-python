@@ -311,6 +311,119 @@ class Test_AsyncJob(unittest.TestCase):
         status['state'] = state
         self.assertEqual(job.state, state)
 
+    def test__scrub_local_properties(self):
+        before = {'foo': 'bar'}
+        resource = before.copy()
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._scrub_local_properties(resource)  # no raise
+        self.assertEqual(resource, before)
+
+    def test__copy_configuration_properties(self):
+        before = {'foo': 'bar'}
+        resource = before.copy()
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        with self.assertRaises(NotImplementedError):
+            job._copy_configuration_properties(resource)
+        self.assertEqual(resource, before)
+
+    def _set_properties_job(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._scrub_local_properties = mock.Mock()
+        job._copy_configuration_properties = mock.Mock()
+        job._set_future_result = mock.Mock()
+        job._properties = {
+            'foo': 'bar',
+        }
+        return job
+
+    def test__set_properties_no_stats(self):
+        config = {
+            'test': True,
+        }
+        resource = {
+            'configuration': config,
+        }
+        job = self._set_properties_job()
+
+        job._set_properties(resource)
+
+        self.assertEqual(job._properties, resource)
+
+        job._scrub_local_properties.assert_called_once_with(resource)
+        job._copy_configuration_properties.assert_called_once_with(config)
+
+    def test__set_properties_w_creation_time(self):
+        now, millis = self._datetime_and_millis()
+        config = {
+            'test': True,
+        }
+        stats = {
+            'creationTime': str(millis),
+        }
+        resource = {
+            'configuration': config,
+            'statistics': stats,
+        }
+        job = self._set_properties_job()
+
+        job._set_properties(resource)
+
+        cleaned = copy.deepcopy(resource)
+        cleaned['statistics']['creationTime'] = float(millis)
+        self.assertEqual(job._properties, cleaned)
+
+        job._scrub_local_properties.assert_called_once_with(resource)
+        job._copy_configuration_properties.assert_called_once_with(config)
+
+    def test__set_properties_w_start_time(self):
+        now, millis = self._datetime_and_millis()
+        config = {
+            'test': True,
+        }
+        stats = {
+            'startTime': str(millis),
+        }
+        resource = {
+            'configuration': config,
+            'statistics': stats,
+        }
+        job = self._set_properties_job()
+
+        job._set_properties(resource)
+
+        cleaned = copy.deepcopy(resource)
+        cleaned['statistics']['startTime'] = float(millis)
+        self.assertEqual(job._properties, cleaned)
+
+        job._scrub_local_properties.assert_called_once_with(resource)
+        job._copy_configuration_properties.assert_called_once_with(config)
+
+    def test__set_properties_w_end_time(self):
+        now, millis = self._datetime_and_millis()
+        config = {
+            'test': True,
+        }
+        stats = {
+            'endTime': str(millis),
+        }
+        resource = {
+            'configuration': config,
+            'statistics': stats,
+        }
+        job = self._set_properties_job()
+
+        job._set_properties(resource)
+
+        cleaned = copy.deepcopy(resource)
+        cleaned['statistics']['endTime'] = float(millis)
+        self.assertEqual(job._properties, cleaned)
+
+        job._scrub_local_properties.assert_called_once_with(resource)
+        job._copy_configuration_properties.assert_called_once_with(config)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
