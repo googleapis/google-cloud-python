@@ -477,6 +477,12 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job_id, self.JOB_ID)
         self.assertEqual(config, {'derived': derived_config})
 
+    def test__build_resource(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        with self.assertRaises(NotImplementedError):
+            job._build_resource()
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
