@@ -370,10 +370,8 @@ class AutoMlClient(object):
                 An example of using the filter is:
 
                   * ``translation_dataset_metadata:*`` --> The dataset has
-                ::
-
-                                                         translation_dataset_metadata.
-
+                    ::
+                    translation_dataset_metadata.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -837,13 +835,11 @@ class AutoMlClient(object):
                 Some examples of using the filter are:
 
                   * ``image_classification_model_metadata:*`` --> The model has
-                ::
-
-                                                       image_classification_model_metadata.
+                    ::
+                    image_classification_model_metadata.
                   * ``dataset_id=5`` --> The model was created from a sibling dataset with
-                ::
-
-                                   ID 5.
+                    ::
+                    ID 5.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1177,20 +1173,17 @@ class AutoMlClient(object):
             filter_ (str): An expression for filtering the results of the request.
 
                   * ``annotation_spec_id`` - for =, !=  or existence. See example below for
-                ::
-
-                                         the last.
+                    ::
+                    the last.
 
                 Some examples of using the filter are:
 
                   * ``annotation_spec_id!=4`` --> The model evaluation was done for
-                ::
-
-                                            annotation spec with ID different than 4.
+                    ::
+                    annotation spec with ID different than 4.
                   * ``NOT annotation_spec_id:*`` --> The model evaluation was done for
-                ::
-
-                                               aggregate of all annotation specs.
+                    ::
+                    aggregate of all annotation specs.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
