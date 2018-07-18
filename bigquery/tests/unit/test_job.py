@@ -131,11 +131,14 @@ class Test_AsyncJob(unittest.TestCase):
     def _make_one(self, job_id, client):
         return self._get_target_class()(job_id, client)
 
-    def _make_derived(self, job_id, client):
+    def _make_derived_class(self):
         class Derived(self._get_target_class()):
             _JOB_TYPE = 'derived'
 
-        return Derived(job_id, client)
+        return Derived
+
+    def _make_derived(self, job_id, client):
+        return self._make_derived_class()(job_id, client)
 
     @staticmethod
     def _job_reference(job_id, project, location):
@@ -423,6 +426,56 @@ class Test_AsyncJob(unittest.TestCase):
 
         job._scrub_local_properties.assert_called_once_with(resource)
         job._copy_configuration_properties.assert_called_once_with(config)
+
+    def test__get_resource_config_missing_job_ref(self):
+        resource = {}
+        klass = self._make_derived_class()
+
+        with self.assertRaises(KeyError):
+            klass._get_resource_config(resource)
+
+    def test__get_resource_config_missing_job_id(self):
+        resource = {
+            'jobReference': {},
+        }
+        klass = self._make_derived_class()
+
+        with self.assertRaises(KeyError):
+            klass._get_resource_config(resource)
+
+    def test__get_resource_config_missing_configuration(self):
+        resource = {
+            'jobReference': {'jobId': self.JOB_ID},
+        }
+        klass = self._make_derived_class()
+
+        with self.assertRaises(KeyError):
+            klass._get_resource_config(resource)
+
+    def test__get_resource_config_missing_config_type(self):
+        resource = {
+            'jobReference': {'jobId': self.JOB_ID},
+            'configuration': {},
+        }
+        klass = self._make_derived_class()
+
+        with self.assertRaises(KeyError):
+            klass._get_resource_config(resource)
+
+    def test__get_resource_config_ok(self):
+        derived_config = {'foo': 'bar'}
+        resource = {
+            'jobReference': {'jobId': self.JOB_ID},
+            'configuration': {
+                'derived': derived_config,
+            },
+        }
+        klass = self._make_derived_class()
+
+        job_id, config = klass._get_resource_config(resource)
+
+        self.assertEqual(job_id, self.JOB_ID)
+        self.assertEqual(config, {'derived': derived_config})
 
 
 class _Base(object):
