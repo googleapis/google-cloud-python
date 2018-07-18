@@ -269,7 +269,7 @@ class Instance(object):
             name=self.name, display_name=self.display_name,
             type=self.type_, labels=self.labels)
 
-        self._client.instance_admin_client.partial_update_instance(
+        return self._client.instance_admin_client.partial_update_instance(
             instance=instance_pb,
             update_mask=update_mask_pb)
 

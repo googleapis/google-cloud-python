@@ -433,15 +433,23 @@ class TestInstance(unittest.TestCase):
         )
 
     def test_update(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
-        from google.longrunning import operations_pb2
-        from google.cloud.bigtable import enums
         from google.protobuf import field_mask_pb2
         from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as instance_v2_pb2)
 
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
@@ -459,7 +467,17 @@ class TestInstance(unittest.TestCase):
             instance=expected_request_instance,
             update_mask=expected_request_update_mask)
 
-        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+        metadata = messages_v2_pb2.UpdateInstanceMetadata(
+            request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.UpdateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
 
         channel = ChannelStub(responses=[response_pb])
         instance_api = (
@@ -469,17 +487,18 @@ class TestInstance(unittest.TestCase):
         # Mock api calls
         client._instance_admin_client = instance_api
 
-        # Create expected_result.
-        expected_result = None
-
         # Perform the method and check the result.
         result = instance.update()
         actual_request = channel.requests[0][1]
 
-        self.assertEqual(result, expected_result)
         self.assertEqual(actual_request, expected_request)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, self.OP_NAME)
+        self.assertIsInstance(result.metadata,
+                              messages_v2_pb2.UpdateInstanceMetadata)
 
     def test_update_empty(self):
+        from google.api_core import operation
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.longrunning import operations_pb2
@@ -511,14 +530,11 @@ class TestInstance(unittest.TestCase):
         # Mock api calls
         client._instance_admin_client = instance_api
 
-        # Create expected_result.
-        expected_result = None
-
         # Perform the method and check the result.
         result = instance.update()
         actual_request = channel.requests[0][1]
 
-        self.assertEqual(result, expected_result)
+        self.assertIsInstance(result, operation.Operation)
         self.assertEqual(actual_request, expected_request)
 
     def test_delete(self):
