@@ -483,6 +483,74 @@ class Test_AsyncJob(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             job._build_resource()
 
+    def test__begin_already(self):
+        job = self._set_properties_job()
+        job._properties['status'] = {'state': 'WHATEVER'}
+
+        with self.assertRaises(ValueError):
+            job._begin()
+
+    def test__begin_defaults(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        job = self._set_properties_job()
+        builder = job._build_resource = mock.Mock()
+        builder.return_value = resource
+        call_api = job._client._call_api = mock.Mock()
+        call_api.return_value = resource
+
+        job._begin()
+
+        call_api.assert_called_once_with(
+            DEFAULT_RETRY,
+            method='POST',
+            path='/projects/{}/jobs'.format(self.PROJECT),
+            data=resource,
+        )
+        self.assertEqual(job._properties, resource)
+
+    def test__begin_explicit(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        other_project = 'other-project-234'
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        job = self._set_properties_job()
+        builder = job._build_resource = mock.Mock()
+        builder.return_value = resource
+        client = _make_client(project=other_project)
+        call_api = client._call_api = mock.Mock()
+        call_api.return_value = resource
+        retry = DEFAULT_RETRY.with_deadline(1)
+
+        job._begin(client=client, retry=retry)
+
+        call_api.assert_called_once_with(
+            retry,
+            method='POST',
+            path='/projects/{}/jobs'.format(self.PROJECT),
+            data=resource,
+        )
+        self.assertEqual(job._properties, resource)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
