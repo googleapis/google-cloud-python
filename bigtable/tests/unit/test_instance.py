@@ -484,7 +484,6 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.longrunning import operations_pb2
-        from google.cloud.bigtable import enums
         from google.protobuf import field_mask_pb2
         from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable_admin_v2.proto import (
@@ -503,7 +502,6 @@ class TestInstance(unittest.TestCase):
             instance=expected_request_instance,
             update_mask=expected_request_update_mask)
 
-        print(self.OP_NAME)
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
         channel = ChannelStub(responses=[response_pb])

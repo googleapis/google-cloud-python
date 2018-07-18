@@ -216,7 +216,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_update_type(self):
         from google.cloud.bigtable.enums import InstanceType
-        from google.cloud.bigtable.enums import InstanceType
 
         _DEVELOPMENT = InstanceType.DEVELOPMENT
         _PRODUCTION = InstanceType.PRODUCTION
