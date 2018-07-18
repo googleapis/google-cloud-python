@@ -373,6 +373,7 @@ class AutoMlClient(object):
                 ::
 
                                                          translation_dataset_metadata.
+
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
