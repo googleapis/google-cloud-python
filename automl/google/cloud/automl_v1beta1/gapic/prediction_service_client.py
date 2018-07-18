@@ -198,7 +198,7 @@ class PredictionServiceClient(object):
                 *  For Image Classification:
 
                    ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
-                ::
+
 
                     makes predictions for an
                     image, it will only produce results that have at least this confidence

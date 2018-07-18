@@ -40,3 +40,10 @@ s.replace(
     '**/gapic/*_client.py',
     r'metadata_type=operations_pb2.OperationMetadata',
     r'metadata_type=proto_operations_pb2.OperationMetadata')
+
+# Fix issue in docstring
+s.replace(
+    'google/cloud/automl_v1beta1/gapic/prediction_service_client.py',
+    '^\s+::',
+    ''
+)
