@@ -18,6 +18,7 @@
 import re
 
 from google.cloud.bigtable.table import Table
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
 from google.protobuf import field_mask_pb2
 
