@@ -84,14 +84,20 @@ for version in versions:
         f'from google.cloud.gapic.vision.{version}',
         f'from google.cloud.vision_{version}')
 
+    # under indented second line of docstring
     s.replace(
         "google/cloud/vision_v1p3beta1/gapic/product_search_client.py",
         "    (- The API has a collection of ``ProductSet.*\n)"
         "\s+(``project.*\n)\s+(products.*)",
-        "    \1      \2      \3")
+        "    \g<1>      \g<2>      \g<3>")
 
-    # under indented second line of docstring
     s.replace(
         'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
         '(        \* .*\n        )([^\s*])',
         '\g<1>  \g<2>')
+
+    # Blank line needed after bullet list
+    s.replace(
+        'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
+        "(- Each ``Product`` has a collection .*\n.*\n)(\s+\"\"\")",
+        '\g<1>\n\g<2>')
