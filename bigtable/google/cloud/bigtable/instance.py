@@ -220,6 +220,7 @@ class Instance(object):
         :returns: The long-running operation corresponding to the create
                     operation.
         """
+
         clusters = {}
         cluster_id = '{}-cluster'.format(self.instance_id)
         cluster_name = self._client.instance_admin_client.cluster_path(
@@ -234,6 +235,43 @@ class Instance(object):
             display_name=self.display_name, type=self.type_,
             labels=self.labels)
         clusters[cluster_id] = cluster
+        parent = self._client.project_path
+
+        return self._client.instance_admin_client.create_instance(
+            parent=parent, instance_id=self.instance_id, instance=instance,
+            clusters=clusters)
+
+    def create_with_multiple_clusters(self, clusters):
+        """Create this instance with multiple cluster.
+
+        .. note::
+
+            Uses the ``project`` and ``instance_id`` on the current
+            :class:`Instance` in addition to the ``display_name``.
+            To change them before creating, reset the values via
+
+            .. code:: python
+
+                instance.display_name = 'New display name'
+                instance.instance_id = 'i-changed-my-mind'
+
+            before calling :meth:`create`.
+
+        :type clusters: class:`~[~google.cloud.bigtable.cluster.Cluster]`
+        :param clusters: List of clusters to be created
+
+        :rtype: :class:`~google.api_core.operation.Operation`
+        :returns: The long-running operation corresponding to the create
+                    operation.
+        """
+
+        clusters_dict = {}
+        for cluster in clusters:
+            clusters_dict[cluster.cluster_id] = cluster._create_pb_request()
+
+        instance = instance_pb2.Instance(
+            display_name=self.display_name, type=self.type_,
+            labels=self.labels)
 
         parent = self._client.project_path
 

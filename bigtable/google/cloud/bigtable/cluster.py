@@ -69,12 +69,12 @@ class Cluster(object):
 
     def __init__(self, cluster_id, instance, location_id,
                  serve_nodes=DEFAULT_SERVE_NODES,
-                 storage_type=_STORAGE_TYPE_UNSPECIFIED):
+                 default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
         self.cluster_id = cluster_id
         self._instance = instance
         self.location = location_id
         self.serve_nodes = serve_nodes
-        self.storage_type = storage_type
+        self.default_storage_type = default_storage_type
 
     @property
     def name(self):
@@ -195,7 +195,7 @@ class Cluster(object):
         client = self._instance._client
         client.instance_admin_client.delete_cluster(self.name)
 
-    def create_pb_request(self):
+    def _create_pb_request(self):
         """ Create cluster proto buff message for API calls """
         client = self._instance._client
         cluster_name = client.instance_admin_client.cluster_path(
@@ -205,5 +205,5 @@ class Cluster(object):
         cluster_message = instance_pb2.Cluster(
             name=cluster_name, location=location,
             serve_nodes=self.serve_nodes,
-            default_storage_type=self.storage_type)
+            default_storage_type=self.default_storage_type)
         return cluster_message
