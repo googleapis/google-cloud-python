@@ -19,7 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 
-versions = ['v1', 'v1beta1', 'v1beta2', 'v1p1beta1']
+versions = ['v1beta1', 'v1beta2', 'v1p1beta1', 'v1']
 
 
 for version in versions:
@@ -28,6 +28,7 @@ for version in versions:
         version,
         artman_output_name=f'video-intelligence-{version}')
 
+    # TODO: stop excluding tests and nox.py (excluded as we lack system tests)
     s.move(
         library,
         excludes=[
@@ -36,6 +37,7 @@ for version in versions:
             f'test_system_video_intelligence_service_{version}.py',
             f'tests/unit/gapic/{version}/'
             f'test_video_intelligence_service_client_{version}.py',
+            f'nox.py',
         ])
 
 s.replace("**/*/video_intelligence_service_client.py",

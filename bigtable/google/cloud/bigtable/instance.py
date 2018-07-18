@@ -21,16 +21,16 @@ from google.cloud.bigtable.table import Table
 
 from google.protobuf import field_mask_pb2
 
-from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+
+
 ROUTING_POLICY_TYPE_ANY = 1
 ROUTING_POLICY_TYPE_SINGLE = 2
-_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Instance(object):
@@ -60,12 +60,39 @@ class Instance(object):
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+    :type instance_type: int
+    :param instance_type: (Optional) The type of the instance.
+                          Possible values are represented
+                          by the following constants:
+                          :data:`google.cloud.bigtable.enums.InstanceType.PRODUCTION`.
+                          :data:`google.cloud.bigtable.enums.InstanceType.DEVELOPMENT`,
+                          Defaults to
+                          :data:`google.cloud.bigtable.enums.InstanceType.UNSPECIFIED`.
+
+    :type labels: dict
+    :param labels: (Optional) Labels are a flexible and lightweight
+                   mechanism for organizing cloud resources into groups
+                   that reflect a customer's organizational needs and
+                   deployment strategies. They can be used to filter
+                   resources and aggregate metrics. Label keys must be
+                   between 1 and 63 characters long. Maximum 64 labels can
+                   be associated with a given resource. Label values must
+                   be between 0 and 63 characters long. Keys and values
+                   must both be under 128 bytes.
     """
 
-    def __init__(self, instance_id, client, display_name=None):
+    def __init__(self,
+                 instance_id,
+                 client,
+                 display_name=None,
+                 instance_type=None,
+                 labels=None):
         self.instance_id = instance_id
-        self.display_name = display_name or instance_id
         self._client = client
+        self.display_name = display_name or instance_id
+        self.type_ = instance_type
+        self.labels = labels
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -94,8 +121,8 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client,
-                     display_name=instance_pb.display_name)
+        result = cls(instance_id, client, instance_pb.display_name,
+                     instance_pb.type, instance_pb.labels)
         return result
 
     def _update_from_pb(self, instance_pb):
@@ -105,6 +132,8 @@ class Instance(object):
         if not instance_pb.display_name:  # Simple field (string)
             raise ValueError('Instance protobuf does not contain display_name')
         self.display_name = instance_pb.display_name
+        self.type_ = instance_pb.type
+        self.labels = instance_pb.labels
 
     @property
     def name(self):
@@ -148,7 +177,9 @@ class Instance(object):
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
 
-    def create(self, clusters):
+    def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
+               serve_nodes=DEFAULT_SERVE_NODES,
+               default_storage_type=None):
         """Create this instance.
 
         .. note::
@@ -164,18 +195,44 @@ class Instance(object):
 
             before calling :meth:`create`.
 
-        :type clusters: class:`~[~google.cloud.bigtable.cluster.Cluster]`
-        :param clusters: List of clusters to be created
+        :type location_id: str
+        :param location_id: ID of the location in which the instance will be
+                            created.  Required for instances which do not yet
+                            exist.
+
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the instance's
+                            cluster; used to set up the instance's cluster.
+
+        :type default_storage_type: int
+        :param default_storage_type: (Optional) The storage media type for
+                                      persisting Bigtable data.
+                                      Possible values are represented
+                                      by the following constants:
+                                      :data:`google.cloud.bigtable.enums.StorageType.SSD`.
+                                      :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                      Defaults to
+                                      :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
         """
-        clusters_dict = {}
-        for cluster in clusters:
-            clusters_dict[cluster.cluster_id] = cluster.create_pb_request()
-
-        instance = instance_pb2.Instance(display_name=self.display_name)
+        clusters = {}
+        cluster_id = '{}-cluster'.format(self.instance_id)
+        cluster_name = self._client.instance_admin_client.cluster_path(
+            self._client.project, self.instance_id, cluster_id)
+        location = self._client.instance_admin_client.location_path(
+            self._client.project, location_id)
+        cluster = instance_pb2.Cluster(
+            name=cluster_name, location=location,
+            serve_nodes=serve_nodes,
+            default_storage_type=default_storage_type)
+        instance = instance_pb2.Instance(
+            display_name=self.display_name, type=self.type_,
+            labels=self.labels)
+        clusters[cluster_id] = cluster
 
         parent = self._client.project_path
 
@@ -197,10 +254,10 @@ class Instance(object):
 
             before calling :meth:`update`.
         """
-        type = enums.Instance.Type.TYPE_UNSPECIFIED
         self._client.instance_admin_client.update_instance(
-            name=self.name, display_name=self.display_name, type_=type,
-            labels={})
+            name=self.name, display_name=self.display_name,
+            type_=self.type_,
+            labels=self.labels)
 
     def delete(self):
         """Delete this instance.

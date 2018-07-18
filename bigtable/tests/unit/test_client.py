@@ -89,33 +89,40 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
-        DISPLAY_NAME = 'display-name'
         credentials = _make_credentials()
         client = self._make_one(
             project=PROJECT, credentials=credentials)
 
-        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
+        instance = client.instance(INSTANCE_ID)
 
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
-        self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance.display_name, INSTANCE_ID)
+        self.assertIsNone(instance.type_)
+        self.assertIsNone(instance.labels)
         self.assertIs(instance._client, client)
 
-    def test_instance_factory_w_explicit_serve_nodes(self):
+    def test_instance_factory_non_defaults(self):
         from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable import enums
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
+        instance_type = enums.InstanceType.DEVELOPMENT
+        labels = {'foo': 'bar'}
         credentials = _make_credentials()
         client = self._make_one(
             project=PROJECT, credentials=credentials)
 
-        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME,
+                                   instance_type=instance_type, labels=labels)
 
         self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance.type_, instance_type)
+        self.assertEqual(instance.labels, labels)
         self.assertIs(instance._client, client)
 
     def test_admin_client_w_value_error(self):

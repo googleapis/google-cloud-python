@@ -76,8 +76,6 @@ def to_delete(client):
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
             client.delete_dataset(item, delete_contents=True)
-        elif isinstance(item, (bigquery.Table, bigquery.TableReference)):
-            client.delete_table(item)
         else:
             item.delete()
 
@@ -486,8 +484,6 @@ def test_list_tables(client, to_delete):
     assert tables[0].table_id == 'my_table'
     # [END bigquery_list_tables]
 
-    to_delete.insert(0, table)
-
 
 def test_create_table(client, to_delete):
     """Create a table."""
@@ -513,8 +509,6 @@ def test_create_table(client, to_delete):
     assert table.table_id == 'my_table'
     # [END bigquery_create_table]
 
-    to_delete.insert(0, table)
-
 
 @pytest.mark.skip(reason=(
     'update_table() is flaky '
@@ -538,25 +532,6 @@ def test_create_table_then_add_schema(client, to_delete):
 
     assert table.table_id == 'my_table'
     # [END bigquery_create_table_without_schema]
-
-    to_delete.insert(0, table)
-
-    # [START bigquery_add_schema_to_empty]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    table_ref = client.dataset(dataset_id).table('my_table')
-    schema = [
-        bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-        bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
-    ]
-    table = bigquery.Table(table_ref, schema=schema)
-
-    table = client.update_table(table, ['schema'])  # API request
-
-    assert table.schema == schema
-    # [END bigquery_add_schema_to_empty]
 
 
 def test_create_table_nested_repeated_schema(client, to_delete):
@@ -748,7 +723,6 @@ def test_get_table_information(client, to_delete):
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table.description = ORIGINAL_DESCRIPTION
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_get_table]
     # from google.cloud import bigquery
@@ -805,7 +779,6 @@ def test_table_exists(client, to_delete):
     table_ref = dataset.table(TABLE_ID)
     table = bigquery.Table(table_ref, schema=SCHEMA)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     assert table_exists(client, table_ref)
     assert not table_exists(client, dataset.table('i_dont_exist'))
@@ -823,7 +796,6 @@ def test_manage_table_labels(client, to_delete):
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_label_table]
     # from google.cloud import bigquery
@@ -892,7 +864,6 @@ def test_update_table_description(client, to_delete):
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table.description = 'Original description.'
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_update_table_description]
     # from google.cloud import bigquery
@@ -922,7 +893,6 @@ def test_update_table_expiration(client, to_delete):
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_update_table_expiration]
     import datetime
@@ -959,7 +929,6 @@ def test_add_empty_column(client, to_delete):
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_add_empty_column]
     # from google.cloud import bigquery
@@ -1019,8 +988,6 @@ def test_relax_column(client, to_delete):
     assert all(field.mode == 'NULLABLE' for field in table.schema)
     # [END bigquery_relax_column]
 
-    to_delete.insert(0, table)
-
 
 @pytest.mark.skip(reason=(
     'update_table() is flaky '
@@ -1040,7 +1007,6 @@ def test_update_table_cmek(client, to_delete):
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=original_kms_key_name)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_update_table_cmek]
     # from google.cloud import bigquery
@@ -1239,7 +1205,6 @@ def test_table_insert_rows(client, to_delete):
 
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START bigquery_table_insert_rows]
     # from google.cloud import bigquery
@@ -1296,7 +1261,6 @@ def test_load_table_from_file(client, to_delete):
     # [END bigquery_load_from_file]
 
     table = client.get_table(table_ref)
-    to_delete.insert(0, table)
     rows = list(client.list_rows(table))  # API request
 
     assert len(rows) == 2
@@ -1896,31 +1860,6 @@ def test_load_table_relax_column(client, to_delete):
     assert table.num_rows > 0
 
 
-def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
-    import csv
-    from google.cloud._testing import _NamedTemporaryFile
-    from google.cloud.storage import Client as StorageClient
-
-    storage_client = StorageClient()
-
-    # In the **very** rare case the bucket name is reserved, this
-    # fails with a ConnectionError.
-    bucket = storage_client.create_bucket(bucket_name)
-
-    blob = bucket.blob(blob_name)
-
-    with _NamedTemporaryFile() as temp:
-        with open(temp.name, 'w') as csv_write:
-            writer = csv.writer(csv_write)
-            writer.writerow(header_row)
-            writer.writerows(data_rows)
-
-        with open(temp.name, 'rb') as csv_read:
-            blob.upload_from_file(csv_read, content_type='text/csv')
-
-    return bucket, blob
-
-
 def test_copy_table(client, to_delete):
     dataset_id = 'copy_table_dataset_{}'.format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -1951,8 +1890,6 @@ def test_copy_table(client, to_delete):
     assert dest_table.num_rows > 0
     # [END bigquery_copy_table]
 
-    to_delete.insert(0, dest_table)
-
 
 def test_copy_table_multiple_source(client, to_delete):
     dest_dataset_id = 'dest_dataset_{}'.format(_millis())
@@ -1975,8 +1912,6 @@ def test_copy_table_multiple_source(client, to_delete):
     table_data = {'table1': b'Washington,WA', 'table2': b'California,CA'}
     for table_id, data in table_data.items():
         table_ref = source_dataset.table(table_id)
-        table = bigquery.Table(table_ref, schema=schema)
-        to_delete.insert(0, table)
         job_config = bigquery.LoadJobConfig()
         job_config.schema = schema
         body = six.BytesIO(data)
@@ -2010,7 +1945,6 @@ def test_copy_table_multiple_source(client, to_delete):
     # [END bigquery_copy_table_multiple_source]
 
     assert dest_table.num_rows == 2
-    to_delete.insert(0, dest_table)
 
 
 def test_copy_table_cmek(client, to_delete):
@@ -2053,8 +1987,6 @@ def test_copy_table_cmek(client, to_delete):
     dest_table = client.get_table(dest_table_ref)
     assert dest_table.encryption_configuration.kms_key_name == kms_key_name
     # [END bigquery_copy_table_cmek]
-
-    to_delete.insert(0, dest_table)
 
 
 def test_extract_table(client, to_delete):
@@ -2293,6 +2225,42 @@ def test_client_query_legacy_sql(client):
     # [END bigquery_query_legacy]
 
 
+def test_manage_job(client):
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+    location = 'us'
+    job = client.query(sql, location=location)
+    job_id = job.job_id
+
+    # [START bigquery_cancel_job]
+    # TODO(developer): Uncomment the lines below and replace with your values.
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
+    # location = 'us'                         # replace with your location
+
+    job = client.cancel_job(job_id, location=location)
+    # [END bigquery_cancel_job]
+
+    # [START bigquery_get_job]
+    # TODO(developer): Uncomment the lines below and replace with your values.
+    # from google.cloud import bigquery
+    # client = bigquery.Client()
+    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
+    # location = 'us'                         # replace with your location
+
+    job = client.get_job(job_id, location=location)  # API request
+
+    # Print selected job properties
+    print('Details for job {} running in {}:'.format(job_id, location))
+    print('\tType: {}\n\tState: {}\n\tCreated: {}'.format(
+        job.job_type, job.state, job.created))
+    # [END bigquery_get_job]
+
+
 def test_client_query_destination_table(client, to_delete):
     """Run a query"""
     dataset_id = 'query_destination_table_{}'.format(_millis())
@@ -2301,7 +2269,6 @@ def test_client_query_destination_table(client, to_delete):
     dataset = bigquery.Dataset(dataset_ref)
     dataset.location = 'US'
     client.create_dataset(dataset)
-    to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
     # from google.cloud import bigquery
@@ -2377,7 +2344,6 @@ def test_client_query_destination_table_cmek(client, to_delete):
     dataset = bigquery.Dataset(dataset_ref)
     dataset.location = 'US'
     client.create_dataset(dataset)
-    to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table_cmek]
     # from google.cloud import bigquery
@@ -3031,8 +2997,10 @@ def test_client_list_jobs(client):
     """List jobs for a project."""
 
     # [START bigquery_list_jobs]
+    # TODO(developer): Uncomment the lines below and replace with your values.
     # from google.cloud import bigquery
-    # client = bigquery.Client(project='my_project')
+    # project = 'my_project'  # replace with your project ID
+    # client = bigquery.Client(project=project)
     import datetime
 
     # List the 10 most recent jobs in reverse chronological order.
