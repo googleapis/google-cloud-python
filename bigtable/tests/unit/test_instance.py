@@ -435,25 +435,94 @@ class TestInstance(unittest.TestCase):
     def test_update(self):
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.longrunning import operations_pb2
+        from google.cloud.bigtable import enums
+        from google.protobuf import field_mask_pb2
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_v2_pb2)
 
-        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME)
+                                  display_name=self.DISPLAY_NAME,
+                                  instance_type=enums.InstanceType.DEVELOPMENT,
+                                  labels=self.LABELS)
+
+        expected_request_instance = instance_pb2.Instance(
+            name=instance.name, display_name=instance.display_name,
+            type=instance.type_, labels=instance.labels)
+        expected_request_update_mask = field_mask_pb2.FieldMask(
+            paths=['display_name', 'type', 'labels'])
+        expected_request = instance_v2_pb2.PartialUpdateInstanceRequest(
+            instance=expected_request_instance,
+            update_mask=expected_request_update_mask)
+
+        print(self.OP_NAME)
+        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+
+        channel = ChannelStub(responses=[response_pb])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
 
         # Mock api calls
-        client._instance_admin_client = api
+        client._instance_admin_client = instance_api
 
         # Create expected_result.
         expected_result = None
 
         # Perform the method and check the result.
         result = instance.update()
+        actual_request = channel.requests[0][1]
 
         self.assertEqual(result, expected_result)
+        self.assertEqual(actual_request, expected_request)
+
+    def test_update_empty(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.longrunning import operations_pb2
+        from google.cloud.bigtable import enums
+        from google.protobuf import field_mask_pb2
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_v2_pb2)
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(None, client)
+
+        expected_request_instance = instance_pb2.Instance(
+            name=instance.name, display_name=instance.display_name,
+            type=instance.type_, labels=instance.labels)
+        expected_request_update_mask = field_mask_pb2.FieldMask()
+        expected_request = instance_v2_pb2.PartialUpdateInstanceRequest(
+            instance=expected_request_instance,
+            update_mask=expected_request_update_mask)
+
+        print(self.OP_NAME)
+        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+
+        channel = ChannelStub(responses=[response_pb])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+
+        # Mock api calls
+        client._instance_admin_client = instance_api
+
+        # Create expected_result.
+        expected_result = None
+
+        # Perform the method and check the result.
+        result = instance.update()
+        actual_request = channel.requests[0][1]
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(actual_request, expected_request)
 
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (

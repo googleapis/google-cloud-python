@@ -192,22 +192,55 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance.labels, instance_alt.labels)
 
-    def test_update(self):
+    def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
+        NEW_LABELS = {'foo_bar': 'foo_bar'}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
+        Config.INSTANCE.labels = NEW_LABELS
         Config.INSTANCE.update()
 
         # Create a new instance instance and reload it.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID)
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID, LABELS)
         self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
+        self.assertNotEqual(instance_alt.labels, NEW_LABELS)
         instance_alt.reload()
         self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
+        self.assertEqual(instance_alt.labels, NEW_LABELS)
 
         # Make sure to put the instance back the way it was for the
         # other test cases.
         Config.INSTANCE.display_name = OLD_DISPLAY_NAME
+        Config.INSTANCE.labels = LABELS
         Config.INSTANCE.update()
+
+    def test_update_type(self):
+        from google.cloud.bigtable.enums import InstanceType
+        from google.cloud.bigtable.enums import InstanceType
+
+        _DEVELOPMENT = InstanceType.DEVELOPMENT
+        _PRODUCTION = InstanceType.PRODUCTION
+        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
+                                          instance_type=_DEVELOPMENT)
+        operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
+
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
+
+        # Unset the display_name
+        instance.display_name = None
+
+        instance.type_ = _PRODUCTION
+        instance.update()
+
+        # Create a new instance instance and reload it.
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        self.assertIsNone(instance_alt.type_)
+        instance_alt.reload()
+        self.assertEqual(instance_alt.type_, _PRODUCTION)
 
     def test_create_app_profile_with_multi_routing_policy(self):
         # Create a new instance instance and reload it.
