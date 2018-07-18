@@ -117,6 +117,201 @@ class Test_JobReference(unittest.TestCase):
         self.assertEqual(job_ref.location, self.LOCATION)
 
 
+class Test_AsyncJob(unittest.TestCase):
+    JOB_ID = 'job-id'
+    PROJECT = 'test-project-123'
+    LOCATION = 'us-central'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery import job
+
+        return job._AsyncJob
+
+    def _make_one(self, job_id, client):
+        return self._get_target_class()(job_id, client)
+
+    def _make_derived(self, job_id, client):
+        class Derived(self._get_target_class()):
+            _JOB_TYPE = 'derived'
+
+        return Derived(job_id, client)
+
+    @staticmethod
+    def _job_reference(job_id, project, location):
+        from google.cloud.bigquery import job
+
+        return job._JobReference(job_id, project, location)
+
+    def test_ctor_w_bare_job_id(self):
+        import threading
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertEqual(job.job_id, self.JOB_ID)
+        self.assertEqual(job.project, self.PROJECT)
+        self.assertIsNone(job.location)
+        self.assertIs(job._client, client)
+        self.assertEqual(job._properties, {})
+        self.assertIsInstance(job._completion_lock, type(threading.Lock()))
+        self.assertEqual(
+            job.path,
+            '/projects/{}/jobs/{}'.format(self.PROJECT, self.JOB_ID))
+
+    def test_ctor_w_job_ref(self):
+        import threading
+
+        other_project = 'other-project-234'
+        client = _make_client(project=other_project)
+        job_ref = self._job_reference(self.JOB_ID, self.PROJECT, self.LOCATION)
+        job = self._make_one(job_ref, client)
+
+        self.assertEqual(job.job_id, self.JOB_ID)
+        self.assertEqual(job.project, self.PROJECT)
+        self.assertEqual(job.location, self.LOCATION)
+        self.assertIs(job._client, client)
+        self.assertEqual(job._properties, {})
+        self.assertFalse(job._result_set)
+        self.assertIsInstance(job._completion_lock, type(threading.Lock()))
+        self.assertEqual(
+            job.path,
+            '/projects/{}/jobs/{}'.format(self.PROJECT, self.JOB_ID))
+
+    def test__require_client_w_none(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIs(job._require_client(None), client)
+
+    def test__require_client_w_other(self):
+        client = _make_client(project=self.PROJECT)
+        other = object()
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIs(job._require_client(other), other)
+
+    def test_job_type(self):
+        client = _make_client(project=self.PROJECT)
+        derived = self._make_derived(self.JOB_ID, client)
+
+        self.assertEqual(derived.job_type, 'derived')
+
+    def test_etag(self):
+        etag = 'ETAG-123'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.etag)
+        job._properties['etag'] = etag
+        self.assertEqual(job.etag, etag)
+
+    def test_self_link(self):
+        self_link = 'https://api.example.com/123'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.self_link)
+        job._properties['selfLink'] = self_link
+        self.assertEqual(job.self_link, self_link)
+
+    def test_user_email(self):
+        user_email = 'user@example.com'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.user_email)
+        job._properties['user_email'] = user_email
+        self.assertEqual(job.user_email, user_email)
+
+    @staticmethod
+    def _datetime_and_millis():
+        import datetime
+        import pytz
+        from google.cloud._helpers import _millis
+        now = datetime.datetime.utcnow().replace(
+            microsecond=123000,  # stats timestamps have ms precision
+            tzinfo=pytz.UTC)
+        return now, _millis(now)
+
+    def test_created(self):
+        now, millis = self._datetime_and_millis()
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.created)
+        stats = job._properties['statistics'] = {}
+        self.assertIsNone(job.created)
+        stats['creationTime'] = millis
+        self.assertEqual(job.created, now)
+
+    def test_started(self):
+        now, millis = self._datetime_and_millis()
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.started)
+        stats = job._properties['statistics'] = {}
+        self.assertIsNone(job.started)
+        stats['startTime'] = millis
+        self.assertEqual(job.started, now)
+
+    def test_ended(self):
+        now, millis = self._datetime_and_millis()
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.ended)
+        stats = job._properties['statistics'] = {}
+        self.assertIsNone(job.ended)
+        stats['endTime'] = millis
+        self.assertEqual(job.ended, now)
+
+    def test__job_statistics(self):
+        statistics = {'foo': 'bar'}
+        client = _make_client(project=self.PROJECT)
+        derived = self._make_derived(self.JOB_ID, client)
+        self.assertEqual(derived._job_statistics(), {})
+        stats = derived._properties['statistics'] = {}
+        self.assertEqual(derived._job_statistics(), {})
+        stats['derived'] = statistics
+        self.assertEqual(derived._job_statistics(), statistics)
+
+    def test_error_result(self):
+        error_result = {
+            'debugInfo': 'DEBUG INFO',
+            'location': 'LOCATION',
+            'message': 'MESSAGE',
+            'reason': 'REASON'
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.error_result)
+        status = job._properties['status'] = {}
+        self.assertIsNone(job.error_result)
+        status['errorResult'] = error_result
+        self.assertEqual(job.error_result, error_result)
+
+    def test_errors(self):
+        errors = [{
+            'debugInfo': 'DEBUG INFO',
+            'location': 'LOCATION',
+            'message': 'MESSAGE',
+            'reason': 'REASON'
+        }]
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.errors)
+        status = job._properties['status'] = {}
+        self.assertIsNone(job.errors)
+        status['errors'] = errors
+        self.assertEqual(job.errors, errors)
+
+    def test_state(self):
+        state = 'STATE'
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.state)
+        status = job._properties['status'] = {}
+        self.assertIsNone(job.state)
+        status['state'] = state
+        self.assertEqual(job.state, state)
+
+
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
