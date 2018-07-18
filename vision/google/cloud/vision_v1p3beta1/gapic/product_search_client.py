@@ -228,7 +228,7 @@ class ProductSearchClient(object):
         Possible errors:
 
         * Returns INVALID_ARGUMENT if display_name is missing, or is longer than
-        4096 characters.
+          4096 characters.
 
         Example:
             >>> from google.cloud import vision_v1p3beta1
@@ -307,7 +307,7 @@ class ProductSearchClient(object):
         Possible errors:
 
         * Returns INVALID_ARGUMENT if page_size is greater than 100, or less
-        than 1.
+          than 1.
 
         Example:
             >>> from google.cloud import vision_v1p3beta1
@@ -465,7 +465,7 @@ class ProductSearchClient(object):
 
         * Returns NOT_FOUND if the ProductSet does not exist.
         * Returns INVALID_ARGUMENT if display_name is present in update_mask but
-        missing from the request or longer than 4096 characters.
+          missing from the request or longer than 4096 characters.
 
         Example:
             >>> from google.cloud import vision_v1p3beta1
@@ -843,9 +843,9 @@ class ProductSearchClient(object):
 
         * Returns NOT_FOUND if the Product does not exist.
         * Returns INVALID_ARGUMENT if display_name is present in update_mask but is
-        missing from the request or longer than 4096 characters.
+          missing from the request or longer than 4096 characters.
         * Returns INVALID_ARGUMENT if description is present in update_mask but is
-        longer than 4096 characters.
+          longer than 4096 characters.
         * Returns INVALID_ARGUMENT if product_category is present in update_mask.
 
         Example:
@@ -993,10 +993,10 @@ class ProductSearchClient(object):
         Possible errors:
 
         * Returns INVALID_ARGUMENT if the image_uri is missing or longer than 4096
-        characters.
+          characters.
         * Returns INVALID_ARGUMENT if the product does not exist.
         * Returns INVALID_ARGUMENT if bounding_poly is not provided, and nothing
-        compatible with the parent product's product_category is detected.
+          compatible with the parent product's product_category is detected.
         * Returns INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
 
         Example:
@@ -1145,7 +1145,7 @@ class ProductSearchClient(object):
 
         * Returns NOT_FOUND if the parent product does not exist.
         * Returns INVALID_ARGUMENT if the page_size is greater than 100, or less
-        than 1.
+          than 1.
 
         Example:
             >>> from google.cloud import vision_v1p3beta1

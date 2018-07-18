@@ -30,7 +30,9 @@ for version in versions:
     s.move(library / f'google/cloud/vision_{version}/types.py')
     s.move(library / f'google/cloud/vision_{version}/proto')
     s.move(library / f'tests/unit/gapic/{version}')
-    s.move(library / f'docs/gapic/{version}')
+    # don't publish docs for these versions
+    if version not in ['v1p1beta1']:
+        s.move(library / f'docs/gapic/{version}')
 
     # Add vision helpers to each version
     s.replace(
@@ -87,3 +89,9 @@ for version in versions:
         "    (- The API has a collection of ``ProductSet.*\n)"
         "\s+(``project.*\n)\s+(products.*)",
         "    \1      \2      \3")
+
+    # under indented second line of docstring
+    s.replace(
+        'google/cloud/vision_v1p3beta1/gapic/product_search_client.py',
+        '(        \* .*\n        )([^\s*])',
+        '\g<1>  \g<2>')
