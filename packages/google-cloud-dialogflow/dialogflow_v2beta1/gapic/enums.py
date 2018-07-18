@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -27,7 +29,7 @@ class NullValue(object):
     NULL_VALUE = 0
 
 
-class IntentView(object):
+class IntentView(enum.IntEnum):
     """
     Represents the options for views of an intent.
     An intent can be a sizable object. Therefore, we provide a resource view that
@@ -41,10 +43,50 @@ class IntentView(object):
     INTENT_VIEW_FULL = 1
 
 
-class AudioEncoding(object):
+class SsmlVoiceGender(enum.IntEnum):
+    """
+    Gender of the voice as described in
+    `SSML voice element <https://www.w3.org/TR/speech-synthesis11/#edef_voice>`_.
+
+    Attributes:
+      SSML_VOICE_GENDER_UNSPECIFIED (int): An unspecified gender, which means that the client doesn't care which
+      gender the selected voice will have.
+      SSML_VOICE_GENDER_MALE (int): A male voice.
+      SSML_VOICE_GENDER_FEMALE (int): A female voice.
+      SSML_VOICE_GENDER_NEUTRAL (int): A gender-neutral voice.
+    """
+    SSML_VOICE_GENDER_UNSPECIFIED = 0
+    SSML_VOICE_GENDER_MALE = 1
+    SSML_VOICE_GENDER_FEMALE = 2
+    SSML_VOICE_GENDER_NEUTRAL = 3
+
+
+class OutputAudioEncoding(enum.IntEnum):
+    """
+    Audio encoding of the output audio format in Text-To-Speech.
+
+    Attributes:
+      OUTPUT_AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
+      OUTPUT_AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
+      Audio content returned as LINEAR16 also contains a WAV header.
+      OUTPUT_AUDIO_ENCODING_MP3 (int): MP3 audio.
+      OUTPUT_AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio wrapped in an ogg container. The result will be a
+      file which can be played natively on Android, and in browsers (at least
+      Chrome and Firefox). The quality of the encoding is considerably higher
+      than MP3 while using approximately the same bitrate.
+    """
+    OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
+    OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
+    OUTPUT_AUDIO_ENCODING_MP3 = 2
+    OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
+
+
+class AudioEncoding(enum.IntEnum):
     """
     Audio encoding of the audio content sent in the conversational query request.
-    Refer to the `Cloud Speech API documentation <https://cloud.google.com/speech/docs/basics>`_ for more
+    Refer to the
+    [Cloud Speech API
+    documentation](https://cloud.google.com/speech-to-text/docs/basics) for more
     details.
 
     Attributes:
@@ -85,8 +127,47 @@ class AudioEncoding(object):
     AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
 
 
+class Document(object):
+    class KnowledgeType(enum.IntEnum):
+        """
+        The knowledge type of document content.
+
+        Attributes:
+          KNOWLEDGE_TYPE_UNSPECIFIED (int): The type is unspecified or arbitrary.
+          FAQ (int): The document content contains question and answer pairs as either HTML or
+          CSV. Typical FAQ HTML formats are parsed accurately, but unusual formats
+          may fail to be parsed.
+
+          CSV must have questions in the first column and answers in the second,
+          with no header. Because of this explicit format, they are always parsed
+          accurately.
+          EXTRACTIVE_QA (int): Documents for which unstructured text is extracted and used for
+          question answering.
+        """
+        KNOWLEDGE_TYPE_UNSPECIFIED = 0
+        FAQ = 1
+        EXTRACTIVE_QA = 2
+
+
+class KnowledgeOperationMetadata(object):
+    class State(enum.IntEnum):
+        """
+        States of the operation.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): State unspecified.
+          PENDING (int): The operation has been created.
+          RUNNING (int): The operation is currently running.
+          DONE (int): The operation is done, either cancelled or completed.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+
+
 class EntityType(object):
-    class Kind(object):
+    class Kind(enum.IntEnum):
         """
         Represents kinds of entities.
 
@@ -102,7 +183,7 @@ class EntityType(object):
         KIND_MAP = 1
         KIND_LIST = 2
 
-    class AutoExpansionMode(object):
+    class AutoExpansionMode(enum.IntEnum):
         """
         Represents different entity type expansion modes. Automated expansion
         allows an agent to recognize values that have not been explicitly listed in
@@ -118,7 +199,7 @@ class EntityType(object):
 
 
 class SessionEntityType(object):
-    class EntityOverrideMode(object):
+    class EntityOverrideMode(enum.IntEnum):
         """
         The types of modifications for a session entity type.
 
@@ -139,7 +220,7 @@ class SessionEntityType(object):
 
 
 class Intent(object):
-    class WebhookState(object):
+    class WebhookState(enum.IntEnum):
         """
         Represents the different states that webhooks can be in.
 
@@ -154,7 +235,7 @@ class Intent(object):
         WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
 
     class TrainingPhrase(object):
-        class Type(object):
+        class Type(enum.IntEnum):
             """
             Represents different types of training phrases.
 
@@ -170,7 +251,7 @@ class Intent(object):
             TEMPLATE = 2
 
     class Message(object):
-        class Platform(object):
+        class Platform(enum.IntEnum):
             """
             Represents different platforms that a rich message can be intended for.
 
@@ -248,6 +329,7 @@ class Intent(object):
                   \"intent\": \"actions.intent.OPTION\"
                 }
               }</pre>
+              TELEPHONY (int): Telephony Gateway.
             """
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
@@ -258,10 +340,30 @@ class Intent(object):
             LINE = 6
             VIBER = 7
             ACTIONS_ON_GOOGLE = 8
+            TELEPHONY = 10
+
+
+class KnowledgeAnswers(object):
+    class Answer(object):
+        class MatchConfidenceLevel(enum.IntEnum):
+            """
+            Represents the system's confidence that this knowledge answer is a good
+            match for this conversational query.
+
+            Attributes:
+              MATCH_CONFIDENCE_LEVEL_UNSPECIFIED (int): Not specified.
+              LOW (int): Indicates that the confidence is low.
+              MEDIUM (int): Indicates our confidence is medium.
+              HIGH (int): Indicates our confidence is high.
+            """
+            MATCH_CONFIDENCE_LEVEL_UNSPECIFIED = 0
+            LOW = 1
+            MEDIUM = 2
+            HIGH = 3
 
 
 class StreamingRecognitionResult(object):
-    class MessageType(object):
+    class MessageType(enum.IntEnum):
         """
         Type of the response message.
 
@@ -282,7 +384,7 @@ class StreamingRecognitionResult(object):
 
 
 class Agent(object):
-    class MatchMode(object):
+    class MatchMode(enum.IntEnum):
         """
         Match mode determines how intents are detected from user queries.
 

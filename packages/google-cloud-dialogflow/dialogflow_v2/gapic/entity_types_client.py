@@ -15,7 +15,9 @@
 
 import functools
 import pkg_resources
+import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -25,43 +27,84 @@ import google.api_core.operations_v1
 import google.api_core.page_iterator
 import google.api_core.path_template
 import google.api_core.protobuf_helpers
+import grpc
 
+from dialogflow_v2.gapic import entity_types_client_config
+from dialogflow_v2.gapic import enums
+from dialogflow_v2.gapic.transports import entity_types_grpc_transport
+from dialogflow_v2.proto import agent_pb2
+from dialogflow_v2.proto import agent_pb2_grpc
+from dialogflow_v2.proto import context_pb2
+from dialogflow_v2.proto import context_pb2_grpc
+from dialogflow_v2.proto import entity_type_pb2
+from dialogflow_v2.proto import entity_type_pb2_grpc
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 
-from dialogflow_v2.gapic import entity_types_client_config
-from dialogflow_v2.gapic import enums
-from dialogflow_v2.proto import agent_pb2
-from dialogflow_v2.proto import context_pb2
-from dialogflow_v2.proto import entity_type_pb2
-
-
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'dialogflow',
-).version
+    'dialogflow', ).version
 
 
 class EntityTypesClient(object):
     """
-    Manages agent entity types.
+    Entities are extracted from user input and represent parameters that are
+    meaningful to your application. For example, a date range, a proper name
+    such as a geographic location or landmark, and so on. Entities represent
+    actionable data for your application.
 
+    When you define an entity, you can also include synonyms that all map to
+    that entity. For example, \"soft drink\", \"soda\", \"pop\", and so on.
 
-    Refer to the `Dialogflow documentation <https://dialogflow.com/docs/entities>`__
-    for more details about entity types.
-    #
+    There are three types of entities:
+
+    *   **System** - entities that are defined by the Dialogflow API for common
+        data types such as date, time, currency, and so on. A system entity is
+        represented by the `EntityType` type.
+
+    *   **Developer** - entities that are defined by you that represent
+        actionable data that is meaningful to your application. For example,
+        you could define a `pizza.sauce` entity for red or white pizza sauce,
+        a `pizza.cheese` entity for the different types of cheese on a pizza,
+        a `pizza.topping` entity for different toppings, and so on. A developer
+        entity is represented by the `EntityType` type.
+
+    *   **User** - entities that are built for an individual user such as
+        favorites, preferences, playlists, and so on. A user entity is
+        represented by the [SessionEntityType][google.cloud.dialogflow.v2.SessionEntityType] type.
+
+    For more information about entity types, see the
+    `Dialogflow documentation <https://dialogflow.com/docs/entities>`__.
     """
 
     SERVICE_ADDRESS = 'dialogflow.googleapis.com:443'
     """The default address of the service."""
 
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
-
-    # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary.
+    # The name of the interface for this client. This is the key used to
+    # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.dialogflow.v2.EntityTypes'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            dialogflow_v2.EntityTypesClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def project_agent_path(cls, project):
@@ -81,6 +124,7 @@ class EntityTypesClient(object):
         )
 
     def __init__(self,
+                 transport=None,
                  channel=None,
                  credentials=None,
                  client_config=entity_types_client_config.config,
@@ -88,121 +132,82 @@ class EntityTypesClient(object):
         """Constructor.
 
         Args:
-            channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
+            transport (Union[~.EntityTypesGrpcTransport,
+                    Callable[[~.Credentials, type], ~.EntityTypesGrpcTransport]): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.
+                This argument may also be a callable which returns a
+                transport instance. Callables will be sent the credentials
+                as the first argument and the default transport class as
+                the second argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict): A dictionary of call options for each
-                method. If not specified, the default configuration is used.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # If both `channel` and `credentials` are specified, raise an
-        # exception (channels come with credentials baked in already).
-        if channel is not None and credentials is not None:
-            raise ValueError(
-                'The `channel` and `credentials` arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__), )
+        # Raise deprecation warnings for things we want to go away.
+        if client_config:
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning)
+        if channel:
+            warnings.warn(
+                'The `channel` argument is deprecated; use '
+                '`transport` instead.', PendingDeprecationWarning)
 
-        # Create the channel.
-        if channel is None:
-            channel = google.api_core.grpc_helpers.create_channel(
-                self.SERVICE_ADDRESS,
-                credentials=credentials,
-                scopes=self._DEFAULT_SCOPES,
-            )
-
-        # Create the gRPC stubs.
-        self.entity_types_stub = (entity_type_pb2.EntityTypesStub(channel))
-
-        # Operations client for methods that return long-running operations
-        # futures.
-        self.operations_client = (
-            google.api_core.operations_v1.OperationsClient(channel))
+        # Instantiate the transport.
+        # The transport is responsible for handling serialization and
+        # deserialization and actually sending data to the service.
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=entity_types_grpc_transport.
+                    EntityTypesGrpcTransport,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.')
+                self.transport = transport
+        self.transport = entity_types_grpc_transport.EntityTypesGrpcTransport(
+            address=self.SERVICE_ADDRESS,
+            channel=channel,
+            credentials=credentials,
+        )
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
+        self._client_info = client_info
 
         # Parse out the default settings for retry and timeout for each RPC
         # from the client configuration.
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
-        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+        self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
             client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Write the "inner API call" methods to the class.
-        # These are wrapped versions of the gRPC stub methods, with retry and
-        # timeout configuration applied, called by the public methods on
-        # this class.
-        self._list_entity_types = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.ListEntityTypes,
-            default_retry=method_configs['ListEntityTypes'].retry,
-            default_timeout=method_configs['ListEntityTypes'].timeout,
-            client_info=client_info,
-        )
-        self._get_entity_type = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.GetEntityType,
-            default_retry=method_configs['GetEntityType'].retry,
-            default_timeout=method_configs['GetEntityType'].timeout,
-            client_info=client_info,
-        )
-        self._create_entity_type = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.CreateEntityType,
-            default_retry=method_configs['CreateEntityType'].retry,
-            default_timeout=method_configs['CreateEntityType'].timeout,
-            client_info=client_info,
-        )
-        self._update_entity_type = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.UpdateEntityType,
-            default_retry=method_configs['UpdateEntityType'].retry,
-            default_timeout=method_configs['UpdateEntityType'].timeout,
-            client_info=client_info,
-        )
-        self._delete_entity_type = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.DeleteEntityType,
-            default_retry=method_configs['DeleteEntityType'].retry,
-            default_timeout=method_configs['DeleteEntityType'].timeout,
-            client_info=client_info,
-        )
-        self._batch_update_entity_types = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.BatchUpdateEntityTypes,
-            default_retry=method_configs['BatchUpdateEntityTypes'].retry,
-            default_timeout=method_configs['BatchUpdateEntityTypes'].timeout,
-            client_info=client_info,
-        )
-        self._batch_delete_entity_types = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.BatchDeleteEntityTypes,
-            default_retry=method_configs['BatchDeleteEntityTypes'].retry,
-            default_timeout=method_configs['BatchDeleteEntityTypes'].timeout,
-            client_info=client_info,
-        )
-        self._batch_create_entities = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.BatchCreateEntities,
-            default_retry=method_configs['BatchCreateEntities'].retry,
-            default_timeout=method_configs['BatchCreateEntities'].timeout,
-            client_info=client_info,
-        )
-        self._batch_update_entities = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.BatchUpdateEntities,
-            default_retry=method_configs['BatchUpdateEntities'].retry,
-            default_timeout=method_configs['BatchUpdateEntities'].timeout,
-            client_info=client_info,
-        )
-        self._batch_delete_entities = google.api_core.gapic_v1.method.wrap_method(
-            self.entity_types_stub.BatchDeleteEntities,
-            default_retry=method_configs['BatchDeleteEntities'].retry,
-            default_timeout=method_configs['BatchDeleteEntities'].timeout,
-            client_info=client_info,
-        )
+        # Save a dictionary of cached API call functions.
+        # These are the actual callables which invoke the proper
+        # transport methods, wrapped with `wrap_method` to add retry,
+        # timeout, and the like.
+        self._inner_api_calls = {}
 
     # Service calls
     def list_entity_types(self,
@@ -222,13 +227,15 @@ class EntityTypesClient(object):
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
             >>>
-            >>>
             >>> # Iterate over all results
             >>> for element in client.list_entity_types(parent):
             ...     # process element
             ...     pass
             >>>
-            >>> # Or iterate over results one page at a time
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
             >>> for page in client.list_entity_types(parent, options=CallOptions(page_token=INITIAL_PAGE)):
             ...     for element in page:
             ...         # process element
@@ -269,9 +276,18 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'list_entity_types' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'list_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.list_entity_types,
+                    default_retry=self._method_configs[
+                        'ListEntityTypes'].retry,
+                    default_timeout=self._method_configs['ListEntityTypes']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.ListEntityTypesRequest(
             parent=parent,
             language_code=language_code,
@@ -280,7 +296,7 @@ class EntityTypesClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_entity_types,
+                self._inner_api_calls['list_entity_types'],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata),
@@ -336,14 +352,22 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'get_entity_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'get_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.get_entity_type,
+                    default_retry=self._method_configs['GetEntityType'].retry,
+                    default_timeout=self._method_configs['GetEntityType']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.GetEntityTypeRequest(
             name=name,
             language_code=language_code,
         )
-        return self._get_entity_type(
+        return self._inner_api_calls['get_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_entity_type(self,
@@ -362,6 +386,8 @@ class EntityTypesClient(object):
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``entity_type``:
             >>> entity_type = {}
             >>>
             >>> response = client.create_entity_type(parent, entity_type)
@@ -396,15 +422,24 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'create_entity_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'create_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.create_entity_type,
+                    default_retry=self._method_configs[
+                        'CreateEntityType'].retry,
+                    default_timeout=self._method_configs['CreateEntityType']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.CreateEntityTypeRequest(
             parent=parent,
             entity_type=entity_type,
             language_code=language_code,
         )
-        return self._create_entity_type(
+        return self._inner_api_calls['create_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_entity_type(self,
@@ -422,6 +457,7 @@ class EntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
+            >>> # TODO: Initialize ``entity_type``:
             >>> entity_type = {}
             >>>
             >>> response = client.update_entity_type(entity_type)
@@ -458,15 +494,24 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'update_entity_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'update_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.update_entity_type,
+                    default_retry=self._method_configs[
+                        'UpdateEntityType'].retry,
+                    default_timeout=self._method_configs['UpdateEntityType']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.UpdateEntityTypeRequest(
             entity_type=entity_type,
             language_code=language_code,
             update_mask=update_mask,
         )
-        return self._update_entity_type(
+        return self._inner_api_calls['update_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_entity_type(self,
@@ -505,11 +550,20 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'delete_entity_type' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'delete_entity_type'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.delete_entity_type,
+                    default_retry=self._method_configs[
+                        'DeleteEntityType'].retry,
+                    default_timeout=self._method_configs['DeleteEntityType']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.DeleteEntityTypeRequest(name=name, )
-        self._delete_entity_type(
+        self._inner_api_calls['delete_entity_type'](
             request, retry=retry, timeout=timeout, metadata=metadata)
 
     def batch_update_entity_types(
@@ -583,9 +637,18 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'batch_update_entity_types' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_update_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_update_entity_types,
+                    default_retry=self._method_configs[
+                        'BatchUpdateEntityTypes'].retry,
+                    default_timeout=self._method_configs[
+                        'BatchUpdateEntityTypes'].timeout,
+                    client_info=self._client_info,
+                )
+
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
@@ -600,11 +663,11 @@ class EntityTypesClient(object):
             language_code=language_code,
             update_mask=update_mask,
         )
-        operation = self._batch_update_entity_types(
+        operation = self._inner_api_calls['batch_update_entity_types'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
-            self.operations_client,
+            self.transport._operations_client,
             entity_type_pb2.BatchUpdateEntityTypesResponse,
             metadata_type=struct_pb2.Struct,
         )
@@ -628,6 +691,8 @@ class EntityTypesClient(object):
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize ``entity_type_names``:
             >>> entity_type_names = []
             >>>
             >>> response = client.batch_delete_entity_types(parent, entity_type_names)
@@ -665,18 +730,27 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'batch_delete_entity_types' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_delete_entity_types'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_delete_entity_types,
+                    default_retry=self._method_configs[
+                        'BatchDeleteEntityTypes'].retry,
+                    default_timeout=self._method_configs[
+                        'BatchDeleteEntityTypes'].timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.BatchDeleteEntityTypesRequest(
             parent=parent,
             entity_type_names=entity_type_names,
         )
-        operation = self._batch_delete_entity_types(
+        operation = self._inner_api_calls['batch_delete_entity_types'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
-            self.operations_client,
+            self.transport._operations_client,
             empty_pb2.Empty,
             metadata_type=struct_pb2.Struct,
         )
@@ -700,6 +774,8 @@ class EntityTypesClient(object):
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
+            >>>
+            >>> # TODO: Initialize ``entities``:
             >>> entities = []
             >>>
             >>> response = client.batch_create_entities(parent, entities)
@@ -743,19 +819,28 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'batch_create_entities' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_create_entities'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_create_entities,
+                    default_retry=self._method_configs[
+                        'BatchCreateEntities'].retry,
+                    default_timeout=self._method_configs['BatchCreateEntities']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.BatchCreateEntitiesRequest(
             parent=parent,
             entities=entities,
             language_code=language_code,
         )
-        operation = self._batch_create_entities(
+        operation = self._inner_api_calls['batch_create_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
-            self.operations_client,
+            self.transport._operations_client,
             empty_pb2.Empty,
             metadata_type=struct_pb2.Struct,
         )
@@ -781,6 +866,8 @@ class EntityTypesClient(object):
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
+            >>>
+            >>> # TODO: Initialize ``entities``:
             >>> entities = []
             >>>
             >>> response = client.batch_update_entities(parent, entities)
@@ -827,20 +914,29 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'batch_update_entities' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_update_entities'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_update_entities,
+                    default_retry=self._method_configs[
+                        'BatchUpdateEntities'].retry,
+                    default_timeout=self._method_configs['BatchUpdateEntities']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.BatchUpdateEntitiesRequest(
             parent=parent,
             entities=entities,
             language_code=language_code,
             update_mask=update_mask,
         )
-        operation = self._batch_update_entities(
+        operation = self._inner_api_calls['batch_update_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
-            self.operations_client,
+            self.transport._operations_client,
             empty_pb2.Empty,
             metadata_type=struct_pb2.Struct,
         )
@@ -864,6 +960,8 @@ class EntityTypesClient(object):
             >>> client = dialogflow_v2.EntityTypesClient()
             >>>
             >>> parent = client.entity_type_path('[PROJECT]', '[ENTITY_TYPE]')
+            >>>
+            >>> # TODO: Initialize ``entity_values``:
             >>> entity_values = []
             >>>
             >>> response = client.batch_delete_entities(parent, entity_values)
@@ -907,19 +1005,28 @@ class EntityTypesClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if 'batch_delete_entities' not in self._inner_api_calls:
+            self._inner_api_calls[
+                'batch_delete_entities'] = google.api_core.gapic_v1.method.wrap_method(
+                    self.transport.batch_delete_entities,
+                    default_retry=self._method_configs[
+                        'BatchDeleteEntities'].retry,
+                    default_timeout=self._method_configs['BatchDeleteEntities']
+                    .timeout,
+                    client_info=self._client_info,
+                )
+
         request = entity_type_pb2.BatchDeleteEntitiesRequest(
             parent=parent,
             entity_values=entity_values,
             language_code=language_code,
         )
-        operation = self._batch_delete_entities(
+        operation = self._inner_api_calls['batch_delete_entities'](
             request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
-            self.operations_client,
+            self.transport._operations_client,
             empty_pb2.Empty,
             metadata_type=struct_pb2.Struct,
         )

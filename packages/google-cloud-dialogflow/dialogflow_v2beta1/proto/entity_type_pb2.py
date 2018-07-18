@@ -772,7 +772,7 @@ EntityType = _reflection.GeneratedProtocolMessageType('EntityType', (_message.Me
 
   Entity = _reflection.GeneratedProtocolMessageType('Entity', (_message.Message,), dict(
     DESCRIPTOR = _ENTITYTYPE_ENTITY,
-    __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+    __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
     ,
     __doc__ = """Optional. Represents an entity.
     
@@ -792,7 +792,7 @@ EntityType = _reflection.GeneratedProtocolMessageType('EntityType', (_message.Me
     ))
   ,
   DESCRIPTOR = _ENTITYTYPE,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """Represents an entity type. Entity types serve as a tool for extracting
   parameter values from natural language queries.
@@ -822,7 +822,7 @@ _sym_db.RegisterMessage(EntityType.Entity)
 
 ListEntityTypesRequest = _reflection.GeneratedProtocolMessageType('ListEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTENTITYTYPESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
@@ -852,7 +852,7 @@ _sym_db.RegisterMessage(ListEntityTypesRequest)
 
 ListEntityTypesResponse = _reflection.GeneratedProtocolMessageType('ListEntityTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTENTITYTYPESRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The response message for
   [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
@@ -873,7 +873,7 @@ _sym_db.RegisterMessage(ListEntityTypesResponse)
 
 GetEntityTypeRequest = _reflection.GeneratedProtocolMessageType('GetEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType].
@@ -897,7 +897,7 @@ _sym_db.RegisterMessage(GetEntityTypeRequest)
 
 CreateEntityTypeRequest = _reflection.GeneratedProtocolMessageType('CreateEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.CreateEntityType].
@@ -923,7 +923,7 @@ _sym_db.RegisterMessage(CreateEntityTypeRequest)
 
 UpdateEntityTypeRequest = _reflection.GeneratedProtocolMessageType('UpdateEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATEENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType].
@@ -949,7 +949,7 @@ _sym_db.RegisterMessage(UpdateEntityTypeRequest)
 
 DeleteEntityTypeRequest = _reflection.GeneratedProtocolMessageType('DeleteEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.DeleteEntityType].
@@ -966,7 +966,7 @@ _sym_db.RegisterMessage(DeleteEntityTypeRequest)
 
 BatchUpdateEntityTypesRequest = _reflection.GeneratedProtocolMessageType('BatchUpdateEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITYTYPESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
@@ -1004,7 +1004,7 @@ _sym_db.RegisterMessage(BatchUpdateEntityTypesRequest)
 
 BatchUpdateEntityTypesResponse = _reflection.GeneratedProtocolMessageType('BatchUpdateEntityTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITYTYPESRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The response message for
   [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
@@ -1020,7 +1020,7 @@ _sym_db.RegisterMessage(BatchUpdateEntityTypesResponse)
 
 BatchDeleteEntityTypesRequest = _reflection.GeneratedProtocolMessageType('BatchDeleteEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHDELETEENTITYTYPESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes].
@@ -1040,7 +1040,7 @@ _sym_db.RegisterMessage(BatchDeleteEntityTypesRequest)
 
 BatchCreateEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchCreateEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHCREATEENTITIESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
@@ -1067,7 +1067,7 @@ _sym_db.RegisterMessage(BatchCreateEntitiesRequest)
 
 BatchUpdateEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchUpdateEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHUPDATEENTITIESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The response message for
   [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
@@ -1097,7 +1097,7 @@ _sym_db.RegisterMessage(BatchUpdateEntitiesRequest)
 
 BatchDeleteEntitiesRequest = _reflection.GeneratedProtocolMessageType('BatchDeleteEntitiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHDELETEENTITIESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """The request message for
   [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities].
@@ -1126,7 +1126,7 @@ _sym_db.RegisterMessage(BatchDeleteEntitiesRequest)
 
 EntityTypeBatch = _reflection.GeneratedProtocolMessageType('EntityTypeBatch', (_message.Message,), dict(
   DESCRIPTOR = _ENTITYTYPEBATCH,
-  __module__ = 'dialogflow_v2beta1.proto.entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.entity_type_pb2'
   ,
   __doc__ = """This message is a wrapper around a collection of entity types.
   

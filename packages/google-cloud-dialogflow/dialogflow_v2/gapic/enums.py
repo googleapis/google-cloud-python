@@ -13,8 +13,10 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class NullValue(object):
+
+class NullValue(enum.IntEnum):
     """
     ``NullValue`` is a singleton enumeration to represent the null value for the
     ``Value`` type union.
@@ -27,7 +29,7 @@ class NullValue(object):
     NULL_VALUE = 0
 
 
-class IntentView(object):
+class IntentView(enum.IntEnum):
     """
     Represents the options for views of an intent.
     An intent can be a sizable object. Therefore, we provide a resource view that
@@ -41,7 +43,7 @@ class IntentView(object):
     INTENT_VIEW_FULL = 1
 
 
-class AudioEncoding(object):
+class AudioEncoding(enum.IntEnum):
     """
     Audio encoding of the audio content sent in the conversational query request.
     Refer to the `Cloud Speech API documentation <https://cloud.google.com/speech/docs/basics>`_ for more
@@ -85,66 +87,8 @@ class AudioEncoding(object):
     AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
 
 
-class Intent(object):
-    class WebhookState(object):
-        """
-        Represents the different states that webhooks can be in.
-
-        Attributes:
-          WEBHOOK_STATE_UNSPECIFIED (int): Webhook is disabled in the agent and in the intent.
-          WEBHOOK_STATE_ENABLED (int): Webhook is enabled in the agent and in the intent.
-          WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING (int): Webhook is enabled in the agent and in the intent. Also, each slot
-          filling prompt is forwarded to the webhook.
-        """
-        WEBHOOK_STATE_UNSPECIFIED = 0
-        WEBHOOK_STATE_ENABLED = 1
-        WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
-
-    class TrainingPhrase(object):
-        class Type(object):
-            """
-            Represents different types of training phrases.
-
-            Attributes:
-              TYPE_UNSPECIFIED (int): Not specified. This value should never be used.
-              EXAMPLE (int): Examples do not contain @-prefixed entity type names, but example parts
-              can be annotated with entity types.
-              TEMPLATE (int): Templates are not annotated with entity types, but they can contain
-              @-prefixed entity type names as substrings.
-            """
-            TYPE_UNSPECIFIED = 0
-            EXAMPLE = 1
-            TEMPLATE = 2
-
-    class Message(object):
-        class Platform(object):
-            """
-            Represents different platforms that a rich message can be intended for.
-
-            Attributes:
-              PLATFORM_UNSPECIFIED (int): Not specified.
-              FACEBOOK (int): Facebook.
-              SLACK (int): Slack.
-              TELEGRAM (int): Telegram.
-              KIK (int): Kik.
-              SKYPE (int): Skype.
-              LINE (int): Line.
-              VIBER (int): Viber.
-              ACTIONS_ON_GOOGLE (int): Actions on Google.
-            """
-            PLATFORM_UNSPECIFIED = 0
-            FACEBOOK = 1
-            SLACK = 2
-            TELEGRAM = 3
-            KIK = 4
-            SKYPE = 5
-            LINE = 6
-            VIBER = 7
-            ACTIONS_ON_GOOGLE = 8
-
-
 class EntityType(object):
-    class Kind(object):
+    class Kind(enum.IntEnum):
         """
         Represents kinds of entities.
 
@@ -160,7 +104,7 @@ class EntityType(object):
         KIND_MAP = 1
         KIND_LIST = 2
 
-    class AutoExpansionMode(object):
+    class AutoExpansionMode(enum.IntEnum):
         """
         Represents different entity type expansion modes. Automated expansion
         allows an agent to recognize values that have not been explicitly listed in
@@ -176,7 +120,7 @@ class EntityType(object):
 
 
 class SessionEntityType(object):
-    class EntityOverrideMode(object):
+    class EntityOverrideMode(enum.IntEnum):
         """
         The types of modifications for a session entity type.
 
@@ -196,8 +140,130 @@ class SessionEntityType(object):
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
 
 
+class Intent(object):
+    class WebhookState(enum.IntEnum):
+        """
+        Represents the different states that webhooks can be in.
+
+        Attributes:
+          WEBHOOK_STATE_UNSPECIFIED (int): Webhook is disabled in the agent and in the intent.
+          WEBHOOK_STATE_ENABLED (int): Webhook is enabled in the agent and in the intent.
+          WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING (int): Webhook is enabled in the agent and in the intent. Also, each slot
+          filling prompt is forwarded to the webhook.
+        """
+        WEBHOOK_STATE_UNSPECIFIED = 0
+        WEBHOOK_STATE_ENABLED = 1
+        WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
+
+    class TrainingPhrase(object):
+        class Type(enum.IntEnum):
+            """
+            Represents different types of training phrases.
+
+            Attributes:
+              TYPE_UNSPECIFIED (int): Not specified. This value should never be used.
+              EXAMPLE (int): Examples do not contain @-prefixed entity type names, but example parts
+              can be annotated with entity types.
+              TEMPLATE (int): Templates are not annotated with entity types, but they can contain
+              @-prefixed entity type names as substrings.
+            """
+            TYPE_UNSPECIFIED = 0
+            EXAMPLE = 1
+            TEMPLATE = 2
+
+    class Message(object):
+        class Platform(enum.IntEnum):
+            """
+            Represents different platforms that a rich message can be intended for.
+
+            Attributes:
+              PLATFORM_UNSPECIFIED (int): Not specified.
+              FACEBOOK (int): Facebook.
+              SLACK (int): Slack.
+              TELEGRAM (int): Telegram.
+              KIK (int): Kik.
+              SKYPE (int): Skype.
+              LINE (int): Line.
+              VIBER (int): Viber.
+              ACTIONS_ON_GOOGLE (int): Actions on Google.
+              When using Actions on Google, you can choose one of the specific
+              Intent.Message types that mention support for Actions on Google,
+              or you can use the advanced Intent.Message.payload field.
+              The payload field provides access to AoG features not available in the
+              specific message types.
+              If using the Intent.Message.payload field, it should have a structure
+              similar to the JSON message shown here. For more information, see
+              [Actions on Google Webhook
+              Format](https://developers.google.com/actions/dialogflow/webhook)
+              <pre>{
+                \"expectUserResponse\": true,
+                \"isSsml\": false,
+                \"noInputPrompts\": [],
+                \"richResponse\": {
+              ::
+
+                  \"items\": [
+                    {
+                      \"simpleResponse\": {
+                        \"displayText\": \"hi\",
+                        \"textToSpeech\": \"hello\"
+                      }
+                    }
+                  ],
+                  \"suggestions\": [
+                    {
+                      \"title\": \"Say this\"
+                    },
+                    {
+                      \"title\": \"or this\"
+                    }
+                  ]
+                },
+                \"systemIntent\": {
+              ::
+
+                  \"data\": {
+                    \"@type\": \"type.googleapis.com/google.actions.v2.OptionValueSpec\",
+                    \"listSelect\": {
+                      \"items\": [
+                        {
+                          \"optionInfo\": {
+                            \"key\": \"key1\",
+                            \"synonyms\": [
+                              \"key one\"
+                            ]
+                          },
+                          \"title\": \"must not be empty, but unique\"
+                        },
+                        {
+                          \"optionInfo\": {
+                            \"key\": \"key2\",
+                            \"synonyms\": [
+                              \"key two\"
+                            ]
+                          },
+                          \"title\": \"must not be empty, but unique\"
+                        }
+                      ]
+                    }
+                  },
+                  \"intent\": \"actions.intent.OPTION\"
+                }
+              }</pre>
+            """
+            PLATFORM_UNSPECIFIED = 0
+            FACEBOOK = 1
+            SLACK = 2
+            TELEGRAM = 3
+            KIK = 4
+            SKYPE = 5
+            LINE = 6
+            VIBER = 7
+            ACTIONS_ON_GOOGLE = 8
+
+
 class StreamingRecognitionResult(object):
-    class MessageType(object):
+    class MessageType(enum.IntEnum):
         """
         Type of the response message.
 
@@ -218,7 +284,7 @@ class StreamingRecognitionResult(object):
 
 
 class Agent(object):
-    class MatchMode(object):
+    class MatchMode(enum.IntEnum):
         """
         Match mode determines how intents are detected from user queries.
 

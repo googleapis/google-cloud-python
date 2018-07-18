@@ -26,7 +26,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n.google/cloud/dialogflow_v2/proto/context.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\"\\\n\x07\x43ontext\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x16\n\x0elifespan_count\x18\x02 \x01(\x05\x12+\n\nparameters\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\"L\n\x13ListContextsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"f\n\x14ListContextsResponse\x12\x35\n\x08\x63ontexts\x18\x01 \x03(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"!\n\x11GetContextRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\\\n\x14\x43reateContextRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x34\n\x07\x63ontext\x18\x02 \x01(\x0b\x32#.google.cloud.dialogflow.v2.Context\"}\n\x14UpdateContextRequest\x12\x34\n\x07\x63ontext\x18\x01 \x01(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"$\n\x14\x44\x65leteContextRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"*\n\x18\x44\x65leteAllContextsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t2\xef\x07\n\x08\x43ontexts\x12\xac\x01\n\x0cListContexts\x12/.google.cloud.dialogflow.v2.ListContextsRequest\x1a\x30.google.cloud.dialogflow.v2.ListContextsResponse\"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v2/{parent=projects/*/agent/sessions/*}/contexts\x12\x9b\x01\n\nGetContext\x12-.google.cloud.dialogflow.v2.GetContextRequest\x1a#.google.cloud.dialogflow.v2.Context\"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v2/{name=projects/*/agent/sessions/*/contexts/*}\x12\xaa\x01\n\rCreateContext\x12\x30.google.cloud.dialogflow.v2.CreateContextRequest\x1a#.google.cloud.dialogflow.v2.Context\"B\x82\xd3\xe4\x93\x02<\"1/v2/{parent=projects/*/agent/sessions/*}/contexts:\x07\x63ontext\x12\xb2\x01\n\rUpdateContext\x12\x30.google.cloud.dialogflow.v2.UpdateContextRequest\x1a#.google.cloud.dialogflow.v2.Context\"J\x82\xd3\xe4\x93\x02\x44\x32\x39/v2/{context.name=projects/*/agent/sessions/*/contexts/*}:\x07\x63ontext\x12\x94\x01\n\rDeleteContext\x12\x30.google.cloud.dialogflow.v2.DeleteContextRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v2/{name=projects/*/agent/sessions/*/contexts/*}\x12\x9c\x01\n\x11\x44\x65leteAllContexts\x12\x34.google.cloud.dialogflow.v2.DeleteAllContextsRequest\x1a\x16.google.protobuf.Empty\"9\x82\xd3\xe4\x93\x02\x33*1/v2/{parent=projects/*/agent/sessions/*}/contextsB\x9b\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x0c\x43ontextProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -44,21 +43,21 @@ _CONTEXT = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='lifespan_count', full_name='google.cloud.dialogflow.v2.Context.lifespan_count', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='parameters', full_name='google.cloud.dialogflow.v2.Context.parameters', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -89,21 +88,21 @@ _LISTCONTEXTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_size', full_name='google.cloud.dialogflow.v2.ListContextsRequest.page_size', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='page_token', full_name='google.cloud.dialogflow.v2.ListContextsRequest.page_token', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -134,14 +133,14 @@ _LISTCONTEXTSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_page_token', full_name='google.cloud.dialogflow.v2.ListContextsResponse.next_page_token', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -172,7 +171,7 @@ _GETCONTEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -203,14 +202,14 @@ _CREATECONTEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='context', full_name='google.cloud.dialogflow.v2.CreateContextRequest.context', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -241,14 +240,14 @@ _UPDATECONTEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='update_mask', full_name='google.cloud.dialogflow.v2.UpdateContextRequest.update_mask', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -279,7 +278,7 @@ _DELETECONTEXTREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -310,7 +309,7 @@ _DELETEALLCONTEXTSREQUEST = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -340,6 +339,7 @@ DESCRIPTOR.message_types_by_name['CreateContextRequest'] = _CREATECONTEXTREQUEST
 DESCRIPTOR.message_types_by_name['UpdateContextRequest'] = _UPDATECONTEXTREQUEST
 DESCRIPTOR.message_types_by_name['DeleteContextRequest'] = _DELETECONTEXTREQUEST
 DESCRIPTOR.message_types_by_name['DeleteAllContextsRequest'] = _DELETEALLCONTEXTSREQUEST
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Context = _reflection.GeneratedProtocolMessageType('Context', (_message.Message,), dict(
   DESCRIPTOR = _CONTEXT,
@@ -352,8 +352,7 @@ Context = _reflection.GeneratedProtocolMessageType('Context', (_message.Message,
       name:
           Required. The unique identifier of the context. Format:
           ``projects/<Project ID>/agent/sessions/<Session
-          ID>/contexts/<Context ID>``. Note: The Context ID is always
-          converted to lowercase.
+          ID>/contexts/<Context ID>``.
       lifespan_count:
           Optional. The number of conversational query requests after
           which the context expires. If set to ``0`` (the default) the
@@ -504,303 +503,73 @@ _sym_db.RegisterMessage(DeleteAllContextsRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.cloud.dialogflow.v2B\014ContextProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
 
+_CONTEXTS = _descriptor.ServiceDescriptor(
+  name='Contexts',
+  full_name='google.cloud.dialogflow.v2.Contexts',
+  file=DESCRIPTOR,
+  index=0,
+  options=None,
+  serialized_start=816,
+  serialized_end=1823,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListContexts',
+    full_name='google.cloud.dialogflow.v2.Contexts.ListContexts',
+    index=0,
+    containing_service=None,
+    input_type=_LISTCONTEXTSREQUEST,
+    output_type=_LISTCONTEXTSRESPONSE,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023\0221/v2/{parent=projects/*/agent/sessions/*}/contexts')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetContext',
+    full_name='google.cloud.dialogflow.v2.Contexts.GetContext',
+    index=1,
+    containing_service=None,
+    input_type=_GETCONTEXTREQUEST,
+    output_type=_CONTEXT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023\0221/v2/{name=projects/*/agent/sessions/*/contexts/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateContext',
+    full_name='google.cloud.dialogflow.v2.Contexts.CreateContext',
+    index=2,
+    containing_service=None,
+    input_type=_CREATECONTEXTREQUEST,
+    output_type=_CONTEXT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002<\"1/v2/{parent=projects/*/agent/sessions/*}/contexts:\007context')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateContext',
+    full_name='google.cloud.dialogflow.v2.Contexts.UpdateContext',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATECONTEXTREQUEST,
+    output_type=_CONTEXT,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002D29/v2/{context.name=projects/*/agent/sessions/*/contexts/*}:\007context')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteContext',
+    full_name='google.cloud.dialogflow.v2.Contexts.DeleteContext',
+    index=4,
+    containing_service=None,
+    input_type=_DELETECONTEXTREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023*1/v2/{name=projects/*/agent/sessions/*/contexts/*}')),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteAllContexts',
+    full_name='google.cloud.dialogflow.v2.Contexts.DeleteAllContexts',
+    index=5,
+    containing_service=None,
+    input_type=_DELETEALLCONTEXTSREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\0023*1/v2/{parent=projects/*/agent/sessions/*}/contexts')),
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_CONTEXTS)
 
-  class ContextsStub(object):
-    """Manages contexts.
+DESCRIPTOR.services_by_name['Contexts'] = _CONTEXTS
 
-
-    Refer to the [Dialogflow documentation](https://dialogflow.com/docs/contexts)
-    for more details about contexts.
-    #
-    """
-
-    def __init__(self, channel):
-      """Constructor.
-
-      Args:
-        channel: A grpc.Channel.
-      """
-      self.ListContexts = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/ListContexts',
-          request_serializer=ListContextsRequest.SerializeToString,
-          response_deserializer=ListContextsResponse.FromString,
-          )
-      self.GetContext = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/GetContext',
-          request_serializer=GetContextRequest.SerializeToString,
-          response_deserializer=Context.FromString,
-          )
-      self.CreateContext = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/CreateContext',
-          request_serializer=CreateContextRequest.SerializeToString,
-          response_deserializer=Context.FromString,
-          )
-      self.UpdateContext = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/UpdateContext',
-          request_serializer=UpdateContextRequest.SerializeToString,
-          response_deserializer=Context.FromString,
-          )
-      self.DeleteContext = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/DeleteContext',
-          request_serializer=DeleteContextRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-      self.DeleteAllContexts = channel.unary_unary(
-          '/google.cloud.dialogflow.v2.Contexts/DeleteAllContexts',
-          request_serializer=DeleteAllContextsRequest.SerializeToString,
-          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          )
-
-
-  class ContextsServicer(object):
-    """Manages contexts.
-
-
-    Refer to the [Dialogflow documentation](https://dialogflow.com/docs/contexts)
-    for more details about contexts.
-    #
-    """
-
-    def ListContexts(self, request, context):
-      """Returns the list of all contexts in the specified session.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def GetContext(self, request, context):
-      """Retrieves the specified context.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def CreateContext(self, request, context):
-      """Creates a context.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def UpdateContext(self, request, context):
-      """Updates the specified context.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteContext(self, request, context):
-      """Deletes the specified context.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-    def DeleteAllContexts(self, request, context):
-      """Deletes all active contexts in the specified session.
-      """
-      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-      context.set_details('Method not implemented!')
-      raise NotImplementedError('Method not implemented!')
-
-
-  def add_ContextsServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-        'ListContexts': grpc.unary_unary_rpc_method_handler(
-            servicer.ListContexts,
-            request_deserializer=ListContextsRequest.FromString,
-            response_serializer=ListContextsResponse.SerializeToString,
-        ),
-        'GetContext': grpc.unary_unary_rpc_method_handler(
-            servicer.GetContext,
-            request_deserializer=GetContextRequest.FromString,
-            response_serializer=Context.SerializeToString,
-        ),
-        'CreateContext': grpc.unary_unary_rpc_method_handler(
-            servicer.CreateContext,
-            request_deserializer=CreateContextRequest.FromString,
-            response_serializer=Context.SerializeToString,
-        ),
-        'UpdateContext': grpc.unary_unary_rpc_method_handler(
-            servicer.UpdateContext,
-            request_deserializer=UpdateContextRequest.FromString,
-            response_serializer=Context.SerializeToString,
-        ),
-        'DeleteContext': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteContext,
-            request_deserializer=DeleteContextRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-        'DeleteAllContexts': grpc.unary_unary_rpc_method_handler(
-            servicer.DeleteAllContexts,
-            request_deserializer=DeleteAllContextsRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-        'google.cloud.dialogflow.v2.Contexts', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
-  class BetaContextsServicer(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages contexts.
-
-
-    Refer to the [Dialogflow documentation](https://dialogflow.com/docs/contexts)
-    for more details about contexts.
-    #
-    """
-    def ListContexts(self, request, context):
-      """Returns the list of all contexts in the specified session.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def GetContext(self, request, context):
-      """Retrieves the specified context.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def CreateContext(self, request, context):
-      """Creates a context.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def UpdateContext(self, request, context):
-      """Updates the specified context.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteContext(self, request, context):
-      """Deletes the specified context.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-    def DeleteAllContexts(self, request, context):
-      """Deletes all active contexts in the specified session.
-      """
-      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-  class BetaContextsStub(object):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This class was generated
-    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    """Manages contexts.
-
-
-    Refer to the [Dialogflow documentation](https://dialogflow.com/docs/contexts)
-    for more details about contexts.
-    #
-    """
-    def ListContexts(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Returns the list of all contexts in the specified session.
-      """
-      raise NotImplementedError()
-    ListContexts.future = None
-    def GetContext(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Retrieves the specified context.
-      """
-      raise NotImplementedError()
-    GetContext.future = None
-    def CreateContext(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a context.
-      """
-      raise NotImplementedError()
-    CreateContext.future = None
-    def UpdateContext(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Updates the specified context.
-      """
-      raise NotImplementedError()
-    UpdateContext.future = None
-    def DeleteContext(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes the specified context.
-      """
-      raise NotImplementedError()
-    DeleteContext.future = None
-    def DeleteAllContexts(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Deletes all active contexts in the specified session.
-      """
-      raise NotImplementedError()
-    DeleteAllContexts.future = None
-
-
-  def beta_create_Contexts_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_deserializers = {
-      ('google.cloud.dialogflow.v2.Contexts', 'CreateContext'): CreateContextRequest.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteAllContexts'): DeleteAllContextsRequest.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteContext'): DeleteContextRequest.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'GetContext'): GetContextRequest.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'ListContexts'): ListContextsRequest.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'UpdateContext'): UpdateContextRequest.FromString,
-    }
-    response_serializers = {
-      ('google.cloud.dialogflow.v2.Contexts', 'CreateContext'): Context.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteAllContexts'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteContext'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'GetContext'): Context.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'ListContexts'): ListContextsResponse.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'UpdateContext'): Context.SerializeToString,
-    }
-    method_implementations = {
-      ('google.cloud.dialogflow.v2.Contexts', 'CreateContext'): face_utilities.unary_unary_inline(servicer.CreateContext),
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteAllContexts'): face_utilities.unary_unary_inline(servicer.DeleteAllContexts),
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteContext'): face_utilities.unary_unary_inline(servicer.DeleteContext),
-      ('google.cloud.dialogflow.v2.Contexts', 'GetContext'): face_utilities.unary_unary_inline(servicer.GetContext),
-      ('google.cloud.dialogflow.v2.Contexts', 'ListContexts'): face_utilities.unary_unary_inline(servicer.ListContexts),
-      ('google.cloud.dialogflow.v2.Contexts', 'UpdateContext'): face_utilities.unary_unary_inline(servicer.UpdateContext),
-    }
-    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-    return beta_implementations.server(method_implementations, options=server_options)
-
-
-  def beta_create_Contexts_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-    """The Beta API is deprecated for 0.15.0 and later.
-
-    It is recommended to use the GA API (classes and functions in this
-    file not marked beta) for all further purposes. This function was
-    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-    request_serializers = {
-      ('google.cloud.dialogflow.v2.Contexts', 'CreateContext'): CreateContextRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteAllContexts'): DeleteAllContextsRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteContext'): DeleteContextRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'GetContext'): GetContextRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'ListContexts'): ListContextsRequest.SerializeToString,
-      ('google.cloud.dialogflow.v2.Contexts', 'UpdateContext'): UpdateContextRequest.SerializeToString,
-    }
-    response_deserializers = {
-      ('google.cloud.dialogflow.v2.Contexts', 'CreateContext'): Context.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteAllContexts'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'DeleteContext'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'GetContext'): Context.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'ListContexts'): ListContextsResponse.FromString,
-      ('google.cloud.dialogflow.v2.Contexts', 'UpdateContext'): Context.FromString,
-    }
-    cardinalities = {
-      'CreateContext': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteAllContexts': cardinality.Cardinality.UNARY_UNARY,
-      'DeleteContext': cardinality.Cardinality.UNARY_UNARY,
-      'GetContext': cardinality.Cardinality.UNARY_UNARY,
-      'ListContexts': cardinality.Cardinality.UNARY_UNARY,
-      'UpdateContext': cardinality.Cardinality.UNARY_UNARY,
-    }
-    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'google.cloud.dialogflow.v2.Contexts', cardinalities, options=stub_options)
-except ImportError:
-  pass
 # @@protoc_insertion_point(module_scope)

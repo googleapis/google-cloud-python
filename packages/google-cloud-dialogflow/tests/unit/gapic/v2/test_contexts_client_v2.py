@@ -17,6 +17,7 @@ import pytest
 
 import dialogflow_v2
 from dialogflow_v2.proto import context_pb2
+from google.protobuf import empty_pb2
 
 
 class MultiCallableStub(object):

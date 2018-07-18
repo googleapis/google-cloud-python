@@ -18,6 +18,13 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
+from dialogflow_v2.proto import agent_pb2
+from dialogflow_v2.proto import context_pb2
+from dialogflow_v2.proto import entity_type_pb2
+from dialogflow_v2.proto import intent_pb2
+from dialogflow_v2.proto import session_entity_type_pb2
+from dialogflow_v2.proto import session_pb2
+from dialogflow_v2.proto import webhook_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
@@ -27,33 +34,35 @@ from google.protobuf import struct_pb2
 from google.rpc import status_pb2
 from google.type import latlng_pb2
 
-from dialogflow_v2.proto import agent_pb2
-from dialogflow_v2.proto import context_pb2
-from dialogflow_v2.proto import entity_type_pb2
-from dialogflow_v2.proto import intent_pb2
-from dialogflow_v2.proto import session_entity_type_pb2
-from dialogflow_v2.proto import session_pb2
-from dialogflow_v2.proto import webhook_pb2
+_shared_modules = [
+    http_pb2,
+    operations_pb2,
+    any_pb2,
+    descriptor_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    struct_pb2,
+    status_pb2,
+    latlng_pb2,
+]
+
+_local_modules = [
+    agent_pb2,
+    context_pb2,
+    entity_type_pb2,
+    intent_pb2,
+    session_entity_type_pb2,
+    session_pb2,
+    webhook_pb2,
+]
 
 names = []
-for module in (
-        http_pb2,
-        agent_pb2,
-        context_pb2,
-        entity_type_pb2,
-        intent_pb2,
-        session_entity_type_pb2,
-        session_pb2,
-        webhook_pb2,
-        operations_pb2,
-        any_pb2,
-        descriptor_pb2,
-        empty_pb2,
-        field_mask_pb2,
-        struct_pb2,
-        status_pb2,
-        latlng_pb2,
-):
+
+for module in _shared_modules:
+    for name, message in get_messages(module).items():
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
+for module in _local_modules:
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.dialogflow_v2.types'
         setattr(sys.modules[__name__], name, message)

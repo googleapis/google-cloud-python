@@ -111,6 +111,7 @@ class TestIntentsClient(object):
         is_fallback = False
         ml_enabled = False
         ml_disabled = True
+        end_interaction = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -122,6 +123,7 @@ class TestIntentsClient(object):
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
             'ml_disabled': ml_disabled,
+            'end_interaction': end_interaction,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -163,6 +165,7 @@ class TestIntentsClient(object):
         is_fallback = False
         ml_enabled = False
         ml_disabled = True
+        end_interaction = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -174,6 +177,7 @@ class TestIntentsClient(object):
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
             'ml_disabled': ml_disabled,
+            'end_interaction': end_interaction,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -218,6 +222,7 @@ class TestIntentsClient(object):
         is_fallback = False
         ml_enabled = False
         ml_disabled = True
+        end_interaction = True
         action = 'action-1422950858'
         reset_contexts = True
         root_followup_intent_name = 'rootFollowupIntentName402253784'
@@ -229,6 +234,7 @@ class TestIntentsClient(object):
             'is_fallback': is_fallback,
             'ml_enabled': ml_enabled,
             'ml_disabled': ml_disabled,
+            'end_interaction': end_interaction,
             'action': action,
             'reset_contexts': reset_contexts,
             'root_followup_intent_name': root_followup_intent_name,
@@ -304,7 +310,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         language_code = 'languageCode-412800396'
 
         response = client.batch_update_intents(parent, language_code)
@@ -329,7 +335,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         language_code = 'languageCode-412800396'
 
         response = client.batch_update_intents(parent, language_code)
@@ -349,7 +355,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_agent_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)
@@ -374,7 +380,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2beta1.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.project_path('[PROJECT]')
+        parent = client.project_agent_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)

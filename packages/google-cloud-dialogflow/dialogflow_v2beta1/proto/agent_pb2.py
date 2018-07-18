@@ -505,7 +505,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Agent = _reflection.GeneratedProtocolMessageType('Agent', (_message.Message,), dict(
   DESCRIPTOR = _AGENT,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """Represents a conversational agent.
   
@@ -559,7 +559,7 @@ _sym_db.RegisterMessage(Agent)
 
 GetAgentRequest = _reflection.GeneratedProtocolMessageType('GetAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETAGENTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.GetAgent][google.cloud.dialogflow.v2beta1.Agents.GetAgent].
@@ -576,7 +576,7 @@ _sym_db.RegisterMessage(GetAgentRequest)
 
 SearchAgentsRequest = _reflection.GeneratedProtocolMessageType('SearchAgentsRequest', (_message.Message,), dict(
   DESCRIPTOR = _SEARCHAGENTSREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
@@ -599,7 +599,7 @@ _sym_db.RegisterMessage(SearchAgentsRequest)
 
 SearchAgentsResponse = _reflection.GeneratedProtocolMessageType('SearchAgentsResponse', (_message.Message,), dict(
   DESCRIPTOR = _SEARCHAGENTSRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The response message for
   [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
@@ -619,7 +619,7 @@ _sym_db.RegisterMessage(SearchAgentsResponse)
 
 TrainAgentRequest = _reflection.GeneratedProtocolMessageType('TrainAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _TRAINAGENTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent].
@@ -636,7 +636,7 @@ _sym_db.RegisterMessage(TrainAgentRequest)
 
 ExportAgentRequest = _reflection.GeneratedProtocolMessageType('ExportAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _EXPORTAGENTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
@@ -647,9 +647,11 @@ ExportAgentRequest = _reflection.GeneratedProtocolMessageType('ExportAgentReques
           Required. The project that the agent to export is associated
           with. Format: ``projects/<Project ID>``.
       agent_uri:
-          Optional. The Google Cloud Storage URI to export the agent to.
-          Note: The URI must start with "gs://". If left unspecified,
-          the serialized agent is returned inline.
+          Optional. The `Google Cloud Storage
+          <https://cloud.google.com/storage/docs/>`__ URI to export the
+          agent to. The format of this URI must be ``gs://<bucket-
+          name>/<object-name>``. If left unspecified, the serialized
+          agent is returned inline.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ExportAgentRequest)
   ))
@@ -657,7 +659,7 @@ _sym_db.RegisterMessage(ExportAgentRequest)
 
 ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentResponse', (_message.Message,), dict(
   DESCRIPTOR = _EXPORTAGENTRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The response message for
   [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
@@ -671,7 +673,16 @@ ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentRespo
           populated only if ``agent_uri`` is specified in
           ``ExportAgentRequest``.
       agent_content:
-          The exported agent.
+          The exported agent.  Example for how to export an agent to a
+          zip file via a command line:  .. raw:: html     <pre>curl \
+          'https://dialogflow.googleapis.com/v2beta1/projects/&lt;projec
+          t_name&gt;/agent:export'\      -X POST \      -H
+          'Authorization: Bearer '$(gcloud auth application-default
+          print-access-token) \      -H 'Accept: application/json' \
+          -H 'Content-Type: application/json' \      --compressed \
+          --data-binary '{}' \    | grep agentContent | sed -e
+          's/.*"agentContent": "\([^"]*\)".*/\1/' \    | base64 --decode
+          > &lt;agent zip file&gt;</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ExportAgentResponse)
   ))
@@ -679,7 +690,7 @@ _sym_db.RegisterMessage(ExportAgentResponse)
 
 ImportAgentRequest = _reflection.GeneratedProtocolMessageType('ImportAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _IMPORTAGENTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent].
@@ -695,7 +706,15 @@ ImportAgentRequest = _reflection.GeneratedProtocolMessageType('ImportAgentReques
           The URI to a Google Cloud Storage file containing the agent to
           import. Note: The URI must start with "gs://".
       agent_content:
-          The agent to import.
+          The agent to import.  Example for how to import an agent via
+          the command line:  .. raw:: html     <pre>curl \      'https:/
+          /dialogflow.googleapis.com/v2beta1/projects/&lt;project_name&g
+          t;/agent:import\       -X POST \       -H 'Authorization:
+          Bearer '$(gcloud auth application-default       print-access-
+          token) \       -H 'Accept: application/json' \       -H
+          'Content-Type: application/json' \       --compressed \
+          --data-binary "{          'agentContent': '$(cat &lt;agent zip
+          file&gt; | base64 -w 0)'       }"</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ImportAgentRequest)
   ))
@@ -703,7 +722,7 @@ _sym_db.RegisterMessage(ImportAgentRequest)
 
 RestoreAgentRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentRequest', (_message.Message,), dict(
   DESCRIPTOR = _RESTOREAGENTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.agent_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.agent_pb2'
   ,
   __doc__ = """The request message for
   [Agents.RestoreAgent][google.cloud.dialogflow.v2beta1.Agents.RestoreAgent].
@@ -719,7 +738,15 @@ RestoreAgentRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentRequ
           The URI to a Google Cloud Storage file containing the agent to
           restore. Note: The URI must start with "gs://".
       agent_content:
-          The agent to restore.
+          The agent to restore.  Example for how to restore an agent via
+          the command line:  .. raw:: html     <pre>curl \      'https:/
+          /dialogflow.googleapis.com/v2beta1/projects/&lt;project_name&g
+          t;/agent:restore\       -X POST \       -H 'Authorization:
+          Bearer '$(gcloud auth application-default       print-access-
+          token) \       -H 'Accept: application/json' \       -H
+          'Content-Type: application/json' \       --compressed \
+          --data-binary "{           'agentContent': '$(cat &lt;agent
+          zip file&gt; | base64 -w 0)'       }"</pre>
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.RestoreAgentRequest)
   ))

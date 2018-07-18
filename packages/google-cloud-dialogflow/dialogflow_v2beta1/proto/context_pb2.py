@@ -343,7 +343,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Context = _reflection.GeneratedProtocolMessageType('Context', (_message.Message,), dict(
   DESCRIPTOR = _CONTEXT,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """Represents a context.
   
@@ -354,11 +354,11 @@ Context = _reflection.GeneratedProtocolMessageType('Context', (_message.Message,
           ``projects/<Project ID>/agent/sessions/<Session
           ID>/contexts/<Context ID>``, or ``projects/<Project
           ID>/agent/environments/<Environment ID>/users/<User
-          ID>/sessions/<Session ID>/contexts/<Context ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. The Context ID is always converted to
-          lowercase. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/sessions/<Session ID>/contexts/<Context ID>``. The
+          ``Context ID`` is always converted to lowercase. If
+          ``Environment ID`` is not specified, we assume default 'draft'
+          environment. If ``User ID`` is not specified, we assume
+          default '-' user.
       lifespan_count:
           Optional. The number of conversational query requests after
           which the context expires. If set to ``0`` (the default) the
@@ -376,7 +376,7 @@ _sym_db.RegisterMessage(Context)
 
 ListContextsRequest = _reflection.GeneratedProtocolMessageType('ListContextsRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTCONTEXTSREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
@@ -387,10 +387,9 @@ ListContextsRequest = _reflection.GeneratedProtocolMessageType('ListContextsRequ
           Required. The session to list all contexts from. Format:
           ``projects/<Project ID>/agent/sessions/<Session ID>`` or
           ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/sessions/<Session ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/users/<User ID>/sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       page_size:
           Optional. The maximum number of items to return in a single
           page. By default 100 and at most 1000.
@@ -404,7 +403,7 @@ _sym_db.RegisterMessage(ListContextsRequest)
 
 ListContextsResponse = _reflection.GeneratedProtocolMessageType('ListContextsResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTCONTEXTSRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The response message for
   [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
@@ -424,7 +423,7 @@ _sym_db.RegisterMessage(ListContextsResponse)
 
 GetContextRequest = _reflection.GeneratedProtocolMessageType('GetContextRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETCONTEXTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.GetContext][google.cloud.dialogflow.v2beta1.Contexts.GetContext].
@@ -436,10 +435,9 @@ GetContextRequest = _reflection.GeneratedProtocolMessageType('GetContextRequest'
           ID>/agent/sessions/<Session ID>/contexts/<Context ID>`` or
           ``projects/<Project ID>/agent/environments/<Environment
           ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context
-          ID>``. Note: Environments and users are under construction and
-          will be available soon. If is not specified, we assume default
-          'draft' environment. If is not specified, we assume default
-          '-' user.
+          ID>``. If ``Environment ID`` is not specified, we assume
+          default 'draft' environment. If ``User ID`` is not specified,
+          we assume default '-' user.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.GetContextRequest)
   ))
@@ -447,7 +445,7 @@ _sym_db.RegisterMessage(GetContextRequest)
 
 CreateContextRequest = _reflection.GeneratedProtocolMessageType('CreateContextRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATECONTEXTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.CreateContext][google.cloud.dialogflow.v2beta1.Contexts.CreateContext].
@@ -458,10 +456,9 @@ CreateContextRequest = _reflection.GeneratedProtocolMessageType('CreateContextRe
           Required. The session to create a context for. Format:
           ``projects/<Project ID>/agent/sessions/<Session ID>`` or
           ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/sessions/<Session ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/users/<User ID>/sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       context:
           Required. The context to create.
   """,
@@ -471,7 +468,7 @@ _sym_db.RegisterMessage(CreateContextRequest)
 
 UpdateContextRequest = _reflection.GeneratedProtocolMessageType('UpdateContextRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATECONTEXTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.UpdateContext][google.cloud.dialogflow.v2beta1.Contexts.UpdateContext].
@@ -489,7 +486,7 @@ _sym_db.RegisterMessage(UpdateContextRequest)
 
 DeleteContextRequest = _reflection.GeneratedProtocolMessageType('DeleteContextRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETECONTEXTREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.DeleteContext][google.cloud.dialogflow.v2beta1.Contexts.DeleteContext].
@@ -501,10 +498,10 @@ DeleteContextRequest = _reflection.GeneratedProtocolMessageType('DeleteContextRe
           ``projects/<Project ID>/agent/sessions/<Session
           ID>/contexts/<Context ID>`` or ``projects/<Project
           ID>/agent/environments/<Environment ID>/users/<User
-          ID>/sessions/<Session ID>/contexts/<Context ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/sessions/<Session ID>/contexts/<Context ID>``. If
+          ``Environment ID`` is not specified, we assume default 'draft'
+          environment. If ``User ID`` is not specified, we assume
+          default '-' user.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.DeleteContextRequest)
   ))
@@ -512,7 +509,7 @@ _sym_db.RegisterMessage(DeleteContextRequest)
 
 DeleteAllContextsRequest = _reflection.GeneratedProtocolMessageType('DeleteAllContextsRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEALLCONTEXTSREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.context_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.context_pb2'
   ,
   __doc__ = """The request message for
   [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2beta1.Contexts.DeleteAllContexts].
@@ -523,10 +520,9 @@ DeleteAllContextsRequest = _reflection.GeneratedProtocolMessageType('DeleteAllCo
           Required. The name of the session to delete all contexts from.
           Format: ``projects/<Project ID>/agent/sessions/<Session ID>``
           or ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/sessions/<Session ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/users/<User ID>/sessions/<Session ID>``. If ``Environment
+          ID`` is not specified we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.DeleteAllContextsRequest)
   ))

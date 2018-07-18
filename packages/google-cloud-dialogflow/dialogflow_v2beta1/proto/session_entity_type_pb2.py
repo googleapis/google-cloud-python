@@ -340,7 +340,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 SessionEntityType = _reflection.GeneratedProtocolMessageType('SessionEntityType', (_message.Message,), dict(
   DESCRIPTOR = _SESSIONENTITYTYPE,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """Represents a session entity type.
   
@@ -358,11 +358,10 @@ SessionEntityType = _reflection.GeneratedProtocolMessageType('SessionEntityType'
           Format: ``projects/<Project ID>/agent/sessions/<Session
           ID>/entityTypes/<Entity Type Display Name>``, or
           ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/sessions /<Session ID>/entityTypes/<Entity
-          Type Display Name>``. Note: Environments and users are under
-          construction and will be available soon. If is not specified,
-          we assume default 'draft' environment. If is not specified, we
-          assume default '-' user.
+          ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
       entity_override_mode:
           Required. Indicates whether the additional data should
           override or supplement the developer entity type definition.
@@ -376,7 +375,7 @@ _sym_db.RegisterMessage(SessionEntityType)
 
 ListSessionEntityTypesRequest = _reflection.GeneratedProtocolMessageType('ListSessionEntityTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTSESSIONENTITYTYPESREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The request message for
   [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2beta1.SessionEntityTypes.ListSessionEntityTypes].
@@ -387,10 +386,9 @@ ListSessionEntityTypesRequest = _reflection.GeneratedProtocolMessageType('ListSe
           Required. The session to list all session entity types from.
           Format: ``projects/<Project ID>/agent/sessions/<Session ID>``
           or ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/ sessions/<Session ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/users/<User ID>/ sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       page_size:
           Optional. The maximum number of items to return in a single
           page. By default 100 and at most 1000.
@@ -404,7 +402,7 @@ _sym_db.RegisterMessage(ListSessionEntityTypesRequest)
 
 ListSessionEntityTypesResponse = _reflection.GeneratedProtocolMessageType('ListSessionEntityTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTSESSIONENTITYTYPESRESPONSE,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The response message for
   [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2beta1.SessionEntityTypes.ListSessionEntityTypes].
@@ -425,7 +423,7 @@ _sym_db.RegisterMessage(ListSessionEntityTypesResponse)
 
 GetSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('GetSessionEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETSESSIONENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The request message for
   [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.GetSessionEntityType].
@@ -437,11 +435,10 @@ GetSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('GetSessi
           ``projects/<Project ID>/agent/sessions/<Session
           ID>/entityTypes/<Entity Type Display Name>`` or
           ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/sessions/<Session ID>/ entityTypes/<Entity
-          Type Display Name>``. Note: Environments and users re under
-          construction and will be available soon. If is not specified,
-          we assume default 'draft' environment. If is not specified, we
-          assume default '-' user.
+          ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.GetSessionEntityTypeRequest)
   ))
@@ -449,7 +446,7 @@ _sym_db.RegisterMessage(GetSessionEntityTypeRequest)
 
 CreateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('CreateSessionEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATESESSIONENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The request message for
   [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.CreateSessionEntityType].
@@ -460,10 +457,9 @@ CreateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('Creat
           Required. The session to create a session entity type for.
           Format: ``projects/<Project ID>/agent/sessions/<Session ID>``
           or ``projects/<Project ID>/agent/environments/<Environment
-          ID>/users/<User ID>/ sessions/<Session ID>``. Note:
-          Environments and users are under construction and will be
-          available soon. If is not specified, we assume default 'draft'
-          environment. If is not specified, we assume default '-' user.
+          ID>/users/<User ID>/ sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       session_entity_type:
           Required. The session entity type to create.
   """,
@@ -473,7 +469,7 @@ _sym_db.RegisterMessage(CreateSessionEntityTypeRequest)
 
 UpdateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('UpdateSessionEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATESESSIONENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The request message for
   [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.UpdateSessionEntityType].
@@ -486,10 +482,9 @@ UpdateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('Updat
           ID>/entityTypes/<Entity Type Display Name>`` or
           ``projects/<Project ID>/agent/environments/<Environment
           ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
-          Type Display Name>``. Note: Environments and users are under
-          construction and will be available soon. If is not specified,
-          we assume default 'draft' environment. If is not specified, we
-          assume default '-' user.
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
       update_mask:
           Optional. The mask to control which fields get updated.
   """,
@@ -499,7 +494,7 @@ _sym_db.RegisterMessage(UpdateSessionEntityTypeRequest)
 
 DeleteSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('DeleteSessionEntityTypeRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETESESSIONENTITYTYPEREQUEST,
-  __module__ = 'dialogflow_v2beta1.proto.session_entity_type_pb2'
+  __module__ = 'google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2'
   ,
   __doc__ = """The request message for
   [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.DeleteSessionEntityType].
@@ -512,10 +507,9 @@ DeleteSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType('Delet
           ID>/entityTypes/<Entity Type Display Name>`` or
           ``projects/<Project ID>/agent/environments/<Environment
           ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
-          Type Display Name>``. Note: Environments and users are under
-          construction and will be available soon. If is not specified,
-          we assume default 'draft' environment. If is not specified, we
-          assume default '-' user.
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.DeleteSessionEntityTypeRequest)
   ))

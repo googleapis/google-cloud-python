@@ -298,7 +298,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         language_code = 'languageCode-412800396'
 
         response = client.batch_update_intents(parent, language_code)
@@ -323,7 +323,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         language_code = 'languageCode-412800396'
 
         response = client.batch_update_intents(parent, language_code)
@@ -343,7 +343,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)
@@ -368,7 +368,7 @@ class TestIntentsClient(object):
         client = dialogflow_v2.IntentsClient(channel=channel)
 
         # Setup Request
-        parent = client.agent_path('[PROJECT]', '[AGENT]')
+        parent = client.project_agent_path('[PROJECT]')
         intents = []
 
         response = client.batch_delete_intents(parent, intents)

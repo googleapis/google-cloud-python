@@ -196,11 +196,7 @@ class TestAgentsClient(object):
     def test_export_agent(self):
         # Setup Expected Response
         agent_uri = 'agentUri-1700713166'
-        agent_content = b'63'
-        expected_response = {
-            'agent_uri': agent_uri,
-            'agent_content': agent_content
-        }
+        expected_response = {'agent_uri': agent_uri}
         expected_response = agent_pb2.ExportAgentResponse(**expected_response)
         operation = operations_pb2.Operation(
             name='operations/test_export_agent', done=True)

@@ -4,7 +4,7 @@ omit =
   */proto/*
 
 [report]
-fail_under = 90
+fail_under = 80
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma

@@ -14,12 +14,13 @@
 
 from __future__ import absolute_import
 
-from dialogflow_v2beta1 import types
 from dialogflow_v2beta1.gapic import agents_client
 from dialogflow_v2beta1.gapic import contexts_client
+from dialogflow_v2beta1.gapic import documents_client
 from dialogflow_v2beta1.gapic import entity_types_client
 from dialogflow_v2beta1.gapic import enums
 from dialogflow_v2beta1.gapic import intents_client
+from dialogflow_v2beta1.gapic import knowledge_bases_client
 from dialogflow_v2beta1.gapic import session_entity_types_client
 from dialogflow_v2beta1.gapic import sessions_client
 
@@ -34,6 +35,11 @@ class ContextsClient(contexts_client.ContextsClient):
     enums = enums
 
 
+class DocumentsClient(documents_client.DocumentsClient):
+    __doc__ = documents_client.DocumentsClient.__doc__
+    enums = enums
+
+
 class EntityTypesClient(entity_types_client.EntityTypesClient):
     __doc__ = entity_types_client.EntityTypesClient.__doc__
     enums = enums
@@ -41,6 +47,11 @@ class EntityTypesClient(entity_types_client.EntityTypesClient):
 
 class IntentsClient(intents_client.IntentsClient):
     __doc__ = intents_client.IntentsClient.__doc__
+    enums = enums
+
+
+class KnowledgeBasesClient(knowledge_bases_client.KnowledgeBasesClient):
+    __doc__ = knowledge_bases_client.KnowledgeBasesClient.__doc__
     enums = enums
 
 
@@ -60,8 +71,10 @@ __all__ = (
     'types',
     'AgentsClient',
     'ContextsClient',
+    'DocumentsClient',
     'EntityTypesClient',
     'IntentsClient',
+    'KnowledgeBasesClient',
     'SessionEntityTypesClient',
     'SessionsClient',
 )

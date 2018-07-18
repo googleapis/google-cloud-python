@@ -68,7 +68,11 @@ class TestSessionsClient(object):
     def test_detect_intent(self):
         # Setup Expected Response
         response_id = 'responseId1847552473'
-        expected_response = {'response_id': response_id}
+        output_audio = b'24'
+        expected_response = {
+            'response_id': response_id,
+            'output_audio': output_audio
+        }
         expected_response = session_pb2.DetectIntentResponse(
             **expected_response)
 
@@ -104,7 +108,11 @@ class TestSessionsClient(object):
     def test_streaming_detect_intent(self):
         # Setup Expected Response
         response_id = 'responseId1847552473'
-        expected_response = {'response_id': response_id}
+        output_audio = b'24'
+        expected_response = {
+            'response_id': response_id,
+            'output_audio': output_audio
+        }
         expected_response = session_pb2.StreamingDetectIntentResponse(
             **expected_response)
 
