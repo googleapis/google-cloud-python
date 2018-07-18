@@ -601,6 +601,64 @@ class Test_AsyncJob(unittest.TestCase):
             query_params={'fields': 'id'}
         )
 
+    def test_reload_defaults(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        job = self._set_properties_job()
+        job._job_ref._properties['location'] = self.LOCATION
+        call_api = job._client._call_api = mock.Mock()
+        call_api.return_value = resource
+
+        job.reload()
+
+        call_api.assert_called_once_with(
+            DEFAULT_RETRY,
+            method='GET',
+            path='/projects/{}/jobs/{}'.format(self.PROJECT, self.JOB_ID),
+            query_params={'location': self.LOCATION},
+        )
+        self.assertEqual(job._properties, resource)
+
+    def test_reload_explicit(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        other_project = 'other-project-234'
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        job = self._set_properties_job()
+        client = _make_client(project=other_project)
+        call_api = client._call_api = mock.Mock()
+        call_api.return_value = resource
+        retry = DEFAULT_RETRY.with_deadline(1)
+
+        job.reload(client=client, retry=retry)
+
+        call_api.assert_called_once_with(
+            retry,
+            method='GET',
+            path='/projects/{}/jobs/{}'.format(self.PROJECT, self.JOB_ID),
+            query_params={},
+        )
+        self.assertEqual(job._properties, resource)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
