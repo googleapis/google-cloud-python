@@ -81,3 +81,9 @@ for version in versions:
         f'google/cloud/vision_{version}/**/*.py',
         f'from google.cloud.gapic.vision.{version}',
         f'from google.cloud.vision_{version}')
+
+    s.replace(
+        "google/cloud/vision_v1p3beta1/gapic/product_search_client.py",
+        "    (- The API has a collection of ``ProductSet.*\n)"
+        "\s+(``project.*\n)\s+(products.*)",
+        "    \1      \2      \3")

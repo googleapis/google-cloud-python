@@ -47,8 +47,8 @@ class ProductSearchClient(object):
     search. It uses the following resource model:
 
     - The API has a collection of ``ProductSet`` resources, named
-    ``projects/*/locations/*/productSets/*``, which acts as a way to put different
-    products into groups to limit identification.
+      ``projects/*/locations/*/productSets/*``, which acts as a way to put different
+      products into groups to limit identification.
 
     In parallel,
 
@@ -57,6 +57,7 @@ class ProductSearchClient(object):
 
     - Each ``Product`` has a collection of ``ReferenceImage`` resources, named
       ``projects/*/locations/*/products/*/referenceImages/*``
+
     """
 
     SERVICE_ADDRESS = 'vision.googleapis.com:443'
@@ -602,7 +603,7 @@ class ProductSearchClient(object):
         Possible errors:
 
         * Returns INVALID_ARGUMENT if display_name is missing or longer than 4096
-        characters.
+          characters.
         * Returns INVALID_ARGUMENT if description is longer than 4096 characters.
         * Returns INVALID_ARGUMENT if product_category is missing or invalid.
 
