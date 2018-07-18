@@ -241,7 +241,7 @@ class Instance(object):
             clusters=clusters)
 
     def update(self):
-        """Partially updates an instance within a project.
+        """Updates an instance within a project.
 
         .. note::
 
@@ -258,20 +258,20 @@ class Instance(object):
 
             before calling :meth:`update`.
         """
-        update_mask = field_mask_pb2.FieldMask()
+        update_mask_pb = field_mask_pb2.FieldMask()
         if self.display_name is not None:
-            update_mask.paths.append('display_name')
+            update_mask_pb.paths.append('display_name')
         if self.type_ is not None:
-            update_mask.paths.append('type')
+            update_mask_pb.paths.append('type')
         if self.labels is not None:
-            update_mask.paths.append('labels')
-        update_instance = instance_pb2.Instance(
+            update_mask_pb.paths.append('labels')
+        instance_pb = instance_pb2.Instance(
             name=self.name, display_name=self.display_name,
             type=self.type_, labels=self.labels)
 
         self._client.instance_admin_client.partial_update_instance(
-            instance=update_instance,
-            update_mask=update_mask)
+            instance=instance_pb,
+            update_mask=update_mask_pb)
 
     def delete(self):
         """Delete this instance.

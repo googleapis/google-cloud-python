@@ -201,9 +201,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.update()
 
         # Create a new instance instance and reload it.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID, LABELS)
-        self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
-        self.assertNotEqual(instance_alt.labels, NEW_LABELS)
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
+        self.assertEqual(instance_alt.display_name, OLD_DISPLAY_NAME)
+        self.assertEqual(instance_alt.labels, LABELS)
         instance_alt.reload()
         self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
         self.assertEqual(instance_alt.labels, NEW_LABELS)

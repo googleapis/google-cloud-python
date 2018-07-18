@@ -459,7 +459,6 @@ class TestInstance(unittest.TestCase):
             instance=expected_request_instance,
             update_mask=expected_request_update_mask)
 
-        print(self.OP_NAME)
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
         channel = ChannelStub(responses=[response_pb])
