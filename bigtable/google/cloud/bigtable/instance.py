@@ -257,6 +257,10 @@ class Instance(object):
                 instance.display_name = 'New display name'
 
             before calling :meth:`update`.
+
+        :rtype: :class:`~google.api_core.operation.Operation`
+        :returns: The long-running operation corresponding to the update
+                    operation.
         """
         update_mask_pb = field_mask_pb2.FieldMask()
         if self.display_name is not None:
