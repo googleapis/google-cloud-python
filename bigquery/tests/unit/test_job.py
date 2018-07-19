@@ -205,6 +205,13 @@ class Test_AsyncJob(unittest.TestCase):
         job = self._make_one(self.JOB_ID, client)
         self.assertEqual(job.labels, {})
 
+    def test_labels_update_in_place(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        labels = job.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(job.labels, {'foo': 'bar'})
+
     def test_labels_hit(self):
         labels = {
             'foo': 'bar',
@@ -933,6 +940,12 @@ class Test_JobConfig(unittest.TestCase):
     def test_labels_miss(self):
         job_config = self._make_one()
         self.assertEqual(job_config.labels, {})
+
+    def test_labels_update_in_place(self):
+        job_config = self._make_one()
+        labels = job_config.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(job_config.labels, {'foo': 'bar'})
 
     def test_labels_hit(self):
         labels = {

@@ -343,7 +343,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     @property
     def labels(self):
         """Dict[str, str]: Labels for the job."""
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @property
     def etag(self):
@@ -718,7 +718,7 @@ class _JobConfig(object):
         Raises:
             ValueError: If ``value`` type is invalid.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @labels.setter
     def labels(self, value):
