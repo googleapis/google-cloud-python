@@ -6,6 +6,19 @@
 
 ## 0.1.1
 
+### Implementation Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+
+### Dependencies
+- Update dependency range for api-core to include v1.0.0 releases (#4944)
+
+### Internal / Testing Changes
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Re-enable lint for tests, remove usage of pylint (#4921)
+
+## 0.1.1
+
 ### Dependencies
 
 - Update dependency range for api-core to include v1.0.0 releases (#4944)
