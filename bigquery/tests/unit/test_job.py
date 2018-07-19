@@ -856,6 +856,24 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertTrue(job.cancelled())
 
 
+class Test_JobConfig(unittest.TestCase):
+    JOB_TYPE = 'testing'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery import job
+
+        return job._JobConfig
+
+    def _make_one(self, job_type=JOB_TYPE):
+        return self._get_target_class()(job_type)
+
+    def test_ctor(self):
+        job_config = self._make_one()
+        self.assertEqual(job_config._job_type, self.JOB_TYPE)
+        self.assertEqual(job_config._properties, {self.JOB_TYPE: {}})
+
+
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
