@@ -712,6 +712,67 @@ class Test_AsyncJob(unittest.TestCase):
         )
         self.assertEqual(job._properties, resource)
 
+    def test__set_future_result_wo_done(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        set_exception = job.set_exception = mock.Mock()
+        set_result = job.set_result = mock.Mock()
+
+        job._set_future_result()
+
+        set_exception.assert_not_called()
+        set_result.assert_not_called()
+
+    def test__set_future_result_w_result_set(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {'state': 'DONE'}
+        job._result_set = True
+        set_exception = job.set_exception = mock.Mock()
+        set_result = job.set_result = mock.Mock()
+
+        job._set_future_result()
+
+        set_exception.assert_not_called()
+        set_result.assert_not_called()
+
+    def test__set_future_result_w_done_wo_result_set_w_error(self):
+        from google.cloud.exceptions import NotFound
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {
+            'state': 'DONE',
+            'errorResult': {
+                'reason': 'notFound',
+                'message': 'testing'
+            }
+        }
+        set_exception = job.set_exception = mock.Mock()
+        set_result = job.set_result = mock.Mock()
+
+        job._set_future_result()
+
+        set_exception.assert_called_once()
+        args, kw = set_exception.call_args
+        exception, = args
+        self.assertIsInstance(exception, NotFound)
+        self.assertEqual(exception.message, 'testing')
+        self.assertEqual(kw, {})
+        set_result.assert_not_called()
+
+    def test__set_future_result_w_done_wo_result_set_wo_error(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {'state': 'DONE'}
+        set_exception = job.set_exception = mock.Mock()
+        set_result = job.set_result = mock.Mock()
+
+        job._set_future_result()
+
+        set_exception.assert_not_called()
+        set_result.assert_called_once_with(job)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
