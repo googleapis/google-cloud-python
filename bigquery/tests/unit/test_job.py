@@ -827,6 +827,34 @@ class Test_AsyncJob(unittest.TestCase):
         begin.assert_not_called()
         result.assert_called_once_with(timeout=timeout)
 
+    def test_cancelled_wo_error_result(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertFalse(job.cancelled())
+
+    def test_cancelled_w_error_result_not_stopped(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {
+            'errorResult': {
+                'reason': 'other',
+            }
+        }
+
+        self.assertFalse(job.cancelled())
+
+    def test_cancelled_w_error_result_w_stopped(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {
+            'errorResult': {
+                'reason': 'stopped',
+            }
+        }
+
+        self.assertTrue(job.cancelled())
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
