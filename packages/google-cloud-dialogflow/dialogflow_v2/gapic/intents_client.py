@@ -64,7 +64,6 @@ class IntentsClient(object):
     match user input to an intent by adding the following to your intent.
 
     *   **Contexts** - provide additional context for intent analysis. For
-        ::
         example, if an intent is related to an object in your application that
         plays music, you can provide a context to determine when to match the
         intent if the user input is “turn it off”.  You can include a context
@@ -73,7 +72,6 @@ class IntentsClient(object):
         \"turn on the light\".
 
     *   **Events** - allow for matching an intent by using an event name
-        ::
         instead of user input. Your application can provide an event name and
         related parameters to the Dialogflow API to match an intent. For
         example, when your application starts, you can send a welcome event
@@ -81,7 +79,6 @@ class IntentsClient(object):
         a personalized welcome message for the user.
 
     *   **Training phrases** - provide examples of user input to train the
-        ::
         Dialogflow API agent to better match intents.
 
     For more information about intents, see the
@@ -202,11 +199,12 @@ class IntentsClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = intents_grpc_transport.IntentsGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = intents_grpc_transport.IntentsGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (

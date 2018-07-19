@@ -68,7 +68,7 @@ class DocumentsClient(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DocumentsClient: The constructed client.
+            dialogflow_v2beta1.DocumentsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
             filename)
@@ -157,11 +157,12 @@ class DocumentsClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = documents_grpc_transport.DocumentsGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = documents_grpc_transport.DocumentsGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (

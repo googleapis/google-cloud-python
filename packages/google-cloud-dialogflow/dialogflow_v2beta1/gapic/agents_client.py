@@ -168,11 +168,12 @@ class AgentsClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = agents_grpc_transport.AgentsGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = agents_grpc_transport.AgentsGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -539,19 +540,7 @@ class AgentsClient(object):
                 Note: The URI must start with \"gs://\".
             agent_content (bytes): The agent to import.
 
-                Example for how to import an agent via the command line:
-                <pre>curl \
-                'https://dialogflow.googleapis.com/v2beta1/projects/&lt;project_name&gt;/agent:import\
-                -X POST \
-                -H 'Authorization: Bearer '$(gcloud auth application-default
-                print-access-token) \
-                -H 'Accept: application/json' \
-                -H 'Content-Type: application/json' \
-                --compressed \
-                --data-binary \"{
-                ::
-                'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
-                }\"</pre>
+                
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -645,19 +634,7 @@ class AgentsClient(object):
                 Note: The URI must start with \"gs://\".
             agent_content (bytes): The agent to restore.
 
-                Example for how to restore an agent via the command line:
-                <pre>curl \
-                'https://dialogflow.googleapis.com/v2beta1/projects/&lt;project_name&gt;/agent:restore\
-                -X POST \
-                -H 'Authorization: Bearer '$(gcloud auth application-default
-                print-access-token) \
-                -H 'Accept: application/json' \
-                -H 'Content-Type: application/json' \
-                --compressed \
-                --data-binary \"{
-                ::
-                'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
-                }\"</pre>
+                
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

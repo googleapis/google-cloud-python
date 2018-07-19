@@ -62,12 +62,10 @@ class EntityTypesClient(object):
     There are three types of entities:
 
     *   **System** - entities that are defined by the Dialogflow API for common
-        ::
         data types such as date, time, currency, and so on. A system entity is
         represented by the `EntityType` type.
 
     *   **Developer** - entities that are defined by you that represent
-        ::
         actionable data that is meaningful to your application. For example,
         you could define a `pizza.sauce` entity for red or white pizza sauce,
         a `pizza.cheese` entity for the different types of cheese on a pizza,
@@ -75,7 +73,6 @@ class EntityTypesClient(object):
         entity is represented by the `EntityType` type.
 
     *   **User** - entities that are built for an individual user such as
-        ::
         favorites, preferences, playlists, and so on. A user entity is
         represented by the [SessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityType] type.
 
@@ -189,11 +186,12 @@ class EntityTypesClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = entity_types_grpc_transport.EntityTypesGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = entity_types_grpc_transport.EntityTypesGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (

@@ -76,7 +76,7 @@ class KnowledgeBasesClient(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            KnowledgeBasesClient: The constructed client.
+            dialogflow_v2beta1.KnowledgeBasesClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
             filename)
@@ -163,11 +163,12 @@ class KnowledgeBasesClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = knowledge_bases_grpc_transport.KnowledgeBasesGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = knowledge_bases_grpc_transport.KnowledgeBasesGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (

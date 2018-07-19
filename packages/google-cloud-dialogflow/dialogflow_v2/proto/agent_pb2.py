@@ -678,7 +678,7 @@ ExportAgentResponse = _reflection.GeneratedProtocolMessageType('ExportAgentRespo
           access-token) | -H 'Accept: application/json' | -H 'Content-
           Type: application/json' | --compressed | --data-binary '{}' |
           \| grep agentContent \| sed -e 's/.*"agentContent":
-          "([^"]*)".\*/\1/' | \| base64 --decode >
+          "([^"]*)".\*/`\1`/' | \| base64 --decode >
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.ExportAgentResponse)
   ))

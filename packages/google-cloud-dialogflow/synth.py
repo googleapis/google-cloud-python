@@ -42,13 +42,34 @@ for version in versions:
 
     code_paths = ['tests/unit/gapic/**/*.py',
                   f'dialogflow_{version}/**/*.py']
-        
+
     s.replace(
         code_paths, 'import google.cloud.dialogflow', 'import dialogflow')
     s.replace(code_paths, 'from google.cloud\.', 'from ')
     s.replace(code_paths, 'from google.cloud import', 'import')
     s.replace(code_paths, 'google-cloud-dialogflow', 'dialogflow')
     s.replace(code_paths, "'-dialogflow'", "'dialogflow'")
+    s.replace(
+        code_paths,
+        "(Returns:\n\s+)([a-zA-Z]+Client:)",
+        f"\g<1>dialogflow_{version}.\g<2>")
+
+    s.replace(
+        code_paths,
+        '(`Dialogflow documentation <.*?>`)_\.',
+        '\g<1>__.')
+
+    # Unexpected Indentation: https://github.com/googleapis/gapic-generator/issues/2157
+    # For now strip this example.
+    s.replace(f'dialogflow_{version}/gapic/agents_client.py',
+              'Example for.*\n\s+<pre>.*\n(.*\n)+?.*?</pre>', '')
+    
+    # Some docstrings have oddly placed literal markers 
+    s.replace(
+        [f'dialogflow_{version}/gapic/entity_types_client.py',
+         f'dialogflow_{version}/gapic/intents_client.py'],
+        "^\s+::\n\n", 
+        "")
 
 # Some files are missing the appropriate utf-8 header
 # -*- coding: utf-8 -*-
@@ -69,14 +90,11 @@ s.replace(
     "# Copyright 2018 Google LLC",
     "# -*- coding: utf-8 -*-\n\g<0>")
 
-# Docstring has an extra '\' at the end of it
+# Docstring has an extra '\' at the end of it '}\" \'
 s.replace(
     'dialogflow_v2/gapic/agents_client.py',
-    '}\\\" \\',
-    '}\\"'
-)
+    r'}\\\" [\\]\n(\s+retry \(Optional)',
+    '}\\"\n\g<1>')
 
-s.replace(
-    code_paths,
-    '(`Dialogflow documentation <.*?>`)_\.'
-    '\g<1>__.')
+s.replace('dialogflow_v2/proto/agent_pb2.py', ':math:', '')
+s.replace('dialogflow_v2/proto/agent_pb2.py', ':raw-latex:', '')
