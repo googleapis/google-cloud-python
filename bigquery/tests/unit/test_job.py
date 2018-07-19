@@ -773,6 +773,36 @@ class Test_AsyncJob(unittest.TestCase):
         set_exception.assert_not_called()
         set_result.assert_called_once_with(job)
 
+    def test_done_defaults_wo_state(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        reload_ = job.reload = mock.Mock()
+
+        self.assertFalse(job.done())
+
+        reload_.assert_called_once_with(retry=DEFAULT_RETRY)
+
+    def test_done_explicit_wo_state(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        reload_ = job.reload = mock.Mock()
+        retry = DEFAULT_RETRY.with_deadline(1)
+
+        self.assertFalse(job.done(retry=retry))
+
+        reload_.assert_called_once_with(retry=retry)
+
+    def test_done_already(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {'state': 'DONE'}
+
+        self.assertTrue(job.done())
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
