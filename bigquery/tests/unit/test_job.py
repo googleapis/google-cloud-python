@@ -803,6 +803,30 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertTrue(job.done())
 
+    @mock.patch('google.api_core.future.polling.PollingFuture.result')
+    def test_result_default_wo_state(self, result):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        begin = job._begin = mock.Mock()
+
+        self.assertIs(job.result(), result.return_value)
+
+        begin.assert_called_once()
+        result.assert_called_once_with(timeout=None)
+
+    @mock.patch('google.api_core.future.polling.PollingFuture.result')
+    def test_result_explicit_w_state(self, result):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['status'] = {'state': 'DONE'}
+        begin = job._begin = mock.Mock()
+        timeout = 1
+
+        self.assertIs(job.result(timeout=timeout), result.return_value)
+
+        begin.assert_not_called()
+        result.assert_called_once_with(timeout=timeout)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
