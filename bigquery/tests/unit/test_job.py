@@ -200,6 +200,20 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertEqual(derived.job_type, 'derived')
 
+    def test_labels_miss(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertEqual(job.labels, {})
+
+    def test_labels_hit(self):
+        labels = {
+            'foo': 'bar',
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties['labels'] = labels
+        self.assertEqual(job.labels, labels)
+
     def test_etag(self):
         etag = 'ETAG-123'
         client = _make_client(project=self.PROJECT)

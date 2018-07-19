@@ -341,6 +341,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return '/projects/%s/jobs/%s' % (self.project, self.job_id)
 
     @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job."""
+        return self._properties.get('labels', {})
+
+    @property
     def etag(self):
         """ETag for the job resource.
 
