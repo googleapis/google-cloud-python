@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.33.0
+
+### New Features
+- Add v1p3beta1 endpoint to vision client library (#5638)
+
 ## 0.32.0
 
 ### Implementation Changes

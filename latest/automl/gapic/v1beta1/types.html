@@ -1,0 +1,1510 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Cloud AutoML API Client &#8212; google-cloud 6cb22b8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="BigQuery" href="../../../bigquery/usage.html" />
+    <link rel="prev" title="Client for Cloud AutoML API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.automl_v1beta1.types">
+<span id="types-for-cloud-automl-api-client"></span><h1>Types for Cloud AutoML API Client<a class="headerlink" href="#module-google.cloud.automl_v1beta1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">AnnotationPayload</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains annotation information that is relevant to AutoML.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.detail">
+<code class="descname">detail</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.detail" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only . Additional information about the annotation
+specific to the AutoML solution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.translation">
+<code class="descname">translation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.translation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation details for translation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.classification">
+<code class="descname">classification</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.classification" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation details for content or image classification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.annotation_spec_id">
+<code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.annotation_spec_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only . The resource ID of the annotation spec that this
+annotation pertains to. The annotation spec comes from either
+an ancestor dataset, or the dataset that was used to train the
+model in use.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The value of [AnnotationSpec.display_name][googl
+e.cloud.automl.v1beta1.AnnotationSpec.display_name] when the
+model was trained. Because this field returns a value at model
+training time, for different models trained using the same
+dataset, the returned value could be different as model owner
+could update the display_name between any two model training.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ClassificationAnnotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains annotation details specific to classification.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationAnnotation.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A confidence estimate between 0.0 and 1.0. A
+higher value means greater confidence that the annotation is
+positive. If a user approves an annotation as negative or
+positive, the score value remains unchanged. If a user creates
+an annotation, the score is 0 for negative or 1 for positive.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ClassificationEvaluationMetrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Model evaluation metrics for classification problems. Visible only to
+v1beta1</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.au_prc">
+<code class="descname">au_prc</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.au_prc" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The Area under precision recall curve metric.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.base_au_prc">
+<code class="descname">base_au_prc</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.base_au_prc" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The Area under precision recall curve metric
+based on priors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.confidence_metrics_entry">
+<code class="descname">confidence_metrics_entry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.confidence_metrics_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Metrics that have confidence thresholds.
+Precision-recall curve can be derived from it.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.confusion_matrix">
+<code class="descname">confusion_matrix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Confusion matrix of the evaluation. Only set for
+MULTICLASS classification problems where number of labels is
+no more than 10. Only set for model level evaluation, not for
+evaluation per label.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.annotation_spec_id">
+<code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.annotation_spec_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The annotation spec ids used for this evaluation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry">
+<em class="property">class </em><code class="descname">ConfidenceMetricsEntry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry" title="Permalink to this definition">#</a></dt>
+<dd><p>Metrics for a single confidence threshold.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.confidence_threshold">
+<code class="descname">confidence_threshold</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.confidence_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The confidence threshold value used to compute
+the metrics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall">
+<code class="descname">recall</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Recall under the given confidence threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision">
+<code class="descname">precision</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Precision under the given confidence threshold.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score">
+<code class="descname">f1_score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The harmonic mean of recall and precision.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1">
+<code class="descname">recall_at1</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The recall when only considering the label that
+has the highest prediction score and not below the confidence
+threshold for each example.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1">
+<code class="descname">precision_at1</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The precision when only considering the label
+that has the highest predictionscore and not below the
+confidence threshold for each example.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score_at1">
+<code class="descname">f1_score_at1</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The harmonic mean of [recall_at1][google.cloud.a
+utoml.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetric
+sEntry.recall_at1] and [precision_at1][google.cloud.automl.v
+1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.
+precision_at1].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix">
+<em class="property">class </em><code class="descname">ConfusionMatrix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Confusion matrix of the model running the classification.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id">
+<code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. IDs of the annotation specs used in the confusion
+matrix.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.row">
+<code class="descname">row</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.row" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Rows in the confusion matrix. The number of rows
+is equal to the size of <code class="docutils literal notranslate"><span class="pre">annotation_spec_id</span></code>.
+<code class="docutils literal notranslate"><span class="pre">row[i].value[j]</span></code> is the number of examples that have ground
+truth of the <code class="docutils literal notranslate"><span class="pre">annotation_spec_id[i]</span></code> and are predicted as
+<code class="docutils literal notranslate"><span class="pre">annotation_spec_id[j]</span></code> by the model being evaluated.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row">
+<em class="property">class </em><code class="descname">Row</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A row in the confusion matrix.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row.example_count">
+<code class="descname">example_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row.example_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Value of the specific cell in the confusion
+matrix. The number of values each row is equal to the size of
+annotatin_spec_id.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.CreateDatasetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CreateDatasetRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateDatasetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.CreateDataset][google.cloud.automl.v1beta1.AutoMl.CreateDataset].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CreateDatasetRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateDatasetRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the project to create the dataset for.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CreateDatasetRequest.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateDatasetRequest.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>The dataset to create.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.CreateModelOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CreateModelOperationMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateModelOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of CreateModel operation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.CreateModelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CreateModelRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateModelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.CreateModel][google.cloud.automl.v1beta1.AutoMl.CreateModel].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CreateModelRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateModelRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the parent project where the model is being
+created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.CreateModelRequest.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CreateModelRequest.model" title="Permalink to this definition">#</a></dt>
+<dd><p>The model to create.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Dataset">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Dataset</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>A workspace for solving a single, particular machine learning (ML)
+problem. A workspace contains examples that may be annotated.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.dataset_metadata">
+<code class="descname">dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.dataset_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The dataset metadata that is specific to the problem
+type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.translation_dataset_metadata">
+<code class="descname">translation_dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.translation_dataset_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for a dataset used for translation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.image_classification_dataset_metadata">
+<code class="descname">image_classification_dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.image_classification_dataset_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for a dataset used for image classification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.text_classification_dataset_metadata">
+<code class="descname">text_classification_dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.text_classification_dataset_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for a dataset used for text classification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The resource name of the dataset. Form: <code class="docutils literal notranslate"><span class="pre">project</span>
+<span class="pre">s/{project_id}/locations/{location_id}/datasets/{dataset_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the dataset to show in the interface.
+The name can be up to 32 characters long and can consist only
+of ASCII Latin letters A-Z and a-z, underscores (_), and
+ASCII digits 0-9.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.example_count">
+<code class="descname">example_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.example_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of examples in the dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when this dataset was created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DeleteDatasetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DeleteDatasetRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteDatasetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.DeleteDataset][google.cloud.automl.v1beta1.AutoMl.DeleteDataset].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DeleteDatasetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteDatasetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the dataset to delete.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DeleteModelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DeleteModelRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteModelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.DeleteModel][google.cloud.automl.v1beta1.AutoMl.DeleteModel].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DeleteModelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteModelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the model being deleted.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DeployModelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DeployModelRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeployModelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.DeployModel][google.cloud.automl.v1beta1.AutoMl.DeployModel].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DeployModelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DeployModelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the model to deploy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ExamplePayload">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ExamplePayload</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExamplePayload" title="Permalink to this definition">#</a></dt>
+<dd><p>Example data used for training or prediction.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExamplePayload.payload">
+<code class="descname">payload</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExamplePayload.payload" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Input only. The example data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExamplePayload.image">
+<code class="descname">image</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExamplePayload.image" title="Permalink to this definition">#</a></dt>
+<dd><p>An example image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExamplePayload.text_snippet">
+<code class="descname">text_snippet</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExamplePayload.text_snippet" title="Permalink to this definition">#</a></dt>
+<dd><p>Example text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ExportDataRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ExportDataRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExportDataRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.ExportData][google.cloud.automl.v1beta1.AutoMl.ExportData].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExportDataRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExportDataRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ExportDataRequest.output_config">
+<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExportDataRequest.output_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The desired output location.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GcsDestination">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GcsDestination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GcsDestination" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCS location where the output must be written to</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GcsDestination.output_uri_prefix">
+<code class="descname">output_uri_prefix</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GcsDestination.output_uri_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Google Cloud Storage URI to output directory, up to
+2000 characters long. Accepted forms: * Prefix path:
+gs://bucket/directory The requesting user must have write
+permission to the bucket. The directory is created if it
+doesn’t exist.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GcsSource">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GcsSource</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GcsSource" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCS location for the input content.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GcsSource.input_uris">
+<code class="descname">input_uris</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GcsSource.input_uris" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Google Cloud Storage URIs to input files, up to 2000
+characters long. Accepted forms: * Full object path:
+gs://bucket/directory/object.csv</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GetDatasetRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GetDatasetRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetDatasetRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.GetDataset][google.cloud.automl.v1beta1.AutoMl.GetDataset].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GetDatasetRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetDatasetRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the dataset to retrieve.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GetModelEvaluationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GetModelEvaluationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetModelEvaluationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.GetModelEvaluation][google.cloud.automl.v1beta1.AutoMl.GetModelEvaluation].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GetModelEvaluationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetModelEvaluationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name for the model evaluation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GetModelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GetModelRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetModelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.GetModel][google.cloud.automl.v1beta1.AutoMl.GetModel].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.GetModelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetModelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Image">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Image</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Image" title="Permalink to this definition">#</a></dt>
+<dd><p>A representation of an image.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Image.data">
+<code class="descname">data</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Image.data" title="Permalink to this definition">#</a></dt>
+<dd><p>Input only. The data representing the image. For Predict calls
+[image_bytes][] must be set, as other options are not
+currently supported by prediction API. You can read the
+contents of an uploaded image by using the [content_uri][]
+field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Image.image_bytes">
+<code class="descname">image_bytes</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Image.image_bytes" title="Permalink to this definition">#</a></dt>
+<dd><p>Image content represented as a stream of bytes. Note: As with
+all <code class="docutils literal notranslate"><span class="pre">bytes</span></code> fields, protobuffers use a pure binary
+representation, whereas JSON representations use base64.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Image.input_config">
+<code class="descname">input_config</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Image.input_config" title="Permalink to this definition">#</a></dt>
+<dd><p>An input config specifying the content of the image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Image.thumbnail_uri">
+<code class="descname">thumbnail_uri</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Image.thumbnail_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. HTTP URI to the thumbnail image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ImageClassificationDatasetMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset metadata that is specific to image classification.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata.classification_type">
+<code class="descname">classification_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata.classification_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Type of the classification problem.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ImageClassificationModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Model metadata for image classification.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.base_model_id">
+<code class="descname">base_model_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.base_model_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The ID of the <code class="docutils literal notranslate"><span class="pre">base</span></code> model. If it is specified,
+the new model will be created based on the <code class="docutils literal notranslate"><span class="pre">base</span></code> model.
+Otherwise, the new model will be created from scratch. The
+<code class="docutils literal notranslate"><span class="pre">base</span></code> model is expected to be in the same <code class="docutils literal notranslate"><span class="pre">project</span></code> and
+<code class="docutils literal notranslate"><span class="pre">location</span></code> as the new model to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.train_budget">
+<code class="descname">train_budget</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.train_budget" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The train budget of creating this model. The actual
+<code class="docutils literal notranslate"><span class="pre">train_cost</span></code> will be equal or less than this value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.train_cost">
+<code class="descname">train_cost</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.train_cost" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The actual train cost of creating this model. If
+this model is created from a <code class="docutils literal notranslate"><span class="pre">base</span></code> model, the train cost
+used to create the <code class="docutils literal notranslate"><span class="pre">base</span></code> model are not included.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.stop_reason">
+<code class="descname">stop_reason</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata.stop_reason" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The reason that this create model operation
+stopped, e.g. BUDGET_REACHED, CONVERGED.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ImportDataRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ImportDataRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImportDataRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImportDataRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImportDataRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Dataset name. Dataset must already exist. All
+imported annotations and examples will be added.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImportDataRequest.input_config">
+<code class="descname">input_config</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImportDataRequest.input_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The desired input location.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.InputConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">InputConfig</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Input configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.InputConfig.source">
+<code class="descname">source</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig.source" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The source of the input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.InputConfig.gcs_source">
+<code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCS location for the input content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListDatasetsRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the project from which to list datasets.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An expression for filtering the results of the request.  -
+<code class="docutils literal notranslate"><span class="pre">dataset_metadata</span></code> - for existence of the case.  An example
+of using the filter is:  -  <code class="docutils literal notranslate"><span class="pre">translation_dataset_metadata:*</span></code>
+–&gt; The dataset has    translation_dataset_metadata.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Requested page size. Server may return fewer results than
+requested. If unspecified, server will pick a default size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying a page of results for the server to return
+Typically obtained via [ListDatasetsResponse.next_page_token
+][google.cloud.automl.v1beta1.ListDatasetsResponse.next_page          _token] of the previous [AutoMl.ListDatasets][google.cloud.aut
+oml.v1beta1.AutoMl.ListDatasets] call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListDatasetsResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsResponse.datasets">
+<code class="descname">datasets</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsResponse.datasets" title="Permalink to this definition">#</a></dt>
+<dd><p>The datasets read.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListDatasetsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListDatasetsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results. Pass to [ListDataset
+sRequest.page_token][google.cloud.automl.v1beta1.ListDatasets
+Request.page_token] to obtain that page.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListModelEvaluationsRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the model to list the model evaluations for.
+If modelId is set as “-“, this will list model evaluations
+from across all models of the parent location.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An expression for filtering the results of the request.  -
+<code class="docutils literal notranslate"><span class="pre">annotation_spec_id</span></code> - for =, != or existence. See example
+below    for the last.  Some examples of using the filter are:
+-  <code class="docutils literal notranslate"><span class="pre">annotation_spec_id!=4</span></code> –&gt; The model evaluation was done
+for    annotation spec with ID different than 4. -  <code class="docutils literal notranslate"><span class="pre">NOT</span>
+<span class="pre">annotation_spec_id:*</span></code> –&gt; The model evaluation was done for
+aggregate of all annotation specs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Requested page size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying a page of results for the server to
+return. Typically obtained via
+<code class="docutils literal notranslate"><span class="pre">ListModelEvaluationsResponse.next_page_token</span></code> of the
+previous [AutoMl.ListModelEvaluations][google.cloud.automl.v1b
+eta1.AutoMl.ListModelEvaluations] call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListModelEvaluationsResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse.model_evaluation">
+<code class="descname">model_evaluation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse.model_evaluation" title="Permalink to this definition">#</a></dt>
+<dd><p>List of model evaluations in the requested page.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results. Pass to
+[ListModelEvaluations.page_token][] to obtain that page.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListModelsRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the project, from which to list the models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An expression for filtering the results of the request.  -
+<code class="docutils literal notranslate"><span class="pre">model_metadata</span></code> - for existence of the case. -
+<code class="docutils literal notranslate"><span class="pre">dataset_id</span></code> - for = or !=.  Some examples of using the
+filter are:  -  <code class="docutils literal notranslate"><span class="pre">image_classification_model_metadata:*</span></code> –&gt;
+The model has    image_classification_model_metadata. -
+<code class="docutils literal notranslate"><span class="pre">dataset_id=5</span></code> –&gt; The model was created from a sibling
+dataset    with ID 5.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Requested page size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token identifying a page of results for the server to return
+Typically obtained via [ListModelsResponse.next_page_token][
+google.cloud.automl.v1beta1.ListModelsResponse.next_page_tok
+en] of the previous [AutoMl.ListModels][google.cloud.automl.v1
+beta1.AutoMl.ListModels] call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListModelsResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsResponse.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsResponse.model" title="Permalink to this definition">#</a></dt>
+<dd><p>List of models in the requested page.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ListModelsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListModelsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results. Pass to
+[ListModels.page_token][] to obtain that page.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Model">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Model</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model" title="Permalink to this definition">#</a></dt>
+<dd><p>API proto representing a trained machine learning model.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.model_metadata">
+<code class="descname">model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.model_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The model metadata that is specific to the problem
+type. Must match the metadata type of the dataset used to
+train the model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.image_classification_model_metadata">
+<code class="descname">image_classification_model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.image_classification_model_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for image classification models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.text_classification_model_metadata">
+<code class="descname">text_classification_model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.text_classification_model_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for text classification models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.translation_model_metadata">
+<code class="descname">translation_model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.translation_model_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for translation models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Resource name of the model. Format: <code class="docutils literal notranslate"><span class="pre">projects/{p</span>
+<span class="pre">roject_id}/locations/{location_id}/models/{model_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the model to show in the interface. The
+name can be up to 32 characters long and can consist only of
+ASCII Latin letters A-Z and a-z, underscores (_), and ASCII
+digits 0-9.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.dataset_id">
+<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource ID of the dataset used to create the
+model. The dataset must come from the same ancestor project
+and location.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when this model was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when this model was last updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.deployment_state">
+<code class="descname">deployment_state</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.deployment_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Deployment state of the model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ModelEvaluation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation" title="Permalink to this definition">#</a></dt>
+<dd><p>Evaluation results of a model.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.metrics">
+<code class="descname">metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Problem type specific evaluation metrics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.classification_evaluation_metrics">
+<code class="descname">classification_evaluation_metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.classification_evaluation_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Evaluation metrics for models on classification problems
+models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.translation_evaluation_metrics">
+<code class="descname">translation_evaluation_metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.translation_evaluation_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Evaluation metrics for models on translation models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Resource name of the model evaluation. Format:  `
+<cite>projects/{project_id}/locations/{location_id}/models/{model_i
+d}/modelEvaluations/{model_evaluation_id}`</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.annotation_spec_id">
+<code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.annotation_spec_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The ID of the annotation spec that the model
+evaluation applies to. The ID is empty for overall model
+evaluation. NOTE: Currently there is no way to obtain the
+display_name of the annotation spec from its ID. To see the
+display_names, review the model evaluations in the UI.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when this model evaluation was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.evaluated_example_count">
+<code class="descname">evaluated_example_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.evaluated_example_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of examples used for model evaluation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OperationMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata used across all long running operations returned by AutoML API.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Ouptut only. Details of specific operation. Even if this field
+is empty, the presence allows to distinguish different types
+of operations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.create_model_details">
+<code class="descname">create_model_details</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.create_model_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of CreateModel operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.progress_percent">
+<code class="descname">progress_percent</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.progress_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Progress of operation. Range: [0, 100].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Partial failures encountered. E.g. single files
+that couldn’t be read. This field should never exceed 20
+entries. Status details field will contain standard GCP error
+details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time when the operation was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OperationMetadata.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OperationMetadata.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time when the operation was updated for the last
+time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.OutputConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OutputConfig</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Output configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OutputConfig.destination">
+<code class="descname">destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.destination" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The destination of the output.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination">
+<code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
+<dd><p>The GCS location where the output must be written to.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">PredictRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the model requested to serve the prediction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.payload">
+<code class="descname">payload</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.payload" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Payload to perform a prediction on. The payload must
+match the problem type that the model was trained to solve.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.params" title="Permalink to this definition">#</a></dt>
+<dd><p>Additional domain-specific parameters, any string must be up
+to 25000 characters long.  -  For Image Classification:
+<code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> - (float) A value from 0.0 to 1.0. When
+the model makes predictions for an image, it will only produce
+results that have at least this confidence score threshold.
+The default is 0.5.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry">
+<em class="property">class </em><code class="descname">ParamsEntry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">PredictResponse</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].</p>
+<p>Currently, this is only used to return an image recognition prediction
+result. More prediction output metadata might be introduced in the
+future.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.payload">
+<code class="descname">payload</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.payload" title="Permalink to this definition">#</a></dt>
+<dd><p>Prediction result.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Additional domain-specific prediction response metadata.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry">
+<em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextClassificationDatasetMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset metadata for classification.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata.classification_type">
+<code class="descname">classification_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata.classification_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Type of the classification problem.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TextClassificationModelMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextClassificationModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextClassificationModelMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Model metadata that is specific to text classification.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TextSnippet">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextSnippet</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSnippet" title="Permalink to this definition">#</a></dt>
+<dd><p>A representation of a text snippet.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TextSnippet.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSnippet.content" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The content of the text snippet as a string. Up to
+250000 characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TextSnippet.mime_type">
+<code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSnippet.mime_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The format of the source text. For example, “text/html” or
+“text/plain”. If left blank the format is automatically
+determined from the type of the uploaded content. The default
+is “text/html”. Up to 25000 characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TextSnippet.content_uri">
+<code class="descname">content_uri</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSnippet.content_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. HTTP URI where you can download the content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TranslationAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TranslationAnnotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation details specific to translation.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationAnnotation.translated_content">
+<code class="descname">translated_content</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationAnnotation.translated_content" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only . The translated content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TranslationDatasetMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TranslationDatasetMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationDatasetMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset metadata that is specific to translation.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationDatasetMetadata.source_language_code">
+<code class="descname">source_language_code</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationDatasetMetadata.source_language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The BCP-47 language code of the source language.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationDatasetMetadata.target_language_code">
+<code class="descname">target_language_code</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationDatasetMetadata.target_language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The BCP-47 language code of the target language.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TranslationEvaluationMetrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Evaluation metrics for the dataset.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.bleu_score">
+<code class="descname">bleu_score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.bleu_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. BLEU score.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.base_bleu_score">
+<code class="descname">base_bleu_score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationEvaluationMetrics.base_bleu_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. BLEU score for base model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.TranslationModelMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TranslationModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationModelMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Model metadata that is specific to translation.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationModelMetadata.base_model">
+<code class="descname">base_model</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationModelMetadata.base_model" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the model to use as a baseline to train
+the custom model. If unset, we use the default base model
+provided by Google Translate. Format: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/</span>
+<span class="pre">locations/{location_id}/models/{model_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationModelMetadata.source_language_code">
+<code class="descname">source_language_code</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationModelMetadata.source_language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Inferred from the dataset. The source languge
+(The BCP-47 language code) that is used for training.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TranslationModelMetadata.target_language_code">
+<code class="descname">target_language_code</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TranslationModelMetadata.target_language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The target languge (The BCP-47 language code)
+that is used for training.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.UndeployModelRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">UndeployModelRequest</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UndeployModelRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[AutoMl.UndeployModel][google.cloud.automl.v1beta1.AutoMl.UndeployModel].</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.UndeployModelRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UndeployModelRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of the model to undeploy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Cloud AutoML API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud AutoML API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud AutoML API</a></li>
+      <li>Next: <a href="../../../bigquery/usage.html" title="next chapter">BigQuery</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/automl/gapic/v1beta1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
