@@ -913,6 +913,9 @@ class Test_JobConfig(unittest.TestCase):
         self.assertEqual(found, expected)
         self.assertIsNot(found, expected)  # copied
 
+    # 'from_api_repr' cannot be tested on '_JobConfig', because it presumes
+    # the ctor can be called w/o arguments
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
