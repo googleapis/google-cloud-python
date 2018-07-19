@@ -341,6 +341,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return '/projects/%s/jobs/%s' % (self.project, self.job_id)
 
     @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job."""
+        return self._properties.setdefault('labels', {})
+
+    @property
     def etag(self):
         """ETag for the job resource.
 
@@ -701,6 +706,25 @@ class _JobConfig(object):
     def __init__(self, job_type):
         self._job_type = job_type
         self._properties = {job_type: {}}
+
+    @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job.
+
+        This method always returns a dict. To change a job's labels,
+        modify the dict, then call ``Client.update_job``. To delete a
+        label, set its value to :data:`None` before updating.
+
+        Raises:
+            ValueError: If ``value`` type is invalid.
+        """
+        return self._properties.setdefault('labels', {})
+
+    @labels.setter
+    def labels(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
 
     def _get_sub_prop(self, key, default=None):
         """Get a value in the ``self._properties[self._job_type]`` dictionary.
