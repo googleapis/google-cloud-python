@@ -2441,6 +2441,22 @@ class QueryJob(_AsyncJob):
 
         return parameters
 
+    @property
+    def estimated_bytes_processed(self):
+        """Return the estimated number of bytes processed by the query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.estimatedBytesProcessed
+
+        :rtype: int or None
+        :returns: number of DML rows affected by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('estimatedBytesProcessed')
+        if result is not None:
+            result = int(result)
+        return result
+
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 

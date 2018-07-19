@@ -3560,6 +3560,22 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(struct.struct_types, {'count': 'INT64'})
         self.assertEqual(struct.struct_values, {'count': 123})
 
+    def test_estimated_bytes_processed(self):
+        est_bytes = 123456
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.estimated_bytes_processed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.estimated_bytes_processed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.estimated_bytes_processed)
+
+        query_stats['estimatedBytesProcessed'] = str(est_bytes)
+        self.assertEqual(job.estimated_bytes_processed, est_bytes)
+
     def test_result(self):
         query_resource = {
             'jobComplete': True,
