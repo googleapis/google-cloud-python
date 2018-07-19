@@ -930,6 +930,32 @@ class Test_JobConfig(unittest.TestCase):
     # 'from_api_repr' cannot be tested on '_JobConfig', because it presumes
     # the ctor can be called w/o arguments
 
+    def test_labels_miss(self):
+        job_config = self._make_one()
+        self.assertEqual(job_config.labels, {})
+
+    def test_labels_hit(self):
+        labels = {
+            'foo': 'bar',
+        }
+        job_config = self._make_one()
+        job_config._properties['labels'] = labels
+        self.assertEqual(job_config.labels, labels)
+
+    def test_labels_setter_invalid(self):
+        labels = object()
+        job_config = self._make_one()
+        with self.assertRaises(ValueError):
+            job_config.labels = labels
+
+    def test_labels_setter(self):
+        labels = {
+            'foo': 'bar',
+        }
+        job_config = self._make_one()
+        job_config.labels = labels
+        self.assertEqual(job_config._properties['labels'], labels)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
