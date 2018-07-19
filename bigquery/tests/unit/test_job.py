@@ -902,6 +902,17 @@ class Test_JobConfig(unittest.TestCase):
         _set_sub_prop.assert_called_once_with(
             job_config._properties, [self.JOB_TYPE, key], value)
 
+    def test_to_api_repr(self):
+        job_config = self._make_one()
+        expected = job_config._properties = {
+            self.JOB_TYPE: {
+                'foo': 'bar',
+            }
+        }
+        found = job_config.to_api_repr()
+        self.assertEqual(found, expected)
+        self.assertIsNot(found, expected)  # copied
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
