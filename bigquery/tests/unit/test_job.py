@@ -659,6 +659,59 @@ class Test_AsyncJob(unittest.TestCase):
         )
         self.assertEqual(job._properties, resource)
 
+    def test_cancel_defaults(self):
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        response = {'job': resource}
+        job = self._set_properties_job()
+        job._job_ref._properties['location'] = self.LOCATION
+        connection = job._client._connection = _make_connection(response)
+
+        self.assertTrue(job.cancel())
+
+        connection.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/jobs/{}/cancel'.format(
+                self.PROJECT, self.JOB_ID),
+            query_params={'location': self.LOCATION},
+        )
+        self.assertEqual(job._properties, resource)
+
+    def test_cancel_explicit(self):
+        other_project = 'other-project-234'
+        resource = {
+            'jobReference': {
+                'jobId': self.JOB_ID,
+                'projectId': self.PROJECT,
+                'location': None,
+            },
+            'configuration': {
+                'test': True,
+            }
+        }
+        response = {'job': resource}
+        job = self._set_properties_job()
+        client = _make_client(project=other_project)
+        connection = client._connection = _make_connection(response)
+
+        self.assertTrue(job.cancel(client=client))
+
+        connection.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/jobs/{}/cancel'.format(
+                self.PROJECT, self.JOB_ID),
+            query_params={},
+        )
+        self.assertEqual(job._properties, resource)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
