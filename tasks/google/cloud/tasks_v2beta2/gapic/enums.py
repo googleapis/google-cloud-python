@@ -22,11 +22,11 @@ class HttpMethod(enum.IntEnum):
 
     Attributes:
       HTTP_METHOD_UNSPECIFIED (int): HTTP method unspecified
-      POST (int): HTTP Post
-      GET (int): HTTP Get
-      HEAD (int): HTTP Head
-      PUT (int): HTTP Put
-      DELETE (int): HTTP Delete
+      POST (int): HTTP POST
+      GET (int): HTTP GET
+      HEAD (int): HTTP HEAD
+      PUT (int): HTTP PUT
+      DELETE (int): HTTP DELETE
     """
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
@@ -214,7 +214,7 @@ class Queue(object):
 
           A queue becomes ``DISABLED`` when
           `queue.yaml <https://cloud.google.com/appengine/docs/python/config/queueref>`_ or
-          `queue.xml <https://cloud.google.comappengine/docs/standard/java/config/queueref>`_ is uploaded
+          `queue.xml <https://cloud.google.com/appengine/docs/standard/java/config/queueref>`_ is uploaded
           which does not contain the queue. You cannot directly disable a queue.
 
           When a queue is disabled, tasks can still be added to a queue

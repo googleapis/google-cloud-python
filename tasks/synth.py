@@ -69,3 +69,10 @@ s.replace(
     'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
     '(Google IAM .*?_) ',
     '\g<1>_ ')
+
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    r'(Sample filter \\"app_engine_http_target: )\*\\".',
+    '\g<1>\\*\\".')
+
+s.replace("google/cloud/**/*.py", "`[.\s\n]+ </appengine/.*?>`__", "")
