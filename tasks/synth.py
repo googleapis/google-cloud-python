@@ -58,3 +58,9 @@ s.replace(
     r'.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks',
     '.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/'
     'library/cloudtasks.googleapis.com')
+
+# Fix unindentation of bullet list second line
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    '(        \* .*\n        )([^\s*])',
+    '\g<1>  \g<2>')
