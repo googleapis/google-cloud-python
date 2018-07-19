@@ -42,9 +42,6 @@ for version in versions:
 
     code_paths = ['tests/unit/gapic/**/*.py',
                   f'dialogflow_{version}/**/*.py']
-                  #,
-                  #f'dialogflow_{version}/__init__.py'
-                  #f'dialogflow_{version}/types.py']
         
     s.replace(
         code_paths, 'import google.cloud.dialogflow', 'import dialogflow')
@@ -71,12 +68,6 @@ s.replace(
      ],
     "# Copyright 2018 Google LLC",
     "# -*- coding: utf-8 -*-\n\g<0>")
-
-# __init__.py has an import that isn't used and causes errors
-s.replace(
-    ['dialogflow_v2/__init__.py', 'dialogflow_v2beta1/__init__.py'],
-    'from dialogflow_.*? import types\n',
-    '')
 
 # Docstring has an extra '\' at the end of it
 s.replace(

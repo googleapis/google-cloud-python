@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+from dialogflow_v2beta1 import types
 from dialogflow_v2beta1.gapic import agents_client
 from dialogflow_v2beta1.gapic import contexts_client
 from dialogflow_v2beta1.gapic import documents_client
