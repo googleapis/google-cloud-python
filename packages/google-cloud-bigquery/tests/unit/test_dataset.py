@@ -443,6 +443,13 @@ class TestDataset(unittest.TestCase):
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
+    def test_labels_update_in_place(self):
+        dataset = self._make_one(self.DS_REF)
+        del dataset._properties['labels']  # don't start w/ existing dict
+        labels = dataset.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(dataset.labels, {'foo': 'bar'})
+
     def test_labels_setter(self):
         dataset = self._make_one(self.DS_REF)
         dataset.labels = {'color': 'green'}
@@ -612,6 +619,18 @@ class TestDatasetListItem(unittest.TestCase):
     def test_ctor_wo_reference(self):
         with self.assertRaises(ValueError):
             self._make_one({})
+
+    def test_labels_update_in_place(self):
+        resource = {
+            'datasetReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+            },
+        }
+        dataset = self._make_one(resource)
+        labels = dataset.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(dataset.labels, {'foo': 'bar'})
 
     def test_table(self):
         from google.cloud.bigquery.table import TableReference

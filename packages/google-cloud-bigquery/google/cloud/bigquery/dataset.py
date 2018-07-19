@@ -473,7 +473,7 @@ class Dataset(object):
         Raises:
             ValueError: for invalid value types.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -630,7 +630,7 @@ class DatasetListItem(object):
     @property
     def labels(self):
         """Dict[str, str]: Labels for the dataset."""
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @property
     def reference(self):
