@@ -873,6 +873,35 @@ class Test_JobConfig(unittest.TestCase):
         self.assertEqual(job_config._job_type, self.JOB_TYPE)
         self.assertEqual(job_config._properties, {self.JOB_TYPE: {}})
 
+    @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')
+    def test__get_sub_prop_wo_default(self, _get_sub_prop):
+        job_config = self._make_one()
+        key = 'key'
+        self.assertIs(
+            job_config._get_sub_prop(key), _get_sub_prop.return_value)
+        _get_sub_prop.assert_called_once_with(
+            job_config._properties, [self.JOB_TYPE, key], default=None)
+
+    @mock.patch('google.cloud.bigquery._helpers._get_sub_prop')
+    def test__get_sub_prop_w_default(self, _get_sub_prop):
+        job_config = self._make_one()
+        key = 'key'
+        default = 'default'
+        self.assertIs(
+            job_config._get_sub_prop(key, default=default),
+            _get_sub_prop.return_value)
+        _get_sub_prop.assert_called_once_with(
+            job_config._properties, [self.JOB_TYPE, key], default=default)
+
+    @mock.patch('google.cloud.bigquery._helpers._set_sub_prop')
+    def test__set_sub_prop(self, _set_sub_prop):
+        job_config = self._make_one()
+        key = 'key'
+        value = 'value'
+        job_config._set_sub_prop(key, value)
+        _set_sub_prop.assert_called_once_with(
+            job_config._properties, [self.JOB_TYPE, key], value)
+
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
