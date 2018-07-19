@@ -869,7 +869,7 @@ class CloudTasksClient(object):
         Returns an empty policy if the resource exists and does not have a policy
         set.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
+        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`__ permission on the
         specified resource parent:
 
         * ``cloudtasks.queues.getIamPolicy``
@@ -946,7 +946,7 @@ class CloudTasksClient(object):
         Note: The Cloud Console does not check queue-level IAM permissions yet.
         Project-level permissions are required to use the Cloud Console.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
+        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`__ permission on the
         specified resource parent:
 
         * ``cloudtasks.queues.setIamPolicy``
@@ -1159,7 +1159,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             order_by (str): Sort order used for the query. The only fields supported for sorting
                 are ``schedule_time`` and ``pull_message.tag``. All results will be
@@ -1267,7 +1267,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1400,7 +1400,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1596,7 +1596,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             filter_ (str): ``filter`` can be used to specify a subset of tasks to lease.
 
@@ -1835,7 +1835,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -1938,7 +1938,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -2049,7 +2049,7 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`__ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not

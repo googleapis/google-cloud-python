@@ -64,3 +64,8 @@ s.replace(
     'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
     '(        \* .*\n        )([^\s*])',
     '\g<1>  \g<2>')
+
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    '(Google IAM .*?_) ',
+    '\g<1>_ ')
