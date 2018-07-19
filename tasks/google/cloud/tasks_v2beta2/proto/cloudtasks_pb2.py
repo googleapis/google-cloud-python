@@ -882,7 +882,7 @@ ListQueuesRequest = _reflection.GeneratedProtocolMessageType('ListQueuesRequest'
           a filter and several operators as supported. For example:
           ``<=, <, >=, >, !=, =, :``. The filter syntax is the same as
           described in `Stackdriver's Advanced Logs Filters <https://clo
-          ud.google.com/logging/docs/view/advanced_filters>`__.  Sample
+          ud.google.com/logging/docs/view/advanced_filters>`_.  Sample
           filter "app\_engine\_http\_target: \*".  Note that using
           filters might cause fewer queues than the requested\_page size
           to be returned.
@@ -1090,7 +1090,7 @@ ListTasksRequest = _reflection.GeneratedProtocolMessageType('ListTasksRequest', 
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
       page_size:
           Requested page size. Fewer tasks than requested might be
@@ -1158,7 +1158,7 @@ GetTaskRequest = _reflection.GeneratedProtocolMessageType('GetTaskRequest', (_me
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.GetTaskRequest)
@@ -1219,7 +1219,7 @@ CreateTaskRequest = _reflection.GeneratedProtocolMessageType('CreateTaskRequest'
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.CreateTaskRequest)
@@ -1280,7 +1280,7 @@ LeaseTasksRequest = _reflection.GeneratedProtocolMessageType('LeaseTasksRequest'
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
       filter:
           ``filter`` can be used to specify a subset of tasks to lease.
@@ -1299,7 +1299,7 @@ LeaseTasksRequest = _reflection.GeneratedProtocolMessageType('LeaseTasksRequest'
           schedule time).  SDK compatibility: Although the SDK allows
           tags to be either string or `bytes <https://cloud.google.com/a
           ppengine/docs/standard/java/javadoc/com/google/appengine/api/t
-          askqueue/TaskOptions.html#tag-byte:A->`__, only UTF-8 encoded
+          askqueue/TaskOptions.html#tag-byte:A->`_, only UTF-8 encoded
           tags can be used in Cloud Tasks. Tag which aren't UTF-8
           encoded can't be used in the
           [filter][google.cloud.tasks.v2beta2.LeaseTasksRequest.filter]
@@ -1389,7 +1389,7 @@ RenewLeaseRequest = _reflection.GeneratedProtocolMessageType('RenewLeaseRequest'
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.RenewLeaseRequest)
@@ -1428,7 +1428,7 @@ CancelLeaseRequest = _reflection.GeneratedProtocolMessageType('CancelLeaseReques
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.CancelLeaseRequest)
@@ -1458,7 +1458,7 @@ RunTaskRequest = _reflection.GeneratedProtocolMessageType('RunTaskRequest', (_me
           data that it contains.  Authorization for
           [FULL][google.cloud.tasks.v2beta2.Task.View.FULL] requires
           ``cloudtasks.tasks.fullView`` `Google IAM
-          <https://cloud.google.com/iam/>`__ permission on the
+          <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.RunTaskRequest)

@@ -76,3 +76,10 @@ s.replace(
     '\g<1>\\*\\".')
 
 s.replace("google/cloud/**/*.py", "`[.\s\n]+ </appengine/.*?>`__", "")
+
+# Issues with Anonymous ('__') links. Change to named.
+s.replace(
+    "google/cloud/tasks_v2beta2/proto/*.py",
+    ">`__",
+    ">`_")
+
