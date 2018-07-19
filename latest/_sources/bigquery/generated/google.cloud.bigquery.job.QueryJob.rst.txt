@@ -79,6 +79,7 @@ google.cloud.bigquery.job.QueryJob
       ~QueryJob.ended
       ~QueryJob.error_result
       ~QueryJob.errors
+      ~QueryJob.estimated_bytes_processed
       ~QueryJob.etag
       ~QueryJob.flatten_results
       ~QueryJob.job_id
