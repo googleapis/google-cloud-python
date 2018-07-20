@@ -198,7 +198,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         NEW_LABELS = {'foo_bar': 'foo_bar'}
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         Config.INSTANCE.labels = NEW_LABELS
-        Config.INSTANCE.update()
+        operation = Config.INSTANCE.update()
+        
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
 
         # Create a new instance instance and reload it.
         instance_alt = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
@@ -212,7 +215,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # other test cases.
         Config.INSTANCE.display_name = OLD_DISPLAY_NAME
         Config.INSTANCE.labels = LABELS
-        Config.INSTANCE.update()
+        operation = Config.INSTANCE.update()
+        
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
 
     def test_update_type(self):
         from google.cloud.bigtable.enums import InstanceType
@@ -233,7 +239,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance.display_name = None
 
         instance.type_ = _PRODUCTION
-        instance.update()
+        operation = instance.update()
+        
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
 
         # Create a new instance instance and reload it.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
