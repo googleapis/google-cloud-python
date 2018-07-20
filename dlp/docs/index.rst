@@ -1,8 +1,9 @@
 Python Client for Cloud Data Loss Prevention (DLP) API (`Alpha`_)
 =================================================================
 
-`Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection of privacy-sensitive fragments in text,
-images, and Google Cloud Platform storage repositories.
+`Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection, risk analysis, and de-identification of
+privacy-sensitive fragments in text, images, and Google Cloud Platform
+storage repositories.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -83,4 +84,3 @@ Api Reference
     gapic/v2/api
     gapic/v2/types
     changelog
-
