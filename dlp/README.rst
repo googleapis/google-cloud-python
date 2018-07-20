@@ -63,11 +63,18 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-dlp
 
+Preview
+~~~~~~~
+
 DlpServiceClient
 ^^^^^^^^^^^^^^^^
+
 .. code:: py
+
     from google.cloud import dlp_v2
+
     client = dlp_v2.DlpServiceClient()
+
     name = 'EMAIL_ADDRESS'
     info_types_element = {'name': name}
     info_types = [info_types_element]
@@ -76,6 +83,7 @@ DlpServiceClient
     value = 'My email is example@example.com.'
     items_element = {'type': type_, 'value': value}
     items = [items_element]
+
     response = client.inspect_content(inspect_config, items)
 
 Next Steps
