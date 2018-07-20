@@ -199,7 +199,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         Config.INSTANCE.labels = NEW_LABELS
         operation = Config.INSTANCE.update()
-        
+
         # We want to make sure the operation completes.
         operation.result(timeout=10)
 
@@ -216,7 +216,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.display_name = OLD_DISPLAY_NAME
         Config.INSTANCE.labels = LABELS
         operation = Config.INSTANCE.update()
-        
+
         # We want to make sure the operation completes.
         operation.result(timeout=10)
 
@@ -240,7 +240,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         instance.type_ = _PRODUCTION
         operation = instance.update()
-        
+
         # We want to make sure the operation completes.
         operation.result(timeout=10)
 
