@@ -17,6 +17,7 @@ import functools
 import pkg_resources
 import warnings
 
+from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -56,6 +57,27 @@ class CloudTasksClient(object):
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
     _INTERFACE_NAME = 'google.cloud.tasks.v2beta2.CloudTasks'
+
+    @classmethod
+    def from_service_account_file(cls, filename, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudTasksClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
 
     @classmethod
     def project_path(cls, project):
@@ -156,11 +178,12 @@ class CloudTasksClient(object):
                         'Received both a transport instance and '
                         'credentials; these are mutually exclusive.')
                 self.transport = transport
-        self.transport = cloud_tasks_grpc_transport.CloudTasksGrpcTransport(
-            address=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-        )
+        else:
+            self.transport = cloud_tasks_grpc_transport.CloudTasksGrpcTransport(
+                address=self.SERVICE_ADDRESS,
+                channel=channel,
+                credentials=credentials,
+            )
 
         if client_info is None:
             client_info = (
@@ -226,7 +249,7 @@ class CloudTasksClient(object):
                 described in
                 `Stackdriver's Advanced Logs Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`_.
 
-                Sample filter \"app_engine_http_target: *\".
+                Sample filter \"app_engine_http_target: \*\".
 
                 Note that using filters might cause fewer queues than the
                 requested_page size to be returned.
@@ -381,7 +404,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -480,7 +503,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -575,7 +598,7 @@ class CloudTasksClient(object):
         WARNING: Using this method may have unintended side effects if you are
         using an App Engine ``queue.yaml`` or ``queue.xml`` file to manage your queues.
         Read
-        `Overview of Queue Management and queue.yaml <https://cloud.google.com/cloud-tasks/docs/queue-yaml>`_
+        `Overview of Queue Management and queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`_
         before using this method.
 
         Example:
@@ -797,7 +820,7 @@ class CloudTasksClient(object):
         WARNING: Resuming many high-QPS queues at the same time can
         lead to target overloading. If you are resuming high-QPS
         queues, follow the 500/50/5 pattern described in
-        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/cloud-tasks/pdfs/managing-cloud-tasks-scaling-risks-2017-06-05.pdf>`_.
+        `Managing Cloud Tasks Scaling Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`_.
 
         Example:
             >>> from google.cloud import tasks_v2beta2
@@ -869,8 +892,9 @@ class CloudTasksClient(object):
         Returns an empty policy if the resource exists and does not have a policy
         set.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
-        specified resource parent:
+        Authorization requires the following
+        `Google IAM <https://cloud.google.com/iam>`__ permission on the specified
+        resource parent:
 
         * ``cloudtasks.queues.getIamPolicy``
 
@@ -946,8 +970,9 @@ class CloudTasksClient(object):
         Note: The Cloud Console does not check queue-level IAM permissions yet.
         Project-level permissions are required to use the Cloud Console.
 
-        Authorization requires the following `Google IAM <https://cloud.google.com/iam>`_ permission on the
-        specified resource parent:
+        Authorization requires the following
+        `Google IAM <https://cloud.google.com/iam>`__ permission on the specified
+        resource parent:
 
         * ``cloudtasks.queues.setIamPolicy``
 
@@ -1110,7 +1135,6 @@ class CloudTasksClient(object):
     def list_tasks(self,
                    parent,
                    response_view=None,
-                   order_by=None,
                    page_size=None,
                    retry=google.api_core.gapic_v1.method.DEFAULT,
                    timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1122,6 +1146,9 @@ class CloudTasksClient(object):
         due to performance considerations;
         ``response_view`` controls the
         subset of information which is returned.
+
+        The tasks may be returned in any order. The ordering may change at any
+        time.
 
         Example:
             >>> from google.cloud import tasks_v2beta2
@@ -1159,12 +1186,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
-            order_by (str): Sort order used for the query. The only fields supported for sorting
-                are ``schedule_time`` and ``pull_message.tag``. All results will be
-                returned in approximately ascending order. The default ordering is by
-                ``schedule_time``.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1205,7 +1228,6 @@ class CloudTasksClient(object):
         request = cloudtasks_pb2.ListTasksRequest(
             parent=parent,
             response_view=response_view,
-            order_by=order_by,
             page_size=page_size,
         )
         if metadata is None:
@@ -1267,8 +1289,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1329,10 +1351,9 @@ class CloudTasksClient(object):
 
         Tasks cannot be updated after creation; there is no UpdateTask command.
 
-        * For `App Engine queues <https://cloud.google.comgoogle.cloud.tasks.v2beta2.AppEngineHttpTarget>`_,
-        the maximum task size is 100KB.
-        * For `pull queues <https://cloud.google.comgoogle.cloud.tasks.v2beta2.PullTarget>`_, this
-        the maximum task size is 1MB.
+        * For ``App Engine queues``, the maximum task size is
+          100KB.
+        * For ``pull queues``, the maximum task size is 1MB.
 
         Example:
             >>> from google.cloud import tasks_v2beta2
@@ -1400,8 +1421,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1596,8 +1617,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             filter_ (str): ``filter`` can be used to specify a subset of tasks to lease.
 
                 When ``filter`` is set to ``tag=<my-tag>`` then the
@@ -1835,8 +1856,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1938,8 +1959,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2049,8 +2070,8 @@ class CloudTasksClient(object):
                 contains.
 
                 Authorization for ``FULL`` requires
-                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_ permission on the
-                ``Task`` resource.
+                ``cloudtasks.tasks.fullView`` `Google IAM <https://cloud.google.com/iam/>`_
+                permission on the ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
