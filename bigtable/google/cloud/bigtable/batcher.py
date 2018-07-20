@@ -15,7 +15,7 @@
 """User friendly container for Google Cloud Bigtable MutationBatcher."""
 
 
-import sys
+from google.cloud.bigtable import table
 
 FLUSH_COUNT = 1000
 MAX_MUTATIONS = 100000
@@ -23,9 +23,21 @@ MAX_ROW_BYTES = 5242880  # 5MB
 
 
 class MutationsBatcher(object):
-    """ Batch mutations using limits MAX_ROW_BYTES, MAX_MUTATIONS and
-    FLUSH_COUNT. A batch is sent to finish_batch() if any of these limits is
-    exceeded.
+    """ A MutationsBatcher is used in batch cases where the number of mutations
+    is large or unknown. It will store DirectRows in memory until one of the
+    size limits is reached, or an explicit call to flush() is performed. When
+    a flush event occurs, the DirectRows in memory will be sent to Cloud
+    Bigtable. Batching mutations is more efficient than sending individual
+    request.
+
+    This class is not suited for usage in systems where each mutation
+    needs to guaranteed to be sent, since calling mutate may only result in an
+    in-memory change. In a case of a system crash, any DirectRows remaining in
+    memory will not necessarily be sent to the service, even after the
+    completion of the mutate() method.
+
+    TODO: Performance would dramatically improve if this class had the
+    capability of asynchronous, parallel RPCs.
 
     :type table: class
     :param table: class:`~google.cloud.bigtable.table.Table`.
@@ -35,11 +47,6 @@ class MutationsBatcher(object):
     reaches the max number of rows it calls finish_batch() to mutate the
     current row batch. Default is FLUSH_COUNT (1000 rows).
 
-    :type max_mutations: int
-    :param max_mutations: (Optional)  Max number of row mutations to flush.
-    If it reaches the max number of row mutations it calls finish_batch() to
-    mutate the current row batch. Default is MAX_MUTATIONS (100000 mutations).
-
     :type max_row_bytes: int
     :param max_row_bytes: (Optional) Max number of row mutations size to
     flush. If it reaches the max number of row mutations size it calls
@@ -47,42 +54,51 @@ class MutationsBatcher(object):
     (5 MB).
     """
 
-    def __init__(self, table, flush_count=None, max_mutations=None,
-                 max_row_bytes=None):
+    def __init__(self, table, flush_count=None, max_row_bytes=None):
         self.rows = []
         self.total_mutation_count = 0
         self.total_size = 0
         self.table = table
         self.flush_count = flush_count if flush_count else FLUSH_COUNT
-        self.max_mutations = max_mutations if max_mutations else MAX_MUTATIONS
         self.max_row_bytes = max_row_bytes if max_row_bytes else MAX_ROW_BYTES
 
-    def add_row(self, row):
-        """ Add a row using batching logic and finish current batch if
-        necessary.
+    def mutate(self, row):
+        """ Add a row to the batch. If the current batch meets one of the size
+        limits, the batch is sent synchronously.
 
         :type row: class
         :param row: class:`~google.cloud.bigtable.row.DirectRow`.
+
+        :raises: One of the following:
+                 * :exc:`~.table._BigtableRetryableError` if any
+                   row returned a transient error.
+                 * :exc:`RuntimeError` if the number of responses doesn't
+                   match the number of rows that were retried
         """
-        mutation_size = sys.getsizeof(row._get_mutations())
-        if (self.total_size + mutation_size) >= self.max_row_bytes:
-            self.finish_batch()
+        mutation_size = 0
+        for mutation in row._get_mutations():
+            mutation_size = mutation.ByteSize()
+            if (self.total_size + mutation_size) >= self.max_row_bytes:
+                self.flush()
 
         mutation_count = len(row._get_mutations())
-        if (self.total_mutation_count + mutation_count) >= self.max_mutations:
-            self.finish_batch()
+        if mutation_count > MAX_MUTATIONS:
+            raise table.TooManyMutationsError
+
+        if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
+            self.flush()
 
         self.rows.append(row)
         self.total_mutation_count += mutation_count
         self.total_size += mutation_size
 
         if len(self.rows) >= self.flush_count:
-            self.finish_batch()
+            self.flush()
 
-    def finish_batch(self):
-        """ Mutate multiple rows in bulk and start a new batch.
-        """
-        self.table.mutate_rows(self.rows)
-        self.total_mutation_count = 0
-        self.total_size = 0
-        self.rows = []
+    def flush(self):
+        """ Sends the current. batch to Cloud Bigtable. """
+        if len(self.rows) is not 0:
+            self.table.mutate_rows(self.rows)
+            self.total_mutation_count = 0
+            self.total_size = 0
+            self.rows = []

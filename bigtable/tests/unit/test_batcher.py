@@ -31,20 +31,6 @@ class TestMutationsBatcher(unittest.TestCase):
 
     # RPC Status Codes
     SUCCESS = StatusCode.OK.value[0]
-    RETRYABLE_1 = StatusCode.DEADLINE_EXCEEDED.value[0]
-    RETRYABLE_2 = StatusCode.ABORTED.value[0]
-    NON_RETRYABLE = StatusCode.CANCELLED.value[0]
-
-    def _make_responses(self, codes):
-        import six
-        from google.cloud.bigtable_v2.proto.bigtable_pb2 import (
-            MutateRowsResponse)
-        from google.rpc.status_pb2 import Status
-
-        entries = [MutateRowsResponse.Entry(
-            index=i, status=Status(code=codes[i]))
-            for i in six.moves.xrange(len(codes))]
-        return MutateRowsResponse(entries=entries)
 
     @staticmethod
     def _get_target_class():
@@ -80,25 +66,8 @@ class TestMutationsBatcher(unittest.TestCase):
     def test_add_row(self):
         from google.cloud.bigtable.batcher import MutationsBatcher
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-        from google.cloud.bigtable_v2.gapic import (
-            bigtable_client)
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient)
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_table(self.TABLE_ID, instance)
-
-        response = self._make_responses([self.SUCCESS])
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response, response]]
+        table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table)
 
         rows = [DirectRow(row_key=b'row_key_1', table=table),
@@ -109,38 +78,19 @@ class TestMutationsBatcher(unittest.TestCase):
         rows[1].set_cell('cf1', b'c1', 4)
 
         for row in rows:
-            mutation_batcher.add_row(row)
+            mutation_batcher.mutate(row)
 
         with mock.patch('google.cloud.bigtable.table.Table.name',
                         new=self.TABLE_NAME):
-            mutation_batcher.finish_batch()
+            mutation_batcher.flush()
 
-        self.assertEqual(
-            client._table_data_client.bigtable_stub.MutateRows.call_count, 1)
+        self.assertEqual(table.mutation_calls, 1)
 
     def test_add_row_with_max_flush_count(self):
         from google.cloud.bigtable.batcher import MutationsBatcher
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-        from google.cloud.bigtable_v2.gapic import (
-            bigtable_client)
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_table(self.TABLE_ID, instance)
-
-        response = self._make_responses([self.SUCCESS])
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [
-            [response, response, response], [response]]
+        table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table, flush_count=3)
 
         rows = [DirectRow(row_key=b'row_key', table=table),
@@ -153,39 +103,22 @@ class TestMutationsBatcher(unittest.TestCase):
         rows[3].set_cell('cf1', b'c1', 4)
 
         for row in rows:
-            mutation_batcher.add_row(row)
+            mutation_batcher.mutate(row)
 
         with mock.patch('google.cloud.bigtable.table.Table.name',
                         new=self.TABLE_NAME):
-            mutation_batcher.finish_batch()
+            mutation_batcher.flush()
 
-        self.assertEqual(
-            client._table_data_client.bigtable_stub.MutateRows.call_count, 2)
+        self.assertEqual(table.mutation_calls, 2)
 
-    def test_add_row_with_max_mutationst(self):
+    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=1)
+    def test_add_row_with_max_mutations_failure(self):
         from google.cloud.bigtable.batcher import MutationsBatcher
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-        from google.cloud.bigtable_v2.gapic import (
-            bigtable_client)
+        from google.cloud.bigtable.table import TooManyMutationsError
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_table(self.TABLE_ID, instance)
-
-        response = self._make_responses([self.SUCCESS])
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response], [response]]
-        mutation_batcher = MutationsBatcher(table, max_mutations=2)
+        table = _Table(self.TABLE_NAME)
+        mutation_batcher = MutationsBatcher(table)
 
         rows = [DirectRow(row_key=b'row_key_1', table=table),
                 DirectRow(row_key=b'row_key_2', table=table)]
@@ -195,56 +128,73 @@ class TestMutationsBatcher(unittest.TestCase):
         rows[1].set_cell('cf1', b'c1', 4)
 
         for row in rows:
-            mutation_batcher.add_row(row)
+            with self.assertRaises(TooManyMutationsError):
+                mutation_batcher.mutate(row)
+
+    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=2)
+    def test_add_row_with_max_mutations(self):
+        from google.cloud.bigtable.batcher import MutationsBatcher
+        from google.cloud.bigtable.row import DirectRow
+
+        table = _Table(self.TABLE_NAME)
+        mutation_batcher = MutationsBatcher(table)
+
+        rows = [DirectRow(row_key=b'row_key_1', table=table),
+                DirectRow(row_key=b'row_key_2', table=table)]
+        rows[0].set_cell('cf1', b'c1', 1)
+        rows[0].set_cell('cf1', b'c1', 2)
+        rows[1].set_cell('cf1', b'c1', 3)
+        rows[1].set_cell('cf1', b'c1', 4)
+
+        for row in rows:
+            mutation_batcher.mutate(row)
 
         with mock.patch('google.cloud.bigtable.table.Table.name',
                         new=self.TABLE_NAME):
-            mutation_batcher.finish_batch()
+            mutation_batcher.flush()
 
-        self.assertEqual(
-            client._table_data_client.bigtable_stub.MutateRows.call_count, 2)
+        self.assertEqual(table.mutation_calls, 2)
 
     def test_add_row_with_max_row_bytes(self):
         from google.cloud.bigtable.batcher import MutationsBatcher
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_table_admin_client)
-        from google.cloud.bigtable_v2.gapic import (
-            bigtable_client)
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(
-            mock.Mock())
-        credentials = _make_credentials()
-        client = self._make_client(project='project-id',
-                                   credentials=credentials, admin=True)
-
-        client._table_data_client = data_api
-        client._table_admin_client = table_api
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_table(self.TABLE_ID, instance)
-
-        response = self._make_responses([self.SUCCESS])
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRows.side_effect = [[response], [response]]
-        mutation_batcher = MutationsBatcher(table, max_row_bytes=2)
+        table = _Table(self.TABLE_NAME)
+        mutation_batcher = MutationsBatcher(table, max_row_bytes=1)
 
         number_of_bytes = 2 * 1024 * 1024
         max_value = b'1' * number_of_bytes
 
         rows = [DirectRow(row_key=b'row_key', table=table),
                 DirectRow(row_key=b'row_key_2', table=table)]
-        rows[0].set_cell('cf1', b'c1', 1)
         rows[0].set_cell('cf1', b'c1', max_value)
+        rows[0].set_cell('cf1', b'c1', 2)
         rows[1].set_cell('cf1', b'c1', 3)
         rows[1].set_cell('cf1', b'c1', 4)
 
         for row in rows:
-            mutation_batcher.add_row(row)
+            mutation_batcher.mutate(row)
 
         with mock.patch('google.cloud.bigtable.table.Table.name',
                         new=self.TABLE_NAME):
-            mutation_batcher.finish_batch()
+            mutation_batcher.flush()
 
-        self.assertEqual(
-            client._table_data_client.bigtable_stub.MutateRows.call_count, 2)
+        self.assertEqual(table.mutation_calls, 2)
+
+
+class _Instance(object):
+
+    def __init__(self, client=None):
+        self._client = client
+
+
+class _Table(object):
+
+    def __init__(self, name, client=None):
+        self.name = name
+        self._instance = _Instance(client)
+        self.mutation_calls = 0
+
+    def mutate_rows(self, rows):
+        self.mutation_calls += 1
+        return rows
