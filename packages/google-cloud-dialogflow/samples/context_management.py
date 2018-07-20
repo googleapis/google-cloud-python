@@ -27,14 +27,11 @@ Examples:
   delete --session-id SESSION_ID --context-id CONTEXT_ID
 """
 
-# [START import_libraries]
 import argparse
-
-import dialogflow
-# [END import_libraries]
 
 
 def list_contexts(project_id, session_id):
+    import dialogflow_v2 as dialogflow
     contexts_client = dialogflow.ContextsClient()
 
     session_path = contexts_client.session_path(project_id, session_id)
@@ -53,6 +50,7 @@ def list_contexts(project_id, session_id):
 
 # [START dialogflow_create_context]
 def create_context(project_id, session_id, context_id, lifespan_count):
+    import dialogflow_v2 as dialogflow
     contexts_client = dialogflow.ContextsClient()
 
     session_path = contexts_client.session_path(project_id, session_id)
@@ -70,6 +68,7 @@ def create_context(project_id, session_id, context_id, lifespan_count):
 
 # [START dialogflow_delete_context]
 def delete_context(project_id, session_id, context_id):
+    import dialogflow_v2 as dialogflow
     contexts_client = dialogflow.ContextsClient()
 
     context_name = contexts_client.context_path(

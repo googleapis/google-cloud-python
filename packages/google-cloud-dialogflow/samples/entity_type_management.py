@@ -24,14 +24,11 @@ Examples:
   e57238e2-e692-44ea-9216-6be1b2332e2a
 """
 
-# [START import_libraries]
 import argparse
-
-import dialogflow
-# [END import_libraries]
 
 
 def list_entity_types(project_id):
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     parent = entity_types_client.project_agent_path(project_id)
@@ -47,6 +44,7 @@ def list_entity_types(project_id):
 # [START dialogflow_create_entity_type]
 def create_entity_type(project_id, display_name, kind):
     """Create an entity type with the given display name."""
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     parent = entity_types_client.project_agent_path(project_id)
@@ -62,6 +60,7 @@ def create_entity_type(project_id, display_name, kind):
 # [START dialogflow_delete_entity_type]
 def delete_entity_type(project_id, entity_type_id):
     """Delete entity type with the given entity type name."""
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     entity_type_path = entity_types_client.entity_type_path(
@@ -73,6 +72,7 @@ def delete_entity_type(project_id, entity_type_id):
 
 # Helper to get entity_type_id from display name.
 def _get_entity_type_ids(project_id, display_name):
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     parent = entity_types_client.project_agent_path(project_id)
@@ -89,6 +89,7 @@ def _get_entity_type_ids(project_id, display_name):
 
 
 if __name__ == '__main__':
+    import dialogflow_v2
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -110,7 +111,7 @@ if __name__ == '__main__':
     create_parser.add_argument(
         '--kind',
         help='The kind of entity.  KIND_MAP (default) or KIND_LIST.',
-        default=dialogflow.enums.EntityType.Kind.KIND_MAP)
+        default=dialogflow_v2.enums.EntityType.Kind.KIND_MAP)
 
     delete_parser = subparsers.add_parser(
         'delete', help=delete_entity_type.__doc__)

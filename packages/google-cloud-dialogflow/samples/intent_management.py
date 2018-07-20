@@ -27,15 +27,12 @@ Examples:
   74892d81-7901-496a-bb0a-c769eda5180e
 """
 
-# [START import_libraries]
 import argparse
-
-import dialogflow
-# [END import_libraries]
 
 
 # [START dialogflow_list_intents]
 def list_intents(project_id):
+    import dialogflow_v2 as dialogflow
     intents_client = dialogflow.IntentsClient()
 
     parent = intents_client.project_agent_path(project_id)
@@ -66,6 +63,7 @@ def list_intents(project_id):
 def create_intent(project_id, display_name, training_phrases_parts,
                   message_texts):
     """Create an intent of the given intent type."""
+    import dialogflow_v2 as dialogflow
     intents_client = dialogflow.IntentsClient()
 
     parent = intents_client.project_agent_path(project_id)
@@ -94,6 +92,7 @@ def create_intent(project_id, display_name, training_phrases_parts,
 # [START dialogflow_delete_intent]
 def delete_intent(project_id, intent_id):
     """Delete intent with the given intent type and intent value."""
+    import dialogflow_v2 as dialogflow
     intents_client = dialogflow.IntentsClient()
 
     intent_path = intents_client.intent_path(project_id, intent_id)
@@ -104,6 +103,7 @@ def delete_intent(project_id, intent_id):
 
 # Helper to get intent from display name.
 def _get_intent_ids(project_id, display_name):
+    import dialogflow_v2 as dialogflow
     intents_client = dialogflow.IntentsClient()
 
     parent = intents_client.project_agent_path(project_id)

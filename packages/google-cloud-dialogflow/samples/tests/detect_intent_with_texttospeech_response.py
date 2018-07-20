@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC
+# Copyright 2018, Google LLC
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,21 +14,21 @@
 from __future__ import absolute_import
 import os
 
-from ..detect_intent_audio import detect_intent_audio
+from ..detect_intent_with_texttospeech_response import \
+    detect_intent_with_texttospeech_response
 
-DIRNAME = os.path.realpath(os.path.dirname(__file__))
 PROJECT_ID = os.getenv('GCLOUD_PROJECT')
 SESSION_ID = 'fake_session_for_testing'
-AUDIOS = [
-    '{0}/../resources/book_a_room.wav'.format(DIRNAME),
-    '{0}/../resources/mountain_view.wav'.format(DIRNAME),
-    '{0}/../resources/today.wav'.format(DIRNAME),
-]
+TEXTS = ["hello"]
 
 
-def test_detect_intent_audio(capsys):
-    for audio_file_path in AUDIOS:
-        detect_intent_audio(PROJECT_ID, SESSION_ID, audio_file_path, 'en-US')
+def test_detect_intent_with_sentiment_analysis(capsys):
+    detect_intent_with_texttospeech_response(PROJECT_ID, SESSION_ID, TEXTS,
+                                             'en-US')
     out, _ = capsys.readouterr()
 
-    assert 'Fulfillment text: What time will the meeting start?' in out
+    assert 'Audio content written to file' in out
+    statinfo = os.stat('output.wav')
+    assert statinfo.st_size > 0
+    os.remove('output.wav')
+    assert not os.path.isfile('output.wav')

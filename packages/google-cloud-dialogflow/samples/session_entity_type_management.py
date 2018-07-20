@@ -29,14 +29,11 @@ Examples:
   --entity-type-display-name room
 """
 
-# [START import_libraries]
 import argparse
-
-import dialogflow
-# [END import_libraries]
 
 
 def list_session_entity_types(project_id, session_id):
+    import dialogflow_v2 as dialogflow
     session_entity_types_client = dialogflow.SessionEntityTypesClient()
 
     session_path = session_entity_types_client.session_path(
@@ -57,6 +54,7 @@ def list_session_entity_types(project_id, session_id):
 def create_session_entity_type(project_id, session_id, entity_values,
                                entity_type_display_name, entity_override_mode):
     """Create a session entity type with the given display name."""
+    import dialogflow_v2 as dialogflow
     session_entity_types_client = dialogflow.SessionEntityTypesClient()
 
     session_path = session_entity_types_client.session_path(
@@ -85,6 +83,7 @@ def create_session_entity_type(project_id, session_id, entity_values,
 def delete_session_entity_type(project_id, session_id,
                                entity_type_display_name):
     """Delete session entity type with the given entity type display name."""
+    import dialogflow_v2 as dialogflow
     session_entity_types_client = dialogflow.SessionEntityTypesClient()
 
     session_entity_type_name = (
@@ -97,6 +96,7 @@ def delete_session_entity_type(project_id, session_id,
 
 
 if __name__ == '__main__':
+    import dialogflow_v2
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -132,7 +132,7 @@ if __name__ == '__main__':
         '--entity-override-mode',
         help='ENTITY_OVERRIDE_MODE_OVERRIDE (default) or '
         'ENTITY_OVERRIDE_MODE_SUPPLEMENT',
-        default=(dialogflow.enums.SessionEntityType.EntityOverrideMode.
+        default=(dialogflow_v2.enums.SessionEntityType.EntityOverrideMode.
                  ENTITY_OVERRIDE_MODE_OVERRIDE))
 
     delete_parser = subparsers.add_parser(

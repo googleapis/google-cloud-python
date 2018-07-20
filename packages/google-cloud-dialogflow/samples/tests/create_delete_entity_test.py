@@ -31,7 +31,7 @@ def test_create_entity_type(capsys):
 
     assert len(entity_type_ids) == 0
 
-    entity_type = entity_type_management.create_entity_type(
+    entity_type_management.create_entity_type(
         PROJECT_ID, ENTITY_TYPE_DISPLAY_NAME, 'KIND_MAP')
     out, _ = capsys.readouterr()
 

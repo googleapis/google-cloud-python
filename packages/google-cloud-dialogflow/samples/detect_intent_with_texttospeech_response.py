@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2017 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,33 +14,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""DialogFlow API Detect Intent Python sample with text inputs.
+"""Dialogflow API Beta Detect Intent Python sample with an audio response.
 
 Examples:
-  python detect_intent_texts.py -h
-  python detect_intent_texts.py --project-id PROJECT_ID \
-  --session-id SESSION_ID \
-  "hello" "book a meeting room" "Mountain View"
-  python detect_intent_texts.py --project-id PROJECT_ID \
-  --session-id SESSION_ID \
-  "tomorrow" "10 AM" "2 hours" "10 people" "A" "yes"
+  python detect_intent_with_texttospeech_response.py -h
+  python detect_intent_with_texttospeech_response.py --project-id PROJECT_ID \
+  --session-id SESSION_ID "hello"
 """
 
 import argparse
 import uuid
 
 
-# [START dialogflow_detect_intent_text]
-def detect_intent_texts(project_id, session_id, texts, language_code):
-    """Returns the result of detect intent with texts as inputs.
+# [START dialogflow_detect_intent_with_texttospeech_response]
+def detect_intent_with_texttospeech_response(project_id, session_id, texts,
+                                             language_code):
+    """Returns the result of detect intent with texts as inputs and includes
+    the response in an audio format.
 
     Using the same `session_id` between requests allows continuation
     of the conversaion."""
-    import dialogflow_v2 as dialogflow
+    import dialogflow_v2beta1 as dialogflow
     session_client = dialogflow.SessionsClient()
 
-    session = session_client.session_path(project_id, session_id)
-    print('Session path: {}\n'.format(session))
+    session_path = session_client.session_path(project_id, session_id)
+    print('Session path: {}\n'.format(session_path))
 
     for text in texts:
         text_input = dialogflow.types.TextInput(
@@ -48,8 +46,14 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
 
         query_input = dialogflow.types.QueryInput(text=text_input)
 
+        # Set the query parameters with sentiment analysis
+        output_audio_config = dialogflow.types.OutputAudioConfig(
+            audio_encoding=dialogflow.enums.OutputAudioEncoding
+            .OUTPUT_AUDIO_ENCODING_LINEAR_16)
+
         response = session_client.detect_intent(
-            session=session, query_input=query_input)
+            session=session_path, query_input=query_input,
+            output_audio_config=output_audio_config)
 
         print('=' * 20)
         print('Query text: {}'.format(response.query_result.query_text))
@@ -58,7 +62,11 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
             response.query_result.intent_detection_confidence))
         print('Fulfillment text: {}\n'.format(
             response.query_result.fulfillment_text))
-# [END dialogflow_detect_intent_text]
+        # The response's audio_content is binary.
+        with open('output.wav', 'wb') as out:
+            out.write(response.output_audio)
+            print('Audio content written to file "output.wav"')
+# [END dialogflow_detect_intent_with_texttospeech_response]
 
 
 if __name__ == '__main__':
@@ -72,7 +80,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--session-id',
         help='Identifier of the DetectIntent session. '
-        'Defaults to a random UUID.',
+             'Defaults to a random UUID.',
         default=str(uuid.uuid4()))
     parser.add_argument(
         '--language-code',
@@ -86,5 +94,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    detect_intent_texts(
+    detect_intent_with_texttospeech_response(
         args.project_id, args.session_id, args.texts, args.language_code)

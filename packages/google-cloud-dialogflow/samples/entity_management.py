@@ -28,14 +28,11 @@ Examples:
   --entity-type-id e57238e2-e692-44ea-9216-6be1b2332e2a
 """
 
-# [START import_libraries]
 import argparse
-
-import dialogflow
-# [END import_libraries]
 
 
 def list_entities(project_id, entity_type_id):
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     parent = entity_types_client.entity_type_path(
@@ -51,6 +48,7 @@ def list_entities(project_id, entity_type_id):
 # [START dialogflow_create_entity]
 def create_entity(project_id, entity_type_id, entity_value, synonyms):
     """Create an entity of the given entity type."""
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     # Note: synonyms must be exactly [entity_value] if the
@@ -74,6 +72,7 @@ def create_entity(project_id, entity_type_id, entity_value, synonyms):
 # [START dialogflow_delete_entity]
 def delete_entity(project_id, entity_type_id, entity_value):
     """Delete entity with the given entity type and entity value."""
+    import dialogflow_v2 as dialogflow
     entity_types_client = dialogflow.EntityTypesClient()
 
     entity_type_path = entity_types_client.entity_type_path(
