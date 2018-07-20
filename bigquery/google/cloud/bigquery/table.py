@@ -362,7 +362,7 @@ class Table(object):
         Raises:
             ValueError: If ``value`` type is invalid.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -830,7 +830,7 @@ class TableListItem(object):
         modify the dict, then call ``Client.update_table``. To delete a
         label, set its value to :data:`None` before updating.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @property
     def full_table_id(self):

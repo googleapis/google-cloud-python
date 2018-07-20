@@ -341,6 +341,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return '/projects/%s/jobs/%s' % (self.project, self.job_id)
 
     @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job."""
+        return self._properties.setdefault('labels', {})
+
+    @property
     def etag(self):
         """ETag for the job resource.
 
@@ -499,6 +504,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         return job_id, resource['configuration']
+
+    def _build_resource(self):
+        """Helper:  Generate a resource for :meth:`_begin`."""
+        raise NotImplementedError("Abstract")
 
     def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
@@ -697,6 +706,25 @@ class _JobConfig(object):
     def __init__(self, job_type):
         self._job_type = job_type
         self._properties = {job_type: {}}
+
+    @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job.
+
+        This method always returns a dict. To change a job's labels,
+        modify the dict, then call ``Client.update_job``. To delete a
+        label, set its value to :data:`None` before updating.
+
+        Raises:
+            ValueError: If ``value`` type is invalid.
+        """
+        return self._properties.setdefault('labels', {})
+
+    @labels.setter
+    def labels(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
 
     def _get_sub_prop(self, key, default=None):
         """Get a value in the ``self._properties[self._job_type]`` dictionary.
@@ -1237,7 +1265,7 @@ class LoadJob(_AsyncJob):
             return int(statistics['load']['outputRows'])
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
             _helpers._set_sub_prop(
@@ -1413,7 +1441,7 @@ class CopyJob(_AsyncJob):
         return self._configuration.destination_encryption_configuration
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
 
         source_refs = [{
             'projectId': table.project,
@@ -1631,7 +1659,7 @@ class ExtractJob(_AsyncJob):
         return None
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
 
         source_ref = {
             'projectId': self.source.project,
@@ -2202,7 +2230,7 @@ class QueryJob(_AsyncJob):
         return self._configuration.schema_update_options
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
 
         resource = {
@@ -2436,6 +2464,22 @@ class QueryJob(_AsyncJob):
             parameters.append(klass.from_api_repr(parameter))
 
         return parameters
+
+    @property
+    def estimated_bytes_processed(self):
+        """Return the estimated number of bytes processed by the query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.estimatedBytesProcessed
+
+        :rtype: int or None
+        :returns: number of DML rows affected by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('estimatedBytesProcessed')
+        if result is not None:
+            result = int(result)
+        return result
 
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
