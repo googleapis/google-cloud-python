@@ -83,3 +83,8 @@ s.replace(
     ">`__",
     ">`_")
 
+# Wrapped link fails due ot space in link
+s.replace(
+    "google/cloud/tasks_v2beta2/proto/queue_pb2.py",
+    '(uests in queue.yaml/xml) <\n\s+',
+    '\g<1>\n          <')
