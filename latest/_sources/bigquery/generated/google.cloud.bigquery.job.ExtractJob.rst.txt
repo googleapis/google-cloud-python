@@ -73,6 +73,7 @@ google.cloud.bigquery.job.ExtractJob
       ~ExtractJob.field_delimiter
       ~ExtractJob.job_id
       ~ExtractJob.job_type
+      ~ExtractJob.labels
       ~ExtractJob.location
       ~ExtractJob.path
       ~ExtractJob.print_header

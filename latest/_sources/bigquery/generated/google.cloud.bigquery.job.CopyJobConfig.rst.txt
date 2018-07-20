@@ -34,6 +34,7 @@ google.cloud.bigquery.job.CopyJobConfig
    
       ~CopyJobConfig.create_disposition
       ~CopyJobConfig.destination_encryption_configuration
+      ~CopyJobConfig.labels
       ~CopyJobConfig.write_disposition
    
    

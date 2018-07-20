@@ -69,6 +69,7 @@ google.cloud.bigquery.job.UnknownJob
       ~UnknownJob.etag
       ~UnknownJob.job_id
       ~UnknownJob.job_type
+      ~UnknownJob.labels
       ~UnknownJob.location
       ~UnknownJob.path
       ~UnknownJob.project

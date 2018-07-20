@@ -71,6 +71,7 @@ google.cloud.bigquery.job.CopyJob
       ~CopyJob.etag
       ~CopyJob.job_id
       ~CopyJob.job_type
+      ~CopyJob.labels
       ~CopyJob.location
       ~CopyJob.path
       ~CopyJob.project

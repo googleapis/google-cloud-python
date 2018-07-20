@@ -84,6 +84,7 @@ google.cloud.bigquery.job.QueryJob
       ~QueryJob.flatten_results
       ~QueryJob.job_id
       ~QueryJob.job_type
+      ~QueryJob.labels
       ~QueryJob.location
       ~QueryJob.maximum_billing_tier
       ~QueryJob.maximum_bytes_billed

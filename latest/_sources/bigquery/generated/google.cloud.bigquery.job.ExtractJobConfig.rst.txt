@@ -35,6 +35,7 @@ google.cloud.bigquery.job.ExtractJobConfig
       ~ExtractJobConfig.compression
       ~ExtractJobConfig.destination_format
       ~ExtractJobConfig.field_delimiter
+      ~ExtractJobConfig.labels
       ~ExtractJobConfig.print_header
    
    

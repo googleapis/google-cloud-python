@@ -39,6 +39,7 @@ google.cloud.bigquery.job.QueryJobConfig
       ~QueryJobConfig.destination_encryption_configuration
       ~QueryJobConfig.dry_run
       ~QueryJobConfig.flatten_results
+      ~QueryJobConfig.labels
       ~QueryJobConfig.maximum_billing_tier
       ~QueryJobConfig.maximum_bytes_billed
       ~QueryJobConfig.priority

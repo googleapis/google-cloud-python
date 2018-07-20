@@ -79,6 +79,7 @@ google.cloud.bigquery.job.LoadJob
       ~LoadJob.input_files
       ~LoadJob.job_id
       ~LoadJob.job_type
+      ~LoadJob.labels
       ~LoadJob.location
       ~LoadJob.max_bad_records
       ~LoadJob.null_marker
