@@ -126,21 +126,23 @@ class TestInstance(unittest.TestCase):
     def test_cluster_factory(self):
         from google.cloud.bigtable.cluster import Cluster
         from google.cloud.bigtable.enums import StorageType
+        from google.cloud.bigtable.enums import ClusterState
 
         CLUSTER_ID = self.INSTANCE_ID+'-cluster'
         LOCATION_ID = 'us-central1-c'
         SERVE_NODES = 3
+        STATE = ClusterState.READY
         STORAGE_TYPE = StorageType.HDD
 
         instance = self._make_one(self.INSTANCE_ID, None)
 
         cluster = instance.cluster(CLUSTER_ID, location_id=LOCATION_ID,
-                                   serve_nodes=SERVE_NODES,
+                                   state=STATE, serve_nodes=SERVE_NODES,
                                    default_storage_type=STORAGE_TYPE)
         self.assertIsInstance(cluster, Cluster)
         self.assertEqual(cluster.cluster_id, CLUSTER_ID)
         self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertIsNone(cluster.state)
+        self.assertEqual(cluster.state, STATE)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
 
