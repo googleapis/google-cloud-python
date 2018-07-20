@@ -47,15 +47,15 @@ class MutationsBatcher(object):
     (5 MB).
     """
 
-    def __init__(self, table, flush_count=FLUSH_COUNT,
-                 max_mutations=MAX_MUTATIONS, max_row_bytes=MAX_ROW_BYTES):
+    def __init__(self, table, flush_count=None, max_mutations=None,
+                 max_row_bytes=None):
         self.rows = []
         self.total_mutation_count = 0
         self.total_size = 0
         self.table = table
-        self.flush_count = flush_count
-        self.max_mutations = max_mutations
-        self.max_row_bytes = max_row_bytes
+        self.flush_count = flush_count if flush_count else FLUSH_COUNT
+        self.max_mutations = max_mutations if max_mutations else MAX_MUTATIONS
+        self.max_row_bytes = max_row_bytes if max_row_bytes else MAX_ROW_BYTES
 
     def add_row(self, row):
         """ Add a row using batching logic and finish current batch if
