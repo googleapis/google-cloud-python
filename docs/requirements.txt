@@ -16,6 +16,7 @@ datastore/
 dlp/
 dns/
 firestore/
+kms/
 language/
 logging/
 error_reporting/
