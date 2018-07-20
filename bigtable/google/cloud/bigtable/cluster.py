@@ -19,6 +19,8 @@ import re
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
+from google.cloud.bigtable_admin_v2.types import instance_pb2
+
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
@@ -47,34 +49,94 @@ class Cluster(object):
     :param instance: The instance where the cluster resides.
 
     :type location_id: str
-    :param location_id: ID of the location in which the cluster will be
-                        created. For e.g "us-central1-b"
-                        List of locations id is :
+    :param location_id: (Creation Only) The location where this cluster's
+                        nodes and storage reside . For best performance,
+                        clients should be located as close as possible to
+                        this cluster.
+                        For list of supported locations refer to
                         https://cloud.google.com/bigtable/docs/locations
-                        For best performance, clients should be located
-                        as close as possible to this cluster.
+
+    :type state: int
+    :param state: (`OutputOnly`)
+                  The current state of the cluster.
+                  Possible values are represented by the following constants:
+                  :data:`google.cloud.bigtable.enums.ClusterState.STATE_NOT_KNOWN`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.REAY`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.CREATING`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.RESIZING`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.DISABLED`.
 
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
-                        Defaults to :data:`DEFAULT_SERVE_NODES`.
 
     :type default_storage_type: int
-    :param default_storage_type: (Optional) The default values are
-                                  STORAGE_TYPE_UNSPECIFIED = 0: The user
-                                  did not specify a storage type.
-                                  SSD = 1: Flash (SSD) storage should be used.
-                                  HDD = 2: Magnetic drive (HDD) storage
-                                  should be used.
+    :param default_storage_type: (Optional) The type of storage
+                                 Possible values are represented by the
+                                 following constants:
+                                 :data:`google.cloud.bigtable.enums.StorageType.SSD`.
+                                 :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                 Defaults to
+                                 :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
     """
 
-    def __init__(self, cluster_id, instance, location_id,
-                 serve_nodes=DEFAULT_SERVE_NODES,
-                 default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
+    def __init__(self,
+                 cluster_id,
+                 instance,
+                 location_id=None,
+                 state=None,
+                 serve_nodes=None,
+                 default_storage_type=None):
         self.cluster_id = cluster_id
         self._instance = instance
-        self.location = location_id
+        self.location_id = location_id
+        self.state = state
         self.serve_nodes = serve_nodes
         self.default_storage_type = default_storage_type
+
+    @classmethod
+    def from_pb(cls, cluster_pb, instance):
+        """Creates an cluster instance from a protobuf.
+
+        :type cluster_pb: :class:`instance_pb2.Cluster`
+        :param cluster_pb: An instance protobuf object.
+
+        :type client: :class:`Client <google.cloud.bigtable.client.Client>`
+        :param client: The client that owns the instance.
+
+        :rtype: :class:`Instance`
+        :returns: The instance parsed from the protobuf response.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the instance
+                 name does not match
+                 ``projects/{project}/instances/{instance_id}``
+                 or if the parsed project ID does not match the project ID
+                 on the client.
+        """
+        match_cluster_name = _CLUSTER_NAME_RE.match(cluster_pb.name)
+        if match_cluster_name is None:
+            raise ValueError('Cluster protobuf name was not in the '
+                             'expected format.', cluster_pb.name)
+        if match_cluster_name.group('instance') != instance.instance_id:
+            raise ValueError('Instance ID on cluster does not match the '
+                             'instance ID on the client')
+        if match_cluster_name.group('project') != instance._client.project:
+            raise ValueError('Project ID on cluster does not match the '
+                             'project ID on the client')
+        cluster_id = match_cluster_name.group('cluster_id')
+        location_id = cluster_pb.location.split('/')[-1]
+
+        result = cls(cluster_id, instance, location_id, cluster_pb.state,
+                     cluster_pb.serve_nodes, cluster_pb.default_storage_type)
+        return result
+
+    def _update_from_pb(self, cluster_pb):
+        """Refresh self from the server-provided protobuf.
+        Helper for :meth:`from_pb` and :meth:`reload`.
+        """
+
+        self.location_id = cluster_pb.location.split('/')[-1]
+        self.state = cluster_pb.state
+        self.serve_nodes = cluster_pb.serve_nodes
+        self.default_storage_type = cluster_pb.default_storage_type
 
     @property
     def name(self):
@@ -112,7 +174,12 @@ class Cluster(object):
 
     def reload(self):
         """Reload the metadata for this cluster."""
-        self._instance._client.instance_admin_client.get_cluster(self.name)
+        cluster_pb = self._instance._client.instance_admin_client.get_cluster(
+            self.name)
+
+        # NOTE: _update_from_pb does not check that the project and
+        #       cluster ID on the response match the request.
+        self._update_from_pb(cluster_pb)
 
     def create(self):
         """Create this cluster.
@@ -134,11 +201,19 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   create operation.
         """
-        client = self._instance._client
-        return client.instance_admin_client.create_cluster(
-            self._instance.name, self.cluster_id, {})
 
-    def update(self, location='', serve_nodes=0):
+        client = self._instance._client
+        cluster_pb = instance_pb2.Cluster(
+            location=client.instance_admin_client.location_path(
+                client.project, self.location_id,),
+            serve_nodes=self.serve_nodes,
+            default_storage_type=self.default_storage_type)
+
+        return client.instance_admin_client.create_cluster(
+            self._instance.name, self.cluster_id, cluster_pb)
+
+    # def update(self, location='', serve_nodes=0):
+    def update(self):
         """Update this cluster.
 
         .. note::
@@ -170,7 +245,8 @@ class Cluster(object):
         """
         client = self._instance._client
         return client.instance_admin_client.update_cluster(
-            self.name, location, serve_nodes)
+            # self.name, location, serve_nodes)
+            self.name, self.serve_nodes)
 
     def delete(self):
         """Delete this cluster.

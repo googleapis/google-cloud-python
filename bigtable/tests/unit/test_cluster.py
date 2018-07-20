@@ -24,11 +24,14 @@ class TestCluster(unittest.TestCase):
 
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
+    LOCATION_ID = 'location-id'
     CLUSTER_ID = 'cluster-id'
     LOCATION_ID = 'location-id'
     CLUSTER_NAME = ('projects/' + PROJECT +
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
+    LOCATION_PATH = 'projects/' + PROJECT + '/locations/'
+    SERVE_NODES = 5
 
     @staticmethod
     def _get_target_class():
@@ -49,26 +52,31 @@ class TestCluster(unittest.TestCase):
         return self._get_target_client_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
         cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
-        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+        self.assertIsNone(cluster.location_id)
+        self.assertIsNone(cluster.serve_nodes)
+        self.assertIsNone(cluster.default_storage_type)
 
     def test_constructor_non_default(self):
-        SERVE_NODES = 8
+        from google.cloud.bigtable.enums import StorageType
+        STORAGE_TYPE_SSD = StorageType.SSD
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 self.LOCATION_ID, serve_nodes=SERVE_NODES)
+                                 location_id=self.LOCATION_ID,
+                                 serve_nodes=self.SERVE_NODES,
+                                 default_storage_type=STORAGE_TYPE_SSD)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(cluster.location_id, self.LOCATION_ID)
+        self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, STORAGE_TYPE_SSD)
 
     def test_name_property(self):
         from google.cloud.bigtable.instance import Instance
@@ -80,6 +88,123 @@ class TestCluster(unittest.TestCase):
         cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
 
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
+
+    def test_update_from_pb(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+
+        from google.cloud.bigtable import enums
+
+        location = self.LOCATION_PATH + self.LOCATION_ID
+        state = enums.ClusterState.READY
+        storage_type = enums.StorageType.SSD
+        cluster_pb = data_v2_pb2.Cluster(
+            location=location,
+            state=state,
+            serve_nodes=self.SERVE_NODES,
+            default_storage_type=storage_type
+        )
+
+        cluster = self._make_one(None, None)
+        self.assertIsNone(cluster.location_id)
+        self.assertIsNone(cluster.state)
+        self.assertIsNone(cluster.serve_nodes)
+        self.assertIsNone(cluster.default_storage_type)
+        cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.location_id, self.LOCATION_ID)
+        self.assertEqual(cluster.state, state)
+        self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, storage_type)
+
+    def test_update_from_pb_defaults(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.enums import ClusterState
+        from google.cloud.bigtable.enums import StorageType
+
+        cluster_pb = data_v2_pb2.Cluster()
+
+        cluster = self._make_one(None, None)
+        self.assertIsNone(cluster.location_id)
+        self.assertIsNone(cluster.state)
+        self.assertIsNone(cluster.serve_nodes)
+        self.assertIsNone(cluster.default_storage_type)
+        cluster._update_from_pb(cluster_pb)
+        self.assertFalse(cluster.location_id)
+        self.assertEqual(cluster.state, ClusterState.STATE_NOT_KNOWN)
+        self.assertEqual(cluster.serve_nodes, 0)
+        self.assertEqual(cluster.default_storage_type, StorageType.UNSPECIFIED)
+
+    def test_from_pb_success(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable import enums
+
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+
+        location = self.LOCATION_PATH + self.LOCATION_ID
+        state = enums.ClusterState.RESIZING
+        storage_type = enums.StorageType.SSD
+        cluster_pb = data_v2_pb2.Cluster(
+            name=self.CLUSTER_NAME,
+            location=location,
+            state=state,
+            serve_nodes=self.SERVE_NODES,
+            default_storage_type=storage_type
+        )
+
+        klass = self._get_target_class()
+        cluster = klass.from_pb(cluster_pb, instance)
+        self.assertIsInstance(cluster, klass)
+        self.assertEqual(cluster._instance, instance)
+        self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
+        self.assertEqual(cluster.location_id, self.LOCATION_ID)
+        self.assertEqual(cluster.state, state)
+        self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, storage_type)
+
+    def test_from_pb_bad_cluster_name(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+
+        bad_cluster_name = 'BAD_NAME'
+
+        cluster_pb = data_v2_pb2.Cluster(name=bad_cluster_name)
+
+        klass = self._get_target_class()
+        with self.assertRaises(ValueError):
+            klass.from_pb(cluster_pb, None)
+
+    def test_from_pb_instance_id_mistmatch(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+
+        ALT_INSTANCE_ID = 'ALT_INSTANCE_ID'
+        client = _Client(self.PROJECT)
+        instance = _Instance(ALT_INSTANCE_ID, client)
+
+        self.assertNotEqual(self.INSTANCE_ID, ALT_INSTANCE_ID)
+        cluster_pb = data_v2_pb2.Cluster(name=self.CLUSTER_NAME)
+
+        klass = self._get_target_class()
+        with self.assertRaises(ValueError):
+            klass.from_pb(cluster_pb, instance)
+
+    def test_from_pb_project_mistmatch(self):
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+
+        ALT_PROJECT = 'ALT_PROJECT'
+        client = _Client(project=ALT_PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+
+        self.assertNotEqual(self.PROJECT, ALT_PROJECT)
+        cluster_pb = data_v2_pb2.Cluster(name=self.CLUSTER_NAME)
+
+        klass = self._get_target_class()
+        with self.assertRaises(ValueError):
+            klass.from_pb(cluster_pb, instance)
 
     def test___eq__(self):
         client = _Client(self.PROJECT)
@@ -111,24 +236,34 @@ class TestCluster(unittest.TestCase):
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.enums import StorageType
 
-        LOCATION = 'LOCATION'
         api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
             mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
+        STORAGE_TYPE_SSD = StorageType.SSD
         instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
+        cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 location_id=self.LOCATION_ID,
+                                 serve_nodes=self.SERVE_NODES,
+                                 default_storage_type=STORAGE_TYPE_SSD)
 
         # Create response_pb
-        response_pb = _ClusterPB(
-            serve_nodes=DEFAULT_SERVE_NODES,
-            location=LOCATION,
+        LOCATION_ID_FROM_SERVER = 'new-location-id'
+        SERVE_NODES_FROM_SERVER = 10
+        STORAGE_TYPE_FROM_SERVER = StorageType.HDD
+
+        response_pb = data_v2_pb2.Cluster(
+            location=self.LOCATION_PATH + LOCATION_ID_FROM_SERVER,
+            serve_nodes=SERVE_NODES_FROM_SERVER,
+            default_storage_type=STORAGE_TYPE_FROM_SERVER
         )
 
         # Patch the stub used by the API method.
@@ -141,11 +276,17 @@ class TestCluster(unittest.TestCase):
         expected_result = None  # reload() has no return value.
 
         # Check Cluster optional config values before.
-        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.location_id, self.LOCATION_ID)
+        self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, STORAGE_TYPE_SSD)
 
         # Perform the method and check the result.
         result = cluster.reload()
         self.assertEqual(result, expected_result)
+        self.assertEqual(cluster.location_id, LOCATION_ID_FROM_SERVER)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES_FROM_SERVER)
+        self.assertEqual(cluster.default_storage_type,
+                         STORAGE_TYPE_FROM_SERVER)
 
     def test_create(self):
         from google.api_core import operation

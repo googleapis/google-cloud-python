@@ -123,6 +123,27 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(table._instance, instance)
         self.assertEqual(table._app_profile_id, app_profile_id)
 
+    def test_cluster_factory(self):
+        from google.cloud.bigtable.cluster import Cluster
+        from google.cloud.bigtable.enums import StorageType
+
+        CLUSTER_ID = self.INSTANCE_ID+'-cluster'
+        LOCATION_ID = 'us-central1-c'
+        SERVE_NODES = 3
+        STORAGE_TYPE = StorageType.HDD
+
+        instance = self._make_one(self.INSTANCE_ID, None)
+
+        cluster = instance.cluster(CLUSTER_ID, location_id=LOCATION_ID,
+                                   serve_nodes=SERVE_NODES,
+                                   default_storage_type=STORAGE_TYPE)
+        self.assertIsInstance(cluster, Cluster)
+        self.assertEqual(cluster.cluster_id, CLUSTER_ID)
+        self.assertEqual(cluster.location_id, LOCATION_ID)
+        self.assertIsNone(cluster.state)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
+
     def test__update_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)

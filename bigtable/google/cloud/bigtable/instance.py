@@ -18,6 +18,7 @@
 import re
 
 from google.cloud.bigtable.table import Table
+from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.cluster import Cluster
 
@@ -294,6 +295,53 @@ class Instance(object):
           permanently deleted.
         """
         self._client.instance_admin_client.delete_instance(name=self.name)
+
+    def cluster(self, cluster_id, location_id=None, state=None,
+                serve_nodes=None, default_storage_type=None):
+        """Factory to create a cluster associated with this instance.
+
+        :type cluster_id: str
+        :param cluster_id: The ID of the cluster.
+
+        :type instance: :class:`~google.cloud.bigtable.instance.Instance`
+        :param instance: The instance where the cluster resides.
+
+        :type location_id: str
+        :param location_id: (Creation Only) The location where this cluster's
+                            nodes and storage reside . For best performance,
+                            clients should be located as close as possible to
+                            this cluster.
+                            For list of supported locations refer to
+                            https://cloud.google.com/bigtable/docs/locations
+
+        :type state: int
+        :param state: (`OutputOnly`)
+                  The current state of the cluster.
+                  Possible values are represented by the following constants:
+                  :data:`google.cloud.bigtable.enums.ClusterState.STATE_NOT_KNOWN`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.REAY`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.CREATING`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.RESIZING`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.DISABLED`.
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the cluster.
+
+        :type default_storage_type: int
+        :param default_storage_type: (Optional) The type of storage
+                                     Possible values are represented by the
+                                     following constants:
+                                     :data:`google.cloud.bigtable.enums.StorageType.SSD`.
+                                     :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                     Defaults to
+                                     :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
+
+        :rtype: :class:`~google.cloud.bigtable.instance.Cluster`
+        :returns: a cluster owe=ned by this instance.
+        """
+        return Cluster(cluster_id, self, location_id=location_id,
+                       state=state, serve_nodes=serve_nodes,
+                       default_storage_type=default_storage_type)
 
     def table(self, table_id, app_profile_id=None):
         """Factory to create a table associated with this instance.
