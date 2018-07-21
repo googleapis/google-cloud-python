@@ -534,8 +534,8 @@ class DlpServiceClient(object):
                 be provided here. The reversible transformations are:
 
                  - ``CryptoReplaceFfxFpeConfig``
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
+                   If a dict is provided, it must be of the same form as the protobuf
+                   message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
@@ -1473,18 +1473,14 @@ class DlpServiceClient(object):
 
                 * Filter expressions are made up of one or more restrictions.
                 * Restrictions can be combined by ``AND`` or ``OR`` logical operators. A
-                sequence of restrictions implicitly uses ``AND``.
+                  sequence of restrictions implicitly uses ``AND``.
                 * A restriction has the form of ``<field> <operator> <value>``.
                 * Supported fields/values for inspect jobs:
-                ::
-
-                    - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
-                    - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
-                    - `trigger_name` - The resource name of the trigger that created job.
+                  - `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
+                  - `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
+                  - `trigger_name` - The resource name of the trigger that created job.
                 * Supported fields for risk analysis jobs:
-                ::
-
-                    - `state` - RUNNING|CANCELED|FINISHED|FAILED
+                  - `state` - RUNNING|CANCELED|FINISHED|FAILED
                 * The operator must be ``=`` or ``!=``.
 
                 Examples:

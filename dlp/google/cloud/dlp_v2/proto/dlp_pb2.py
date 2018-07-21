@@ -7078,17 +7078,17 @@ InspectConfig = _reflection.GeneratedProtocolMessageType('InspectConfig', (_mess
     __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Attributes:
-        max_findings_per_item:
-            Max number of findings that will be returned for each item
-            scanned. When set within ``InspectDataSourceRequest``, the
-            maximum returned is 1000 regardless if this is set higher.
-            When set within ``InspectContentRequest``, this field is
+        max_findings_per_item: \
+            Max number of findings that will be returned for each item \
+            scanned. When set within ``InspectDataSourceRequest``, the \
+            maximum returned is 1000 regardless if this is set higher. \
+            When set within ``InspectContentRequest``, this field is \
             ignored.
-        max_findings_per_request:
-            Max number of findings that will be returned per request/job.
-            When set within ``InspectContentRequest``, the maximum
+        max_findings_per_request: \
+            Max number of findings that will be returned per request/job. \
+            When set within ``InspectContentRequest``, the maximum \
             returned is 1000 regardless if this is set higher.
-        max_findings_per_info_type:
+        max_findings_per_info_type: \
             Configuration of findings limit given for specified infoTypes.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectConfig.FindingLimits)
@@ -7737,8 +7737,8 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
     __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Attributes:
-        snapshot_inspect_template:
-            If run with an InspectTemplate, a snapshot of its state at the
+        snapshot_inspect_template: \
+            If run with an InspectTemplate, a snapshot of its state at the \
             time of this run.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions)
@@ -7750,12 +7750,12 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
     __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Attributes:
-        processed_bytes:
+        processed_bytes: \
             Total size in bytes that were processed.
-        total_estimated_bytes:
+        total_estimated_bytes: \
             Estimate of the number of bytes to process.
-        info_type_stats:
-            Statistics of how many instances of each info type were found
+        info_type_stats: \
+            Statistics of how many instances of each info type were found \
             during inspect job.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails.Result)
@@ -7768,9 +7768,9 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
   
   
   Attributes:
-      requested_options:
+      requested_options: \
           The configuration used for this job.
-      result:
+      result: \
           A summary of the outcome of this inspect job.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails)
@@ -8022,26 +8022,26 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
       __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """Attributes:
-          field:
+          field: \
               Identifies the column. [required]
-          tag:
-              Semantic tag that identifies what a column contains, to
-              determine which statistical model to use to estimate the
-              reidentifiability of each value. [required]
-          info_type:
-              A column can be tagged with a InfoType to use the relevant
-              public dataset as a statistical model of population, if
-              available. We currently support US ZIP codes, region codes,
-              ages and genders. To programmatically obtain the list of
-              supported InfoTypes, use ListInfoTypes with the
+          tag: \
+              Semantic tag that identifies what a column contains, to \
+              determine which statistical model to use to estimate the \
+              reidentifiability of each value. [required] \
+          info_type: \
+              A column can be tagged with a InfoType to use the relevant \
+              public dataset as a statistical model of population, if \
+              available. We currently support US ZIP codes, region codes, \
+              ages and genders. To programmatically obtain the list of \
+              supported InfoTypes, use ListInfoTypes with the \
               supported\_by=RISK\_ANALYSIS filter.
-          custom_tag:
-              A column can be tagged with a custom tag. In this case, the
-              user must indicate an auxiliary table that contains
-              statistical information on the possible values of this column
+          custom_tag: \
+              A column can be tagged with a custom tag. In this case, the \
+              user must indicate an auxiliary table that contains \
+              statistical information on the possible values of this column \
               (below).
-          inferred:
-              If no semantic tag is indicated, we infer the statistical
+          inferred: \
+              If no semantic tag is indicated, we infer the statistical \
               model from the distribution of values in the input data
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField)
@@ -8188,19 +8188,11 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """Attributes:
-          value_frequency_lower_bound:
-              Lower bound on the value frequency of the values in this
-              bucket.
-          value_frequency_upper_bound:
-              Upper bound on the value frequency of the values in this
-              bucket.
-          bucket_size:
-              Total number of values in this bucket.
-          bucket_values:
-              Sample of value frequencies in this bucket. The total number
-              of values returned per bucket is capped at 20.
-          bucket_value_count:
-              Total number of distinct values in this bucket.
+          value_frequency_lower_bound: Lower bound on the value frequency of the values in this bucket.
+          value_frequency_upper_bound: Upper bound on the value frequency of the values in this bucket.
+          bucket_size: Total number of values in this bucket.
+          bucket_values: Sample of value frequencies in this bucket. The total number of values returned per bucket is capped at 20.
+          bucket_value_count: Total number of distinct values in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket)
       ))
@@ -8230,12 +8222,12 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       
       Attributes:
           quasi_ids_values:
-              Set of values defining the equivalence class. One value per
-              quasi-identifier column in the original KAnonymity metric
-              message. The order is always the same as the original request.
+          Set of values defining the equivalence class. One value per \
+          quasi-identifier column in the original KAnonymity metric \
+          message. The order is always the same as the original request.
           equivalence_class_size:
-              Size of the equivalence class, for example number of rows with
-              the above set of values.
+          Size of the equivalence class, for example number of rows with \
+          the above set of values.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass)
       ))
@@ -8246,18 +8238,18 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """Attributes:
-          equivalence_class_size_lower_bound:
-              Lower bound on the size of the equivalence classes in this
+          equivalence_class_size_lower_bound: \
+              Lower bound on the size of the equivalence classes in this \
               bucket.
-          equivalence_class_size_upper_bound:
-              Upper bound on the size of the equivalence classes in this
+          equivalence_class_size_upper_bound: \
+              Upper bound on the size of the equivalence classes in this \
               bucket.
-          bucket_size:
+          bucket_size: \
               Total number of equivalence classes in this bucket.
-          bucket_values:
-              Sample of equivalence classes in this bucket. The total number
+          bucket_values: \
+              Sample of equivalence classes in this bucket. The total number \
               of classes returned per bucket is capped at 20.
-          bucket_value_count:
+          bucket_value_count: \
               Total number of distinct equivalence classes in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket)
@@ -8306,18 +8298,18 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """Attributes:
-          sensitive_value_frequency_lower_bound:
-              Lower bound on the sensitive value frequencies of the
+          sensitive_value_frequency_lower_bound: \
+              Lower bound on the sensitive value frequencies of the \
               equivalence classes in this bucket.
-          sensitive_value_frequency_upper_bound:
-              Upper bound on the sensitive value frequencies of the
+          sensitive_value_frequency_upper_bound: \
+              Upper bound on the sensitive value frequencies of the \
               equivalence classes in this bucket.
-          bucket_size:
+          bucket_size: \
               Total number of equivalence classes in this bucket.
-          bucket_values:
-              Sample of equivalence classes in this bucket. The total number
+          bucket_values: \
+              Sample of equivalence classes in this bucket. The total number \
               of classes returned per bucket is capped at 20.
-          bucket_value_count:
+          bucket_value_count: \
               Total number of distinct equivalence classes in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket)
@@ -8572,8 +8564,8 @@ DateTime = _reflection.GeneratedProtocolMessageType('DateTime', (_message.Messag
     __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Attributes:
-        offset_minutes:
-            Set only if the offset can be determined. Positive for time
+        offset_minutes: \
+            Set only if the offset can be determined. Positive for time \
             ahead of UTC. E.g. For "UTC-9", this value is -540.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DateTime.TimeZone)
@@ -9342,8 +9334,7 @@ DeidentifyTemplate = _reflection.GeneratedProtocolMessageType('DeidentifyTemplat
           The last update timestamp of a inspectTemplate, output only
           field.
       deidentify_config:
-          ///////////// // The core content of the template //
-          ///////////////
+           The core content of the template
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DeidentifyTemplate)
   ))
@@ -9767,16 +9758,16 @@ InspectJobConfig = _reflection.GeneratedProtocolMessageType('InspectJobConfig', 
   __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Attributes:
-      storage_config:
+      storage_config: \
           The data to scan.
-      inspect_config:
+      inspect_config: \
           How and what to scan for.
-      inspect_template_name:
-          If provided, will be used as the default for all values in
-          InspectConfig. ``inspect_config`` will be merged into the
-          values persisted as part of the template.
-      actions:
-          Actions to execute at the completion of the job. Are executed
+      inspect_template_name: \
+          If provided, will be used as the default for all values in \
+          InspectConfig. ``inspect_config`` will be merged into the \
+          values persisted as part of the template. \
+      actions: \
+          Actions to execute at the completion of the job. Are executed \
           in the order provided.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectJobConfig)
