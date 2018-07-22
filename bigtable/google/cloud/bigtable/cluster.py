@@ -19,8 +19,6 @@ import re
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-from google.cloud.bigtable_admin_v2.types import instance_pb2
-
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
@@ -205,7 +203,7 @@ class Cluster(object):
         client = self._instance._client
         cluster_pb = instance_pb2.Cluster(
             location=client.instance_admin_client.location_path(
-                client.project, self.location_id,),
+                client.project, self.location_id),
             serve_nodes=self.serve_nodes,
             default_storage_type=self.default_storage_type)
 

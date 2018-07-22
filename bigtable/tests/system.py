@@ -316,6 +316,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(cluster.default_storage_type,
                          alt_cluster.default_storage_type)
 
+        # Delete the newly created cluster and confirm
+        self.assertTrue(self._cluster_exists(cluster.name))
+        cluster.delete()
+        self.assertFalse(self._cluster_exists(cluster.name))
+
     def _cluster_exists(self, cluster_name):
         from google.api_core import exceptions
         try:
@@ -325,13 +330,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
             return False
         else:
             return True
-
-    def test_delete_cluster(self):
-        cluster = Config.INSTANCE.cluster(ALT_CLUSTER_ID)
-
-        self.assertTrue(self._cluster_exists(cluster.name))
-        cluster.delete()
-        self.assertFalse(self._cluster_exists(cluster.name))
 
 
 class TestTableAdminAPI(unittest.TestCase):
