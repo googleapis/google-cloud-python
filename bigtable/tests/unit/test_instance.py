@@ -305,6 +305,13 @@ class TestInstance(unittest.TestCase):
         # Check Instance optional config values before.
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
+    def test_create_check_conflicts(self):
+        client = object()
+        instance = self._make_one(self.INSTANCE_ID, client)
+        with self.assertRaises(ValueError):
+            instance.create(location_id=self.LOCATION_ID,
+                            clusters=[object(), object()])
+
     def test_create(self):
         import datetime
         from google.api_core import operation
@@ -448,7 +455,7 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         clusters = [Cluster('cluster-id1', instance, 'location-id1'),
                     Cluster('cluster-id2', instance, 'location-id2')]
-        result = instance.create_with_multiple_clusters(clusters)
+        result = instance.create(None, None, None, clusters)
         actual_request = channel.requests[0][1]
 
         cluster1 = self._create_cluster(
