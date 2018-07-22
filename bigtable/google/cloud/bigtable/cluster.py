@@ -212,7 +212,6 @@ class Cluster(object):
         return client.instance_admin_client.create_cluster(
             self._instance.name, self.cluster_id, cluster_pb)
 
-    # def update(self, location='', serve_nodes=0):
     def update(self):
         """Update this cluster.
 
@@ -245,7 +244,6 @@ class Cluster(object):
         """
         client = self._instance._client
         return client.instance_admin_client.update_cluster(
-            # self.name, location, serve_nodes)
             self.name, self.serve_nodes)
 
     def delete(self):

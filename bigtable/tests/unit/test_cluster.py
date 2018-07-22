@@ -397,31 +397,28 @@ class TestCluster(unittest.TestCase):
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable_admin_v2.proto import (
-            instance_pb2 as data_v2_pb2)
-        from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.cloud.bigtable.enums import StorageType
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
 
-        SERVE_NODES = 81
-
-        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock())
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
+        STORAGE_TYPE_SSD = StorageType.SSD
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 self.LOCATION_ID, serve_nodes=SERVE_NODES)
-
-        # Create request_pb
-        request_pb = _ClusterPB(
-            name=self.CLUSTER_NAME,
-            serve_nodes=SERVE_NODES,
-        )
+                                 location_id=self.LOCATION_ID,
+                                 serve_nodes=self.SERVE_NODES,
+                                 default_storage_type=STORAGE_TYPE_SSD)
+        # Create expected_request
+        expected_request = instance_pb2.Cluster(
+            name=cluster.name,
+            serve_nodes=self.SERVE_NODES)
 
         # Create response_pb
         OP_ID = 5678
@@ -440,20 +437,20 @@ class TestCluster(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
+        channel = ChannelStub(responses=[response_pb])
+        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
+            channel=channel)
         client._instance_admin_client = api
-        instance_admin_client = client._instance_admin_client
-        instance_stub = instance_admin_client.bigtable_instance_admin_stub
-        instance_stub.UpdateCluster.side_effect = [response_pb]
 
+        # Perform the method and check the result.
         result = cluster.update()
+        actual_request = channel.requests[0][1]
 
+        self.assertEqual(actual_request, expected_request)
         self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
-
-        self.assertIsInstance(request_pb, data_v2_pb2.Cluster)
-        self.assertEqual(request_pb.name, self.CLUSTER_NAME)
-        self.assertEqual(request_pb.serve_nodes, SERVE_NODES)
 
     def test_delete(self):
         from google.protobuf import empty_pb2
@@ -488,13 +485,6 @@ class TestCluster(unittest.TestCase):
         result = cluster.delete()
 
         self.assertEqual(result, expected_result)
-
-
-def _ClusterPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import (
-        instance_pb2 as instance_v2_pb2)
-
-    return instance_v2_pb2.Cluster(*args, **kw)
 
 
 class _Instance(object):
