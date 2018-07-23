@@ -205,14 +205,14 @@ To run this sample:
     usage: detect_intent_knowledge.py [-h] --project-id PROJECT_ID
                                       [--session-id SESSION_ID]
                                       [--language-code LANGUAGE_CODE]
-                                      --knowledge-id KNOWLEDGE_ID
+                                      --knowledge-base-id KNOWLEDGE_ID
                                       texts [texts ...]
 
     Dialogflow API Detect Intent Python sample with text inputs.
 
     Examples:
       python detect_intent_knowledge.py -h
-      python detect_intent_knowledge.py --project-id PROJECT_ID   --session-id SESSION_ID --knowledge-id KNOWLEDGE_ID   "hello" "how do I reset my password?"
+      python detect_intent_knowledge.py --project-id PROJECT_ID   --session-id SESSION_ID --knowledge-base-id KNOWLEDGE_ID   "hello" "how do I reset my password?"
 
     positional arguments:
       texts                 Text inputs.
@@ -226,8 +226,8 @@ To run this sample:
                             UUID.
       --language-code LANGUAGE_CODE
                             Language code of the query. Defaults to "en-US".
-      --knowledge-id KNOWLEDGE_ID
-                            The id of the Knowledge Base to query against
+      --knowledge-base-id KNOWLEDGE_ID
+                            The id of the Knowledge Base to query against, e.g., OTE5NjYzMTkxNDA2NzI2MzQ4OA
 
 
 
@@ -588,7 +588,7 @@ To run this sample:
       {list,create,get,delete}
         list                List all Documents that belong to a certain Knowledge
                             base.
-        create              Create a Document for a certain Knowledge base.
+        create              Create a Document for a certain Knowledge base. Please note that it will be initially disabled until you enable it.
         get                 Get a Document by its id and the Knowledge base id.
         delete              Delete a Document by its id and the Knowledge baseid.
 
@@ -598,7 +598,17 @@ To run this sample:
                             Project id. Required.
       --knowledge-base-id KNOWLEDGE_BASE_ID
                             The id of the Knowledge Base that the Document belongs
-                            to
+                            to, e.g., OTE5NjYzMTkxNDA2NzI2MzQ4OA
+      --mime_type           The mime_type of the Document. e.g. text/csv, text/html,
+                            text/plain, text/pdf etc.
+                            
+      --knowledge_type      The Knowledge type of the Document. e.g. FAQ, EXTRACTIVE_QA.
+                            
+      --content_uri         Uri of the document, e.g. gs://path/mydoc.csv, 
+                            http://mypage.com/faq.html.
+                            
+  
+
 
 
 
