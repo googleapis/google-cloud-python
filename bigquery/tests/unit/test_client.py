@@ -69,7 +69,7 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         from google.cloud.bigquery._http import Connection
 
         creds = _make_credentials()
@@ -79,6 +79,20 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
+        self.assertIsNone(client.location)
+
+    def test_ctor_w_location(self):
+        from google.cloud.bigquery._http import Connection
+
+        creds = _make_credentials()
+        http = object()
+        location = 'us-central'
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http, location=location)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertEqual(client.location, location)
 
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound

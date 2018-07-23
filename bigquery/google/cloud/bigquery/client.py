@@ -107,6 +107,8 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
+        location str:
+            (Optional) Default location for jobs / datasets / tables.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -118,10 +120,17 @@ class Client(ClientWithProject):
              'https://www.googleapis.com/auth/cloud-platform')
     """The scopes required for authenticating as a BigQuery consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(
+            self, project=None, credentials=None, _http=None, location=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
+        self._location = location
+
+    @property
+    def location(self):
+        """Default location for jobs / datasets / tables."""
+        return self._location
 
     def get_service_account_email(self, project=None):
         """Get the email address of the project's BigQuery service account
