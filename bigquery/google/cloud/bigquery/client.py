@@ -757,8 +757,12 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def load_table_from_uri(
-            self, source_uris, destination, job_id=None, job_id_prefix=None,
-            location=None, project=None, job_config=None,
+            self, source_uris, destination,
+            job_id=None,
+            job_id_prefix=None,
+            location=None,
+            project=None,
+            job_config=None,
             retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
@@ -793,14 +797,22 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.LoadJob: A new load job.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
+
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
+
         load_job = job.LoadJob(
             job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
+
         return load_job
 
     def load_table_from_file(

@@ -1919,7 +1919,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -1942,7 +1942,47 @@ class TestClient(unittest.TestCase):
 
         client.load_table_from_uri(
             source_uri, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
+
+    def test_load_table_from_uri_w_client_location(self):
+        job_id = 'this-is-a-job-id'
+        destination_id = 'destination_table'
+        source_uri = 'gs://example/source.csv'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [source_uri],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        destination = client.dataset(self.DS_ID).table(destination_id)
+
+        client.load_table_from_uri(
+            source_uri, destination,
+            job_id=job_id,
+            project='other-project')
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
