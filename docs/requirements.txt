@@ -16,6 +16,7 @@ datastore/
 dlp/
 dns/
 firestore/
+kms/
 language/
 logging/
 error_reporting/
@@ -27,6 +28,7 @@ resource_manager/
 runtimeconfig/
 spanner/
 speech/
+tasks/
 texttospeech/
 trace/
 translate/

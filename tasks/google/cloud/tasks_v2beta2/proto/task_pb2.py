@@ -275,18 +275,19 @@ Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), dic
           ations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``  -
           ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
           ([0-9]),    hyphens (-), colons (:), or periods (.). For more
-          information, see    `Identifying    projects </resource-
-          manager/docs/creating-managing-
-          projects#identifying_projects>`__ -  ``LOCATION_ID`` is the
-          canonical ID for the task's location. The list    of available
-          locations can be obtained by calling    [ListLocations][google
-          .cloud.location.Locations.ListLocations]. For    more
-          information, see https://cloud.google.com/about/locations/. -
-          ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers ([0-9]),
-          or    hyphens (-). The maximum length is 100 characters. -
-          ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
-          ([0-9]),    hyphens (-), or underscores (\_). The maximum
-          length is 500    characters.
+          information, see    `Identifying    projects
+          <https://cloud.google.com/resource-manager/docs/creating-
+          managing-projects#identifying_projects>`_ -  ``LOCATION_ID``
+          is the canonical ID for the task's location. The list    of
+          available locations can be obtained by calling    [ListLocatio
+          ns][google.cloud.location.Locations.ListLocations]. For
+          more information, see
+          https://cloud.google.com/about/locations/. -  ``QUEUE_ID`` can
+          contain letters ([A-Za-z]), numbers ([0-9]), or    hyphens
+          (-). The maximum length is 100 characters. -  ``TASK_ID`` can
+          contain only letters ([A-Za-z]), numbers ([0-9]),    hyphens
+          (-), or underscores (\_). The maximum length is 500
+          characters.
       payload_type:
           Required.  The task's payload is used by the task's target to
           process the task. A payload is valid only if it is compatible
@@ -340,20 +341,20 @@ TaskStatus = _reflection.GeneratedProtocolMessageType('TaskStatus', (_message.Me
           a response.
       attempt_response_count:
           Output only. The number of attempts which have received a
-          response.  This field is not calculated for `pull tasks
-          <google.cloud.tasks.v2beta2.PullTaskTarget>`__.
+          response.  This field is not calculated for [pull
+          tasks][google.cloud.tasks.v2beta2.PullMessage].
       first_attempt_status:
           Output only. The status of the task's first attempt.  Only [di
           spatch\_time][google.cloud.tasks.v2beta2.AttemptStatus.dispatc
           h\_time] will be set. The other
           [AttemptStatus][google.cloud.tasks.v2beta2.AttemptStatus]
           information is not retained by Cloud Tasks.  This field is not
-          calculated for `pull tasks
-          <google.cloud.tasks.v2beta2.PullTaskTarget>`__.
+          calculated for [pull
+          tasks][google.cloud.tasks.v2beta2.PullMessage].
       last_attempt_status:
           Output only. The status of the task's last attempt.  This
-          field is not calculated for `pull tasks
-          <google.cloud.tasks.v2beta2.PullTaskTarget>`__.
+          field is not calculated for [pull
+          tasks][google.cloud.tasks.v2beta2.PullMessage].
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.TaskStatus)
   ))

@@ -58,3 +58,33 @@ s.replace(
     r'.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks',
     '.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/'
     'library/cloudtasks.googleapis.com')
+
+# Fix unindentation of bullet list second line
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    '(        \* .*\n        )([^\s*])',
+    '\g<1>  \g<2>')
+
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    '(Google IAM .*?_) ',
+    '\g<1>_ ')
+
+s.replace(
+    'google/cloud/tasks_v2beta2/gapic/cloud_tasks_client.py',
+    r'(Sample filter \\"app_engine_http_target: )\*\\".',
+    '\g<1>\\*\\".')
+
+s.replace("google/cloud/**/*.py", "`[.\s\n]+ </appengine/.*?>`__", "")
+
+# Issues with Anonymous ('__') links. Change to named.
+s.replace(
+    "google/cloud/tasks_v2beta2/proto/*.py",
+    ">`__",
+    ">`_")
+
+# Wrapped link fails due ot space in link
+s.replace(
+    "google/cloud/tasks_v2beta2/proto/queue_pb2.py",
+    '(uests in queue.yaml/xml) <\n\s+',
+    '\g<1>\n          <')
