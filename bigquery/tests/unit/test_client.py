@@ -1545,12 +1545,36 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.cancel_job(JOB_ID, project=OTHER_PROJECT, location='EU')
+            client.cancel_job(
+                JOB_ID, project=OTHER_PROJECT, location=self.LOCATION)
 
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
-            query_params={'projection': 'full', 'location': 'EU'})
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
+
+    def test_cancel_job_miss_w_client_location(self):
+        from google.cloud.exceptions import NotFound
+
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        JOB_ID = 'NONESUCH'
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
+        conn = client._connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client.cancel_job(JOB_ID, project=OTHER_PROJECT)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
 
     def test_cancel_job_hit(self):
         from google.cloud.bigquery.job import QueryJob

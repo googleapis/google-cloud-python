@@ -668,6 +668,10 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
