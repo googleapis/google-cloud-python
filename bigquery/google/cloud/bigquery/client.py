@@ -1160,8 +1160,13 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.ExtractJob: A new extract job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(destination_uris, six.string_types):
@@ -1171,6 +1176,7 @@ class Client(ClientWithProject):
             job_ref, source, destination_uris, client=self,
             job_config=job_config)
         extract_job._begin(retry=retry)
+
         return extract_job
 
     def query(

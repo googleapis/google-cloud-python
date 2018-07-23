@@ -2338,7 +2338,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2362,13 +2362,54 @@ class TestClient(unittest.TestCase):
 
         client.extract_table(
             source, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_extract_table_w_client_location(self):
+        job_id = 'job_id'
+        source_id = 'source_table'
+        destination = 'gs://bucket_name/object_name'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': source_id,
+                    },
+                    'destinationUris': [destination],
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+
+        client.extract_table(
+            source, destination, job_id=job_id, project='other-project')
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_extract_table_generated_job_id(self):
         from google.cloud.bigquery.job import ExtractJob
