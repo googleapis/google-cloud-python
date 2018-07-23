@@ -3716,6 +3716,43 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
     @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe_w_client_location(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client(location=self.LOCATION)
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_file = load_table_from_file.mock_calls[0][1][1]
+        sent_bytes = sent_file.getvalue()
+        assert isinstance(sent_bytes, bytes)
+        assert len(sent_bytes) > 0
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
     def test_load_table_from_dataframe_w_custom_job_config(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -3733,12 +3770,20 @@ class TestClientUpload(object):
             autospec=True)
         with load_patch as load_table_from_file:
             client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, job_config=job_config)
+                dataframe, self.TABLE_REF,
+                job_config=job_config,
+                location=self.LOCATION)
 
         load_table_from_file.assert_called_once_with(
-            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
-            rewind=True, job_id=None, job_id_prefix=None, location=None,
-            project=None, job_config=mock.ANY)
+            client, mock.ANY, self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=None,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
 
         sent_config = load_table_from_file.mock_calls[0][2]['job_config']
         assert sent_config is job_config

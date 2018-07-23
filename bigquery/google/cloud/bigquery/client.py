@@ -942,10 +942,19 @@ class Client(ClientWithProject):
             job_config = job.LoadJobConfig()
         job_config.source_format = job.SourceFormat.PARQUET
 
+        if location is None:
+            location = self.location
+
         return self.load_table_from_file(
-            buffer, destination, num_retries=num_retries, rewind=True,
-            job_id=job_id, job_id_prefix=job_id_prefix, location=location,
-            project=project, job_config=job_config)
+            buffer, destination,
+            num_retries=num_retries,
+            rewind=True,
+            job_id=job_id,
+            job_id_prefix=job_id_prefix,
+            location=location,
+            project=project,
+            job_config=job_config,
+        )
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
