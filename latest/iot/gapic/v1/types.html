@@ -1,0 +1,1466 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Cloud IoT API Client &#8212; google-cloud 271e3eb068 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Python Client for Google Cloud Key Management Service (KMS) API (Alpha)" href="../../../kms/index.html" />
+    <link rel="prev" title="Client for Cloud IoT API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.iot_v1.types">
+<span id="types-for-cloud-iot-api-client"></span><h1>Types for Cloud IoT API Client<a class="headerlink" href="#module-google.cloud.iot_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.iot_v1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.AuditData">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.iot_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
+<dd><p>Audit log information specific to Cloud IAM. This message is serialized
+as an <code class="docutils literal notranslate"><span class="pre">Any</span></code> type in the <code class="docutils literal notranslate"><span class="pre">ServiceData</span></code> message of an <code class="docutils literal notranslate"><span class="pre">AuditLog</span></code>
+message.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.AuditData.policy_delta">
+<code class="descname">policy_delta</code><a class="headerlink" href="#google.cloud.iot_v1.types.AuditData.policy_delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Policy delta between the original policy and the newly set
+policy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.iot_v1.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.iot_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.iot_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal notranslate"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.iot_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRegistryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">CreateDeviceRegistryRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRegistryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">CreateDeviceRegistry</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRegistryRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRegistryRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project and cloud region where this device registry must
+be created. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-</span>
+<span class="pre">project/locations/us-central1</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRegistryRequest.device_registry">
+<code class="descname">device_registry</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRegistryRequest.device_registry" title="Permalink to this definition">#</a></dt>
+<dd><p>The device registry. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be empty. The
+server will generate that field from the device registry
+<code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">CreateDeviceRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">CreateDevice</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device registry where this device should be
+created. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-</span>
+<span class="pre">central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.CreateDeviceRequest.device">
+<code class="descname">device</code><a class="headerlink" href="#google.cloud.iot_v1.types.CreateDeviceRequest.device" title="Permalink to this definition">#</a></dt>
+<dd><p>The device registration details. The field <code class="docutils literal notranslate"><span class="pre">name</span></code> must be
+empty. The server will generate that field from the device
+registry <code class="docutils literal notranslate"><span class="pre">id</span></code> provided and the <code class="docutils literal notranslate"><span class="pre">parent</span></code> field.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.CustomHttpPattern">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">CustomHttpPattern</code><a class="headerlink" href="#google.cloud.iot_v1.types.CustomHttpPattern" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeleteDeviceRegistryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeleteDeviceRegistryRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeleteDeviceRegistryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">DeleteDeviceRegistry</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeleteDeviceRegistryRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeleteDeviceRegistryRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device registry. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-</span>
+<span class="pre">central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeleteDeviceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeleteDeviceRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeleteDeviceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">DeleteDevice</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeleteDeviceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeleteDeviceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.DescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.iot_v1.types.DescriptorProto.ExtensionRange">
+<em class="property">class </em><code class="descname">ExtensionRange</code><a class="headerlink" href="#google.cloud.iot_v1.types.DescriptorProto.ExtensionRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DescriptorProto.ReservedRange">
+<em class="property">class </em><code class="descname">ReservedRange</code><a class="headerlink" href="#google.cloud.iot_v1.types.DescriptorProto.ReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Device">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Device</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device" title="Permalink to this definition">#</a></dt>
+<dd><p>The device resource.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.id" title="Permalink to this definition">#</a></dt>
+<dd><p>The user-defined device identifier. The device ID must be
+unique within a device registry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource path name. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p1/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/dev0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p1/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>. When
+<code class="docutils literal notranslate"><span class="pre">name</span></code> is populated as a response from the service, it
+always ends in the device numeric ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.num_id">
+<code class="descname">num_id</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.num_id" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] A server-defined unique numeric ID for the
+device. This is a more compact way to identify devices, and it
+is globally unique.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.credentials">
+<code class="descname">credentials</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.credentials" title="Permalink to this definition">#</a></dt>
+<dd><p>The credentials used to authenticate this device. To allow
+credential rotation without interruption, multiple device
+credentials can be bound to this device. No more than 3
+credentials can be bound to a single device at a time. When
+new credentials are added to a device, they are verified
+against the registry credentials. For details, see the
+description of the <code class="docutils literal notranslate"><span class="pre">DeviceRegistry.credentials</span></code> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_heartbeat_time">
+<code class="descname">last_heartbeat_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_heartbeat_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The last time an MQTT <code class="docutils literal notranslate"><span class="pre">PINGREQ</span></code> was received.
+This field applies only to devices connecting through MQTT.
+MQTT clients usually only send <code class="docutils literal notranslate"><span class="pre">PINGREQ</span></code> messages if the
+connection is idle, and no other messages have been sent.
+Timestamps are periodically collected and written to storage;
+they may be stale by a few minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_event_time">
+<code class="descname">last_event_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_event_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The last time a telemetry event was received.
+Timestamps are periodically collected and written to storage;
+they may be stale by a few minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_state_time">
+<code class="descname">last_state_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_state_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The last time a state event was received.
+Timestamps are periodically collected and written to storage;
+they may be stale by a few minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_config_ack_time">
+<code class="descname">last_config_ack_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_config_ack_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The last time a cloud-to-device config version
+acknowledgment was received from the device. This field is
+only for configurations sent through MQTT.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_config_send_time">
+<code class="descname">last_config_send_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_config_send_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The last time a cloud-to-device config version
+was sent to the device.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.blocked">
+<code class="descname">blocked</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.blocked" title="Permalink to this definition">#</a></dt>
+<dd><p>If a device is blocked, connections or requests from this
+device will fail. Can be used to temporarily prevent the
+device from connecting if, for example, the sensor is
+generating bad data and needs maintenance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_error_time">
+<code class="descname">last_error_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_error_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time the most recent error occurred, such as
+a failure to publish to Cloud Pub/Sub. This field is the
+timestamp of ‘last_error_status’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.last_error_status">
+<code class="descname">last_error_status</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.last_error_status" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The error message of the most recent error, such
+as a failure to publish to Cloud Pub/Sub. ‘last_error_time’
+is the timestamp of this field. If no errors have occurred,
+this field has an empty message and the status code 0 == OK.
+Otherwise, this field is expected to have a status code other
+than OK.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.config" title="Permalink to this definition">#</a></dt>
+<dd><p>The most recent device configuration, which is eventually sent
+from Cloud IoT Core to the device. If not present on creation,
+the configuration will be initialized with an empty payload
+and version value of <code class="docutils literal notranslate"><span class="pre">1</span></code>. To update this field after
+creation, use the <code class="docutils literal notranslate"><span class="pre">DeviceManager.ModifyCloudToDeviceConfig</span></code>
+method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.state" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The state most recently received from the
+device. If no state has been reported, this field is not
+present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Device.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>The metadata key-value pairs assigned to the device. This
+metadata is not interpreted or indexed by Cloud IoT Core. It
+can be used to add contextual information for the device.
+Keys must conform to the regular expression
+[a-zA-Z][a-zA-Z0-9-_.+~%]+ and be less than 128 bytes in
+length.  Values are free-form strings. Each value must be less
+than or equal to 32 KB in size.  The total size of all keys
+and values must be less than 256 KB, and the maximum number of
+key-value pairs is 500.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Device.MetadataEntry">
+<em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.iot_v1.types.Device.MetadataEntry" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeviceConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeviceConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The device configuration. Eventually delivered to devices.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceConfig.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceConfig.version" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The version of this update. The version number
+is assigned by the server, and is always greater than 0 after
+device creation. The version must be 0 on the <code class="docutils literal notranslate"><span class="pre">CreateDevice</span></code>
+request if a <code class="docutils literal notranslate"><span class="pre">config</span></code> is specified; the response of
+<code class="docutils literal notranslate"><span class="pre">CreateDevice</span></code> will always have a value of 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceConfig.cloud_update_time">
+<code class="descname">cloud_update_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceConfig.cloud_update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time at which this configuration version was
+updated in Cloud IoT Core. This timestamp is set by the
+server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceConfig.device_ack_time">
+<code class="descname">device_ack_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceConfig.device_ack_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time at which Cloud IoT Core received the
+acknowledgment from the device, indicating that the device has
+received this configuration version. If this field is not
+present, the device has not yet acknowledged that it received
+this version. Note that when the config was sent to the
+device, many config versions may have been available in Cloud
+IoT Core while the device was disconnected, and on connection,
+only the latest version is sent to the device. Some versions
+may never be sent to the device, and therefore are never
+acknowledged. This timestamp is set by Cloud IoT Core.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceConfig.binary_data">
+<code class="descname">binary_data</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceConfig.binary_data" title="Permalink to this definition">#</a></dt>
+<dd><p>The device configuration data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeviceCredential">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeviceCredential</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceCredential" title="Permalink to this definition">#</a></dt>
+<dd><p>A server-stored device credential used for authentication.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceCredential.credential">
+<code class="descname">credential</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceCredential.credential" title="Permalink to this definition">#</a></dt>
+<dd><p>The credential data. Reserved for expansion in the future.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceCredential.public_key">
+<code class="descname">public_key</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceCredential.public_key" title="Permalink to this definition">#</a></dt>
+<dd><p>A public key used to verify the signature of JSON Web Tokens
+(JWTs). When adding a new device credential, either via device
+creation or via modifications, this public key credential may
+be required to be signed by one of the registry level
+certificates. More specifically, if the registry contains at
+least one certificate, any new device credential must be
+signed by one of the registry certificates. As a result, when
+the registry contains certificates, only X.509 certificates
+are accepted as device credentials. However, if the registry
+does not contain a certificate, self-signed certificates and
+public keys will be accepted. New device credentials must be
+different from every registry-level certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceCredential.expiration_time">
+<code class="descname">expiration_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceCredential.expiration_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Optional] The time at which this credential becomes invalid.
+This credential will be ignored for new client authentication
+requests after this timestamp; however, it will not be
+automatically deleted.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeviceRegistry</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry" title="Permalink to this definition">#</a></dt>
+<dd><p>A container for a group of devices.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.id" title="Permalink to this definition">#</a></dt>
+<dd><p>The identifier of this device registry. For example,
+<code class="docutils literal notranslate"><span class="pre">myRegistry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource path name. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-</span>
+<span class="pre">project/locations/us-central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.event_notification_configs">
+<code class="descname">event_notification_configs</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.event_notification_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration for notification of telemetry events
+received from the device. All telemetry events that were
+successfully published by the device and acknowledged by Cloud
+IoT Core are guaranteed to be delivered to Cloud Pub/Sub. If
+multiple configurations match a message, only the first
+matching configuration is used. If you try to publish a device
+telemetry event using MQTT without specifying a Cloud Pub/Sub
+topic for the device’s registry, the connection closes
+automatically. If you try to do so using an HTTP connection,
+an error is returned. Up to 10 configurations may be provided.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.state_notification_config">
+<code class="descname">state_notification_config</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.state_notification_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration for notification of new states received from
+the device. State updates are guaranteed to be stored in the
+state history, but notifications to Cloud Pub/Sub are not
+guaranteed. For example, if permissions are misconfigured or
+the specified topic doesn’t exist, no notification will be
+published but the state will still be stored in Cloud IoT
+Core.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.mqtt_config">
+<code class="descname">mqtt_config</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.mqtt_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The MQTT configuration for this device registry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.http_config">
+<code class="descname">http_config</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.http_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The DeviceService (HTTP) configuration for this device
+registry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceRegistry.credentials">
+<code class="descname">credentials</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceRegistry.credentials" title="Permalink to this definition">#</a></dt>
+<dd><p>The credentials used to verify the device credentials. No more
+than 10 credentials can be bound to a single registry at a
+time. The verification process occurs at the time of device
+creation or update. If this field is empty, no verification is
+performed. Otherwise, the credentials of a newly created
+device or added credentials of an updated device should be
+signed with one of these registry credentials.  Note, however,
+that existing devices will never be affected by modifications
+to this list of credentials: after a device has been
+successfully created in a registry, it should be able to
+connect even if its registry credentials are revoked, deleted,
+or modified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.DeviceState">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">DeviceState</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceState" title="Permalink to this definition">#</a></dt>
+<dd><p>The device state, as reported by the device.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceState.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceState.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time at which this state version was updated
+in Cloud IoT Core.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.DeviceState.binary_data">
+<code class="descname">binary_data</code><a class="headerlink" href="#google.cloud.iot_v1.types.DeviceState.binary_data" title="Permalink to this definition">#</a></dt>
+<dd><p>The device state data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Duration">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.iot_v1.types.Duration" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.iot_v1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.EnumDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">EnumDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.EnumDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.iot_v1.types.EnumDescriptorProto.EnumReservedRange">
+<em class="property">class </em><code class="descname">EnumReservedRange</code><a class="headerlink" href="#google.cloud.iot_v1.types.EnumDescriptorProto.EnumReservedRange" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.EnumOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">EnumOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.EnumOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.EnumValueDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">EnumValueDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.EnumValueDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.EnumValueOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">EnumValueOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.EnumValueOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.EventNotificationConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">EventNotificationConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.EventNotificationConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration for forwarding telemetry events.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.EventNotificationConfig.subfolder_matches">
+<code class="descname">subfolder_matches</code><a class="headerlink" href="#google.cloud.iot_v1.types.EventNotificationConfig.subfolder_matches" title="Permalink to this definition">#</a></dt>
+<dd><p>If the subfolder name matches this string exactly, this
+configuration will be used. The string must not include the
+leading ‘/’ character. If empty, all strings are matched. This
+field is used only for telemetry events; subfolders are not
+supported for state changes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.EventNotificationConfig.pubsub_topic_name">
+<code class="descname">pubsub_topic_name</code><a class="headerlink" href="#google.cloud.iot_v1.types.EventNotificationConfig.pubsub_topic_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Pub/Sub topic name. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/myProject/topics/deviceEvents</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ExtensionRangeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ExtensionRangeOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.ExtensionRangeOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FieldDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FieldDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.FieldDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.iot_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FieldOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FieldOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.FieldOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FileDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FileDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.FileDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FileDescriptorSet">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FileDescriptorSet</code><a class="headerlink" href="#google.cloud.iot_v1.types.FileDescriptorSet" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.FileOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">FileOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.FileOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GeneratedCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GeneratedCodeInfo</code><a class="headerlink" href="#google.cloud.iot_v1.types.GeneratedCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.iot_v1.types.GeneratedCodeInfo.Annotation">
+<em class="property">class </em><code class="descname">Annotation</code><a class="headerlink" href="#google.cloud.iot_v1.types.GeneratedCodeInfo.Annotation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GetDeviceRegistryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GetDeviceRegistryRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetDeviceRegistryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">GetDeviceRegistry</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GetDeviceRegistryRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetDeviceRegistryRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device registry. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-</span>
+<span class="pre">central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GetDeviceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GetDeviceRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetDeviceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">GetDevice</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GetDeviceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetDeviceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GetDeviceRequest.field_mask">
+<code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetDeviceRequest.field_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the
+response. If the field mask is unset or empty, all fields are
+returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.iot_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Http">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Http</code><a class="headerlink" href="#google.cloud.iot_v1.types.Http" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.HttpConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">HttpConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.HttpConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration of the HTTP bridge for a device registry.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.HttpConfig.http_enabled_state">
+<code class="descname">http_enabled_state</code><a class="headerlink" href="#google.cloud.iot_v1.types.HttpConfig.http_enabled_state" title="Permalink to this definition">#</a></dt>
+<dd><p>If enabled, allows devices to use DeviceService via the HTTP
+protocol. Otherwise, any requests to DeviceService will fail
+for this registry.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.HttpRule">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">HttpRule</code><a class="headerlink" href="#google.cloud.iot_v1.types.HttpRule" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceConfigVersionsRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">ListDeviceConfigVersions</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest.num_versions">
+<code class="descname">num_versions</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceConfigVersionsRequest.num_versions" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of versions to list. Versions are listed in
+decreasing order of the version number. The maximum number of
+versions retained is 10. If this value is zero, it will return
+all the versions available.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceConfigVersionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceConfigVersionsResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceConfigVersionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">ListDeviceConfigVersions</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceConfigVersionsResponse.device_configs">
+<code class="descname">device_configs</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceConfigVersionsResponse.device_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>The device configuration for the last few versions. Versions
+are listed in decreasing order, starting from the most recent
+one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceRegistriesRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistries</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project and cloud region path. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/example-project/locations/us-central1</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of registries to return in the response. If
+this value is zero, the service will select a default size. A
+call may return fewer objects than requested, but if there is
+a non-empty <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, it indicates that more entries are
+available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last
+<code class="docutils literal notranslate"><span class="pre">ListDeviceRegistriesResponse</span></code>; indicates that this is a
+continuation of a prior <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistries</span></code> call, and
+that the system should return the next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceRegistriesResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">ListDeviceRegistries</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesResponse.device_registries">
+<code class="descname">device_registries</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesResponse.device_registries" title="Permalink to this definition">#</a></dt>
+<dd><p>The registries that matched the query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceRegistriesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceRegistriesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more registries that
+match the request; this value should be passed in a new
+<code class="docutils literal notranslate"><span class="pre">ListDeviceRegistriesRequest</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceStatesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceStatesRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceStatesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">ListDeviceStates</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceStatesRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceStatesRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceStatesRequest.num_states">
+<code class="descname">num_states</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceStatesRequest.num_states" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of states to list. States are listed in descending
+order of update time. The maximum number of states retained is
+10. If this value is zero, it will return all the states
+available.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDeviceStatesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDeviceStatesResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceStatesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">ListDeviceStates</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDeviceStatesResponse.device_states">
+<code class="descname">device_states</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDeviceStatesResponse.device_states" title="Permalink to this definition">#</a></dt>
+<dd><p>The last few device states. States are listed in descending
+order of server update time, starting from the most recent
+one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDevicesRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">ListDevices</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The device registry path. Required. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/my-project/locations/us-central1/registries/my-</span>
+<span class="pre">registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.device_num_ids">
+<code class="descname">device_num_ids</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.device_num_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of device numerical ids. If empty, it will ignore this
+field. This field cannot hold more than 10,000 entries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.device_ids">
+<code class="descname">device_ids</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.device_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of device string identifiers. If empty, it will ignore
+this field. For example, <code class="docutils literal notranslate"><span class="pre">['device0',</span> <span class="pre">'device12']</span></code>. This
+field cannot hold more than 10,000 entries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.field_mask">
+<code class="descname">field_mask</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.field_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>The fields of the <code class="docutils literal notranslate"><span class="pre">Device</span></code> resource to be returned in the
+response. The fields <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">num_id</span></code> are always
+returned by default, along with any other fields specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of devices to return in the response. If
+this value is zero, the service will select a default size. A
+call may return fewer objects than requested, but if there is
+a non-empty <code class="docutils literal notranslate"><span class="pre">page_token</span></code>, it indicates that more entries are
+available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The value returned by the last <code class="docutils literal notranslate"><span class="pre">ListDevicesResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal notranslate"><span class="pre">ListDevices</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ListDevicesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ListDevicesResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response for <code class="docutils literal notranslate"><span class="pre">ListDevices</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesResponse.devices">
+<code class="descname">devices</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesResponse.devices" title="Permalink to this definition">#</a></dt>
+<dd><p>The devices that match the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ListDevicesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.iot_v1.types.ListDevicesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more devices that
+match the request; this value should be passed in a new
+<code class="docutils literal notranslate"><span class="pre">ListDevicesRequest</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.MessageOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">MessageOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.MessageOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.MethodDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">MethodDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.MethodDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.MethodOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">MethodOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.MethodOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ModifyCloudToDeviceConfigRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">ModifyCloudToDeviceConfig</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the device. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.version_to_update">
+<code class="descname">version_to_update</code><a class="headerlink" href="#google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.version_to_update" title="Permalink to this definition">#</a></dt>
+<dd><p>The version number to update. If this value is zero, it will
+not check the version number of the server and will always
+update the current version; otherwise, this update will fail
+if the version number found on the server does not match this
+version number. This is used to support multiple simultaneous
+updates without losing data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.binary_data">
+<code class="descname">binary_data</code><a class="headerlink" href="#google.cloud.iot_v1.types.ModifyCloudToDeviceConfigRequest.binary_data" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration data for the device.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.MqttConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">MqttConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.MqttConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration of MQTT for a device registry.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.MqttConfig.mqtt_enabled_state">
+<code class="descname">mqtt_enabled_state</code><a class="headerlink" href="#google.cloud.iot_v1.types.MqttConfig.mqtt_enabled_state" title="Permalink to this definition">#</a></dt>
+<dd><p>If enabled, allows connections using the MQTT protocol.
+Otherwise, MQTT connections to this registry will fail.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.OneofDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">OneofDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.OneofDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.OneofOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">OneofOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.OneofOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.iot_v1.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.iot_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.iot_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.iot_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal notranslate"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal notranslate"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal notranslate"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.iot_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.iot_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.PublicKeyCertificate">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">PublicKeyCertificate</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCertificate" title="Permalink to this definition">#</a></dt>
+<dd><p>A public key certificate format and data.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PublicKeyCertificate.format">
+<code class="descname">format</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCertificate.format" title="Permalink to this definition">#</a></dt>
+<dd><p>The certificate format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PublicKeyCertificate.certificate">
+<code class="descname">certificate</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCertificate.certificate" title="Permalink to this definition">#</a></dt>
+<dd><p>The certificate data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PublicKeyCertificate.x509_details">
+<code class="descname">x509_details</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCertificate.x509_details" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The certificate details. Used only for X.509
+certificates.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.PublicKeyCredential">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">PublicKeyCredential</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCredential" title="Permalink to this definition">#</a></dt>
+<dd><p>A public key format and data.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PublicKeyCredential.format">
+<code class="descname">format</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCredential.format" title="Permalink to this definition">#</a></dt>
+<dd><p>The format of the key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.PublicKeyCredential.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.iot_v1.types.PublicKeyCredential.key" title="Permalink to this definition">#</a></dt>
+<dd><p>The key data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.RegistryCredential">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">RegistryCredential</code><a class="headerlink" href="#google.cloud.iot_v1.types.RegistryCredential" title="Permalink to this definition">#</a></dt>
+<dd><p>A server-stored registry credential used to validate device credentials.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.RegistryCredential.credential">
+<code class="descname">credential</code><a class="headerlink" href="#google.cloud.iot_v1.types.RegistryCredential.credential" title="Permalink to this definition">#</a></dt>
+<dd><p>The credential data. Reserved for expansion in the future.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.RegistryCredential.public_key_certificate">
+<code class="descname">public_key_certificate</code><a class="headerlink" href="#google.cloud.iot_v1.types.RegistryCredential.public_key_certificate" title="Permalink to this definition">#</a></dt>
+<dd><p>A public key certificate used to verify the device
+credentials.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ServiceDescriptorProto">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ServiceDescriptorProto</code><a class="headerlink" href="#google.cloud.iot_v1.types.ServiceDescriptorProto" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.ServiceOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">ServiceOptions</code><a class="headerlink" href="#google.cloud.iot_v1.types.ServiceOptions" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.iot_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.iot_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.SourceCodeInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">SourceCodeInfo</code><a class="headerlink" href="#google.cloud.iot_v1.types.SourceCodeInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.iot_v1.types.SourceCodeInfo.Location">
+<em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.iot_v1.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.StateNotificationConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">StateNotificationConfig</code><a class="headerlink" href="#google.cloud.iot_v1.types.StateNotificationConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>The configuration for notification of new states received from the
+device.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.StateNotificationConfig.pubsub_topic_name">
+<code class="descname">pubsub_topic_name</code><a class="headerlink" href="#google.cloud.iot_v1.types.StateNotificationConfig.pubsub_topic_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Pub/Sub topic name. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/myProject/topics/deviceEvents</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.iot_v1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.iot_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.iot_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.iot_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.iot_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.Timestamp">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.iot_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.UninterpretedOption">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UninterpretedOption</code><a class="headerlink" href="#google.cloud.iot_v1.types.UninterpretedOption" title="Permalink to this definition">#</a></dt>
+<dd><dl class="class">
+<dt id="google.cloud.iot_v1.types.UninterpretedOption.NamePart">
+<em class="property">class </em><code class="descname">NamePart</code><a class="headerlink" href="#google.cloud.iot_v1.types.UninterpretedOption.NamePart" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRegistryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UpdateDeviceRegistryRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRegistryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">UpdateDeviceRegistry</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRegistryRequest.device_registry">
+<code class="descname">device_registry</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRegistryRequest.device_registry" title="Permalink to this definition">#</a></dt>
+<dd><p>The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> field must
+be empty, and the <code class="docutils literal notranslate"><span class="pre">name</span></code> field must indicate the path of the
+resource. For example, <code class="docutils literal notranslate"><span class="pre">projects/example-</span>
+<span class="pre">project/locations/us-central1/registries/my-registry</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRegistryRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRegistryRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Only updates the <code class="docutils literal notranslate"><span class="pre">device_registry</span></code> fields indicated by this
+mask. The field mask must not be empty, and it must not
+contain fields that are immutable or only set by the server.
+Mutable top-level fields: <code class="docutils literal notranslate"><span class="pre">event_notification_config</span></code>,
+<code class="docutils literal notranslate"><span class="pre">http_config</span></code>, <code class="docutils literal notranslate"><span class="pre">mqtt_config</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">state_notification_config</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">UpdateDeviceRequest</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for <code class="docutils literal notranslate"><span class="pre">UpdateDevice</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRequest.device">
+<code class="descname">device</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRequest.device" title="Permalink to this definition">#</a></dt>
+<dd><p>The new values for the device registry. The <code class="docutils literal notranslate"><span class="pre">id</span></code> and
+<code class="docutils literal notranslate"><span class="pre">num_id</span></code> fields must be empty, and the field <code class="docutils literal notranslate"><span class="pre">name</span></code> must
+specify the name path. For example,
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/device0</span></code>or
+<code class="docutils literal notranslate"><span class="pre">projects/p0/locations/us-</span>
+<span class="pre">central1/registries/registry0/devices/{num_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.UpdateDeviceRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.iot_v1.types.UpdateDeviceRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Only updates the <code class="docutils literal notranslate"><span class="pre">device</span></code> fields indicated by this mask. The
+field mask must not be empty, and it must not contain fields
+that are immutable or only set by the server. Mutable top-
+level fields: <code class="docutils literal notranslate"><span class="pre">credentials</span></code>, <code class="docutils literal notranslate"><span class="pre">blocked</span></code>, and <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails">
+<em class="property">class </em><code class="descclassname">google.cloud.iot_v1.types.</code><code class="descname">X509CertificateDetails</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of an X.509 certificate. For informational purposes only.</p>
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.issuer">
+<code class="descname">issuer</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.issuer" title="Permalink to this definition">#</a></dt>
+<dd><p>The entity that signed the certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.subject">
+<code class="descname">subject</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.subject" title="Permalink to this definition">#</a></dt>
+<dd><p>The entity the certificate and public key belong to.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time the certificate becomes valid.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.expiry_time">
+<code class="descname">expiry_time</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.expiry_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time the certificate becomes invalid.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.signature_algorithm">
+<code class="descname">signature_algorithm</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.signature_algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>The algorithm used to sign the certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iot_v1.types.X509CertificateDetails.public_key_type">
+<code class="descname">public_key_type</code><a class="headerlink" href="#google.cloud.iot_v1.types.X509CertificateDetails.public_key_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of public key in the certificate.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal notranslate"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../automl/index.html">Python Client for Cloud AutoML API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Python Client for Cloud Data Loss Prevention (DLP) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Cloud IoT API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">Python Client for Google Cloud OS Login API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Python Client for Stackdriver Monitoring API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Python Client for Google Cloud Memorystore for Redis API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Python Client for Cloud Tasks API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Python Client for Cloud Text-to-Speech API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud IoT API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Cloud IoT API</a></li>
+      <li>Next: <a href="../../../kms/index.html" title="next chapter">Python Client for Google Cloud Key Management Service (KMS) API (Alpha)</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../../_sources/iot/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
