@@ -50,6 +50,29 @@ class TestMutationsBatcher(unittest.TestCase):
     def _make_client(self, *args, **kwargs):
         return self._get_target_client_class()(*args, **kwargs)
 
+    @staticmethod
+    def _get_target_batcher_class():
+        from google.cloud.bigtable.batcher import MutationsBatcher
+
+        return MutationsBatcher
+
+    def _make_batcher(self, *args, **kwargs):
+        return self._get_target_batcher_class()(*args, **kwargs)
+
+    def _make_rows(self, table):
+        from google.cloud.bigtable.row import DirectRow
+
+        rows = [DirectRow(row_key=b'row_key', table=table),
+                DirectRow(row_key=b'row_key_2', table=table),
+                DirectRow(row_key=b'row_key_3', table=table),
+                DirectRow(row_key=b'row_key_4', table=table)]
+        rows[0].set_cell('cf1', b'c1', 1)
+        rows[1].set_cell('cf1', b'c1', 2)
+        rows[2].set_cell('cf1', b'c1', 3)
+        rows[3].set_cell('cf1', b'c1', 4)
+
+        return rows
+
     def test_constructor(self):
         from google.cloud.bigtable.batcher import MutationsBatcher
 
@@ -64,18 +87,10 @@ class TestMutationsBatcher(unittest.TestCase):
         self.assertEqual(table.table_id, mutation_batcher.table.table_id)
 
     def test_add_row(self):
-        from google.cloud.bigtable.batcher import MutationsBatcher
-        from google.cloud.bigtable.row import DirectRow
-
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table)
+        mutation_batcher = self._make_batcher(table)
 
-        rows = [DirectRow(row_key=b'row_key_1', table=table),
-                DirectRow(row_key=b'row_key_2', table=table)]
-        rows[0].set_cell('cf1', b'c1', 1)
-        rows[0].set_cell('cf1', b'c1', 2)
-        rows[1].set_cell('cf1', b'c1', 3)
-        rows[1].set_cell('cf1', b'c1', 4)
+        rows = self._make_rows(table)
 
         for row in rows:
             mutation_batcher.mutate(row)
@@ -87,20 +102,10 @@ class TestMutationsBatcher(unittest.TestCase):
         self.assertEqual(table.mutation_calls, 1)
 
     def test_add_row_with_max_flush_count(self):
-        from google.cloud.bigtable.batcher import MutationsBatcher
-        from google.cloud.bigtable.row import DirectRow
-
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table, flush_count=3)
+        mutation_batcher = self._make_batcher(table, flush_count=3)
 
-        rows = [DirectRow(row_key=b'row_key', table=table),
-                DirectRow(row_key=b'row_key_2', table=table),
-                DirectRow(row_key=b'row_key_3', table=table),
-                DirectRow(row_key=b'row_key_4', table=table)]
-        rows[0].set_cell('cf1', b'c1', 1)
-        rows[1].set_cell('cf1', b'c1', 2)
-        rows[2].set_cell('cf1', b'c1', 3)
-        rows[3].set_cell('cf1', b'c1', 4)
+        rows = self._make_rows(table)
 
         for row in rows:
             mutation_batcher.mutate(row)
@@ -111,40 +116,27 @@ class TestMutationsBatcher(unittest.TestCase):
 
         self.assertEqual(table.mutation_calls, 2)
 
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=1)
+    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
     def test_add_row_with_max_mutations_failure(self):
-        from google.cloud.bigtable.batcher import MutationsBatcher
-        from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import TooManyMutationsError
 
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table)
+        mutation_batcher = self._make_batcher(table)
 
-        rows = [DirectRow(row_key=b'row_key_1', table=table),
-                DirectRow(row_key=b'row_key_2', table=table)]
-        rows[0].set_cell('cf1', b'c1', 1)
+        rows = self._make_rows(table)
         rows[0].set_cell('cf1', b'c1', 2)
-        rows[1].set_cell('cf1', b'c1', 3)
-        rows[1].set_cell('cf1', b'c1', 4)
+        rows[0].set_cell('cf1', b'c1', 3)
+        rows[0].set_cell('cf1', b'c1', 4)
 
-        for row in rows:
-            with self.assertRaises(TooManyMutationsError):
-                mutation_batcher.mutate(row)
+        with self.assertRaises(TooManyMutationsError):
+            mutation_batcher.mutate(rows[0])
 
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=2)
+    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
     def test_add_row_with_max_mutations(self):
-        from google.cloud.bigtable.batcher import MutationsBatcher
-        from google.cloud.bigtable.row import DirectRow
-
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table)
+        mutation_batcher = self._make_batcher(table)
 
-        rows = [DirectRow(row_key=b'row_key_1', table=table),
-                DirectRow(row_key=b'row_key_2', table=table)]
-        rows[0].set_cell('cf1', b'c1', 1)
-        rows[0].set_cell('cf1', b'c1', 2)
-        rows[1].set_cell('cf1', b'c1', 3)
-        rows[1].set_cell('cf1', b'c1', 4)
+        rows = self._make_rows(table)
 
         for row in rows:
             mutation_batcher.mutate(row)
@@ -156,21 +148,15 @@ class TestMutationsBatcher(unittest.TestCase):
         self.assertEqual(table.mutation_calls, 2)
 
     def test_add_row_with_max_row_bytes(self):
-        from google.cloud.bigtable.batcher import MutationsBatcher
-        from google.cloud.bigtable.row import DirectRow
-
         table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table, max_row_bytes=1)
+        mutation_batcher = self._make_batcher(table,
+                                              max_row_bytes=1 * 1024 * 1024)
 
         number_of_bytes = 2 * 1024 * 1024
         max_value = b'1' * number_of_bytes
 
-        rows = [DirectRow(row_key=b'row_key', table=table),
-                DirectRow(row_key=b'row_key_2', table=table)]
+        rows = self._make_rows(table)
         rows[0].set_cell('cf1', b'c1', max_value)
-        rows[0].set_cell('cf1', b'c1', 2)
-        rows[1].set_cell('cf1', b'c1', 3)
-        rows[1].set_cell('cf1', b'c1', 4)
 
         for row in rows:
             mutation_batcher.mutate(row)

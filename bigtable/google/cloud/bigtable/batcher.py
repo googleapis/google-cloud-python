@@ -54,13 +54,14 @@ class MutationsBatcher(object):
     (5 MB).
     """
 
-    def __init__(self, table, flush_count=None, max_row_bytes=None):
+    def __init__(self, table, flush_count=FLUSH_COUNT,
+                 max_row_bytes=MAX_ROW_BYTES):
         self.rows = []
         self.total_mutation_count = 0
         self.total_size = 0
         self.table = table
-        self.flush_count = flush_count if flush_count else FLUSH_COUNT
-        self.max_row_bytes = max_row_bytes if max_row_bytes else MAX_ROW_BYTES
+        self.flush_count = flush_count
+        self.max_row_bytes = max_row_bytes
 
     def mutate(self, row):
         """ Add a row to the batch. If the current batch meets one of the size
@@ -75,18 +76,18 @@ class MutationsBatcher(object):
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
         """
-        mutation_size = 0
-        for mutation in row._get_mutations():
-            mutation_size = mutation.ByteSize()
-            if (self.total_size + mutation_size) >= self.max_row_bytes:
-                self.flush()
-
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
             raise table.TooManyMutationsError
 
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
             self.flush()
+
+        mutation_size = 0
+        for mutation in row._get_mutations():
+            mutation_size = mutation.ByteSize()
+            if (self.total_size + mutation_size) >= self.max_row_bytes:
+                self.flush()
 
         self.rows.append(row)
         self.total_mutation_count += mutation_count
