@@ -31,11 +31,12 @@ credentials for applications.
 Install Dependencies
 ++++++++++++++++++++
 
-#. Clone python-docs-samples and change directory to the sample directory you want to use.
+#. Clone the repository and change directory to the sample directory.
 
     .. code-block:: bash
 
-        $ git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
+        $ git clone https://github.com/dialogflow/dialogflow-python-client-v2.git
+        $ cd dialogflow-python-client-v2/samples
 
 #. Install `pip`_ and `virtualenv`_ if you do not already have them. You may want to refer to the `Python Development Environment Setup Guide`_ for Google Cloud Platform for instructions.
 
