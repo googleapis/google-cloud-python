@@ -229,22 +229,18 @@ class Instance(object):
                  and ``default_storage_type`` are set.
         """
 
-        if (clusters is not None and
-            (location_id is not None or serve_nodes is not None or
-             default_storage_type is not None)):
-            raise ValueError("clusters and one of location_id, serve_nodes, \
-                             default_storage_type can not be set \
-                             simultaneously.")
-
         if clusters is None:
             cluster_id = '{}-cluster'.format(self.instance_id)
 
             clusters = [Cluster(cluster_id, self, location_id,
                                 serve_nodes, default_storage_type)]
 
-        clusters_dict = {}
-        for cluster in clusters:
-            clusters_dict[cluster.cluster_id] = cluster._create_pb_request()
+        elif location_id is not None or
+             serve_nodes is not None or
+             default_storage_type is not None:
+            raise ValueError("clusters and one of location_id, serve_nodes, \
+                             default_storage_type can not be set \
+                             simultaneously.")
 
         instance = instance_pb2.Instance(
             display_name=self.display_name, type=self.type_,
@@ -254,7 +250,7 @@ class Instance(object):
 
         return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters=clusters_dict)
+            clusters={c.cluster_id: c._create_pb_request() for c in clusters})
 
     def update(self):
         """Update this instance.
