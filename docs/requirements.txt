@@ -16,6 +16,7 @@ datastore/
 dlp/
 dns/
 firestore/
+iot/
 kms/
 language/
 logging/

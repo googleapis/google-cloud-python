@@ -14,6 +14,7 @@
   dlp/index
   dns/usage
   firestore/index
+  iot/index
   kms/index
   language/usage
   pubsub/index
