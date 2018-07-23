@@ -25,6 +25,7 @@ class TestCluster(unittest.TestCase):
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
     CLUSTER_ID = 'cluster-id'
+    LOCATION_ID = 'location-id'
     CLUSTER_NAME = ('projects/' + PROJECT +
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
@@ -53,7 +54,7 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._make_one(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -64,7 +65,7 @@ class TestCluster(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
 
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 serve_nodes=SERVE_NODES)
+                                 self.LOCATION_ID, serve_nodes=SERVE_NODES)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
@@ -76,37 +77,37 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
 
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
 
     def test___eq__(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._make_one(self.CLUSTER_ID, instance)
-        cluster2 = self._make_one(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
+        cluster2 = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         self.assertEqual(cluster1, cluster2)
 
     def test___eq__type_differ(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._make_one(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         cluster2 = object()
         self.assertNotEqual(cluster1, cluster2)
 
     def test___ne__same_value(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._make_one(self.CLUSTER_ID, instance)
-        cluster2 = self._make_one(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
+        cluster2 = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         comparison_val = (cluster1 != cluster2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._make_one('cluster_id1', instance)
-        cluster2 = self._make_one('cluster_id2', instance)
+        cluster1 = self._make_one('cluster_id1', instance, self.LOCATION_ID)
+        cluster2 = self._make_one('cluster_id2', instance, self.LOCATION_ID)
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
@@ -122,7 +123,7 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
 
         # Create response_pb
         response_pb = _ClusterPB(
@@ -159,7 +160,7 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
 
         # Create response_pb
         OP_ID = 5678
@@ -207,7 +208,7 @@ class TestCluster(unittest.TestCase):
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 serve_nodes=SERVE_NODES)
+                                 self.LOCATION_ID, serve_nodes=SERVE_NODES)
 
         # Create request_pb
         request_pb = _ClusterPB(
@@ -261,6 +262,7 @@ class TestCluster(unittest.TestCase):
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 self.LOCATION_ID,
                                  serve_nodes=DEFAULT_SERVE_NODES)
 
         # Create response_pb

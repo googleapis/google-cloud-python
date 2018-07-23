@@ -1,15 +1,16 @@
-Python Client for Cloud AutoML API (`Alpha`_)
-=============================================
+Python Client for Google Cloud Key Management Service (KMS) API (`Alpha`_)
+==========================================================================
 
-`Cloud AutoML API`_: The AutoML project API.
+`Google Cloud Key Management Service (KMS) API`_: Manages encryption for your cloud services the same way you do on-premises.
+You can generate, use, rotate, and destroy AES256 encryption keys.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Cloud AutoML API: https://cloud.google.com/automl
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/automl/index.html
-.. _Product Documentation:  https://cloud.google.com/automl
+.. _Google Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/kms/usage.html
+.. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start
 -----------
@@ -18,13 +19,13 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud AutoML API.`_
+3. `Enable the Google Cloud Key Management Service (KMS) API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud AutoML API.:  https://cloud.google.com/automl
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable the Google Cloud Key Management Service (KMS) API.:  https://cloud.google.com/kms
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -48,7 +49,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-automl
+    <your-env>/bin/pip install google-cloud-kms
 
 
 Windows
@@ -59,17 +60,25 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-automl
+    <your-env>\Scripts\pip.exe install google-cloud-kms
 
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud AutoML API
+-  Read the `Client Library Documentation`_ for Google Cloud Key Management Service (KMS) API
    API to see other available methods on the client.
--  Read the `Cloud AutoML API Product documentation`_ to learn
+-  Read the `Google Cloud Key Management Service (KMS) API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud AutoML API Product documentation:  https://cloud.google.com/automl
+.. _Google Cloud Key Management Service (KMS) API Product documentation:  https://cloud.google.com/kms
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+
+Api Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v1/api
+    gapic/v1/types

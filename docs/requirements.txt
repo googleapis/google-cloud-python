@@ -17,6 +17,7 @@ dlp/
 dns/
 firestore/
 iot/
+kms/
 language/
 logging/
 error_reporting/

@@ -429,7 +429,7 @@ class DocumentReference(object):
             page_size (Optional[int]]): Iterator page size.
 
         Returns:
-            Sequence[~.firestore_v1beta1.collection.CollectionReference[:
+            Sequence[~.firestore_v1beta1.collection.CollectionReference]:
                 iterator of subcollections of the current document. If the
                 document does not exist at the time of `snapshot`, the
                 iterator will be empty
