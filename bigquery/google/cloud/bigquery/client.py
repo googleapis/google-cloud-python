@@ -1100,16 +1100,23 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.CopyJob: A new copy job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
+
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self,
             job_config=job_config)
         copy_job._begin(retry=retry)
+
         return copy_job
 
     def extract_table(

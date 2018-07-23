@@ -2199,7 +2199,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2230,13 +2230,61 @@ class TestClient(unittest.TestCase):
 
         client.copy_table(
             source, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_copy_table_w_client_location(self):
+        job_id = 'this-is-a-job-id'
+        source_id = 'source_table'
+        destination_id = 'destination_table'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [
+                        {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': source_id,
+                        },
+                    ],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+        destination = dataset.table(destination_id)
+
+        client.copy_table(
+            source, destination, job_id=job_id, project='other-project')
+
+        # Check that copy_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
