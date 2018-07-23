@@ -235,9 +235,9 @@ class Instance(object):
             clusters = [Cluster(cluster_id, self, location_id,
                                 serve_nodes, default_storage_type)]
 
-        elif location_id is not None or
-             serve_nodes is not None or
-             default_storage_type is not None:
+        elif (location_id is not None or
+              serve_nodes is not None or
+              default_storage_type is not None):
             raise ValueError("clusters and one of location_id, serve_nodes, \
                              default_storage_type can not be set \
                              simultaneously.")
