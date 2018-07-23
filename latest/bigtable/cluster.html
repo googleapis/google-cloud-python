@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Cluster &#8212; google-cloud 8fa7ab2f90 documentation</title>
+    <title>Cluster &#8212; google-cloud 7de18a3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@
 <p>User friendly container for Google Cloud Bigtable Cluster.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.cluster.Cluster">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>cluster_id</em>, <em>instance</em>, <em>serve_nodes=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>cluster_id</em>, <em>instance</em>, <em>location_id</em>, <em>serve_nodes=3</em>, <em>default_storage_type=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google Cloud Bigtable Cluster.</p>
 <p>We can use a <a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster" title="google.cloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a> to:</p>
@@ -56,8 +56,20 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the cluster.</li>
 <li><strong>instance</strong> (<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance where the cluster resides.</li>
+<li><strong>location_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – ID of the location in which the cluster will be
+created. For e.g “us-central1-b”
+List of locations id is :
+<a class="reference external" href="https://cloud.google.com/bigtable/docs/locations">https://cloud.google.com/bigtable/docs/locations</a>
+For best performance, clients should be located
+as close as possible to this cluster.</li>
 <li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The number of nodes in the cluster.
 Defaults to <a class="reference internal" href="#google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES" title="google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES"><code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_SERVE_NODES</span></code></a>.</li>
+<li><strong>default_storage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The default values are
+STORAGE_TYPE_UNSPECIFIED = 0: The user
+did not specify a storage type.
+SSD = 1: Flash (SSD) storage should be used.
+HDD = 2: Magnetic drive (HDD) storage
+should be used.</li>
 </ul>
 </td>
 </tr>
