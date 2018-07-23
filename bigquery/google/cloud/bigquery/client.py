@@ -1212,12 +1212,18 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.QueryJob: A new query job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
             job_ref, query, client=self, job_config=job_config)
         query_job._begin(retry=retry)
+
         return query_job
 
     def insert_rows(self, table, rows, selected_fields=None, **kwargs):

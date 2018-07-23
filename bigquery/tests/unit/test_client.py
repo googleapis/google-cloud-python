@@ -2563,7 +2563,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2580,13 +2580,48 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection(resource)
 
         client.query(
-            query, job_id=job_id, project='other-project', location='US')
+            query, job_id=job_id, project='other-project',
+            location=self.LOCATION)
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_query_w_client_location(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+
+        client.query(
+            query, job_id=job_id, project='other-project')
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_query_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJob
