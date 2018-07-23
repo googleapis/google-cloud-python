@@ -59,6 +59,7 @@ class TestClient(unittest.TestCase):
     TABLE_ID = 'TABLE_ID'
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
     KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
+    LOCATION = 'us-central'
 
     @staticmethod
     def _get_target_class():
@@ -103,13 +104,32 @@ class TestClient(unittest.TestCase):
 
         with self.assertRaises(NotFound):
             client._get_query_results(
-                'nothere', None, project='other-project', location='US',
+                'nothere', None,
+                project='other-project',
+                location=self.LOCATION,
                 timeout_ms=500)
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/other-project/queries/nothere',
-            query_params={'maxResults': 0, 'timeoutMs': 500, 'location': 'US'})
+            query_params={
+                'maxResults': 0, 'timeoutMs': 500, 'location': self.LOCATION},
+        )
+
+    def test__get_query_results_miss_w_client_location(self):
+        from google.cloud.exceptions import NotFound
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
+        conn = client._connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client._get_query_results('nothere', None)
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/PROJECT/queries/nothere',
+            query_params={'maxResults': 0, 'location': self.LOCATION})
 
     def test__get_query_results_hit(self):
         job_id = 'query_job'

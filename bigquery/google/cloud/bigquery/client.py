@@ -557,6 +557,9 @@ class Client(ClientWithProject):
         if timeout_ms is not None:
             extra_params['timeoutMs'] = timeout_ms
 
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
