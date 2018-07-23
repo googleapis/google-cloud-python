@@ -863,14 +863,22 @@ class Client(ClientWithProject):
                 mode.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job._build_resource()
+
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
+
         _check_mode(file_obj)
+
         try:
             if size is None or size >= _MAX_MULTIPART_SIZE:
                 response = self._do_resumable_upload(
@@ -880,6 +888,7 @@ class Client(ClientWithProject):
                     file_obj, job_resource, size, num_retries)
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
+
         return self.job_from_resource(response.json())
 
     def load_table_from_dataframe(self, dataframe, destination,

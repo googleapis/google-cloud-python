@@ -3417,14 +3417,16 @@ class TestClientUpload(object):
     TABLE_REF = DatasetReference(
         'project_id', 'test_dataset').table('test_table')
 
+    LOCATION = 'us-central'
+
     @staticmethod
-    def _make_client(transport=None):
+    def _make_client(transport=None, location=None):
         from google.cloud.bigquery import _http
         from google.cloud.bigquery import client
 
         cl = client.Client(project='project_id',
                            credentials=_make_credentials(),
-                           _http=transport)
+                           _http=transport, location=location)
         cl._connection = mock.create_autospec(_http.Connection, instance=True)
         return cl
 
@@ -3510,11 +3512,33 @@ class TestClientUpload(object):
         with do_upload_patch as do_upload:
             client.load_table_from_file(
                 file_obj, self.TABLE_REF, job_id='job_id',
-                project='other-project', location='US',
+                project='other-project', location=self.LOCATION,
                 job_config=self._make_config())
 
         expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
-        expected_resource['jobReference']['location'] = 'US'
+        expected_resource['jobReference']['location'] = self.LOCATION
+        expected_resource['jobReference']['projectId'] = 'other-project'
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_w_client_location(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client(location=self.LOCATION)
+        file_obj = self._make_file_obj()
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, job_id='job_id',
+                project='other-project',
+                job_config=self._make_config())
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource['jobReference']['location'] = self.LOCATION
         expected_resource['jobReference']['projectId'] = 'other-project'
         do_upload.assert_called_once_with(
             file_obj,
