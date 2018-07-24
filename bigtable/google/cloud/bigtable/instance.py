@@ -245,12 +245,12 @@ class Instance(object):
 
         .. note::
 
-            Apdates any or all of the following values:
+            Updates any or all of the following values:
             ``display_name``
             ``type``
             ``labels``
             To change a value before
-            updating, reset that values via
+            updating, assign that values via
 
             .. code:: python
 
