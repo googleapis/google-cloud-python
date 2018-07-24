@@ -5,12 +5,13 @@ Python Client for Stackdriver Monitoring API (`Alpha`_)
 must be associated with a Stackdriver account, with a few exceptions as
 noted on the individual method pages.
 
+- `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
-.. _Product Documentation:  https://cloud.google.com/monitoring
+.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
+.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
+.. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
 -----------
@@ -24,8 +25,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring/api/enable-api
+.. _Setup Authentication.: http://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~

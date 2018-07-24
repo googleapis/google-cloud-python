@@ -16,6 +16,8 @@
 
 
 import re
+from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -24,6 +26,8 @@ _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 
 DEFAULT_SERVE_NODES = 3
 """Default number of nodes to use when creating a cluster."""
+
+_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Cluster(object):
@@ -42,17 +46,35 @@ class Cluster(object):
     :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance where the cluster resides.
 
+    :type location_id: str
+    :param location_id: ID of the location in which the cluster will be
+                        created. For e.g "us-central1-b"
+                        List of locations id is :
+                        https://cloud.google.com/bigtable/docs/locations
+                        For best performance, clients should be located
+                        as close as possible to this cluster.
+
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
                         Defaults to :data:`DEFAULT_SERVE_NODES`.
+
+    :type default_storage_type: int
+    :param default_storage_type: (Optional) The default values are
+                                  STORAGE_TYPE_UNSPECIFIED = 0: The user
+                                  did not specify a storage type.
+                                  SSD = 1: Flash (SSD) storage should be used.
+                                  HDD = 2: Magnetic drive (HDD) storage
+                                  should be used.
     """
 
-    def __init__(self, cluster_id, instance,
-                 serve_nodes=DEFAULT_SERVE_NODES):
+    def __init__(self, cluster_id, instance, location_id,
+                 serve_nodes=DEFAULT_SERVE_NODES,
+                 default_storage_type=_STORAGE_TYPE_UNSPECIFIED):
         self.cluster_id = cluster_id
         self._instance = instance
+        self.location = location_id
         self.serve_nodes = serve_nodes
-        self.location = None
+        self.default_storage_type = default_storage_type
 
     @property
     def name(self):
@@ -69,7 +91,7 @@ class Cluster(object):
         :rtype: str
         :returns: The cluster name.
         """
-        return self._instance._client._instance_admin_client.cluster_path(
+        return self._instance._client.instance_admin_client.cluster_path(
             self._instance._client.project, self._instance.instance_id,
             self.cluster_id)
 
@@ -90,7 +112,7 @@ class Cluster(object):
 
     def reload(self):
         """Reload the metadata for this cluster."""
-        self._instance._client._instance_admin_client.get_cluster(self.name)
+        self._instance._client.instance_admin_client.get_cluster(self.name)
 
     def create(self):
         """Create this cluster.
@@ -113,7 +135,7 @@ class Cluster(object):
                   create operation.
         """
         client = self._instance._client
-        return client._instance_admin_client.create_cluster(
+        return client.instance_admin_client.create_cluster(
             self._instance.name, self.cluster_id, {})
 
     def update(self, location='', serve_nodes=0):
@@ -147,7 +169,7 @@ class Cluster(object):
                   update operation.
         """
         client = self._instance._client
-        return client._instance_admin_client.update_cluster(
+        return client.instance_admin_client.update_cluster(
             self.name, location, serve_nodes)
 
     def delete(self):
@@ -171,4 +193,17 @@ class Cluster(object):
           permanently deleted.
         """
         client = self._instance._client
-        client._instance_admin_client.delete_cluster(self.name)
+        client.instance_admin_client.delete_cluster(self.name)
+
+    def _create_pb_request(self):
+        """ Create cluster proto buff message for API calls """
+        client = self._instance._client
+        cluster_name = client.instance_admin_client.cluster_path(
+            client.project, self._instance.instance_id, self.cluster_id)
+        location = client.instance_admin_client.location_path(
+            client.project, self.location)
+        cluster_message = instance_pb2.Cluster(
+            name=cluster_name, location=location,
+            serve_nodes=self.serve_nodes,
+            default_storage_type=self.default_storage_type)
+        return cluster_message

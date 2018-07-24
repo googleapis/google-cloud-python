@@ -14,16 +14,19 @@
 
 from __future__ import division
 
+import collections
 import functools
 import logging
 import threading
 
-from google.api_core import exceptions
 import grpc
+import six
 
+from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import bidi
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
+from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import requests
@@ -31,6 +34,7 @@ import google.cloud.pubsub_v1.subscriber.message
 import google.cloud.pubsub_v1.subscriber.scheduler
 
 _LOGGER = logging.getLogger(__name__)
+_RPC_ERROR_THREAD_NAME = 'Thread-OnRpcTerminated'
 _RETRYABLE_STREAM_ERRORS = (
     exceptions.DeadlineExceeded,
     exceptions.ServiceUnavailable,
@@ -84,6 +88,10 @@ class StreamingPullManager(object):
             scheduler will be used.
     """
 
+    _UNARY_REQUESTS = True
+    """If set to True, this class will make requests over a separate unary
+    RPC instead of over the streaming RPC."""
+
     def __init__(self, client, subscription, flow_control=types.FlowControl(),
                  scheduler=None):
         self._client = client
@@ -108,6 +116,7 @@ class StreamingPullManager(object):
         self._dispatcher = None
         self._leaser = None
         self._consumer = None
+        self._heartbeater = None
 
     @property
     def is_active(self):
@@ -220,9 +229,56 @@ class StreamingPullManager(object):
         else:
             _LOGGER.debug('Did not resume, current load is %s', self.load)
 
+    def _send_unary_request(self, request):
+        """Send a request using a separate unary request instead of over the
+        stream.
+
+        Args:
+            request (types.StreamingPullRequest): The stream request to be
+                mapped into unary requests.
+        """
+        if request.ack_ids:
+            self._client.acknowledge(
+                subscription=self._subscription,
+                ack_ids=list(request.ack_ids))
+
+        if request.modify_deadline_ack_ids:
+            # Send ack_ids with the same deadline seconds together.
+            deadline_to_ack_ids = collections.defaultdict(list)
+
+            for n, ack_id in enumerate(request.modify_deadline_ack_ids):
+                deadline = request.modify_deadline_seconds[n]
+                deadline_to_ack_ids[deadline].append(ack_id)
+
+            for deadline, ack_ids in six.iteritems(deadline_to_ack_ids):
+                self._client.modify_ack_deadline(
+                    subscription=self._subscription,
+                    ack_ids=ack_ids,
+                    ack_deadline_seconds=deadline)
+
+        _LOGGER.debug('Sent request(s) over unary RPC.')
+
     def send(self, request):
         """Queue a request to be sent to the RPC."""
-        self._rpc.send(request)
+        if self._UNARY_REQUESTS:
+            try:
+                self._send_unary_request(request)
+            except exceptions.GoogleAPICallError as exc:
+                _LOGGER.debug(
+                    'Exception while sending unary RPC. This is typically '
+                    'non-fatal as stream requests are best-effort.',
+                    exc_info=True)
+        else:
+            self._rpc.send(request)
+
+    def heartbeat(self):
+        """Sends an empty request over the streaming pull RPC.
+
+        This always sends over the stream, regardless of if
+        ``self._UNARY_REQUESTS`` is set or not.
+        """
+        if self._rpc is not None and self._rpc.is_active:
+            self._rpc.send(types.StreamingPullRequest())
 
     def open(self, callback):
         """Begin consuming messages.
@@ -241,23 +297,31 @@ class StreamingPullManager(object):
 
         self._callback = functools.partial(_wrap_callback_errors, callback)
 
-        # Start the thread to pass the requests.
-        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
-        self._dispatcher.start()
-
-        # Start consuming messages.
+        # Create the RPC
         self._rpc = bidi.ResumableBidiRpc(
             start_rpc=self._client.api.streaming_pull,
             initial_request=self._get_initial_request,
             should_recover=self._should_recover)
         self._rpc.add_done_callback(self._on_rpc_done)
+
+        # Create references to threads
+        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
         self._consumer = bidi.BackgroundConsumer(
             self._rpc, self._on_response)
+        self._leaser = leaser.Leaser(self)
+        self._heartbeater = heartbeater.Heartbeater(self)
+
+        # Start the thread to pass the requests.
+        self._dispatcher.start()
+
+        # Start consuming messages.
         self._consumer.start()
 
         # Start the lease maintainer thread.
-        self._leaser = leaser.Leaser(self)
         self._leaser.start()
+
+        # Start the stream heartbeater thread.
+        self._heartbeater.start()
 
     def close(self, reason=None):
         """Stop consuming messages and shutdown all helper threads.
@@ -289,6 +353,9 @@ class StreamingPullManager(object):
             _LOGGER.debug('Stopping dispatcher.')
             self._dispatcher.stop()
             self._dispatcher = None
+            _LOGGER.debug('Stopping heartbeater.')
+            self._heartbeater.stop()
+            self._heartbeater = None
 
             self._rpc = None
             self._closed = True
@@ -335,6 +402,7 @@ class StreamingPullManager(object):
         After the messages have all had their ack deadline updated, execute
         the callback for each message using the executor.
         """
+
         _LOGGER.debug(
             'Scheduling callbacks for %s messages.',
             len(response.received_messages))
@@ -372,11 +440,28 @@ class StreamingPullManager(object):
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
+            _LOGGER.info('Observed recoverable stream error %s', exception)
             return True
+        _LOGGER.info('Observed non-recoverable stream error %s', exception)
         return False
 
     def _on_rpc_done(self, future):
+        """Triggered whenever the underlying RPC terminates without recovery.
+
+        This is typically triggered from one of two threads: the background
+        consumer thread (when calling ``recv()`` produces a non-recoverable
+        error) or the grpc management thread (when cancelling the RPC).
+
+        This method is *non-blocking*. It will start another thread to deal
+        with shutting everything down. This is to prevent blocking in the
+        background consumer and preventing it from being ``joined()``.
+        """
         _LOGGER.info(
             'RPC termination has signaled streaming pull manager shutdown.')
         future = _maybe_wrap_exception(future)
-        self.close(reason=future)
+        thread = threading.Thread(
+            name=_RPC_ERROR_THREAD_NAME,
+            target=self.close,
+            kwargs={'reason': future})
+        thread.daemon = True
+        thread.start()

@@ -21,10 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/vision_v1/proto/text_annotation.proto',
   package='google.cloud.vision.v1',
   syntax='proto3',
-  serialized_pb=_b('\n2google/cloud/vision_v1/proto/text_annotation.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\"\x96\x04\n\x0eTextAnnotation\x12+\n\x05pages\x18\x01 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Page\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a=\n\x10\x44\x65tectedLanguage\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x1a\xd5\x01\n\rDetectedBreak\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType\x12\x11\n\tis_prefix\x18\x02 \x01(\x08\"c\n\tBreakType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\t\n\x05SPACE\x10\x01\x12\x0e\n\nSURE_SPACE\x10\x02\x12\x12\n\x0e\x45OL_SURE_SPACE\x10\x03\x12\n\n\x06HYPHEN\x10\x04\x12\x0e\n\nLINE_BREAK\x10\x05\x1a\xb1\x01\n\x0cTextProperty\x12S\n\x12\x64\x65tected_languages\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1.TextAnnotation.DetectedLanguage\x12L\n\x0e\x64\x65tected_break\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.TextAnnotation.DetectedBreak\"\xaf\x01\n\x04Page\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12-\n\x06\x62locks\x18\x04 \x03(\x0b\x32\x1d.google.cloud.vision.v1.Block\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"\xe6\x02\n\x05\x42lock\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x35\n\nparagraphs\x18\x03 \x03(\x0b\x32!.google.cloud.vision.v1.Paragraph\x12;\n\nblock_type\x18\x04 \x01(\x0e\x32\'.google.cloud.vision.v1.Block.BlockType\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"R\n\tBlockType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04TEXT\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\x0b\n\x07PICTURE\x10\x03\x12\t\n\x05RULER\x10\x04\x12\x0b\n\x07\x42\x41RCODE\x10\x05\"\xcf\x01\n\tParagraph\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12+\n\x05words\x18\x03 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Word\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xce\x01\n\x04Word\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12/\n\x07symbols\x18\x03 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Symbol\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xad\x01\n\x06Symbol\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x0c\n\x04text\x18\x03 \x01(\t\x12\x12\n\nconfidence\x18\x04 \x01(\x02\x42t\n\x1a\x63om.google.cloud.vision.v1B\x13TextAnnotationProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n2google/cloud/vision_v1/proto/text_annotation.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\"\x96\x04\n\x0eTextAnnotation\x12+\n\x05pages\x18\x01 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Page\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a=\n\x10\x44\x65tectedLanguage\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x1a\xd5\x01\n\rDetectedBreak\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType\x12\x11\n\tis_prefix\x18\x02 \x01(\x08\"c\n\tBreakType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\t\n\x05SPACE\x10\x01\x12\x0e\n\nSURE_SPACE\x10\x02\x12\x12\n\x0e\x45OL_SURE_SPACE\x10\x03\x12\n\n\x06HYPHEN\x10\x04\x12\x0e\n\nLINE_BREAK\x10\x05\x1a\xb1\x01\n\x0cTextProperty\x12S\n\x12\x64\x65tected_languages\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1.TextAnnotation.DetectedLanguage\x12L\n\x0e\x64\x65tected_break\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.TextAnnotation.DetectedBreak\"\xaf\x01\n\x04Page\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12-\n\x06\x62locks\x18\x04 \x03(\x0b\x32\x1d.google.cloud.vision.v1.Block\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"\xe6\x02\n\x05\x42lock\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x35\n\nparagraphs\x18\x03 \x03(\x0b\x32!.google.cloud.vision.v1.Paragraph\x12;\n\nblock_type\x18\x04 \x01(\x0e\x32\'.google.cloud.vision.v1.Block.BlockType\x12\x12\n\nconfidence\x18\x05 \x01(\x02\"R\n\tBlockType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04TEXT\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\x0b\n\x07PICTURE\x10\x03\x12\t\n\x05RULER\x10\x04\x12\x0b\n\x07\x42\x41RCODE\x10\x05\"\xcf\x01\n\tParagraph\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12+\n\x05words\x18\x03 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Word\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xce\x01\n\x04Word\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12/\n\x07symbols\x18\x03 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Symbol\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"\xad\x01\n\x06Symbol\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x0c\n\x04text\x18\x03 \x01(\t\x12\x12\n\nconfidence\x18\x04 \x01(\x02\x42{\n\x1a\x63om.google.cloud.vision.v1B\x13TextAnnotationProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -118,14 +117,14 @@ _TEXTANNOTATION_DETECTEDLANGUAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.TextAnnotation.DetectedLanguage.confidence', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -155,14 +154,14 @@ _TEXTANNOTATION_DETECTEDBREAK = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='is_prefix', full_name='google.cloud.vision.v1.TextAnnotation.DetectedBreak.is_prefix', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -193,14 +192,14 @@ _TEXTANNOTATION_TEXTPROPERTY = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='detected_break', full_name='google.cloud.vision.v1.TextAnnotation.TextProperty.detected_break', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -230,14 +229,14 @@ _TEXTANNOTATION = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='text', full_name='google.cloud.vision.v1.TextAnnotation.text', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -268,35 +267,35 @@ _PAGE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='width', full_name='google.cloud.vision.v1.Page.width', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='height', full_name='google.cloud.vision.v1.Page.height', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='blocks', full_name='google.cloud.vision.v1.Page.blocks', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.Page.confidence', index=4,
       number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -327,35 +326,35 @@ _BLOCK = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bounding_box', full_name='google.cloud.vision.v1.Block.bounding_box', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='paragraphs', full_name='google.cloud.vision.v1.Block.paragraphs', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='block_type', full_name='google.cloud.vision.v1.Block.block_type', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.Block.confidence', index=4,
       number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -387,28 +386,28 @@ _PARAGRAPH = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bounding_box', full_name='google.cloud.vision.v1.Paragraph.bounding_box', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='words', full_name='google.cloud.vision.v1.Paragraph.words', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.Paragraph.confidence', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -439,28 +438,28 @@ _WORD = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bounding_box', full_name='google.cloud.vision.v1.Word.bounding_box', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbols', full_name='google.cloud.vision.v1.Word.symbols', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.Word.confidence', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -491,28 +490,28 @@ _SYMBOL = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bounding_box', full_name='google.cloud.vision.v1.Symbol.bounding_box', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='text', full_name='google.cloud.vision.v1.Symbol.text', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='confidence', full_name='google.cloud.vision.v1.Symbol.confidence', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -558,6 +557,7 @@ DESCRIPTOR.message_types_by_name['Block'] = _BLOCK
 DESCRIPTOR.message_types_by_name['Paragraph'] = _PARAGRAPH
 DESCRIPTOR.message_types_by_name['Word'] = _WORD
 DESCRIPTOR.message_types_by_name['Symbol'] = _SYMBOL
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_message.Message,), dict(
 
@@ -650,9 +650,11 @@ Page = _reflection.GeneratedProtocolMessageType('Page', (_message.Message,), dic
       property:
           Additional information detected on the page.
       width:
-          Page width in pixels.
+          Page width. For PDFs the unit is points. For images (including
+          TIFFs) the unit is pixels.
       height:
-          Page height in pixels.
+          Page height. For PDFs the unit is points. For images
+          (including TIFFs) the unit is pixels.
       blocks:
           List of blocks of text, images etc on this page.
       confidence:
@@ -785,15 +787,5 @@ _sym_db.RegisterMessage(Symbol)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\032com.google.cloud.vision.v1B\023TextAnnotationProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001'))
-try:
-  # THESE ELEMENTS WILL BE DEPRECATED.
-  # Please use the generated *_pb2_grpc.py files instead.
-  import grpc
-  from grpc.beta import implementations as beta_implementations
-  from grpc.beta import interfaces as beta_interfaces
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
-except ImportError:
-  pass
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\032com.google.cloud.vision.v1B\023TextAnnotationProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001\242\002\004GCVN'))
 # @@protoc_insertion_point(module_scope)

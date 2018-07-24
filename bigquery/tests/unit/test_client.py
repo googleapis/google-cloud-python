@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import copy
+import datetime
+import decimal
 import email
 import io
 import json
@@ -22,6 +24,14 @@ import mock
 import six
 from six.moves import http_client
 import pytest
+try:
+    import pandas
+except (ImportError, AttributeError):  # pragma: NO COVER
+    pandas = None
+try:
+    import pyarrow
+except (ImportError, AttributeError):  # pragma: NO COVER
+    pyarrow = None
 
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -1744,6 +1754,29 @@ class TestClient(unittest.TestCase):
                 'projection': 'full',
             })
 
+    def test_list_jobs_w_time_filter(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _make_connection({})
+
+        # One millisecond after the unix epoch.
+        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0, 1000)
+        # One millisecond after the the 2038 31-bit signed int rollover
+        end_time = datetime.datetime(2038, 1, 19, 3, 14, 7, 1000)
+        end_time_millis = (((2 ** 31) - 1) * 1000) + 1
+
+        list(client.list_jobs(
+            min_creation_time=start_time, max_creation_time=end_time))
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/%s/jobs' % self.PROJECT,
+            query_params={
+                'projection': 'full',
+                'minCreationTime': '1',
+                'maxCreationTime': str(end_time_millis),
+            })
+
     def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob
 
@@ -2825,6 +2858,52 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.insert_rows(1, ROWS)
 
+    def test_insert_rows_w_numeric(self):
+        from google.cloud.bigquery import table
+
+        project = 'PROJECT'
+        ds_id = 'DS_ID'
+        table_id = 'TABLE_ID'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        conn = client._connection = _make_connection({})
+        table_ref = DatasetReference(project, ds_id).table(table_id)
+        schema = [
+            table.SchemaField('account', 'STRING'),
+            table.SchemaField('balance', 'NUMERIC'),
+        ]
+        insert_table = table.Table(table_ref, schema=schema)
+        rows = [
+            ('Savings', decimal.Decimal('23.47')),
+            ('Checking', decimal.Decimal('1.98')),
+            ('Mortgage', decimal.Decimal('-12345678909.87654321')),
+        ]
+
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(rows)))):
+            errors = client.insert_rows(insert_table, rows)
+
+        self.assertEqual(len(errors), 0)
+        rows_json = [
+            {'account': 'Savings', 'balance': '23.47'},
+            {'account': 'Checking', 'balance': '1.98'},
+            {
+                'account': 'Mortgage',
+                'balance': '-12345678909.87654321',
+            },
+        ]
+        sent = {
+            'rows': [{
+                'json': row,
+                'insertId': str(i),
+            } for i, row in enumerate(rows_json)],
+        }
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/{}/datasets/{}/tables/{}/insertAll'.format(
+                project, ds_id, table_id),
+            data=sent)
+
     def test_insert_rows_json(self):
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference
@@ -2999,6 +3078,25 @@ class TestClient(unittest.TestCase):
             method='GET',
             path='/%s' % PATH,
             query_params={})
+
+    def test_list_rows_empty_table(self):
+        from google.cloud.bigquery.table import Table
+
+        response = {
+            'totalRows': '0',
+            'rows': [],
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = _make_connection(response, response)
+
+        # Table that has no schema because it's an empty table.
+        table = Table(self.TABLE_REF)
+        table._properties['creationTime'] = '1234567890'
+        rows = tuple(client.list_rows(table))
+        self.assertEqual(rows, ())
 
     def test_list_rows_query_params(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -3436,6 +3534,68 @@ class TestClientUpload(object):
 
         with pytest.raises(ValueError):
             client.load_table_from_file(file_obj, self.TABLE_REF)
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None, job_id_prefix=None, location=None,
+            project=None, job_config=mock.ANY)
+
+        sent_file = load_table_from_file.mock_calls[0][1][1]
+        sent_bytes = sent_file.getvalue()
+        assert isinstance(sent_bytes, bytes)
+        assert len(sent_bytes) > 0
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe_w_custom_job_config(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+        job_config = job.LoadJobConfig()
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None, job_id_prefix=None, location=None,
+            project=None, job_config=mock.ANY)
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config is job_config
+        assert sent_config.source_format == job.SourceFormat.PARQUET
 
     # Low-level tests
 

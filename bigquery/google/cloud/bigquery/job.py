@@ -22,7 +22,6 @@ from six.moves import http_client
 import google.api_core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
-from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.query import _query_param_from_api_repr
@@ -30,14 +29,14 @@ from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
-from google.cloud.bigquery._helpers import _int_or_none
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -184,6 +183,9 @@ class SourceFormat(object):
     PARQUET = 'PARQUET'
     """Specifies Parquet format."""
 
+    ORC = 'ORC'
+    """Specifies Orc format."""
+
 
 class WriteDisposition(object):
     """Specifies the action that occurs if destination table already exists.
@@ -204,6 +206,18 @@ class WriteDisposition(object):
     WRITE_EMPTY = 'WRITE_EMPTY'
     """If the table already exists and contains data, a 'duplicate' error is
     returned in the job result."""
+
+
+class SchemaUpdateOption(object):
+    """Specifies an update to the destination table schema as a side effect of
+    a load job.
+    """
+
+    ALLOW_FIELD_ADDITION = 'ALLOW_FIELD_ADDITION'
+    """Allow adding a nullable field to the schema."""
+
+    ALLOW_FIELD_RELAXATION = 'ALLOW_FIELD_RELAXATION'
+    """Allow relaxing a required field in the original schema to nullable."""
 
 
 class _JobReference(object):
@@ -327,6 +341,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return '/projects/%s/jobs/%s' % (self.project, self.job_id)
 
     @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job."""
+        return self._properties.setdefault('labels', {})
+
+    @property
     def etag(self):
         """ETag for the job resource.
 
@@ -364,7 +383,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if statistics is not None:
             millis = statistics.get('creationTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     @property
     def started(self):
@@ -377,7 +396,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if statistics is not None:
             millis = statistics.get('startTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     @property
     def ended(self):
@@ -390,7 +409,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if statistics is not None:
             millis = statistics.get('endTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     def _job_statistics(self):
         """Helper for job-type specific statistics-based properties."""
@@ -485,6 +504,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         return job_id, resource['configuration']
+
+    def _build_resource(self):
+        """Helper:  Generate a resource for :meth:`_begin`."""
+        raise NotImplementedError("Abstract")
 
     def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
@@ -684,6 +707,25 @@ class _JobConfig(object):
         self._job_type = job_type
         self._properties = {job_type: {}}
 
+    @property
+    def labels(self):
+        """Dict[str, str]: Labels for the job.
+
+        This method always returns a dict. To change a job's labels,
+        modify the dict, then call ``Client.update_job``. To delete a
+        label, set its value to :data:`None` before updating.
+
+        Raises:
+            ValueError: If ``value`` type is invalid.
+        """
+        return self._properties.setdefault('labels', {})
+
+    @labels.setter
+    def labels(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
+
     def _get_sub_prop(self, key, default=None):
         """Get a value in the ``self._properties[self._job_type]`` dictionary.
 
@@ -693,9 +735,9 @@ class _JobConfig(object):
 
             self._get_sub_prop('destinationTable')
 
-        This is equivalent to using the ``_helper.get_sub_prop`` function::
+        This is equivalent to using the ``_helpers._get_sub_prop`` function::
 
-            _helper.get_sub_prop(
+            _helpers._get_sub_prop(
                 self._properties, ['query', 'destinationTable'])
 
         Arguments:
@@ -709,7 +751,7 @@ class _JobConfig(object):
         Returns:
             object: The value if present or the default.
         """
-        return _helpers.get_sub_prop(
+        return _helpers._get_sub_prop(
             self._properties, [self._job_type, key], default=default)
 
     def _set_sub_prop(self, key, value):
@@ -721,9 +763,9 @@ class _JobConfig(object):
 
             self._set_sub_prop('useLegacySql', False)
 
-        This is equivalent to using the ``_helper.set_sub_prop`` function::
+        This is equivalent to using the ``_helper._set_sub_prop`` function::
 
-            _helper.set_sub_prop(
+            _helper._set_sub_prop(
                 self._properties, ['query', 'useLegacySql'], False)
 
         Arguments:
@@ -732,7 +774,7 @@ class _JobConfig(object):
                  dictionary.
             value (object): Value to set.
         """
-        _helpers.set_sub_prop(self._properties, [self._job_type, key], value)
+        _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
 
     def to_api_repr(self):
         """Build an API representation of the job config.
@@ -908,7 +950,7 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
         """
-        return _int_or_none(self._get_sub_prop('skipLeadingRows'))
+        return _helpers._int_or_none(self._get_sub_prop('skipLeadingRows'))
 
     @skip_leading_rows.setter
     def skip_leading_rows(self, value):
@@ -949,7 +991,7 @@ class LoadJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
         """
-        schema = _helpers.get_sub_prop(
+        schema = _helpers._get_sub_prop(
             self._properties, ['load', 'schema', 'fields'])
         if schema is None:
             return
@@ -959,7 +1001,7 @@ class LoadJobConfig(_JobConfig):
     def schema(self, value):
         if not all(hasattr(field, 'to_api_repr') for field in value):
             raise ValueError('Schema items must be fields')
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             self._properties,
             ['load', 'schema', 'fields'],
             [field.to_api_repr() for field in value])
@@ -1003,6 +1045,18 @@ class LoadJobConfig(_JobConfig):
         if value is not None:
             api_repr = value.to_api_repr()
         self._set_sub_prop('timePartitioning', api_repr)
+
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the load job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
 
 
 class LoadJob(_AsyncJob):
@@ -1159,6 +1213,13 @@ class LoadJob(_AsyncJob):
         return self._configuration.time_partitioning
 
     @property
+    def schema_update_options(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.schema_update_options`.
+        """
+        return self._configuration.schema_update_options
+
+    @property
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
@@ -1204,12 +1265,12 @@ class LoadJob(_AsyncJob):
             return int(statistics['load']['outputRows'])
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
         if self.source_uris is not None:
-            _helpers.set_sub_prop(
+            _helpers._set_sub_prop(
                 configuration, ['load', 'sourceUris'], self.source_uris)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['load', 'destinationTable'],
             self.destination.to_api_repr())
@@ -1250,7 +1311,7 @@ class LoadJob(_AsyncJob):
             dest_config['projectId'], dest_config['datasetId'])
         destination = TableReference(ds_ref, dest_config['tableId'])
         # sourceUris will be absent if this is a file upload.
-        source_uris = _helpers.get_sub_prop(
+        source_uris = _helpers._get_sub_prop(
             config_resource, ['load', 'sourceUris'])
         job_ref = _JobReference._from_api_repr(resource['jobReference'])
         job = cls(job_ref, source_uris, destination, client, config)
@@ -1380,7 +1441,7 @@ class CopyJob(_AsyncJob):
         return self._configuration.destination_encryption_configuration
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
 
         source_refs = [{
             'projectId': table.project,
@@ -1389,9 +1450,9 @@ class CopyJob(_AsyncJob):
         } for table in self.sources]
 
         configuration = self._configuration.to_api_repr()
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration, ['copy', 'sourceTables'], source_refs)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['copy', 'destinationTable'],
             {
@@ -1598,7 +1659,7 @@ class ExtractJob(_AsyncJob):
         return None
 
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
 
         source_ref = {
             'projectId': self.source.project,
@@ -1607,9 +1668,9 @@ class ExtractJob(_AsyncJob):
         }
 
         configuration = self._configuration.to_api_repr()
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration, ['extract', 'sourceTable'], source_ref)
-        _helpers.set_sub_prop(
+        _helpers._set_sub_prop(
             configuration,
             ['extract', 'destinationUris'],
             self.destination_uris)
@@ -1644,12 +1705,12 @@ class ExtractJob(_AsyncJob):
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = ExtractJobConfig.from_api_repr(config_resource)
-        source_config = _helpers.get_sub_prop(
+        source_config = _helpers._get_sub_prop(
             config_resource, ['extract', 'sourceTable'])
         dataset = DatasetReference(
             source_config['projectId'], source_config['datasetId'])
         source = dataset.table(source_config['tableId'])
-        destination_uris = _helpers.get_sub_prop(
+        destination_uris = _helpers._get_sub_prop(
             config_resource, ['extract', 'destinationUris'])
 
         job = cls(
@@ -1842,7 +1903,7 @@ class QueryJobConfig(_JobConfig):
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
         """
-        return _int_or_none(self._get_sub_prop('maximumBytesBilled'))
+        return _helpers._int_or_none(self._get_sub_prop('maximumBytesBilled'))
 
     @maximum_bytes_billed.setter
     def maximum_bytes_billed(self, value):
@@ -1970,6 +2031,18 @@ class QueryJobConfig(_JobConfig):
         if value is not None:
             api_repr = value.to_api_repr()
         self._set_sub_prop('timePartitioning', api_repr)
+
+    @property
+    def schema_update_options(self):
+        """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
+        updates to the destination table schema to allow as a side effect of
+        the query job.
+        """
+        return self._get_sub_prop('schemaUpdateOptions')
+
+    @schema_update_options.setter
+    def schema_update_options(self, values):
+        self._set_sub_prop('schemaUpdateOptions', values)
 
     def to_api_repr(self):
         """Build an API representation of the query job config.
@@ -2149,8 +2222,15 @@ class QueryJob(_AsyncJob):
         """
         return self._configuration.time_partitioning
 
+    @property
+    def schema_update_options(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.schema_update_options`.
+        """
+        return self._configuration.schema_update_options
+
     def _build_resource(self):
-        """Generate a resource for :meth:`begin`."""
+        """Generate a resource for :meth:`_begin`."""
         configuration = self._configuration.to_api_repr()
 
         resource = {
@@ -2164,7 +2244,7 @@ class QueryJob(_AsyncJob):
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
-        self.query = _helpers.get_sub_prop(configuration, ['query', 'query'])
+        self.query = _helpers._get_sub_prop(configuration, ['query', 'query'])
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -2267,6 +2347,29 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get('cacheHit')
 
     @property
+    def ddl_operation_performed(self):
+        """Optional[str]: Return the DDL operation performed.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlOperationPerformed
+
+        """
+        return self._job_statistics().get('ddlOperationPerformed')
+
+    @property
+    def ddl_target_table(self):
+        """Optional[TableReference]: Return the DDL target table, present
+            for CREATE/DROP TABLE/VIEW queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlTargetTable
+        """
+        prop = self._job_statistics().get('ddlTargetTable')
+        if prop is not None:
+            prop = TableReference.from_api_repr(prop)
+        return prop
+
+    @property
     def num_dml_affected_rows(self):
         """Return the number of DML rows affected by the job.
 
@@ -2285,7 +2388,7 @@ class QueryJob(_AsyncJob):
     @property
     def slot_millis(self):
         """Union[int, None]: Slot-milliseconds used by this query job."""
-        return _int_or_none(self._job_statistics().get('totalSlotMs'))
+        return _helpers._int_or_none(self._job_statistics().get('totalSlotMs'))
 
     @property
     def statement_type(self):
@@ -2362,6 +2465,22 @@ class QueryJob(_AsyncJob):
 
         return parameters
 
+    @property
+    def estimated_bytes_processed(self):
+        """Return the estimated number of bytes processed by the query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.estimatedBytesProcessed
+
+        :rtype: int or None
+        :returns: number of DML rows affected by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('estimatedBytesProcessed')
+        if result is not None:
+            result = int(result)
+        return result
+
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
@@ -2431,6 +2550,14 @@ class QueryJob(_AsyncJob):
             self._query_results = self._client._get_query_results(
                 self.job_id, retry, project=self.project,
                 location=self.location)
+
+        # If the query job is complete but there are no query results, this was
+        # special job, such as a DDL query. Return an empty result set to
+        # indicate success and avoid calling tabledata.list on a table which
+        # can't be read (such as a view table).
+        if self._query_results.total_rows is None:
+            return _EmptyRowIterator()
+
         schema = self._query_results.schema
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
@@ -2530,7 +2657,7 @@ class QueryPlanEntry(object):
         """Union[Datetime, None]: Datetime when the stage started."""
         if self._properties.get('startMs') is None:
             return None
-        return _datetime_from_microseconds(
+        return _helpers._datetime_from_microseconds(
                 int(self._properties.get('startMs')) * 1000.0)
 
     @property
@@ -2538,7 +2665,7 @@ class QueryPlanEntry(object):
         """Union[Datetime, None]: Datetime when the stage ended."""
         if self._properties.get('endMs') is None:
             return None
-        return _datetime_from_microseconds(
+        return _helpers._datetime_from_microseconds(
                 int(self._properties.get('endMs')) * 1000.0)
 
     @property
@@ -2546,7 +2673,7 @@ class QueryPlanEntry(object):
         """List(int): Entry IDs for stages that were inputs for this stage."""
         if self._properties.get('inputStages') is None:
             return []
-        return [_int_or_none(entry)
+        return [_helpers._int_or_none(entry)
                 for entry in self._properties.get('inputStages')]
 
     @property
@@ -2554,26 +2681,27 @@ class QueryPlanEntry(object):
         """Union[int, None]: Number of parallel input segments within
         the stage.
         """
-        return _int_or_none(self._properties.get('parallelInputs'))
+        return _helpers._int_or_none(self._properties.get('parallelInputs'))
 
     @property
     def completed_parallel_inputs(self):
         """Union[int, None]: Number of parallel input segments completed."""
-        return _int_or_none(self._properties.get('completedParallelInputs'))
+        return _helpers._int_or_none(
+            self._properties.get('completedParallelInputs'))
 
     @property
     def wait_ms_avg(self):
         """Union[int, None]: Milliseconds the average worker spent waiting to
         be scheduled.
         """
-        return _int_or_none(self._properties.get('waitMsAvg'))
+        return _helpers._int_or_none(self._properties.get('waitMsAvg'))
 
     @property
     def wait_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent waiting to
         be scheduled.
         """
-        return _int_or_none(self._properties.get('waitMsMax'))
+        return _helpers._int_or_none(self._properties.get('waitMsMax'))
 
     @property
     def wait_ratio_avg(self):
@@ -2596,14 +2724,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent reading
         input.
         """
-        return _int_or_none(self._properties.get('readMsAvg'))
+        return _helpers._int_or_none(self._properties.get('readMsAvg'))
 
     @property
     def read_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent reading
         input.
         """
-        return _int_or_none(self._properties.get('readMsMax'))
+        return _helpers._int_or_none(self._properties.get('readMsMax'))
 
     @property
     def read_ratio_avg(self):
@@ -2626,14 +2754,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent on CPU-bound
         processing.
         """
-        return _int_or_none(self._properties.get('computeMsAvg'))
+        return _helpers._int_or_none(self._properties.get('computeMsAvg'))
 
     @property
     def compute_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent on CPU-bound
         processing.
         """
-        return _int_or_none(self._properties.get('computeMsMax'))
+        return _helpers._int_or_none(self._properties.get('computeMsMax'))
 
     @property
     def compute_ratio_avg(self):
@@ -2656,14 +2784,14 @@ class QueryPlanEntry(object):
         """Union[int, None]: Milliseconds the average worker spent writing
         output data.
         """
-        return _int_or_none(self._properties.get('writeMsAvg'))
+        return _helpers._int_or_none(self._properties.get('writeMsAvg'))
 
     @property
     def write_ms_max(self):
         """Union[int, None]: Milliseconds the slowest worker spent writing
         output data.
         """
-        return _int_or_none(self._properties.get('writeMsMax'))
+        return _helpers._int_or_none(self._properties.get('writeMsMax'))
 
     @property
     def write_ratio_avg(self):
@@ -2684,12 +2812,12 @@ class QueryPlanEntry(object):
     @property
     def records_read(self):
         """Union[int, None]: Number of records read by this stage."""
-        return _int_or_none(self._properties.get('recordsRead'))
+        return _helpers._int_or_none(self._properties.get('recordsRead'))
 
     @property
     def records_written(self):
         """Union[int, None]: Number of records written by this stage."""
-        return _int_or_none(self._properties.get('recordsWritten'))
+        return _helpers._int_or_none(self._properties.get('recordsWritten'))
 
     @property
     def status(self):
@@ -2701,14 +2829,16 @@ class QueryPlanEntry(object):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle.
         """
-        return _int_or_none(self._properties.get('shuffleOutputBytes'))
+        return _helpers._int_or_none(
+            self._properties.get('shuffleOutputBytes'))
 
     @property
     def shuffle_output_bytes_spilled(self):
         """Union[int, None]: Number of bytes written by this stage to
         intermediate shuffle and spilled to disk.
         """
-        return _int_or_none(self._properties.get('shuffleOutputBytesSpilled'))
+        return _helpers._int_or_none(
+            self._properties.get('shuffleOutputBytesSpilled'))
 
     @property
     def steps(self):
@@ -2752,31 +2882,31 @@ class TimelineEntry(object):
     def elapsed_ms(self):
         """Union[int, None]: Milliseconds elapsed since start of query
         execution."""
-        return _int_or_none(self._properties.get('elapsedMs'))
+        return _helpers._int_or_none(self._properties.get('elapsedMs'))
 
     @property
     def active_units(self):
         """Union[int, None]: Current number of input units being processed
         by workers, reported as largest value since the last sample."""
-        return _int_or_none(self._properties.get('activeUnits'))
+        return _helpers._int_or_none(self._properties.get('activeUnits'))
 
     @property
     def pending_units(self):
         """Union[int, None]: Current number of input units remaining for
         query stages active at this sample time."""
-        return _int_or_none(self._properties.get('pendingUnits'))
+        return _helpers._int_or_none(self._properties.get('pendingUnits'))
 
     @property
     def completed_units(self):
         """Union[int, None]: Current number of input units completed by
         this query."""
-        return _int_or_none(self._properties.get('completedUnits'))
+        return _helpers._int_or_none(self._properties.get('completedUnits'))
 
     @property
     def slot_millis(self):
         """Union[int, None]: Cumulative slot-milliseconds consumed by
         this query."""
-        return _int_or_none(self._properties.get('totalSlotMs'))
+        return _helpers._int_or_none(self._properties.get('totalSlotMs'))
 
 
 class UnknownJob(_AsyncJob):

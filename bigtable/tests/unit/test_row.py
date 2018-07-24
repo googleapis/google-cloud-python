@@ -17,16 +17,7 @@ import unittest
 
 import mock
 
-
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def _make_channel(secure_authorized_channel):
-    from google.api_core import grpc_helpers
-    target = 'example.com:443'
-
-    channel = grpc_helpers.create_channel(
-        target, credentials=mock.sentinel.credentials)
-
-    return channel
+from ._testing import _make_credentials
 
 
 class TestRow(unittest.TestCase):
@@ -342,92 +333,23 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
 
     def test_commit(self):
-        from google.protobuf import empty_pb2
-
         project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
 
-        channel = _make_channel()
-        client = self._make_client(project=project_id, channel=channel,
-                                   admin=True)
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id,
+                                   credentials=credentials, admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
-
-        # Create request_pb
         value = b'bytes-value'
-
-        # Create response_pb
-        response_pb = empty_pb2.Empty()
-
-        # Patch the stub used by the API method.
-        bigtable_stub = client._table_data_client.bigtable_stub
-        bigtable_stub.MutateRow.side_effect = [response_pb]
-
-        # Create expected_result.
-        expected_result = None  # commit() has no return value when no filter.
 
         # Perform the method and check the result.
         row.set_cell(column_family_id, column, value)
-        result = row.commit()
-        self.assertEqual(result, expected_result)
-        self.assertEqual(row._pb_mutations, [])
-
-    def test_retry_commit_exception(self):
-        import grpc
-        import mock
-
-        from google.cloud.bigtable.row import _retry_commit_exception
-
-        class ErrorUnavailable(grpc.RpcError, grpc.Call):
-            """ErrorUnavailable exception"""
-
-        message = 'Endpoint read failed'
-        error = mock.create_autospec(ErrorUnavailable, instance=True)
-        error.code.return_value = grpc.StatusCode.UNAVAILABLE
-        error.details.return_value = message
-
-        result = _retry_commit_exception(error)
-        self.assertEqual(result, True)
-
-        result = _retry_commit_exception(ValueError)
-        self.assertNotEqual(result, True)
-
-    def test_commit_too_many_mutations(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.bigtable import row as MUT
-
-        row_key = b'row_key'
-        table = object()
-        row = self._make_one(row_key, table)
-        row._pb_mutations = [1, 2, 3]
-        num_mutations = len(row._pb_mutations)
-        with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
-            with self.assertRaises(ValueError):
-                row.commit()
-
-    def test_commit_no_mutations(self):
-        from tests.unit._testing import _FakeStub
-
-        row_key = b'row_key'
-        from google.cloud.bigtable_v2 import BigtableClient
-
-        channel = _make_channel()
-        client = BigtableClient(channel=channel)
-        table = _Table(None, client=client)
-        row = self._make_one(row_key, table)
-        self.assertEqual(row._pb_mutations, [])
-
-        # Patch the stub used by the API method.
-        stub = _FakeStub()
-
-        # Perform the method and check the result.
-        result = row.commit()
-        self.assertIsNone(result)
-        # Make sure no request was sent.
-        self.assertEqual(stub.method_calls, [])
+        row.commit()
+        self.assertEqual(table.mutated_rows, [row])
 
 
 class TestConditionalRow(unittest.TestCase):
@@ -475,6 +397,7 @@ class TestConditionalRow(unittest.TestCase):
 
     def test_commit(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable_v2.gapic import bigtable_client
 
         project_id = 'project-id'
         row_key = b'row_key'
@@ -485,8 +408,9 @@ class TestConditionalRow(unittest.TestCase):
         column1 = b'column1'
         column2 = b'column2'
 
-        channel = _make_channel()
-        client = self._make_client(project=project_id, channel=channel,
+        api = bigtable_client.BigtableClient(mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id, credentials=credentials,
                                    admin=True)
         table = _Table(table_name, client=client)
         row_filter = RowSampleFilter(0.33)
@@ -501,6 +425,7 @@ class TestConditionalRow(unittest.TestCase):
             predicate_matched=predicate_matched)
 
         # Patch the stub used by the API method.
+        client._table_data_client = api
         bigtable_stub = client._table_data_client.bigtable_stub
         bigtable_stub.CheckAndMutateRow.side_effect = [[response_pb]]
 
@@ -534,11 +459,12 @@ class TestConditionalRow(unittest.TestCase):
     def test_commit_no_mutations(self):
         from tests.unit._testing import _FakeStub
 
+        project_id = 'project-id'
         row_key = b'row_key'
-        from google.cloud.bigtable_v2 import BigtableClient
 
-        channel = _make_channel()
-        client = BigtableClient(channel=channel)
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id, credentials=credentials,
+                                   admin=True)
         table = _Table(None, client=client)
         filter_ = object()
         row = self._make_one(row_key, table, filter_=filter_)
@@ -625,14 +551,17 @@ class TestAppendRow(unittest.TestCase):
     def test_commit(self):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
+        from google.cloud.bigtable_v2.gapic import bigtable_client
 
         project_id = 'project-id'
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
-        channel = _make_channel()
-        client = self._make_client(project=project_id, channel=channel,
+
+        api = bigtable_client.BigtableClient(mock.Mock())
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id, credentials=credentials,
                                    admin=True)
         table = _Table(table_name, client=client)
         row = self._make_one(row_key, table)
@@ -643,6 +572,9 @@ class TestAppendRow(unittest.TestCase):
         # Create expected_result.
         row_responses = []
         expected_result = object()
+
+        # Patch API calls
+        client._table_data_client = api
 
         def mock_parse_rmw_row_response(row_response):
             row_responses.append(row_response)
@@ -661,8 +593,9 @@ class TestAppendRow(unittest.TestCase):
 
         project_id = 'project-id'
         row_key = b'row_key'
-        channel = _make_channel()
-        client = self._make_client(project=project_id, channel=channel,
+
+        credentials = _make_credentials()
+        client = self._make_client(project=project_id, credentials=credentials,
                                    admin=True)
         table = _Table(None, client=client)
         row = self._make_one(row_key, table)
@@ -921,13 +854,6 @@ def _ReadModifyWriteRulePB(*args, **kw):
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 
 
-class _Client(object):
-
-    data_stub = None
-    _table_data_client = None
-    _table_admin_client = None
-
-
 class _Instance(object):
 
     def __init__(self, client=None):
@@ -940,3 +866,7 @@ class _Table(object):
         self.name = name
         self._instance = _Instance(client)
         self.client = client
+        self.mutated_rows = []
+
+    def mutate_rows(self, rows):
+        self.mutated_rows.extend(rows)

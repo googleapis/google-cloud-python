@@ -383,6 +383,35 @@ class Test_Blob(unittest.TestCase):
         credentials = object()
         self._basic_generate_signed_url_helper(credentials=credentials)
 
+    def test_generate_signed_url_non_ascii(self):
+        BLOB_NAME = u'\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        URI = (u'http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+               u'&Expiration=2014-10-16T20:34:37.000Z')
+
+        SIGNER = _Signer()
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
+            signed_url = blob.generate_signed_url(EXPIRATION)
+            self.assertEqual(signed_url, URI)
+
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': '/name/%D0%90%D0%BA%D0%BA%D0%BE%D1%80%D0%B4%D1%8B.txt',
+            'content_type': None,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+
     def test_generate_signed_url_w_slash_in_name(self):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -1637,18 +1666,17 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'Someone is already in this spot.'
+        message = 'Someone is already in this spot.'
         response = requests.Response()
-        response._content = message
         response.status_code = http_client.CONFLICT
         response.request = requests.Request(
             'POST', 'http://example.com').prepare()
-        side_effect = InvalidResponse(response)
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1784,17 +1812,16 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = b'5-oh-3 woe is me.'
+        message = '5-oh-3 woe is me.'
         response = self._mock_requests_response(
-            content=message, status_code=http_client.SERVICE_UNAVAILABLE,
-            headers={})
-        side_effect = InvalidResponse(response)
+            status_code=http_client.SERVICE_UNAVAILABLE, headers={})
+        side_effect = InvalidResponse(response, message)
 
         with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
+        self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -2062,6 +2089,24 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_make_private(self):
+        BLOB_NAME = 'blob-name'
+        no_permissions = []
+        after = ({'status': http_client.OK}, {'acl': no_permissions})
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob.acl.loaded = True
+        blob.make_private()
+        self.assertEqual(list(blob.acl), no_permissions)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
+        self.assertEqual(kw[0]['data'], {'acl': no_permissions})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
     def test_compose_wo_content_type_set(self):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
@@ -2103,7 +2148,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {'userProject': USER_PROJECT},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
@@ -2143,7 +2188,7 @@ class Test_Blob(unittest.TestCase):
             'method': 'POST',
             'path': '/b/name/o/%s/compose' % DESTINATION,
             'query_params': {},
-            'data':  {
+            'data': {
                 'sourceObjects': [
                     {'name': source_1.name},
                     {'name': source_2.name},
@@ -2873,34 +2918,41 @@ class Test__maybe_rewind(unittest.TestCase):
 class Test__raise_from_invalid_response(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(*args, **kwargs):
+    def _call_fut(error):
         from google.cloud.storage.blob import _raise_from_invalid_response
 
-        return _raise_from_invalid_response(*args, **kwargs)
+        return _raise_from_invalid_response(error)
 
-    def _helper(self, message, **kwargs):
+    def _helper(self, message, code=http_client.BAD_REQUEST, args=()):
         import requests
 
         from google.resumable_media import InvalidResponse
-        from google.cloud import exceptions
+        from google.api_core import exceptions
 
         response = requests.Response()
         response.request = requests.Request(
             'GET', 'http://example.com').prepare()
-        response.status_code = http_client.BAD_REQUEST
-        response._content = message
-        error = InvalidResponse(response)
+        response.status_code = code
+        error = InvalidResponse(response, message, *args)
 
-        with self.assertRaises(exceptions.BadRequest) as exc_info:
-            self._call_fut(error, **kwargs)
+        with self.assertRaises(exceptions.GoogleAPICallError) as exc_info:
+            self._call_fut(error)
 
         return exc_info
 
     def test_default(self):
-        message = b'Failure'
+        message = 'Failure'
         exc_info = self._helper(message)
-        message_str = message.decode('utf-8')
-        expected = 'GET http://example.com/: {}'.format(message_str)
+        expected = 'GET http://example.com/: {}'.format(message)
+        self.assertEqual(exc_info.exception.message, expected)
+        self.assertEqual(exc_info.exception.errors, [])
+
+    def test_w_206_and_args(self):
+        message = 'Failure'
+        args = ('one', 'two')
+        exc_info = self._helper(
+            message, code=http_client.PARTIAL_CONTENT, args=args)
+        expected = 'GET http://example.com/: {}'.format((message,) + args)
         self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 

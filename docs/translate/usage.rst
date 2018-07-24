@@ -13,6 +13,15 @@ lets websites and programs integrate with Google Cloud Translation
 programmatically. Google Cloud Translation is available as a
 paid service. See the `Pricing`_ and `FAQ`_ pages for details.
 
+Installation
+------------
+
+Install the ``google-cloud-translate`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-translate
+
 Authentication / Configuration
 ------------------------------
 
@@ -85,7 +94,8 @@ The `confidence`_ value is an optional floating point value between 0 and 1.
 The closer this value is to 1, the higher the confidence level for the
 language detection. This member is not always available.
 
-To translate text:
+To translate text into the default destination language without knowing
+the source language:
 
   .. code::
 
@@ -96,6 +106,18 @@ To translate text:
          'translatedText': 'shirt',
          'detectedSourceLanguage': 'pl',
          'input': 'koszula',
+     }
+
+If the source language is known:
+
+  .. code::
+
+     >>> from google.cloud import translate
+     >>> client = translate.Client()
+     >>> client.translate('camisa', source_language='es')
+     {
+         'translatedText': 'shirt',
+         'input': 'camisa',
      }
 
 or to use a non-default target language:

@@ -647,6 +647,15 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.external_data_configuration = 12345
 
+    def test_labels_update_in_place(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        del table._properties['labels']  # don't start w/ existing dict
+        labels = table.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(table.labels, {'foo': 'bar'})
+
     def test_labels_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -1093,6 +1102,19 @@ class TestTableListItem(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._make_one({})
 
+    def test_labels_update_in_place(self):
+        resource = {
+            'tableReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+                'tableId': 'testtable',
+            },
+        }
+        table = self._make_one(resource)
+        labels = table.labels
+        labels['foo'] = 'bar'  # update in place
+        self.assertEqual(table.labels, {'foo': 'bar'})
+
 
 class TestRow(unittest.TestCase):
 
@@ -1123,12 +1145,30 @@ class TestRow(unittest.TestCase):
             row['z']
 
 
+class Test_EmptyRowIterator(unittest.TestCase):
+
+    @mock.patch('google.cloud.bigquery.table.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe()
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        from google.cloud.bigquery.table import _EmptyRowIterator
+        row_iterator = _EmptyRowIterator()
+        df = row_iterator.to_dataframe()
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+
+
 class TestRowIterator(unittest.TestCase):
 
     def test_constructor(self):
         from google.cloud.bigquery.table import RowIterator
-        from google.cloud.bigquery._helpers import _item_to_row
-        from google.cloud.bigquery._helpers import _rows_page_start
+        from google.cloud.bigquery.table import _item_to_row
+        from google.cloud.bigquery.table import _rows_page_start
 
         client = mock.sentinel.client
         api_request = mock.sentinel.api_request
@@ -1143,7 +1183,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(iterator._items_key, 'rows')
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator.extra_params, {})
-        self.assertEqual(iterator._page_start, _rows_page_start)
+        self.assertIs(iterator._page_start, _rows_page_start)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)

@@ -422,6 +422,25 @@ class DocumentReference(object):
             [self], field_paths=field_paths, transaction=transaction)
         return _consume_single_get(snapshot_generator)
 
+    def collections(self, page_size=None):
+        """List subcollections of the current document.
+
+        Args:
+            page_size (Optional[int]]): Iterator page size.
+
+        Returns:
+            Sequence[~.firestore_v1beta1.collection.CollectionReference]:
+                iterator of subcollections of the current document. If the
+                document does not exist at the time of `snapshot`, the
+                iterator will be empty
+        """
+        iterator = self._client._firestore_api.list_collection_ids(
+            self._document_path, page_size=page_size,
+            metadata=self._client._rpc_metadata)
+        iterator.document = self
+        iterator.item_to_value = _item_to_collection_ref
+        return iterator
+
 
 class DocumentSnapshot(object):
     """A snapshot of document data in a Firestore database.
@@ -658,3 +677,14 @@ def _first_write_result(write_results):
         raise ValueError('Expected at least one write result')
 
     return write_results[0]
+
+
+def _item_to_collection_ref(iterator, item):
+    """Convert collection ID to collection ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (str): ID of the collection
+    """
+    return iterator.document.collection(item)

@@ -16,11 +16,13 @@ import datetime
 import logging
 import unittest
 
+from google.api_core.exceptions import BadGateway
+from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import TooManyRequests
+from google.api_core.exceptions import ResourceExhausted
+from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import UTC
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import TooManyRequests
-from google.cloud.exceptions import ServiceUnavailable
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
@@ -63,7 +65,8 @@ def _list_entries(logger):
     :returns: List of all entries consumed.
     """
     inner = RetryResult(_has_entries)(_consume_entries)
-    outer = RetryErrors(ServiceUnavailable)(inner)
+    outer = RetryErrors(
+        (ServiceUnavailable, ResourceExhausted), max_tries=9)(inner)
     return outer(logger)
 
 
@@ -101,7 +104,7 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        retry = RetryErrors(NotFound, max_tries=9)
+        retry = RetryErrors((NotFound, TooManyRequests), max_tries=9)
         for doomed in self.to_delete:
             try:
                 retry(doomed.delete)()
@@ -380,9 +383,10 @@ class TestLogging(unittest.TestCase):
 
         # Create the destination bucket, and set up the ACL to allow
         # Stackdriver Logging to write into it.
+        retry = RetryErrors((Conflict, TooManyRequests, ServiceUnavailable))
         storage_client = storage.Client()
         bucket = storage_client.bucket(BUCKET_NAME)
-        retry_429(bucket.create)()
+        retry(bucket.create)()
         self.to_delete.append(bucket)
         bucket.acl.reload()
         logs_group = bucket.acl.group('cloud-logs@google.com')
@@ -440,9 +444,11 @@ class TestLogging(unittest.TestCase):
 
         # Create the destination dataset, and set up the ACL to allow
         # Stackdriver Logging to write into it.
+        retry = RetryErrors((TooManyRequests, BadGateway, ServiceUnavailable))
         bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset(dataset_name)
-        dataset = bigquery_client.create_dataset(bigquery.Dataset(dataset_ref))
+        dataset = retry(bigquery_client.create_dataset)(
+            bigquery.Dataset(dataset_ref))
         self.to_delete.append((bigquery_client, dataset))
         bigquery_client.get_dataset(dataset)
         access = AccessEntry(

@@ -199,12 +199,6 @@ class Client(object):
 
         # Create the Pub/Sub message object.
         message = types.PubsubMessage(data=data, attributes=attrs)
-        if message.ByteSize() > self.batch_settings.max_bytes:
-            raise ValueError(
-                'Message being published is too large for the '
-                'batch settings with max bytes {}.'.
-                format(self.batch_settings.max_bytes)
-            )
 
         # Delegate the publishing to the batch.
         batch = self.batch(topic)

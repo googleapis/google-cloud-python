@@ -94,7 +94,7 @@ class TestStorageBuckets(unittest.TestCase):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
-        created = Config.CLIENT.create_bucket(new_bucket_name)
+        created = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
@@ -673,6 +673,20 @@ class TestStorageSignURLs(TestStorageFiles):
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, self.LOCAL_FILE)
+
+    def test_create_signed_read_url_w_non_ascii_name(self):
+        blob = self.bucket.blob(u'Caf\xe9.txt')
+        payload = b'Test signed URL for blob w/ non-ASCII name'
+        blob.upload_from_string(payload)
+        self.case_blobs_to_delete.append(blob)
+
+        expiration = int(time.time() + 10)
+        signed_url = blob.generate_signed_url(expiration, method='GET',
+                                              client=Config.CLIENT)
+
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, payload)
 
     def test_create_signed_delete_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')

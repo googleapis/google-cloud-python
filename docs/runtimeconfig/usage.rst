@@ -9,6 +9,15 @@ Runtimeconfig
   config
   variable
 
+Installation
+------------
+
+Install the ``google-cloud-runtimeconfig`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-runtimeconfig
+
 Modules
 -------
 

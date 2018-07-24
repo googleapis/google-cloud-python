@@ -358,3 +358,7 @@ class ChannelStub(grpc.Channel):
     def unsubscribe(self, callback):
         """grpc.Channel.unsubscribe implementation."""
         pass
+
+    def close(self):
+        """grpc.Channel.close implementation."""
+        pass

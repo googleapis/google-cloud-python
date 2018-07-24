@@ -18,6 +18,15 @@ Stackdriver Logging
   transports-thread
   transports-base
 
+Installation
+------------
+
+Install the ``google-cloud-logging`` library using ``pip``:
+
+.. code-block:: console
+
+    $ pip install google-cloud-logging
+
 Authentication and Configuration
 --------------------------------
 
@@ -87,6 +96,16 @@ Fetch entries for the default project.
     :start-after: [START client_list_entries_default]
     :end-before: [END client_list_entries_default]
     :dedent: 4
+
+Entries returned by
+:meth:`Client.list_entries <google.cloud.logging.client.Client.list_entries>`
+or
+:meth:`Logger.list_entries <google.cloud.logging.logger.Logger.list_entries>`
+will be instances of one of the following classes:
+
+- :class:`~google.cloud.logging.entries.TextEntry`
+- :class:`~google.cloud.logging.entries.StructEntry`
+- :class:`~google.cloud.logging.entries.ProtobufEntry`
 
 Fetch entries across multiple projects.
 
