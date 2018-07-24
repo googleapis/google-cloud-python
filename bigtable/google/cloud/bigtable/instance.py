@@ -18,7 +18,6 @@
 import re
 
 from google.cloud.bigtable.table import Table
-from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.cluster import Cluster
 
