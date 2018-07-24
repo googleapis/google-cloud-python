@@ -18,11 +18,22 @@ import collections
 import copy
 import inspect
 
-from google.protobuf import descriptor
 from google.protobuf import field_mask_pb2
 from google.protobuf import message
+from google.protobuf import wrappers_pb2
 
 _SENTINEL = object()
+_WRAPPER_TYPES = (
+    wrappers_pb2.BoolValue,
+    wrappers_pb2.BytesValue,
+    wrappers_pb2.DoubleValue,
+    wrappers_pb2.FloatValue,
+    wrappers_pb2.Int32Value,
+    wrappers_pb2.Int64Value,
+    wrappers_pb2.StringValue,
+    wrappers_pb2.UInt32Value,
+    wrappers_pb2.UInt64Value,
+)
 
 
 def from_any_pb(pb_type, any_pb):
@@ -290,23 +301,47 @@ def field_mask(original, modified):
                 'expected that both original and modified should be of the '
                 'same type, received "{!r}" and "{!r}".'.
                 format(type(original), type(modified)))
+
+    return field_mask_pb2.FieldMask(
+        paths=_field_mask_helper(original, modified))
+
+
+def _field_mask_helper(original, modified, current=''):
     answer = []
-    seen = []
 
-    for field, _ in original.ListFields():
-        seen.append(field.name)
-        if (field.label != descriptor.FieldDescriptor.LABEL_REPEATED and
-                field.message_type is not None):
-            if getattr(original, field.name) != getattr(modified, field.name):
-                subpaths = field_mask(
-                    getattr(original, field.name), getattr(
-                        modified, field.name)).paths
-                answer.extend(['%s.%s' % (field.name, s) for s in subpaths])
-        elif getattr(original, field.name) != getattr(modified, field.name):
-            answer.append(field.name)
+    for name in original.DESCRIPTOR.fields_by_name:
+        field_path = _get_path(current, name)
 
-    for field, _ in modified.ListFields():
-        if field.name not in seen:
-            answer.append(field.name)
+        original_val = getattr(original, name)
+        modified_val = getattr(modified, name)
 
-    return field_mask_pb2.FieldMask(paths=answer)
+        if _is_message(original_val) or _is_message(modified_val):
+            if original_val != modified_val:
+                # Wrapper types do not need to include the .value part of the
+                # path.
+                if _is_wrapper(original_val) or _is_wrapper(modified_val):
+                    answer.append(field_path)
+                elif not modified_val.ListFields():
+                    answer.append(field_path)
+                else:
+                    answer.extend(_field_mask_helper(original_val,
+                                                     modified_val, field_path))
+        else:
+            if original_val != modified_val:
+                answer.append(field_path)
+
+    return answer
+
+
+def _get_path(current, name):
+    if not current:
+        return name
+    return '%s.%s' % (current, name)
+
+
+def _is_message(value):
+    return isinstance(value, message.Message)
+
+
+def _is_wrapper(value):
+    return type(value) in _WRAPPER_TYPES
