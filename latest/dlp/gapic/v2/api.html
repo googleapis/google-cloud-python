@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 271e3eb068 documentation</title>
+    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 860ebd1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -38,29 +38,41 @@
 <span id="client-for-cloud-data-loss-prevention-dlp-api"></span><h1>Client for Cloud Data Loss Prevention (DLP) API<a class="headerlink" href="#module-google.cloud.dlp_v2" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.DlpServiceClient">
-<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.</code><code class="descname">DlpServiceClient</code><span class="sig-paren">(</span><em>channel=None, credentials=None, client_config={'interfaces': {'google.privacy.dlp.v2.DlpService': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 60000, 'initial_rpc_timeout_millis': 20000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 20000, 'total_timeout_millis': 600000}}, 'methods': {'InspectContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'RedactImage': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeidentifyContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ReidentifyContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListInfoTypes': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListInspectTemplates': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListDeidentifyTemplates': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'ListDlpJobs': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CancelDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'ListJobTriggers': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'UpdateJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'CreateJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2.html#DlpServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.</code><code class="descname">DlpServiceClient</code><span class="sig-paren">(</span><em>transport=None, channel=None, credentials=None, client_config={'interfaces': {'google.privacy.dlp.v2.DlpService': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 100, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 60000, 'initial_rpc_timeout_millis': 20000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 20000, 'total_timeout_millis': 600000}}, 'methods': {'InspectContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'RedactImage': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeidentifyContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ReidentifyContent': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListInfoTypes': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListInspectTemplates': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteInspectTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'UpdateDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'ListDeidentifyTemplates': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteDeidentifyTemplate': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'ListDlpJobs': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CancelDlpJob': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'ListJobTriggers': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DeleteJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'UpdateJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'CreateJobTrigger': {'timeout_millis': 300000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2.html#DlpServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Cloud Data Loss Prevention (DLP) API is a service that allows clients
 to detect the presence of Personally Identifiable Information (PII) and other
 privacy-sensitive data in user-supplied, unstructured data streams, like text
 blocks or images.
 The service also includes methods for sensitive data redaction and
 scheduling of data scans on Google Cloud Platform based data sets.</p>
+<p>To learn more about concepts and find how-to guides see
+<a class="reference external" href="https://cloud.google.com/dlp/docs/">https://cloud.google.com/dlp/docs/</a>.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through
-which to make calls. This argument is mutually exclusive
+<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>DlpServiceGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.DlpServiceGrpcTransport]): A transport
+instance, responsible for actually making the API calls.
+The default transport uses the gRPC protocol.
+This argument may also be a callable which returns a
+transport instance. Callables will be sent the credentials
+as the first argument and the default transport class as
+the second argument.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
 with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.5.0)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
-credentials from the environment.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – A dictionary of call options for each
-method. If not specified, the default configuration is used.</li>
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</li>
 <li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
@@ -75,7 +87,9 @@ your own client library.</li>
 <code class="descname">cancel_dlp_job</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.cancel_dlp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.cancel_dlp_job" title="Permalink to this definition">#</a></dt>
 <dd><p>Starts asynchronous cancellation on a long-running DlpJob. The server
 makes a best effort to cancel the DlpJob, but success is not
-guaranteed.</p>
+guaranteed.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-storage">https://cloud.google.com/dlp/docs/inspecting-storage</a> and
+<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">https://cloud.google.com/dlp/docs/compute-risk-analysis</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -120,7 +134,9 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.create_deidentify_template">
 <code class="descname">create_deidentify_template</code><span class="sig-paren">(</span><em>parent</em>, <em>deidentify_template=None</em>, <em>template_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.create_deidentify_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.create_deidentify_template" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a DeidentifyTemplate for re-using frequently used configuration
-for de-identifying content, images, and storage.</p>
+for de-identifying content, images, and storage.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates-deid">https://cloud.google.com/dlp/docs/creating-templates-deid</a> to learn
+more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -176,7 +192,11 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.create_dlp_job">
 <code class="descname">create_dlp_job</code><span class="sig-paren">(</span><em>parent</em>, <em>inspect_job=None</em>, <em>risk_job=None</em>, <em>job_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.create_dlp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.create_dlp_job" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new job to inspect storage or calculate risk metrics.
-<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">How-to guide</a>.</p>
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-storage">https://cloud.google.com/dlp/docs/inspecting-storage</a> and
+<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">https://cloud.google.com/dlp/docs/compute-risk-analysis</a> to learn more.</p>
+<p>When no InfoTypes or CustomInfoTypes are specified in inspect jobs, the
+system will automatically choose what detectors to run. By default this may
+be all types, but may change over time as detectors are updated.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -232,7 +252,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.create_inspect_template">
 <code class="descname">create_inspect_template</code><span class="sig-paren">(</span><em>parent</em>, <em>inspect_template=None</em>, <em>template_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.create_inspect_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.create_inspect_template" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an InspectTemplate for re-using frequently used configuration
-for inspecting content, images, and storage.</p>
+for inspecting content, images, and storage.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates">https://cloud.google.com/dlp/docs/creating-templates</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -288,7 +309,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.create_job_trigger">
 <code class="descname">create_job_trigger</code><span class="sig-paren">(</span><em>parent</em>, <em>job_trigger=None</em>, <em>trigger_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.create_job_trigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.create_job_trigger" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a job trigger to run DLP actions such as scanning storage for
-sensitive information on a set schedule.</p>
+sensitive information on a set schedule.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-job-triggers">https://cloud.google.com/dlp/docs/creating-job-triggers</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -344,7 +366,11 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">deidentify_content</code><span class="sig-paren">(</span><em>parent</em>, <em>deidentify_config=None</em>, <em>inspect_config=None</em>, <em>item=None</em>, <em>inspect_template_name=None</em>, <em>deidentify_template_name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.deidentify_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.deidentify_content" title="Permalink to this definition">#</a></dt>
 <dd><p>De-identifies potentially sensitive info from a ContentItem.
 This method has limits on input size and output size.
-<a class="reference external" href="https://cloud.google.com/dlp/docs/deidentify-sensitive-data">How-to guide</a></p>
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/deidentify-sensitive-data">https://cloud.google.com/dlp/docs/deidentify-sensitive-data</a> to
+learn more.</p>
+<p>When no InfoTypes or CustomInfoTypes are specified in this request, the
+system will automatically choose what detectors to run. By default this may
+be all types, but may change over time as detectors are updated.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -414,7 +440,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.delete_deidentify_template">
 <code class="descname">delete_deidentify_template</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.delete_deidentify_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.delete_deidentify_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a DeidentifyTemplate.</p>
+<dd><p>Deletes a DeidentifyTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates-deid">https://cloud.google.com/dlp/docs/creating-templates-deid</a> to learn
+more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -462,7 +490,9 @@ to a retryable error and retry attempts failed.</li>
 <code class="descname">delete_dlp_job</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.delete_dlp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.delete_dlp_job" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a long-running DlpJob. This method indicates that the client is
 no longer interested in the DlpJob result. The job will be cancelled if
-possible.</p>
+possible.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-storage">https://cloud.google.com/dlp/docs/inspecting-storage</a> and
+<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">https://cloud.google.com/dlp/docs/compute-risk-analysis</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -506,7 +536,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.delete_inspect_template">
 <code class="descname">delete_inspect_template</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.delete_inspect_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.delete_inspect_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes an InspectTemplate.</p>
+<dd><p>Deletes an InspectTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates">https://cloud.google.com/dlp/docs/creating-templates</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -552,7 +583,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.delete_job_trigger">
 <code class="descname">delete_job_trigger</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.delete_job_trigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.delete_job_trigger" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a job trigger.</p>
+<dd><p>Deletes a job trigger.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-job-triggers">https://cloud.google.com/dlp/docs/creating-job-triggers</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -603,13 +635,69 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.dlp_v2.gapic.enums' from '/home/kbuilder/.pyenv/versions/3.6.1/lib/python3.6/site-packages/google/cloud/dlp_v2/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.dlp_v2.gapic.enums' from '/var/code/gcp/.nox/docs/lib/python3.6/site-packages/google/cloud/dlp_v2/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.dlp_v2.DlpServiceClient.from_service_account_file">
+<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.dlp_v2.DlpServiceClient" title="google.cloud.dlp_v2.DlpServiceClient">DlpServiceClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.dlp_v2.DlpServiceClient.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this client using the provided credentials
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</li>
+<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
+<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.dlp_v2.DlpServiceClient" title="google.cloud.dlp_v2.DlpServiceClient">DlpServiceClient</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.get_deidentify_template">
 <code class="descname">get_deidentify_template</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.get_deidentify_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.get_deidentify_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets a DeidentifyTemplate.</p>
+<dd><p>Gets a DeidentifyTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates-deid">https://cloud.google.com/dlp/docs/creating-templates-deid</a> to learn
+more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -658,7 +746,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.get_dlp_job">
 <code class="descname">get_dlp_job</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.get_dlp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.get_dlp_job" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the latest state of a long-running DlpJob.</p>
+<dd><p>Gets the latest state of a long-running DlpJob.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-storage">https://cloud.google.com/dlp/docs/inspecting-storage</a> and
+<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">https://cloud.google.com/dlp/docs/compute-risk-analysis</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -705,7 +795,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.get_inspect_template">
 <code class="descname">get_inspect_template</code><span class="sig-paren">(</span><em>name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.get_inspect_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.get_inspect_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets an InspectTemplate.</p>
+<dd><p>Gets an InspectTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates">https://cloud.google.com/dlp/docs/creating-templates</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -752,7 +843,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.get_job_trigger">
 <code class="descname">get_job_trigger</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.get_job_trigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.get_job_trigger" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets a job trigger.</p>
+<dd><p>Gets a job trigger.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-job-triggers">https://cloud.google.com/dlp/docs/creating-job-triggers</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -801,9 +893,12 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.inspect_content">
 <code class="descname">inspect_content</code><span class="sig-paren">(</span><em>parent</em>, <em>inspect_config=None</em>, <em>item=None</em>, <em>inspect_template_name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.inspect_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.inspect_content" title="Permalink to this definition">#</a></dt>
 <dd><p>Finds potentially sensitive info in content.
-This method has limits on input size, processing time, and output size.
-<a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-text">How-to guide for text</a>, [How-to guide for
-images](/dlp/docs/inspecting-images)</p>
+This method has limits on input size, processing time, and output size.</p>
+<p>When no InfoTypes or CustomInfoTypes are specified in this request, the
+system will automatically choose what detectors to run. By default this may
+be all types, but may change over time as detectors are updated.</p>
+<p>For how to guides, see <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-images">https://cloud.google.com/dlp/docs/inspecting-images</a>
+and <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-text">https://cloud.google.com/dlp/docs/inspecting-text</a>,</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -862,7 +957,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.list_deidentify_templates">
 <code class="descname">list_deidentify_templates</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.list_deidentify_templates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.list_deidentify_templates" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists DeidentifyTemplates.</p>
+<dd><p>Lists DeidentifyTemplates.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates-deid">https://cloud.google.com/dlp/docs/creating-templates-deid</a> to learn
+more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -870,13 +967,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_deidentify_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_deidentify_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -928,7 +1027,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.list_dlp_jobs">
 <code class="descname">list_dlp_jobs</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>page_size=None</em>, <em>type_=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.list_dlp_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.list_dlp_jobs" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists DlpJobs that match the specified filter in the request.</p>
+<dd><p>Lists DlpJobs that match the specified filter in the request.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-storage">https://cloud.google.com/dlp/docs/inspecting-storage</a> and
+<a class="reference external" href="https://cloud.google.com/dlp/docs/compute-risk-analysis">https://cloud.google.com/dlp/docs/compute-risk-analysis</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -936,13 +1037,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_dlp_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_dlp_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -962,16 +1065,12 @@ to a retryable error and retry attempts failed.</li>
 <li>Restrictions can be combined by <code class="docutils literal notranslate"><span class="pre">AND</span></code> or <code class="docutils literal notranslate"><span class="pre">OR</span></code> logical operators. A
 sequence of restrictions implicitly uses <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</li>
 <li>A restriction has the form of <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span> <span class="pre">&lt;operator&gt;</span> <span class="pre">&lt;value&gt;</span></code>.</li>
-<li>Supported fields/values for inspect jobs:<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- `state` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
-- `inspected_storage` - DATASTORE|CLOUD_STORAGE|BIGQUERY
-- `trigger_name` - The resource name of the trigger that created job.
-</pre></div>
-</div>
-</li>
-<li>Supported fields for risk analysis jobs:<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- `state` - RUNNING|CANCELED|FINISHED|FAILED
-</pre></div>
-</div>
-</li>
+<li>Supported fields/values for inspect jobs:
+- <cite>state</cite> - PENDING|RUNNING|CANCELED|FINISHED|FAILED
+- <cite>inspected_storage</cite> - DATASTORE|CLOUD_STORAGE|BIGQUERY
+- <cite>trigger_name</cite> - The resource name of the trigger that created job.</li>
+<li>Supported fields for risk analysis jobs:
+- <cite>state</cite> - RUNNING|CANCELED|FINISHED|FAILED</li>
 <li>The operator must be <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>.</li>
 </ul>
 <p>Examples:</p>
@@ -1022,8 +1121,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.dlp_v2.DlpServiceClient.list_info_types">
 <code class="descname">list_info_types</code><span class="sig-paren">(</span><em>language_code=None</em>, <em>filter_=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.list_info_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.list_info_types" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list of the sensitive information types that the DLP API
-supports. For more information, see [Listing supported predefined
-infoTypes](/dlp/docs/listing-infotypes).</p>
+supports. See <a class="reference external" href="https://cloud.google.com/dlp/docs/infotypes-reference">https://cloud.google.com/dlp/docs/infotypes-reference</a> to
+learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1072,7 +1171,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.list_inspect_templates">
 <code class="descname">list_inspect_templates</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.list_inspect_templates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.list_inspect_templates" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists InspectTemplates.</p>
+<dd><p>Lists InspectTemplates.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates">https://cloud.google.com/dlp/docs/creating-templates</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1080,13 +1180,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">organization_path</span><span class="p">(</span><span class="s1">&#39;[ORGANIZATION]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_inspect_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_inspect_templates</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -1138,7 +1240,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.list_job_triggers">
 <code class="descname">list_job_triggers</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>order_by=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.list_job_triggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.list_job_triggers" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists job triggers.</p>
+<dd><p>Lists job triggers.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-job-triggers">https://cloud.google.com/dlp/docs/creating-job-triggers</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1146,13 +1249,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_job_triggers</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># process element</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_job_triggers</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="c1"># process element</span>
@@ -1164,23 +1269,22 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example projects/my-project-id.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The parent resource name, for example <code class="docutils literal notranslate"><span class="pre">projects/my-project-id</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional comma separated list of triggeredJob fields to order by,
-followed by ‘asc/desc’ postfix, i.e.
-<code class="docutils literal notranslate"><span class="pre">&quot;create_time</span> <span class="pre">asc,name</span> <span class="pre">desc,schedule_mode</span> <span class="pre">asc&quot;</span></code>. This list is
-case-insensitive.</p>
-<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;name</span> <span class="pre">asc,schedule_mode</span> <span class="pre">desc,</span> <span class="pre">status</span> <span class="pre">desc&quot;</span></code></p>
-<p>Supported filters keys and values are:</p>
+followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is case-insensitive,
+default sorting order is ascending, redundant space characters are
+insignificant.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">asc,update_time,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code></p>
+<p>Supported fields are:</p>
 <ul>
 <li><code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the triggeredJob was created.</li>
 <li><code class="docutils literal notranslate"><span class="pre">update_time</span></code>: corresponds to time the triggeredJob was last updated.</li>
-<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to JobTrigger’s display name.</li>
-<li><code class="docutils literal notranslate"><span class="pre">status</span></code>: corresponds to the triggeredJob status.</li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to JobTrigger’s name.</li>
 </ul>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -1257,10 +1361,14 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.redact_image">
-<code class="descname">redact_image</code><span class="sig-paren">(</span><em>parent</em>, <em>inspect_config=None</em>, <em>image_redaction_configs=None</em>, <em>byte_item=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.redact_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.redact_image" title="Permalink to this definition">#</a></dt>
+<code class="descname">redact_image</code><span class="sig-paren">(</span><em>parent</em>, <em>inspect_config=None</em>, <em>image_redaction_configs=None</em>, <em>include_findings=None</em>, <em>byte_item=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.redact_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.redact_image" title="Permalink to this definition">#</a></dt>
 <dd><p>Redacts potentially sensitive info from an image.
 This method has limits on input size, processing time, and output size.
-<a class="reference external" href="https://cloud.google.com/dlp/docs/redacting-sensitive-data-images">How-to guide</a></p>
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/redacting-sensitive-data-images">https://cloud.google.com/dlp/docs/redacting-sensitive-data-images</a> to
+learn more.</p>
+<p>When no InfoTypes or CustomInfoTypes are specified in this request, the
+system will automatically choose what detectors to run. By default this may
+be all types, but may change over time as detectors are updated.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1283,6 +1391,8 @@ message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types
 <li><strong>image_redaction_configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>ImageRedactionConfig</em><em>]</em><em>]</em>) – The configuration for specifying what content to redact from images.
 If a dict is provided, it must be of the same form as the protobuf
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageRedactionConfig</span></code></li>
+<li><strong>include_findings</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether the response should include findings along with the redacted
+image.</li>
 <li><strong>byte_item</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><em>ByteContentItem</em></a><em>]</em>) – The content must be PNG, JPEG, SVG or BMP.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.ByteContentItem" title="google.cloud.dlp_v2.types.ByteContentItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ByteContentItem</span></code></a></li>
@@ -1316,7 +1426,10 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.reidentify_content">
 <code class="descname">reidentify_content</code><span class="sig-paren">(</span><em>parent</em>, <em>reidentify_config=None</em>, <em>inspect_config=None</em>, <em>item=None</em>, <em>inspect_template_name=None</em>, <em>reidentify_template_name=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.reidentify_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.reidentify_content" title="Permalink to this definition">#</a></dt>
-<dd><p>Re-identifies content that has been de-identified.</p>
+<dd><p>Re-identifies content that has been de-identified.
+See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example">https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example</a>
+to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1340,11 +1453,13 @@ previous de-identification. Re-identification is performed by examining
 the transformations used to de-identify the items and executing the
 reverse. This requires that only reversible transformations
 be provided here. The reversible transformations are:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- ``CryptoReplaceFfxFpeConfig``
-</pre></div>
-</div>
-<p>If a dict is provided, it must be of the same form as the protobuf
-message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></p>
+<blockquote>
+<div><ul>
+<li><code class="docutils literal notranslate"><span class="pre">CryptoReplaceFfxFpeConfig</span></code>
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.dlp_v2.types.DeidentifyConfig" title="google.cloud.dlp_v2.types.DeidentifyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeidentifyConfig</span></code></a></li>
+</ul>
+</div></blockquote>
 </li>
 <li><strong>inspect_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dlp_v2.types.InspectConfig" title="google.cloud.dlp_v2.types.InspectConfig"><em>InspectConfig</em></a><em>]</em>) – Configuration for the inspector.
 If a dict is provided, it must be of the same form as the protobuf
@@ -1393,7 +1508,9 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.update_deidentify_template">
 <code class="descname">update_deidentify_template</code><span class="sig-paren">(</span><em>name</em>, <em>deidentify_template=None</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.update_deidentify_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.update_deidentify_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the DeidentifyTemplate.</p>
+<dd><p>Updates the DeidentifyTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates-deid">https://cloud.google.com/dlp/docs/creating-templates-deid</a> to learn
+more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1448,7 +1565,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.update_inspect_template">
 <code class="descname">update_inspect_template</code><span class="sig-paren">(</span><em>name</em>, <em>inspect_template=None</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.update_inspect_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.update_inspect_template" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates the InspectTemplate.</p>
+<dd><p>Updates the InspectTemplate.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-templates">https://cloud.google.com/dlp/docs/creating-templates</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1503,7 +1621,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.dlp_v2.DlpServiceClient.update_job_trigger">
 <code class="descname">update_job_trigger</code><span class="sig-paren">(</span><em>name</em>, <em>job_trigger=None</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/dlp_v2/gapic/dlp_service_client.html#DlpServiceClient.update_job_trigger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dlp_v2.DlpServiceClient.update_job_trigger" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates a job trigger.</p>
+<dd><p>Updates a job trigger.
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/creating-job-triggers">https://cloud.google.com/dlp/docs/creating-job-triggers</a> to learn more.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">dlp_v2</span>
 <span class="go">&gt;&gt;&gt;</span>

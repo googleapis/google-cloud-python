@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 271e3eb068 documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 860ebd1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +39,8 @@
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Action">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Action</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action" title="Permalink to this definition">#</a></dt>
-<dd><p>A task to execute on the completion of a job.</p>
+<dd><p>A task to execute on the completion of a job. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-actions">https://cloud.google.com/dlp/docs/concepts-actions</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.Action.save_findings">
 <code class="descname">save_findings</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.save_findings" title="Permalink to this definition">#</a></dt>
@@ -92,7 +93,7 @@ notifications. Format is projects/{project}/topics/{topic}.</p>
 <em class="property">class </em><code class="descname">SaveFindings</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.SaveFindings" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, the detailed findings will be persisted to the specified
 OutputStorageConfig. Only a single instance of this action can be
-specified. Compatible with: Inspect</p>
+specified. Compatible with: Inspect, Risk</p>
 </dd></dl>
 
 </dd></dl>
@@ -132,37 +133,99 @@ specified. Compatible with: Inspect</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket">
 <em class="property">class </em><code class="descname">CategoricalStatsHistogramBucket</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_lower_bound">
-<code class="descname">value_frequency_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_lower_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Lower bound on the value frequency of the values in this
+<dd><p>Attributes:
+value_frequency_lower_bound: Lower bound on the value frequency of the values in this bucket.
+value_frequency_upper_bound: Upper bound on the value frequency of the values in this bucket.
+bucket_size: Total number of values in this bucket.
+bucket_values: Sample of value frequencies in this bucket. The total number of values returned per bucket is capped at 20.
+bucket_value_count: Total number of distinct values in this bucket.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult">
+<em class="property">class </em><code class="descname">DeltaPresenceEstimationResult</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Result of the δ-presence computation. Note that these results are an
+estimation, not exact values.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.delta_presence_estimation_histogram">
+<code class="descname">delta_presence_estimation_histogram</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.delta_presence_estimation_histogram" title="Permalink to this definition">#</a></dt>
+<dd><p>The intervals [min_probability, max_probability) do not
+overlap. If a value doesn’t correspond to any such interval,
+the associated frequency is zero. For example, the following
+records: {min_probability: 0, max_probability: 0.1,
+frequency: 17} {min_probability: 0.2, max_probability: 0.3,
+frequency: 42} {min_probability: 0.3, max_probability: 0.4,
+frequency: 99} mean that there are no record with an estimated
+probability in [0.1, 0.2) nor larger or equal to 0.4.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket">
+<em class="property">class </em><code class="descname">DeltaPresenceEstimationHistogramBucket</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket" title="Permalink to this definition">#</a></dt>
+<dd><p>A DeltaPresenceEstimationHistogramBucket message with the following
+values: min_probability: 0.1 max_probability: 0.2 frequency: 42 means
+that there are 42 records for which δ is in [0.1, 0.2). An important
+particular case is when min_probability = max_probability = 1: then,
+every individual who shares this quasi-identifier combination is in the
+dataset.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.min_probability">
+<code class="descname">min_probability</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.min_probability" title="Permalink to this definition">#</a></dt>
+<dd><p>Between 0 and 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.max_probability">
+<code class="descname">max_probability</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.max_probability" title="Permalink to this definition">#</a></dt>
+<dd><p>Always greater than or equal to min_probability.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_size">
+<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of records within these probability bounds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_values">
+<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample of quasi-identifier tuple values in this bucket. The
+total number of classes returned per bucket is capped at 20.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_value_count">
+<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of distinct quasi-identifier tuple values in this
 bucket.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues">
+<em class="property">class </em><code class="descname">DeltaPresenceEstimationQuasiIdValues</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues" title="Permalink to this definition">#</a></dt>
+<dd><p>A tuple of values for the quasi-identifier columns.</p>
 <dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_upper_bound">
-<code class="descname">value_frequency_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.value_frequency_upper_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Upper bound on the value frequency of the values in this
-bucket.</p>
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.quasi_ids_values">
+<code class="descname">quasi_ids_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.quasi_ids_values" title="Permalink to this definition">#</a></dt>
+<dd><p>The quasi-identifier values.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_size">
-<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of values in this bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_values">
-<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
-<dd><p>Sample of value frequencies in this bucket. The total number
-of values returned per bucket is capped at 20.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_value_count">
-<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of distinct values in this bucket.</p>
+<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.estimated_probability">
+<code class="descname">estimated_probability</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.estimated_probability" title="Permalink to this definition">#</a></dt>
+<dd><p>The estimated probability that a given individual sharing
+these quasi-identifier values is in the dataset. This value,
+typically called δ, is the ratio between the number of records
+in the dataset with these quasi-identifier values, and the
+total number of individuals (inside <em>and</em> outside the dataset)
+with these quasi-identifier values. For example, if there are
+15 individuals in the dataset who share the same quasi-
+identifier values, and an estimated 100 people in the entire
+population with these values, then δ is 0.15.</p>
 </dd></dl>
 
 </dd></dl>
@@ -186,56 +249,34 @@ of values returned per bucket is capped at 20.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.quasi_ids_values">
 <code class="descname">quasi_ids_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.quasi_ids_values" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of values defining the equivalence class. One value per
-quasi-identifier column in the original KAnonymity metric
-message. The order is always the same as the original request.</p>
-</dd></dl>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">Set of values defining the equivalence class. One value per           quasi-identifier column in the original KAnonymity metric           message. The order is always the same as the original request.</code></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.equivalence_class_size">
 <code class="descname">equivalence_class_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass.equivalence_class_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Size of the equivalence class, for example number of rows with
-the above set of values.</p>
-</dd></dl>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">Size of the equivalence class, for example number of rows with           the above set of values.</code></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket">
 <em class="property">class </em><code class="descname">KAnonymityHistogramBucket</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_lower_bound">
-<code class="descname">equivalence_class_size_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_lower_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Lower bound on the size of the equivalence classes in this
-bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_upper_bound">
-<code class="descname">equivalence_class_size_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.equivalence_class_size_upper_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Upper bound on the size of the equivalence classes in this
-bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_size">
-<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of equivalence classes in this bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_values">
-<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
-<dd><p>Sample of equivalence classes in this bucket. The total number
-of classes returned per bucket is capped at 20.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_value_count">
-<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of distinct equivalence classes in this bucket.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+equivalence_class_size_lower_bound:               Lower bound on the size of the equivalence classes in this               bucket.
+equivalence_class_size_upper_bound:               Upper bound on the size of the equivalence classes in this               bucket.
+bucket_size:               Total number of equivalence classes in this bucket.
+bucket_values:               Sample of equivalence classes in this bucket. The total number               of classes returned per bucket is capped at 20.
+bucket_value_count:               Total number of distinct equivalence classes in this bucket.</p>
 </dd></dl>
 
 </dd></dl>
@@ -366,39 +407,12 @@ class. The order is always the same as the original request.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket">
 <em class="property">class </em><code class="descname">LDiversityHistogramBucket</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_lower_bound">
-<code class="descname">sensitive_value_frequency_lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_lower_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Lower bound on the sensitive value frequencies of the
-equivalence classes in this bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_upper_bound">
-<code class="descname">sensitive_value_frequency_upper_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.sensitive_value_frequency_upper_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>Upper bound on the sensitive value frequencies of the
-equivalence classes in this bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_size">
-<code class="descname">bucket_size</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of equivalence classes in this bucket.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_values">
-<code class="descname">bucket_values</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_values" title="Permalink to this definition">#</a></dt>
-<dd><p>Sample of equivalence classes in this bucket. The total number
-of classes returned per bucket is capped at 20.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_value_count">
-<code class="descname">bucket_value_count</code><a class="headerlink" href="#google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket.bucket_value_count" title="Permalink to this definition">#</a></dt>
-<dd><p>Total number of distinct equivalence classes in this bucket.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+sensitive_value_frequency_lower_bound:               Lower bound on the sensitive value frequencies of the               equivalence classes in this bucket.
+sensitive_value_frequency_upper_bound:               Upper bound on the sensitive value frequencies of the               equivalence classes in this bucket.
+bucket_size:               Total number of equivalence classes in this bucket.
+bucket_values:               Sample of equivalence classes in this bucket. The total number               of classes returned per bucket is capped at 20.
+bucket_value_count:               Total number of distinct equivalence classes in this bucket.</p>
 </dd></dl>
 
 </dd></dl>
@@ -552,7 +566,8 @@ behavior, such as 1-30 -&gt; LOW 31-65 -&gt; MEDIUM 66-100 -&gt; HIGH This can b
 used on data of type: number, long, string, timestamp. If the bound
 <code class="docutils literal notranslate"><span class="pre">Value</span></code> type differs from the type of data being transformed, we will
 first attempt converting the type of the data to be transformed to match
-the type of the bound before comparing.</p>
+the type of the bound before comparing. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-bucketing">https://cloud.google.com/dlp/docs/concepts-bucketing</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.BucketingConfig.buckets">
 <code class="descname">buckets</code><a class="headerlink" href="#google.cloud.dlp_v2.types.BucketingConfig.buckets" title="Permalink to this definition">#</a></dt>
@@ -695,6 +710,15 @@ files are scanned and available data format processors are
 applied.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.CloudStorageOptions.files_limit_percent">
+<code class="descname">files_limit_percent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.files_limit_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>Limits the number of files to scan to this percentage of the
+input FileSet. Number of files scanned is rounded down. Must
+be between 0 and 100, inclusively. Both 0 and 100 means no
+limit. Defaults to 0.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CloudStorageOptions.FileSet">
 <em class="property">class </em><code class="descname">FileSet</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStorageOptions.FileSet" title="Permalink to this definition">#</a></dt>
@@ -713,7 +737,7 @@ wildcard in the path is allowed.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CloudStoragePath">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">CloudStoragePath</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStoragePath" title="Permalink to this definition">#</a></dt>
-<dd><p>Message representing a path in Cloud Storage.</p>
+<dd><p>Message representing a single file or path in Cloud Storage.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CloudStoragePath.path">
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CloudStoragePath.path" title="Permalink to this definition">#</a></dt>
@@ -770,7 +794,9 @@ form, or table.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.ContentItem.table">
 <code class="descname">table</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ContentItem.table" title="Permalink to this definition">#</a></dt>
-<dd><p>Structured content for inspection.</p>
+<dd><p>Structured content for inspection. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting">https://cloud.google.com/dlp/docs/inspecting</a>-
+text#inspecting_a_table to learn more.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -986,7 +1012,7 @@ original identifier. The identifier must be encoded as ASCII. For a
 given crypto key and context, the same identifier will be replaced with
 the same surrogate. Identifiers must be at least two characters long. In
 the case that the identifier is the empty string, it will be skipped.
-See <a class="reference external" href="/dlp/docs/pseudonymization">Pseudonymization</a> for example usage.</p>
+See <a class="reference external" href="https://cloud.google.com/dlp/docs/pseudonymization">https://cloud.google.com/dlp/docs/pseudonymization</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig.crypto_key">
 <code class="descname">crypto_key</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig.crypto_key" title="Permalink to this definition">#</a></dt>
@@ -1009,7 +1035,7 @@ field may be of value type integer or string.  The tweak is
 constructed as a sequence of bytes in big endian byte order
 such that:  -  a 64 bit integer is encoded followed by a
 single byte of value 1 -  a string is encoded in UTF-8 format
-followed by a single byte of    value å 2</p>
+followed by a single byte of    value 2</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1075,51 +1101,51 @@ question.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.info_type">
 <code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.info_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Info type configuration. All custom info types must have
-configurations that do not conflict with built-in info types
-or other custom info types.</p>
+<dd><p>All CustomInfoTypes must have a name that does not conflict
+with built-in InfoTypes or other CustomInfoTypes.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.likelihood">
 <code class="descname">likelihood</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.likelihood" title="Permalink to this definition">#</a></dt>
-<dd><p>Likelihood to return for this custom info type. This base
-value can be altered by a detection rule if the finding meets
-the criteria specified by the rule. Defaults to
-<code class="docutils literal notranslate"><span class="pre">VERY_LIKELY</span></code> if not specified.</p>
+<dd><p>Likelihood to return for this CustomInfoType. This base value
+can be altered by a detection rule if the finding meets the
+criteria specified by the rule. Defaults to <code class="docutils literal notranslate"><span class="pre">VERY_LIKELY</span></code> if
+not specified.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.dictionary">
 <code class="descname">dictionary</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.dictionary" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary-based custom info type.</p>
+<dd><p>A list of phrases to detect as a CustomInfoType.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.regex">
 <code class="descname">regex</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.regex" title="Permalink to this definition">#</a></dt>
-<dd><p>Regex-based custom info type.</p>
+<dd><p>Regular expression based CustomInfoType.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.surrogate_type">
 <code class="descname">surrogate_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.surrogate_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Surrogate info type.</p>
+<dd><p>Message for detecting output from deidentification
+transformations that support reversing.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.detection_rules">
 <code class="descname">detection_rules</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.detection_rules" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of detection rules to apply to all findings of this custom
-info type. Rules are applied in order that they are specified.
-Not supported for the <code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code> custom info type.</p>
+<dd><p>Set of detection rules to apply to all findings of this
+CustomInfoType. Rules are applied in order that they are
+specified. Not supported for the <code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code>
+CustomInfoType.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule">
 <em class="property">class </em><code class="descname">DetectionRule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule" title="Permalink to this definition">#</a></dt>
-<dd><p>Rule for modifying a custom info type to alter behavior under certain
-circumstances, depending on the specific details of the rule. Not
+<dd><p>Rule for modifying a CustomInfoType to alter behavior under certain
 supported for the <code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code> custom info type.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.hotword_rule">
@@ -1130,26 +1156,18 @@ supported for the <code class="docutils literal notranslate"><span class="pre">s
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule">
 <em class="property">class </em><code class="descname">HotwordRule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule" title="Permalink to this definition">#</a></dt>
-<dd><p>Detection rule that adjusts the likelihood of findings within a certain
+<dd><p>The rule that adjusts the likelihood of findings within a certain
 proximity of hotwords.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.hotword_regex">
 <code class="descname">hotword_regex</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.hotword_regex" title="Permalink to this definition">#</a></dt>
-<dd><p>Regex pattern defining what qualifies as a hotword.</p>
+<dd><p>Regular expression pattern defining what qualifies as a               hotword.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.proximity">
 <code class="descname">proximity</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule.proximity" title="Permalink to this definition">#</a></dt>
-<dd><p>Proximity of the finding within which the entire hotword must
-reside. The total length of the window cannot exceed 1000
-characters. Note that the finding itself will be included in
-the window, so that hotwords may be used to match substrings
-of the finding itself. For example, the certainty of a phone
-number regex “(d{3}) d{3}d{4}” could be adjusted upwards if the area code is
-known to be the local area code of a company office using the
-hotword regex “(xxx)”, where “xxx” is the area code in
-question.</p>
+<dd><p>Proximity of the finding within which the entire hotword must               reside. The total length of the window cannot exceed 1000               characters. Note that the finding itself will be included in               the window, so that hotwords may be used to match substrings               of the finding itself. For example, the certainty of a phone               number regex “(<cite>d{3}</cite>) <cite>d{3}</cite>-:raw-               latex:<cite>d{4}</cite>” could be adjusted upwards if the area code is               known to be the local area code of a company office using the               hotword regex “(xxx)”, where “xxx” is the area code in               question.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1278,8 +1296,8 @@ as
 These types of transformations are those that perform pseudonymization,
 thereby producing a “surrogate” as output. This should be used in
 conjunction with a field on the transformation such as
-<code class="docutils literal notranslate"><span class="pre">surrogate_info_type</span></code>. This custom info type does not support the use
-of <code class="docutils literal notranslate"><span class="pre">detection_rules</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">surrogate_info_type</span></code>. This CustomInfoType does not support the use of
+<code class="docutils literal notranslate"><span class="pre">detection_rules</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1325,7 +1343,8 @@ may be empty.</p>
 <dt id="google.cloud.dlp_v2.types.DateShiftConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">DateShiftConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateShiftConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Shifts dates by random number of days, with option to be consistent for
-the same context.</p>
+the same context. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-date-shifting">https://cloud.google.com/dlp/docs/concepts-date-shifting</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.DateShiftConfig.upper_bound_days">
 <code class="descname">upper_bound_days</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateShiftConfig.upper_bound_days" title="Permalink to this definition">#</a></dt>
@@ -1383,13 +1402,8 @@ optional, but when set must be valid date or time values.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.DateTime.TimeZone">
 <em class="property">class </em><code class="descname">TimeZone</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.TimeZone" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.DateTime.TimeZone.offset_minutes">
-<code class="descname">offset_minutes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DateTime.TimeZone.offset_minutes" title="Permalink to this definition">#</a></dt>
-<dd><p>Set only if the offset can be determined. Positive for time
-ahead of UTC. E.g. For “UTC-9”, this value is -540.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+offset_minutes:             Set only if the offset can be determined. Positive for time             ahead of UTC. E.g. For “UTC-9”, this value is -540.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1493,7 +1507,8 @@ merged.</p>
 <dt id="google.cloud.dlp_v2.types.DeidentifyTemplate">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">DeidentifyTemplate</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeidentifyTemplate" title="Permalink to this definition">#</a></dt>
 <dd><p>The DeidentifyTemplates contains instructions on how to deidentify
-content.</p>
+content. See <a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-templates">https://cloud.google.com/dlp/docs/concepts-templates</a> to
+learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.DeidentifyTemplate.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.DeidentifyTemplate.name" title="Permalink to this definition">#</a></dt>
@@ -1852,22 +1867,22 @@ transform content that matches an <code class="docutils literal notranslate"><sp
 <code class="descname">quote</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Finding.quote" title="Permalink to this definition">#</a></dt>
 <dd><p>The content that was found. Even if the content is not
 textual, it may be converted to a textual representation here.
-Provided if requested by the <code class="docutils literal notranslate"><span class="pre">InspectConfig</span></code> and the finding
-is less than or equal to 4096 bytes long. If the finding
-exceeds 4096 bytes in length, the quote may be omitted.</p>
+Provided if <code class="docutils literal notranslate"><span class="pre">include_quote</span></code> is true and the finding is less
+than or equal to 4096 bytes long. If the finding exceeds 4096
+bytes in length, the quote may be omitted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.Finding.info_type">
 <code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Finding.info_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of content that might have been found. Provided if
-requested by the <code class="docutils literal notranslate"><span class="pre">InspectConfig</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">excluded_types</span></code> is false.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.Finding.likelihood">
 <code class="descname">likelihood</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Finding.likelihood" title="Permalink to this definition">#</a></dt>
-<dd><p>Estimate of how likely it is that the <code class="docutils literal notranslate"><span class="pre">info_type</span></code> is
+<dd><p>Confidence of how likely it is that the <code class="docutils literal notranslate"><span class="pre">info_type</span></code> is
 correct.</p>
 </dd></dl>
 
@@ -1908,6 +1923,7 @@ bucket will be replaced with “10-20”.</p>
 <p>If the bound Value type differs from the type of data being transformed,
 we will first attempt converting the type of the data to be transformed
 to match the type of the bound before comparing.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-bucketing">https://cloud.google.com/dlp/docs/concepts-bucketing</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.FixedSizeBucketingConfig.lower_bound">
 <code class="descname">lower_bound</code><a class="headerlink" href="#google.cloud.dlp_v2.types.FixedSizeBucketingConfig.lower_bound" title="Permalink to this definition">#</a></dt>
@@ -2033,7 +2049,10 @@ the finding.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.InfoType.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InfoType.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the information type.</p>
+<dd><p>Name of the information type. Either a name of your choosing
+when creating a CustomInfoType, or one of the names listed at
+<a class="reference external" href="https://cloud.google.com/dlp/docs/infotypes-reference">https://cloud.google.com/dlp/docs/infotypes-reference</a> when
+specifying a built-in type.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2102,8 +2121,10 @@ info_type.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.InfoTypeTransformations.InfoTypeTransformation.info_types">
 <code class="descname">info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InfoTypeTransformations.InfoTypeTransformation.info_types" title="Permalink to this definition">#</a></dt>
-<dd><p>InfoTypes to apply the transformation to. Empty list will
-match all available infoTypes for this transformation.</p>
+<dd><p>InfoTypes to apply the transformation to. An empty list will
+cause this transformation to apply to all findings that
+correspond to infoTypes that were requested in
+<code class="docutils literal notranslate"><span class="pre">InspectConfig</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2126,14 +2147,19 @@ redactContent only info_types and min_likelihood are currently used.</p>
 <code class="descname">info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.info_types" title="Permalink to this definition">#</a></dt>
 <dd><p>Restricts what info_types to look for. The values must
 correspond to InfoType values returned by ListInfoTypes or
-found in documentation.</p>
+listed at <a class="reference external" href="https://cloud.google.com/dlp/docs/infotypes">https://cloud.google.com/dlp/docs/infotypes</a>-
+reference.  When no InfoTypes or CustomInfoTypes are specified
+in a request, the system may automatically choose what
+detectors to run. By default this may be all types, but may
+change over time as detectors are updated.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.InspectConfig.min_likelihood">
 <code class="descname">min_likelihood</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.min_likelihood" title="Permalink to this definition">#</a></dt>
 <dd><p>Only returns findings equal or above this threshold. The
-default is POSSIBLE.</p>
+default is POSSIBLE. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/likelihood">https://cloud.google.com/dlp/docs/likelihood</a> to learn more.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2152,7 +2178,9 @@ finding is included in the response; see Finding.quote.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.InspectConfig.custom_info_types">
 <code class="descname">custom_info_types</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.custom_info_types" title="Permalink to this definition">#</a></dt>
-<dd><p>Custom infoTypes provided by the user.</p>
+<dd><p>CustomInfoTypes provided by the user. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/creating-custom-infotypes">https://cloud.google.com/dlp/docs/creating-custom-infotypes</a> to
+learn more.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2165,30 +2193,10 @@ images, and other content will be included.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits">
 <em class="property">class </em><code class="descname">FindingLimits</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_item">
-<code class="descname">max_findings_per_item</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_item" title="Permalink to this definition">#</a></dt>
-<dd><p>Max number of findings that will be returned for each item
-scanned. When set within <code class="docutils literal notranslate"><span class="pre">InspectDataSourceRequest</span></code>, the
-maximum returned is 1000 regardless if this is set higher.
-When set within <code class="docutils literal notranslate"><span class="pre">InspectContentRequest</span></code>, this field is
-ignored.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_request">
-<code class="descname">max_findings_per_request</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_request" title="Permalink to this definition">#</a></dt>
-<dd><p>Max number of findings that will be returned per request/job.
-When set within <code class="docutils literal notranslate"><span class="pre">InspectContentRequest</span></code>, the maximum
-returned is 1000 regardless if this is set higher.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_info_type">
-<code class="descname">max_findings_per_info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.max_findings_per_info_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration of findings limit given for specified infoTypes.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+max_findings_per_item:             Max number of findings that will be returned for each item             scanned. When set within <code class="docutils literal notranslate"><span class="pre">InspectDataSourceRequest</span></code>, the             maximum returned is 1000 regardless if this is set higher.             When set within <code class="docutils literal notranslate"><span class="pre">InspectContentRequest</span></code>, this field is             ignored.
+max_findings_per_request:             Max number of findings that will be returned per request/job.             When set within <code class="docutils literal notranslate"><span class="pre">InspectContentRequest</span></code>, the maximum             returned is 1000 regardless if this is set higher.
+max_findings_per_info_type:             Configuration of findings limit given for specified infoTypes.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit">
 <em class="property">class </em><code class="descname">InfoTypeLimit</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit" title="Permalink to this definition">#</a></dt>
@@ -2284,37 +2292,17 @@ merged.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions">
 <em class="property">class </em><code class="descname">RequestedOptions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.snapshot_inspect_template">
-<code class="descname">snapshot_inspect_template</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions.snapshot_inspect_template" title="Permalink to this definition">#</a></dt>
-<dd><p>If run with an InspectTemplate, a snapshot of its state at the
-time of this run.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+snapshot_inspect_template:             If run with an InspectTemplate, a snapshot of its state at the             time of this run.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result">
 <em class="property">class </em><code class="descname">Result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.processed_bytes">
-<code class="descname">processed_bytes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.processed_bytes" title="Permalink to this definition">#</a></dt>
-<dd><p>Total size in bytes that were processed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.total_estimated_bytes">
-<code class="descname">total_estimated_bytes</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.total_estimated_bytes" title="Permalink to this definition">#</a></dt>
-<dd><p>Estimate of the number of bytes to process.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.info_type_stats">
-<code class="descname">info_type_stats</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectDataSourceDetails.Result.info_type_stats" title="Permalink to this definition">#</a></dt>
-<dd><p>Statistics of how many instances of each info type were found
-during inspect job.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+processed_bytes:             Total size in bytes that were processed.
+total_estimated_bytes:             Estimate of the number of bytes to process.
+info_type_stats:             Statistics of how many instances of each info type were found             during inspect job.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2322,33 +2310,10 @@ during inspect job.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.InspectJobConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">InspectJobConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectJobConfig.storage_config">
-<code class="descname">storage_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.storage_config" title="Permalink to this definition">#</a></dt>
-<dd><p>The data to scan.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectJobConfig.inspect_config">
-<code class="descname">inspect_config</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.inspect_config" title="Permalink to this definition">#</a></dt>
-<dd><p>How and what to scan for.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectJobConfig.inspect_template_name">
-<code class="descname">inspect_template_name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.inspect_template_name" title="Permalink to this definition">#</a></dt>
-<dd><p>If provided, will be used as the default for all values in
-InspectConfig. <code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will be merged into the
-values persisted as part of the template.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.InspectJobConfig.actions">
-<code class="descname">actions</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectJobConfig.actions" title="Permalink to this definition">#</a></dt>
-<dd><p>Actions to execute at the completion of the job. Are executed
-in the order provided.</p>
-</dd></dl>
-
+<dd><p>Attributes:
+storage_config:           The data to scan.
+inspect_config:           How and what to scan for.
+inspect_template_name:           If provided, will be used as the default for all values in           InspectConfig. <code class="docutils literal notranslate"><span class="pre">inspect_config</span></code> will be merged into the           values persisted as part of the template.       actions:           Actions to execute at the completion of the job. Are executed           in the order provided.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2379,7 +2344,8 @@ best results, divide the input into smaller batches.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">InspectTemplate</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectTemplate" title="Permalink to this definition">#</a></dt>
 <dd><p>The inspectTemplate contains a configuration (set of types of sensitive
 data to be detected) to be used anywhere you otherwise would normally
-specify InspectConfig.</p>
+specify InspectConfig. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-templates">https://cloud.google.com/dlp/docs/concepts-templates</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.InspectTemplate.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.dlp_v2.types.InspectTemplate.name" title="Permalink to this definition">#</a></dt>
@@ -2819,16 +2785,16 @@ used in following ListInspectTemplates request.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.ListJobTriggersRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListJobTriggersRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>The parent resource name, for example projects/my-project-id.</p>
+<dd><p>The parent resource name, for example <code class="docutils literal notranslate"><span class="pre">projects/my-project-</span>
+<span class="pre">id</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.ListJobTriggersRequest.page_token">
 <code class="descname">page_token</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListJobTriggersRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional page token to continue retrieval. Comes from previous
-call to ListJobTriggers. <code class="docutils literal notranslate"><span class="pre">order_by</span></code> and <code class="docutils literal notranslate"><span class="pre">filter</span></code> should
-not change for subsequent calls, but can be omitted if token
-is specified.</p>
+call to ListJobTriggers. <code class="docutils literal notranslate"><span class="pre">order_by</span></code> field must not change
+for subsequent calls.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2841,15 +2807,14 @@ is specified.</p>
 <dt id="google.cloud.dlp_v2.types.ListJobTriggersRequest.order_by">
 <code class="descname">order_by</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListJobTriggersRequest.order_by" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional comma separated list of triggeredJob fields to order
-by, followed by ‘asc/desc’ postfix, i.e. <code class="docutils literal notranslate"><span class="pre">&quot;create_time</span>
-<span class="pre">asc,name</span> <span class="pre">desc,schedule_mode</span> <span class="pre">asc&quot;</span></code>. This list is case-
-insensitive.  Example: <code class="docutils literal notranslate"><span class="pre">&quot;name</span> <span class="pre">asc,schedule_mode</span> <span class="pre">desc,</span> <span class="pre">status</span>
-<span class="pre">desc&quot;</span></code>  Supported filters keys and values are:  -
+by, followed by <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code> postfix. This list is
+case-insensitive, default sorting order is ascending,
+redundant space characters are insignificant.  Example: <code class="docutils literal notranslate"><span class="pre">name</span>
+<span class="pre">asc,update_time,</span> <span class="pre">create_time</span> <span class="pre">desc</span></code>  Supported fields are:  -
 <code class="docutils literal notranslate"><span class="pre">create_time</span></code>: corresponds to time the triggeredJob was
 created. -  <code class="docutils literal notranslate"><span class="pre">update_time</span></code>: corresponds to time the
 triggeredJob was last    updated. -  <code class="docutils literal notranslate"><span class="pre">name</span></code>: corresponds to
-JobTrigger’s display name. -  <code class="docutils literal notranslate"><span class="pre">status</span></code>: corresponds to the
-triggeredJob status.</p>
+JobTrigger’s name.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2938,23 +2903,31 @@ finding within the file or record.</p>
 <dt id="google.cloud.dlp_v2.types.OutputStorageConfig.table">
 <code class="descname">table</code><a class="headerlink" href="#google.cloud.dlp_v2.types.OutputStorageConfig.table" title="Permalink to this definition">#</a></dt>
 <dd><p>Store findings in an existing table or a new table in an
-existing dataset. Each column in an existing table must have
-the same name, type, and mode of a field in the <code class="docutils literal notranslate"><span class="pre">Finding</span></code>
-object. If table_id is not set a new one will be generated
-for you with the following format:
+existing dataset. If table_id is not set a new one will be
+generated for you with the following format:
 dlp_googleapis_yyyy_mm_dd_[dlp_job_id]. Pacific
-timezone will be used for generating the date details.</p>
+timezone will be used for generating the date details.  For
+Inspect, each column in an existing output table must have the
+same name, type, and mode of a field in the <code class="docutils literal notranslate"><span class="pre">Finding</span></code>
+object.  For Risk, an existing output table should be the
+output of a previous Risk analysis job run on the same source
+table, with the same privacy metric and quasi-identifiers.
+Risk jobs that analyze the same table but compute a different
+privacy metric, or use different sets of quasi-identifiers,
+cannot store their results in the same table.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.OutputStorageConfig.output_schema">
 <code class="descname">output_schema</code><a class="headerlink" href="#google.cloud.dlp_v2.types.OutputStorageConfig.output_schema" title="Permalink to this definition">#</a></dt>
-<dd><p>Schema used for writing the findings. Columns are derived from
-the <code class="docutils literal notranslate"><span class="pre">Finding</span></code> object. If appending to an existing table, any
-columns from the predefined schema that are missing will be
-added. No columns in the existing table will be deleted.  If
-unspecified, then all available columns will be used for a new
-table, and no changes will be made to an existing table.</p>
+<dd><p>Schema used for writing the findings for Inspect jobs. This
+field is only used for Inspect and must be unspecified for
+Risk jobs. Columns are derived from the <code class="docutils literal notranslate"><span class="pre">Finding</span></code> object. If
+appending to an existing table, any columns from the
+predefined schema that are missing will be added. No columns
+in the existing table will be deleted.  If unspecified, then
+all available columns will be used for a new table, and no
+changes will be made to an existing table.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3008,6 +2981,39 @@ supported, depending on the data.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig">
+<em class="property">class </em><code class="descname">DeltaPresenceEstimationConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>δ-presence metric, used to estimate how likely it is for an attacker to
+figure out that one given individual appears in a de-identified dataset.
+Similarly to the k-map metric, we cannot compute δ-presence exactly
+without knowing the attack dataset, so we use a statistical model
+instead.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.quasi_ids">
+<code class="descname">quasi_ids</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.quasi_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Fields considered to be quasi-identifiers. No two fields can
+have the same tag. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.region_code">
+<code class="descname">region_code</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.region_code" title="Permalink to this definition">#</a></dt>
+<dd><p>ISO 3166-1 alpha-2 region code to use in the statistical
+modeling. Required if no column is tagged with a region-
+specific InfoType (like US_ZIP_5) or a region code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.auxiliary_tables">
+<code class="descname">auxiliary_tables</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig.auxiliary_tables" title="Permalink to this definition">#</a></dt>
+<dd><p>Several auxiliary tables can be used in the analysis. Each
+custom_tag used to tag a quasi-identifiers field must appear
+in exactly one field of one auxiliary table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.PrivacyMetric.KAnonymityConfig">
 <em class="property">class </em><code class="descname">KAnonymityConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KAnonymityConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>k-anonymity metric, used for analysis of reidentification risk.</p>
@@ -3047,7 +3053,7 @@ dataset is statistically modeled instead of being perfectly known. This
 can be done using publicly available data (like the US Census), or using
 a custom statistical model (indicated as one or several BigQuery
 tables), or by extrapolating from the distribution of values in the
-input dataset.</p>
+input dataset. A column with a semantic tag attached.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.quasi_ids">
 <code class="descname">quasi_ids</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.quasi_ids" title="Permalink to this definition">#</a></dt>
@@ -3113,48 +3119,11 @@ in the data corresponds to which column in the statistical model.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField">
 <em class="property">class </em><code class="descname">TaggedField</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField" title="Permalink to this definition">#</a></dt>
-<dd><p>A column with a semantic tag attached.</p>
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.field">
-<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.field" title="Permalink to this definition">#</a></dt>
-<dd><p>Identifies the column. [required]</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.tag">
-<code class="descname">tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.tag" title="Permalink to this definition">#</a></dt>
-<dd><p>Semantic tag that identifies what a column contains, to
-determine which statistical model to use to estimate the
-reidentifiability of each value. [required]</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.info_type">
-<code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.info_type" title="Permalink to this definition">#</a></dt>
-<dd><p>A column can be tagged with a InfoType to use the relevant
-public dataset as a statistical model of population, if
-available. We currently support US ZIP codes, region codes,
-ages and genders. To programmatically obtain the list of
-supported InfoTypes, use ListInfoTypes with the
-supported_by=RISK_ANALYSIS filter.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.custom_tag">
-<code class="descname">custom_tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.custom_tag" title="Permalink to this definition">#</a></dt>
-<dd><p>A column can be tagged with a custom tag. In this case, the
-user must indicate an auxiliary table that contains
-statistical information on the possible values of this column
-(below).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.inferred">
-<code class="descname">inferred</code><a class="headerlink" href="#google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField.inferred" title="Permalink to this definition">#</a></dt>
-<dd><p>If no semantic tag is indicated, we infer the statistical
-model from the distribution of values in the input data</p>
-</dd></dl>
-
+<dd><p>Attributes:
+field:               Identifies the column. [required]
+tag:               Semantic tag that identifies what a column contains, to               determine which statistical model to use to estimate the               reidentifiability of each value. [required]           info_type:               A column can be tagged with a InfoType to use the relevant               public dataset as a statistical model of population, if               available. We currently support US ZIP codes, region codes,               ages and genders. To programmatically obtain the list of               supported InfoTypes, use ListInfoTypes with the               supported_by=RISK_ANALYSIS filter.
+custom_tag:               A column can be tagged with a custom tag. In this case, the               user must indicate an auxiliary table that contains               statistical information on the possible values of this column               (below).
+inferred:               If no semantic tag is indicated, we infer the statistical               model from the distribution of values in the input data</p>
 </dd></dl>
 
 </dd></dl>
@@ -3192,6 +3161,53 @@ and quantiles.</p>
 integer, float, date, datetime, timestamp, time.</p>
 </dd></dl>
 
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.QuasiId">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">QuasiId</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId" title="Permalink to this definition">#</a></dt>
+<dd><p>A column with a semantic tag attached.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuasiId.field">
+<code class="descname">field</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Identifies the column. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuasiId.tag">
+<code class="descname">tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId.tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Semantic tag that identifies what a column contains, to
+determine which statistical model to use to estimate the
+reidentifiability of each value. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuasiId.info_type">
+<code class="descname">info_type</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId.info_type" title="Permalink to this definition">#</a></dt>
+<dd><p>A column can be tagged with a InfoType to use the relevant
+public dataset as a statistical model of population, if
+available. We currently support US ZIP codes, region codes,
+ages and genders. To programmatically obtain the list of
+supported InfoTypes, use ListInfoTypes with the
+supported_by=RISK_ANALYSIS filter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuasiId.custom_tag">
+<code class="descname">custom_tag</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId.custom_tag" title="Permalink to this definition">#</a></dt>
+<dd><p>A column can be tagged with a custom tag. In this case, the
+user must indicate an auxiliary table that contains
+statistical information on the possible values of this column
+(below).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.QuasiId.inferred">
+<code class="descname">inferred</code><a class="headerlink" href="#google.cloud.dlp_v2.types.QuasiId.inferred" title="Permalink to this definition">#</a></dt>
+<dd><p>If no semantic tag is indicated, we infer the statistical
+model from the distribution of values in the input data</p>
 </dd></dl>
 
 </dd></dl>
@@ -3378,8 +3394,8 @@ phone number is 206-555-0123’, the output would be ‘My phone number is
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.RedactImageRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">RedactImageRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request to search for potentially sensitive info in a list of items and
-replace it with a default or provided content.</p>
+<dd><p>Request to search for potentially sensitive info in an image and redact
+it by covering it with a colored rectangle.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.RedactImageRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageRequest.parent" title="Permalink to this definition">#</a></dt>
@@ -3397,6 +3413,13 @@ replace it with a default or provided content.</p>
 <code class="descname">image_redaction_configs</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageRequest.image_redaction_configs" title="Permalink to this definition">#</a></dt>
 <dd><p>The configuration for specifying what content to redact from
 images.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RedactImageRequest.include_findings">
+<code class="descname">include_findings</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageRequest.include_findings" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the response should include findings along with the
+redacted image.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3428,7 +3451,8 @@ are found, but not specified in another ImageRedactionConfig.</p>
 <dt id="google.cloud.dlp_v2.types.RedactImageRequest.ImageRedactionConfig.redact_all_text">
 <code class="descname">redact_all_text</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageRequest.ImageRedactionConfig.redact_all_text" title="Permalink to this definition">#</a></dt>
 <dd><p>If true, all text found in the image, regardless whether it
-matches an info_type, is redacted.</p>
+matches an info_type, is redacted. Only one should be
+provided.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3459,6 +3483,13 @@ image.</p>
 <dd><p>If an image was being inspected and the InspectConfig’s
 include_quote was set to true, then this field will include
 all text, if any, that was found in the image.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.RedactImageResponse.inspect_result">
+<code class="descname">inspect_result</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RedactImageResponse.inspect_result" title="Permalink to this definition">#</a></dt>
+<dd><p>The findings. Populated when include_findings in the request
+is true.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3562,7 +3593,8 @@ and groups are recursively merged.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.RiskAnalysisJobConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">RiskAnalysisJobConfig</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RiskAnalysisJobConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration for a risk analysis job.</p>
+<dd><p>Configuration for a risk analysis job. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/concepts-risk-analysis">https://cloud.google.com/dlp/docs/concepts-risk-analysis</a> to learn more.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.RiskAnalysisJobConfig.privacy_metric">
 <code class="descname">privacy_metric</code><a class="headerlink" href="#google.cloud.dlp_v2.types.RiskAnalysisJobConfig.privacy_metric" title="Permalink to this definition">#</a></dt>
@@ -3592,10 +3624,10 @@ in the order provided.</p>
 <dt id="google.cloud.dlp_v2.types.Schedule.recurrence_period_duration">
 <code class="descname">recurrence_period_duration</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Schedule.recurrence_period_duration" title="Permalink to this definition">#</a></dt>
 <dd><p>With this option a job is started a regular periodic basis.
-For example: every 10 minutes.  A scheduled start time will be
-skipped if the previous execution has not ended when its
-scheduled time occurs.  This value must be set to a time
-duration greater than or equal to 60 minutes and can be no
+For example: every day (86400 seconds).  A scheduled start
+time will be skipped if the previous execution has not ended
+when its scheduled time occurs.  This value must be set to a
+time duration greater than or equal to 1 day and can be no
 longer than 60 days.</p>
 </dd></dl>
 
@@ -3618,6 +3650,45 @@ longer than 60 days.</p>
 <dt id="google.cloud.dlp_v2.types.SourceCodeInfo.Location">
 <em class="property">class </em><code class="descname">Location</code><a class="headerlink" href="#google.cloud.dlp_v2.types.SourceCodeInfo.Location" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StatisticalTable</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable" title="Permalink to this definition">#</a></dt>
+<dd><p>An auxiliary table containing statistical information on the relative
+frequency of different quasi-identifiers values. It has one or several
+quasi-identifiers columns, and one column that indicates the relative
+frequency of each quasi-identifier tuple. If a tuple is present in the
+data but not in the auxiliary table, the corresponding relative
+frequency is assumed to be zero (and thus, the tuple is highly
+reidentifiable).</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Auxiliary table location. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.quasi_ids">
+<code class="descname">quasi_ids</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.quasi_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Quasi-identifier columns. [required]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.relative_frequency">
+<code class="descname">relative_frequency</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.relative_frequency" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative frequency column must contain a floating-point
+number between 0 and 1 (inclusive). Null values are assumed to
+be zero. [required]</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField">
+<em class="property">class </em><code class="descname">QuasiIdentifierField</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField" title="Permalink to this definition">#</a></dt>
+<dd><p>A quasi-identifier column has a custom_tag, used to know which column
+in the data corresponds to which column in the statistical model.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -3696,7 +3767,9 @@ the last run of the JobTrigger.</p>
 <dt id="google.cloud.dlp_v2.types.Table">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">Table</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table" title="Permalink to this definition">#</a></dt>
 <dd><p>Structured content to inspect. Up to 50,000 <code class="docutils literal notranslate"><span class="pre">Value</span></code>s per request
-allowed.</p>
+allowed. See
+<a class="reference external" href="https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table">https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table</a>
+to learn more.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Table.Row">
 <em class="property">class </em><code class="descname">Row</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Table.Row" title="Permalink to this definition">#</a></dt>
