@@ -921,7 +921,6 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        description = 'description-1724546052'
         app_profile_id = 'appProfileId1262094415'
         cluster_id = 'cluster-id'
         allow_transactional_writes = True
@@ -933,11 +932,10 @@ class TestInstance(unittest.TestCase):
                 ))
         expected_request_app_profile = instance_pb2.AppProfile(
             name=self.APP_PROFILE_PATH + app_profile_id,
-            description=description,
             single_cluster_routing=single_cluster_routing
             )
         expected_request_update_mask = field_mask_pb2.FieldMask(
-            paths=['description', 'single_cluster_routing']
+            paths=['single_cluster_routing']
         )
         expected_request = instance_v2_pb2.UpdateAppProfileRequest(
             app_profile=expected_request_app_profile,
@@ -947,7 +945,6 @@ class TestInstance(unittest.TestCase):
 
         result = instance.update_app_profile(app_profile_id,
                                              RoutingPolicyType.SINGLE,
-                                             description=description,
                                              ignore_warnings=ignore_warnings,
                                              cluster_id=cluster_id,
                                              allow_transactional_writes=(
