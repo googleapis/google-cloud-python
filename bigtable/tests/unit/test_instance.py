@@ -18,6 +18,7 @@ import unittest
 import mock
 
 from ._testing import _make_credentials
+from google.cloud.bigtable.cluster import Cluster
 
 
 class MultiCallableStub(object):
@@ -304,6 +305,13 @@ class TestInstance(unittest.TestCase):
         # Check Instance optional config values before.
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
+    def test_create_check_conflicts(self):
+        client = object()
+        instance = self._make_one(self.INSTANCE_ID, client)
+        with self.assertRaises(ValueError):
+            instance.create(location_id=self.LOCATION_ID,
+                            clusters=[object(), object()])
+
     def test_create(self):
         import datetime
         from google.api_core import operation
@@ -401,6 +409,72 @@ class TestInstance(unittest.TestCase):
         expected_request = self._create_instance_request({cluster_id: cluster})
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
+
+    def test_create_w_clusters(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable import enums
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  self.DISPLAY_NAME,
+                                  enums.InstanceType.PRODUCTION,
+                                  self.LABELS)
+
+        # Create response_pb
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        # Patch the stub used by the API method.
+        channel = ChannelStub(responses=[response_pb])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        clusters = [Cluster('cluster-id1', instance, 'location-id1'),
+                    Cluster('cluster-id2', instance, 'location-id2')]
+        result = instance.create(None, None, None, clusters)
+        actual_request = channel.requests[0][1]
+
+        cluster1 = self._create_cluster(
+            instance_api, 'cluster-id1', 'location-id1', DEFAULT_SERVE_NODES,
+            enums.StorageType.UNSPECIFIED)
+
+        cluster2 = self._create_cluster(
+            instance_api, 'cluster-id2', 'location-id2', DEFAULT_SERVE_NODES,
+            enums.StorageType.UNSPECIFIED)
+
+        expected_request = self._create_instance_request(
+            {'cluster-id1': cluster1,
+             'cluster-id2': cluster2}
+        )
+        self.assertEqual(expected_request, actual_request)
+        self.assertIsInstance(result, operation.Operation)
+        # self.assertEqual(result.operation.name, self.OP_NAME)
+        self.assertIsInstance(result.metadata,
+                              messages_v2_pb2.CreateInstanceMetadata)
 
     def _create_cluster(self, instance_api, cluster_id, location_id,
                         server_nodes, storage_type):

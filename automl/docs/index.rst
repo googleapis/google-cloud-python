@@ -3,12 +3,10 @@ Python Client for Cloud AutoML API (`Alpha`_)
 
 `Cloud AutoML API`_: The AutoML project API.
 
-- `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Cloud AutoML API: https://cloud.google.com/automl
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/automl/usage.html
 .. _Product Documentation:  https://cloud.google.com/automl
 
 Quick Start
@@ -64,8 +62,6 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud AutoML API
-   API to see other available methods on the client.
 -  Read the `Cloud AutoML API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `repository’s main README`_ to see the full list of Cloud

@@ -19,6 +19,7 @@ import re
 
 from google.cloud.bigtable.table import Table
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+from google.cloud.bigtable.cluster import Cluster
 
 from google.protobuf import field_mask_pb2
 
@@ -180,7 +181,7 @@ class Instance(object):
 
     def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
                serve_nodes=DEFAULT_SERVE_NODES,
-               default_storage_type=None):
+               default_storage_type=None, clusters=None):
         """Create this instance.
 
         .. note::
@@ -216,29 +217,40 @@ class Instance(object):
                                       Defaults to
                                       :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
+        :type clusters: class:`~[~google.cloud.bigtable.cluster.Cluster]`
+        :param clusters: List of clusters to be created.
+
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if both
+                 ``clusters`` and one of ``location_id``, ``serve_nodes``
+                 and ``default_storage_type`` are set.
         """
-        clusters = {}
-        cluster_id = '{}-cluster'.format(self.instance_id)
-        cluster_name = self._client.instance_admin_client.cluster_path(
-            self._client.project, self.instance_id, cluster_id)
-        location = self._client.instance_admin_client.location_path(
-            self._client.project, location_id)
-        cluster = instance_pb2.Cluster(
-            name=cluster_name, location=location,
-            serve_nodes=serve_nodes,
-            default_storage_type=default_storage_type)
+
+        if clusters is None:
+            cluster_id = '{}-cluster'.format(self.instance_id)
+
+            clusters = [Cluster(cluster_id, self, location_id,
+                                serve_nodes, default_storage_type)]
+
+        elif (location_id is not None or
+              serve_nodes is not None or
+              default_storage_type is not None):
+            raise ValueError("clusters and one of location_id, serve_nodes, \
+                             default_storage_type can not be set \
+                             simultaneously.")
+
         instance = instance_pb2.Instance(
             display_name=self.display_name, type=self.type_,
             labels=self.labels)
-        clusters[cluster_id] = cluster
+
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters=clusters)
+            clusters={c.cluster_id: c._create_pb_request() for c in clusters})
 
     def update(self):
         """Update this instance.
