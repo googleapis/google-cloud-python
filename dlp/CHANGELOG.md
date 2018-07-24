@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.6.0
+
+### New Features
+- Regenerate DLP v2 endpoint (redact image, delta presence) (#5666)
+
+### Internal / Testing Changes
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Add Test runs for Python 3.7 and remove 3.4 (#5295)
+- Modify system tests to use prerelease versions of grpcio (#5304)
+
 ## 0.5.0
 
 ### New Features
