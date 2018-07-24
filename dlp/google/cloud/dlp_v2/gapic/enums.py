@@ -13,14 +13,16 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
 
-class Likelihood(object):
+
+class Likelihood(enum.IntEnum):
     """
     Categorization of results based on how likely they are to represent a match,
     based on the number of elements they contain which imply a match.
 
     Attributes:
-      LIKELIHOOD_UNSPECIFIED (int): Default value; information with all likelihoods is included.
+      LIKELIHOOD_UNSPECIFIED (int): Default value; same as POSSIBLE.
       VERY_UNLIKELY (int): Few matching elements.
       UNLIKELY (int)
       POSSIBLE (int): Some matching elements.
@@ -35,7 +37,7 @@ class Likelihood(object):
     VERY_LIKELY = 5
 
 
-class FileType(object):
+class FileType(enum.IntEnum):
     """
     Definitions of file type groups to scan.
 
@@ -54,7 +56,7 @@ class FileType(object):
     TEXT_FILE = 2
 
 
-class DayOfWeek(object):
+class DayOfWeek(enum.IntEnum):
     """
     Represents a day of week.
 
@@ -78,7 +80,7 @@ class DayOfWeek(object):
     SUNDAY = 7
 
 
-class ContentOption(object):
+class ContentOption(enum.IntEnum):
     """
     Options describing which parts of the provided content should be scanned.
 
@@ -92,7 +94,7 @@ class ContentOption(object):
     CONTENT_IMAGE = 2
 
 
-class InfoTypeSupportedBy(object):
+class InfoTypeSupportedBy(enum.IntEnum):
     """
     Parts of the APIs which use certain infoTypes.
 
@@ -106,7 +108,7 @@ class InfoTypeSupportedBy(object):
     RISK_ANALYSIS = 2
 
 
-class RelationalOperator(object):
+class RelationalOperator(enum.IntEnum):
     """
     Operators available for comparing the value of fields.
 
@@ -130,7 +132,7 @@ class RelationalOperator(object):
     EXISTS = 7
 
 
-class DlpJobType(object):
+class DlpJobType(enum.IntEnum):
     """
     An enum to represent the various type of DLP jobs.
 
@@ -144,8 +146,43 @@ class DlpJobType(object):
     RISK_ANALYSIS_JOB = 2
 
 
+class CloudStorageOptions(object):
+    class SampleMethod(enum.IntEnum):
+        """
+        How to sample bytes if not all bytes are scanned. Meaningful only when used
+        in conjunction with bytes_limit_per_file. If not specified, scanning would
+        start from the top.
+
+        Attributes:
+          SAMPLE_METHOD_UNSPECIFIED (int)
+          TOP (int): Scan from the top (default).
+          RANDOM_START (int): For each file larger than bytes_limit_per_file, randomly pick the offset
+          to start scanning. The scanned bytes are contiguous.
+        """
+        SAMPLE_METHOD_UNSPECIFIED = 0
+        TOP = 1
+        RANDOM_START = 2
+
+
+class BigQueryOptions(object):
+    class SampleMethod(enum.IntEnum):
+        """
+        How to sample rows if not all rows are scanned. Meaningful only when used
+        in conjunction with rows_limit. If not specified, scanning would start
+        from the top.
+
+        Attributes:
+          SAMPLE_METHOD_UNSPECIFIED (int)
+          TOP (int): Scan from the top (default).
+          RANDOM_START (int): Randomly pick the row to start scanning. The scanned rows are contiguous.
+        """
+        SAMPLE_METHOD_UNSPECIFIED = 0
+        TOP = 1
+        RANDOM_START = 2
+
+
 class ByteContentItem(object):
-    class BytesType(object):
+    class BytesType(enum.IntEnum):
         """
         Attributes:
           BYTES_TYPE_UNSPECIFIED (int)
@@ -166,7 +203,7 @@ class ByteContentItem(object):
 
 
 class OutputStorageConfig(object):
-    class OutputSchema(object):
+    class OutputSchema(enum.IntEnum):
         """
         Predefined schemas for storing findings.
 
@@ -188,7 +225,7 @@ class OutputStorageConfig(object):
 
 
 class TimePartConfig(object):
-    class TimePart(object):
+    class TimePart(enum.IntEnum):
         """
         Attributes:
           TIME_PART_UNSPECIFIED (int)
@@ -209,7 +246,7 @@ class TimePartConfig(object):
 
 
 class CharsToIgnore(object):
-    class CommonCharsToIgnore(object):
+    class CommonCharsToIgnore(enum.IntEnum):
         """
         Attributes:
           COMMON_CHARS_TO_IGNORE_UNSPECIFIED (int)
@@ -228,7 +265,7 @@ class CharsToIgnore(object):
 
 
 class CryptoReplaceFfxFpeConfig(object):
-    class FfxCommonNativeAlphabet(object):
+    class FfxCommonNativeAlphabet(enum.IntEnum):
         """
         These are commonly used subsets of the alphabet that the FFX mode
         natively supports. In the algorithm, the alphabet is selected using
@@ -250,7 +287,7 @@ class CryptoReplaceFfxFpeConfig(object):
 
 class RecordCondition(object):
     class Expressions(object):
-        class LogicalOperator(object):
+        class LogicalOperator(enum.IntEnum):
             """
             Attributes:
               LOGICAL_OPERATOR_UNSPECIFIED (int)
@@ -261,7 +298,7 @@ class RecordCondition(object):
 
 
 class TransformationSummary(object):
-    class TransformationResultCode(object):
+    class TransformationResultCode(enum.IntEnum):
         """
         Possible outcomes of transformations.
 
@@ -276,7 +313,7 @@ class TransformationSummary(object):
 
 
 class JobTrigger(object):
-    class Status(object):
+    class Status(enum.IntEnum):
         """
         Whether the trigger is currently active. If PAUSED or CANCELLED, no jobs
         will be created with this configuration. The service may automatically
@@ -296,7 +333,7 @@ class JobTrigger(object):
 
 
 class DlpJob(object):
-    class JobState(object):
+    class JobState(enum.IntEnum):
         """
         Attributes:
           JOB_STATE_UNSPECIFIED (int)
