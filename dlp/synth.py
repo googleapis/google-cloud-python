@@ -25,12 +25,11 @@ common = gcp.CommonTemplates()
 
 client_library_version = '0.5.0'
 
-# tasks has two product names, and a poorly named artman yaml
 library = gapic.py_library(
     'dlp', 'v2',
     config_path='/google/privacy/dlp/artman_dlp_v2.yaml')
 
-s.copy(library, excludes="README.rst")
+s.copy(library, excludes=["README.rst", "nox.py"])
 
 # Set Release Status
 release_status = 'Development Status :: 3 - Alpha'
