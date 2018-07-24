@@ -273,7 +273,7 @@ class Cluster(object):
         cluster_name = client.instance_admin_client.cluster_path(
             client.project, self._instance.instance_id, self.cluster_id)
         location = client.instance_admin_client.location_path(
-            client.project, self.location)
+            client.project, self.location_id)
         cluster_message = instance_pb2.Cluster(
             name=cluster_name, location=location,
             serve_nodes=self.serve_nodes,
