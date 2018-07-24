@@ -85,7 +85,7 @@ class TestCluster(unittest.TestCase):
         cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
-        self.assertIsNone(cluster.location_id)
+        self.assertIs(cluster.location_id, self.LOCATION_ID)
         self.assertIsNone(cluster.state)
         self.assertIsNone(cluster.serve_nodes)
         self.assertIsNone(cluster.default_storage_type)
