@@ -118,7 +118,7 @@ class TestMutationsBatcher(unittest.TestCase):
 
     @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
     def test_add_row_with_max_mutations_failure(self):
-        from google.cloud.bigtable.table import TooManyMutationsError
+        from google.cloud.bigtable.batcher import MaxMutaionsError
 
         table = _Table(self.TABLE_NAME)
         mutation_batcher = self._make_batcher(table)
@@ -128,7 +128,7 @@ class TestMutationsBatcher(unittest.TestCase):
         rows[0].set_cell('cf1', b'c1', 3)
         rows[0].set_cell('cf1', b'c1', 4)
 
-        with self.assertRaises(TooManyMutationsError):
+        with self.assertRaises(MaxMutaionsError):
             mutation_batcher.mutate(rows[0])
 
     @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)

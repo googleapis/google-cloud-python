@@ -15,11 +15,13 @@
 """User friendly container for Google Cloud Bigtable MutationBatcher."""
 
 
-from google.cloud.bigtable import table
-
 FLUSH_COUNT = 1000
 MAX_MUTATIONS = 100000
 MAX_ROW_BYTES = 5242880  # 5MB
+
+
+class MaxMutaionsError(ValueError):
+    """The number of mutations for bulk request is too big."""
 
 
 class MutationsBatcher(object):
@@ -78,7 +80,7 @@ class MutationsBatcher(object):
         """
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
-            raise table.TooManyMutationsError
+            raise MaxMutaionsError
 
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
             self.flush()
