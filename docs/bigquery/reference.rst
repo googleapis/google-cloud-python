@@ -129,6 +129,7 @@ External Configuration
 .. autosummary::
     :toctree: generated
 
+    external_config.ExternalSourceFormat
     external_config.ExternalConfig
     external_config.BigtableOptions
     external_config.BigtableColumnFamily
