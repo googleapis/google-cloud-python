@@ -31,7 +31,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/privacy/dlp_v2/proto/dlp.proto',
   package='google.privacy.dlp.v2',
   syntax='proto3',
-  serialized_pb=_b('\n+google/cloud/privacy/dlp_v2/proto/dlp.proto\x12\x15google.privacy.dlp.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/cloud/privacy/dlp_v2/proto/storage.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x16google/type/date.proto\x1a\x1bgoogle/type/dayofweek.proto\x1a\x1bgoogle/type/timeofday.proto\"\x8b\x05\n\rInspectConfig\x12\x33\n\ninfo_types\x18\x01 \x03(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x39\n\x0emin_likelihood\x18\x02 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x42\n\x06limits\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.InspectConfig.FindingLimits\x12\x15\n\rinclude_quote\x18\x04 \x01(\x08\x12\x1a\n\x12\x65xclude_info_types\x18\x05 \x01(\x08\x12@\n\x11\x63ustom_info_types\x18\x06 \x03(\x0b\x32%.google.privacy.dlp.v2.CustomInfoType\x12=\n\x0f\x63ontent_options\x18\x08 \x03(\x0e\x32$.google.privacy.dlp.v2.ContentOption\x1a\x91\x02\n\rFindingLimits\x12\x1d\n\x15max_findings_per_item\x18\x01 \x01(\x05\x12 \n\x18max_findings_per_request\x18\x02 \x01(\x05\x12\x64\n\x1amax_findings_per_info_type\x18\x03 \x03(\x0b\x32@.google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit\x1aY\n\rInfoTypeLimit\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x14\n\x0cmax_findings\x18\x02 \x01(\x05\"\xdf\x01\n\x0f\x42yteContentItem\x12>\n\x04type\x18\x01 \x01(\x0e\x32\x30.google.privacy.dlp.v2.ByteContentItem.BytesType\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"~\n\tBytesType\x12\x1a\n\x16\x42YTES_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05IMAGE\x10\x06\x12\x0e\n\nIMAGE_JPEG\x10\x01\x12\r\n\tIMAGE_BMP\x10\x02\x12\r\n\tIMAGE_PNG\x10\x03\x12\r\n\tIMAGE_SVG\x10\x04\x12\r\n\tTEXT_UTF8\x10\x05\"\x97\x01\n\x0b\x43ontentItem\x12\x0f\n\x05value\x18\x03 \x01(\tH\x00\x12-\n\x05table\x18\x04 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.TableH\x00\x12;\n\tbyte_item\x18\x05 \x01(\x0b\x32&.google.privacy.dlp.v2.ByteContentItemH\x00\x42\x0b\n\tdata_item\"\x9d\x01\n\x05Table\x12/\n\x07headers\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12.\n\x04rows\x18\x02 \x03(\x0b\x32 .google.privacy.dlp.v2.Table.Row\x1a\x33\n\x03Row\x12,\n\x06values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"]\n\rInspectResult\x12\x30\n\x08\x66indings\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.Finding\x12\x1a\n\x12\x66indings_truncated\x18\x02 \x01(\x08\"\x9d\x02\n\x07\x46inding\x12\r\n\x05quote\x18\x01 \x01(\t\x12\x32\n\tinfo_type\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x35\n\nlikelihood\x18\x03 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x31\n\x08location\x18\x04 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.Location\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\nquote_info\x18\x07 \x01(\x0b\x32 .google.privacy.dlp.v2.QuoteInfo\"\xb6\x01\n\x08Location\x12\x30\n\nbyte_range\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Range\x12\x35\n\x0f\x63odepoint_range\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Range\x12\x41\n\x11\x63ontent_locations\x18\x07 \x03(\x0b\x32&.google.privacy.dlp.v2.ContentLocation\"\xd1\x02\n\x0f\x43ontentLocation\x12\x16\n\x0e\x63ontainer_name\x18\x01 \x01(\t\x12@\n\x0frecord_location\x18\x02 \x01(\x0b\x32%.google.privacy.dlp.v2.RecordLocationH\x00\x12>\n\x0eimage_location\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.ImageLocationH\x00\x12\x44\n\x11\x64ocument_location\x18\x05 \x01(\x0b\x32\'.google.privacy.dlp.v2.DocumentLocationH\x00\x12\x37\n\x13\x63ontainer_timestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x19\n\x11\x63ontainer_version\x18\x07 \x01(\tB\n\n\x08location\"\'\n\x10\x44ocumentLocation\x12\x13\n\x0b\x66ile_offset\x18\x01 \x01(\x03\"\xb6\x01\n\x0eRecordLocation\x12\x34\n\nrecord_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.RecordKey\x12\x30\n\x08\x66ield_id\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12<\n\x0etable_location\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.TableLocation\"\"\n\rTableLocation\x12\x11\n\trow_index\x18\x01 \x01(\x03\"#\n\x05Range\x12\r\n\x05start\x18\x01 \x01(\x03\x12\x0b\n\x03\x65nd\x18\x02 \x01(\x03\"K\n\rImageLocation\x12:\n\x0e\x62ounding_boxes\x18\x01 \x03(\x0b\x32\".google.privacy.dlp.v2.BoundingBox\"G\n\x0b\x42oundingBox\x12\x0b\n\x03top\x18\x01 \x01(\x05\x12\x0c\n\x04left\x18\x02 \x01(\x05\x12\r\n\x05width\x18\x03 \x01(\x05\x12\x0e\n\x06height\x18\x04 \x01(\x05\"\xa9\x03\n\x12RedactImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12_\n\x17image_redaction_configs\x18\x05 \x03(\x0b\x32>.google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig\x12\x39\n\tbyte_item\x18\x07 \x01(\x0b\x32&.google.privacy.dlp.v2.ByteContentItem\x1a\xa8\x01\n\x14ImageRedactionConfig\x12\x34\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoTypeH\x00\x12\x19\n\x0fredact_all_text\x18\x02 \x01(\x08H\x00\x12\x35\n\x0fredaction_color\x18\x03 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.ColorB\x08\n\x06target\"1\n\x05\x43olor\x12\x0b\n\x03red\x18\x01 \x01(\x02\x12\r\n\x05green\x18\x02 \x01(\x02\x12\x0c\n\x04\x62lue\x18\x03 \x01(\x02\"E\n\x13RedactImageResponse\x12\x16\n\x0eredacted_image\x18\x01 \x01(\x0c\x12\x16\n\x0e\x65xtracted_text\x18\x02 \x01(\t\"\x9f\x02\n\x18\x44\x65identifyContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x42\n\x11\x64\x65identify_config\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\x12<\n\x0einspect_config\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x04 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x05 \x01(\t\x12 \n\x18\x64\x65identify_template_name\x18\x06 \x01(\t\"\x8e\x01\n\x19\x44\x65identifyContentResponse\x12\x30\n\x04item\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12?\n\x08overview\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.TransformationOverview\"\x9f\x02\n\x18ReidentifyContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x42\n\x11reidentify_config\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\x12<\n\x0einspect_config\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x04 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x05 \x01(\t\x12 \n\x18reidentify_template_name\x18\x06 \x01(\t\"\x8e\x01\n\x19ReidentifyContentResponse\x12\x30\n\x04item\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12?\n\x08overview\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.TransformationOverview\"\xb6\x01\n\x15InspectContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x03 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x04 \x01(\t\"N\n\x16InspectContentResponse\x12\x34\n\x06result\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectResult\"\xb7\x02\n\x13OutputStorageConfig\x12\x35\n\x05table\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTableH\x00\x12N\n\routput_schema\x18\x03 \x01(\x0e\x32\x37.google.privacy.dlp.v2.OutputStorageConfig.OutputSchema\"\x90\x01\n\x0cOutputSchema\x12\x1d\n\x19OUTPUT_SCHEMA_UNSPECIFIED\x10\x00\x12\x11\n\rBASIC_COLUMNS\x10\x01\x12\x0f\n\x0bGCS_COLUMNS\x10\x02\x12\x15\n\x11\x44\x41TASTORE_COLUMNS\x10\x03\x12\x15\n\x11\x42IG_QUERY_COLUMNS\x10\x04\x12\x0f\n\x0b\x41LL_COLUMNS\x10\x05\x42\x06\n\x04type\"R\n\rInfoTypeStats\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"\xdd\x03\n\x18InspectDataSourceDetails\x12[\n\x11requested_options\x18\x02 \x01(\x0b\x32@.google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions\x12\x46\n\x06result\x18\x03 \x01(\x0b\x32\x36.google.privacy.dlp.v2.InspectDataSourceDetails.Result\x1a\x9a\x01\n\x10RequestedOptions\x12I\n\x19snapshot_inspect_template\x18\x01 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12;\n\njob_config\x18\x03 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfig\x1a\x7f\n\x06Result\x12\x17\n\x0fprocessed_bytes\x18\x01 \x01(\x03\x12\x1d\n\x15total_estimated_bytes\x18\x02 \x01(\x03\x12=\n\x0finfo_type_stats\x18\x03 \x03(\x0b\x32$.google.privacy.dlp.v2.InfoTypeStats\"{\n\x13InfoTypeDescription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12@\n\x0csupported_by\x18\x03 \x03(\x0e\x32*.google.privacy.dlp.v2.InfoTypeSupportedBy\"=\n\x14ListInfoTypesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\"W\n\x15ListInfoTypesResponse\x12>\n\ninfo_types\x18\x01 \x03(\x0b\x32*.google.privacy.dlp.v2.InfoTypeDescription\"\xc1\x01\n\x15RiskAnalysisJobConfig\x12<\n\x0eprivacy_metric\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.PrivacyMetric\x12:\n\x0csource_table\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12.\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.Action\"\xd8\x0c\n\rPrivacyMetric\x12[\n\x16numerical_stats_config\x18\x01 \x01(\x0b\x32\x39.google.privacy.dlp.v2.PrivacyMetric.NumericalStatsConfigH\x00\x12_\n\x18\x63\x61tegorical_stats_config\x18\x02 \x01(\x0b\x32;.google.privacy.dlp.v2.PrivacyMetric.CategoricalStatsConfigH\x00\x12S\n\x12k_anonymity_config\x18\x03 \x01(\x0b\x32\x35.google.privacy.dlp.v2.PrivacyMetric.KAnonymityConfigH\x00\x12S\n\x12l_diversity_config\x18\x04 \x01(\x0b\x32\x35.google.privacy.dlp.v2.PrivacyMetric.LDiversityConfigH\x00\x12\\\n\x17k_map_estimation_config\x18\x05 \x01(\x0b\x32\x39.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfigH\x00\x1a\x45\n\x14NumericalStatsConfig\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1aG\n\x16\x43\x61tegoricalStatsConfig\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1ay\n\x10KAnonymityConfig\x12\x31\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x32\n\tentity_id\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.EntityId\x1a\x82\x01\n\x10LDiversityConfig\x12\x31\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12;\n\x13sensitive_attribute\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1a\xe8\x05\n\x14KMapEstimationConfig\x12X\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x45.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField\x12\x13\n\x0bregion_code\x18\x02 \x01(\t\x12\x62\n\x10\x61uxiliary_tables\x18\x03 \x03(\x0b\x32H.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable\x1a\xbb\x01\n\x0bTaggedField\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x34\n\tinfo_type\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoTypeH\x00\x12\x14\n\ncustom_tag\x18\x03 \x01(\tH\x00\x12*\n\x08inferred\x18\x04 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03tag\x1a\xbe\x02\n\x0e\x41uxiliaryTable\x12\x33\n\x05table\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12h\n\tquasi_ids\x18\x01 \x03(\x0b\x32U.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField\x12:\n\x12relative_frequency\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1aQ\n\x0cQuasiIdField\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x12\n\ncustom_tag\x18\x02 \x01(\tB\x06\n\x04type\"\x8c\x18\n\x1c\x41nalyzeDataSourceRiskDetails\x12\x46\n\x18requested_privacy_metric\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.PrivacyMetric\x12\x44\n\x16requested_source_table\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12j\n\x16numerical_stats_result\x18\x03 \x01(\x0b\x32H.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.NumericalStatsResultH\x00\x12n\n\x18\x63\x61tegorical_stats_result\x18\x04 \x01(\x0b\x32J.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResultH\x00\x12\x62\n\x12k_anonymity_result\x18\x05 \x01(\x0b\x32\x44.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResultH\x00\x12\x62\n\x12l_diversity_result\x18\x06 \x01(\x0b\x32\x44.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResultH\x00\x12k\n\x17k_map_estimation_result\x18\x07 \x01(\x0b\x32H.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResultH\x00\x1a\xaf\x01\n\x14NumericalStatsResult\x12/\n\tmin_value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12/\n\tmax_value\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x35\n\x0fquantile_values\x18\x04 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x1a\x8d\x03\n\x16\x43\x61tegoricalStatsResult\x12\x95\x01\n!value_frequency_histogram_buckets\x18\x05 \x03(\x0b\x32j.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket\x1a\xda\x01\n\x1f\x43\x61tegoricalStatsHistogramBucket\x12#\n\x1bvalue_frequency_lower_bound\x18\x01 \x01(\x03\x12#\n\x1bvalue_frequency_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12<\n\rbucket_values\x18\x04 \x03(\x0b\x32%.google.privacy.dlp.v2.ValueFrequency\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\xb5\x04\n\x10KAnonymityResult\x12\x8b\x01\n#equivalence_class_histogram_buckets\x18\x05 \x03(\x0b\x32^.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket\x1at\n\x1aKAnonymityEquivalenceClass\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1e\n\x16\x65quivalence_class_size\x18\x02 \x01(\x03\x1a\x9c\x02\n\x19KAnonymityHistogramBucket\x12*\n\"equivalence_class_size_lower_bound\x18\x01 \x01(\x03\x12*\n\"equivalence_class_size_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12v\n\rbucket_values\x18\x04 \x03(\x0b\x32_.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\xb0\x05\n\x10LDiversityResult\x12\x93\x01\n+sensitive_value_frequency_histogram_buckets\x18\x05 \x03(\x0b\x32^.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket\x1a\xe0\x01\n\x1aLDiversityEquivalenceClass\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1e\n\x16\x65quivalence_class_size\x18\x02 \x01(\x03\x12%\n\x1dnum_distinct_sensitive_values\x18\x03 \x01(\x03\x12\x43\n\x14top_sensitive_values\x18\x04 \x03(\x0b\x32%.google.privacy.dlp.v2.ValueFrequency\x1a\xa2\x02\n\x19LDiversityHistogramBucket\x12-\n%sensitive_value_frequency_lower_bound\x18\x01 \x01(\x03\x12-\n%sensitive_value_frequency_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12v\n\rbucket_values\x18\x04 \x03(\x0b\x32_.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\x95\x04\n\x14KMapEstimationResult\x12\x8a\x01\n\x1ak_map_estimation_histogram\x18\x01 \x03(\x0b\x32\x66.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket\x1ar\n\x1bKMapEstimationQuasiIdValues\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1b\n\x13\x65stimated_anonymity\x18\x02 \x01(\x03\x1a\xfb\x01\n\x1dKMapEstimationHistogramBucket\x12\x15\n\rmin_anonymity\x18\x01 \x01(\x03\x12\x15\n\rmax_anonymity\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x05 \x01(\x03\x12{\n\rbucket_values\x18\x06 \x03(\x0b\x32\x64.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues\x12\x1a\n\x12\x62ucket_value_count\x18\x07 \x01(\x03\x42\x08\n\x06result\"L\n\x0eValueFrequency\x12+\n\x05value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"\xb3\x02\n\x05Value\x12\x17\n\rinteger_value\x18\x01 \x01(\x03H\x00\x12\x15\n\x0b\x66loat_value\x18\x02 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x03 \x01(\tH\x00\x12\x17\n\rboolean_value\x18\x04 \x01(\x08H\x00\x12\x35\n\x0ftimestamp_value\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12,\n\ntime_value\x18\x06 \x01(\x0b\x32\x16.google.type.TimeOfDayH\x00\x12\'\n\ndate_value\x18\x07 \x01(\x0b\x32\x11.google.type.DateH\x00\x12\x33\n\x11\x64\x61y_of_week_value\x18\x08 \x01(\x0e\x32\x16.google.type.DayOfWeekH\x00\x42\x06\n\x04type\"Q\n\tQuoteInfo\x12\x34\n\tdate_time\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.DateTimeH\x00\x42\x0e\n\x0cparsed_quote\"\xdf\x01\n\x08\x44\x61teTime\x12\x1f\n\x04\x64\x61te\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12+\n\x0b\x64\x61y_of_week\x18\x02 \x01(\x0e\x32\x16.google.type.DayOfWeek\x12$\n\x04time\x18\x03 \x01(\x0b\x32\x16.google.type.TimeOfDay\x12;\n\ttime_zone\x18\x04 \x01(\x0b\x32(.google.privacy.dlp.v2.DateTime.TimeZone\x1a\"\n\x08TimeZone\x12\x16\n\x0eoffset_minutes\x18\x01 \x01(\x05\"\xc9\x01\n\x10\x44\x65identifyConfig\x12S\n\x19info_type_transformations\x18\x01 \x01(\x0b\x32..google.privacy.dlp.v2.InfoTypeTransformationsH\x00\x12N\n\x16record_transformations\x18\x02 \x01(\x0b\x32,.google.privacy.dlp.v2.RecordTransformationsH\x00\x42\x10\n\x0etransformation\"\x9c\x06\n\x17PrimitiveTransformation\x12\x43\n\x0ereplace_config\x18\x01 \x01(\x0b\x32).google.privacy.dlp.v2.ReplaceValueConfigH\x00\x12<\n\rredact_config\x18\x02 \x01(\x0b\x32#.google.privacy.dlp.v2.RedactConfigH\x00\x12K\n\x15\x63haracter_mask_config\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.CharacterMaskConfigH\x00\x12Y\n\x1d\x63rypto_replace_ffx_fpe_config\x18\x04 \x01(\x0b\x32\x30.google.privacy.dlp.v2.CryptoReplaceFfxFpeConfigH\x00\x12V\n\x1b\x66ixed_size_bucketing_config\x18\x05 \x01(\x0b\x32/.google.privacy.dlp.v2.FixedSizeBucketingConfigH\x00\x12\x42\n\x10\x62ucketing_config\x18\x06 \x01(\x0b\x32&.google.privacy.dlp.v2.BucketingConfigH\x00\x12Y\n\x1dreplace_with_info_type_config\x18\x07 \x01(\x0b\x32\x30.google.privacy.dlp.v2.ReplaceWithInfoTypeConfigH\x00\x12\x41\n\x10time_part_config\x18\x08 \x01(\x0b\x32%.google.privacy.dlp.v2.TimePartConfigH\x00\x12\x45\n\x12\x63rypto_hash_config\x18\t \x01(\x0b\x32\'.google.privacy.dlp.v2.CryptoHashConfigH\x00\x12\x43\n\x11\x64\x61te_shift_config\x18\x0b \x01(\x0b\x32&.google.privacy.dlp.v2.DateShiftConfigH\x00\x42\x10\n\x0etransformation\"\xdc\x01\n\x0eTimePartConfig\x12G\n\x0fpart_to_extract\x18\x01 \x01(\x0e\x32..google.privacy.dlp.v2.TimePartConfig.TimePart\"\x80\x01\n\x08TimePart\x12\x19\n\x15TIME_PART_UNSPECIFIED\x10\x00\x12\x08\n\x04YEAR\x10\x01\x12\t\n\x05MONTH\x10\x02\x12\x10\n\x0c\x44\x41Y_OF_MONTH\x10\x03\x12\x0f\n\x0b\x44\x41Y_OF_WEEK\x10\x04\x12\x10\n\x0cWEEK_OF_YEAR\x10\x05\x12\x0f\n\x0bHOUR_OF_DAY\x10\x06\"H\n\x10\x43ryptoHashConfig\x12\x34\n\ncrypto_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKey\"E\n\x12ReplaceValueConfig\x12/\n\tnew_value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"\x1b\n\x19ReplaceWithInfoTypeConfig\"\x0e\n\x0cRedactConfig\"\xb6\x02\n\rCharsToIgnore\x12\x1c\n\x12\x63haracters_to_skip\x18\x01 \x01(\tH\x00\x12_\n\x1b\x63ommon_characters_to_ignore\x18\x02 \x01(\x0e\x32\x38.google.privacy.dlp.v2.CharsToIgnore.CommonCharsToIgnoreH\x00\"\x97\x01\n\x13\x43ommonCharsToIgnore\x12&\n\"COMMON_CHARS_TO_IGNORE_UNSPECIFIED\x10\x00\x12\x0b\n\x07NUMERIC\x10\x01\x12\x14\n\x10\x41LPHA_UPPER_CASE\x10\x02\x12\x14\n\x10\x41LPHA_LOWER_CASE\x10\x03\x12\x0f\n\x0bPUNCTUATION\x10\x04\x12\x0e\n\nWHITESPACE\x10\x05\x42\x0c\n\ncharacters\"\xa3\x01\n\x13\x43haracterMaskConfig\x12\x19\n\x11masking_character\x18\x01 \x01(\t\x12\x16\n\x0enumber_to_mask\x18\x02 \x01(\x05\x12\x15\n\rreverse_order\x18\x03 \x01(\x08\x12\x42\n\x14\x63haracters_to_ignore\x18\x04 \x03(\x0b\x32$.google.privacy.dlp.v2.CharsToIgnore\"\x95\x01\n\x18\x46ixedSizeBucketingConfig\x12\x31\n\x0blower_bound\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x31\n\x0bupper_bound\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x01\"\xeb\x01\n\x0f\x42ucketingConfig\x12>\n\x07\x62uckets\x18\x01 \x03(\x0b\x32-.google.privacy.dlp.v2.BucketingConfig.Bucket\x1a\x97\x01\n\x06\x42ucket\x12)\n\x03min\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12)\n\x03max\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x37\n\x11replacement_value\x18\x03 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"\xf4\x03\n\x19\x43ryptoReplaceFfxFpeConfig\x12\x34\n\ncrypto_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKey\x12/\n\x07\x63ontext\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x63\n\x0f\x63ommon_alphabet\x18\x04 \x01(\x0e\x32H.google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.FfxCommonNativeAlphabetH\x00\x12\x19\n\x0f\x63ustom_alphabet\x18\x05 \x01(\tH\x00\x12\x0f\n\x05radix\x18\x06 \x01(\x05H\x00\x12<\n\x13surrogate_info_type\x18\x08 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\"\x94\x01\n\x17\x46\x66xCommonNativeAlphabet\x12*\n&FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED\x10\x00\x12\x0b\n\x07NUMERIC\x10\x01\x12\x0f\n\x0bHEXADECIMAL\x10\x02\x12\x1c\n\x18UPPER_CASE_ALPHA_NUMERIC\x10\x03\x12\x11\n\rALPHA_NUMERIC\x10\x04\x42\n\n\x08\x61lphabet\"\xd8\x01\n\tCryptoKey\x12>\n\ttransient\x18\x01 \x01(\x0b\x32).google.privacy.dlp.v2.TransientCryptoKeyH\x00\x12>\n\tunwrapped\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.UnwrappedCryptoKeyH\x00\x12\x41\n\x0bkms_wrapped\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.KmsWrappedCryptoKeyH\x00\x42\x08\n\x06source\"\"\n\x12TransientCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x12UnwrappedCryptoKey\x12\x0b\n\x03key\x18\x01 \x01(\x0c\"C\n\x13KmsWrappedCryptoKey\x12\x13\n\x0bwrapped_key\x18\x01 \x01(\x0c\x12\x17\n\x0f\x63rypto_key_name\x18\x02 \x01(\t\"\xb8\x01\n\x0f\x44\x61teShiftConfig\x12\x18\n\x10upper_bound_days\x18\x01 \x01(\x05\x12\x18\n\x10lower_bound_days\x18\x02 \x01(\x05\x12/\n\x07\x63ontext\x18\x03 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x36\n\ncrypto_key\x18\x04 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKeyH\x00\x42\x08\n\x06method\"\x9b\x02\n\x17InfoTypeTransformations\x12^\n\x0ftransformations\x18\x01 \x03(\x0b\x32\x45.google.privacy.dlp.v2.InfoTypeTransformations.InfoTypeTransformation\x1a\x9f\x01\n\x16InfoTypeTransformation\x12\x33\n\ninfo_types\x18\x01 \x03(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12P\n\x18primitive_transformation\x18\x02 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformation\"\xbb\x02\n\x13\x46ieldTransformation\x12.\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x39\n\tcondition\x18\x03 \x01(\x0b\x32&.google.privacy.dlp.v2.RecordCondition\x12R\n\x18primitive_transformation\x18\x04 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformationH\x00\x12S\n\x19info_type_transformations\x18\x05 \x01(\x0b\x32..google.privacy.dlp.v2.InfoTypeTransformationsH\x00\x42\x10\n\x0etransformation\"\xa9\x01\n\x15RecordTransformations\x12I\n\x15\x66ield_transformations\x18\x01 \x03(\x0b\x32*.google.privacy.dlp.v2.FieldTransformation\x12\x45\n\x13record_suppressions\x18\x02 \x03(\x0b\x32(.google.privacy.dlp.v2.RecordSuppression\"N\n\x11RecordSuppression\x12\x39\n\tcondition\x18\x01 \x01(\x0b\x32&.google.privacy.dlp.v2.RecordCondition\"\xd2\x04\n\x0fRecordCondition\x12G\n\x0b\x65xpressions\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.RecordCondition.Expressions\x1a\xa4\x01\n\tCondition\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12;\n\x08operator\x18\x03 \x01(\x0e\x32).google.privacy.dlp.v2.RelationalOperator\x12+\n\x05value\x18\x04 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x1aR\n\nConditions\x12\x44\n\nconditions\x18\x01 \x03(\x0b\x32\x30.google.privacy.dlp.v2.RecordCondition.Condition\x1a\xfa\x01\n\x0b\x45xpressions\x12\\\n\x10logical_operator\x18\x01 \x01(\x0e\x32\x42.google.privacy.dlp.v2.RecordCondition.Expressions.LogicalOperator\x12G\n\nconditions\x18\x03 \x01(\x0b\x32\x31.google.privacy.dlp.v2.RecordCondition.ConditionsH\x00\"<\n\x0fLogicalOperator\x12 \n\x1cLOGICAL_OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x42\x06\n\x04type\"\x83\x01\n\x16TransformationOverview\x12\x19\n\x11transformed_bytes\x18\x02 \x01(\x03\x12N\n\x18transformation_summaries\x18\x03 \x03(\x0b\x32,.google.privacy.dlp.v2.TransformationSummary\"\x9f\x05\n\x15TransformationSummary\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12-\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x46\n\x0etransformation\x18\x03 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformation\x12I\n\x15\x66ield_transformations\x18\x05 \x03(\x0b\x32*.google.privacy.dlp.v2.FieldTransformation\x12\x41\n\x0frecord_suppress\x18\x06 \x01(\x0b\x32(.google.privacy.dlp.v2.RecordSuppression\x12K\n\x07results\x18\x04 \x03(\x0b\x32:.google.privacy.dlp.v2.TransformationSummary.SummaryResult\x12\x19\n\x11transformed_bytes\x18\x07 \x01(\x03\x1a\x84\x01\n\rSummaryResult\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12S\n\x04\x63ode\x18\x02 \x01(\x0e\x32\x45.google.privacy.dlp.v2.TransformationSummary.TransformationResultCode\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\"^\n\x18TransformationResultCode\x12*\n&TRANSFORMATION_RESULT_CODE_UNSPECIFIED\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\t\n\x05\x45RROR\x10\x02\"U\n\x08Schedule\x12?\n\x1arecurrence_period_duration\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x42\x08\n\x06option\"\xea\x01\n\x0fInspectTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x0einspect_config\x18\x06 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\"\xf3\x01\n\x12\x44\x65identifyTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x42\n\x11\x64\x65identify_config\x18\x06 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\"\\\n\x05\x45rror\x12#\n\x07\x64\x65tails\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12.\n\ntimestamps\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\xdb\x04\n\nJobTrigger\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12>\n\x0binspect_job\x18\x04 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfigH\x00\x12;\n\x08triggers\x18\x05 \x03(\x0b\x32).google.privacy.dlp.v2.JobTrigger.Trigger\x12,\n\x06\x65rrors\x18\x06 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Error\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rlast_run_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x06status\x18\n \x01(\x0e\x32(.google.privacy.dlp.v2.JobTrigger.Status\x1aI\n\x07Trigger\x12\x33\n\x08schedule\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.ScheduleH\x00\x42\t\n\x07trigger\"H\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07HEALTHY\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\r\n\tCANCELLED\x10\x03\x42\x05\n\x03job\"\xfd\x02\n\x06\x41\x63tion\x12\x43\n\rsave_findings\x18\x01 \x01(\x0b\x32*.google.privacy.dlp.v2.Action.SaveFindingsH\x00\x12@\n\x07pub_sub\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.Action.PublishToPubSubH\x00\x12U\n\x17publish_summary_to_cscc\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.Action.PublishSummaryToCsccH\x00\x1aQ\n\x0cSaveFindings\x12\x41\n\routput_config\x18\x01 \x01(\x0b\x32*.google.privacy.dlp.v2.OutputStorageConfig\x1a \n\x0fPublishToPubSub\x12\r\n\x05topic\x18\x01 \x01(\t\x1a\x16\n\x14PublishSummaryToCsccB\x08\n\x06\x61\x63tion\"\x85\x01\n\x1c\x43reateInspectTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12@\n\x10inspect_template\x18\x02 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12\x13\n\x0btemplate_id\x18\x03 \x01(\t\"\x9f\x01\n\x1cUpdateInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x10inspect_template\x18\x02 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\")\n\x19GetInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"T\n\x1bListInspectTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"z\n\x1cListInspectTemplatesResponse\x12\x41\n\x11inspect_templates\x18\x01 \x03(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\",\n\x1c\x44\x65leteInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"u\n\x17\x43reateJobTriggerRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x36\n\x0bjob_trigger\x18\x02 \x01(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12\x12\n\ntrigger_id\x18\x03 \x01(\t\"\x90\x01\n\x17UpdateJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x0bjob_trigger\x18\x02 \x01(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"$\n\x14GetJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xbe\x01\n\x13\x43reateDlpJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0binspect_job\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfigH\x00\x12@\n\x08risk_job\x18\x03 \x01(\x0b\x32,.google.privacy.dlp.v2.RiskAnalysisJobConfigH\x00\x12\x0e\n\x06job_id\x18\x04 \x01(\tB\x05\n\x03job\"a\n\x16ListJobTriggersRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x10\n\x08order_by\x18\x04 \x01(\t\"k\n\x17ListJobTriggersResponse\x12\x37\n\x0cjob_triggers\x18\x01 \x03(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\'\n\x17\x44\x65leteJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xdd\x01\n\x10InspectJobConfig\x12<\n\x0estorage_config\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.StorageConfig\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x1d\n\x15inspect_template_name\x18\x03 \x01(\t\x12.\n\x07\x61\x63tions\x18\x04 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.Action\"\xde\x04\n\x06\x44lpJob\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x04type\x18\x02 \x01(\x0e\x32!.google.privacy.dlp.v2.DlpJobType\x12\x35\n\x05state\x18\x03 \x01(\x0e\x32&.google.privacy.dlp.v2.DlpJob.JobState\x12K\n\x0crisk_details\x18\x04 \x01(\x0b\x32\x33.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetailsH\x00\x12J\n\x0finspect_details\x18\x05 \x01(\x0b\x32/.google.privacy.dlp.v2.InspectDataSourceDetailsH\x00\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x18\n\x10job_trigger_name\x18\n \x01(\t\x12,\n\x06\x65rrors\x18\x0b \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Error\"c\n\x08JobState\x12\x19\n\x15JOB_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x43\x41NCELED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\x42\t\n\x07\x64\x65tails\" \n\x10GetDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8c\x01\n\x12ListDlpJobsRequest\x12\x0e\n\x06parent\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12/\n\x04type\x18\x05 \x01(\x0e\x32!.google.privacy.dlp.v2.DlpJobType\"[\n\x13ListDlpJobsResponse\x12+\n\x04jobs\x18\x01 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.DlpJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x13\x43\x61ncelDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x13\x44\x65leteDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8e\x01\n\x1f\x43reateDeidentifyTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x13\x64\x65identify_template\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12\x13\n\x0btemplate_id\x18\x03 \x01(\t\"\xa8\x01\n\x1fUpdateDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x46\n\x13\x64\x65identify_template\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\",\n\x1cGetDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"W\n\x1eListDeidentifyTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"\x83\x01\n\x1fListDeidentifyTemplatesResponse\x12G\n\x14\x64\x65identify_templates\x18\x01 \x03(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"/\n\x1f\x44\x65leteDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t*M\n\rContentOption\x12\x17\n\x13\x43ONTENT_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x43ONTENT_TEXT\x10\x01\x12\x11\n\rCONTENT_IMAGE\x10\x02*P\n\x13InfoTypeSupportedBy\x12\x19\n\x15\x45NUM_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07INSPECT\x10\x01\x12\x11\n\rRISK_ANALYSIS\x10\x02*\xbb\x01\n\x12RelationalOperator\x12#\n\x1fRELATIONAL_OPERATOR_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x45QUAL_TO\x10\x01\x12\x10\n\x0cNOT_EQUAL_TO\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\r\n\tLESS_THAN\x10\x04\x12\x1a\n\x16GREATER_THAN_OR_EQUALS\x10\x05\x12\x17\n\x13LESS_THAN_OR_EQUALS\x10\x06\x12\n\n\x06\x45XISTS\x10\x07*R\n\nDlpJobType\x12\x1c\n\x18\x44LP_JOB_TYPE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bINSPECT_JOB\x10\x01\x12\x15\n\x11RISK_ANALYSIS_JOB\x10\x02\x32\xfe\"\n\nDlpService\x12\xa1\x01\n\x0eInspectContent\x12,.google.privacy.dlp.v2.InspectContentRequest\x1a-.google.privacy.dlp.v2.InspectContentResponse\"2\x82\xd3\xe4\x93\x02,\"\'/v2/{parent=projects/*}/content:inspect:\x01*\x12\x95\x01\n\x0bRedactImage\x12).google.privacy.dlp.v2.RedactImageRequest\x1a*.google.privacy.dlp.v2.RedactImageResponse\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/image:redact:\x01*\x12\xad\x01\n\x11\x44\x65identifyContent\x12/.google.privacy.dlp.v2.DeidentifyContentRequest\x1a\x30.google.privacy.dlp.v2.DeidentifyContentResponse\"5\x82\xd3\xe4\x93\x02/\"*/v2/{parent=projects/*}/content:deidentify:\x01*\x12\xad\x01\n\x11ReidentifyContent\x12/.google.privacy.dlp.v2.ReidentifyContentRequest\x1a\x30.google.privacy.dlp.v2.ReidentifyContentResponse\"5\x82\xd3\xe4\x93\x02/\"*/v2/{parent=projects/*}/content:reidentify:\x01*\x12\x81\x01\n\rListInfoTypes\x12+.google.privacy.dlp.v2.ListInfoTypesRequest\x1a,.google.privacy.dlp.v2.ListInfoTypesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v2/infoTypes\x12\xdd\x01\n\x15\x43reateInspectTemplate\x12\x33.google.privacy.dlp.v2.CreateInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"g\x82\xd3\xe4\x93\x02\x61\"-/v2/{parent=organizations/*}/inspectTemplates:\x01*Z-\"(/v2/{parent=projects/*}/inspectTemplates:\x01*\x12\xdd\x01\n\x15UpdateInspectTemplate\x12\x33.google.privacy.dlp.v2.UpdateInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"g\x82\xd3\xe4\x93\x02\x61\x32-/v2/{name=organizations/*/inspectTemplates/*}:\x01*Z-2(/v2/{name=projects/*/inspectTemplates/*}:\x01*\x12\xd1\x01\n\x12GetInspectTemplate\x12\x30.google.privacy.dlp.v2.GetInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"a\x82\xd3\xe4\x93\x02[\x12-/v2/{name=organizations/*/inspectTemplates/*}Z*\x12(/v2/{name=projects/*/inspectTemplates/*}\x12\xe2\x01\n\x14ListInspectTemplates\x12\x32.google.privacy.dlp.v2.ListInspectTemplatesRequest\x1a\x33.google.privacy.dlp.v2.ListInspectTemplatesResponse\"a\x82\xd3\xe4\x93\x02[\x12-/v2/{parent=organizations/*}/inspectTemplatesZ*\x12(/v2/{parent=projects/*}/inspectTemplates\x12\xc7\x01\n\x15\x44\x65leteInspectTemplate\x12\x33.google.privacy.dlp.v2.DeleteInspectTemplateRequest\x1a\x16.google.protobuf.Empty\"a\x82\xd3\xe4\x93\x02[*-/v2/{name=organizations/*/inspectTemplates/*}Z**(/v2/{name=projects/*/inspectTemplates/*}\x12\xec\x01\n\x18\x43reateDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.CreateDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"m\x82\xd3\xe4\x93\x02g\"0/v2/{parent=organizations/*}/deidentifyTemplates:\x01*Z0\"+/v2/{parent=projects/*}/deidentifyTemplates:\x01*\x12\xec\x01\n\x18UpdateDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.UpdateDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"m\x82\xd3\xe4\x93\x02g20/v2/{name=organizations/*/deidentifyTemplates/*}:\x01*Z02+/v2/{name=projects/*/deidentifyTemplates/*}:\x01*\x12\xe0\x01\n\x15GetDeidentifyTemplate\x12\x33.google.privacy.dlp.v2.GetDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"g\x82\xd3\xe4\x93\x02\x61\x12\x30/v2/{name=organizations/*/deidentifyTemplates/*}Z-\x12+/v2/{name=projects/*/deidentifyTemplates/*}\x12\xf1\x01\n\x17ListDeidentifyTemplates\x12\x35.google.privacy.dlp.v2.ListDeidentifyTemplatesRequest\x1a\x36.google.privacy.dlp.v2.ListDeidentifyTemplatesResponse\"g\x82\xd3\xe4\x93\x02\x61\x12\x30/v2/{parent=organizations/*}/deidentifyTemplatesZ-\x12+/v2/{parent=projects/*}/deidentifyTemplates\x12\xd3\x01\n\x18\x44\x65leteDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.DeleteDeidentifyTemplateRequest\x1a\x16.google.protobuf.Empty\"g\x82\xd3\xe4\x93\x02\x61*0/v2/{name=organizations/*/deidentifyTemplates/*}Z-*+/v2/{name=projects/*/deidentifyTemplates/*}\x12\x95\x01\n\x10\x43reateJobTrigger\x12..google.privacy.dlp.v2.CreateJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\".\x82\xd3\xe4\x93\x02(\"#/v2/{parent=projects/*}/jobTriggers:\x01*\x12\x95\x01\n\x10UpdateJobTrigger\x12..google.privacy.dlp.v2.UpdateJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\".\x82\xd3\xe4\x93\x02(2#/v2/{name=projects/*/jobTriggers/*}:\x01*\x12\x8c\x01\n\rGetJobTrigger\x12+.google.privacy.dlp.v2.GetJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\"+\x82\xd3\xe4\x93\x02%\x12#/v2/{name=projects/*/jobTriggers/*}\x12\x9d\x01\n\x0fListJobTriggers\x12-.google.privacy.dlp.v2.ListJobTriggersRequest\x1a..google.privacy.dlp.v2.ListJobTriggersResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v2/{parent=projects/*}/jobTriggers\x12\x87\x01\n\x10\x44\x65leteJobTrigger\x12..google.privacy.dlp.v2.DeleteJobTriggerRequest\x1a\x16.google.protobuf.Empty\"+\x82\xd3\xe4\x93\x02%*#/v2/{name=projects/*/jobTriggers/*}\x12\x85\x01\n\x0c\x43reateDlpJob\x12*.google.privacy.dlp.v2.CreateDlpJobRequest\x1a\x1d.google.privacy.dlp.v2.DlpJob\"*\x82\xd3\xe4\x93\x02$\"\x1f/v2/{parent=projects/*}/dlpJobs:\x01*\x12\x8d\x01\n\x0bListDlpJobs\x12).google.privacy.dlp.v2.ListDlpJobsRequest\x1a*.google.privacy.dlp.v2.ListDlpJobsResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{parent=projects/*}/dlpJobs\x12|\n\tGetDlpJob\x12\'.google.privacy.dlp.v2.GetDlpJobRequest\x1a\x1d.google.privacy.dlp.v2.DlpJob\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{name=projects/*/dlpJobs/*}\x12{\n\x0c\x44\x65leteDlpJob\x12*.google.privacy.dlp.v2.DeleteDlpJobRequest\x1a\x16.google.protobuf.Empty\"\'\x82\xd3\xe4\x93\x02!*\x1f/v2/{name=projects/*/dlpJobs/*}\x12\x85\x01\n\x0c\x43\x61ncelDlpJob\x12*.google.privacy.dlp.v2.CancelDlpJobRequest\x1a\x16.google.protobuf.Empty\"1\x82\xd3\xe4\x93\x02+\"&/v2/{name=projects/*/dlpJobs/*}:cancel:\x01*B\x8d\x01\n\x19\x63om.google.privacy.dlp.v2B\x08\x44lpProtoP\x01Z8google.golang.org/genproto/googleapis/privacy/dlp/v2;dlp\xaa\x02\x13Google.Cloud.Dlp.V2\xca\x02\x13Google\\Cloud\\Dlp\\V2b\x06proto3')
+  serialized_pb=_b('\n+google/cloud/privacy/dlp_v2/proto/dlp.proto\x12\x15google.privacy.dlp.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/cloud/privacy/dlp_v2/proto/storage.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x16google/type/date.proto\x1a\x1bgoogle/type/dayofweek.proto\x1a\x1bgoogle/type/timeofday.proto\"\x8b\x05\n\rInspectConfig\x12\x33\n\ninfo_types\x18\x01 \x03(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x39\n\x0emin_likelihood\x18\x02 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x42\n\x06limits\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.InspectConfig.FindingLimits\x12\x15\n\rinclude_quote\x18\x04 \x01(\x08\x12\x1a\n\x12\x65xclude_info_types\x18\x05 \x01(\x08\x12@\n\x11\x63ustom_info_types\x18\x06 \x03(\x0b\x32%.google.privacy.dlp.v2.CustomInfoType\x12=\n\x0f\x63ontent_options\x18\x08 \x03(\x0e\x32$.google.privacy.dlp.v2.ContentOption\x1a\x91\x02\n\rFindingLimits\x12\x1d\n\x15max_findings_per_item\x18\x01 \x01(\x05\x12 \n\x18max_findings_per_request\x18\x02 \x01(\x05\x12\x64\n\x1amax_findings_per_info_type\x18\x03 \x03(\x0b\x32@.google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit\x1aY\n\rInfoTypeLimit\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x14\n\x0cmax_findings\x18\x02 \x01(\x05\"\xdf\x01\n\x0f\x42yteContentItem\x12>\n\x04type\x18\x01 \x01(\x0e\x32\x30.google.privacy.dlp.v2.ByteContentItem.BytesType\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"~\n\tBytesType\x12\x1a\n\x16\x42YTES_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05IMAGE\x10\x06\x12\x0e\n\nIMAGE_JPEG\x10\x01\x12\r\n\tIMAGE_BMP\x10\x02\x12\r\n\tIMAGE_PNG\x10\x03\x12\r\n\tIMAGE_SVG\x10\x04\x12\r\n\tTEXT_UTF8\x10\x05\"\x97\x01\n\x0b\x43ontentItem\x12\x0f\n\x05value\x18\x03 \x01(\tH\x00\x12-\n\x05table\x18\x04 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.TableH\x00\x12;\n\tbyte_item\x18\x05 \x01(\x0b\x32&.google.privacy.dlp.v2.ByteContentItemH\x00\x42\x0b\n\tdata_item\"\x9d\x01\n\x05Table\x12/\n\x07headers\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12.\n\x04rows\x18\x02 \x03(\x0b\x32 .google.privacy.dlp.v2.Table.Row\x1a\x33\n\x03Row\x12,\n\x06values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"]\n\rInspectResult\x12\x30\n\x08\x66indings\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.Finding\x12\x1a\n\x12\x66indings_truncated\x18\x02 \x01(\x08\"\x9d\x02\n\x07\x46inding\x12\r\n\x05quote\x18\x01 \x01(\t\x12\x32\n\tinfo_type\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\x35\n\nlikelihood\x18\x03 \x01(\x0e\x32!.google.privacy.dlp.v2.Likelihood\x12\x31\n\x08location\x18\x04 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.Location\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\nquote_info\x18\x07 \x01(\x0b\x32 .google.privacy.dlp.v2.QuoteInfo\"\xb6\x01\n\x08Location\x12\x30\n\nbyte_range\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Range\x12\x35\n\x0f\x63odepoint_range\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Range\x12\x41\n\x11\x63ontent_locations\x18\x07 \x03(\x0b\x32&.google.privacy.dlp.v2.ContentLocation\"\xd1\x02\n\x0f\x43ontentLocation\x12\x16\n\x0e\x63ontainer_name\x18\x01 \x01(\t\x12@\n\x0frecord_location\x18\x02 \x01(\x0b\x32%.google.privacy.dlp.v2.RecordLocationH\x00\x12>\n\x0eimage_location\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.ImageLocationH\x00\x12\x44\n\x11\x64ocument_location\x18\x05 \x01(\x0b\x32\'.google.privacy.dlp.v2.DocumentLocationH\x00\x12\x37\n\x13\x63ontainer_timestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x19\n\x11\x63ontainer_version\x18\x07 \x01(\tB\n\n\x08location\"\'\n\x10\x44ocumentLocation\x12\x13\n\x0b\x66ile_offset\x18\x01 \x01(\x03\"\xb6\x01\n\x0eRecordLocation\x12\x34\n\nrecord_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.RecordKey\x12\x30\n\x08\x66ield_id\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12<\n\x0etable_location\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.TableLocation\"\"\n\rTableLocation\x12\x11\n\trow_index\x18\x01 \x01(\x03\"#\n\x05Range\x12\r\n\x05start\x18\x01 \x01(\x03\x12\x0b\n\x03\x65nd\x18\x02 \x01(\x03\"K\n\rImageLocation\x12:\n\x0e\x62ounding_boxes\x18\x01 \x03(\x0b\x32\".google.privacy.dlp.v2.BoundingBox\"G\n\x0b\x42oundingBox\x12\x0b\n\x03top\x18\x01 \x01(\x05\x12\x0c\n\x04left\x18\x02 \x01(\x05\x12\r\n\x05width\x18\x03 \x01(\x05\x12\x0e\n\x06height\x18\x04 \x01(\x05\"\xc3\x03\n\x12RedactImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12_\n\x17image_redaction_configs\x18\x05 \x03(\x0b\x32>.google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig\x12\x18\n\x10include_findings\x18\x06 \x01(\x08\x12\x39\n\tbyte_item\x18\x07 \x01(\x0b\x32&.google.privacy.dlp.v2.ByteContentItem\x1a\xa8\x01\n\x14ImageRedactionConfig\x12\x34\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoTypeH\x00\x12\x19\n\x0fredact_all_text\x18\x02 \x01(\x08H\x00\x12\x35\n\x0fredaction_color\x18\x03 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.ColorB\x08\n\x06target\"1\n\x05\x43olor\x12\x0b\n\x03red\x18\x01 \x01(\x02\x12\r\n\x05green\x18\x02 \x01(\x02\x12\x0c\n\x04\x62lue\x18\x03 \x01(\x02\"\x83\x01\n\x13RedactImageResponse\x12\x16\n\x0eredacted_image\x18\x01 \x01(\x0c\x12\x16\n\x0e\x65xtracted_text\x18\x02 \x01(\t\x12<\n\x0einspect_result\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectResult\"\x9f\x02\n\x18\x44\x65identifyContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x42\n\x11\x64\x65identify_config\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\x12<\n\x0einspect_config\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x04 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x05 \x01(\t\x12 \n\x18\x64\x65identify_template_name\x18\x06 \x01(\t\"\x8e\x01\n\x19\x44\x65identifyContentResponse\x12\x30\n\x04item\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12?\n\x08overview\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.TransformationOverview\"\x9f\x02\n\x18ReidentifyContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x42\n\x11reidentify_config\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\x12<\n\x0einspect_config\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x04 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x05 \x01(\t\x12 \n\x18reidentify_template_name\x18\x06 \x01(\t\"\x8e\x01\n\x19ReidentifyContentResponse\x12\x30\n\x04item\x18\x01 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12?\n\x08overview\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.TransformationOverview\"\xb6\x01\n\x15InspectContentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x30\n\x04item\x18\x03 \x01(\x0b\x32\".google.privacy.dlp.v2.ContentItem\x12\x1d\n\x15inspect_template_name\x18\x04 \x01(\t\"N\n\x16InspectContentResponse\x12\x34\n\x06result\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectResult\"\xb7\x02\n\x13OutputStorageConfig\x12\x35\n\x05table\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTableH\x00\x12N\n\routput_schema\x18\x03 \x01(\x0e\x32\x37.google.privacy.dlp.v2.OutputStorageConfig.OutputSchema\"\x90\x01\n\x0cOutputSchema\x12\x1d\n\x19OUTPUT_SCHEMA_UNSPECIFIED\x10\x00\x12\x11\n\rBASIC_COLUMNS\x10\x01\x12\x0f\n\x0bGCS_COLUMNS\x10\x02\x12\x15\n\x11\x44\x41TASTORE_COLUMNS\x10\x03\x12\x15\n\x11\x42IG_QUERY_COLUMNS\x10\x04\x12\x0f\n\x0b\x41LL_COLUMNS\x10\x05\x42\x06\n\x04type\"R\n\rInfoTypeStats\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"\xdd\x03\n\x18InspectDataSourceDetails\x12[\n\x11requested_options\x18\x02 \x01(\x0b\x32@.google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions\x12\x46\n\x06result\x18\x03 \x01(\x0b\x32\x36.google.privacy.dlp.v2.InspectDataSourceDetails.Result\x1a\x9a\x01\n\x10RequestedOptions\x12I\n\x19snapshot_inspect_template\x18\x01 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12;\n\njob_config\x18\x03 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfig\x1a\x7f\n\x06Result\x12\x17\n\x0fprocessed_bytes\x18\x01 \x01(\x03\x12\x1d\n\x15total_estimated_bytes\x18\x02 \x01(\x03\x12=\n\x0finfo_type_stats\x18\x03 \x03(\x0b\x32$.google.privacy.dlp.v2.InfoTypeStats\"{\n\x13InfoTypeDescription\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12@\n\x0csupported_by\x18\x03 \x03(\x0e\x32*.google.privacy.dlp.v2.InfoTypeSupportedBy\"=\n\x14ListInfoTypesRequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\"W\n\x15ListInfoTypesResponse\x12>\n\ninfo_types\x18\x01 \x03(\x0b\x32*.google.privacy.dlp.v2.InfoTypeDescription\"\xc1\x01\n\x15RiskAnalysisJobConfig\x12<\n\x0eprivacy_metric\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.PrivacyMetric\x12:\n\x0csource_table\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12.\n\x07\x61\x63tions\x18\x03 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.Action\"\xb7\x01\n\x07QuasiId\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x34\n\tinfo_type\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoTypeH\x00\x12\x14\n\ncustom_tag\x18\x03 \x01(\tH\x00\x12*\n\x08inferred\x18\x04 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03tag\"\xaf\x02\n\x10StatisticalTable\x12\x33\n\x05table\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12O\n\tquasi_ids\x18\x01 \x03(\x0b\x32<.google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField\x12:\n\x12relative_frequency\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1aY\n\x14QuasiIdentifierField\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x12\n\ncustom_tag\x18\x02 \x01(\t\"\xf5\x0e\n\rPrivacyMetric\x12[\n\x16numerical_stats_config\x18\x01 \x01(\x0b\x32\x39.google.privacy.dlp.v2.PrivacyMetric.NumericalStatsConfigH\x00\x12_\n\x18\x63\x61tegorical_stats_config\x18\x02 \x01(\x0b\x32;.google.privacy.dlp.v2.PrivacyMetric.CategoricalStatsConfigH\x00\x12S\n\x12k_anonymity_config\x18\x03 \x01(\x0b\x32\x35.google.privacy.dlp.v2.PrivacyMetric.KAnonymityConfigH\x00\x12S\n\x12l_diversity_config\x18\x04 \x01(\x0b\x32\x35.google.privacy.dlp.v2.PrivacyMetric.LDiversityConfigH\x00\x12\\\n\x17k_map_estimation_config\x18\x05 \x01(\x0b\x32\x39.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfigH\x00\x12n\n delta_presence_estimation_config\x18\x06 \x01(\x0b\x32\x42.google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfigH\x00\x1a\x45\n\x14NumericalStatsConfig\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1aG\n\x16\x43\x61tegoricalStatsConfig\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1ay\n\x10KAnonymityConfig\x12\x31\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x32\n\tentity_id\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.EntityId\x1a\x82\x01\n\x10LDiversityConfig\x12\x31\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12;\n\x13sensitive_attribute\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1a\xe8\x05\n\x14KMapEstimationConfig\x12X\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x45.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField\x12\x13\n\x0bregion_code\x18\x02 \x01(\t\x12\x62\n\x10\x61uxiliary_tables\x18\x03 \x03(\x0b\x32H.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable\x1a\xbb\x01\n\x0bTaggedField\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x34\n\tinfo_type\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoTypeH\x00\x12\x14\n\ncustom_tag\x18\x03 \x01(\tH\x00\x12*\n\x08inferred\x18\x04 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x42\x05\n\x03tag\x1a\xbe\x02\n\x0e\x41uxiliaryTable\x12\x33\n\x05table\x18\x03 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12h\n\tquasi_ids\x18\x01 \x03(\x0b\x32U.google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField\x12:\n\x12relative_frequency\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x1aQ\n\x0cQuasiIdField\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x12\n\ncustom_tag\x18\x02 \x01(\t\x1a\xaa\x01\n\x1d\x44\x65ltaPresenceEstimationConfig\x12\x31\n\tquasi_ids\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.QuasiId\x12\x13\n\x0bregion_code\x18\x02 \x01(\t\x12\x41\n\x10\x61uxiliary_tables\x18\x03 \x03(\x0b\x32\'.google.privacy.dlp.v2.StatisticalTableB\x06\n\x04type\"\xf2\x1d\n\x1c\x41nalyzeDataSourceRiskDetails\x12\x46\n\x18requested_privacy_metric\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.PrivacyMetric\x12\x44\n\x16requested_source_table\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.BigQueryTable\x12j\n\x16numerical_stats_result\x18\x03 \x01(\x0b\x32H.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.NumericalStatsResultH\x00\x12n\n\x18\x63\x61tegorical_stats_result\x18\x04 \x01(\x0b\x32J.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResultH\x00\x12\x62\n\x12k_anonymity_result\x18\x05 \x01(\x0b\x32\x44.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResultH\x00\x12\x62\n\x12l_diversity_result\x18\x06 \x01(\x0b\x32\x44.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResultH\x00\x12k\n\x17k_map_estimation_result\x18\x07 \x01(\x0b\x32H.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResultH\x00\x12}\n delta_presence_estimation_result\x18\t \x01(\x0b\x32Q.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResultH\x00\x1a\xaf\x01\n\x14NumericalStatsResult\x12/\n\tmin_value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12/\n\tmax_value\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x35\n\x0fquantile_values\x18\x04 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x1a\x8d\x03\n\x16\x43\x61tegoricalStatsResult\x12\x95\x01\n!value_frequency_histogram_buckets\x18\x05 \x03(\x0b\x32j.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket\x1a\xda\x01\n\x1f\x43\x61tegoricalStatsHistogramBucket\x12#\n\x1bvalue_frequency_lower_bound\x18\x01 \x01(\x03\x12#\n\x1bvalue_frequency_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12<\n\rbucket_values\x18\x04 \x03(\x0b\x32%.google.privacy.dlp.v2.ValueFrequency\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\xb5\x04\n\x10KAnonymityResult\x12\x8b\x01\n#equivalence_class_histogram_buckets\x18\x05 \x03(\x0b\x32^.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket\x1at\n\x1aKAnonymityEquivalenceClass\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1e\n\x16\x65quivalence_class_size\x18\x02 \x01(\x03\x1a\x9c\x02\n\x19KAnonymityHistogramBucket\x12*\n\"equivalence_class_size_lower_bound\x18\x01 \x01(\x03\x12*\n\"equivalence_class_size_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12v\n\rbucket_values\x18\x04 \x03(\x0b\x32_.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\xb0\x05\n\x10LDiversityResult\x12\x93\x01\n+sensitive_value_frequency_histogram_buckets\x18\x05 \x03(\x0b\x32^.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket\x1a\xe0\x01\n\x1aLDiversityEquivalenceClass\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1e\n\x16\x65quivalence_class_size\x18\x02 \x01(\x03\x12%\n\x1dnum_distinct_sensitive_values\x18\x03 \x01(\x03\x12\x43\n\x14top_sensitive_values\x18\x04 \x03(\x0b\x32%.google.privacy.dlp.v2.ValueFrequency\x1a\xa2\x02\n\x19LDiversityHistogramBucket\x12-\n%sensitive_value_frequency_lower_bound\x18\x01 \x01(\x03\x12-\n%sensitive_value_frequency_upper_bound\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x03\x12v\n\rbucket_values\x18\x04 \x03(\x0b\x32_.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass\x12\x1a\n\x12\x62ucket_value_count\x18\x05 \x01(\x03\x1a\x95\x04\n\x14KMapEstimationResult\x12\x8a\x01\n\x1ak_map_estimation_histogram\x18\x01 \x03(\x0b\x32\x66.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket\x1ar\n\x1bKMapEstimationQuasiIdValues\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1b\n\x13\x65stimated_anonymity\x18\x02 \x01(\x03\x1a\xfb\x01\n\x1dKMapEstimationHistogramBucket\x12\x15\n\rmin_anonymity\x18\x01 \x01(\x03\x12\x15\n\rmax_anonymity\x18\x02 \x01(\x03\x12\x13\n\x0b\x62ucket_size\x18\x05 \x01(\x03\x12{\n\rbucket_values\x18\x06 \x03(\x0b\x32\x64.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues\x12\x1a\n\x12\x62ucket_value_count\x18\x07 \x01(\x03\x1a\xe4\x04\n\x1d\x44\x65ltaPresenceEstimationResult\x12\xa5\x01\n#delta_presence_estimation_histogram\x18\x01 \x03(\x0b\x32x.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket\x1a}\n$DeltaPresenceEstimationQuasiIdValues\x12\x36\n\x10quasi_ids_values\x18\x01 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x1d\n\x15\x65stimated_probability\x18\x02 \x01(\x01\x1a\x9b\x02\n&DeltaPresenceEstimationHistogramBucket\x12\x17\n\x0fmin_probability\x18\x01 \x01(\x01\x12\x17\n\x0fmax_probability\x18\x02 \x01(\x01\x12\x13\n\x0b\x62ucket_size\x18\x05 \x01(\x03\x12\x8d\x01\n\rbucket_values\x18\x06 \x03(\x0b\x32v.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues\x12\x1a\n\x12\x62ucket_value_count\x18\x07 \x01(\x03\x42\x08\n\x06result\"L\n\x0eValueFrequency\x12+\n\x05value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\"\xb3\x02\n\x05Value\x12\x17\n\rinteger_value\x18\x01 \x01(\x03H\x00\x12\x15\n\x0b\x66loat_value\x18\x02 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x03 \x01(\tH\x00\x12\x17\n\rboolean_value\x18\x04 \x01(\x08H\x00\x12\x35\n\x0ftimestamp_value\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12,\n\ntime_value\x18\x06 \x01(\x0b\x32\x16.google.type.TimeOfDayH\x00\x12\'\n\ndate_value\x18\x07 \x01(\x0b\x32\x11.google.type.DateH\x00\x12\x33\n\x11\x64\x61y_of_week_value\x18\x08 \x01(\x0e\x32\x16.google.type.DayOfWeekH\x00\x42\x06\n\x04type\"Q\n\tQuoteInfo\x12\x34\n\tdate_time\x18\x02 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.DateTimeH\x00\x42\x0e\n\x0cparsed_quote\"\xdf\x01\n\x08\x44\x61teTime\x12\x1f\n\x04\x64\x61te\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12+\n\x0b\x64\x61y_of_week\x18\x02 \x01(\x0e\x32\x16.google.type.DayOfWeek\x12$\n\x04time\x18\x03 \x01(\x0b\x32\x16.google.type.TimeOfDay\x12;\n\ttime_zone\x18\x04 \x01(\x0b\x32(.google.privacy.dlp.v2.DateTime.TimeZone\x1a\"\n\x08TimeZone\x12\x16\n\x0eoffset_minutes\x18\x01 \x01(\x05\"\xc9\x01\n\x10\x44\x65identifyConfig\x12S\n\x19info_type_transformations\x18\x01 \x01(\x0b\x32..google.privacy.dlp.v2.InfoTypeTransformationsH\x00\x12N\n\x16record_transformations\x18\x02 \x01(\x0b\x32,.google.privacy.dlp.v2.RecordTransformationsH\x00\x42\x10\n\x0etransformation\"\x9c\x06\n\x17PrimitiveTransformation\x12\x43\n\x0ereplace_config\x18\x01 \x01(\x0b\x32).google.privacy.dlp.v2.ReplaceValueConfigH\x00\x12<\n\rredact_config\x18\x02 \x01(\x0b\x32#.google.privacy.dlp.v2.RedactConfigH\x00\x12K\n\x15\x63haracter_mask_config\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.CharacterMaskConfigH\x00\x12Y\n\x1d\x63rypto_replace_ffx_fpe_config\x18\x04 \x01(\x0b\x32\x30.google.privacy.dlp.v2.CryptoReplaceFfxFpeConfigH\x00\x12V\n\x1b\x66ixed_size_bucketing_config\x18\x05 \x01(\x0b\x32/.google.privacy.dlp.v2.FixedSizeBucketingConfigH\x00\x12\x42\n\x10\x62ucketing_config\x18\x06 \x01(\x0b\x32&.google.privacy.dlp.v2.BucketingConfigH\x00\x12Y\n\x1dreplace_with_info_type_config\x18\x07 \x01(\x0b\x32\x30.google.privacy.dlp.v2.ReplaceWithInfoTypeConfigH\x00\x12\x41\n\x10time_part_config\x18\x08 \x01(\x0b\x32%.google.privacy.dlp.v2.TimePartConfigH\x00\x12\x45\n\x12\x63rypto_hash_config\x18\t \x01(\x0b\x32\'.google.privacy.dlp.v2.CryptoHashConfigH\x00\x12\x43\n\x11\x64\x61te_shift_config\x18\x0b \x01(\x0b\x32&.google.privacy.dlp.v2.DateShiftConfigH\x00\x42\x10\n\x0etransformation\"\xdc\x01\n\x0eTimePartConfig\x12G\n\x0fpart_to_extract\x18\x01 \x01(\x0e\x32..google.privacy.dlp.v2.TimePartConfig.TimePart\"\x80\x01\n\x08TimePart\x12\x19\n\x15TIME_PART_UNSPECIFIED\x10\x00\x12\x08\n\x04YEAR\x10\x01\x12\t\n\x05MONTH\x10\x02\x12\x10\n\x0c\x44\x41Y_OF_MONTH\x10\x03\x12\x0f\n\x0b\x44\x41Y_OF_WEEK\x10\x04\x12\x10\n\x0cWEEK_OF_YEAR\x10\x05\x12\x0f\n\x0bHOUR_OF_DAY\x10\x06\"H\n\x10\x43ryptoHashConfig\x12\x34\n\ncrypto_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKey\"E\n\x12ReplaceValueConfig\x12/\n\tnew_value\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"\x1b\n\x19ReplaceWithInfoTypeConfig\"\x0e\n\x0cRedactConfig\"\xb6\x02\n\rCharsToIgnore\x12\x1c\n\x12\x63haracters_to_skip\x18\x01 \x01(\tH\x00\x12_\n\x1b\x63ommon_characters_to_ignore\x18\x02 \x01(\x0e\x32\x38.google.privacy.dlp.v2.CharsToIgnore.CommonCharsToIgnoreH\x00\"\x97\x01\n\x13\x43ommonCharsToIgnore\x12&\n\"COMMON_CHARS_TO_IGNORE_UNSPECIFIED\x10\x00\x12\x0b\n\x07NUMERIC\x10\x01\x12\x14\n\x10\x41LPHA_UPPER_CASE\x10\x02\x12\x14\n\x10\x41LPHA_LOWER_CASE\x10\x03\x12\x0f\n\x0bPUNCTUATION\x10\x04\x12\x0e\n\nWHITESPACE\x10\x05\x42\x0c\n\ncharacters\"\xa3\x01\n\x13\x43haracterMaskConfig\x12\x19\n\x11masking_character\x18\x01 \x01(\t\x12\x16\n\x0enumber_to_mask\x18\x02 \x01(\x05\x12\x15\n\rreverse_order\x18\x03 \x01(\x08\x12\x42\n\x14\x63haracters_to_ignore\x18\x04 \x03(\x0b\x32$.google.privacy.dlp.v2.CharsToIgnore\"\x95\x01\n\x18\x46ixedSizeBucketingConfig\x12\x31\n\x0blower_bound\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x31\n\x0bupper_bound\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x13\n\x0b\x62ucket_size\x18\x03 \x01(\x01\"\xeb\x01\n\x0f\x42ucketingConfig\x12>\n\x07\x62uckets\x18\x01 \x03(\x0b\x32-.google.privacy.dlp.v2.BucketingConfig.Bucket\x1a\x97\x01\n\x06\x42ucket\x12)\n\x03min\x18\x01 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12)\n\x03max\x18\x02 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x12\x37\n\x11replacement_value\x18\x03 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\"\xf4\x03\n\x19\x43ryptoReplaceFfxFpeConfig\x12\x34\n\ncrypto_key\x18\x01 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKey\x12/\n\x07\x63ontext\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x63\n\x0f\x63ommon_alphabet\x18\x04 \x01(\x0e\x32H.google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.FfxCommonNativeAlphabetH\x00\x12\x19\n\x0f\x63ustom_alphabet\x18\x05 \x01(\tH\x00\x12\x0f\n\x05radix\x18\x06 \x01(\x05H\x00\x12<\n\x13surrogate_info_type\x18\x08 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\"\x94\x01\n\x17\x46\x66xCommonNativeAlphabet\x12*\n&FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED\x10\x00\x12\x0b\n\x07NUMERIC\x10\x01\x12\x0f\n\x0bHEXADECIMAL\x10\x02\x12\x1c\n\x18UPPER_CASE_ALPHA_NUMERIC\x10\x03\x12\x11\n\rALPHA_NUMERIC\x10\x04\x42\n\n\x08\x61lphabet\"\xd8\x01\n\tCryptoKey\x12>\n\ttransient\x18\x01 \x01(\x0b\x32).google.privacy.dlp.v2.TransientCryptoKeyH\x00\x12>\n\tunwrapped\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.UnwrappedCryptoKeyH\x00\x12\x41\n\x0bkms_wrapped\x18\x03 \x01(\x0b\x32*.google.privacy.dlp.v2.KmsWrappedCryptoKeyH\x00\x42\x08\n\x06source\"\"\n\x12TransientCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x12UnwrappedCryptoKey\x12\x0b\n\x03key\x18\x01 \x01(\x0c\"C\n\x13KmsWrappedCryptoKey\x12\x13\n\x0bwrapped_key\x18\x01 \x01(\x0c\x12\x17\n\x0f\x63rypto_key_name\x18\x02 \x01(\t\"\xb8\x01\n\x0f\x44\x61teShiftConfig\x12\x18\n\x10upper_bound_days\x18\x01 \x01(\x05\x12\x18\n\x10lower_bound_days\x18\x02 \x01(\x05\x12/\n\x07\x63ontext\x18\x03 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x36\n\ncrypto_key\x18\x04 \x01(\x0b\x32 .google.privacy.dlp.v2.CryptoKeyH\x00\x42\x08\n\x06method\"\x9b\x02\n\x17InfoTypeTransformations\x12^\n\x0ftransformations\x18\x01 \x03(\x0b\x32\x45.google.privacy.dlp.v2.InfoTypeTransformations.InfoTypeTransformation\x1a\x9f\x01\n\x16InfoTypeTransformation\x12\x33\n\ninfo_types\x18\x01 \x03(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12P\n\x18primitive_transformation\x18\x02 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformation\"\xbb\x02\n\x13\x46ieldTransformation\x12.\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x39\n\tcondition\x18\x03 \x01(\x0b\x32&.google.privacy.dlp.v2.RecordCondition\x12R\n\x18primitive_transformation\x18\x04 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformationH\x00\x12S\n\x19info_type_transformations\x18\x05 \x01(\x0b\x32..google.privacy.dlp.v2.InfoTypeTransformationsH\x00\x42\x10\n\x0etransformation\"\xa9\x01\n\x15RecordTransformations\x12I\n\x15\x66ield_transformations\x18\x01 \x03(\x0b\x32*.google.privacy.dlp.v2.FieldTransformation\x12\x45\n\x13record_suppressions\x18\x02 \x03(\x0b\x32(.google.privacy.dlp.v2.RecordSuppression\"N\n\x11RecordSuppression\x12\x39\n\tcondition\x18\x01 \x01(\x0b\x32&.google.privacy.dlp.v2.RecordCondition\"\xd2\x04\n\x0fRecordCondition\x12G\n\x0b\x65xpressions\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.RecordCondition.Expressions\x1a\xa4\x01\n\tCondition\x12-\n\x05\x66ield\x18\x01 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12;\n\x08operator\x18\x03 \x01(\x0e\x32).google.privacy.dlp.v2.RelationalOperator\x12+\n\x05value\x18\x04 \x01(\x0b\x32\x1c.google.privacy.dlp.v2.Value\x1aR\n\nConditions\x12\x44\n\nconditions\x18\x01 \x03(\x0b\x32\x30.google.privacy.dlp.v2.RecordCondition.Condition\x1a\xfa\x01\n\x0b\x45xpressions\x12\\\n\x10logical_operator\x18\x01 \x01(\x0e\x32\x42.google.privacy.dlp.v2.RecordCondition.Expressions.LogicalOperator\x12G\n\nconditions\x18\x03 \x01(\x0b\x32\x31.google.privacy.dlp.v2.RecordCondition.ConditionsH\x00\"<\n\x0fLogicalOperator\x12 \n\x1cLOGICAL_OPERATOR_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x42\x06\n\x04type\"\x83\x01\n\x16TransformationOverview\x12\x19\n\x11transformed_bytes\x18\x02 \x01(\x03\x12N\n\x18transformation_summaries\x18\x03 \x03(\x0b\x32,.google.privacy.dlp.v2.TransformationSummary\"\x9f\x05\n\x15TransformationSummary\x12\x32\n\tinfo_type\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.InfoType\x12-\n\x05\x66ield\x18\x02 \x01(\x0b\x32\x1e.google.privacy.dlp.v2.FieldId\x12\x46\n\x0etransformation\x18\x03 \x01(\x0b\x32..google.privacy.dlp.v2.PrimitiveTransformation\x12I\n\x15\x66ield_transformations\x18\x05 \x03(\x0b\x32*.google.privacy.dlp.v2.FieldTransformation\x12\x41\n\x0frecord_suppress\x18\x06 \x01(\x0b\x32(.google.privacy.dlp.v2.RecordSuppression\x12K\n\x07results\x18\x04 \x03(\x0b\x32:.google.privacy.dlp.v2.TransformationSummary.SummaryResult\x12\x19\n\x11transformed_bytes\x18\x07 \x01(\x03\x1a\x84\x01\n\rSummaryResult\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12S\n\x04\x63ode\x18\x02 \x01(\x0e\x32\x45.google.privacy.dlp.v2.TransformationSummary.TransformationResultCode\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\"^\n\x18TransformationResultCode\x12*\n&TRANSFORMATION_RESULT_CODE_UNSPECIFIED\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\t\n\x05\x45RROR\x10\x02\"U\n\x08Schedule\x12?\n\x1arecurrence_period_duration\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x42\x08\n\x06option\"\xea\x01\n\x0fInspectTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x0einspect_config\x18\x06 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\"\xf3\x01\n\x12\x44\x65identifyTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x42\n\x11\x64\x65identify_config\x18\x06 \x01(\x0b\x32\'.google.privacy.dlp.v2.DeidentifyConfig\"\\\n\x05\x45rror\x12#\n\x07\x64\x65tails\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12.\n\ntimestamps\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\"\xdb\x04\n\nJobTrigger\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12>\n\x0binspect_job\x18\x04 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfigH\x00\x12;\n\x08triggers\x18\x05 \x03(\x0b\x32).google.privacy.dlp.v2.JobTrigger.Trigger\x12,\n\x06\x65rrors\x18\x06 \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Error\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rlast_run_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x06status\x18\n \x01(\x0e\x32(.google.privacy.dlp.v2.JobTrigger.Status\x1aI\n\x07Trigger\x12\x33\n\x08schedule\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2.ScheduleH\x00\x42\t\n\x07trigger\"H\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07HEALTHY\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\r\n\tCANCELLED\x10\x03\x42\x05\n\x03job\"\xfd\x02\n\x06\x41\x63tion\x12\x43\n\rsave_findings\x18\x01 \x01(\x0b\x32*.google.privacy.dlp.v2.Action.SaveFindingsH\x00\x12@\n\x07pub_sub\x18\x02 \x01(\x0b\x32-.google.privacy.dlp.v2.Action.PublishToPubSubH\x00\x12U\n\x17publish_summary_to_cscc\x18\x03 \x01(\x0b\x32\x32.google.privacy.dlp.v2.Action.PublishSummaryToCsccH\x00\x1aQ\n\x0cSaveFindings\x12\x41\n\routput_config\x18\x01 \x01(\x0b\x32*.google.privacy.dlp.v2.OutputStorageConfig\x1a \n\x0fPublishToPubSub\x12\r\n\x05topic\x18\x01 \x01(\t\x1a\x16\n\x14PublishSummaryToCsccB\x08\n\x06\x61\x63tion\"\x85\x01\n\x1c\x43reateInspectTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12@\n\x10inspect_template\x18\x02 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12\x13\n\x0btemplate_id\x18\x03 \x01(\t\"\x9f\x01\n\x1cUpdateInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x10inspect_template\x18\x02 \x01(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\")\n\x19GetInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"T\n\x1bListInspectTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"z\n\x1cListInspectTemplatesResponse\x12\x41\n\x11inspect_templates\x18\x01 \x03(\x0b\x32&.google.privacy.dlp.v2.InspectTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\",\n\x1c\x44\x65leteInspectTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"u\n\x17\x43reateJobTriggerRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x36\n\x0bjob_trigger\x18\x02 \x01(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12\x12\n\ntrigger_id\x18\x03 \x01(\t\"\x90\x01\n\x17UpdateJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x0bjob_trigger\x18\x02 \x01(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"$\n\x14GetJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xbe\x01\n\x13\x43reateDlpJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0binspect_job\x18\x02 \x01(\x0b\x32\'.google.privacy.dlp.v2.InspectJobConfigH\x00\x12@\n\x08risk_job\x18\x03 \x01(\x0b\x32,.google.privacy.dlp.v2.RiskAnalysisJobConfigH\x00\x12\x0e\n\x06job_id\x18\x04 \x01(\tB\x05\n\x03job\"a\n\x16ListJobTriggersRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x10\n\x08order_by\x18\x04 \x01(\t\"k\n\x17ListJobTriggersResponse\x12\x37\n\x0cjob_triggers\x18\x01 \x03(\x0b\x32!.google.privacy.dlp.v2.JobTrigger\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\'\n\x17\x44\x65leteJobTriggerRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xdd\x01\n\x10InspectJobConfig\x12<\n\x0estorage_config\x18\x01 \x01(\x0b\x32$.google.privacy.dlp.v2.StorageConfig\x12<\n\x0einspect_config\x18\x02 \x01(\x0b\x32$.google.privacy.dlp.v2.InspectConfig\x12\x1d\n\x15inspect_template_name\x18\x03 \x01(\t\x12.\n\x07\x61\x63tions\x18\x04 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.Action\"\xde\x04\n\x06\x44lpJob\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x04type\x18\x02 \x01(\x0e\x32!.google.privacy.dlp.v2.DlpJobType\x12\x35\n\x05state\x18\x03 \x01(\x0e\x32&.google.privacy.dlp.v2.DlpJob.JobState\x12K\n\x0crisk_details\x18\x04 \x01(\x0b\x32\x33.google.privacy.dlp.v2.AnalyzeDataSourceRiskDetailsH\x00\x12J\n\x0finspect_details\x18\x05 \x01(\x0b\x32/.google.privacy.dlp.v2.InspectDataSourceDetailsH\x00\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x18\n\x10job_trigger_name\x18\n \x01(\t\x12,\n\x06\x65rrors\x18\x0b \x03(\x0b\x32\x1c.google.privacy.dlp.v2.Error\"c\n\x08JobState\x12\x19\n\x15JOB_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x43\x41NCELED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\x42\t\n\x07\x64\x65tails\" \n\x10GetDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8c\x01\n\x12ListDlpJobsRequest\x12\x0e\n\x06parent\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12/\n\x04type\x18\x05 \x01(\x0e\x32!.google.privacy.dlp.v2.DlpJobType\"[\n\x13ListDlpJobsResponse\x12+\n\x04jobs\x18\x01 \x03(\x0b\x32\x1d.google.privacy.dlp.v2.DlpJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"#\n\x13\x43\x61ncelDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"#\n\x13\x44\x65leteDlpJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x8e\x01\n\x1f\x43reateDeidentifyTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x13\x64\x65identify_template\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12\x13\n\x0btemplate_id\x18\x03 \x01(\t\"\xa8\x01\n\x1fUpdateDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x46\n\x13\x64\x65identify_template\x18\x02 \x01(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\",\n\x1cGetDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"W\n\x1eListDeidentifyTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\"\x83\x01\n\x1fListDeidentifyTemplatesResponse\x12G\n\x14\x64\x65identify_templates\x18\x01 \x03(\x0b\x32).google.privacy.dlp.v2.DeidentifyTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"/\n\x1f\x44\x65leteDeidentifyTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t*M\n\rContentOption\x12\x17\n\x13\x43ONTENT_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x43ONTENT_TEXT\x10\x01\x12\x11\n\rCONTENT_IMAGE\x10\x02*P\n\x13InfoTypeSupportedBy\x12\x19\n\x15\x45NUM_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07INSPECT\x10\x01\x12\x11\n\rRISK_ANALYSIS\x10\x02*\xbb\x01\n\x12RelationalOperator\x12#\n\x1fRELATIONAL_OPERATOR_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x45QUAL_TO\x10\x01\x12\x10\n\x0cNOT_EQUAL_TO\x10\x02\x12\x10\n\x0cGREATER_THAN\x10\x03\x12\r\n\tLESS_THAN\x10\x04\x12\x1a\n\x16GREATER_THAN_OR_EQUALS\x10\x05\x12\x17\n\x13LESS_THAN_OR_EQUALS\x10\x06\x12\n\n\x06\x45XISTS\x10\x07*R\n\nDlpJobType\x12\x1c\n\x18\x44LP_JOB_TYPE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bINSPECT_JOB\x10\x01\x12\x15\n\x11RISK_ANALYSIS_JOB\x10\x02\x32\xfe\"\n\nDlpService\x12\xa1\x01\n\x0eInspectContent\x12,.google.privacy.dlp.v2.InspectContentRequest\x1a-.google.privacy.dlp.v2.InspectContentResponse\"2\x82\xd3\xe4\x93\x02,\"\'/v2/{parent=projects/*}/content:inspect:\x01*\x12\x95\x01\n\x0bRedactImage\x12).google.privacy.dlp.v2.RedactImageRequest\x1a*.google.privacy.dlp.v2.RedactImageResponse\"/\x82\xd3\xe4\x93\x02)\"$/v2/{parent=projects/*}/image:redact:\x01*\x12\xad\x01\n\x11\x44\x65identifyContent\x12/.google.privacy.dlp.v2.DeidentifyContentRequest\x1a\x30.google.privacy.dlp.v2.DeidentifyContentResponse\"5\x82\xd3\xe4\x93\x02/\"*/v2/{parent=projects/*}/content:deidentify:\x01*\x12\xad\x01\n\x11ReidentifyContent\x12/.google.privacy.dlp.v2.ReidentifyContentRequest\x1a\x30.google.privacy.dlp.v2.ReidentifyContentResponse\"5\x82\xd3\xe4\x93\x02/\"*/v2/{parent=projects/*}/content:reidentify:\x01*\x12\x81\x01\n\rListInfoTypes\x12+.google.privacy.dlp.v2.ListInfoTypesRequest\x1a,.google.privacy.dlp.v2.ListInfoTypesResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v2/infoTypes\x12\xdd\x01\n\x15\x43reateInspectTemplate\x12\x33.google.privacy.dlp.v2.CreateInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"g\x82\xd3\xe4\x93\x02\x61\"-/v2/{parent=organizations/*}/inspectTemplates:\x01*Z-\"(/v2/{parent=projects/*}/inspectTemplates:\x01*\x12\xdd\x01\n\x15UpdateInspectTemplate\x12\x33.google.privacy.dlp.v2.UpdateInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"g\x82\xd3\xe4\x93\x02\x61\x32-/v2/{name=organizations/*/inspectTemplates/*}:\x01*Z-2(/v2/{name=projects/*/inspectTemplates/*}:\x01*\x12\xd1\x01\n\x12GetInspectTemplate\x12\x30.google.privacy.dlp.v2.GetInspectTemplateRequest\x1a&.google.privacy.dlp.v2.InspectTemplate\"a\x82\xd3\xe4\x93\x02[\x12-/v2/{name=organizations/*/inspectTemplates/*}Z*\x12(/v2/{name=projects/*/inspectTemplates/*}\x12\xe2\x01\n\x14ListInspectTemplates\x12\x32.google.privacy.dlp.v2.ListInspectTemplatesRequest\x1a\x33.google.privacy.dlp.v2.ListInspectTemplatesResponse\"a\x82\xd3\xe4\x93\x02[\x12-/v2/{parent=organizations/*}/inspectTemplatesZ*\x12(/v2/{parent=projects/*}/inspectTemplates\x12\xc7\x01\n\x15\x44\x65leteInspectTemplate\x12\x33.google.privacy.dlp.v2.DeleteInspectTemplateRequest\x1a\x16.google.protobuf.Empty\"a\x82\xd3\xe4\x93\x02[*-/v2/{name=organizations/*/inspectTemplates/*}Z**(/v2/{name=projects/*/inspectTemplates/*}\x12\xec\x01\n\x18\x43reateDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.CreateDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"m\x82\xd3\xe4\x93\x02g\"0/v2/{parent=organizations/*}/deidentifyTemplates:\x01*Z0\"+/v2/{parent=projects/*}/deidentifyTemplates:\x01*\x12\xec\x01\n\x18UpdateDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.UpdateDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"m\x82\xd3\xe4\x93\x02g20/v2/{name=organizations/*/deidentifyTemplates/*}:\x01*Z02+/v2/{name=projects/*/deidentifyTemplates/*}:\x01*\x12\xe0\x01\n\x15GetDeidentifyTemplate\x12\x33.google.privacy.dlp.v2.GetDeidentifyTemplateRequest\x1a).google.privacy.dlp.v2.DeidentifyTemplate\"g\x82\xd3\xe4\x93\x02\x61\x12\x30/v2/{name=organizations/*/deidentifyTemplates/*}Z-\x12+/v2/{name=projects/*/deidentifyTemplates/*}\x12\xf1\x01\n\x17ListDeidentifyTemplates\x12\x35.google.privacy.dlp.v2.ListDeidentifyTemplatesRequest\x1a\x36.google.privacy.dlp.v2.ListDeidentifyTemplatesResponse\"g\x82\xd3\xe4\x93\x02\x61\x12\x30/v2/{parent=organizations/*}/deidentifyTemplatesZ-\x12+/v2/{parent=projects/*}/deidentifyTemplates\x12\xd3\x01\n\x18\x44\x65leteDeidentifyTemplate\x12\x36.google.privacy.dlp.v2.DeleteDeidentifyTemplateRequest\x1a\x16.google.protobuf.Empty\"g\x82\xd3\xe4\x93\x02\x61*0/v2/{name=organizations/*/deidentifyTemplates/*}Z-*+/v2/{name=projects/*/deidentifyTemplates/*}\x12\x95\x01\n\x10\x43reateJobTrigger\x12..google.privacy.dlp.v2.CreateJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\".\x82\xd3\xe4\x93\x02(\"#/v2/{parent=projects/*}/jobTriggers:\x01*\x12\x95\x01\n\x10UpdateJobTrigger\x12..google.privacy.dlp.v2.UpdateJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\".\x82\xd3\xe4\x93\x02(2#/v2/{name=projects/*/jobTriggers/*}:\x01*\x12\x8c\x01\n\rGetJobTrigger\x12+.google.privacy.dlp.v2.GetJobTriggerRequest\x1a!.google.privacy.dlp.v2.JobTrigger\"+\x82\xd3\xe4\x93\x02%\x12#/v2/{name=projects/*/jobTriggers/*}\x12\x9d\x01\n\x0fListJobTriggers\x12-.google.privacy.dlp.v2.ListJobTriggersRequest\x1a..google.privacy.dlp.v2.ListJobTriggersResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v2/{parent=projects/*}/jobTriggers\x12\x87\x01\n\x10\x44\x65leteJobTrigger\x12..google.privacy.dlp.v2.DeleteJobTriggerRequest\x1a\x16.google.protobuf.Empty\"+\x82\xd3\xe4\x93\x02%*#/v2/{name=projects/*/jobTriggers/*}\x12\x85\x01\n\x0c\x43reateDlpJob\x12*.google.privacy.dlp.v2.CreateDlpJobRequest\x1a\x1d.google.privacy.dlp.v2.DlpJob\"*\x82\xd3\xe4\x93\x02$\"\x1f/v2/{parent=projects/*}/dlpJobs:\x01*\x12\x8d\x01\n\x0bListDlpJobs\x12).google.privacy.dlp.v2.ListDlpJobsRequest\x1a*.google.privacy.dlp.v2.ListDlpJobsResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{parent=projects/*}/dlpJobs\x12|\n\tGetDlpJob\x12\'.google.privacy.dlp.v2.GetDlpJobRequest\x1a\x1d.google.privacy.dlp.v2.DlpJob\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/v2/{name=projects/*/dlpJobs/*}\x12{\n\x0c\x44\x65leteDlpJob\x12*.google.privacy.dlp.v2.DeleteDlpJobRequest\x1a\x16.google.protobuf.Empty\"\'\x82\xd3\xe4\x93\x02!*\x1f/v2/{name=projects/*/dlpJobs/*}\x12\x85\x01\n\x0c\x43\x61ncelDlpJob\x12*.google.privacy.dlp.v2.CancelDlpJobRequest\x1a\x16.google.protobuf.Empty\"1\x82\xd3\xe4\x93\x02+\"&/v2/{name=projects/*/dlpJobs/*}:cancel:\x01*B\x8d\x01\n\x19\x63om.google.privacy.dlp.v2B\x08\x44lpProtoP\x01Z8google.golang.org/genproto/googleapis/privacy/dlp/v2;dlp\xaa\x02\x13Google.Cloud.Dlp.V2\xca\x02\x13Google\\Cloud\\Dlp\\V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,google_dot_type_dot_date__pb2.DESCRIPTOR,google_dot_type_dot_dayofweek__pb2.DESCRIPTOR,google_dot_type_dot_timeofday__pb2.DESCRIPTOR,])
 
@@ -56,8 +56,8 @@ _CONTENTOPTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=21785,
-  serialized_end=21862,
+  serialized_start=23393,
+  serialized_end=23470,
 )
 _sym_db.RegisterEnumDescriptor(_CONTENTOPTION)
 
@@ -83,8 +83,8 @@ _INFOTYPESUPPORTEDBY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=21864,
-  serialized_end=21944,
+  serialized_start=23472,
+  serialized_end=23552,
 )
 _sym_db.RegisterEnumDescriptor(_INFOTYPESUPPORTEDBY)
 
@@ -130,8 +130,8 @@ _RELATIONALOPERATOR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=21947,
-  serialized_end=22134,
+  serialized_start=23555,
+  serialized_end=23742,
 )
 _sym_db.RegisterEnumDescriptor(_RELATIONALOPERATOR)
 
@@ -157,8 +157,8 @@ _DLPJOBTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=22136,
-  serialized_end=22218,
+  serialized_start=23744,
+  serialized_end=23826,
 )
 _sym_db.RegisterEnumDescriptor(_DLPJOBTYPE)
 
@@ -257,8 +257,8 @@ _OUTPUTSTORAGECONFIG_OUTPUTSCHEMA = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=4780,
-  serialized_end=4924,
+  serialized_start=4869,
+  serialized_end=5013,
 )
 _sym_db.RegisterEnumDescriptor(_OUTPUTSTORAGECONFIG_OUTPUTSCHEMA)
 
@@ -299,8 +299,8 @@ _TIMEPARTCONFIG_TIMEPART = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=12478,
-  serialized_end=12606,
+  serialized_start=14086,
+  serialized_end=14214,
 )
 _sym_db.RegisterEnumDescriptor(_TIMEPARTCONFIG_TIMEPART)
 
@@ -337,8 +337,8 @@ _CHARSTOIGNORE_COMMONCHARSTOIGNORE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=12944,
-  serialized_end=13095,
+  serialized_start=14552,
+  serialized_end=14703,
 )
 _sym_db.RegisterEnumDescriptor(_CHARSTOIGNORE_COMMONCHARSTOIGNORE)
 
@@ -371,8 +371,8 @@ _CRYPTOREPLACEFFXFPECONFIG_FFXCOMMONNATIVEALPHABET = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=14008,
-  serialized_end=14156,
+  serialized_start=15616,
+  serialized_end=15764,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOREPLACEFFXFPECONFIG_FFXCOMMONNATIVEALPHABET)
 
@@ -393,8 +393,8 @@ _RECORDCONDITION_EXPRESSIONS_LOGICALOPERATOR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=16099,
-  serialized_end=16159,
+  serialized_start=17707,
+  serialized_end=17767,
 )
 _sym_db.RegisterEnumDescriptor(_RECORDCONDITION_EXPRESSIONS_LOGICALOPERATOR)
 
@@ -419,8 +419,8 @@ _TRANSFORMATIONSUMMARY_TRANSFORMATIONRESULTCODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=16881,
-  serialized_end=16975,
+  serialized_start=18489,
+  serialized_end=18583,
 )
 _sym_db.RegisterEnumDescriptor(_TRANSFORMATIONSUMMARY_TRANSFORMATIONRESULTCODE)
 
@@ -449,8 +449,8 @@ _JOBTRIGGER_STATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=18166,
-  serialized_end=18238,
+  serialized_start=19774,
+  serialized_end=19846,
 )
 _sym_db.RegisterEnumDescriptor(_JOBTRIGGER_STATUS)
 
@@ -487,8 +487,8 @@ _DLPJOB_JOBSTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=20695,
-  serialized_end=20794,
+  serialized_start=22303,
+  serialized_end=22402,
 )
 _sym_db.RegisterEnumDescriptor(_DLPJOB_JOBSTATE)
 
@@ -1291,8 +1291,8 @@ _REDACTIMAGEREQUEST_IMAGEREDACTIONCONFIG = _descriptor.Descriptor(
       name='target', full_name='google.privacy.dlp.v2.RedactImageRequest.ImageRedactionConfig.target',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3193,
-  serialized_end=3361,
+  serialized_start=3219,
+  serialized_end=3387,
 )
 
 _REDACTIMAGEREQUEST = _descriptor.Descriptor(
@@ -1324,7 +1324,14 @@ _REDACTIMAGEREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='byte_item', full_name='google.privacy.dlp.v2.RedactImageRequest.byte_item', index=3,
+      name='include_findings', full_name='google.privacy.dlp.v2.RedactImageRequest.include_findings', index=3,
+      number=6, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='byte_item', full_name='google.privacy.dlp.v2.RedactImageRequest.byte_item', index=4,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1343,7 +1350,7 @@ _REDACTIMAGEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=2936,
-  serialized_end=3361,
+  serialized_end=3387,
 )
 
 
@@ -1387,8 +1394,8 @@ _COLOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3363,
-  serialized_end=3412,
+  serialized_start=3389,
+  serialized_end=3438,
 )
 
 
@@ -1413,6 +1420,13 @@ _REDACTIMAGERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='inspect_result', full_name='google.privacy.dlp.v2.RedactImageResponse.inspect_result', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1425,8 +1439,8 @@ _REDACTIMAGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3414,
-  serialized_end=3483,
+  serialized_start=3441,
+  serialized_end=3572,
 )
 
 
@@ -1491,8 +1505,8 @@ _DEIDENTIFYCONTENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3486,
-  serialized_end=3773,
+  serialized_start=3575,
+  serialized_end=3862,
 )
 
 
@@ -1529,8 +1543,8 @@ _DEIDENTIFYCONTENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3776,
-  serialized_end=3918,
+  serialized_start=3865,
+  serialized_end=4007,
 )
 
 
@@ -1595,8 +1609,8 @@ _REIDENTIFYCONTENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3921,
-  serialized_end=4208,
+  serialized_start=4010,
+  serialized_end=4297,
 )
 
 
@@ -1633,8 +1647,8 @@ _REIDENTIFYCONTENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4211,
-  serialized_end=4353,
+  serialized_start=4300,
+  serialized_end=4442,
 )
 
 
@@ -1685,8 +1699,8 @@ _INSPECTCONTENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4356,
-  serialized_end=4538,
+  serialized_start=4445,
+  serialized_end=4627,
 )
 
 
@@ -1716,8 +1730,8 @@ _INSPECTCONTENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4540,
-  serialized_end=4618,
+  serialized_start=4629,
+  serialized_end=4707,
 )
 
 
@@ -1758,8 +1772,8 @@ _OUTPUTSTORAGECONFIG = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.OutputStorageConfig.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4621,
-  serialized_end=4932,
+  serialized_start=4710,
+  serialized_end=5021,
 )
 
 
@@ -1796,8 +1810,8 @@ _INFOTYPESTATS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4934,
-  serialized_end=5016,
+  serialized_start=5023,
+  serialized_end=5105,
 )
 
 
@@ -1834,8 +1848,8 @@ _INSPECTDATASOURCEDETAILS_REQUESTEDOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5213,
-  serialized_end=5367,
+  serialized_start=5302,
+  serialized_end=5456,
 )
 
 _INSPECTDATASOURCEDETAILS_RESULT = _descriptor.Descriptor(
@@ -1878,8 +1892,8 @@ _INSPECTDATASOURCEDETAILS_RESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5369,
-  serialized_end=5496,
+  serialized_start=5458,
+  serialized_end=5585,
 )
 
 _INSPECTDATASOURCEDETAILS = _descriptor.Descriptor(
@@ -1915,8 +1929,8 @@ _INSPECTDATASOURCEDETAILS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5019,
-  serialized_end=5496,
+  serialized_start=5108,
+  serialized_end=5585,
 )
 
 
@@ -1960,8 +1974,8 @@ _INFOTYPEDESCRIPTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5498,
-  serialized_end=5621,
+  serialized_start=5587,
+  serialized_end=5710,
 )
 
 
@@ -1998,8 +2012,8 @@ _LISTINFOTYPESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5623,
-  serialized_end=5684,
+  serialized_start=5712,
+  serialized_end=5773,
 )
 
 
@@ -2029,8 +2043,8 @@ _LISTINFOTYPESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5686,
-  serialized_end=5773,
+  serialized_start=5775,
+  serialized_end=5862,
 )
 
 
@@ -2074,8 +2088,145 @@ _RISKANALYSISJOBCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5776,
-  serialized_end=5969,
+  serialized_start=5865,
+  serialized_end=6058,
+)
+
+
+_QUASIID = _descriptor.Descriptor(
+  name='QuasiId',
+  full_name='google.privacy.dlp.v2.QuasiId',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='field', full_name='google.privacy.dlp.v2.QuasiId.field', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='info_type', full_name='google.privacy.dlp.v2.QuasiId.info_type', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='custom_tag', full_name='google.privacy.dlp.v2.QuasiId.custom_tag', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='inferred', full_name='google.privacy.dlp.v2.QuasiId.inferred', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='tag', full_name='google.privacy.dlp.v2.QuasiId.tag',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=6061,
+  serialized_end=6244,
+)
+
+
+_STATISTICALTABLE_QUASIIDENTIFIERFIELD = _descriptor.Descriptor(
+  name='QuasiIdentifierField',
+  full_name='google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='field', full_name='google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField.field', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='custom_tag', full_name='google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField.custom_tag', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=6461,
+  serialized_end=6550,
+)
+
+_STATISTICALTABLE = _descriptor.Descriptor(
+  name='StatisticalTable',
+  full_name='google.privacy.dlp.v2.StatisticalTable',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='table', full_name='google.privacy.dlp.v2.StatisticalTable.table', index=0,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='quasi_ids', full_name='google.privacy.dlp.v2.StatisticalTable.quasi_ids', index=1,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='relative_frequency', full_name='google.privacy.dlp.v2.StatisticalTable.relative_frequency', index=2,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_STATISTICALTABLE_QUASIIDENTIFIERFIELD, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=6247,
+  serialized_end=6550,
 )
 
 
@@ -2105,8 +2256,8 @@ _PRIVACYMETRIC_NUMERICALSTATSCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6443,
-  serialized_end=6512,
+  serialized_start=7136,
+  serialized_end=7205,
 )
 
 _PRIVACYMETRIC_CATEGORICALSTATSCONFIG = _descriptor.Descriptor(
@@ -2135,8 +2286,8 @@ _PRIVACYMETRIC_CATEGORICALSTATSCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6514,
-  serialized_end=6585,
+  serialized_start=7207,
+  serialized_end=7278,
 )
 
 _PRIVACYMETRIC_KANONYMITYCONFIG = _descriptor.Descriptor(
@@ -2172,8 +2323,8 @@ _PRIVACYMETRIC_KANONYMITYCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6587,
-  serialized_end=6708,
+  serialized_start=7280,
+  serialized_end=7401,
 )
 
 _PRIVACYMETRIC_LDIVERSITYCONFIG = _descriptor.Descriptor(
@@ -2209,8 +2360,8 @@ _PRIVACYMETRIC_LDIVERSITYCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6711,
-  serialized_end=6841,
+  serialized_start=7404,
+  serialized_end=7534,
 )
 
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_TAGGEDFIELD = _descriptor.Descriptor(
@@ -2263,8 +2414,8 @@ _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_TAGGEDFIELD = _descriptor.Descriptor(
       name='tag', full_name='google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField.tag',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=7080,
-  serialized_end=7267,
+  serialized_start=7773,
+  serialized_end=7960,
 )
 
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE_QUASIIDFIELD = _descriptor.Descriptor(
@@ -2300,8 +2451,8 @@ _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE_QUASIIDFIELD = _descriptor.De
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7507,
-  serialized_end=7588,
+  serialized_start=8200,
+  serialized_end=8281,
 )
 
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE = _descriptor.Descriptor(
@@ -2344,8 +2495,8 @@ _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7270,
-  serialized_end=7588,
+  serialized_start=7963,
+  serialized_end=8281,
 )
 
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG = _descriptor.Descriptor(
@@ -2388,8 +2539,52 @@ _PRIVACYMETRIC_KMAPESTIMATIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6844,
-  serialized_end=7588,
+  serialized_start=7537,
+  serialized_end=8281,
+)
+
+_PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG = _descriptor.Descriptor(
+  name='DeltaPresenceEstimationConfig',
+  full_name='google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='quasi_ids', full_name='google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.quasi_ids', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='region_code', full_name='google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.region_code', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='auxiliary_tables', full_name='google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig.auxiliary_tables', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=8284,
+  serialized_end=8454,
 )
 
 _PRIVACYMETRIC = _descriptor.Descriptor(
@@ -2434,10 +2629,17 @@ _PRIVACYMETRIC = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='delta_presence_estimation_config', full_name='google.privacy.dlp.v2.PrivacyMetric.delta_presence_estimation_config', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_PRIVACYMETRIC_NUMERICALSTATSCONFIG, _PRIVACYMETRIC_CATEGORICALSTATSCONFIG, _PRIVACYMETRIC_KANONYMITYCONFIG, _PRIVACYMETRIC_LDIVERSITYCONFIG, _PRIVACYMETRIC_KMAPESTIMATIONCONFIG, ],
+  nested_types=[_PRIVACYMETRIC_NUMERICALSTATSCONFIG, _PRIVACYMETRIC_CATEGORICALSTATSCONFIG, _PRIVACYMETRIC_KANONYMITYCONFIG, _PRIVACYMETRIC_LDIVERSITYCONFIG, _PRIVACYMETRIC_KMAPESTIMATIONCONFIG, _PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG, ],
   enum_types=[
   ],
   options=None,
@@ -2449,8 +2651,8 @@ _PRIVACYMETRIC = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.PrivacyMetric.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5972,
-  serialized_end=7596,
+  serialized_start=6553,
+  serialized_end=8462,
 )
 
 
@@ -2494,8 +2696,8 @@ _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8303,
-  serialized_end=8478,
+  serialized_start=9296,
+  serialized_end=9471,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT_CATEGORICALSTATSHISTOGRAMBUCKET = _descriptor.Descriptor(
@@ -2552,8 +2754,8 @@ _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT_CATEGORICALSTATSHISTOGRAMBU
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8660,
-  serialized_end=8878,
+  serialized_start=9653,
+  serialized_end=9871,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT = _descriptor.Descriptor(
@@ -2582,8 +2784,8 @@ _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8481,
-  serialized_end=8878,
+  serialized_start=9474,
+  serialized_end=9871,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYEQUIVALENCECLASS = _descriptor.Descriptor(
@@ -2619,8 +2821,8 @@ _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYEQUIVALENCECLASS = _des
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9043,
-  serialized_end=9159,
+  serialized_start=10036,
+  serialized_end=10152,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYHISTOGRAMBUCKET = _descriptor.Descriptor(
@@ -2677,8 +2879,8 @@ _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYHISTOGRAMBUCKET = _desc
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9162,
-  serialized_end=9446,
+  serialized_start=10155,
+  serialized_end=10439,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT = _descriptor.Descriptor(
@@ -2707,8 +2909,8 @@ _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=8881,
-  serialized_end=9446,
+  serialized_start=9874,
+  serialized_end=10439,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYEQUIVALENCECLASS = _descriptor.Descriptor(
@@ -2758,8 +2960,8 @@ _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYEQUIVALENCECLASS = _des
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9620,
-  serialized_end=9844,
+  serialized_start=10613,
+  serialized_end=10837,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYHISTOGRAMBUCKET = _descriptor.Descriptor(
@@ -2816,8 +3018,8 @@ _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYHISTOGRAMBUCKET = _desc
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9847,
-  serialized_end=10137,
+  serialized_start=10840,
+  serialized_end=11130,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT = _descriptor.Descriptor(
@@ -2846,8 +3048,8 @@ _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9449,
-  serialized_end=10137,
+  serialized_start=10442,
+  serialized_end=11130,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONQUASIIDVALUES = _descriptor.Descriptor(
@@ -2883,8 +3085,8 @@ _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONQUASIIDVALUES =
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10305,
-  serialized_end=10419,
+  serialized_start=11298,
+  serialized_end=11412,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET = _descriptor.Descriptor(
@@ -2941,8 +3143,8 @@ _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10422,
-  serialized_end=10673,
+  serialized_start=11415,
+  serialized_end=11666,
 )
 
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT = _descriptor.Descriptor(
@@ -2971,8 +3173,133 @@ _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10140,
-  serialized_end=10673,
+  serialized_start=11133,
+  serialized_end=11666,
+)
+
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES = _descriptor.Descriptor(
+  name='DeltaPresenceEstimationQuasiIdValues',
+  full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='quasi_ids_values', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.quasi_ids_values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='estimated_probability', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues.estimated_probability', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=11870,
+  serialized_end=11995,
+)
+
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET = _descriptor.Descriptor(
+  name='DeltaPresenceEstimationHistogramBucket',
+  full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='min_probability', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.min_probability', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='max_probability', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.max_probability', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bucket_size', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_size', index=2,
+      number=5, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bucket_values', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_values', index=3,
+      number=6, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bucket_value_count', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket.bucket_value_count', index=4,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=11998,
+  serialized_end=12281,
+)
+
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT = _descriptor.Descriptor(
+  name='DeltaPresenceEstimationResult',
+  full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='delta_presence_estimation_histogram', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.delta_presence_estimation_histogram', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES, _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=11669,
+  serialized_end=12281,
 )
 
 _ANALYZEDATASOURCERISKDETAILS = _descriptor.Descriptor(
@@ -3031,10 +3358,17 @@ _ANALYZEDATASOURCERISKDETAILS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='delta_presence_estimation_result', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.delta_presence_estimation_result', index=7,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT, _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT, _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT, _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT, _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT, ],
+  nested_types=[_ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT, _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT, _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT, _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT, _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT, _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT, ],
   enum_types=[
   ],
   options=None,
@@ -3046,8 +3380,8 @@ _ANALYZEDATASOURCERISKDETAILS = _descriptor.Descriptor(
       name='result', full_name='google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=7599,
-  serialized_end=10683,
+  serialized_start=8465,
+  serialized_end=12291,
 )
 
 
@@ -3084,8 +3418,8 @@ _VALUEFREQUENCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10685,
-  serialized_end=10761,
+  serialized_start=12293,
+  serialized_end=12369,
 )
 
 
@@ -3167,8 +3501,8 @@ _VALUE = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.Value.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=10764,
-  serialized_end=11071,
+  serialized_start=12372,
+  serialized_end=12679,
 )
 
 
@@ -3201,8 +3535,8 @@ _QUOTEINFO = _descriptor.Descriptor(
       name='parsed_quote', full_name='google.privacy.dlp.v2.QuoteInfo.parsed_quote',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=11073,
-  serialized_end=11154,
+  serialized_start=12681,
+  serialized_end=12762,
 )
 
 
@@ -3232,8 +3566,8 @@ _DATETIME_TIMEZONE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11346,
-  serialized_end=11380,
+  serialized_start=12954,
+  serialized_end=12988,
 )
 
 _DATETIME = _descriptor.Descriptor(
@@ -3283,8 +3617,8 @@ _DATETIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11157,
-  serialized_end=11380,
+  serialized_start=12765,
+  serialized_end=12988,
 )
 
 
@@ -3324,8 +3658,8 @@ _DEIDENTIFYCONFIG = _descriptor.Descriptor(
       name='transformation', full_name='google.privacy.dlp.v2.DeidentifyConfig.transformation',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=11383,
-  serialized_end=11584,
+  serialized_start=12991,
+  serialized_end=13192,
 )
 
 
@@ -3421,8 +3755,8 @@ _PRIMITIVETRANSFORMATION = _descriptor.Descriptor(
       name='transformation', full_name='google.privacy.dlp.v2.PrimitiveTransformation.transformation',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=11587,
-  serialized_end=12383,
+  serialized_start=13195,
+  serialized_end=13991,
 )
 
 
@@ -3453,8 +3787,8 @@ _TIMEPARTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12386,
-  serialized_end=12606,
+  serialized_start=13994,
+  serialized_end=14214,
 )
 
 
@@ -3484,8 +3818,8 @@ _CRYPTOHASHCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12608,
-  serialized_end=12680,
+  serialized_start=14216,
+  serialized_end=14288,
 )
 
 
@@ -3515,8 +3849,8 @@ _REPLACEVALUECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12682,
-  serialized_end=12751,
+  serialized_start=14290,
+  serialized_end=14359,
 )
 
 
@@ -3539,8 +3873,8 @@ _REPLACEWITHINFOTYPECONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12753,
-  serialized_end=12780,
+  serialized_start=14361,
+  serialized_end=14388,
 )
 
 
@@ -3563,8 +3897,8 @@ _REDACTCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12782,
-  serialized_end=12796,
+  serialized_start=14390,
+  serialized_end=14404,
 )
 
 
@@ -3605,8 +3939,8 @@ _CHARSTOIGNORE = _descriptor.Descriptor(
       name='characters', full_name='google.privacy.dlp.v2.CharsToIgnore.characters',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=12799,
-  serialized_end=13109,
+  serialized_start=14407,
+  serialized_end=14717,
 )
 
 
@@ -3657,8 +3991,8 @@ _CHARACTERMASKCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13112,
-  serialized_end=13275,
+  serialized_start=14720,
+  serialized_end=14883,
 )
 
 
@@ -3702,8 +4036,8 @@ _FIXEDSIZEBUCKETINGCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13278,
-  serialized_end=13427,
+  serialized_start=14886,
+  serialized_end=15035,
 )
 
 
@@ -3747,8 +4081,8 @@ _BUCKETINGCONFIG_BUCKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13514,
-  serialized_end=13665,
+  serialized_start=15122,
+  serialized_end=15273,
 )
 
 _BUCKETINGCONFIG = _descriptor.Descriptor(
@@ -3777,8 +4111,8 @@ _BUCKETINGCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13430,
-  serialized_end=13665,
+  serialized_start=15038,
+  serialized_end=15273,
 )
 
 
@@ -3847,8 +4181,8 @@ _CRYPTOREPLACEFFXFPECONFIG = _descriptor.Descriptor(
       name='alphabet', full_name='google.privacy.dlp.v2.CryptoReplaceFfxFpeConfig.alphabet',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=13668,
-  serialized_end=14168,
+  serialized_start=15276,
+  serialized_end=15776,
 )
 
 
@@ -3895,8 +4229,8 @@ _CRYPTOKEY = _descriptor.Descriptor(
       name='source', full_name='google.privacy.dlp.v2.CryptoKey.source',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=14171,
-  serialized_end=14387,
+  serialized_start=15779,
+  serialized_end=15995,
 )
 
 
@@ -3926,8 +4260,8 @@ _TRANSIENTCRYPTOKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14389,
-  serialized_end=14423,
+  serialized_start=15997,
+  serialized_end=16031,
 )
 
 
@@ -3957,8 +4291,8 @@ _UNWRAPPEDCRYPTOKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14425,
-  serialized_end=14458,
+  serialized_start=16033,
+  serialized_end=16066,
 )
 
 
@@ -3995,8 +4329,8 @@ _KMSWRAPPEDCRYPTOKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14460,
-  serialized_end=14527,
+  serialized_start=16068,
+  serialized_end=16135,
 )
 
 
@@ -4050,8 +4384,8 @@ _DATESHIFTCONFIG = _descriptor.Descriptor(
       name='method', full_name='google.privacy.dlp.v2.DateShiftConfig.method',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=14530,
-  serialized_end=14714,
+  serialized_start=16138,
+  serialized_end=16322,
 )
 
 
@@ -4088,8 +4422,8 @@ _INFOTYPETRANSFORMATIONS_INFOTYPETRANSFORMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14841,
-  serialized_end=15000,
+  serialized_start=16449,
+  serialized_end=16608,
 )
 
 _INFOTYPETRANSFORMATIONS = _descriptor.Descriptor(
@@ -4118,8 +4452,8 @@ _INFOTYPETRANSFORMATIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14717,
-  serialized_end=15000,
+  serialized_start=16325,
+  serialized_end=16608,
 )
 
 
@@ -4173,8 +4507,8 @@ _FIELDTRANSFORMATION = _descriptor.Descriptor(
       name='transformation', full_name='google.privacy.dlp.v2.FieldTransformation.transformation',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=15003,
-  serialized_end=15318,
+  serialized_start=16611,
+  serialized_end=16926,
 )
 
 
@@ -4211,8 +4545,8 @@ _RECORDTRANSFORMATIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15321,
-  serialized_end=15490,
+  serialized_start=16929,
+  serialized_end=17098,
 )
 
 
@@ -4242,8 +4576,8 @@ _RECORDSUPPRESSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15492,
-  serialized_end=15570,
+  serialized_start=17100,
+  serialized_end=17178,
 )
 
 
@@ -4287,8 +4621,8 @@ _RECORDCONDITION_CONDITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15666,
-  serialized_end=15830,
+  serialized_start=17274,
+  serialized_end=17438,
 )
 
 _RECORDCONDITION_CONDITIONS = _descriptor.Descriptor(
@@ -4317,8 +4651,8 @@ _RECORDCONDITION_CONDITIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15832,
-  serialized_end=15914,
+  serialized_start=17440,
+  serialized_end=17522,
 )
 
 _RECORDCONDITION_EXPRESSIONS = _descriptor.Descriptor(
@@ -4358,8 +4692,8 @@ _RECORDCONDITION_EXPRESSIONS = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2.RecordCondition.Expressions.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=15917,
-  serialized_end=16167,
+  serialized_start=17525,
+  serialized_end=17775,
 )
 
 _RECORDCONDITION = _descriptor.Descriptor(
@@ -4388,8 +4722,8 @@ _RECORDCONDITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15573,
-  serialized_end=16167,
+  serialized_start=17181,
+  serialized_end=17775,
 )
 
 
@@ -4426,8 +4760,8 @@ _TRANSFORMATIONOVERVIEW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16170,
-  serialized_end=16301,
+  serialized_start=17778,
+  serialized_end=17909,
 )
 
 
@@ -4471,8 +4805,8 @@ _TRANSFORMATIONSUMMARY_SUMMARYRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16747,
-  serialized_end=16879,
+  serialized_start=18355,
+  serialized_end=18487,
 )
 
 _TRANSFORMATIONSUMMARY = _descriptor.Descriptor(
@@ -4544,8 +4878,8 @@ _TRANSFORMATIONSUMMARY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16304,
-  serialized_end=16975,
+  serialized_start=17912,
+  serialized_end=18583,
 )
 
 
@@ -4578,8 +4912,8 @@ _SCHEDULE = _descriptor.Descriptor(
       name='option', full_name='google.privacy.dlp.v2.Schedule.option',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=16977,
-  serialized_end=17062,
+  serialized_start=18585,
+  serialized_end=18670,
 )
 
 
@@ -4644,8 +4978,8 @@ _INSPECTTEMPLATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17065,
-  serialized_end=17299,
+  serialized_start=18673,
+  serialized_end=18907,
 )
 
 
@@ -4710,8 +5044,8 @@ _DEIDENTIFYTEMPLATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17302,
-  serialized_end=17545,
+  serialized_start=18910,
+  serialized_end=19153,
 )
 
 
@@ -4748,8 +5082,8 @@ _ERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17547,
-  serialized_end=17639,
+  serialized_start=19155,
+  serialized_end=19247,
 )
 
 
@@ -4782,8 +5116,8 @@ _JOBTRIGGER_TRIGGER = _descriptor.Descriptor(
       name='trigger', full_name='google.privacy.dlp.v2.JobTrigger.Trigger.trigger',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=18091,
-  serialized_end=18164,
+  serialized_start=19699,
+  serialized_end=19772,
 )
 
 _JOBTRIGGER = _descriptor.Descriptor(
@@ -4879,8 +5213,8 @@ _JOBTRIGGER = _descriptor.Descriptor(
       name='job', full_name='google.privacy.dlp.v2.JobTrigger.job',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=17642,
-  serialized_end=18245,
+  serialized_start=19250,
+  serialized_end=19853,
 )
 
 
@@ -4910,8 +5244,8 @@ _ACTION_SAVEFINDINGS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18480,
-  serialized_end=18561,
+  serialized_start=20088,
+  serialized_end=20169,
 )
 
 _ACTION_PUBLISHTOPUBSUB = _descriptor.Descriptor(
@@ -4940,8 +5274,8 @@ _ACTION_PUBLISHTOPUBSUB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18563,
-  serialized_end=18595,
+  serialized_start=20171,
+  serialized_end=20203,
 )
 
 _ACTION_PUBLISHSUMMARYTOCSCC = _descriptor.Descriptor(
@@ -4963,8 +5297,8 @@ _ACTION_PUBLISHSUMMARYTOCSCC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18597,
-  serialized_end=18619,
+  serialized_start=20205,
+  serialized_end=20227,
 )
 
 _ACTION = _descriptor.Descriptor(
@@ -5010,8 +5344,8 @@ _ACTION = _descriptor.Descriptor(
       name='action', full_name='google.privacy.dlp.v2.Action.action',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=18248,
-  serialized_end=18629,
+  serialized_start=19856,
+  serialized_end=20237,
 )
 
 
@@ -5055,8 +5389,8 @@ _CREATEINSPECTTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18632,
-  serialized_end=18765,
+  serialized_start=20240,
+  serialized_end=20373,
 )
 
 
@@ -5100,8 +5434,8 @@ _UPDATEINSPECTTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18768,
-  serialized_end=18927,
+  serialized_start=20376,
+  serialized_end=20535,
 )
 
 
@@ -5131,8 +5465,8 @@ _GETINSPECTTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18929,
-  serialized_end=18970,
+  serialized_start=20537,
+  serialized_end=20578,
 )
 
 
@@ -5176,8 +5510,8 @@ _LISTINSPECTTEMPLATESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18972,
-  serialized_end=19056,
+  serialized_start=20580,
+  serialized_end=20664,
 )
 
 
@@ -5214,8 +5548,8 @@ _LISTINSPECTTEMPLATESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19058,
-  serialized_end=19180,
+  serialized_start=20666,
+  serialized_end=20788,
 )
 
 
@@ -5245,8 +5579,8 @@ _DELETEINSPECTTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19182,
-  serialized_end=19226,
+  serialized_start=20790,
+  serialized_end=20834,
 )
 
 
@@ -5290,8 +5624,8 @@ _CREATEJOBTRIGGERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19228,
-  serialized_end=19345,
+  serialized_start=20836,
+  serialized_end=20953,
 )
 
 
@@ -5335,8 +5669,8 @@ _UPDATEJOBTRIGGERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19348,
-  serialized_end=19492,
+  serialized_start=20956,
+  serialized_end=21100,
 )
 
 
@@ -5366,8 +5700,8 @@ _GETJOBTRIGGERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19494,
-  serialized_end=19530,
+  serialized_start=21102,
+  serialized_end=21138,
 )
 
 
@@ -5421,8 +5755,8 @@ _CREATEDLPJOBREQUEST = _descriptor.Descriptor(
       name='job', full_name='google.privacy.dlp.v2.CreateDlpJobRequest.job',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=19533,
-  serialized_end=19723,
+  serialized_start=21141,
+  serialized_end=21331,
 )
 
 
@@ -5473,8 +5807,8 @@ _LISTJOBTRIGGERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19725,
-  serialized_end=19822,
+  serialized_start=21333,
+  serialized_end=21430,
 )
 
 
@@ -5511,8 +5845,8 @@ _LISTJOBTRIGGERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19824,
-  serialized_end=19931,
+  serialized_start=21432,
+  serialized_end=21539,
 )
 
 
@@ -5542,8 +5876,8 @@ _DELETEJOBTRIGGERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19933,
-  serialized_end=19972,
+  serialized_start=21541,
+  serialized_end=21580,
 )
 
 
@@ -5594,8 +5928,8 @@ _INSPECTJOBCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=19975,
-  serialized_end=20196,
+  serialized_start=21583,
+  serialized_end=21804,
 )
 
 
@@ -5692,8 +6026,8 @@ _DLPJOB = _descriptor.Descriptor(
       name='details', full_name='google.privacy.dlp.v2.DlpJob.details',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=20199,
-  serialized_end=20805,
+  serialized_start=21807,
+  serialized_end=22413,
 )
 
 
@@ -5723,8 +6057,8 @@ _GETDLPJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=20807,
-  serialized_end=20839,
+  serialized_start=22415,
+  serialized_end=22447,
 )
 
 
@@ -5782,8 +6116,8 @@ _LISTDLPJOBSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=20842,
-  serialized_end=20982,
+  serialized_start=22450,
+  serialized_end=22590,
 )
 
 
@@ -5820,8 +6154,8 @@ _LISTDLPJOBSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=20984,
-  serialized_end=21075,
+  serialized_start=22592,
+  serialized_end=22683,
 )
 
 
@@ -5851,8 +6185,8 @@ _CANCELDLPJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21077,
-  serialized_end=21112,
+  serialized_start=22685,
+  serialized_end=22720,
 )
 
 
@@ -5882,8 +6216,8 @@ _DELETEDLPJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21114,
-  serialized_end=21149,
+  serialized_start=22722,
+  serialized_end=22757,
 )
 
 
@@ -5927,8 +6261,8 @@ _CREATEDEIDENTIFYTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21152,
-  serialized_end=21294,
+  serialized_start=22760,
+  serialized_end=22902,
 )
 
 
@@ -5972,8 +6306,8 @@ _UPDATEDEIDENTIFYTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21297,
-  serialized_end=21465,
+  serialized_start=22905,
+  serialized_end=23073,
 )
 
 
@@ -6003,8 +6337,8 @@ _GETDEIDENTIFYTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21467,
-  serialized_end=21511,
+  serialized_start=23075,
+  serialized_end=23119,
 )
 
 
@@ -6048,8 +6382,8 @@ _LISTDEIDENTIFYTEMPLATESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21513,
-  serialized_end=21600,
+  serialized_start=23121,
+  serialized_end=23208,
 )
 
 
@@ -6086,8 +6420,8 @@ _LISTDEIDENTIFYTEMPLATESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21603,
-  serialized_end=21734,
+  serialized_start=23211,
+  serialized_end=23342,
 )
 
 
@@ -6117,8 +6451,8 @@ _DELETEDEIDENTIFYTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21736,
-  serialized_end=21783,
+  serialized_start=23344,
+  serialized_end=23391,
 )
 
 _INSPECTCONFIG_FINDINGLIMITS_INFOTYPELIMIT.fields_by_name['info_type'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._INFOTYPE
@@ -6185,6 +6519,7 @@ _REDACTIMAGEREQUEST_IMAGEREDACTIONCONFIG.fields_by_name['redact_all_text'].conta
 _REDACTIMAGEREQUEST.fields_by_name['inspect_config'].message_type = _INSPECTCONFIG
 _REDACTIMAGEREQUEST.fields_by_name['image_redaction_configs'].message_type = _REDACTIMAGEREQUEST_IMAGEREDACTIONCONFIG
 _REDACTIMAGEREQUEST.fields_by_name['byte_item'].message_type = _BYTECONTENTITEM
+_REDACTIMAGERESPONSE.fields_by_name['inspect_result'].message_type = _INSPECTRESULT
 _DEIDENTIFYCONTENTREQUEST.fields_by_name['deidentify_config'].message_type = _DEIDENTIFYCONFIG
 _DEIDENTIFYCONTENTREQUEST.fields_by_name['inspect_config'].message_type = _INSPECTCONFIG
 _DEIDENTIFYCONTENTREQUEST.fields_by_name['item'].message_type = _CONTENTITEM
@@ -6217,6 +6552,23 @@ _LISTINFOTYPESRESPONSE.fields_by_name['info_types'].message_type = _INFOTYPEDESC
 _RISKANALYSISJOBCONFIG.fields_by_name['privacy_metric'].message_type = _PRIVACYMETRIC
 _RISKANALYSISJOBCONFIG.fields_by_name['source_table'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._BIGQUERYTABLE
 _RISKANALYSISJOBCONFIG.fields_by_name['actions'].message_type = _ACTION
+_QUASIID.fields_by_name['field'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._FIELDID
+_QUASIID.fields_by_name['info_type'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._INFOTYPE
+_QUASIID.fields_by_name['inferred'].message_type = google_dot_protobuf_dot_empty__pb2._EMPTY
+_QUASIID.oneofs_by_name['tag'].fields.append(
+  _QUASIID.fields_by_name['info_type'])
+_QUASIID.fields_by_name['info_type'].containing_oneof = _QUASIID.oneofs_by_name['tag']
+_QUASIID.oneofs_by_name['tag'].fields.append(
+  _QUASIID.fields_by_name['custom_tag'])
+_QUASIID.fields_by_name['custom_tag'].containing_oneof = _QUASIID.oneofs_by_name['tag']
+_QUASIID.oneofs_by_name['tag'].fields.append(
+  _QUASIID.fields_by_name['inferred'])
+_QUASIID.fields_by_name['inferred'].containing_oneof = _QUASIID.oneofs_by_name['tag']
+_STATISTICALTABLE_QUASIIDENTIFIERFIELD.fields_by_name['field'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._FIELDID
+_STATISTICALTABLE_QUASIIDENTIFIERFIELD.containing_type = _STATISTICALTABLE
+_STATISTICALTABLE.fields_by_name['table'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._BIGQUERYTABLE
+_STATISTICALTABLE.fields_by_name['quasi_ids'].message_type = _STATISTICALTABLE_QUASIIDENTIFIERFIELD
+_STATISTICALTABLE.fields_by_name['relative_frequency'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._FIELDID
 _PRIVACYMETRIC_NUMERICALSTATSCONFIG.fields_by_name['field'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._FIELDID
 _PRIVACYMETRIC_NUMERICALSTATSCONFIG.containing_type = _PRIVACYMETRIC
 _PRIVACYMETRIC_CATEGORICALSTATSCONFIG.fields_by_name['field'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._FIELDID
@@ -6249,11 +6601,15 @@ _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE.containing_type = _PRIVACYMET
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG.fields_by_name['quasi_ids'].message_type = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_TAGGEDFIELD
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG.fields_by_name['auxiliary_tables'].message_type = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE
 _PRIVACYMETRIC_KMAPESTIMATIONCONFIG.containing_type = _PRIVACYMETRIC
+_PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG.fields_by_name['quasi_ids'].message_type = _QUASIID
+_PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG.fields_by_name['auxiliary_tables'].message_type = _STATISTICALTABLE
+_PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG.containing_type = _PRIVACYMETRIC
 _PRIVACYMETRIC.fields_by_name['numerical_stats_config'].message_type = _PRIVACYMETRIC_NUMERICALSTATSCONFIG
 _PRIVACYMETRIC.fields_by_name['categorical_stats_config'].message_type = _PRIVACYMETRIC_CATEGORICALSTATSCONFIG
 _PRIVACYMETRIC.fields_by_name['k_anonymity_config'].message_type = _PRIVACYMETRIC_KANONYMITYCONFIG
 _PRIVACYMETRIC.fields_by_name['l_diversity_config'].message_type = _PRIVACYMETRIC_LDIVERSITYCONFIG
 _PRIVACYMETRIC.fields_by_name['k_map_estimation_config'].message_type = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG
+_PRIVACYMETRIC.fields_by_name['delta_presence_estimation_config'].message_type = _PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG
 _PRIVACYMETRIC.oneofs_by_name['type'].fields.append(
   _PRIVACYMETRIC.fields_by_name['numerical_stats_config'])
 _PRIVACYMETRIC.fields_by_name['numerical_stats_config'].containing_oneof = _PRIVACYMETRIC.oneofs_by_name['type']
@@ -6269,6 +6625,9 @@ _PRIVACYMETRIC.fields_by_name['l_diversity_config'].containing_oneof = _PRIVACYM
 _PRIVACYMETRIC.oneofs_by_name['type'].fields.append(
   _PRIVACYMETRIC.fields_by_name['k_map_estimation_config'])
 _PRIVACYMETRIC.fields_by_name['k_map_estimation_config'].containing_oneof = _PRIVACYMETRIC.oneofs_by_name['type']
+_PRIVACYMETRIC.oneofs_by_name['type'].fields.append(
+  _PRIVACYMETRIC.fields_by_name['delta_presence_estimation_config'])
+_PRIVACYMETRIC.fields_by_name['delta_presence_estimation_config'].containing_oneof = _PRIVACYMETRIC.oneofs_by_name['type']
 _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT.fields_by_name['min_value'].message_type = _VALUE
 _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT.fields_by_name['max_value'].message_type = _VALUE
 _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT.fields_by_name['quantile_values'].message_type = _VALUE
@@ -6296,6 +6655,12 @@ _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET.containing_type = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT.fields_by_name['k_map_estimation_histogram'].message_type = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET
 _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT.containing_type = _ANALYZEDATASOURCERISKDETAILS
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES.fields_by_name['quasi_ids_values'].message_type = _VALUE
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES.containing_type = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET.fields_by_name['bucket_values'].message_type = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET.containing_type = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT.fields_by_name['delta_presence_estimation_histogram'].message_type = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET
+_ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT.containing_type = _ANALYZEDATASOURCERISKDETAILS
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['requested_privacy_metric'].message_type = _PRIVACYMETRIC
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['requested_source_table'].message_type = google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_storage__pb2._BIGQUERYTABLE
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['numerical_stats_result'].message_type = _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT
@@ -6303,6 +6668,7 @@ _ANALYZEDATASOURCERISKDETAILS.fields_by_name['categorical_stats_result'].message
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['k_anonymity_result'].message_type = _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['l_diversity_result'].message_type = _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['k_map_estimation_result'].message_type = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT
+_ANALYZEDATASOURCERISKDETAILS.fields_by_name['delta_presence_estimation_result'].message_type = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT
 _ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result'].fields.append(
   _ANALYZEDATASOURCERISKDETAILS.fields_by_name['numerical_stats_result'])
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['numerical_stats_result'].containing_oneof = _ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result']
@@ -6318,6 +6684,9 @@ _ANALYZEDATASOURCERISKDETAILS.fields_by_name['l_diversity_result'].containing_on
 _ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result'].fields.append(
   _ANALYZEDATASOURCERISKDETAILS.fields_by_name['k_map_estimation_result'])
 _ANALYZEDATASOURCERISKDETAILS.fields_by_name['k_map_estimation_result'].containing_oneof = _ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result']
+_ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result'].fields.append(
+  _ANALYZEDATASOURCERISKDETAILS.fields_by_name['delta_presence_estimation_result'])
+_ANALYZEDATASOURCERISKDETAILS.fields_by_name['delta_presence_estimation_result'].containing_oneof = _ANALYZEDATASOURCERISKDETAILS.oneofs_by_name['result']
 _VALUEFREQUENCY.fields_by_name['value'].message_type = _VALUE
 _VALUE.fields_by_name['timestamp_value'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _VALUE.fields_by_name['time_value'].message_type = google_dot_type_dot_timeofday__pb2._TIMEOFDAY
@@ -6610,6 +6979,8 @@ DESCRIPTOR.message_types_by_name['InfoTypeDescription'] = _INFOTYPEDESCRIPTION
 DESCRIPTOR.message_types_by_name['ListInfoTypesRequest'] = _LISTINFOTYPESREQUEST
 DESCRIPTOR.message_types_by_name['ListInfoTypesResponse'] = _LISTINFOTYPESRESPONSE
 DESCRIPTOR.message_types_by_name['RiskAnalysisJobConfig'] = _RISKANALYSISJOBCONFIG
+DESCRIPTOR.message_types_by_name['QuasiId'] = _QUASIID
+DESCRIPTOR.message_types_by_name['StatisticalTable'] = _STATISTICALTABLE
 DESCRIPTOR.message_types_by_name['PrivacyMetric'] = _PRIVACYMETRIC
 DESCRIPTOR.message_types_by_name['AnalyzeDataSourceRiskDetails'] = _ANALYZEDATASOURCERISKDETAILS
 DESCRIPTOR.message_types_by_name['ValueFrequency'] = _VALUEFREQUENCY
@@ -6684,7 +7055,7 @@ InspectConfig = _reflection.GeneratedProtocolMessageType('InspectConfig', (_mess
 
     InfoTypeLimit = _reflection.GeneratedProtocolMessageType('InfoTypeLimit', (_message.Message,), dict(
       DESCRIPTOR = _INSPECTCONFIG_FINDINGLIMITS_INFOTYPELIMIT,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """Max findings configuration per infoType, per content item or long
       running DlpJob.
@@ -6704,28 +7075,27 @@ InspectConfig = _reflection.GeneratedProtocolMessageType('InspectConfig', (_mess
       ))
     ,
     DESCRIPTOR = _INSPECTCONFIG_FINDINGLIMITS,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """
-    Attributes:
-        max_findings_per_item:
-            Max number of findings that will be returned for each item
-            scanned. When set within ``InspectDataSourceRequest``, the
-            maximum returned is 1000 regardless if this is set higher.
-            When set within ``InspectContentRequest``, this field is
+    __doc__ = """Attributes:
+        max_findings_per_item: \
+            Max number of findings that will be returned for each item \
+            scanned. When set within ``InspectDataSourceRequest``, the \
+            maximum returned is 1000 regardless if this is set higher. \
+            When set within ``InspectContentRequest``, this field is \
             ignored.
-        max_findings_per_request:
-            Max number of findings that will be returned per request/job.
-            When set within ``InspectContentRequest``, the maximum
+        max_findings_per_request: \
+            Max number of findings that will be returned per request/job. \
+            When set within ``InspectContentRequest``, the maximum \
             returned is 1000 regardless if this is set higher.
-        max_findings_per_info_type:
+        max_findings_per_info_type: \
             Configuration of findings limit given for specified infoTypes.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectConfig.FindingLimits)
     ))
   ,
   DESCRIPTOR = _INSPECTCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Configuration description of the scanning process. When used with
   redactContent only info\_types and min\_likelihood are currently used.
@@ -6735,17 +7105,24 @@ InspectConfig = _reflection.GeneratedProtocolMessageType('InspectConfig', (_mess
       info_types:
           Restricts what info\_types to look for. The values must
           correspond to InfoType values returned by ListInfoTypes or
-          found in documentation.
+          listed at https://cloud.google.com/dlp/docs/infotypes-
+          reference.  When no InfoTypes or CustomInfoTypes are specified
+          in a request, the system may automatically choose what
+          detectors to run. By default this may be all types, but may
+          change over time as detectors are updated.
       min_likelihood:
           Only returns findings equal or above this threshold. The
-          default is POSSIBLE.
+          default is POSSIBLE. See
+          https://cloud.google.com/dlp/docs/likelihood to learn more.
       include_quote:
           When true, a contextual quote from the data that triggered a
           finding is included in the response; see Finding.quote.
       exclude_info_types:
           When true, excludes type information of the findings.
       custom_info_types:
-          Custom infoTypes provided by the user.
+          CustomInfoTypes provided by the user. See
+          https://cloud.google.com/dlp/docs/creating-custom-infotypes to
+          learn more.
       content_options:
           List of options defining data content to scan. If empty, text,
           images, and other content will be included.
@@ -6758,7 +7135,7 @@ _sym_db.RegisterMessage(InspectConfig.FindingLimits.InfoTypeLimit)
 
 ByteContentItem = _reflection.GeneratedProtocolMessageType('ByteContentItem', (_message.Message,), dict(
   DESCRIPTOR = _BYTECONTENTITEM,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Container for bytes to inspect or redact.
   
@@ -6776,7 +7153,7 @@ _sym_db.RegisterMessage(ByteContentItem)
 
 ContentItem = _reflection.GeneratedProtocolMessageType('ContentItem', (_message.Message,), dict(
   DESCRIPTOR = _CONTENTITEM,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Container structure for the content to inspect.
   
@@ -6788,7 +7165,9 @@ ContentItem = _reflection.GeneratedProtocolMessageType('ContentItem', (_message.
       value:
           String data to inspect or redact.
       table:
-          Structured content for inspection.
+          Structured content for inspection. See
+          https://cloud.google.com/dlp/docs/inspecting-
+          text#inspecting\_a\_table to learn more.
       byte_item:
           Content data to inspect or redact. Replaces ``type`` and
           ``data``.
@@ -6801,15 +7180,17 @@ Table = _reflection.GeneratedProtocolMessageType('Table', (_message.Message,), d
 
   Row = _reflection.GeneratedProtocolMessageType('Row', (_message.Message,), dict(
     DESCRIPTOR = _TABLE_ROW,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Table.Row)
     ))
   ,
   DESCRIPTOR = _TABLE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Structured content to inspect. Up to 50,000 ``Value``\ s per request
-  allowed.
+  allowed. See
+  https://cloud.google.com/dlp/docs/inspecting-text#inspecting\_a\_table
+  to learn more.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Table)
   ))
@@ -6818,7 +7199,7 @@ _sym_db.RegisterMessage(Table.Row)
 
 InspectResult = _reflection.GeneratedProtocolMessageType('InspectResult', (_message.Message,), dict(
   DESCRIPTOR = _INSPECTRESULT,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """All the findings for a single scanned item.
   
@@ -6840,7 +7221,7 @@ _sym_db.RegisterMessage(InspectResult)
 
 Finding = _reflection.GeneratedProtocolMessageType('Finding', (_message.Message,), dict(
   DESCRIPTOR = _FINDING,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Represents a piece of potentially sensitive content.
   
@@ -6849,14 +7230,14 @@ Finding = _reflection.GeneratedProtocolMessageType('Finding', (_message.Message,
       quote:
           The content that was found. Even if the content is not
           textual, it may be converted to a textual representation here.
-          Provided if requested by the ``InspectConfig`` and the finding
-          is less than or equal to 4096 bytes long. If the finding
-          exceeds 4096 bytes in length, the quote may be omitted.
+          Provided if ``include_quote`` is true and the finding is less
+          than or equal to 4096 bytes long. If the finding exceeds 4096
+          bytes in length, the quote may be omitted.
       info_type:
           The type of content that might have been found. Provided if
-          requested by the ``InspectConfig``.
+          ``excluded_types`` is false.
       likelihood:
-          Estimate of how likely it is that the ``info_type`` is
+          Confidence of how likely it is that the ``info_type`` is
           correct.
       location:
           Where the content was found.
@@ -6874,7 +7255,7 @@ _sym_db.RegisterMessage(Finding)
 
 Location = _reflection.GeneratedProtocolMessageType('Location', (_message.Message,), dict(
   DESCRIPTOR = _LOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Specifies the location of the finding.
   
@@ -6900,7 +7281,7 @@ _sym_db.RegisterMessage(Location)
 
 ContentLocation = _reflection.GeneratedProtocolMessageType('ContentLocation', (_message.Message,), dict(
   DESCRIPTOR = _CONTENTLOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Findings container location data.
   
@@ -6936,7 +7317,7 @@ _sym_db.RegisterMessage(ContentLocation)
 
 DocumentLocation = _reflection.GeneratedProtocolMessageType('DocumentLocation', (_message.Message,), dict(
   DESCRIPTOR = _DOCUMENTLOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Location of a finding within a document.
   
@@ -6952,7 +7333,7 @@ _sym_db.RegisterMessage(DocumentLocation)
 
 RecordLocation = _reflection.GeneratedProtocolMessageType('RecordLocation', (_message.Message,), dict(
   DESCRIPTOR = _RECORDLOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Location of a finding within a row or record.
   
@@ -6971,7 +7352,7 @@ _sym_db.RegisterMessage(RecordLocation)
 
 TableLocation = _reflection.GeneratedProtocolMessageType('TableLocation', (_message.Message,), dict(
   DESCRIPTOR = _TABLELOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Location of a finding within a table.
   
@@ -6986,7 +7367,7 @@ _sym_db.RegisterMessage(TableLocation)
 
 Range = _reflection.GeneratedProtocolMessageType('Range', (_message.Message,), dict(
   DESCRIPTOR = _RANGE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Generic half-open interval [start, end)
   
@@ -7003,7 +7384,7 @@ _sym_db.RegisterMessage(Range)
 
 ImageLocation = _reflection.GeneratedProtocolMessageType('ImageLocation', (_message.Message,), dict(
   DESCRIPTOR = _IMAGELOCATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Location of the finding within an image.
   
@@ -7019,7 +7400,7 @@ _sym_db.RegisterMessage(ImageLocation)
 
 BoundingBox = _reflection.GeneratedProtocolMessageType('BoundingBox', (_message.Message,), dict(
   DESCRIPTOR = _BOUNDINGBOX,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Bounding box encompassing detected text within an image.
   
@@ -7042,7 +7423,7 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType('RedactImageReques
 
   ImageRedactionConfig = _reflection.GeneratedProtocolMessageType('ImageRedactionConfig', (_message.Message,), dict(
     DESCRIPTOR = _REDACTIMAGEREQUEST_IMAGEREDACTIONCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Configuration for determining how redaction of images should occur.
     
@@ -7057,7 +7438,8 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType('RedactImageReques
             are found, but not specified in another ImageRedactionConfig.
         redact_all_text:
             If true, all text found in the image, regardless whether it
-            matches an info\_type, is redacted.
+            matches an info\_type, is redacted. Only one should be
+            provided.
         redaction_color:
             The color to use when redacting content from an image. If not
             specified, the default is black.
@@ -7066,10 +7448,10 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType('RedactImageReques
     ))
   ,
   DESCRIPTOR = _REDACTIMAGEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """Request to search for potentially sensitive info in a list of items and
-  replace it with a default or provided content.
+  __doc__ = """Request to search for potentially sensitive info in an image and redact
+  it by covering it with a colored rectangle.
   
   
   Attributes:
@@ -7080,6 +7462,9 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType('RedactImageReques
       image_redaction_configs:
           The configuration for specifying what content to redact from
           images.
+      include_findings:
+          Whether the response should include findings along with the
+          redacted image.
       byte_item:
           The content must be PNG, JPEG, SVG or BMP.
   """,
@@ -7090,7 +7475,7 @@ _sym_db.RegisterMessage(RedactImageRequest.ImageRedactionConfig)
 
 Color = _reflection.GeneratedProtocolMessageType('Color', (_message.Message,), dict(
   DESCRIPTOR = _COLOR,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Represents a color in the RGB color space.
   
@@ -7112,7 +7497,7 @@ _sym_db.RegisterMessage(Color)
 
 RedactImageResponse = _reflection.GeneratedProtocolMessageType('RedactImageResponse', (_message.Message,), dict(
   DESCRIPTOR = _REDACTIMAGERESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Results of redacting an image.
   
@@ -7125,6 +7510,9 @@ RedactImageResponse = _reflection.GeneratedProtocolMessageType('RedactImageRespo
           If an image was being inspected and the InspectConfig's
           include\_quote was set to true, then this field will include
           all text, if any, that was found in the image.
+      inspect_result:
+          The findings. Populated when include\_findings in the request
+          is true.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.RedactImageResponse)
   ))
@@ -7132,7 +7520,7 @@ _sym_db.RegisterMessage(RedactImageResponse)
 
 DeidentifyContentRequest = _reflection.GeneratedProtocolMessageType('DeidentifyContentRequest', (_message.Message,), dict(
   DESCRIPTOR = _DEIDENTIFYCONTENTREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request to de-identify a list of items.
   
@@ -7171,7 +7559,7 @@ _sym_db.RegisterMessage(DeidentifyContentRequest)
 
 DeidentifyContentResponse = _reflection.GeneratedProtocolMessageType('DeidentifyContentResponse', (_message.Message,), dict(
   DESCRIPTOR = _DEIDENTIFYCONTENTRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Results of de-identifying a ContentItem.
   
@@ -7188,7 +7576,7 @@ _sym_db.RegisterMessage(DeidentifyContentResponse)
 
 ReidentifyContentRequest = _reflection.GeneratedProtocolMessageType('ReidentifyContentRequest', (_message.Message,), dict(
   DESCRIPTOR = _REIDENTIFYCONTENTREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request to re-identify an item.
   
@@ -7231,7 +7619,7 @@ _sym_db.RegisterMessage(ReidentifyContentRequest)
 
 ReidentifyContentResponse = _reflection.GeneratedProtocolMessageType('ReidentifyContentResponse', (_message.Message,), dict(
   DESCRIPTOR = _REIDENTIFYCONTENTRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Results of re-identifying a item.
   
@@ -7248,7 +7636,7 @@ _sym_db.RegisterMessage(ReidentifyContentResponse)
 
 InspectContentRequest = _reflection.GeneratedProtocolMessageType('InspectContentRequest', (_message.Message,), dict(
   DESCRIPTOR = _INSPECTCONTENTREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request to search for potentially sensitive info in a ContentItem.
   
@@ -7276,7 +7664,7 @@ _sym_db.RegisterMessage(InspectContentRequest)
 
 InspectContentResponse = _reflection.GeneratedProtocolMessageType('InspectContentResponse', (_message.Message,), dict(
   DESCRIPTOR = _INSPECTCONTENTRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Results of inspecting an item.
   
@@ -7291,7 +7679,7 @@ _sym_db.RegisterMessage(InspectContentResponse)
 
 OutputStorageConfig = _reflection.GeneratedProtocolMessageType('OutputStorageConfig', (_message.Message,), dict(
   DESCRIPTOR = _OUTPUTSTORAGECONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Cloud repository for storing output.
   
@@ -7299,19 +7687,27 @@ OutputStorageConfig = _reflection.GeneratedProtocolMessageType('OutputStorageCon
   Attributes:
       table:
           Store findings in an existing table or a new table in an
-          existing dataset. Each column in an existing table must have
-          the same name, type, and mode of a field in the ``Finding``
-          object. If table\_id is not set a new one will be generated
-          for you with the following format:
+          existing dataset. If table\_id is not set a new one will be
+          generated for you with the following format:
           dlp\_googleapis\_yyyy\_mm\_dd\_[dlp\_job\_id]. Pacific
-          timezone will be used for generating the date details.
+          timezone will be used for generating the date details.  For
+          Inspect, each column in an existing output table must have the
+          same name, type, and mode of a field in the ``Finding``
+          object.  For Risk, an existing output table should be the
+          output of a previous Risk analysis job run on the same source
+          table, with the same privacy metric and quasi-identifiers.
+          Risk jobs that analyze the same table but compute a different
+          privacy metric, or use different sets of quasi-identifiers,
+          cannot store their results in the same table.
       output_schema:
-          Schema used for writing the findings. Columns are derived from
-          the ``Finding`` object. If appending to an existing table, any
-          columns from the predefined schema that are missing will be
-          added. No columns in the existing table will be deleted.  If
-          unspecified, then all available columns will be used for a new
-          table, and no changes will be made to an existing table.
+          Schema used for writing the findings for Inspect jobs. This
+          field is only used for Inspect and must be unspecified for
+          Risk jobs. Columns are derived from the ``Finding`` object. If
+          appending to an existing table, any columns from the
+          predefined schema that are missing will be added. No columns
+          in the existing table will be deleted.  If unspecified, then
+          all available columns will be used for a new table, and no
+          changes will be made to an existing table.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.OutputStorageConfig)
   ))
@@ -7319,7 +7715,7 @@ _sym_db.RegisterMessage(OutputStorageConfig)
 
 InfoTypeStats = _reflection.GeneratedProtocolMessageType('InfoTypeStats', (_message.Message,), dict(
   DESCRIPTOR = _INFOTYPESTATS,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Statistics regarding a specific InfoType.
   
@@ -7338,12 +7734,11 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
 
   RequestedOptions = _reflection.GeneratedProtocolMessageType('RequestedOptions', (_message.Message,), dict(
     DESCRIPTOR = _INSPECTDATASOURCEDETAILS_REQUESTEDOPTIONS,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """
-    Attributes:
-        snapshot_inspect_template:
-            If run with an InspectTemplate, a snapshot of its state at the
+    __doc__ = """Attributes:
+        snapshot_inspect_template: \
+            If run with an InspectTemplate, a snapshot of its state at the \
             time of this run.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails.RequestedOptions)
@@ -7352,31 +7747,30 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType('InspectData
 
   Result = _reflection.GeneratedProtocolMessageType('Result', (_message.Message,), dict(
     DESCRIPTOR = _INSPECTDATASOURCEDETAILS_RESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """
-    Attributes:
-        processed_bytes:
+    __doc__ = """Attributes:
+        processed_bytes: \
             Total size in bytes that were processed.
-        total_estimated_bytes:
+        total_estimated_bytes: \
             Estimate of the number of bytes to process.
-        info_type_stats:
-            Statistics of how many instances of each info type were found
+        info_type_stats: \
+            Statistics of how many instances of each info type were found \
             during inspect job.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails.Result)
     ))
   ,
   DESCRIPTOR = _INSPECTDATASOURCEDETAILS,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The results of an inspect DataSource job.
   
   
   Attributes:
-      requested_options:
+      requested_options: \
           The configuration used for this job.
-      result:
+      result: \
           A summary of the outcome of this inspect job.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectDataSourceDetails)
@@ -7387,7 +7781,7 @@ _sym_db.RegisterMessage(InspectDataSourceDetails.Result)
 
 InfoTypeDescription = _reflection.GeneratedProtocolMessageType('InfoTypeDescription', (_message.Message,), dict(
   DESCRIPTOR = _INFOTYPEDESCRIPTION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """InfoType description.
   
@@ -7406,7 +7800,7 @@ _sym_db.RegisterMessage(InfoTypeDescription)
 
 ListInfoTypesRequest = _reflection.GeneratedProtocolMessageType('ListInfoTypesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTINFOTYPESREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request for the list of infoTypes.
   
@@ -7426,7 +7820,7 @@ _sym_db.RegisterMessage(ListInfoTypesRequest)
 
 ListInfoTypesResponse = _reflection.GeneratedProtocolMessageType('ListInfoTypesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTINFOTYPESRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Response to the ListInfoTypes request.
   
@@ -7441,9 +7835,10 @@ _sym_db.RegisterMessage(ListInfoTypesResponse)
 
 RiskAnalysisJobConfig = _reflection.GeneratedProtocolMessageType('RiskAnalysisJobConfig', (_message.Message,), dict(
   DESCRIPTOR = _RISKANALYSISJOBCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """Configuration for a risk analysis job.
+  __doc__ = """Configuration for a risk analysis job. See
+  https://cloud.google.com/dlp/docs/concepts-risk-analysis to learn more.
   
   
   Attributes:
@@ -7459,11 +7854,84 @@ RiskAnalysisJobConfig = _reflection.GeneratedProtocolMessageType('RiskAnalysisJo
   ))
 _sym_db.RegisterMessage(RiskAnalysisJobConfig)
 
+QuasiId = _reflection.GeneratedProtocolMessageType('QuasiId', (_message.Message,), dict(
+  DESCRIPTOR = _QUASIID,
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+  ,
+  __doc__ = """A column with a semantic tag attached.
+  
+  
+  Attributes:
+      field:
+          Identifies the column. [required]
+      tag:
+          Semantic tag that identifies what a column contains, to
+          determine which statistical model to use to estimate the
+          reidentifiability of each value. [required]
+      info_type:
+          A column can be tagged with a InfoType to use the relevant
+          public dataset as a statistical model of population, if
+          available. We currently support US ZIP codes, region codes,
+          ages and genders. To programmatically obtain the list of
+          supported InfoTypes, use ListInfoTypes with the
+          supported\_by=RISK\_ANALYSIS filter.
+      custom_tag:
+          A column can be tagged with a custom tag. In this case, the
+          user must indicate an auxiliary table that contains
+          statistical information on the possible values of this column
+          (below).
+      inferred:
+          If no semantic tag is indicated, we infer the statistical
+          model from the distribution of values in the input data
+  """,
+  # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.QuasiId)
+  ))
+_sym_db.RegisterMessage(QuasiId)
+
+StatisticalTable = _reflection.GeneratedProtocolMessageType('StatisticalTable', (_message.Message,), dict(
+
+  QuasiIdentifierField = _reflection.GeneratedProtocolMessageType('QuasiIdentifierField', (_message.Message,), dict(
+    DESCRIPTOR = _STATISTICALTABLE_QUASIIDENTIFIERFIELD,
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+    ,
+    __doc__ = """A quasi-identifier column has a custom\_tag, used to know which column
+    in the data corresponds to which column in the statistical model.
+    """,
+    # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.StatisticalTable.QuasiIdentifierField)
+    ))
+  ,
+  DESCRIPTOR = _STATISTICALTABLE,
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+  ,
+  __doc__ = """An auxiliary table containing statistical information on the relative
+  frequency of different quasi-identifiers values. It has one or several
+  quasi-identifiers columns, and one column that indicates the relative
+  frequency of each quasi-identifier tuple. If a tuple is present in the
+  data but not in the auxiliary table, the corresponding relative
+  frequency is assumed to be zero (and thus, the tuple is highly
+  reidentifiable).
+  
+  
+  Attributes:
+      table:
+          Auxiliary table location. [required]
+      quasi_ids:
+          Quasi-identifier columns. [required]
+      relative_frequency:
+          The relative frequency column must contain a floating-point
+          number between 0 and 1 (inclusive). Null values are assumed to
+          be zero. [required]
+  """,
+  # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.StatisticalTable)
+  ))
+_sym_db.RegisterMessage(StatisticalTable)
+_sym_db.RegisterMessage(StatisticalTable.QuasiIdentifierField)
+
 PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_message.Message,), dict(
 
   NumericalStatsConfig = _reflection.GeneratedProtocolMessageType('NumericalStatsConfig', (_message.Message,), dict(
     DESCRIPTOR = _PRIVACYMETRIC_NUMERICALSTATSCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Compute numerical stats over an individual column, including min, max,
     and quantiles.
@@ -7480,7 +7948,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
 
   CategoricalStatsConfig = _reflection.GeneratedProtocolMessageType('CategoricalStatsConfig', (_message.Message,), dict(
     DESCRIPTOR = _PRIVACYMETRIC_CATEGORICALSTATSCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Compute numerical stats over an individual column, including number of
     distinct values and value count distribution.
@@ -7499,7 +7967,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
 
   KAnonymityConfig = _reflection.GeneratedProtocolMessageType('KAnonymityConfig', (_message.Message,), dict(
     DESCRIPTOR = _PRIVACYMETRIC_KANONYMITYCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """k-anonymity metric, used for analysis of reidentification risk.
     
@@ -7529,7 +7997,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
 
   LDiversityConfig = _reflection.GeneratedProtocolMessageType('LDiversityConfig', (_message.Message,), dict(
     DESCRIPTOR = _PRIVACYMETRIC_LDIVERSITYCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """l-diversity metric, used for analysis of reidentification risk.
     
@@ -7551,32 +8019,29 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
 
     TaggedField = _reflection.GeneratedProtocolMessageType('TaggedField', (_message.Message,), dict(
       DESCRIPTOR = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_TAGGEDFIELD,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """A column with a semantic tag attached.
-      
-      
-      Attributes:
-          field:
+      __doc__ = """Attributes:
+          field: \
               Identifies the column. [required]
-          tag:
-              Semantic tag that identifies what a column contains, to
-              determine which statistical model to use to estimate the
-              reidentifiability of each value. [required]
-          info_type:
-              A column can be tagged with a InfoType to use the relevant
-              public dataset as a statistical model of population, if
-              available. We currently support US ZIP codes, region codes,
-              ages and genders. To programmatically obtain the list of
-              supported InfoTypes, use ListInfoTypes with the
+          tag: \
+              Semantic tag that identifies what a column contains, to \
+              determine which statistical model to use to estimate the \
+              reidentifiability of each value. [required] \
+          info_type: \
+              A column can be tagged with a InfoType to use the relevant \
+              public dataset as a statistical model of population, if \
+              available. We currently support US ZIP codes, region codes, \
+              ages and genders. To programmatically obtain the list of \
+              supported InfoTypes, use ListInfoTypes with the \
               supported\_by=RISK\_ANALYSIS filter.
-          custom_tag:
-              A column can be tagged with a custom tag. In this case, the
-              user must indicate an auxiliary table that contains
-              statistical information on the possible values of this column
+          custom_tag: \
+              A column can be tagged with a custom tag. In this case, the \
+              user must indicate an auxiliary table that contains \
+              statistical information on the possible values of this column \
               (below).
-          inferred:
-              If no semantic tag is indicated, we infer the statistical
+          inferred: \
+              If no semantic tag is indicated, we infer the statistical \
               model from the distribution of values in the input data
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig.TaggedField)
@@ -7587,7 +8052,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
 
       QuasiIdField = _reflection.GeneratedProtocolMessageType('QuasiIdField', (_message.Message,), dict(
         DESCRIPTOR = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE_QUASIIDFIELD,
-        __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+        __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
         ,
         __doc__ = """A quasi-identifier column has a custom\_tag, used to know which column
         in the data corresponds to which column in the statistical model.
@@ -7596,7 +8061,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
         ))
       ,
       DESCRIPTOR = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """An auxiliary table contains statistical information on the relative
       frequency of different quasi-identifiers values. It has one or several
@@ -7621,7 +8086,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
       ))
     ,
     DESCRIPTOR = _PRIVACYMETRIC_KMAPESTIMATIONCONFIG,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Reidentifiability metric. This corresponds to a risk model similar to
     what is called "journalist risk" in the literature, except the attack
@@ -7629,7 +8094,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
     can be done using publicly available data (like the US Census), or using
     a custom statistical model (indicated as one or several BigQuery
     tables), or by extrapolating from the distribution of values in the
-    input dataset.
+    input dataset. A column with a semantic tag attached.
     
     
     Attributes:
@@ -7648,8 +8113,36 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType('PrivacyMetric', (_mess
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.PrivacyMetric.KMapEstimationConfig)
     ))
   ,
+
+  DeltaPresenceEstimationConfig = _reflection.GeneratedProtocolMessageType('DeltaPresenceEstimationConfig', (_message.Message,), dict(
+    DESCRIPTOR = _PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG,
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+    ,
+    __doc__ = """δ-presence metric, used to estimate how likely it is for an attacker to
+    figure out that one given individual appears in a de-identified dataset.
+    Similarly to the k-map metric, we cannot compute δ-presence exactly
+    without knowing the attack dataset, so we use a statistical model
+    instead.
+    
+    
+    Attributes:
+        quasi_ids:
+            Fields considered to be quasi-identifiers. No two fields can
+            have the same tag. [required]
+        region_code:
+            ISO 3166-1 alpha-2 region code to use in the statistical
+            modeling. Required if no column is tagged with a region-
+            specific InfoType (like US\_ZIP\_5) or a region code.
+        auxiliary_tables:
+            Several auxiliary tables can be used in the analysis. Each
+            custom\_tag used to tag a quasi-identifiers field must appear
+            in exactly one field of one auxiliary table.
+    """,
+    # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.PrivacyMetric.DeltaPresenceEstimationConfig)
+    ))
+  ,
   DESCRIPTOR = _PRIVACYMETRIC,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Privacy metric to compute for reidentification risk analysis.
   """,
@@ -7664,12 +8157,13 @@ _sym_db.RegisterMessage(PrivacyMetric.KMapEstimationConfig)
 _sym_db.RegisterMessage(PrivacyMetric.KMapEstimationConfig.TaggedField)
 _sym_db.RegisterMessage(PrivacyMetric.KMapEstimationConfig.AuxiliaryTable)
 _sym_db.RegisterMessage(PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField)
+_sym_db.RegisterMessage(PrivacyMetric.DeltaPresenceEstimationConfig)
 
 AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('AnalyzeDataSourceRiskDetails', (_message.Message,), dict(
 
   NumericalStatsResult = _reflection.GeneratedProtocolMessageType('NumericalStatsResult', (_message.Message,), dict(
     DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Result of the numerical stats computation.
     
@@ -7691,29 +8185,20 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     CategoricalStatsHistogramBucket = _reflection.GeneratedProtocolMessageType('CategoricalStatsHistogramBucket', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT_CATEGORICALSTATSHISTOGRAMBUCKET,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """
-      Attributes:
-          value_frequency_lower_bound:
-              Lower bound on the value frequency of the values in this
-              bucket.
-          value_frequency_upper_bound:
-              Upper bound on the value frequency of the values in this
-              bucket.
-          bucket_size:
-              Total number of values in this bucket.
-          bucket_values:
-              Sample of value frequencies in this bucket. The total number
-              of values returned per bucket is capped at 20.
-          bucket_value_count:
-              Total number of distinct values in this bucket.
+      __doc__ = """Attributes:
+          value_frequency_lower_bound: Lower bound on the value frequency of the values in this bucket.
+          value_frequency_upper_bound: Upper bound on the value frequency of the values in this bucket.
+          bucket_size: Total number of values in this bucket.
+          bucket_values: Sample of value frequencies in this bucket. The total number of values returned per bucket is capped at 20.
+          bucket_value_count: Total number of distinct values in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket)
       ))
     ,
     DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Result of the categorical stats computation.
     
@@ -7730,19 +8215,19 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     KAnonymityEquivalenceClass = _reflection.GeneratedProtocolMessageType('KAnonymityEquivalenceClass', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYEQUIVALENCECLASS,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """The set of columns' values that share the same ldiversity value
       
       
       Attributes:
           quasi_ids_values:
-              Set of values defining the equivalence class. One value per
-              quasi-identifier column in the original KAnonymity metric
-              message. The order is always the same as the original request.
+          Set of values defining the equivalence class. One value per \
+          quasi-identifier column in the original KAnonymity metric \
+          message. The order is always the same as the original request.
           equivalence_class_size:
-              Size of the equivalence class, for example number of rows with
-              the above set of values.
+          Size of the equivalence class, for example number of rows with \
+          the above set of values.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass)
       ))
@@ -7750,29 +8235,28 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     KAnonymityHistogramBucket = _reflection.GeneratedProtocolMessageType('KAnonymityHistogramBucket', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYHISTOGRAMBUCKET,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """
-      Attributes:
-          equivalence_class_size_lower_bound:
-              Lower bound on the size of the equivalence classes in this
+      __doc__ = """Attributes:
+          equivalence_class_size_lower_bound: \
+              Lower bound on the size of the equivalence classes in this \
               bucket.
-          equivalence_class_size_upper_bound:
-              Upper bound on the size of the equivalence classes in this
+          equivalence_class_size_upper_bound: \
+              Upper bound on the size of the equivalence classes in this \
               bucket.
-          bucket_size:
+          bucket_size: \
               Total number of equivalence classes in this bucket.
-          bucket_values:
-              Sample of equivalence classes in this bucket. The total number
+          bucket_values: \
+              Sample of equivalence classes in this bucket. The total number \
               of classes returned per bucket is capped at 20.
-          bucket_value_count:
+          bucket_value_count: \
               Total number of distinct equivalence classes in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket)
       ))
     ,
     DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Result of the k-anonymity computation.
     
@@ -7789,7 +8273,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     LDiversityEquivalenceClass = _reflection.GeneratedProtocolMessageType('LDiversityEquivalenceClass', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYEQUIVALENCECLASS,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """The set of columns' values that share the same ldiversity value.
       
@@ -7811,29 +8295,28 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     LDiversityHistogramBucket = _reflection.GeneratedProtocolMessageType('LDiversityHistogramBucket', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYHISTOGRAMBUCKET,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
-      __doc__ = """
-      Attributes:
-          sensitive_value_frequency_lower_bound:
-              Lower bound on the sensitive value frequencies of the
+      __doc__ = """Attributes:
+          sensitive_value_frequency_lower_bound: \
+              Lower bound on the sensitive value frequencies of the \
               equivalence classes in this bucket.
-          sensitive_value_frequency_upper_bound:
-              Upper bound on the sensitive value frequencies of the
+          sensitive_value_frequency_upper_bound: \
+              Upper bound on the sensitive value frequencies of the \
               equivalence classes in this bucket.
-          bucket_size:
+          bucket_size: \
               Total number of equivalence classes in this bucket.
-          bucket_values:
-              Sample of equivalence classes in this bucket. The total number
+          bucket_values: \
+              Sample of equivalence classes in this bucket. The total number \
               of classes returned per bucket is capped at 20.
-          bucket_value_count:
+          bucket_value_count: \
               Total number of distinct equivalence classes in this bucket.
       """,
       # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket)
       ))
     ,
     DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Result of the l-diversity computation.
     
@@ -7851,7 +8334,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     KMapEstimationQuasiIdValues = _reflection.GeneratedProtocolMessageType('KMapEstimationQuasiIdValues', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONQUASIIDVALUES,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """A tuple of values for the quasi-identifier columns.
       
@@ -7868,7 +8351,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
 
     KMapEstimationHistogramBucket = _reflection.GeneratedProtocolMessageType('KMapEstimationHistogramBucket', (_message.Message,), dict(
       DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET,
-      __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
       ,
       __doc__ = """A KMapEstimationHistogramBucket message with the following values:
       min\_anonymity: 3 max\_anonymity: 5 frequency: 42 means that there are
@@ -7896,7 +8379,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
       ))
     ,
     DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Result of the reidentifiability analysis. Note that these results are an
     estimation, not exact values.
@@ -7916,8 +8399,86 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType('Analyze
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.KMapEstimationResult)
     ))
   ,
+
+  DeltaPresenceEstimationResult = _reflection.GeneratedProtocolMessageType('DeltaPresenceEstimationResult', (_message.Message,), dict(
+
+    DeltaPresenceEstimationQuasiIdValues = _reflection.GeneratedProtocolMessageType('DeltaPresenceEstimationQuasiIdValues', (_message.Message,), dict(
+      DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES,
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+      ,
+      __doc__ = """A tuple of values for the quasi-identifier columns.
+      
+      
+      Attributes:
+          quasi_ids_values:
+              The quasi-identifier values.
+          estimated_probability:
+              The estimated probability that a given individual sharing
+              these quasi-identifier values is in the dataset. This value,
+              typically called δ, is the ratio between the number of records
+              in the dataset with these quasi-identifier values, and the
+              total number of individuals (inside *and* outside the dataset)
+              with these quasi-identifier values. For example, if there are
+              15 individuals in the dataset who share the same quasi-
+              identifier values, and an estimated 100 people in the entire
+              population with these values, then δ is 0.15.
+      """,
+      # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues)
+      ))
+    ,
+
+    DeltaPresenceEstimationHistogramBucket = _reflection.GeneratedProtocolMessageType('DeltaPresenceEstimationHistogramBucket', (_message.Message,), dict(
+      DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET,
+      __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+      ,
+      __doc__ = """A DeltaPresenceEstimationHistogramBucket message with the following
+      values: min\_probability: 0.1 max\_probability: 0.2 frequency: 42 means
+      that there are 42 records for which δ is in [0.1, 0.2). An important
+      particular case is when min\_probability = max\_probability = 1: then,
+      every individual who shares this quasi-identifier combination is in the
+      dataset.
+      
+      
+      Attributes:
+          min_probability:
+              Between 0 and 1.
+          max_probability:
+              Always greater than or equal to min\_probability.
+          bucket_size:
+              Number of records within these probability bounds.
+          bucket_values:
+              Sample of quasi-identifier tuple values in this bucket. The
+              total number of classes returned per bucket is capped at 20.
+          bucket_value_count:
+              Total number of distinct quasi-identifier tuple values in this
+              bucket.
+      """,
+      # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket)
+      ))
+    ,
+    DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT,
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
+    ,
+    __doc__ = """Result of the δ-presence computation. Note that these results are an
+    estimation, not exact values.
+    
+    
+    Attributes:
+        delta_presence_estimation_histogram:
+            The intervals [min\_probability, max\_probability) do not
+            overlap. If a value doesn't correspond to any such interval,
+            the associated frequency is zero. For example, the following
+            records: {min\_probability: 0, max\_probability: 0.1,
+            frequency: 17} {min\_probability: 0.2, max\_probability: 0.3,
+            frequency: 42} {min\_probability: 0.3, max\_probability: 0.4,
+            frequency: 99} mean that there are no record with an estimated
+            probability in [0.1, 0.2) nor larger or equal to 0.4.
+    """,
+    # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult)
+    ))
+  ,
   DESCRIPTOR = _ANALYZEDATASOURCERISKDETAILS,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Result of a risk analysis operation request.
   
@@ -7945,10 +8506,13 @@ _sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversity
 _sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.KMapEstimationResult)
 _sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues)
 _sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket)
+_sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult)
+_sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues)
+_sym_db.RegisterMessage(AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket)
 
 ValueFrequency = _reflection.GeneratedProtocolMessageType('ValueFrequency', (_message.Message,), dict(
   DESCRIPTOR = _VALUEFREQUENCY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """A value of a field, including its frequency.
   
@@ -7965,7 +8529,7 @@ _sym_db.RegisterMessage(ValueFrequency)
 
 Value = _reflection.GeneratedProtocolMessageType('Value', (_message.Message,), dict(
   DESCRIPTOR = _VALUE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Set of primitive values supported by the system. Note that for the
   purposes of inspection or transformation, the number of bytes considered
@@ -7980,7 +8544,7 @@ _sym_db.RegisterMessage(Value)
 
 QuoteInfo = _reflection.GeneratedProtocolMessageType('QuoteInfo', (_message.Message,), dict(
   DESCRIPTOR = _QUOTEINFO,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Message for infoType-dependent details parsed from quote.
   
@@ -7997,19 +8561,18 @@ DateTime = _reflection.GeneratedProtocolMessageType('DateTime', (_message.Messag
 
   TimeZone = _reflection.GeneratedProtocolMessageType('TimeZone', (_message.Message,), dict(
     DESCRIPTOR = _DATETIME_TIMEZONE,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
-    __doc__ = """
-    Attributes:
-        offset_minutes:
-            Set only if the offset can be determined. Positive for time
+    __doc__ = """Attributes:
+        offset_minutes: \
+            Set only if the offset can be determined. Positive for time \
             ahead of UTC. E.g. For "UTC-9", this value is -540.
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DateTime.TimeZone)
     ))
   ,
   DESCRIPTOR = _DATETIME,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Message for a date time object.
   
@@ -8026,7 +8589,7 @@ _sym_db.RegisterMessage(DateTime.TimeZone)
 
 DeidentifyConfig = _reflection.GeneratedProtocolMessageType('DeidentifyConfig', (_message.Message,), dict(
   DESCRIPTOR = _DEIDENTIFYCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The configuration that controls how the data will change.
   
@@ -8046,7 +8609,7 @@ _sym_db.RegisterMessage(DeidentifyConfig)
 
 PrimitiveTransformation = _reflection.GeneratedProtocolMessageType('PrimitiveTransformation', (_message.Message,), dict(
   DESCRIPTOR = _PRIMITIVETRANSFORMATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """A rule for transforming a value.
   """,
@@ -8056,7 +8619,7 @@ _sym_db.RegisterMessage(PrimitiveTransformation)
 
 TimePartConfig = _reflection.GeneratedProtocolMessageType('TimePartConfig', (_message.Message,), dict(
   DESCRIPTOR = _TIMEPARTCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """For use with ``Date``, ``Timestamp``, and ``TimeOfDay``, extract or
   preserve a portion of the value.
@@ -8067,7 +8630,7 @@ _sym_db.RegisterMessage(TimePartConfig)
 
 CryptoHashConfig = _reflection.GeneratedProtocolMessageType('CryptoHashConfig', (_message.Message,), dict(
   DESCRIPTOR = _CRYPTOHASHCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Pseudonymization method that generates surrogates via cryptographic
   hashing. Uses SHA-256. The key size must be either 32 or 64 bytes.
@@ -8086,7 +8649,7 @@ _sym_db.RegisterMessage(CryptoHashConfig)
 
 ReplaceValueConfig = _reflection.GeneratedProtocolMessageType('ReplaceValueConfig', (_message.Message,), dict(
   DESCRIPTOR = _REPLACEVALUECONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Replace each input value with a given ``Value``.
   
@@ -8101,7 +8664,7 @@ _sym_db.RegisterMessage(ReplaceValueConfig)
 
 ReplaceWithInfoTypeConfig = _reflection.GeneratedProtocolMessageType('ReplaceWithInfoTypeConfig', (_message.Message,), dict(
   DESCRIPTOR = _REPLACEWITHINFOTYPECONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Replace each matching finding with the name of the info\_type.
   """,
@@ -8111,7 +8674,7 @@ _sym_db.RegisterMessage(ReplaceWithInfoTypeConfig)
 
 RedactConfig = _reflection.GeneratedProtocolMessageType('RedactConfig', (_message.Message,), dict(
   DESCRIPTOR = _REDACTCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Redact a given value. For example, if used with an
   ``InfoTypeTransformation`` transforming PHONE\_NUMBER, and input 'My
@@ -8124,7 +8687,7 @@ _sym_db.RegisterMessage(RedactConfig)
 
 CharsToIgnore = _reflection.GeneratedProtocolMessageType('CharsToIgnore', (_message.Message,), dict(
   DESCRIPTOR = _CHARSTOIGNORE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Characters to skip when doing deidentification of a value. These will be
   left alone and skipped.
@@ -8135,7 +8698,7 @@ _sym_db.RegisterMessage(CharsToIgnore)
 
 CharacterMaskConfig = _reflection.GeneratedProtocolMessageType('CharacterMaskConfig', (_message.Message,), dict(
   DESCRIPTOR = _CHARACTERMASKCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Partially mask a string by replacing a given number of characters with a
   fixed character. Masking can start from the beginning or end of the
@@ -8175,7 +8738,7 @@ _sym_db.RegisterMessage(CharacterMaskConfig)
 
 FixedSizeBucketingConfig = _reflection.GeneratedProtocolMessageType('FixedSizeBucketingConfig', (_message.Message,), dict(
   DESCRIPTOR = _FIXEDSIZEBUCKETINGCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Buckets values based on fixed size ranges. The Bucketing transformation
   can provide all of this functionality, but requires more configuration.
@@ -8191,6 +8754,8 @@ FixedSizeBucketingConfig = _reflection.GeneratedProtocolMessageType('FixedSizeBu
   If the bound Value type differs from the type of data being transformed,
   we will first attempt converting the type of the data to be transformed
   to match the type of the bound before comparing.
+  
+  See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
   
   
   Attributes:
@@ -8219,7 +8784,7 @@ BucketingConfig = _reflection.GeneratedProtocolMessageType('BucketingConfig', (_
 
   Bucket = _reflection.GeneratedProtocolMessageType('Bucket', (_message.Message,), dict(
     DESCRIPTOR = _BUCKETINGCONFIG_BUCKET,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Bucket is represented as a range, along with replacement values.
     
@@ -8238,7 +8803,7 @@ BucketingConfig = _reflection.GeneratedProtocolMessageType('BucketingConfig', (_
     ))
   ,
   DESCRIPTOR = _BUCKETINGCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Generalization function that buckets values based on ranges. The ranges
   and replacement values are dynamically provided by the user for custom
@@ -8246,7 +8811,8 @@ BucketingConfig = _reflection.GeneratedProtocolMessageType('BucketingConfig', (_
   used on data of type: number, long, string, timestamp. If the bound
   ``Value`` type differs from the type of data being transformed, we will
   first attempt converting the type of the data to be transformed to match
-  the type of the bound before comparing.
+  the type of the bound before comparing. See
+  https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
   
   
   Attributes:
@@ -8260,7 +8826,7 @@ _sym_db.RegisterMessage(BucketingConfig.Bucket)
 
 CryptoReplaceFfxFpeConfig = _reflection.GeneratedProtocolMessageType('CryptoReplaceFfxFpeConfig', (_message.Message,), dict(
   DESCRIPTOR = _CRYPTOREPLACEFFXFPECONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Replaces an identifier with a surrogate using FPE with the FFX mode of
   operation; however when used in the ``ReidentifyContent`` API method, it
@@ -8269,7 +8835,7 @@ CryptoReplaceFfxFpeConfig = _reflection.GeneratedProtocolMessageType('CryptoRepl
   given crypto key and context, the same identifier will be replaced with
   the same surrogate. Identifiers must be at least two characters long. In
   the case that the identifier is the empty string, it will be skipped.
-  See `Pseudonymization </dlp/docs/pseudonymization>`__ for example usage.
+  See https://cloud.google.com/dlp/docs/pseudonymization to learn more.
   
   
   Attributes:
@@ -8289,7 +8855,7 @@ CryptoReplaceFfxFpeConfig = _reflection.GeneratedProtocolMessageType('CryptoRepl
           constructed as a sequence of bytes in big endian byte order
           such that:  -  a 64 bit integer is encoded followed by a
           single byte of value 1 -  a string is encoded in UTF-8 format
-          followed by a single byte of    value å 2
+          followed by a single byte of    value 2
       custom_alphabet:
           This is supported by mapping these to the alphanumeric
           characters that the FFX mode natively supports. This happens
@@ -8332,7 +8898,7 @@ _sym_db.RegisterMessage(CryptoReplaceFfxFpeConfig)
 
 CryptoKey = _reflection.GeneratedProtocolMessageType('CryptoKey', (_message.Message,), dict(
   DESCRIPTOR = _CRYPTOKEY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """This is a data encryption key (DEK) (as opposed to a key encryption key
   (KEK) stored by KMS). When using KMS to wrap/unwrap DEKs, be sure to set
@@ -8345,7 +8911,7 @@ _sym_db.RegisterMessage(CryptoKey)
 
 TransientCryptoKey = _reflection.GeneratedProtocolMessageType('TransientCryptoKey', (_message.Message,), dict(
   DESCRIPTOR = _TRANSIENTCRYPTOKEY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Use this to have a random data crypto key generated. It will be
   discarded after the request finishes.
@@ -8367,7 +8933,7 @@ _sym_db.RegisterMessage(TransientCryptoKey)
 
 UnwrappedCryptoKey = _reflection.GeneratedProtocolMessageType('UnwrappedCryptoKey', (_message.Message,), dict(
   DESCRIPTOR = _UNWRAPPEDCRYPTOKEY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Using raw keys is prone to security risks due to accidentally leaking
   the key. Choose another type of key if possible.
@@ -8383,7 +8949,7 @@ _sym_db.RegisterMessage(UnwrappedCryptoKey)
 
 KmsWrappedCryptoKey = _reflection.GeneratedProtocolMessageType('KmsWrappedCryptoKey', (_message.Message,), dict(
   DESCRIPTOR = _KMSWRAPPEDCRYPTOKEY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Include to use an existing data crypto key wrapped by KMS. Authorization
   requires the following IAM permissions when sending a request to perform
@@ -8403,10 +8969,11 @@ _sym_db.RegisterMessage(KmsWrappedCryptoKey)
 
 DateShiftConfig = _reflection.GeneratedProtocolMessageType('DateShiftConfig', (_message.Message,), dict(
   DESCRIPTOR = _DATESHIFTCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Shifts dates by random number of days, with option to be consistent for
-  the same context.
+  the same context. See
+  https://cloud.google.com/dlp/docs/concepts-date-shifting to learn more.
   
   
   Attributes:
@@ -8440,7 +9007,7 @@ InfoTypeTransformations = _reflection.GeneratedProtocolMessageType('InfoTypeTran
 
   InfoTypeTransformation = _reflection.GeneratedProtocolMessageType('InfoTypeTransformation', (_message.Message,), dict(
     DESCRIPTOR = _INFOTYPETRANSFORMATIONS_INFOTYPETRANSFORMATION,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """A transformation to apply to text that is identified as a specific
     info\_type.
@@ -8448,8 +9015,10 @@ InfoTypeTransformations = _reflection.GeneratedProtocolMessageType('InfoTypeTran
     
     Attributes:
         info_types:
-            InfoTypes to apply the transformation to. Empty list will
-            match all available infoTypes for this transformation.
+            InfoTypes to apply the transformation to. An empty list will
+            cause this transformation to apply to all findings that
+            correspond to infoTypes that were requested in
+            ``InspectConfig``.
         primitive_transformation:
             Primitive transformation to apply to the infoType. [required]
     """,
@@ -8457,7 +9026,7 @@ InfoTypeTransformations = _reflection.GeneratedProtocolMessageType('InfoTypeTran
     ))
   ,
   DESCRIPTOR = _INFOTYPETRANSFORMATIONS,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """A type of transformation that will scan unstructured text and apply
   various ``PrimitiveTransformation``\ s to each finding, where the
@@ -8477,7 +9046,7 @@ _sym_db.RegisterMessage(InfoTypeTransformations.InfoTypeTransformation)
 
 FieldTransformation = _reflection.GeneratedProtocolMessageType('FieldTransformation', (_message.Message,), dict(
   DESCRIPTOR = _FIELDTRANSFORMATION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The transformation to apply to the field.
   
@@ -8507,7 +9076,7 @@ _sym_db.RegisterMessage(FieldTransformation)
 
 RecordTransformations = _reflection.GeneratedProtocolMessageType('RecordTransformations', (_message.Message,), dict(
   DESCRIPTOR = _RECORDTRANSFORMATIONS,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """A type of transformation that is applied over structured data such as a
   table.
@@ -8528,7 +9097,7 @@ _sym_db.RegisterMessage(RecordTransformations)
 
 RecordSuppression = _reflection.GeneratedProtocolMessageType('RecordSuppression', (_message.Message,), dict(
   DESCRIPTOR = _RECORDSUPPRESSION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Configuration to suppress records whose suppression conditions evaluate
   to true.
@@ -8548,14 +9117,14 @@ RecordCondition = _reflection.GeneratedProtocolMessageType('RecordCondition', (_
 
   Condition = _reflection.GeneratedProtocolMessageType('Condition', (_message.Message,), dict(
     DESCRIPTOR = _RECORDCONDITION_CONDITION,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.RecordCondition.Condition)
     ))
   ,
 
   Conditions = _reflection.GeneratedProtocolMessageType('Conditions', (_message.Message,), dict(
     DESCRIPTOR = _RECORDCONDITION_CONDITIONS,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """A collection of conditions.
     """,
@@ -8565,7 +9134,7 @@ RecordCondition = _reflection.GeneratedProtocolMessageType('RecordCondition', (_
 
   Expressions = _reflection.GeneratedProtocolMessageType('Expressions', (_message.Message,), dict(
     DESCRIPTOR = _RECORDCONDITION_EXPRESSIONS,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """An expression, consisting or an operator and conditions.
     
@@ -8579,7 +9148,7 @@ RecordCondition = _reflection.GeneratedProtocolMessageType('RecordCondition', (_
     ))
   ,
   DESCRIPTOR = _RECORDCONDITION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The field type of ``value`` and ``field`` do not need to match to be
   considered equal, but not all comparisons are possible.
@@ -8623,7 +9192,7 @@ _sym_db.RegisterMessage(RecordCondition.Expressions)
 
 TransformationOverview = _reflection.GeneratedProtocolMessageType('TransformationOverview', (_message.Message,), dict(
   DESCRIPTOR = _TRANSFORMATIONOVERVIEW,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Overview of the modifications that occurred.
   
@@ -8642,7 +9211,7 @@ TransformationSummary = _reflection.GeneratedProtocolMessageType('Transformation
 
   SummaryResult = _reflection.GeneratedProtocolMessageType('SummaryResult', (_message.Message,), dict(
     DESCRIPTOR = _TRANSFORMATIONSUMMARY_SUMMARYRESULT,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """A collection that informs the user the number of times a particular
     ``TransformationResultCode`` and error details occurred.
@@ -8657,7 +9226,7 @@ TransformationSummary = _reflection.GeneratedProtocolMessageType('Transformation
     ))
   ,
   DESCRIPTOR = _TRANSFORMATIONSUMMARY,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Summary of a single tranformation. Only one of 'transformation',
   'field\_transformation', or 'record\_suppress' will be set.
@@ -8687,7 +9256,7 @@ _sym_db.RegisterMessage(TransformationSummary.SummaryResult)
 
 Schedule = _reflection.GeneratedProtocolMessageType('Schedule', (_message.Message,), dict(
   DESCRIPTOR = _SCHEDULE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Schedule for triggeredJobs.
   
@@ -8695,10 +9264,10 @@ Schedule = _reflection.GeneratedProtocolMessageType('Schedule', (_message.Messag
   Attributes:
       recurrence_period_duration:
           With this option a job is started a regular periodic basis.
-          For example: every 10 minutes.  A scheduled start time will be
-          skipped if the previous execution has not ended when its
-          scheduled time occurs.  This value must be set to a time
-          duration greater than or equal to 60 minutes and can be no
+          For example: every day (86400 seconds).  A scheduled start
+          time will be skipped if the previous execution has not ended
+          when its scheduled time occurs.  This value must be set to a
+          time duration greater than or equal to 1 day and can be no
           longer than 60 days.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Schedule)
@@ -8707,11 +9276,12 @@ _sym_db.RegisterMessage(Schedule)
 
 InspectTemplate = _reflection.GeneratedProtocolMessageType('InspectTemplate', (_message.Message,), dict(
   DESCRIPTOR = _INSPECTTEMPLATE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The inspectTemplate contains a configuration (set of types of sensitive
   data to be detected) to be used anywhere you otherwise would normally
-  specify InspectConfig.
+  specify InspectConfig. See
+  https://cloud.google.com/dlp/docs/concepts-templates to learn more.
   
   
   Attributes:
@@ -8740,10 +9310,11 @@ _sym_db.RegisterMessage(InspectTemplate)
 
 DeidentifyTemplate = _reflection.GeneratedProtocolMessageType('DeidentifyTemplate', (_message.Message,), dict(
   DESCRIPTOR = _DEIDENTIFYTEMPLATE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The DeidentifyTemplates contains instructions on how to deidentify
-  content.
+  content. See https://cloud.google.com/dlp/docs/concepts-templates to
+  learn more.
   
   
   Attributes:
@@ -8763,7 +9334,7 @@ DeidentifyTemplate = _reflection.GeneratedProtocolMessageType('DeidentifyTemplat
           The last update timestamp of a inspectTemplate, output only
           field.
       deidentify_config:
-          The core content of the template
+           The core content of the template
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.DeidentifyTemplate)
   ))
@@ -8771,7 +9342,7 @@ _sym_db.RegisterMessage(DeidentifyTemplate)
 
 Error = _reflection.GeneratedProtocolMessageType('Error', (_message.Message,), dict(
   DESCRIPTOR = _ERROR,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Details information about an error encountered during job execution or
   the results of an unsuccessful activation of the JobTrigger. Output only
@@ -8790,12 +9361,12 @@ JobTrigger = _reflection.GeneratedProtocolMessageType('JobTrigger', (_message.Me
 
   Trigger = _reflection.GeneratedProtocolMessageType('Trigger', (_message.Message,), dict(
     DESCRIPTOR = _JOBTRIGGER_TRIGGER,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.JobTrigger.Trigger)
     ))
   ,
   DESCRIPTOR = _JOBTRIGGER,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """What event needs to occur for a new job to be started.
   
@@ -8844,11 +9415,11 @@ Action = _reflection.GeneratedProtocolMessageType('Action', (_message.Message,),
 
   SaveFindings = _reflection.GeneratedProtocolMessageType('SaveFindings', (_message.Message,), dict(
     DESCRIPTOR = _ACTION_SAVEFINDINGS,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """If set, the detailed findings will be persisted to the specified
     OutputStorageConfig. Only a single instance of this action can be
-    specified. Compatible with: Inspect
+    specified. Compatible with: Inspect, Risk
     """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Action.SaveFindings)
     ))
@@ -8856,7 +9427,7 @@ Action = _reflection.GeneratedProtocolMessageType('Action', (_message.Message,),
 
   PublishToPubSub = _reflection.GeneratedProtocolMessageType('PublishToPubSub', (_message.Message,), dict(
     DESCRIPTOR = _ACTION_PUBLISHTOPUBSUB,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Publish the results of a DlpJob to a pub sub channel. Compatible with:
     Inspect, Risk
@@ -8875,7 +9446,7 @@ Action = _reflection.GeneratedProtocolMessageType('Action', (_message.Message,),
 
   PublishSummaryToCscc = _reflection.GeneratedProtocolMessageType('PublishSummaryToCscc', (_message.Message,), dict(
     DESCRIPTOR = _ACTION_PUBLISHSUMMARYTOCSCC,
-    __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+    __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
     ,
     __doc__ = """Publish the result summary of a DlpJob to the Cloud Security Command
     Center (CSCC Alpha). This action is only available for projects which
@@ -8890,9 +9461,10 @@ Action = _reflection.GeneratedProtocolMessageType('Action', (_message.Message,),
     ))
   ,
   DESCRIPTOR = _ACTION,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """A task to execute on the completion of a job.
+  __doc__ = """A task to execute on the completion of a job. See
+  https://cloud.google.com/dlp/docs/concepts-actions to learn more.
   
   
   Attributes:
@@ -8912,7 +9484,7 @@ _sym_db.RegisterMessage(Action.PublishSummaryToCscc)
 
 CreateInspectTemplateRequest = _reflection.GeneratedProtocolMessageType('CreateInspectTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEINSPECTTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for CreateInspectTemplate.
   
@@ -8935,7 +9507,7 @@ _sym_db.RegisterMessage(CreateInspectTemplateRequest)
 
 UpdateInspectTemplateRequest = _reflection.GeneratedProtocolMessageType('UpdateInspectTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATEINSPECTTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for UpdateInspectTemplate.
   
@@ -8957,7 +9529,7 @@ _sym_db.RegisterMessage(UpdateInspectTemplateRequest)
 
 GetInspectTemplateRequest = _reflection.GeneratedProtocolMessageType('GetInspectTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETINSPECTTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for GetInspectTemplate.
   
@@ -8975,7 +9547,7 @@ _sym_db.RegisterMessage(GetInspectTemplateRequest)
 
 ListInspectTemplatesRequest = _reflection.GeneratedProtocolMessageType('ListInspectTemplatesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTINSPECTTEMPLATESREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for ListInspectTemplates.
   
@@ -8997,7 +9569,7 @@ _sym_db.RegisterMessage(ListInspectTemplatesRequest)
 
 ListInspectTemplatesResponse = _reflection.GeneratedProtocolMessageType('ListInspectTemplatesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTINSPECTTEMPLATESRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Response message for ListInspectTemplates.
   
@@ -9016,7 +9588,7 @@ _sym_db.RegisterMessage(ListInspectTemplatesResponse)
 
 DeleteInspectTemplateRequest = _reflection.GeneratedProtocolMessageType('DeleteInspectTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEINSPECTTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for DeleteInspectTemplate.
   
@@ -9034,7 +9606,7 @@ _sym_db.RegisterMessage(DeleteInspectTemplateRequest)
 
 CreateJobTriggerRequest = _reflection.GeneratedProtocolMessageType('CreateJobTriggerRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEJOBTRIGGERREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for CreateJobTrigger.
   
@@ -9056,7 +9628,7 @@ _sym_db.RegisterMessage(CreateJobTriggerRequest)
 
 UpdateJobTriggerRequest = _reflection.GeneratedProtocolMessageType('UpdateJobTriggerRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATEJOBTRIGGERREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for UpdateJobTrigger.
   
@@ -9076,7 +9648,7 @@ _sym_db.RegisterMessage(UpdateJobTriggerRequest)
 
 GetJobTriggerRequest = _reflection.GeneratedProtocolMessageType('GetJobTriggerRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETJOBTRIGGERREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for GetJobTrigger.
   
@@ -9092,7 +9664,7 @@ _sym_db.RegisterMessage(GetJobTriggerRequest)
 
 CreateDlpJobRequest = _reflection.GeneratedProtocolMessageType('CreateDlpJobRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEDLPJOBREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for CreateDlpJobRequest. Used to initiate long running
   jobs such as calculating risk metrics or inspecting Google Cloud
@@ -9116,32 +9688,31 @@ _sym_db.RegisterMessage(CreateDlpJobRequest)
 
 ListJobTriggersRequest = _reflection.GeneratedProtocolMessageType('ListJobTriggersRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTJOBTRIGGERSREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for ListJobTriggers.
   
   
   Attributes:
       parent:
-          The parent resource name, for example projects/my-project-id.
+          The parent resource name, for example ``projects/my-project-
+          id``.
       page_token:
           Optional page token to continue retrieval. Comes from previous
-          call to ListJobTriggers. ``order_by`` and ``filter`` should
-          not change for subsequent calls, but can be omitted if token
-          is specified.
+          call to ListJobTriggers. ``order_by`` field must not change
+          for subsequent calls.
       page_size:
           Optional size of the page, can be limited by a server.
       order_by:
           Optional comma separated list of triggeredJob fields to order
-          by, followed by 'asc/desc' postfix, i.e. ``"create_time
-          asc,name desc,schedule_mode asc"``. This list is case-
-          insensitive.  Example: ``"name asc,schedule_mode desc, status
-          desc"``  Supported filters keys and values are:  -
+          by, followed by ``asc`` or ``desc`` postfix. This list is
+          case-insensitive, default sorting order is ascending,
+          redundant space characters are insignificant.  Example: ``name
+          asc,update_time, create_time desc``  Supported fields are:  -
           ``create_time``: corresponds to time the triggeredJob was
           created. -  ``update_time``: corresponds to time the
           triggeredJob was last    updated. -  ``name``: corresponds to
-          JobTrigger's display name. -  ``status``: corresponds to the
-          triggeredJob status.
+          JobTrigger's name.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.ListJobTriggersRequest)
   ))
@@ -9149,7 +9720,7 @@ _sym_db.RegisterMessage(ListJobTriggersRequest)
 
 ListJobTriggersResponse = _reflection.GeneratedProtocolMessageType('ListJobTriggersResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTJOBTRIGGERSRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Response message for ListJobTriggers.
   
@@ -9168,7 +9739,7 @@ _sym_db.RegisterMessage(ListJobTriggersResponse)
 
 DeleteJobTriggerRequest = _reflection.GeneratedProtocolMessageType('DeleteJobTriggerRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEJOBTRIGGERREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for DeleteJobTrigger.
   
@@ -9184,20 +9755,19 @@ _sym_db.RegisterMessage(DeleteJobTriggerRequest)
 
 InspectJobConfig = _reflection.GeneratedProtocolMessageType('InspectJobConfig', (_message.Message,), dict(
   DESCRIPTOR = _INSPECTJOBCONFIG,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
-  __doc__ = """
-  Attributes:
-      storage_config:
+  __doc__ = """Attributes:
+      storage_config: \
           The data to scan.
-      inspect_config:
+      inspect_config: \
           How and what to scan for.
-      inspect_template_name:
-          If provided, will be used as the default for all values in
-          InspectConfig. ``inspect_config`` will be merged into the
-          values persisted as part of the template.
-      actions:
-          Actions to execute at the completion of the job. Are executed
+      inspect_template_name: \
+          If provided, will be used as the default for all values in \
+          InspectConfig. ``inspect_config`` will be merged into the \
+          values persisted as part of the template. \
+      actions: \
+          Actions to execute at the completion of the job. Are executed \
           in the order provided.
   """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.InspectJobConfig)
@@ -9206,7 +9776,7 @@ _sym_db.RegisterMessage(InspectJobConfig)
 
 DlpJob = _reflection.GeneratedProtocolMessageType('DlpJob', (_message.Message,), dict(
   DESCRIPTOR = _DLPJOB,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Combines all of the information about a DLP job.
   
@@ -9240,7 +9810,7 @@ _sym_db.RegisterMessage(DlpJob)
 
 GetDlpJobRequest = _reflection.GeneratedProtocolMessageType('GetDlpJobRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETDLPJOBREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The request message for [DlpJobs.GetDlpJob][].
   
@@ -9255,7 +9825,7 @@ _sym_db.RegisterMessage(GetDlpJobRequest)
 
 ListDlpJobsRequest = _reflection.GeneratedProtocolMessageType('ListDlpJobsRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTDLPJOBSREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The request message for listing DLP jobs.
   
@@ -9294,7 +9864,7 @@ _sym_db.RegisterMessage(ListDlpJobsRequest)
 
 ListDlpJobsResponse = _reflection.GeneratedProtocolMessageType('ListDlpJobsResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTDLPJOBSRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The response message for listing DLP jobs.
   
@@ -9312,7 +9882,7 @@ _sym_db.RegisterMessage(ListDlpJobsResponse)
 
 CancelDlpJobRequest = _reflection.GeneratedProtocolMessageType('CancelDlpJobRequest', (_message.Message,), dict(
   DESCRIPTOR = _CANCELDLPJOBREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The request message for canceling a DLP job.
   
@@ -9327,7 +9897,7 @@ _sym_db.RegisterMessage(CancelDlpJobRequest)
 
 DeleteDlpJobRequest = _reflection.GeneratedProtocolMessageType('DeleteDlpJobRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEDLPJOBREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """The request message for deleting a DLP job.
   
@@ -9342,7 +9912,7 @@ _sym_db.RegisterMessage(DeleteDlpJobRequest)
 
 CreateDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType('CreateDeidentifyTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _CREATEDEIDENTIFYTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for CreateDeidentifyTemplate.
   
@@ -9365,7 +9935,7 @@ _sym_db.RegisterMessage(CreateDeidentifyTemplateRequest)
 
 UpdateDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType('UpdateDeidentifyTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _UPDATEDEIDENTIFYTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for UpdateDeidentifyTemplate.
   
@@ -9387,7 +9957,7 @@ _sym_db.RegisterMessage(UpdateDeidentifyTemplateRequest)
 
 GetDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType('GetDeidentifyTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETDEIDENTIFYTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for GetDeidentifyTemplate.
   
@@ -9405,7 +9975,7 @@ _sym_db.RegisterMessage(GetDeidentifyTemplateRequest)
 
 ListDeidentifyTemplatesRequest = _reflection.GeneratedProtocolMessageType('ListDeidentifyTemplatesRequest', (_message.Message,), dict(
   DESCRIPTOR = _LISTDEIDENTIFYTEMPLATESREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for ListDeidentifyTemplates.
   
@@ -9427,7 +9997,7 @@ _sym_db.RegisterMessage(ListDeidentifyTemplatesRequest)
 
 ListDeidentifyTemplatesResponse = _reflection.GeneratedProtocolMessageType('ListDeidentifyTemplatesResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTDEIDENTIFYTEMPLATESRESPONSE,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Response message for ListDeidentifyTemplates.
   
@@ -9446,7 +10016,7 @@ _sym_db.RegisterMessage(ListDeidentifyTemplatesResponse)
 
 DeleteDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType('DeleteDeidentifyTemplateRequest', (_message.Message,), dict(
   DESCRIPTOR = _DELETEDEIDENTIFYTEMPLATEREQUEST,
-  __module__ = 'google.cloud.privacy.dlp_v2.proto.dlp_pb2'
+  __module__ = 'google.cloud.dlp_v2.proto.dlp_pb2'
   ,
   __doc__ = """Request message for DeleteDeidentifyTemplate.
   
@@ -9472,8 +10042,8 @@ _DLPSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=22221,
-  serialized_end=26699,
+  serialized_start=23829,
+  serialized_end=28307,
   methods=[
   _descriptor.MethodDescriptor(
     name='InspectContent',

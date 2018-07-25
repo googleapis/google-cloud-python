@@ -12,6 +12,9 @@ class DlpServiceStub(object):
   blocks or images.
   The service also includes methods for sensitive data redaction and
   scheduling of data scans on Google Cloud Platform based data sets.
+
+  To learn more about concepts and find how-to guides see
+  https://cloud.google.com/dlp/docs/.
   """
 
   def __init__(self, channel):
@@ -154,13 +157,21 @@ class DlpServiceServicer(object):
   blocks or images.
   The service also includes methods for sensitive data redaction and
   scheduling of data scans on Google Cloud Platform based data sets.
+
+  To learn more about concepts and find how-to guides see
+  https://cloud.google.com/dlp/docs/.
   """
 
   def InspectContent(self, request, context):
     """Finds potentially sensitive info in content.
     This method has limits on input size, processing time, and output size.
-    [How-to guide for text](/dlp/docs/inspecting-text), [How-to guide for
-    images](/dlp/docs/inspecting-images)
+
+    When no InfoTypes or CustomInfoTypes are specified in this request, the
+    system will automatically choose what detectors to run. By default this may
+    be all types, but may change over time as detectors are updated.
+
+    For how to guides, see https://cloud.google.com/dlp/docs/inspecting-images
+    and https://cloud.google.com/dlp/docs/inspecting-text,
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -169,7 +180,12 @@ class DlpServiceServicer(object):
   def RedactImage(self, request, context):
     """Redacts potentially sensitive info from an image.
     This method has limits on input size, processing time, and output size.
-    [How-to guide](/dlp/docs/redacting-sensitive-data-images)
+    See https://cloud.google.com/dlp/docs/redacting-sensitive-data-images to
+    learn more.
+
+    When no InfoTypes or CustomInfoTypes are specified in this request, the
+    system will automatically choose what detectors to run. By default this may
+    be all types, but may change over time as detectors are updated.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -178,7 +194,12 @@ class DlpServiceServicer(object):
   def DeidentifyContent(self, request, context):
     """De-identifies potentially sensitive info from a ContentItem.
     This method has limits on input size and output size.
-    [How-to guide](/dlp/docs/deidentify-sensitive-data)
+    See https://cloud.google.com/dlp/docs/deidentify-sensitive-data to
+    learn more.
+
+    When no InfoTypes or CustomInfoTypes are specified in this request, the
+    system will automatically choose what detectors to run. By default this may
+    be all types, but may change over time as detectors are updated.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -186,6 +207,9 @@ class DlpServiceServicer(object):
 
   def ReidentifyContent(self, request, context):
     """Re-identifies content that has been de-identified.
+    See
+    https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+    to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -193,8 +217,8 @@ class DlpServiceServicer(object):
 
   def ListInfoTypes(self, request, context):
     """Returns a list of the sensitive information types that the DLP API
-    supports. For more information, see [Listing supported predefined
-    infoTypes](/dlp/docs/listing-infotypes).
+    supports. See https://cloud.google.com/dlp/docs/infotypes-reference to
+    learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -203,6 +227,7 @@ class DlpServiceServicer(object):
   def CreateInspectTemplate(self, request, context):
     """Creates an InspectTemplate for re-using frequently used configuration
     for inspecting content, images, and storage.
+    See https://cloud.google.com/dlp/docs/creating-templates to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -210,6 +235,7 @@ class DlpServiceServicer(object):
 
   def UpdateInspectTemplate(self, request, context):
     """Updates the InspectTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -217,6 +243,7 @@ class DlpServiceServicer(object):
 
   def GetInspectTemplate(self, request, context):
     """Gets an InspectTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -224,6 +251,7 @@ class DlpServiceServicer(object):
 
   def ListInspectTemplates(self, request, context):
     """Lists InspectTemplates.
+    See https://cloud.google.com/dlp/docs/creating-templates to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -231,6 +259,7 @@ class DlpServiceServicer(object):
 
   def DeleteInspectTemplate(self, request, context):
     """Deletes an InspectTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -239,6 +268,8 @@ class DlpServiceServicer(object):
   def CreateDeidentifyTemplate(self, request, context):
     """Creates a DeidentifyTemplate for re-using frequently used configuration
     for de-identifying content, images, and storage.
+    See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
+    more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -246,6 +277,8 @@ class DlpServiceServicer(object):
 
   def UpdateDeidentifyTemplate(self, request, context):
     """Updates the DeidentifyTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
+    more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -253,6 +286,8 @@ class DlpServiceServicer(object):
 
   def GetDeidentifyTemplate(self, request, context):
     """Gets a DeidentifyTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
+    more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -260,6 +295,8 @@ class DlpServiceServicer(object):
 
   def ListDeidentifyTemplates(self, request, context):
     """Lists DeidentifyTemplates.
+    See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
+    more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -267,6 +304,8 @@ class DlpServiceServicer(object):
 
   def DeleteDeidentifyTemplate(self, request, context):
     """Deletes a DeidentifyTemplate.
+    See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
+    more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -275,6 +314,7 @@ class DlpServiceServicer(object):
   def CreateJobTrigger(self, request, context):
     """Creates a job trigger to run DLP actions such as scanning storage for
     sensitive information on a set schedule.
+    See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -282,6 +322,7 @@ class DlpServiceServicer(object):
 
   def UpdateJobTrigger(self, request, context):
     """Updates a job trigger.
+    See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -289,6 +330,7 @@ class DlpServiceServicer(object):
 
   def GetJobTrigger(self, request, context):
     """Gets a job trigger.
+    See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -296,6 +338,7 @@ class DlpServiceServicer(object):
 
   def ListJobTriggers(self, request, context):
     """Lists job triggers.
+    See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -303,6 +346,7 @@ class DlpServiceServicer(object):
 
   def DeleteJobTrigger(self, request, context):
     """Deletes a job trigger.
+    See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -310,7 +354,12 @@ class DlpServiceServicer(object):
 
   def CreateDlpJob(self, request, context):
     """Creates a new job to inspect storage or calculate risk metrics.
-    [How-to guide](/dlp/docs/compute-risk-analysis).
+    See https://cloud.google.com/dlp/docs/inspecting-storage and
+    https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+
+    When no InfoTypes or CustomInfoTypes are specified in inspect jobs, the
+    system will automatically choose what detectors to run. By default this may
+    be all types, but may change over time as detectors are updated.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -318,6 +367,8 @@ class DlpServiceServicer(object):
 
   def ListDlpJobs(self, request, context):
     """Lists DlpJobs that match the specified filter in the request.
+    See https://cloud.google.com/dlp/docs/inspecting-storage and
+    https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -325,6 +376,8 @@ class DlpServiceServicer(object):
 
   def GetDlpJob(self, request, context):
     """Gets the latest state of a long-running DlpJob.
+    See https://cloud.google.com/dlp/docs/inspecting-storage and
+    https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -334,6 +387,8 @@ class DlpServiceServicer(object):
     """Deletes a long-running DlpJob. This method indicates that the client is
     no longer interested in the DlpJob result. The job will be cancelled if
     possible.
+    See https://cloud.google.com/dlp/docs/inspecting-storage and
+    https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -343,6 +398,8 @@ class DlpServiceServicer(object):
     """Starts asynchronous cancellation on a long-running DlpJob. The server
     makes a best effort to cancel the DlpJob, but success is not
     guaranteed.
+    See https://cloud.google.com/dlp/docs/inspecting-storage and
+    https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
