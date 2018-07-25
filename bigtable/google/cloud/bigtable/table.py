@@ -492,7 +492,7 @@ class Table(object):
         :param table: class:`~google.cloud.bigtable.table.Table`.
 
         :type flush_count: int
-        :param flush_count: (Optional) Max number of rows to flush. If it
+        :param flush_count: (Optional) Maximum number of rows per batch. If it
                 reaches the max number of rows it calls finish_batch() to
                 mutate the current row batch. Default is FLUSH_COUNT (1000
                 rows).

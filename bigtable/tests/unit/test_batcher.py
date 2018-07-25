@@ -23,11 +23,8 @@ from ._testing import _make_credentials
 class TestMutationsBatcher(unittest.TestCase):
     from grpc import StatusCode
 
-    PROJECT_ID = 'project-id'
-    INSTANCE_ID = 'instance-id'
-    INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
     TABLE_ID = 'table-id'
-    TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
+    TABLE_NAME = '/tables/' + TABLE_ID
 
     # RPC Status Codes
     SUCCESS = StatusCode.OK.value[0]
@@ -80,11 +77,11 @@ class TestMutationsBatcher(unittest.TestCase):
         client = self._make_client(project='project-id',
                                    credentials=credentials, admin=True)
 
-        instance = client.instance(instance_id=self.INSTANCE_ID)
+        instance = client.instance(instance_id='instance-id')
         table = self._make_table(self.TABLE_ID, instance)
 
         mutation_batcher = MutationsBatcher(table)
-        self.assertEqual(table.table_id, mutation_batcher.table.table_id)
+        self.assertEqual(table, mutation_batcher.table)
 
     def test_add_row(self):
         table = _Table(self.TABLE_NAME)
@@ -95,11 +92,16 @@ class TestMutationsBatcher(unittest.TestCase):
         for row in rows:
             mutation_batcher.mutate(row)
 
-        with mock.patch('google.cloud.bigtable.table.Table.name',
-                        new=self.TABLE_NAME):
-            mutation_batcher.flush()
+        mutation_batcher.flush()
 
         self.assertEqual(table.mutation_calls, 1)
+
+    def test_flush_with_no_rows(self):
+        table = _Table(self.TABLE_NAME)
+        mutation_batcher = self._make_batcher(table)
+        mutation_batcher.flush()
+
+        self.assertEqual(table.mutation_calls, 0)
 
     def test_add_row_with_max_flush_count(self):
         table = _Table(self.TABLE_NAME)
@@ -110,9 +112,7 @@ class TestMutationsBatcher(unittest.TestCase):
         for row in rows:
             mutation_batcher.mutate(row)
 
-        with mock.patch('google.cloud.bigtable.table.Table.name',
-                        new=self.TABLE_NAME):
-            mutation_batcher.flush()
+        mutation_batcher.flush()
 
         self.assertEqual(table.mutation_calls, 2)
 
@@ -141,9 +141,7 @@ class TestMutationsBatcher(unittest.TestCase):
         for row in rows:
             mutation_batcher.mutate(row)
 
-        with mock.patch('google.cloud.bigtable.table.Table.name',
-                        new=self.TABLE_NAME):
-            mutation_batcher.flush()
+        mutation_batcher.flush()
 
         self.assertEqual(table.mutation_calls, 2)
 
@@ -161,9 +159,7 @@ class TestMutationsBatcher(unittest.TestCase):
         for row in rows:
             mutation_batcher.mutate(row)
 
-        with mock.patch('google.cloud.bigtable.table.Table.name',
-                        new=self.TABLE_NAME):
-            mutation_batcher.flush()
+        mutation_batcher.flush()
 
         self.assertEqual(table.mutation_calls, 2)
 

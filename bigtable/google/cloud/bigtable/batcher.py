@@ -77,10 +77,14 @@ class MutationsBatcher(object):
                    row returned a transient error.
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
+                 * :exc:`.batcher.MaxMutaionsError` if any row exceeds max
+                   mutaions count.
         """
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
-            raise MaxMutaionsError
+            raise MaxMutaionsError(
+                'The row key {} exceeds the number of mutations {}.'.format(
+                    row.row_key, mutation_count), )
 
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
             self.flush()
@@ -88,12 +92,13 @@ class MutationsBatcher(object):
         mutation_size = 0
         for mutation in row._get_mutations():
             mutation_size = mutation.ByteSize()
-            if (self.total_size + mutation_size) >= self.max_row_bytes:
-                self.flush()
 
         self.rows.append(row)
         self.total_mutation_count += mutation_count
         self.total_size += mutation_size
+
+        if self.total_size >= self.max_row_bytes:
+            self.flush()
 
         if len(self.rows) >= self.flush_count:
             self.flush()
