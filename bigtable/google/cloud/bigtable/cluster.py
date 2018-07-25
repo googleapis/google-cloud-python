@@ -270,12 +270,10 @@ class Cluster(object):
     def _create_pb_request(self):
         """ Create cluster proto buff message for API calls """
         client = self._instance._client
-        cluster_name = client.instance_admin_client.cluster_path(
-            client.project, self._instance.instance_id, self.cluster_id)
         location = client.instance_admin_client.location_path(
             client.project, self.location_id)
         cluster_message = instance_pb2.Cluster(
-            name=cluster_name, location=location,
+            location=location,
             serve_nodes=self.serve_nodes,
             default_storage_type=self.default_storage_type)
         return cluster_message

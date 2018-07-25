@@ -82,10 +82,10 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
-        self.assertIs(cluster.location_id, self.LOCATION_ID)
+        self.assertIsNone(cluster.location_id)
         self.assertIsNone(cluster.state)
         self.assertIsNone(cluster.serve_nodes)
         self.assertIsNone(cluster.default_storage_type)
@@ -111,13 +111,11 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE_SSD)
 
     def test_name_property(self):
-        from google.cloud.bigtable.instance import Instance
-
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance, self.LOCATION_ID)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
 
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
 
@@ -222,7 +220,6 @@ class TestCluster(unittest.TestCase):
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
-        from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
         from google.cloud.bigtable_admin_v2.proto import (
@@ -236,7 +233,7 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         STORAGE_TYPE_SSD = StorageType.SSD
-        instance = Instance(self.INSTANCE_ID, client)
+        instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  location_id=self.LOCATION_ID,
                                  serve_nodes=self.SERVE_NODES,
@@ -354,7 +351,6 @@ class TestCluster(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable_admin_v2.proto import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud.bigtable_admin_v2.types import instance_pb2
@@ -369,7 +365,7 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         STORAGE_TYPE_SSD = StorageType.SSD
-        instance = Instance(self.INSTANCE_ID, client)
+        instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  location_id=self.LOCATION_ID,
                                  serve_nodes=self.SERVE_NODES,
@@ -414,7 +410,6 @@ class TestCluster(unittest.TestCase):
     def test_delete(self):
         from google.protobuf import empty_pb2
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from google.cloud.bigtable.instance import Instance
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
 
@@ -423,7 +418,7 @@ class TestCluster(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = Instance(self.INSTANCE_ID, client)
+        instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  self.LOCATION_ID,
                                  serve_nodes=DEFAULT_SERVE_NODES)

@@ -378,7 +378,8 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        result = instance.create(location_id=self.LOCATION_ID)
+        result = instance.create(location_id=self.LOCATION_ID,
+                                 serve_nodes=DEFAULT_SERVE_NODES)
         actual_request = channel.requests[0][1]
 
         cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
@@ -426,8 +427,8 @@ class TestInstance(unittest.TestCase):
 
         cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
         cluster = self._create_cluster(
-            instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
-            enums.StorageType.SSD)
+            instance_api, cluster_id, self.LOCATION_ID,
+            serve_nodes=serve_nodes, storage_type=enums.StorageType.SSD)
 
         expected_request = self._create_instance_request({cluster_id: cluster})
         self.assertEqual(expected_request, actual_request)
@@ -476,8 +477,13 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        clusters = [Cluster('cluster-id1', instance, 'location-id1'),
-                    Cluster('cluster-id2', instance, 'location-id2')]
+        clusters = [
+            Cluster('cluster-id1', instance,
+                    location_id='location-id1',
+                    serve_nodes=DEFAULT_SERVE_NODES),
+            Cluster('cluster-id2', instance,
+                    location_id='location-id2',
+                    serve_nodes=DEFAULT_SERVE_NODES)]
         result = instance.create(None, None, None, clusters)
         actual_request = channel.requests[0][1]
 
@@ -500,16 +506,14 @@ class TestInstance(unittest.TestCase):
                               messages_v2_pb2.CreateInstanceMetadata)
 
     def _create_cluster(self, instance_api, cluster_id, location_id,
-                        server_nodes, storage_type):
+                        serve_nodes, storage_type):
         from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-        cluster_name = instance_api.cluster_path(
-            self.PROJECT, self.INSTANCE_ID, cluster_id)
         location = instance_api.location_path(
             self.PROJECT, location_id)
         return instance_pb2.Cluster(
-            name=cluster_name, location=location,
-            serve_nodes=server_nodes,
+            location=location,
+            serve_nodes=serve_nodes,
             default_storage_type=storage_type)
 
     def _create_instance_request(self, clusters):

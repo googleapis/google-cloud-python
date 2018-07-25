@@ -232,9 +232,10 @@ class Instance(object):
         if clusters is None:
             cluster_id = '{}-cluster'.format(self.instance_id)
 
-            clusters = [Cluster(cluster_id, self, location_id,
-                                serve_nodes, default_storage_type)]
-
+            clusters = [Cluster(cluster_id, self,
+                                location_id=location_id,
+                                serve_nodes=serve_nodes,
+                                default_storage_type=default_storage_type)]
         elif (location_id is not None or
               serve_nodes is not None or
               default_storage_type is not None):
@@ -307,7 +308,7 @@ class Instance(object):
 
         :type location_id: str
         :param location_id: (Creation Only) The location where this cluster's
-                            nodes and storage reside . For best performance,
+                            nodes and storage reside. For best performance,
                             clients should be located as close as possible to
                             this cluster.
                             For list of supported locations refer to
@@ -318,7 +319,7 @@ class Instance(object):
                   The current state of the cluster.
                   Possible values are represented by the following constants:
                   :data:`google.cloud.bigtable.enums.ClusterState.STATE_NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.REAY`.
+                  :data:`google.cloud.bigtable.enums.ClusterState.READY`.
                   :data:`google.cloud.bigtable.enums.ClusterState.CREATING`.
                   :data:`google.cloud.bigtable.enums.ClusterState.RESIZING`.
                   :data:`google.cloud.bigtable.enums.ClusterState.DISABLED`.
@@ -336,7 +337,7 @@ class Instance(object):
                                      :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
         :rtype: :class:`~google.cloud.bigtable.instance.Cluster`
-        :returns: a cluster owe=ned by this instance.
+        :returns: a cluster owned by this instance.
         """
         return Cluster(cluster_id, self, location_id=location_id,
                        state=state, serve_nodes=serve_nodes,
