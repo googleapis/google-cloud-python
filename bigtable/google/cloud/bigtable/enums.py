@@ -75,5 +75,5 @@ class RoutingPolicyType(object):
       See
       https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.SingleClusterRouting
     """
-    ANY = 1
-    SINGLE = 2
+    ANY = enums.RoutingPolicyType.ANY
+    SINGLE = enums.RoutingPolicyType.SINGLE
