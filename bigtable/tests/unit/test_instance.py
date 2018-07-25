@@ -335,7 +335,7 @@ class TestInstance(unittest.TestCase):
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 
@@ -475,7 +475,7 @@ class TestInstance(unittest.TestCase):
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 
@@ -849,7 +849,7 @@ class TestInstance(unittest.TestCase):
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 
@@ -898,7 +898,7 @@ class TestInstance(unittest.TestCase):
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 

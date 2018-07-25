@@ -227,7 +227,7 @@ class TestCluster(unittest.TestCase):
             name=OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 
