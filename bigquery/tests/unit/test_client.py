@@ -435,27 +435,37 @@ class TestClient(unittest.TestCase):
 
         PATH = 'projects/%s/datasets' % self.PROJECT
         RESOURCE = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
             'etag': "etag",
             'id': "%s:%s" % (self.PROJECT, self.DS_ID),
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(RESOURCE)
-        ds = client.create_dataset(Dataset(client.dataset(self.DS_ID)))
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/%s' % PATH,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'labels': {},
             })
-        self.assertEqual(ds.dataset_id, self.DS_ID)
-        self.assertEqual(ds.project, self.PROJECT)
-        self.assertEqual(ds.etag, RESOURCE['etag'])
-        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
 
     def test_create_dataset_w_attrs(self):
         from google.cloud.bigquery.dataset import Dataset, AccessEntry
@@ -472,8 +482,10 @@ class TestClient(unittest.TestCase):
             'tableId': 'northern-hemisphere',
         }
         RESOURCE = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
             'etag': "etag",
             'id': "%s:%s" % (self.PROJECT, self.DS_ID),
             'description': DESCRIPTION,
@@ -483,45 +495,56 @@ class TestClient(unittest.TestCase):
             'labels': LABELS,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'view': VIEW}],
+                {'view': VIEW},
+            ],
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(RESOURCE)
-        entries = [AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
-                   AccessEntry(None, 'view', VIEW)]
-        ds_arg = Dataset(client.dataset(self.DS_ID))
-        ds_arg.access_entries = entries
-        ds_arg.description = DESCRIPTION
-        ds_arg.friendly_name = FRIENDLY_NAME
-        ds_arg.default_table_expiration_ms = 3600
-        ds_arg.location = LOCATION
-        ds_arg.labels = LABELS
-        ds = client.create_dataset(ds_arg)
+        entries = [
+            AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
+            AccessEntry(None, 'view', VIEW),
+        ]
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before.access_entries = entries
+        before.description = DESCRIPTION
+        before.friendly_name = FRIENDLY_NAME
+        before.default_table_expiration_ms = 3600
+        before.location = LOCATION
+        before.labels = LABELS
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.description, DESCRIPTION)
+        self.assertEqual(after.friendly_name, FRIENDLY_NAME)
+        self.assertEqual(after.location, LOCATION)
+        self.assertEqual(after.default_table_expiration_ms, 3600)
+        self.assertEqual(after.labels, LABELS)
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/%s' % PATH,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'description': DESCRIPTION,
                 'friendlyName': FRIENDLY_NAME,
                 'location': LOCATION,
                 'defaultTableExpirationMs': '3600',
                 'access': [
                     {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                    {'view': VIEW}],
+                    {'view': VIEW},
+                ],
                 'labels': LABELS,
             })
-        self.assertEqual(ds.dataset_id, self.DS_ID)
-        self.assertEqual(ds.project, self.PROJECT)
-        self.assertEqual(ds.etag, RESOURCE['etag'])
-        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
-        self.assertEqual(ds.description, DESCRIPTION)
-        self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
-        self.assertEqual(ds.location, LOCATION)
-        self.assertEqual(ds.default_table_expiration_ms, 3600)
-        self.assertEqual(ds.labels, LABELS)
 
     def test_create_dataset_w_custom_property(self):
         # The library should handle sending properties to the API that are not
@@ -537,25 +560,30 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
-        dataset = Dataset(client.dataset(self.DS_ID))
-        dataset._properties['newAlphaProperty'] = 'unreleased property'
 
-        dataset = client.create_dataset(dataset)
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before._properties['newAlphaProperty'] = 'unreleased property'
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(
+            after._properties['newAlphaProperty'], 'unreleased property')
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path=path,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'newAlphaProperty': 'unreleased property',
                 'labels': {},
             }
         )
-
-        self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertEqual(dataset.project, self.PROJECT)
-        self.assertEqual(
-            dataset._properties['newAlphaProperty'], 'unreleased property')
 
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
