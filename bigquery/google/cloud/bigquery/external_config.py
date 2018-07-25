@@ -34,7 +34,7 @@ class ExternalSourceFormat(object):
 
     Note that the set of allowed values for external data sources is different
     than the set used for loading data (see
-    :class:`~google.cloud.bigquery.job.ExternalSourceFormat)`.
+    :class:`~google.cloud.bigquery.job.SourceFormat`).
     """
 
     CSV = 'CSV'
