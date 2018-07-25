@@ -44,9 +44,12 @@ class Generator:
         self._api = api_schema
 
         # Create the jinja environment with which to render templates.
-        self._env = jinja2.Environment(loader=TemplateLoader(
-            searchpath=os.path.join(_dirname, '..', 'templates'),
-        ))
+        self._env = jinja2.Environment(
+            loader=TemplateLoader(
+                searchpath=os.path.join(_dirname, '..', 'templates'),
+            ),
+            undefined=jinja2.StrictUndefined,
+        )
 
         # Add filters which templates require.
         self._env.filters['snake_case'] = utils.to_snake_case

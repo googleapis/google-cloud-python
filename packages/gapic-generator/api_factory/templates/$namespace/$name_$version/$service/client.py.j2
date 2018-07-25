@@ -16,11 +16,6 @@ from .transports import get_transport_class
 from .transports import {{ service.name }}Transport
 
 
-# LIBRARY_VERSION: str = pkg_resources.get_distribution(
-#     '{{ api.warehouse_package_name }}',
-# ).version
-
-
 class {{ service.name }}:
     """{{ service.meta.doc|wrap(width=72, subsequent_indent='    ') }}
     """
@@ -107,7 +102,7 @@ class {{ service.name }}:
         # Send the request.
         response = rpc(request, retry=retry,
                        timeout=timeout, metadata=metadata)
-        {%- if method.output.lro_response %}
+        {%- if method.output.lro_response is defined %}
 
         # Wrap the response in an operation future
         response = operation.from_gapic(

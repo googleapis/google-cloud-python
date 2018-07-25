@@ -377,7 +377,7 @@ class Method:
         # Sanity check: If there are no signatures (which should be by far
         # the common case), just abort now.
         if len(sig_pb2.fields) == 0:
-            return ()
+            return MethodSignatures(all=())
 
         # Signatures are annotated with an `additional_signatures` key that
         # allows for specifying additional signatures. This is an uncommon
