@@ -330,12 +330,12 @@ class TestInstance(unittest.TestCase):
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
         type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString(),
+                value=metadata.SerializeToString()
             )
         )
 
@@ -470,12 +470,12 @@ class TestInstance(unittest.TestCase):
         metadata = messages_v2_pb2.UpdateInstanceMetadata(
             request_time=NOW_PB)
         type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateInstanceMetadata.DESCRIPTOR.full_name,)
+            messages_v2_pb2.UpdateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString(),
+                value=metadata.SerializeToString()
             )
         )
 
@@ -844,12 +844,12 @@ class TestInstance(unittest.TestCase):
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
         type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString(),
+                value=metadata.SerializeToString()
             )
         )
 
@@ -893,12 +893,12 @@ class TestInstance(unittest.TestCase):
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
         type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString(),
+                value=metadata.SerializeToString()
             )
         )
 

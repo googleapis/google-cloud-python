@@ -222,7 +222,7 @@ class TestCluster(unittest.TestCase):
             (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
         metadata = messages_v2_pb2.UpdateClusterMetadata(request_time=NOW_PB)
         type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name,)
+            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=OP_NAME,
             metadata=Any(
