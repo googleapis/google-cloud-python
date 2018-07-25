@@ -29,6 +29,33 @@ from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery.schema import SchemaField
 
 
+class ExternalSourceFormat(object):
+    """The format for external data files..
+
+    Note that the set of allowed values for external data sources is different
+    than the set used for loading data (see
+    :class:`~google.cloud.bigquery.job.SourceFormat`).
+    """
+
+    CSV = 'CSV'
+    """Specifies CSV format."""
+
+    GOOGLE_SHEETS = 'GOOGLE_SHEETS'
+    """Specifies Google Sheets format."""
+
+    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    """Specifies newline delimited JSON format."""
+
+    AVRO = 'AVRO'
+    """Specifies Avro format."""
+
+    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
+    """Specifies datastore backup format"""
+
+    BIGTABLE = 'BIGTABLE'
+    """Specifies Bigtable format."""
+
+
 class BigtableColumn(object):
     """Options for a Bigtable column."""
 
@@ -516,9 +543,9 @@ _OPTION_CLASSES = (BigtableOptions, CSVOptions, GoogleSheetsOptions)
 class ExternalConfig(object):
     """Description of an external data source.
 
-    :type source_format: str
-    :param source_format: the format of the external data. See
-                          the ``source_format`` property on this class.
+    Args:
+        source_format :class:`ExternalSourceFormat`:
+            See :attr:`source_format`.
     """
 
     def __init__(self, source_format):
@@ -531,8 +558,9 @@ class ExternalConfig(object):
 
     @property
     def source_format(self):
-        """See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat
+        """:class:`ExternalSourceFormat`: Format of external source.
+
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
         """
         return self._properties['sourceFormat']
