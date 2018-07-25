@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 860ebd19a3 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 13bbcdc documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -201,7 +201,12 @@
 
 
 <div class="viewcode-block" id="SourceFormat"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.SourceFormat.html#google.cloud.bigquery.job.SourceFormat">[docs]</a><span class="k">class</span> <span class="nc">SourceFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The format of the data files. The default value is :attr:`CSV`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The format of the data files. The default value is :attr:`CSV`.</span>
+
+<span class="sd">    Note that the set of allowed values for loading data is different</span>
+<span class="sd">    than the set used for external data sources (see</span>
+<span class="sd">    :class:`~google.cloud.bigquery.external_config.ExternalSourceFormat`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="sd">&quot;&quot;&quot;Specifies CSV format.&quot;&quot;&quot;</span>

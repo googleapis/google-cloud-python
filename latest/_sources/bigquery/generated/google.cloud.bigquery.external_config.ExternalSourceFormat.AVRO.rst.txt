@@ -1,0 +1,6 @@
+google.cloud.bigquery.external\_config.ExternalSourceFormat.AVRO
+================================================================
+
+.. currentmodule:: google.cloud.bigquery.external_config
+
+.. autoattribute:: ExternalSourceFormat.AVRO
