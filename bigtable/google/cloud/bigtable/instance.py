@@ -329,8 +329,8 @@ class Instance(object):
         for table_pb in table_list_pb:
             table_prefix = self.name + '/tables/'
             if not table_pb.name.startswith(table_prefix):
-                raise ValueError('Table name %s not of expected format' % (
-                    table_pb.name,))
+                raise ValueError('Table name {} not of expected format'
+                    .format(table_pb.name,))
             table_id = table_pb.name[len(table_prefix):]
             result.append(self.table(table_id))
 

@@ -60,8 +60,8 @@ class TestInstance(unittest.TestCase):
     DISPLAY_NAME = 'display_name'
     LABELS = {'foo': 'bar'}
     OP_ID = 8915
-    OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
-               (PROJECT, INSTANCE_ID, OP_ID))
+    OP_NAME = ('operations/projects/{}/instances/{}operations/{}'
+               .format(PROJECT, INSTANCE_ID, OP_ID))
     TABLE_ID = 'table_id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
 
@@ -329,7 +329,7 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
+        type_url = 'type.googleapis.com/{}'.format(
             messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
@@ -426,7 +426,7 @@ class TestInstance(unittest.TestCase):
                                          labels=self.LABELS)
 
         return messages_v2_pb2.CreateInstanceRequest(
-            parent='projects/%s' % (self.PROJECT),
+            parent='projects/{}'.format(self.PROJECT),
             instance_id=self.INSTANCE_ID,
             instance=instance,
             clusters=clusters
@@ -469,7 +469,7 @@ class TestInstance(unittest.TestCase):
 
         metadata = messages_v2_pb2.UpdateInstanceMetadata(
             request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
+        type_url = 'type.googleapis.com/{}'.format(
             messages_v2_pb2.UpdateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
@@ -843,7 +843,7 @@ class TestInstance(unittest.TestCase):
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
+        type_url = 'type.googleapis.com/{}'.format(
             messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
@@ -892,7 +892,7 @@ class TestInstance(unittest.TestCase):
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
+        type_url = 'type.googleapis.com/{}'.format(
             messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
