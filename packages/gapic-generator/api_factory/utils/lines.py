@@ -36,7 +36,7 @@ def subsequent_indent(text: str, prefix: str) -> str:
 
 
 def wrap(text: str, width: int, initial_width: int = None,
-         subsequent_indent: str = '', antecedent_trailer: str = '') -> str:
+         subsequent_indent: str = '') -> str:
     """Wrap the given string to the given width.
 
     This uses :meth:`textwrap.fill` under the hood, but provides functionality
@@ -54,8 +54,6 @@ def wrap(text: str, width: int, initial_width: int = None,
             different. Defaults to the value of ``width``.
         subsequent_indent (str): A string to be prepended to every line
             except the first.
-        antecedent_trailer (str): A string to be appended to every line
-            except the last.
 
     Returns:
         str: The wrapped string.
@@ -65,10 +63,6 @@ def wrap(text: str, width: int, initial_width: int = None,
     # Sanity check: If there is empty text, abort.
     if not text:
         return ''
-
-    # Reduce the values by the length of the trailing string, if any.
-    width -= len(antecedent_trailer)
-    initial_width -= len(antecedent_trailer)
 
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
@@ -86,20 +80,14 @@ def wrap(text: str, width: int, initial_width: int = None,
         first = f'{initial[0]}\n'
         text = ' '.join(initial[1:])
 
-        # Sanity check: If that was the only line, abort here, *without*
-        # the antecedent trailer.
-        if not text:
-            return initial[0]
-
     # Wrap the remainder of the string at the desired width.
-    text = first + textwrap.fill(
-        break_long_words=False,
-        initial_indent=subsequent_indent if first else '',
-        subsequent_indent=subsequent_indent,
-        text=text,
-        width=width,
-    )
-
-    # Replace all the line endings with the antecedent trailer,
-    # and return the resulting string.
-    return text.replace('\n', f'{antecedent_trailer}\n')
+    return '{first}{text}'.format(
+        first=first,
+        text=textwrap.fill(
+            break_long_words=False,
+            initial_indent=subsequent_indent if first else '',
+            subsequent_indent=subsequent_indent,
+            text=text,
+            width=width,
+        ),
+    ).rstrip('\n')
