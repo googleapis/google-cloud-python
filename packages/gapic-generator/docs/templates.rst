@@ -62,11 +62,6 @@ Additionally, these templates receive two variables: the ``api`` variable
 discussed above, as well as a variable spelled ``service``, which corresponds
 to the :class:`~.schema.wrappers.Service` currently being iterated over.
 
-.. note::
-
-    Templates technically receive one additional variable, ``len``; this is
-    the ``len`` function from the standard library.
-
 
 Filters
 ~~~~~~~

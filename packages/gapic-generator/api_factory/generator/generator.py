@@ -114,7 +114,6 @@ class Generator:
             answer.append(CodeGeneratorResponse.File(
                 content=self._env.get_template(template_name).render(
                     api=self._api,
-                    len=len,
                     **additional_context
                 ).strip() + '\n',
                 name=self._get_output_filename(
