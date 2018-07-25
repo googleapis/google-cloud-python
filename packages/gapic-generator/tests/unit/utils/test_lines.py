@@ -15,13 +15,6 @@
 from api_factory.utils import lines
 
 
-def test_subsequent_indent():
-    assert lines.subsequent_indent(
-        text='# foo\nbar\nbaz',
-        prefix='# ',
-    ) == '# foo\n# bar\n# baz'
-
-
 def test_wrap_noop():
     assert lines.wrap('foo bar baz', width=80) == 'foo bar baz'
 

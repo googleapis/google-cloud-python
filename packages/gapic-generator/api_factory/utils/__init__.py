@@ -16,7 +16,6 @@ from api_factory.utils.cache import cached_property
 from api_factory.utils.case import to_snake_case
 from api_factory.utils.filename import to_valid_filename
 from api_factory.utils.filename import to_valid_module_name
-from api_factory.utils.lines import subsequent_indent
 from api_factory.utils.lines import wrap
 from api_factory.utils.placeholder import Placeholder
 

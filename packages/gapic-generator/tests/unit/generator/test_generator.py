@@ -28,7 +28,7 @@ from api_factory.schema import naming
 from api_factory.schema import wrappers
 
 
-def test_proto_builder_constructor():
+def test_constructor():
     # Create a generator.
     g = generator.Generator(api_schema=make_api())
     assert isinstance(g._api, api.API)
@@ -38,7 +38,6 @@ def test_proto_builder_constructor():
     # to establish this and templates will depend on it.
     assert isinstance(g._env, jinja2.Environment)
     assert 'snake_case' in g._env.filters
-    assert 'subsequent_indent' in g._env.filters
     assert 'wrap' in g._env.filters
 
 

@@ -53,7 +53,6 @@ class Generator:
 
         # Add filters which templates require.
         self._env.filters['snake_case'] = utils.to_snake_case
-        self._env.filters['subsequent_indent'] = utils.subsequent_indent
         self._env.filters['wrap'] = utils.wrap
 
     def get_response(self) -> CodeGeneratorResponse:
