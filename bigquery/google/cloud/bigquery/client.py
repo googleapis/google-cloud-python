@@ -107,6 +107,8 @@ class Client(ClientWithProject):
             current object.
             This parameter should be considered private, and could change in
             the future.
+        location str:
+            (Optional) Default location for jobs / datasets / tables.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -118,10 +120,17 @@ class Client(ClientWithProject):
              'https://www.googleapis.com/auth/cloud-platform')
     """The scopes required for authenticating as a BigQuery consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(
+            self, project=None, credentials=None, _http=None, location=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
+        self._location = location
+
+    @property
+    def location(self):
+        """Default location for jobs / datasets / tables."""
+        return self._location
 
     def get_service_account_email(self, project=None):
         """Get the email address of the project's BigQuery service account
@@ -286,8 +295,14 @@ class Client(ClientWithProject):
 
         """
         path = '/projects/%s/datasets' % (dataset.project,)
+
+        data = dataset.to_api_repr()
+        if data.get('location') is None and self.location is not None:
+            data['location'] = self.location
+
         api_response = self._connection.api_request(
-            method='POST', path=path, data=dataset.to_api_repr())
+            method='POST', path=path, data=data)
+
         return Dataset.from_api_repr(api_response)
 
     def create_table(self, table):
@@ -548,6 +563,9 @@ class Client(ClientWithProject):
         if timeout_ms is not None:
             extra_params['timeoutMs'] = timeout_ms
 
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -613,6 +631,10 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -652,6 +674,10 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         if location is not None:
             extra_params['location'] = location
 
@@ -737,8 +763,12 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def load_table_from_uri(
-            self, source_uris, destination, job_id=None, job_id_prefix=None,
-            location=None, project=None, job_config=None,
+            self, source_uris, destination,
+            job_id=None,
+            job_id_prefix=None,
+            location=None,
+            project=None,
+            job_config=None,
             retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
@@ -773,14 +803,22 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.LoadJob: A new load job.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
+
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
+
         load_job = job.LoadJob(
             job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
+
         return load_job
 
     def load_table_from_file(
@@ -831,14 +869,22 @@ class Client(ClientWithProject):
                 mode.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job._build_resource()
+
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
+
         _check_mode(file_obj)
+
         try:
             if size is None or size >= _MAX_MULTIPART_SIZE:
                 response = self._do_resumable_upload(
@@ -848,6 +894,7 @@ class Client(ClientWithProject):
                     file_obj, job_resource, size, num_retries)
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
+
         return self.job_from_resource(response.json())
 
     def load_table_from_dataframe(self, dataframe, destination,
@@ -901,10 +948,19 @@ class Client(ClientWithProject):
             job_config = job.LoadJobConfig()
         job_config.source_format = job.SourceFormat.PARQUET
 
+        if location is None:
+            location = self.location
+
         return self.load_table_from_file(
-            buffer, destination, num_retries=num_retries, rewind=True,
-            job_id=job_id, job_id_prefix=job_id_prefix, location=location,
-            project=project, job_config=job_config)
+            buffer, destination,
+            num_retries=num_retries,
+            rewind=True,
+            job_id=job_id,
+            job_id_prefix=job_id_prefix,
+            location=location,
+            project=project,
+            job_config=job_config,
+        )
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
@@ -1050,16 +1106,23 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.CopyJob: A new copy job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
+
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self,
             job_config=job_config)
         copy_job._begin(retry=retry)
+
         return copy_job
 
     def extract_table(
@@ -1103,8 +1166,13 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.ExtractJob: A new extract job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
 
         if isinstance(destination_uris, six.string_types):
@@ -1114,6 +1182,7 @@ class Client(ClientWithProject):
             job_ref, source, destination_uris, client=self,
             job_config=job_config)
         extract_job._begin(retry=retry)
+
         return extract_job
 
     def query(
@@ -1149,12 +1218,18 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.QueryJob: A new query job instance.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
+
         if project is None:
             project = self.project
+
+        if location is None:
+            location = self.location
+
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(
             job_ref, query, client=self, job_config=job_config)
         query_job._begin(retry=retry)
+
         return query_job
 
     def insert_rows(self, table, rows, selected_fields=None, **kwargs):
