@@ -21,6 +21,9 @@ cd github/google-cloud-python
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
+# Debug: show build environment
+env
+
 # Find out if this package was modified.
 python3.6 -m pip install git+https://github.com/tswast/ci-diff-helper.git
 python3.6 test_utils/scripts/get_target_packages_kokoro.py > ~/target_packages
