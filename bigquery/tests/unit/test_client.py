@@ -1110,7 +1110,10 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID
             },
             'schema': schema_resource,
-            'view': {'query': query, 'useLegacySql': True},
+            'view': {
+                'query': query,
+                'useLegacySql': True,
+            },
             'location': location,
             'expirationTime': _millis(exp_time)
         }
@@ -1118,31 +1121,34 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF, schema=schema)
-        table.location = location
         table.expires = exp_time
         table.view_query = query
         table.view_use_legacy_sql = True
-        updated_properties = ['schema', 'view_query', 'location',
-                              'expires', 'view_use_legacy_sql']
+        updated_properties = [
+            'schema', 'view_query', 'expires', 'view_use_legacy_sql']
 
         updated_table = client.update_table(table, updated_properties)
+
+        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(updated_table.view_query, table.view_query)
+        self.assertEqual(updated_table.expires, table.expires)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+        self.assertEqual(updated_table.location, location)
 
         conn.api_request.assert_called_once_with(
             method='PATCH',
             path='/%s' % path,
             data={
-                'view': {'query': query, 'useLegacySql': True},
-                'location': location,
+                'view': {
+                    'query': query,
+                    'useLegacySql': True,
+                },
                 'expirationTime': str(_millis(exp_time)),
                 'schema': schema_resource,
             },
-            headers=None)
-        self.assertEqual(updated_table.schema, table.schema)
-        self.assertEqual(updated_table.view_query, table.view_query)
-        self.assertEqual(updated_table.location, table.location)
-        self.assertEqual(updated_table.expires, table.expires)
-        self.assertEqual(
-            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+            headers=None,
+        )
 
     def test_update_table_w_schema_None(self):
         # Simulate deleting schema:  not sure if back-end will actually

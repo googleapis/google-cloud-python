@@ -560,20 +560,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.friendly_name = 'FRIENDLY'
         self.assertEqual(table.friendly_name, 'FRIENDLY')
 
-    def test_location_setter_bad_value(self):
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref)
-        with self.assertRaises(ValueError):
-            table.location = 12345
-
-    def test_location_setter(self):
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref)
-        table.location = 'LOCATION'
-        self.assertEqual(table.location, 'LOCATION')
-
     def test_view_query_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
