@@ -235,7 +235,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
             app_profile_id=app_profile_id,
             routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
             description=new_description,
-            ignore_warnings=ignore_warnings,
             cluster_id=CLUSTER_ID,
             allow_transactional_writes=allow_transactional_writes)
         operation.result(timeout=10)
@@ -269,7 +268,6 @@ class TestInstanceAdminAPI(unittest.TestCase):
             routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
             description=description,
             cluster_id=CLUSTER_ID,
-            ignore_warnings=ignore_warnings
         )
 
         # Load a different app_profile objec form the server and
