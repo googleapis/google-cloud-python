@@ -166,7 +166,12 @@ class QueryPriority(object):
 
 
 class SourceFormat(object):
-    """The format of the data files. The default value is :attr:`CSV`."""
+    """The format of the data files. The default value is :attr:`CSV`.
+
+    Note that the set of allowed values for loading data is different
+    than the set used for external data sources (see
+    :class:`~google.cloud.bigquery.external_config.ExternalSourceFormat`).
+    """
 
     CSV = 'CSV'
     """Specifies CSV format."""
