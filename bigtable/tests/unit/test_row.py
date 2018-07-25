@@ -107,6 +107,26 @@ class TestDirectRow(unittest.TestCase):
         row._pb_mutations = mutations = object()
         self.assertIs(mutations, row._get_mutations(None))
 
+    def test_get_mutations_size(self):
+        row_key = b'row_key'
+        row = self._make_one(row_key, None)
+
+        column_family_id1 = u'column_family_id1'
+        column_family_id2 = u'column_family_id2'
+        column1 = b'column1'
+        column2 = b'column2'
+        number_of_bytes = 1 * 1024 * 1024
+        value = b'1' * number_of_bytes
+
+        row.set_cell(column_family_id1, column1, value)
+        row.set_cell(column_family_id2, column2, value)
+
+        total_mutations_size = 0
+        for mutation in row._get_mutations():
+            total_mutations_size += mutation.ByteSize()
+
+        self.assertEqual(row.get_mutations_size(), total_mutations_size)
+
     def _set_cell_helper(self, column=None, column_bytes=None,
                          value=b'foobar', timestamp=None,
                          timestamp_micros=-1):

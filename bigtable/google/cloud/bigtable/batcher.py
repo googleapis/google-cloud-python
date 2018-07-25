@@ -69,6 +69,31 @@ class MutationsBatcher(object):
         """ Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
+        Example:
+            >>> # Batcher for flush count
+            >>> batcher = table.batcher(flush_count=10)
+            >>>
+            >>> rows = ["list of 1000 rows"]
+            >>>
+            >>> # In batcher mutate will create batch of 10 rows if it
+            >>> # reaches the max flush_count
+            >>> for row in rows:
+            >>>     batcher.mutate(row)
+            >>>
+            >>> batcher.flush()
+            >>>
+            >>> # Batcher for max row bytes
+            >>> batcher = table.batcher(max_row_bytes=1024)
+            >>>
+            >>> rows = ["list of 1000 rows"]
+            >>>
+            >>> # In batcher mutate will create batch of rows if it
+            >>> # reaches the max max_row_bytes
+            >>> for row in rows:
+            >>>     batcher.mutate(row)
+            >>>
+            >>> batcher.flush()
+
         :type row: class
         :param row: class:`~google.cloud.bigtable.row.DirectRow`.
 
@@ -89,13 +114,9 @@ class MutationsBatcher(object):
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
             self.flush()
 
-        mutation_size = 0
-        for mutation in row._get_mutations():
-            mutation_size = mutation.ByteSize()
-
         self.rows.append(row)
         self.total_mutation_count += mutation_count
-        self.total_size += mutation_size
+        self.total_size = row.get_mutations_size()
 
         if self.total_size >= self.max_row_bytes:
             self.flush()
