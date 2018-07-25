@@ -9,6 +9,7 @@
 ### Implementation Changes
 
 - Do not pass 'offset' once the query iterator has a cursor (#5503)
+- Add test runs for Python 3.7 and remove run for 3.4 (#5295)
 
 ### Documentation
 
@@ -17,7 +18,6 @@
 
 ### Internal / Testing Changes
 
-- Add Test runs for Python 3.7 and remove 3.4 (#5295)
 - Modify system tests to use prerelease versions of grpcio (#5304)
 - Avoid overwriting '__module__' of messages from shared modules. (#5364)
 - Attempt again to reproduce #4264. (#5403)
