@@ -14,16 +14,16 @@ library.
 The protoc contract
 ~~~~~~~~~~~~~~~~~~~
 
-This code generator is written as a ``protoc`` plugin, which operates on
+This code generator is written as a :command:`protoc` plugin, which operates on
 a defined contract. The contract is straightforward: a plugin must
-accept a `CodeGeneratorRequest <plugin.proto>`_ (essentially a sequence of
-`FileDescriptor <descriptor.proto>`_ objects) and output a
-`CodeGeneratorResponse <plugin.proto>`_.
+accept a ``CodeGeneratorRequest`` (essentially a sequence of
+``FileDescriptor`` objects) and output a
+``CodeGeneratorResponse``.
 
-If you are unfamiliar with ``protoc`` plugins, welcome! That last paragraph
-likely sounded not as straightforward as claimed. It may be useful to read
-`plugin.proto`_ and `descriptor.proto`_ before continuing on. The former
-describes the contract with plugins (such as this one) and is relatively
+If you are unfamiliar with :command:`protoc` plugins, welcome! That last
+paragraph likely sounded not as straightforward as claimed. It may be useful
+to read `plugin.proto`_ and `descriptor.proto`_ before continuing on. The
+former describes the contract with plugins (such as this one) and is relatively
 easy to digest, the latter describes protocol buffer files themselves and is
 rather dense. The key point to grasp is that each ``.proto`` *file* compiles
 into one of these proto messages (called *descriptors*), and this plugin's
@@ -53,7 +53,7 @@ parsing. The guts of this is handled by the :class:`~.schema.api.API` object,
 which is this plugin's internal representation of the full API client.
 
 In particular, this class has a :meth:`~.schema.api.API.build` method which
-accepts a sequence of `FileDescriptor`_ objects (remember, this is ``protoc``'s
+accepts a sequence of ``FileDescriptor`` objects (remember, this is ``protoc``'s
 internal representation of each proto file). That method iterates over each
 file and creates a :class:`~.schema.api.Proto` object for each one.
 
@@ -101,53 +101,19 @@ Translation
 The translation step follows a straightfoward process to write the contents
 of client library files.
 
-First, it loads every template in the ``templates/`` directory.
-These are `Jinja`_ templates. **There is no master list of templates**;
-it is assumed that every template in this directory should be rendered
-(unless its name begins with a single underscore).
+This works by reading in and rendering `Jinja`_ templates into a string.
+The file path of the Jinja template is used to determine the filename
+in the resulting client library.
 
-The name of the output file is based on the name of the template, with
-the following string replacements applied:
+More details on authoring templates is discussed on the :doc:`templates`
+page.
 
-* The ``.j2`` suffix is removed.
-* ``$namespace`` is replaced with the namespace specified in the client,
-  converted to appropriate Python module case. If there is no namespace,
-  this segment is dropped. If the namespace has more than one element,
-  this is expanded out in the directory structure. (For example, a namespace
-  of ``['Acme', 'Manufacturing']`` will translate into ``acme/manufacturing/``
-  directories.)
-* ``$name`` is replaced with the client name. This is expected to be
-  present.
-* ``$version`` is replaced with the client version (the version of the API).
-  If there is no specified version, this is dropped.
-* ``$name_$version`` is a special case: It is replaced with the client
-  name, followed by the version. However, if there is no version, both it
-  and the underscore are dropped.
-* ``$service`` is replaced with the service name, converted to appropriate
-  Python module case. There may be more than one service in an API; read on
-  for more about this.
+Exit Point
+~~~~~~~~~~
 
-Every template receives **one** variable, spelled ``api``. It is the
-:class:`~.schema.api.API` object that was pieced together in the parsing step.
-
-There is one caveat to the above, which is that an API can have more than
-one service. Therefore, templates with ``$service/`` in their name
-are a special case. These files are rendered *once per service*, with the
-``$service`` directory name changed to the name of the service itself
-(in snake case, because this is Python). Additionally, these templates
-receive two variables: the ``api`` variable discussed above, as well as a
-variable spelled ``service``, which corresponds to the
-:class:`~/schema.wrappers.Service` currently being iterated over.
-
-.. note::
-
-  The Jinja environment also receives a small number of filters useful
-  for writing properly formatted templates (e.g. a ``snake_case`` filter);
-  these are defined in :meth:`~.generator.generate` where the environment is
-  created.
-
-After all templates are processed, any files in the ``generator/files/``
-directory are written. These are not templates, and they are read into
-memory and eventually written with no processing whatsoever.
+Once the individual strings corresponding to each file to be generated
+is collected into memory, these are pieced together into a
+``CodeGeneratorResponse`` object, which is serialized
+and written to stdout.
 
 .. _Jinja: http://jinja.pocoo.org/docs/2.10/

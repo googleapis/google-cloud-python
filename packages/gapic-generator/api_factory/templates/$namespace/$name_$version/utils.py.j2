@@ -1,0 +1,22 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import functools
+
+
+def dispatch(func):
+    base_dispatcher = functools.singledispatch(func)
+
+    # Define a wrapper function that works off args[1] instead of args[0].
+    # This is needed because we are overloading *methods*, and their first
+    # argument is always `self`.
+    @functools.wraps(base_dispatcher)
+    def wrapper(*args, **kwargs):
+        return base_dispatcher.dispatch(args[1].__class__)(*args, **kwargs)
+
+    # The register function is not changed, so let singledispatch do the work.
+    wrapper.register = base_dispatcher.register
+
+    # Done; return the decorated method.
+    return wrapper
+{% endblock %}

@@ -22,5 +22,6 @@ implemented as a plugin to ``protoc``, the protocol buffer compiler.
   getting-started
   api-configuration
   process
+  templates
   status
   reference/index

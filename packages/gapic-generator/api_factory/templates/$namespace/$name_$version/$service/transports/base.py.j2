@@ -10,8 +10,8 @@ from google.api_core import operations_v1
 {%- endif %}
 from google.auth import credentials
 
-{% for package, pb2_module in service.pb2_modules -%}
-from {{ package }} import {{ pb2_module }}
+{% for package, python_module in service.python_modules -%}
+from {{ package }} import {{ python_module }}
 {% endfor %}
 
 class {{ service.name }}Transport(metaclass=abc.ABCMeta):
@@ -57,8 +57,8 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def {{ method.name|snake_case }}(
             self,
-            request: {{ method.input.pb2_module }}.{{ method.input.name }},
-            ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
+            request: {{ method.input.python_ident }},
+            ) -> {{ method.output.python_ident }}:
         raise NotImplementedError
     {%- endfor %}
 {% endblock %}

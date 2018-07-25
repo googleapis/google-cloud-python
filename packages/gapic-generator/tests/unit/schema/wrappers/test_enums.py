@@ -12,34 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Tuple
+
 from google.protobuf import descriptor_pb2
 
+from api_factory.schema import metadata
 from api_factory.schema import wrappers
 
 
-def get_enum() -> wrappers.EnumType:
+def test_enum_properties():
+    enum_type = make_enum(name='Color')
+    assert enum_type.name == 'Color'
+
+
+def test_enum_value_properties():
+    enum_type = make_enum(name='Irrelevant', values=(
+        ('RED', 1), ('GREEN', 2), ('BLUE', 3),
+    ))
+    assert len(enum_type.values) == 3
+    for ev, expected in zip(enum_type.values, ('RED', 'GREEN', 'BLUE')):
+        assert ev.name == expected
+
+
+def test_enum_python_ident():
+    message = make_enum('Baz', package='foo.v1', module='bar')
+    assert message.python_ident == 'bar_pb2.Baz'
+
+
+def test_enum_sphinx_ident():
+    message = make_enum('Baz', package='foo.v1', module='bar')
+    assert message.sphinx_ident == '~.bar_pb2.Baz'
+
+
+def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
+        values: Tuple[str, int] = (), meta: metadata.Metadata = None,
+        ) -> wrappers.EnumType:
     enum_value_pbs = [
-        descriptor_pb2.EnumValueDescriptorProto(name='RED', number=1),
-        descriptor_pb2.EnumValueDescriptorProto(name='GREEN', number=2),
-        descriptor_pb2.EnumValueDescriptorProto(name='BLUE', number=3),
+        descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
+        for i in values
     ]
     enum_pb = descriptor_pb2.EnumDescriptorProto(
-        name='Color',
+        name=name,
         value=enum_value_pbs,
     )
     return wrappers.EnumType(
         enum_pb=enum_pb,
         values=[wrappers.EnumValueType(enum_value_pb=evpb)
                 for evpb in enum_value_pbs],
+        meta=meta or metadata.Metadata(address=metadata.Address(
+            package=tuple(package.split('.')),
+            module=module,
+        )),
     )
-
-
-def test_enum_properties():
-    enum_type = get_enum()
-    assert enum_type.name == 'Color'
-
-
-def test_enum_value_properties():
-    enum_type = get_enum()
-    for ev, expected in zip(enum_type.values, ('RED', 'GREEN', 'BLUE')):
-        assert ev.name == expected

@@ -38,11 +38,11 @@ def test_api_build():
                 make_message_pb2(name='Foo', fields=()),
                 make_message_pb2(name='GetFooRequest', fields=(
                     make_field_pb2(name='imported_message', number=1,
-                                   type_name='google.dep.ImportedMessasge'),
+                                   type_name='.google.dep.ImportedMessage'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=(
                     make_field_pb2(name='foo', number=1,
-                                   type_name='google.example.v1.Foo'),
+                                   type_name='.google.example.v1.Foo'),
                 )),
             ),
             services=(descriptor_pb2.ServiceDescriptorProto(
@@ -103,15 +103,15 @@ def test_proto_builder_constructor():
         # of children.
         assert lc.call_count == 3
 
-        # The message type should come first.
+        # The enum type should come first.
         _, args, _ = lc.mock_calls[0]
-        assert args[0][0] == sentinel_message
-        assert args[1] == pb._load_message
-
-        # The enum type should come second.
-        _, args, _ = lc.mock_calls[1]
         assert args[0][0] == sentinel_enum
         assert args[1] == pb._load_enum
+
+        # The message type should come second.
+        _, args, _ = lc.mock_calls[1]
+        assert args[0][0] == sentinel_message
+        assert args[1] == pb._load_message
 
         # The services should come third.
         _, args, _ = lc.mock_calls[2]
@@ -161,6 +161,55 @@ def test_messages():
     assert message.meta.doc == 'This is the Foo message.'
     assert len(message.fields) == 1
     assert message.fields['bar'].meta.doc == 'This is the bar field.'
+
+
+def test_messages_reverse_declaration_order():
+    # Test that if a message is used as a field higher in the same file,
+    # that things still work.
+    message_pbs = (
+        make_message_pb2(name='Foo', fields=(
+            make_field_pb2(name='bar', number=1,
+                           type_name='.google.example.v3.Bar'),
+            ),
+        ),
+        make_message_pb2(name='Bar'),
+    )
+    fdp = make_file_pb2(
+        messages=message_pbs,
+        package='google.example.v3',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    assert len(proto.messages) == 2
+    Foo = proto.messages['google.example.v3.Foo']
+    assert Foo.fields['bar'].message == proto.messages['google.example.v3.Bar']
+
+
+def test_messages_recursive():
+    # Test that if a message is used as a field higher in the same file,
+    # that things still work.
+    message_pbs = (
+        make_message_pb2(name='Foo', fields=(
+            make_field_pb2(name='foo', number=1,
+                           type_name='.google.example.v3.Foo'),
+            ),
+        ),
+    )
+    fdp = make_file_pb2(
+        messages=message_pbs,
+        package='google.example.v3',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    assert len(proto.messages) == 1
+    Foo = proto.messages['google.example.v3.Foo']
+    assert Foo.fields['foo'].message == proto.messages['google.example.v3.Foo']
 
 
 def test_services():
@@ -362,6 +411,10 @@ def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
         source_code_info=descriptor_pb2.SourceCodeInfo(location=locations),
     )
 
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        'google/longrunning/operations.proto': lro_proto,
+    })
 
 def make_message_pb2(name: str, fields=()) -> descriptor_pb2.DescriptorProto:
     return descriptor_pb2.DescriptorProto(name=name, field=fields)

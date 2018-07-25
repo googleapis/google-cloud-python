@@ -49,9 +49,9 @@ def test_service_no_scopes():
     assert len(service.oauth_scopes) == 0
 
 
-def test_service_pb2_modules():
+def test_service_python_modules():
     service = make_service()
-    assert service.pb2_modules == (
+    assert service.python_modules == (
         ('a.b.v1', 'c_pb2'),
         ('foo', 'bacon_pb2'),
         ('foo', 'bar_pb2'),
@@ -60,13 +60,13 @@ def test_service_pb2_modules():
     )
 
 
-def test_service_pb2_modules_lro():
+def test_service_python_modules_lro():
     service = make_service_with_method_options()
-    assert service.pb2_modules == (
+    assert service.python_modules == (
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
         ('foo', 'qux_pb2'),
-        ('google.longrunning', 'operations_pb2'),
+        ('google.api_core', 'operation'),
     )
 
 
@@ -128,7 +128,7 @@ def make_service_with_method_options(*,
         'DoBigThing',
         'foo.bar.ThingRequest',
         'google.longrunning.operations.Operation',
-        lro_payload_type='foo.baz.ThingResponse',
+        lro_response_type='foo.baz.ThingResponse',
         lro_metadata_type='foo.qux.ThingMetadata',
         http_rule=http_rule,
     )
@@ -146,14 +146,12 @@ def make_service_with_method_options(*,
 def get_method(name: str,
         in_type: str,
         out_type: str,
-        lro_payload_type: str = '',
+        lro_response_type: str = '',
         lro_metadata_type: str = '',
         http_rule: http_pb2.HttpRule = None,
         ) -> wrappers.Method:
     input_ = get_message(in_type)
     output = get_message(out_type)
-    lro_payload = get_message(lro_payload_type) if lro_payload_type else None
-    lro_meta = get_message(lro_metadata_type) if lro_metadata_type else None
 
     # Define a method descriptor. Set the field headers if appropriate.
     method_pb = descriptor_pb2.MethodDescriptorProto(
@@ -161,6 +159,11 @@ def get_method(name: str,
         input_type=input_.proto_path,
         output_type=output.proto_path,
     )
+    if lro_response_type:
+        output = wrappers.OperationType(
+            lro_response=get_message(lro_response_type),
+            lro_metadata=get_message(lro_metadata_type),
+        )
     if http_rule:
         ext_key = annotations_pb2.http
         method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
@@ -168,13 +171,15 @@ def get_method(name: str,
     return wrappers.Method(
         method_pb=method_pb,
         input=input_,
-        lro_metadata=lro_meta,
-        lro_payload=lro_payload,
         output=output,
     )
 
 
 def get_message(dot_path: str) -> wrappers.MessageType:
+    # Pass explicit None through (for lro_metadata).
+    if dot_path is None:
+        return None
+
     # Note: The `dot_path` here is distinct from the canonical proto path
     # because it includes the module, which the proto path does not.
     #

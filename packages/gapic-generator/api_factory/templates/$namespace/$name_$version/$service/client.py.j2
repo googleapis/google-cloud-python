@@ -1,23 +1,17 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-import functools
 import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
-{%- if service.has_field_headers %}
-from urllib import parse
-{%- endif %}
 
 from google.api_core import gapic_v1
-{%- if service.has_lro %}
-from google.api_core import operation
-{%- endif %}
 from google.api_core import retry
 from google.auth import credentials
 
-{% for package, pb2_module in service.pb2_modules -%}
-from {{ package }} import {{ pb2_module }}
+{% for package, python_module in service.python_modules -%}
+from {{ package }} import {{ python_module }}
 {% endfor %}
+from ..utils import dispatch
 from .transports import get_transport_class
 from .transports import {{ service.name }}Transport
 
@@ -57,23 +51,21 @@ class {{ service.name }}:
         else:
             Transport = get_transport_class(transport)
             self._transport = Transport(credentials=credentials)
-    {%- for method in service.methods.values() %}
 
-    @functools.singledispatch
+    {% for method in service.methods.values() -%}
+    {%- if method.signatures.single_dispatch -%}
+    @dispatch
+    {% endif -%}
     def {{ method.name|snake_case }}(self,
-            request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
+            request: {{ method.input.python_ident }}, *,
             retry: retry.Retry = None,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            {%- if method.lro_payload %}
-            ) -> operation.Operation:
-            {%- else %}
-            ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
-            {%- endif %}
+            ) -> {{ method.output.python_ident }}:
         """{{ method.meta.doc|wrap(width=72, subsequent_indent=' ' * 8) }}
 
         Args:
-            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}):
+            request ({{ method.input.sphinx_ident }}):
                 The request object. {{ method.input.meta.doc|wrap(width=72,
                 initial_width=36, subsequent_indent=' ' * 16) }}
             retry (~.retry.Retry): Designation of what errors, if any,
@@ -83,15 +75,14 @@ class {{ service.name }}:
                 sent alont with the request as metadata.
 
         Returns:
-            {%- if method.lro_payload %}
-            ~.operation.Operation:
-                A :class:`google.api_core.operation.Operation` instance.
-            {%- else %}
-            ~.{{ method.output.pb2_module }}.{{ method.output.name }}:
+            {{ method.output.sphinx_ident }}:
                 {{ method.output.meta.doc|wrap(width=72, initial_width=56,
                                                subsequent_indent=' ' * 16) }}
-            {%- endif %}
         """
+        # Coerce the request to the protocol buffer object.
+        if not isinstance(request, {{ method.input.python_ident }}):
+            request = {{ method.input.python_ident }}(**request)
+
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(
@@ -102,44 +93,78 @@ class {{ service.name }}:
         )
         {%- if method.field_headers %}
 
-        # Ensure metadata is a mutable sequence.
-        metadata = list(metadata)
-
-        # Add request headers to metadata.
-        {%- for field_header in method.field_headers %}
-
-        try:
-            header_value = request.{{ field_header.field }}
-        except AttributeError:
-            # Suppress when attribute missing.
-            pass
-        else:
-            metadata.append((
-                '{{ field_header.header }}',
-                '{}={}'.format(
-                    parse.quote_plus('{{ field_header.field }}'),
-                    parse.quote_plus(header_value),
-                ),
-            ))
-        {%- endfor %}
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata({
+                {%- for field_header in method.field_headers %}
+                '{{ field_header }}': request.{{ field_header }},
+                {%- endfor %}
+            }),
+        )
         {%- endif %}
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
-        {%- if method.lro_payload %}
+        response = rpc(request, retry=retry,
+                       timeout=timeout, metadata=metadata)
+        {%- if method.output.lro_response %}
 
         # Wrap the response in an operation future
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            {{ method.lro_payload.pb2_module }}.{{ method.lro_payload.name }},
-            metadata_type={{ method.lro_metadata.pb2_module }}.{{ method.lro_metadata.name }}
+            {{ method.output.lro_response.python_ident }},
+            {%- if method.output.lro_metadata %}
+            metadata_type={{ method.output.lro_metadata.python_ident }},
+            {%- endif %}
         )
         {%- endif %}
 
         # Done; return the response.
         return response
-    {%- endfor %}
+
+    {% for signature in method.signatures.single_dispatch -%}
+    @{{ method.name|snake_case }}.register
+    def _{{ method.name|snake_case }}_with_{{ signature.dispatch_field.name|snake_case }}(self,
+            {%- for field in signature.fields.values() %}
+            {{ field.name  }}: {{ field.python_ident }}{% if loop.index0 > 0 and not field.required %} = None{% endif %},
+            {%- endfor %}
+            *,
+            retry: retry.Retry = None,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> {{ method.output.python_ident }}:
+        """{{ method.meta.doc|wrap(width=72, subsequent_indent=' ' * 8) }}
+
+        Args:
+            {%- for field in signature.fields.values() %}
+            {{ field.name }} ({{ field.sphinx_ident }}):
+                {{ field.meta.doc|wrap(width=72, initial_width=56,
+                    subsequent_indent=' ' * 16) }}
+            {%- endfor %}
+            retry (~.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent alont with the request as metadata.
+
+        Returns:
+            {{ method.output.sphinx_ident }}:
+                {{ method.output.meta.doc|wrap(width=72, initial_width=56,
+                                               subsequent_indent=' ' * 16) }}
+        """
+        return self.{{ method.name|snake_case }}(
+            {{ method.input.python_ident }}(
+                {%- for field in signature.fields.values() %}
+                {{ field.name }}={{ field.name }},
+                {%- endfor %}
+            ),
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+    {% endfor %}
+    {% endfor -%}
 
     @property
     def client_info(self) -> gapic_v1.client_info.ClientInfo:

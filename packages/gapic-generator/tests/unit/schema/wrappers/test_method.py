@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import collections
+from typing import Sequence
 
+from google.api import annotations_pb2
 from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
@@ -21,54 +23,103 @@ from api_factory.schema import metadata
 from api_factory.schema import wrappers
 
 
-def get_method() -> wrappers.Method:
-    # Create the address where this method lives, and the types live,
-    # and make them distinct.
-    method_addr = metadata.Address(package=['foo', 'bar'], module='baz')
-    types_addr = metadata.Address(package=['foo', 'bar'], module='bacon')
+def test_method_types():
+    input_msg = make_message(name='Input', module='baz')
+    output_msg = make_message(name='Output', module='baz')
+    method = make_method('DoSomething', input_msg, output_msg,
+                         package='foo.bar', module='bacon')
+    assert method.name == 'DoSomething'
+    assert method.input.name == 'Input'
+    assert method.input.python_module == 'baz_pb2'
+    assert method.output.name == 'Output'
+    assert method.output.python_module == 'baz_pb2'
 
-    # Create the method pb2 and set an overload in it.
+
+def test_method_signature():
+    # Set up a meaningful input message.
+    input_msg = make_message(name='Input', fields=(
+        make_field('int_field', type=5),
+        make_field('bool_field', type=8),
+        make_field('float_field', type=2),
+    ))
+
+    # Create the method.
+    method = make_method('SendStuff', input_message=input_msg)
+
+    # Edit the underlying method pb2 post-hoc to add the appropriate annotation
+    # (google.api.signature).
+    method.options.Extensions[annotations_pb2.method_signature].MergeFrom(
+        signature_pb2.MethodSignature(fields=['int_field', 'float_field'])
+    )
+
+    # We should get back just those two fields as part of the signature.
+    assert len(method.signatures) == 1
+    signature = method.signatures[0]
+    assert tuple(signature.fields.keys()) == ('int_field', 'float_field')
+
+
+def test_method_no_signature():
+    assert len(make_method('Ping').signatures) == 0
+
+
+def test_method_field_headers():
+    method = make_method('DoSomething')
+    assert isinstance(method.field_headers, collections.Sequence)
+
+
+def make_method(
+        name: str, input_message: wrappers.MessageType = None,
+        output_message: wrappers.MessageType = None,
+        package: str = 'foo.bar.v1', module: str = 'baz',
+        **kwargs) -> wrappers.Method:
+    # Use default input and output messages if they are not provided.
+    input_message = input_message or make_message('MethodInput')
+    output_message = output_message or make_message('MethodOutput')
+
+    # Create the method pb2.
     method_pb = descriptor_pb2.MethodDescriptorProto(
-        name='DoTheThings',
-        input_type='foo.bar.Input',
-        output_type='foo.bar.Output',
+        name=name,
+        input_type=str(input_message.meta.address),
+        output_type=str(output_message.meta.address),
     )
 
     # Instantiate the wrapper class.
     return wrappers.Method(
         method_pb=method_pb,
-        input=wrappers.MessageType(
-            fields=[],
-            message_pb=descriptor_pb2.DescriptorProto(name='Input'),
-            meta=metadata.Metadata(address=types_addr),
-        ),
-        output=wrappers.MessageType(
-            fields=[],
-            message_pb=descriptor_pb2.DescriptorProto(name='Output'),
-            meta=metadata.Metadata(address=types_addr),
-        ),
-        meta=metadata.Metadata(address=method_addr),
+        input=input_message,
+        output=output_message,
+        meta=metadata.Metadata(address=metadata.Address(
+            package=package,
+            module=module,
+        )),
     )
 
 
-def test_method_properties():
-    method = get_method()
-    assert method.name == 'DoTheThings'
+def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
+        fields: Sequence[wrappers.Field] = (),
+        ) -> wrappers.MessageType:
+    message_pb = descriptor_pb2.DescriptorProto(
+        name=name,
+        field=[i.field_pb for i in fields],
+    )
+    return wrappers.MessageType(
+        message_pb=message_pb,
+        fields=collections.OrderedDict((i.name, i) for i in fields),
+        meta=metadata.Metadata(address=metadata.Address(
+            package=tuple(package.split('.')),
+            module=module,
+        )),
+    )
 
 
-def test_method_types():
-    method = get_method()
-    assert method.input.name == 'Input'
-    assert method.input.pb2_module == 'bacon_pb2'
-    assert method.output.name == 'Output'
-    assert method.output.pb2_module == 'bacon_pb2'
-
-
-def test_method_signature():
-    method = get_method()
-    assert isinstance(method.signature, signature_pb2.MethodSignature)
-
-
-def test_method_field_headers():
-    method = get_method()
-    assert isinstance(method.field_headers, collections.Sequence)
+def make_field(name: str, repeated: bool = False,
+               meta: metadata.Metadata = None, **kwargs) -> wrappers.Method:
+    field_pb = descriptor_pb2.FieldDescriptorProto(
+        name=name,
+        label=3 if repeated else 1,
+        **kwargs
+    )
+    return wrappers.Field(
+        field_pb=field_pb,
+        meta=meta or metadata.Metadata(),
+    )

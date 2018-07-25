@@ -26,21 +26,20 @@ in a separate structure, and this object model re-connects the comments
 with the things they describe for easy access in templates.
 """
 
-import copy
 import dataclasses
-from typing import List
+from typing import Tuple
 
 from google.protobuf import descriptor_pb2
 
 
 @dataclasses.dataclass(frozen=True)
 class Address:
-    package: List[str] = dataclasses.field(default_factory=list)
+    package: Tuple[str] = dataclasses.field(default_factory=tuple)
     module: str = ''
-    parent: List[str] = dataclasses.field(default_factory=list)
+    parent: Tuple[str] = dataclasses.field(default_factory=tuple)
 
     def __str__(self):
-        return '.'.join(self.package + self.parent)
+        return '.'.join(tuple(self.package) + tuple(self.parent))
 
     def child(self, child_name: str) -> 'Address':
         """Return a new Address with ``child_name`` appended to its parent.
@@ -53,9 +52,32 @@ class Address:
         Returns:
             ~.Address: The new address object.
         """
-        answer = copy.deepcopy(self)
-        answer.parent.append(child_name)
-        return answer
+        return type(self)(
+            module=self.module,
+            package=self.package,
+            parent=self.parent + (child_name,),
+        )
+
+    def resolve(self, selector: str) -> str:
+        """Resolve a potentially-relative protobuf selector.
+
+        This takes a protobuf selector which may be fully-qualified
+        (e.g. `foo.bar.v1.Baz`) or may be relative (`Baz`) and
+        returns the fully-qualified version.
+
+        This method is naive and does not check to see if the message
+        actually exists.
+
+        Args:
+            selector (str): A protobuf selector, either fully-qualified
+                or relative.
+
+        Returns:
+            str: An absolute selector.
+        """
+        if '.' not in selector:
+            return f'{".".join(self.package)}.{selector}'
+        return selector
 
 
 @dataclasses.dataclass(frozen=True)
