@@ -585,6 +585,88 @@ class TestClient(unittest.TestCase):
             }
         )
 
+    def test_create_dataset_w_client_location_wo_dataset_location(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets' % self.PROJECT
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(RESOURCE)
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.location, self.LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': self.LOCATION,
+            })
+
+    def test_create_dataset_w_client_location_w_dataset_location(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets' % self.PROJECT
+        OTHER_LOCATION = 'EU'
+        RESOURCE = {
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': OTHER_LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(RESOURCE)
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before.location = OTHER_LOCATION
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.location, OTHER_LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': OTHER_LOCATION,
+            })
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning

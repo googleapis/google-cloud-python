@@ -295,8 +295,14 @@ class Client(ClientWithProject):
 
         """
         path = '/projects/%s/datasets' % (dataset.project,)
+
+        data = dataset.to_api_repr()
+        if data.get('location') is None and self.location is not None:
+            data['location'] = self.location
+
         api_response = self._connection.api_request(
-            method='POST', path=path, data=dataset.to_api_repr())
+            method='POST', path=path, data=data)
+
         return Dataset.from_api_repr(api_response)
 
     def create_table(self, table):
