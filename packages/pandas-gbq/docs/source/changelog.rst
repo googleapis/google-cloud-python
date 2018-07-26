@@ -1,6 +1,15 @@
 Changelog
 =========
 
+.. _changelog-0.5.1:
+
+0.5.1 / (Unreleased)
+--------------------
+
+- Use general float with 15 decimal digit precision when writing to local
+  CSV buffer in ``to_gbq``. This prevents numerical overflow in certain
+  edge cases. (:issue:`192`)
+
 .. _changelog-0.5.0:
 
 0.5.0 / 2018-06-15

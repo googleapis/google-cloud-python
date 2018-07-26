@@ -15,7 +15,7 @@ def encode_chunk(dataframe):
     csv_buffer = six.StringIO()
     dataframe.to_csv(
         csv_buffer, index=False, header=False, encoding='utf-8',
-        date_format='%Y-%m-%d %H:%M:%S.%f')
+        float_format='%.15g', date_format='%Y-%m-%d %H:%M:%S.%f')
 
     # Convert to a BytesIO buffer so that unicode text is properly handled.
     # See: https://github.com/pydata/pandas-gbq/issues/106
