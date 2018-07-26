@@ -61,6 +61,17 @@ def test_data():
     assert msg.data == b'foo'
 
 
+def test_size():
+    msg = create_message(b'foo')
+    assert msg.size == 30  # payload + protobuf overhead
+
+
+def test_ack_id():
+    ack_id = 'MY-ACK-ID'
+    msg = create_message(b'foo', ack_id=ack_id)
+    assert msg.ack_id == ack_id
+
+
 def test_publish_time():
     msg = create_message(b'foo')
     assert msg.publish_time == PUBLISHED
