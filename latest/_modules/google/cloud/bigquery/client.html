@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 2631c7f documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 306efd9cd1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -142,6 +142,8 @@
 <span class="sd">            current object.</span>
 <span class="sd">            This parameter should be considered private, and could change in</span>
 <span class="sd">            the future.</span>
+<span class="sd">        location str:</span>
+<span class="sd">            (Optional) Default location for jobs / datasets / tables.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        google.auth.exceptions.DefaultCredentialsError:</span>
@@ -153,10 +155,17 @@
              <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a BigQuery consumer.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Client.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.__init__"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">location</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default location for jobs / datasets / tables.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
 
 <div class="viewcode-block" id="Client.get_service_account_email"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.get_service_account_email.html#google.cloud.bigquery.client.Client.get_service_account_email">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_account_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the email address of the project&#39;s BigQuery service account</span>
@@ -321,8 +330,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">())</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.create_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.create_table.html#google.cloud.bigquery.client.Client.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
@@ -583,6 +598,9 @@
         <span class="k">if</span> <span class="n">timeout_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;timeoutMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeout_ms</span>
 
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
@@ -648,6 +666,10 @@
 
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
@@ -687,6 +709,10 @@
 
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
@@ -772,8 +798,12 @@
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.load_table_from_uri"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_uri.html#google.cloud.bigquery.client.Client.load_table_from_uri">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_uri</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
+            <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Starts a job for loading data into a table from CloudStorage.</span>
 
@@ -808,14 +838,22 @@
 <span class="sd">            google.cloud.bigquery.job.LoadJob: A new load job.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="n">source_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">source_uris</span><span class="p">]</span>
+
         <span class="n">load_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJob</span><span class="p">(</span>
             <span class="n">job_ref</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
         <span class="n">load_job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">load_job</span></div>
 
 <div class="viewcode-block" id="Client.load_table_from_file"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_file.html#google.cloud.bigquery.client.Client.load_table_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_file</span><span class="p">(</span>
@@ -866,14 +904,22 @@
 <span class="sd">                mode.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
         <span class="n">load_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJob</span><span class="p">(</span><span class="n">job_ref</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
         <span class="n">job_resource</span> <span class="o">=</span> <span class="n">load_job</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+
         <span class="n">_check_mode</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">size</span> <span class="o">&gt;=</span> <span class="n">_MAX_MULTIPART_SIZE</span><span class="p">:</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
@@ -883,6 +929,7 @@
                     <span class="n">file_obj</span><span class="p">,</span> <span class="n">job_resource</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_response</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Client.load_table_from_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.load_table_from_dataframe.html#google.cloud.bigquery.client.Client.load_table_from_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
@@ -936,10 +983,19 @@
             <span class="n">job_config</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
         <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">PARQUET</span>
 
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
-            <span class="n">buffer</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="n">job_id_prefix</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span></div>
+            <span class="n">buffer</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
+            <span class="n">num_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">,</span>
+            <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span>
+            <span class="n">job_id_prefix</span><span class="o">=</span><span class="n">job_id_prefix</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
@@ -1085,16 +1141,23 @@
 <span class="sd">            google.cloud.bigquery.job.CopyJob: A new copy job instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
             <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">sources</span><span class="p">]</span>
+
         <span class="n">copy_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">CopyJob</span><span class="p">(</span>
             <span class="n">job_ref</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
         <span class="n">copy_job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">copy_job</span></div>
 
 <div class="viewcode-block" id="Client.extract_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.extract_table.html#google.cloud.bigquery.client.Client.extract_table">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table</span><span class="p">(</span>
@@ -1138,8 +1201,13 @@
 <span class="sd">            google.cloud.bigquery.job.ExtractJob: A new extract job instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
@@ -1149,6 +1217,7 @@
             <span class="n">job_ref</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
         <span class="n">extract_job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">extract_job</span></div>
 
 <div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.query.html#google.cloud.bigquery.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span>
@@ -1184,12 +1253,18 @@
 <span class="sd">            google.cloud.bigquery.job.QueryJob: A new query job instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
         <span class="n">job_ref</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_JobReference</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
         <span class="n">query_job</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">QueryJob</span><span class="p">(</span>
             <span class="n">job_ref</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
         <span class="n">query_job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">query_job</span></div>
 
 <div class="viewcode-block" id="Client.insert_rows"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.insert_rows.html#google.cloud.bigquery.client.Client.insert_rows">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

@@ -111,5 +111,6 @@ google.cloud.bigquery.client.Client
       :toctree: .
    
       ~Client.SCOPE
+      ~Client.location
    
    

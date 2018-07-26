@@ -1,0 +1,6 @@
+google.cloud.bigquery.client.Client.location
+============================================
+
+.. currentmodule:: google.cloud.bigquery.client
+
+.. autoattribute:: Client.location

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 2631c7f documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 306efd9cd1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,7 +38,7 @@
 <h1>google.cloud.bigquery.client.Client<a class="headerlink" href="#google-cloud-bigquery-client-client" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.bigquery.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>location=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -58,6 +58,7 @@ object is created that is bound to the <code class="docutils literal notranslate
 current object.
 This parameter should be considered private, and could change in
 the future.</li>
+<li><strong>str</strong> (<em>location</em>) – (Optional) Default location for jobs / datasets / tables.</li>
 </ul>
 </td>
 </tr>
@@ -69,7 +70,7 @@ to acquire default credentials.</p>
 </table>
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.__init__" title="Permalink to this definition">#</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>location=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -175,6 +176,9 @@ to acquire default credentials.</p>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.SCOPE.html#google.cloud.bigquery.client.Client.SCOPE" title="google.cloud.bigquery.client.Client.SCOPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SCOPE</span></code></a></td>
 <td>The scopes required for authenticating as a BigQuery consumer.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="google.cloud.bigquery.client.Client.location.html#google.cloud.bigquery.client.Client.location" title="google.cloud.bigquery.client.Client.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
+<td>Default location for jobs / datasets / tables.</td>
 </tr>
 </tbody>
 </table>
