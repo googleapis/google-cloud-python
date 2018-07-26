@@ -914,7 +914,10 @@ class BigtableInstanceAdminClient(object):
 
     def update_cluster(self,
                        name,
+                       location,
                        serve_nodes,
+                       state=None,
+                       default_storage_type=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
                        timeout=google.api_core.gapic_v1.method.DEFAULT,
                        metadata=None):
@@ -985,7 +988,10 @@ class BigtableInstanceAdminClient(object):
         metadata = list(metadata)
         request = instance_pb2.Cluster(
             name=name,
+            location=location,
             serve_nodes=serve_nodes,
+            state=state,
+            default_storage_type=default_storage_type,
         )
 
         routing_header = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
