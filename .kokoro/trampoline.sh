@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-python3 "${KOKORO_GFILE_DIR}/trampoline_v1.py"
+python3 "${KOKORO_GFILE_DIR}/trampoline_canary.py"
