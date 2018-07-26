@@ -202,6 +202,14 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance.labels, instance_alt.labels)
 
+    def test_cluster_exists(self):
+        NONEXISTING_CLUSTER_ID = 'cluster-id'
+
+        cluster = Config.INSTANCE.cluster(CLUSTER_ID)
+        alt_cluster = Config.INSTANCE.cluster(NONEXISTING_CLUSTER_ID)
+        self.assertTrue(cluster.exists())
+        self.assertFalse(alt_cluster.exists())
+
     def test_create_instance_w_two_clusters(self):
         from google.cloud.bigtable import enums
         _PRODUCTION = enums.Instance.Type.PRODUCTION
