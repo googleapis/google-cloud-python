@@ -18,10 +18,6 @@ set -eo pipefail
 
 cd github/google-cloud-python
 
-# Temporary - install missing ca-certificates
-sudo apt-get update
-sudo apt-get install -yq ca-certificates
-
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
