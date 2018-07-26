@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.7.0
+
+### Implementation Changes
+
+- Do not pass 'offset' once the query iterator has a cursor (#5503)
+- Add test runs for Python 3.7 and remove run for 3.4 (#5295)
+
+### Documentation
+
+- minor fix to datastore example (#5452)
+- Add example showing explicit unicode for text values in entities. (#5263)
+
+### Internal / Testing Changes
+
+- Modify system tests to use prerelease versions of grpcio (#5304)
+- Avoid overwriting '__module__' of messages from shared modules. (#5364)
+- Attempt again to reproduce #4264. (#5403)
+- Fix bad trove classifier
+
 ## 1.6.0
 
 ### Implementation changes
