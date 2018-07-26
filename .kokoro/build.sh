@@ -26,7 +26,7 @@ env | grep KOKORO
 
 # Find out if this package was modified.
 # Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
-python3.6 -m pip install --user --quiet git+https://github.com/theacodes/ci-diff-helper.git
+python3.6 -m pip install --quiet git+https://github.com/theacodes/ci-diff-helper.git
 python3.6 test_utils/scripts/get_target_packages_kokoro.py > ~/target_packages
 cat ~/target_packages
 
@@ -37,6 +37,6 @@ fi
 
 cd "$PACKAGE"
 
-python3.6 -m pip install --user --quiet nox-automation
+python3.6 -m pip install --quiet nox-automation
 
 nox
