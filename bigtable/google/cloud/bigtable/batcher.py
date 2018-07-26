@@ -116,12 +116,10 @@ class MutationsBatcher(object):
 
         self.rows.append(row)
         self.total_mutation_count += mutation_count
-        self.total_size = row.get_mutations_size()
+        self.total_size += row.get_mutations_size()
 
-        if self.total_size >= self.max_row_bytes:
-            self.flush()
-
-        if len(self.rows) >= self.flush_count:
+        if (self.total_size >= self.max_row_bytes or
+                len(self.rows) >= self.flush_count):
             self.flush()
 
     def flush(self):

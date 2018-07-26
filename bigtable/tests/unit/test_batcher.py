@@ -112,9 +112,7 @@ class TestMutationsBatcher(unittest.TestCase):
         for row in rows:
             mutation_batcher.mutate(row)
 
-        mutation_batcher.flush()
-
-        self.assertEqual(table.mutation_calls, 2)
+        self.assertEqual(table.mutation_calls, 1)
 
     @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
     def test_add_row_with_max_mutations_failure(self):
@@ -148,20 +146,21 @@ class TestMutationsBatcher(unittest.TestCase):
     def test_add_row_with_max_row_bytes(self):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = self._make_batcher(table,
-                                              max_row_bytes=1 * 1024 * 1024)
+                                              max_row_bytes=3 * 1024 * 1024)
 
-        number_of_bytes = 2 * 1024 * 1024
+        number_of_bytes = 1 * 1024 * 1024
         max_value = b'1' * number_of_bytes
 
         rows = self._make_rows(table)
         rows[0].set_cell('cf1', b'c1', max_value)
+        rows[0].set_cell('cf1', b'c2', max_value)
+        rows[0].set_cell('cf1', b'c1', max_value)
+        rows[0].set_cell('cf1', b'c2', max_value)
 
         for row in rows:
             mutation_batcher.mutate(row)
 
-        mutation_batcher.flush()
-
-        self.assertEqual(table.mutation_calls, 2)
+        self.assertEqual(table.mutation_calls, 1)
 
 
 class _Instance(object):
