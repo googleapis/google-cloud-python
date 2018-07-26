@@ -240,8 +240,8 @@ class Instance(object):
             cluster_id = '{}-cluster'.format(self.instance_id)
 
             clusters = [self.cluster(cluster_id, location_id=location_id,
-                                     serve_nodes=serve_nodes,
-                                     default_storage_type=default_storage_type)]
+                        serve_nodes=serve_nodes,
+                        default_storage_type=default_storage_type)]
         elif (location_id is not None):
             raise ValueError("clusters and one of location_id, serve_nodes, \
                              default_storage_type can not be set \

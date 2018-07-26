@@ -79,8 +79,8 @@ class Cluster(object):
 
         Attributes:
           NOT_KNOWN (int): The state of the cluster could not be determined.
-          READY (int): The cluster has been successfully created and is ready to
-          serve requests.
+          READY (int): The cluster has been successfully created and is ready
+          to serve requests.
           CREATING (int): The cluster is currently being created, and may be
           destroyed if the creation process encounters an error.
           A cluster may not be able to serve requests while being created.
