@@ -59,5 +59,3 @@ how to analyze images using this library.
    :target: https://pypi.org/project/google-cloud-vision/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
    :target: https://pypi.org/project/google-cloud-vision/
-
-REMOVE ME!
