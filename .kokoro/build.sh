@@ -22,7 +22,7 @@ cd github/google-cloud-python
 export PYTHONUNBUFFERED=1
 
 # Debug: show build environment
-env
+env | grep KOKORO
 
 # Find out if this package was modified.
 # Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
