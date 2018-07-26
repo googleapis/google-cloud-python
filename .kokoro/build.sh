@@ -25,7 +25,8 @@ export PYTHONUNBUFFERED=1
 env
 
 # Find out if this package was modified.
-python3.6 -m pip install git+https://github.com/tswast/ci-diff-helper.git
+# Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
+python3.6 -m pip install git+https://github.com/theacodes/ci-diff-helper.git
 python3.6 test_utils/scripts/get_target_packages_kokoro.py > ~/target_packages
 cat ~/target_packages
 
