@@ -18,14 +18,12 @@
 import re
 from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
+from google.api_core import exceptions
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
                               r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
-
-DEFAULT_SERVE_NODES = 3
-"""Default number of nodes to use when creating a cluster."""
 
 _STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
@@ -58,11 +56,11 @@ class Cluster(object):
     :param state: (`OutputOnly`)
                   The current state of the cluster.
                   Possible values are represented by the following constants:
-                  :data:`google.cloud.bigtable.enums.ClusterState.STATE_NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.REAY`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.CREATING`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.RESIZING`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.DISABLED`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.NOT_KNOWN`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.READY`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.CREATING`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.RESIZING`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
 
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
@@ -179,6 +177,21 @@ class Cluster(object):
         #       cluster ID on the response match the request.
         self._update_from_pb(cluster_pb)
 
+    def exists(self):
+        """Check whether the cluster already exists.
+
+        :rtype: bool
+        :returns: True if the table exists, else False.
+        """
+        client = self._instance._client
+        try:
+            client.instance_admin_client.get_cluster(name=self.name)
+        except exceptions.NotFound:
+            print(exceptions.NotFound)
+            return False
+        else:
+            return True
+
     def create(self):
         """Create this cluster.
 
@@ -267,13 +280,13 @@ class Cluster(object):
         client = self._instance._client
         client.instance_admin_client.delete_cluster(self.name)
 
-    def _create_pb_request(self):
+    def _to_pb(self):
         """ Create cluster proto buff message for API calls """
         client = self._instance._client
         location = client.instance_admin_client.location_path(
             client.project, self.location_id)
-        cluster_message = instance_pb2.Cluster(
+        cluster_pb = instance_pb2.Cluster(
             location=location,
             serve_nodes=self.serve_nodes,
             default_storage_type=self.default_storage_type)
-        return cluster_message
+        return cluster_pb

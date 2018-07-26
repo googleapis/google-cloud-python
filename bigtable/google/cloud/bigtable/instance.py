@@ -18,13 +18,17 @@
 import re
 
 from google.cloud.bigtable.table import Table
-from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.cluster import Cluster
 
 from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
+
+DEFAULT_SERVE_NODES = 3
+"""For backwards compatibility the default number of nodes to use for a cluster
+   when creating instance and not using param clusters
+"""
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -179,7 +183,7 @@ class Instance(object):
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
 
-    def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
+    def create(self, location_id=None,
                serve_nodes=DEFAULT_SERVE_NODES,
                default_storage_type=None, clusters=None):
         """Create this instance.
@@ -198,9 +202,12 @@ class Instance(object):
             before calling :meth:`create`.
 
         :type location_id: str
-        :param location_id: ID of the location in which the instance will be
-                            created.  Required for instances which do not yet
-                            exist.
+        :param location_id: (Creation Only) The location where nodes and
+                            storage of the cluster owned by this instance
+                            reside. For best performance, clients should be
+                            located as close as possible to cluster's location.
+                            For list of supported locations refer to
+                            https://cloud.google.com/bigtable/docs/locations
 
 
         :type serve_nodes: int
@@ -232,26 +239,23 @@ class Instance(object):
         if clusters is None:
             cluster_id = '{}-cluster'.format(self.instance_id)
 
-            clusters = [Cluster(cluster_id, self,
-                                location_id=location_id,
-                                serve_nodes=serve_nodes,
-                                default_storage_type=default_storage_type)]
-        elif (location_id is not None or
-              serve_nodes is not None or
-              default_storage_type is not None):
+            clusters = [self.cluster(cluster_id, location_id=location_id,
+                                     serve_nodes=serve_nodes,
+                                     default_storage_type=default_storage_type)]
+        elif (location_id is not None):
             raise ValueError("clusters and one of location_id, serve_nodes, \
                              default_storage_type can not be set \
                              simultaneously.")
 
-        instance = instance_pb2.Instance(
+        instance_pb = instance_pb2.Instance(
             display_name=self.display_name, type=self.type_,
             labels=self.labels)
 
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
-            parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters={c.cluster_id: c._create_pb_request() for c in clusters})
+            parent=parent, instance_id=self.instance_id, instance=instance_pb,
+            clusters={c.cluster_id: c._to_pb() for c in clusters})
 
     def update(self):
         """Update this instance.
@@ -318,11 +322,11 @@ class Instance(object):
         :param state: (`OutputOnly`)
                   The current state of the cluster.
                   Possible values are represented by the following constants:
-                  :data:`google.cloud.bigtable.enums.ClusterState.STATE_NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.READY`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.CREATING`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.RESIZING`.
-                  :data:`google.cloud.bigtable.enums.ClusterState.DISABLED`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.NOT_KNOWN`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.READY`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.CREATING`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.RESIZING`.
+                  :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
 
         :type serve_nodes: int
         :param serve_nodes: (Optional) The number of nodes in the cluster.

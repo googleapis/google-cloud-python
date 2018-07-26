@@ -109,7 +109,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        instance_type = enums.InstanceType.DEVELOPMENT
+        instance_type = enums.Instance.Type.DEVELOPMENT
         labels = {'foo': 'bar'}
         credentials = _make_credentials()
         client = self._make_one(

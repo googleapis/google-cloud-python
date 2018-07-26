@@ -59,6 +59,9 @@ class TestCluster(unittest.TestCase):
                     '/clusters/' + CLUSTER_ID)
     LOCATION_PATH = 'projects/' + PROJECT + '/locations/'
     SERVE_NODES = 5
+    OP_ID = 5678
+    OP_NAME = ('operations/projects/{}/instances/{}/clusters/{}/operations/{}'
+               .format(PROJECT, INSTANCE_ID, CLUSTER_ID, OP_ID))
 
     @staticmethod
     def _get_target_class():
@@ -92,8 +95,8 @@ class TestCluster(unittest.TestCase):
 
     def test_constructor_non_default(self):
         from google.cloud.bigtable.enums import StorageType
-        from google.cloud.bigtable.enums import ClusterState
-        STATE = ClusterState.READY
+        from google.cloud.bigtable.enums import Cluster
+        STATE = Cluster.State.READY
         STORAGE_TYPE_SSD = StorageType.SSD
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
@@ -128,7 +131,7 @@ class TestCluster(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
 
         location = self.LOCATION_PATH + self.LOCATION_ID
-        state = enums.ClusterState.RESIZING
+        state = enums.Cluster.State.RESIZING
         storage_type = enums.StorageType.SSD
         cluster_pb = data_v2_pb2.Cluster(
             name=self.CLUSTER_NAME,
@@ -225,7 +228,7 @@ class TestCluster(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable.enums import StorageType
-        from google.cloud.bigtable.enums import ClusterState
+        from google.cloud.bigtable.enums import Cluster
 
         api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
             mock.Mock())
@@ -241,11 +244,12 @@ class TestCluster(unittest.TestCase):
 
         # Create response_pb
         LOCATION_ID_FROM_SERVER = 'new-location-id'
-        STATE = ClusterState.READY
+        STATE = Cluster.State.READY
         SERVE_NODES_FROM_SERVER = 10
         STORAGE_TYPE_FROM_SERVER = StorageType.HDD
 
         response_pb = data_v2_pb2.Cluster(
+            name=cluster.name,
             location=self.LOCATION_PATH + LOCATION_ID_FROM_SERVER,
             state=STATE,
             serve_nodes=SERVE_NODES_FROM_SERVER,
@@ -275,6 +279,42 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.serve_nodes, SERVE_NODES_FROM_SERVER)
         self.assertEqual(cluster.default_storage_type,
                          STORAGE_TYPE_FROM_SERVER)
+
+    def test_exists(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.instance import Instance
+        from google.api_core.exceptions import NotFound
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
+
+        # Create response_pb
+        response_pb = data_v2_pb2.Cluster(name=cluster.name)
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.GetCluster.side_effect = [
+            response_pb,
+            NotFound('testing'),
+        ]
+
+        # Perform the method and check the result.
+        non_existing_cluster_id = 'cluster-id-2'
+        alt_cluster_1 = self._make_one(self.CLUSTER_ID, instance)
+        alt_cluster_2 = self._make_one(non_existing_cluster_id, instance)
+        self.assertTrue(alt_cluster_1.exists())
+        self.assertFalse(alt_cluster_2.exists())
 
     def test_create(self):
         import datetime
@@ -312,20 +352,14 @@ class TestCluster(unittest.TestCase):
             parent=instance.name, cluster_id=self.CLUSTER_ID,
             cluster=expected_request_cluster)
 
-        # Create response_pb
-        OP_ID = 5678
-        OP_NAME = (
-            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
-            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
         metadata = messages_v2_pb2.CreateClusterMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateClusterMetadata.DESCRIPTOR.full_name,)
-        # response_pb = operations_pb2.Operation(name=OP_NAME)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.CreateClusterMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
-            name=OP_NAME,
+            name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString(),
+                value=metadata.SerializeToString()
             )
         )
 
@@ -341,7 +375,7 @@ class TestCluster(unittest.TestCase):
 
         self.assertEqual(actual_request, expected_request)
         self.assertIsInstance(result, operation.Operation)
-        self.assertEqual(result.operation.name, OP_NAME)
+        self.assertEqual(result.operation.name, self.OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.CreateClusterMetadata)
 
@@ -375,16 +409,11 @@ class TestCluster(unittest.TestCase):
             name=cluster.name,
             serve_nodes=self.SERVE_NODES)
 
-        # Create response_pb
-        OP_ID = 5678
-        OP_NAME = (
-            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
-            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
         metadata = messages_v2_pb2.UpdateClusterMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
-            name=OP_NAME,
+            name=self.OP_NAME,
             metadata=Any(
                 type_url=type_url,
                 value=metadata.SerializeToString()
@@ -403,13 +432,12 @@ class TestCluster(unittest.TestCase):
 
         self.assertEqual(actual_request, expected_request)
         self.assertIsInstance(result, operation.Operation)
-        self.assertEqual(result.operation.name, OP_NAME)
+        self.assertEqual(result.operation.name, self.OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
 
@@ -420,8 +448,7 @@ class TestCluster(unittest.TestCase):
                                    credentials=credentials, admin=True)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                 self.LOCATION_ID,
-                                 serve_nodes=DEFAULT_SERVE_NODES)
+                                 self.LOCATION_ID)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()

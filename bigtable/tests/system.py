@@ -43,7 +43,6 @@ LABELS = {u'foo': u'bar'}
 TABLE_ID = 'google-cloud-python-test-table'
 APP_PROFILE_ID = 'app-profile-id'
 CLUSTER_ID = INSTANCE_ID+'-cluster'
-ALT_CLUSTER_ID = INSTANCE_ID+'-cluster2'
 SERVE_NODES = 3
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -69,6 +68,7 @@ class Config(object):
     """
     CLIENT = None
     INSTANCE = None
+    CLUSTER = None
     IN_EMULATOR = False
 
 
@@ -90,6 +90,8 @@ def setUpModule():
         Config.CLIENT = Client(admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
+    Config.CLUSTER = Config.INSTANCE.cluster(
+        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
 
     if not Config.IN_EMULATOR:
         retry = RetryErrors(GrpcRendezvous,
@@ -102,11 +104,7 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instance.
-        # TODO: after cluster.py functionality is complete
-        # :data:`LOCATION_ID` and :data:`SERVE_NODES` should be moved
-        # to cluster instance initialization.
-        created_op = Config.INSTANCE.create(location_id=LOCATION_ID,
-                                            serve_nodes=SERVE_NODES)
+        created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
         created_op.result(timeout=10)
 
 
@@ -141,26 +139,30 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable import enums
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(INSTANCE_ID)
+        alt_instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
-        instance.display_name = None
+        alt_instance.display_name = None
 
-        instance.reload()
-        self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
-        self.assertEqual(instance.labels, Config.INSTANCE.labels)
-        self.assertEqual(instance.type_, enums.InstanceType.PRODUCTION)
+        alt_instance.reload()
+        self.assertEqual(alt_instance.display_name,
+                         Config.INSTANCE.display_name)
+        self.assertEqual(alt_instance.labels, Config.INSTANCE.labels)
+        self.assertEqual(alt_instance.type_, enums.Instance.Type.PRODUCTION)
 
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
 
         ALT_INSTANCE_ID = 'ndef' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID)
-        operation = instance.create(location_id=LOCATION_ID)
-        # Make sure this instance gets deleted after the test case.
-        self.instances_to_delete.append(instance)
-
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
+        cluster = instance.cluster(
+            ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES)
+        operation = instance.create(clusters=[cluster])
         # We want to make sure the operation completes.
         operation.result(timeout=10)
+
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -170,24 +172,26 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         # Make sure that by default a PRODUCTION type instance is created
         self.assertIsNone(instance.type_)
-        self.assertEqual(instance_alt.type_, enums.InstanceType.PRODUCTION)
+        self.assertEqual(instance_alt.type_, enums.Instance.Type.PRODUCTION)
         self.assertIsNone(instance.labels)
         self.assertFalse(instance_alt.labels)
 
     def test_create_instance(self):
         from google.cloud.bigtable import enums
-        _DEVELOPMENT = enums.InstanceType.DEVELOPMENT
+        _DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
 
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
                                           instance_type=_DEVELOPMENT,
                                           labels=LABELS)
-        operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
-        # Make sure this instance gets deleted after the test case.
-        self.instances_to_delete.append(instance)
-
+        ALT_CLUSTER_ID = ALT_INSTANCE_ID+'-cluster'
+        cluster = instance.cluster(ALT_CLUSTER_ID, location_id=LOCATION_ID)
+        operation = instance.create(clusters=[cluster])
         # We want to make sure the operation completes.
         operation.result(timeout=10)
+
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -197,6 +201,58 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance.labels, instance_alt.labels)
+
+    def test_create_instance_w_two_clusters(self):
+        from google.cloud.bigtable import enums
+        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        ALT_INSTANCE_ID = 'dif' + unique_resource_id('-')
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
+                                          instance_type=_PRODUCTION)
+
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-cluster-1'
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-cluster-2'
+        LOCATION_ID_2 = 'us-central1-f'
+        SERVE_NODES_2 = 5
+        STORAGE_TYPE = enums.StorageType.HDD
+        cluster_1 = instance.cluster(
+            ALT_CLUSTER_ID_1, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
+            default_storage_type=STORAGE_TYPE)
+        cluster_2 = instance.cluster(
+            ALT_CLUSTER_ID_2, location_id=LOCATION_ID_2,
+            serve_nodes=SERVE_NODES_2, default_storage_type=STORAGE_TYPE)
+        operation = instance.create(clusters=[cluster_1, cluster_2])
+        # We want to make sure the operation completes.
+        operation.result(timeout=10)
+
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
+
+        # Create a new instance instance and make sure it is the same.
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        instance_alt.reload()
+
+        self.assertEqual(instance, instance_alt)
+        self.assertEqual(instance.display_name, instance_alt.display_name)
+        self.assertEqual(instance.type_, instance_alt.type_)
+
+        self.assertTrue(cluster_1.exists())
+        self.assertTrue(cluster_2.exists())
+
+        # Create new cluster objects and reload them.
+        alt_cluster_1 = instance.cluster(ALT_CLUSTER_ID_1)
+        alt_cluster_1.reload()
+        alt_cluster_2 = instance.cluster(ALT_CLUSTER_ID_2)
+        alt_cluster_2.reload()
+        self.assertEqual(cluster_1.location_id, alt_cluster_1.location_id)
+        self.assertEqual(alt_cluster_1.state, enums.Cluster.State.READY)
+        self.assertEqual(cluster_1.serve_nodes, alt_cluster_1.serve_nodes)
+        self.assertEqual(cluster_1.default_storage_type,
+                         alt_cluster_1.default_storage_type)
+        self.assertEqual(cluster_2.location_id, alt_cluster_2.location_id)
+        self.assertEqual(alt_cluster_2.state, enums.Cluster.State.READY)
+        self.assertEqual(cluster_2.serve_nodes, alt_cluster_2.serve_nodes)
+        self.assertEqual(cluster_2.default_storage_type,
+                         alt_cluster_2.default_storage_type)
 
     def test_update(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
@@ -218,9 +274,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_app_profile_with_multi_routing_policy(self):
         # Create a new instance instance and reload it.
         description = 'Foo App Profile'
-        instance = Config.INSTANCE
 
-        app_profile = instance.create_app_profile(
+        app_profile = Config.INSTANCE.create_app_profile(
             app_profile_id=APP_PROFILE_ID+'-multi',
             routing_policy_type=ROUTING_POLICY_TYPE_ANY,
             description=description,
@@ -230,11 +285,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(app_profile.description, description)
 
     def test_create_app_profile_with_single_routing_policy(self):
-        # Create a new instance instance and reload it.
         description = 'Foo App Profile'
-        instance = Config.INSTANCE
 
-        app_profile = instance.create_app_profile(
+        app_profile = Config.INSTANCE.create_app_profile(
             app_profile_id=APP_PROFILE_ID+'-single',
             routing_policy_type=ROUTING_POLICY_TYPE_SINGLE,
             description=description,
@@ -246,7 +299,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
     def test_reload_cluster(self):
         from google.cloud.bigtable.enums import StorageType
-        from google.cloud.bigtable.enums import ClusterState
+        from google.cloud.bigtable.enums import Cluster
         # Use same arguments as Config.INSTANCE.cluster
         # (created in `setUpModule`) so we can use reload()
         # on a fresh cluster.
@@ -254,7 +307,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         cluster.reload()
         self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertEqual(cluster.state, ClusterState.READY)
+        self.assertEqual(cluster.state, Cluster.State.READY)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         # Make sure that by default an StorageType.SSD storage is used.
         self.assertEqual(cluster.default_storage_type, StorageType.SSD)
@@ -262,15 +315,13 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_update_cluster(self):
         NEW_SERVE_NODES = 7
 
-        # TODO: After instance.create can accept clusters this should just
-        # be replaced with Config.CLUSTER (from `setUpModule`)
-        cluster = Config.INSTANCE.cluster(CLUSTER_ID)
-        # Get current cluster metadata
-        cluster.reload()
+        Config.CLUSTER.serve_nodes = NEW_SERVE_NODES
+        # cluster = Config.INSTANCE.cluster(CLUSTER_ID,
+        #                                   serve_nodes=NEW_SERVE_NODES)
 
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-        cluster.serve_nodes = NEW_SERVE_NODES
-        operation = cluster.update()
+        # self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+        # cluster.serve_nodes = NEW_SERVE_NODES
+        operation = Config.CLUSTER.update()
 
         # We want to make sure the operation completes.
         operation.result(timeout=10)
@@ -282,54 +333,43 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         # Make sure to put the cluster back the way it was for the
         # other test cases.
-        # TODO: After instance.create can accept clusters this should
-        # be replaced with Config.CLUSTER (from `setUpModule`)
-        cluster.serve_nodes = SERVE_NODES
-        operation = cluster.update()
+        Config.CLUSTER.serve_nodes = SERVE_NODES
+        operation = Config.CLUSTER.update()
         operation.result(timeout=10)
 
     def test_create_cluster(self):
         from google.cloud.bigtable.enums import StorageType
-        from google.cloud.bigtable.enums import ClusterState
+        from google.cloud.bigtable.enums import Cluster
 
-        ALT_CLUSTER_ID = INSTANCE_ID+'-cluster2'
+        ALT_CLUSTER_ID = INSTANCE_ID+'-cluster-2'
         ALT_LOCATION_ID = 'us-central1-f'
         ALT_SERVE_NODES = 5
 
-        cluster = Config.INSTANCE.cluster(ALT_CLUSTER_ID,
-                                          location_id=ALT_LOCATION_ID,
-                                          serve_nodes=ALT_SERVE_NODES,
-                                          default_storage_type=StorageType.SSD)
-        operation = cluster.create()
+        cluster_2 = Config.INSTANCE.cluster(ALT_CLUSTER_ID,
+                                            location_id=ALT_LOCATION_ID,
+                                            serve_nodes=ALT_SERVE_NODES,
+                                            default_storage_type=(
+                                               StorageType.SSD))
+        operation = cluster_2.create()
 
         # We want to make sure the operation completes.
         operation.result(timeout=10)
 
-        # Create a new object instance and make sure it is the same.
+        # Create a new object instance, reload  and make sure it is the same.
         alt_cluster = Config.INSTANCE.cluster(ALT_CLUSTER_ID)
         alt_cluster.reload()
 
-        self.assertEqual(cluster, alt_cluster)
-        self.assertEqual(cluster.location_id, alt_cluster.location_id)
-        self.assertEqual(alt_cluster.state, ClusterState.READY)
-        self.assertEqual(cluster.serve_nodes, alt_cluster.serve_nodes)
-        self.assertEqual(cluster.default_storage_type,
+        self.assertEqual(cluster_2, alt_cluster)
+        self.assertEqual(cluster_2.location_id, alt_cluster.location_id)
+        self.assertEqual(alt_cluster.state, Cluster.State.READY)
+        self.assertEqual(cluster_2.serve_nodes, alt_cluster.serve_nodes)
+        self.assertEqual(cluster_2.default_storage_type,
                          alt_cluster.default_storage_type)
 
         # Delete the newly created cluster and confirm
-        self.assertTrue(self._cluster_exists(cluster.name))
-        cluster.delete()
-        self.assertFalse(self._cluster_exists(cluster.name))
-
-    def _cluster_exists(self, cluster_name):
-        from google.api_core import exceptions
-        try:
-            Config.CLIENT.instance_admin_client.get_cluster(
-                name=cluster_name)
-        except exceptions.NotFound:
-            return False
-        else:
-            return True
+        self.assertTrue(cluster_2.exists())
+        cluster_2.delete()
+        self.assertFalse(cluster_2.exists())
 
 
 class TestTableAdminAPI(unittest.TestCase):
