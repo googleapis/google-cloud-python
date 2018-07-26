@@ -17,8 +17,8 @@ import pytest
 from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import wrappers
-from api_factory.schema.metadata import Address, Metadata
+from gapic.schema import wrappers
+from gapic.schema.metadata import Address, Metadata
 
 
 def test_field_properties():

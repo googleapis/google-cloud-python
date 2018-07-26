@@ -14,8 +14,8 @@
 
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import metadata
-from api_factory.schema import wrappers
+from gapic.schema import metadata
+from gapic.schema import wrappers
 
 
 def test_operation():

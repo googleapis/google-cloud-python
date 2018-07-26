@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils import placeholder
+from gapic.utils import placeholder
 
 
 def test_placeholder_str_eq():

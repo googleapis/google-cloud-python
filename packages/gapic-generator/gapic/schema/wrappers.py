@@ -36,8 +36,8 @@ from google.api import annotations_pb2
 from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory import utils
-from api_factory.schema import metadata
+from gapic import utils
+from gapic.schema import metadata
 
 
 @dataclasses.dataclass(frozen=True)

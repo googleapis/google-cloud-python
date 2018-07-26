@@ -1,29 +1,29 @@
 schema
 ------
 
-.. automodule:: api_factory.schema
+.. automodule:: gapic.schema
 
 api
 ~~~
 
-.. automodule:: api_factory.schema.api
+.. automodule:: gapic.schema.api
     :members:
 
 metadata
 ~~~~~~~~
 
-.. automodule:: api_factory.schema.metadata
+.. automodule:: gapic.schema.metadata
     :members:
 
 naming
 ~~~~~~
 
-.. automodule:: api_factory.schema.naming
+.. automodule:: gapic.schema.naming
     :members:
 
 
 wrappers
 ~~~~~~~~
 
-.. automodule:: api_factory.schema.wrappers
+.. automodule:: gapic.schema.wrappers
     :members:

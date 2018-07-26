@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils import lines
+from gapic.utils import lines
 
 
 def test_wrap_noop():

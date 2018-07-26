@@ -16,7 +16,7 @@ import typing
 
 import jinja2
 
-from api_factory.utils import cached_property
+from gapic.utils import cached_property
 
 
 class TemplateLoader(jinja2.FileSystemLoader):

@@ -20,7 +20,7 @@ from typing import Iterable, Tuple
 from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory import utils
+from gapic import utils
 
 
 @dataclasses.dataclass(frozen=True)

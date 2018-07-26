@@ -14,7 +14,7 @@
 
 from unittest import mock
 
-from api_factory.generator.loader import TemplateLoader
+from gapic.generator.loader import TemplateLoader
 
 
 def test_service_templates():

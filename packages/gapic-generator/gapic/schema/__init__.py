@@ -12,20 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils.cache import cached_property
-from api_factory.utils.case import to_snake_case
-from api_factory.utils.filename import to_valid_filename
-from api_factory.utils.filename import to_valid_module_name
-from api_factory.utils.lines import wrap
-from api_factory.utils.placeholder import Placeholder
+"""The ``schema`` module provides a normalized API representation.
+
+In general, this module can be considered in three parts: wrappers,
+metadata, and a roll-up view of an API as a whole.
+
+These three parts are divided into the three component modules.
+"""
+
+from gapic.schema.api import API
+from gapic.schema import metadata
+from gapic.schema import wrappers
 
 
 __all__ = (
-    'cached_property',
-    'Placeholder',
-    'subsequent_indent',
-    'to_snake_case',
-    'to_valid_filename',
-    'to_valid_module_name',
-    'wrap',
+    'api',
+    'metadata',
+    'wrappers',
 )

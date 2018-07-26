@@ -21,10 +21,10 @@ import jinja2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
-from api_factory import utils
-from api_factory.generator import formatter
-from api_factory.generator import loader
-from api_factory.schema import api
+from gapic import utils
+from gapic.generator import formatter
+from gapic.generator import loader
+from gapic.schema import api
 
 
 class Generator:

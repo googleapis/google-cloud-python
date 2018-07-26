@@ -18,7 +18,7 @@ from google.api import annotations_pb2
 from google.api import metadata_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import naming
+from gapic.schema import naming
 
 
 def test_long_name():

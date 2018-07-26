@@ -35,8 +35,8 @@ setup(
                 'buffers',
     long_description=README,
     entry_points="""[console_scripts]
-        protoc-gen-dump=api_factory.cli.dump:dump
-        protoc-gen-pyclient=api_factory.cli.generate:generate
+        protoc-gen-dump=gapic.cli.dump:dump
+        protoc-gen-pyclient=gapic.cli.generate:generate
     """,
     platforms='Posix; MacOS X',
     include_package_data=True,

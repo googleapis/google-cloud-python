@@ -1,10 +1,10 @@
 generator
 ---------
 
-.. automodule:: api_factory.generator
+.. automodule:: gapic.generator
 
-.. automodule:: api_factory.generator.generator
+.. automodule:: gapic.generator.generator
   :members:
 
-.. automodule:: api_factory.generator.loader
+.. automodule:: gapic.generator.loader
   :members:

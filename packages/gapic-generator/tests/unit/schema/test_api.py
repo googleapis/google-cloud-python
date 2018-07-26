@@ -18,9 +18,9 @@ from unittest import mock
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import api
-from api_factory.schema import naming
-from api_factory.schema import wrappers
+from gapic.schema import api
+from gapic.schema import naming
+from gapic.schema import wrappers
 
 
 def test_api_build():

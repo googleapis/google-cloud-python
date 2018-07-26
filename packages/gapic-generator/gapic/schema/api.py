@@ -25,10 +25,10 @@ from typing import Callable, List, Mapping, Sequence, Tuple
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import metadata
-from api_factory.schema import naming
-from api_factory.schema import wrappers
-from api_factory.utils import cached_property
+from gapic.schema import metadata
+from gapic.schema import naming
+from gapic.schema import wrappers
+from gapic.utils import cached_property
 
 
 @dataclasses.dataclass(frozen=True)

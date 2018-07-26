@@ -20,8 +20,8 @@ import click
 
 from google.protobuf.compiler import plugin_pb2
 
-from api_factory import generator
-from api_factory.schema import api
+from gapic import generator
+from gapic.schema import api
 
 
 @click.command()

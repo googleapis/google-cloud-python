@@ -39,7 +39,7 @@ contract model to be able to follow what this library is doing.
 Entry Point
 ~~~~~~~~~~~
 
-The entry point to this tool is ``api_factory/cli/generate.py``. The function
+The entry point to this tool is ``gapic/cli/generate.py``. The function
 in this module is responsible for accepting CLI input, building the internal
 API schema, and then rendering templates and using them to build a response
 object.

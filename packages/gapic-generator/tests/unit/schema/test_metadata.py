@@ -16,7 +16,7 @@ import typing
 
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import metadata
+from gapic.schema import metadata
 
 
 def test_address_str_no_parent():

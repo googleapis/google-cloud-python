@@ -1,8 +1,8 @@
 utils
 -----
 
-.. automodule:: api_factory.utils.case
+.. automodule:: gapic.utils.case
     :members:
 
-.. automodule:: api_factory.utils.lines
+.. automodule:: gapic.utils.lines
     :members:

@@ -14,7 +14,7 @@
 
 import textwrap
 
-from api_factory.generator import formatter
+from gapic.generator import formatter
 
 
 def test_fix_whitespace_top_level():

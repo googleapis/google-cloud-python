@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils import cache
+from gapic.utils import cache
 
 
 def test_cached_property():

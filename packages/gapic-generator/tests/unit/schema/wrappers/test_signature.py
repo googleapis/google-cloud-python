@@ -16,7 +16,7 @@ import collections
 
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import wrappers
+from gapic.schema import wrappers
 
 
 def test_signature_dispatch_field():

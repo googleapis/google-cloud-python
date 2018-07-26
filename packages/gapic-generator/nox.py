@@ -33,7 +33,7 @@ def unit(session, python_version='3.7'):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=api_factory',
+        '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',

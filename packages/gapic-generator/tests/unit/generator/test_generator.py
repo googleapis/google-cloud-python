@@ -22,10 +22,10 @@ import jinja2
 from google.protobuf import descriptor_pb2
 from google.protobuf.compiler import plugin_pb2
 
-from api_factory.generator import generator
-from api_factory.schema import api
-from api_factory.schema import naming
-from api_factory.schema import wrappers
+from gapic.generator import generator
+from gapic.schema import api
+from gapic.schema import naming
+from gapic.schema import wrappers
 
 
 def test_constructor():
