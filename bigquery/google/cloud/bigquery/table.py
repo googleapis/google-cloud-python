@@ -591,19 +591,11 @@ class Table(object):
 
     @property
     def location(self):
-        """Union[str, None]: Location in which the table is hosted (defaults
-        to :data:`None`).
+        """Union[str, None]: Location in which the table is hosted
 
-        Raises:
-            ValueError: For invalid value types.
+        Defaults to :data:`None`.
         """
         return self._properties.get('location')
-
-    @location.setter
-    def location(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("Pass a string, or None")
-        self._properties['location'] = value
 
     @property
     def view_query(self):

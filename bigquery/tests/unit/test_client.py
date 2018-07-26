@@ -59,6 +59,7 @@ class TestClient(unittest.TestCase):
     TABLE_ID = 'TABLE_ID'
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
     KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
+    LOCATION = 'us-central'
 
     @staticmethod
     def _get_target_class():
@@ -69,7 +70,7 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         from google.cloud.bigquery._http import Connection
 
         creds = _make_credentials()
@@ -79,6 +80,20 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
+        self.assertIsNone(client.location)
+
+    def test_ctor_w_location(self):
+        from google.cloud.bigquery._http import Connection
+
+        creds = _make_credentials()
+        http = object()
+        location = 'us-central'
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http, location=location)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertEqual(client.location, location)
 
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
@@ -89,13 +104,32 @@ class TestClient(unittest.TestCase):
 
         with self.assertRaises(NotFound):
             client._get_query_results(
-                'nothere', None, project='other-project', location='US',
+                'nothere', None,
+                project='other-project',
+                location=self.LOCATION,
                 timeout_ms=500)
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/other-project/queries/nothere',
-            query_params={'maxResults': 0, 'timeoutMs': 500, 'location': 'US'})
+            query_params={
+                'maxResults': 0, 'timeoutMs': 500, 'location': self.LOCATION},
+        )
+
+    def test__get_query_results_miss_w_client_location(self):
+        from google.cloud.exceptions import NotFound
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
+        conn = client._connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client._get_query_results('nothere', None)
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/PROJECT/queries/nothere',
+            query_params={'maxResults': 0, 'location': self.LOCATION})
 
     def test__get_query_results_hit(self):
         job_id = 'query_job'
@@ -401,27 +435,37 @@ class TestClient(unittest.TestCase):
 
         PATH = 'projects/%s/datasets' % self.PROJECT
         RESOURCE = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
             'etag': "etag",
             'id': "%s:%s" % (self.PROJECT, self.DS_ID),
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(RESOURCE)
-        ds = client.create_dataset(Dataset(client.dataset(self.DS_ID)))
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/%s' % PATH,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'labels': {},
             })
-        self.assertEqual(ds.dataset_id, self.DS_ID)
-        self.assertEqual(ds.project, self.PROJECT)
-        self.assertEqual(ds.etag, RESOURCE['etag'])
-        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
 
     def test_create_dataset_w_attrs(self):
         from google.cloud.bigquery.dataset import Dataset, AccessEntry
@@ -438,8 +482,10 @@ class TestClient(unittest.TestCase):
             'tableId': 'northern-hemisphere',
         }
         RESOURCE = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
             'etag': "etag",
             'id': "%s:%s" % (self.PROJECT, self.DS_ID),
             'description': DESCRIPTION,
@@ -449,45 +495,56 @@ class TestClient(unittest.TestCase):
             'labels': LABELS,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'view': VIEW}],
+                {'view': VIEW},
+            ],
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(RESOURCE)
-        entries = [AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
-                   AccessEntry(None, 'view', VIEW)]
-        ds_arg = Dataset(client.dataset(self.DS_ID))
-        ds_arg.access_entries = entries
-        ds_arg.description = DESCRIPTION
-        ds_arg.friendly_name = FRIENDLY_NAME
-        ds_arg.default_table_expiration_ms = 3600
-        ds_arg.location = LOCATION
-        ds_arg.labels = LABELS
-        ds = client.create_dataset(ds_arg)
+        entries = [
+            AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
+            AccessEntry(None, 'view', VIEW),
+        ]
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before.access_entries = entries
+        before.description = DESCRIPTION
+        before.friendly_name = FRIENDLY_NAME
+        before.default_table_expiration_ms = 3600
+        before.location = LOCATION
+        before.labels = LABELS
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.description, DESCRIPTION)
+        self.assertEqual(after.friendly_name, FRIENDLY_NAME)
+        self.assertEqual(after.location, LOCATION)
+        self.assertEqual(after.default_table_expiration_ms, 3600)
+        self.assertEqual(after.labels, LABELS)
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/%s' % PATH,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'description': DESCRIPTION,
                 'friendlyName': FRIENDLY_NAME,
                 'location': LOCATION,
                 'defaultTableExpirationMs': '3600',
                 'access': [
                     {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                    {'view': VIEW}],
+                    {'view': VIEW},
+                ],
                 'labels': LABELS,
             })
-        self.assertEqual(ds.dataset_id, self.DS_ID)
-        self.assertEqual(ds.project, self.PROJECT)
-        self.assertEqual(ds.etag, RESOURCE['etag'])
-        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
-        self.assertEqual(ds.description, DESCRIPTION)
-        self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
-        self.assertEqual(ds.location, LOCATION)
-        self.assertEqual(ds.default_table_expiration_ms, 3600)
-        self.assertEqual(ds.labels, LABELS)
 
     def test_create_dataset_w_custom_property(self):
         # The library should handle sending properties to the API that are not
@@ -503,25 +560,112 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
-        dataset = Dataset(client.dataset(self.DS_ID))
-        dataset._properties['newAlphaProperty'] = 'unreleased property'
 
-        dataset = client.create_dataset(dataset)
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before._properties['newAlphaProperty'] = 'unreleased property'
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(
+            after._properties['newAlphaProperty'], 'unreleased property')
+
         conn.api_request.assert_called_once_with(
             method='POST',
             path=path,
             data={
-                'datasetReference':
-                    {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
                 'newAlphaProperty': 'unreleased property',
                 'labels': {},
             }
         )
 
-        self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertEqual(dataset.project, self.PROJECT)
-        self.assertEqual(
-            dataset._properties['newAlphaProperty'], 'unreleased property')
+    def test_create_dataset_w_client_location_wo_dataset_location(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets' % self.PROJECT
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': self.LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(RESOURCE)
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.location, self.LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': self.LOCATION,
+            })
+
+    def test_create_dataset_w_client_location_w_dataset_location(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets' % self.PROJECT
+        OTHER_LOCATION = 'EU'
+        RESOURCE = {
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+            },
+            'etag': "etag",
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
+            'location': OTHER_LOCATION,
+        }
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, location=self.LOCATION)
+        conn = client._connection = _make_connection(RESOURCE)
+
+        ds_ref = client.dataset(self.DS_ID)
+        before = Dataset(ds_ref)
+        before.location = OTHER_LOCATION
+
+        after = client.create_dataset(before)
+
+        self.assertEqual(after.dataset_id, self.DS_ID)
+        self.assertEqual(after.project, self.PROJECT)
+        self.assertEqual(after.etag, RESOURCE['etag'])
+        self.assertEqual(after.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(after.location, OTHER_LOCATION)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/%s' % PATH,
+            data={
+                'datasetReference': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_ID,
+                },
+                'labels': {},
+                'location': OTHER_LOCATION,
+            })
 
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
@@ -1110,7 +1254,10 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID
             },
             'schema': schema_resource,
-            'view': {'query': query, 'useLegacySql': True},
+            'view': {
+                'query': query,
+                'useLegacySql': True,
+            },
             'location': location,
             'expirationTime': _millis(exp_time)
         }
@@ -1118,31 +1265,34 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _make_connection(resource)
         table = Table(self.TABLE_REF, schema=schema)
-        table.location = location
         table.expires = exp_time
         table.view_query = query
         table.view_use_legacy_sql = True
-        updated_properties = ['schema', 'view_query', 'location',
-                              'expires', 'view_use_legacy_sql']
+        updated_properties = [
+            'schema', 'view_query', 'expires', 'view_use_legacy_sql']
 
         updated_table = client.update_table(table, updated_properties)
+
+        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(updated_table.view_query, table.view_query)
+        self.assertEqual(updated_table.expires, table.expires)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+        self.assertEqual(updated_table.location, location)
 
         conn.api_request.assert_called_once_with(
             method='PATCH',
             path='/%s' % path,
             data={
-                'view': {'query': query, 'useLegacySql': True},
-                'location': location,
+                'view': {
+                    'query': query,
+                    'useLegacySql': True,
+                },
                 'expirationTime': str(_millis(exp_time)),
                 'schema': schema_resource,
             },
-            headers=None)
-        self.assertEqual(updated_table.schema, table.schema)
-        self.assertEqual(updated_table.view_query, table.view_query)
-        self.assertEqual(updated_table.location, table.location)
-        self.assertEqual(updated_table.expires, table.expires)
-        self.assertEqual(
-            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+            headers=None,
+        )
 
     def test_update_table_w_schema_None(self):
         # Simulate deleting schema:  not sure if back-end will actually
@@ -1423,12 +1573,36 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.get_job(JOB_ID, project=OTHER_PROJECT, location='EU')
+            client.get_job(
+                JOB_ID, project=OTHER_PROJECT, location=self.LOCATION)
 
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH',
-            query_params={'projection': 'full', 'location': 'EU'})
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
+
+    def test_get_job_miss_w_client_location(self):
+        from google.cloud.exceptions import NotFound
+
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        JOB_ID = 'NONESUCH'
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
+        conn = client._connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client.get_job(JOB_ID, project=OTHER_PROJECT)
+
+        conn.api_request.assert_called_once_with(
+            method='GET',
+            path='/projects/OTHER_PROJECT/jobs/NONESUCH',
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
 
     def test_get_job_hit(self):
         from google.cloud.bigquery.job import CreateDisposition
@@ -1474,7 +1648,8 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method='GET',
             path='/projects/PROJECT/jobs/query_job',
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full'},
+        )
 
     def test_cancel_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound
@@ -1486,12 +1661,36 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.cancel_job(JOB_ID, project=OTHER_PROJECT, location='EU')
+            client.cancel_job(
+                JOB_ID, project=OTHER_PROJECT, location=self.LOCATION)
 
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
-            query_params={'projection': 'full', 'location': 'EU'})
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
+
+    def test_cancel_job_miss_w_client_location(self):
+        from google.cloud.exceptions import NotFound
+
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        JOB_ID = 'NONESUCH'
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
+        conn = client._connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client.cancel_job(JOB_ID, project=OTHER_PROJECT)
+
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/OTHER_PROJECT/jobs/NONESUCH/cancel',
+            query_params={
+                'projection': 'full',
+                'location': self.LOCATION,
+            })
 
     def test_cancel_job_hit(self):
         from google.cloud.bigquery.job import QueryJob
@@ -1836,7 +2035,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -1859,7 +2058,47 @@ class TestClient(unittest.TestCase):
 
         client.load_table_from_uri(
             source_uri, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
+
+        # Check that load_table_from_uri actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource)
+
+    def test_load_table_from_uri_w_client_location(self):
+        job_id = 'this-is-a-job-id'
+        destination_id = 'destination_table'
+        source_uri = 'gs://example/source.csv'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [source_uri],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        destination = client.dataset(self.DS_ID).table(destination_id)
+
+        client.load_table_from_uri(
+            source_uri, destination,
+            job_id=job_id,
+            project='other-project')
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
@@ -2076,7 +2315,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2107,13 +2346,61 @@ class TestClient(unittest.TestCase):
 
         client.copy_table(
             source, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_copy_table_w_client_location(self):
+        job_id = 'this-is-a-job-id'
+        source_id = 'source_table'
+        destination_id = 'destination_table'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [
+                        {
+                            'projectId': self.PROJECT,
+                            'datasetId': self.DS_ID,
+                            'tableId': source_id,
+                        },
+                    ],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': destination_id,
+                    },
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+        destination = dataset.table(destination_id)
+
+        client.copy_table(
+            source, destination, job_id=job_id, project='other-project')
+
+        # Check that copy_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -2167,7 +2454,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2191,13 +2478,54 @@ class TestClient(unittest.TestCase):
 
         client.extract_table(
             source, destination, job_id=job_id, project='other-project',
-            location='US')
+            location=self.LOCATION)
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_extract_table_w_client_location(self):
+        job_id = 'job_id'
+        source_id = 'source_table'
+        destination = 'gs://bucket_name/object_name'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': source_id,
+                    },
+                    'destinationUris': [destination],
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(source_id)
+
+        client.extract_table(
+            source, destination, job_id=job_id, project='other-project')
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_extract_table_generated_job_id(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -2351,7 +2679,7 @@ class TestClient(unittest.TestCase):
         resource = {
             'jobReference': {
                 'projectId': 'other-project',
-                'location': 'US',
+                'location': self.LOCATION,
                 'jobId': job_id,
             },
             'configuration': {
@@ -2368,13 +2696,48 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _make_connection(resource)
 
         client.query(
-            query, job_id=job_id, project='other-project', location='US')
+            query, job_id=job_id, project='other-project',
+            location=self.LOCATION)
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
             method='POST',
             path='/projects/other-project/jobs',
-            data=resource)
+            data=resource,
+        )
+
+    def test_query_w_client_location(self):
+        job_id = 'some-job-id'
+        query = 'select count(*) from persons'
+        resource = {
+            'jobReference': {
+                'projectId': 'other-project',
+                'location': self.LOCATION,
+                'jobId': job_id,
+            },
+            'configuration': {
+                'query': {
+                    'query': query,
+                    'useLegacySql': False,
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http,
+            location=self.LOCATION)
+        conn = client._connection = _make_connection(resource)
+
+        client.query(
+            query, job_id=job_id, project='other-project')
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method='POST',
+            path='/projects/other-project/jobs',
+            data=resource,
+        )
 
     def test_query_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJob
@@ -3294,14 +3657,16 @@ class TestClientUpload(object):
     TABLE_REF = DatasetReference(
         'project_id', 'test_dataset').table('test_table')
 
+    LOCATION = 'us-central'
+
     @staticmethod
-    def _make_client(transport=None):
+    def _make_client(transport=None, location=None):
         from google.cloud.bigquery import _http
         from google.cloud.bigquery import client
 
         cl = client.Client(project='project_id',
                            credentials=_make_credentials(),
-                           _http=transport)
+                           _http=transport, location=location)
         cl._connection = mock.create_autospec(_http.Connection, instance=True)
         return cl
 
@@ -3387,11 +3752,33 @@ class TestClientUpload(object):
         with do_upload_patch as do_upload:
             client.load_table_from_file(
                 file_obj, self.TABLE_REF, job_id='job_id',
-                project='other-project', location='US',
+                project='other-project', location=self.LOCATION,
                 job_config=self._make_config())
 
         expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
-        expected_resource['jobReference']['location'] = 'US'
+        expected_resource['jobReference']['location'] = self.LOCATION
+        expected_resource['jobReference']['projectId'] = 'other-project'
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_resource,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_w_client_location(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client(location=self.LOCATION)
+        file_obj = self._make_file_obj()
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, job_id='job_id',
+                project='other-project',
+                job_config=self._make_config())
+
+        expected_resource = copy.deepcopy(self.EXPECTED_CONFIGURATION)
+        expected_resource['jobReference']['location'] = self.LOCATION
         expected_resource['jobReference']['projectId'] = 'other-project'
         do_upload.assert_called_once_with(
             file_obj,
@@ -3569,6 +3956,43 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
     @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
+    def test_load_table_from_dataframe_w_client_location(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client(location=self.LOCATION)
+        records = [
+            {'name': 'Monty', 'age': 100},
+            {'name': 'Python', 'age': 60},
+        ]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            'google.cloud.bigquery.client.Client.load_table_from_file',
+            autospec=True)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client, mock.ANY, self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True, job_id=None,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_file = load_table_from_file.mock_calls[0][1][1]
+        sent_bytes = sent_file.getvalue()
+        assert isinstance(sent_bytes, bytes)
+        assert len(sent_bytes) > 0
+
+        sent_config = load_table_from_file.mock_calls[0][2]['job_config']
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    @unittest.skipIf(pyarrow is None, 'Requires `pyarrow`')
     def test_load_table_from_dataframe_w_custom_job_config(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -3586,12 +4010,20 @@ class TestClientUpload(object):
             autospec=True)
         with load_patch as load_table_from_file:
             client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, job_config=job_config)
+                dataframe, self.TABLE_REF,
+                job_config=job_config,
+                location=self.LOCATION)
 
         load_table_from_file.assert_called_once_with(
-            client, mock.ANY, self.TABLE_REF, num_retries=_DEFAULT_NUM_RETRIES,
-            rewind=True, job_id=None, job_id_prefix=None, location=None,
-            project=None, job_config=mock.ANY)
+            client, mock.ANY, self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=None,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
 
         sent_config = load_table_from_file.mock_calls[0][2]['job_config']
         assert sent_config is job_config

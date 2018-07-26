@@ -166,7 +166,12 @@ class QueryPriority(object):
 
 
 class SourceFormat(object):
-    """The format of the data files. The default value is :attr:`CSV`."""
+    """The format of the data files. The default value is :attr:`CSV`.
+
+    Note that the set of allowed values for loading data is different
+    than the set used for external data sources (see
+    :class:`~google.cloud.bigquery.external_config.ExternalSourceFormat`).
+    """
 
     CSV = 'CSV'
     """Specifies CSV format."""
@@ -1388,7 +1393,7 @@ class CopyJob(_AsyncJob):
     :param job_id: the job's ID, within the project belonging to ``client``.
 
     :type sources: list of :class:`google.cloud.bigquery.table.TableReference`
-    :param sources: Table into which data is to be loaded.
+    :param sources: Table from which data is to be loaded.
 
     :type destination: :class:`google.cloud.bigquery.table.TableReference`
     :param destination: Table into which data is to be loaded.
