@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance &#8212; google-cloud 4be5d1b documentation</title>
+    <title>Instance &#8212; google-cloud 5aabf45 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -142,7 +142,7 @@ and <code class="docutils literal notranslate"><span class="pre">default_storage
 
 <dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.create_app_profile">
-<code class="descname">create_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type</em>, <em>description=''</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.create_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.create_app_profile" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type</em>, <em>description=None</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.create_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.create_app_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an app profile within an instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,16 +154,11 @@ and <code class="docutils literal notranslate"><span class="pre">default_storage
 </tr>
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">routing_policy_type: int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: There are two routing policies
-ROUTING_POLICY_TYPE_ANY = 1 and
-ROUTING_POLICY_TYPE_SINGLE = 2.
-If ROUTING_POLICY_TYPE_ANY
-which will create a
-MultiClusterRoutingUseAny policy and if
-ROUTING_POLICY_TYPE_ANY is specified, a
-SingleClusterRouting policy will be created
-using the cluster_id and
-allow_transactional_writes parameters.</td>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: The type of the routing policy.
+Possible values are represented
+by the following constants:
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.ANY</span></code>
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.SINGLE</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">description: str</td>
 </tr>
@@ -389,21 +384,36 @@ but the return value is not cached.</p>
 <dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Update this instance.</p>
+<dd><p>Updates an instance within a project.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Updates the <code class="docutils literal notranslate"><span class="pre">display_name</span></code>. To change that value before
-updating, reset its values via</p>
+<p>Updates any or all of the following values:
+<code class="docutils literal notranslate"><span class="pre">display_name</span></code>
+<code class="docutils literal notranslate"><span class="pre">type</span></code>
+<code class="docutils literal notranslate"><span class="pre">labels</span></code>
+To change a value before
+updating, assign that values via</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;New display name&#39;</span>
 </pre></div>
 </div>
 <p class="last">before calling <a class="reference internal" href="#google.cloud.bigtable.instance.Instance.update" title="google.cloud.bigtable.instance.Instance.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a>.</p>
 </div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/operation.html#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The long-running operation corresponding to the update
+operation.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.instance.Instance.update_app_profile">
-<code class="descname">update_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>update_mask</em>, <em>routing_policy_type</em>, <em>description=''</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.update_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.update_app_profile" title="Permalink to this definition">#</a></dt>
+<code class="descname">update_app_profile</code><span class="sig-paren">(</span><em>app_profile_id</em>, <em>routing_policy_type</em>, <em>description=None</em>, <em>ignore_warnings=None</em>, <em>cluster_id=None</em>, <em>allow_transactional_writes=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.update_app_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.update_app_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates an app profile within an instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -420,16 +430,11 @@ needed to update.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">routing_policy_type: int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: There are two routing policies
-ROUTING_POLICY_TYPE_ANY = 1 and
-ROUTING_POLICY_TYPE_SINGLE = 2.
-If ROUTING_POLICY_TYPE_ANY
-which will create a
-MultiClusterRoutingUseAny policy and if
-ROUTING_POLICY_TYPE_ANY is specified, a
-SingleClusterRouting policy will be created
-using the cluster_id and
-allow_transactional_writes parameters.</td>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">routing_policy_type: The type of the routing policy.
+Possible values are represented
+by the following constants:
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.ANY</span></code>
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.RoutingPolicyType.SINGLE</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">description: str</td>
 </tr>
