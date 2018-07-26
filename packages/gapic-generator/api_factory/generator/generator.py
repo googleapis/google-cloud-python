@@ -22,7 +22,8 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from api_factory import utils
-from api_factory.generator.loader import TemplateLoader
+from api_factory.generator import formatter
+from api_factory.generator import loader
 from api_factory.schema import api
 
 
@@ -45,7 +46,7 @@ class Generator:
 
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
-            loader=TemplateLoader(
+            loader=loader.TemplateLoader(
                 searchpath=os.path.join(_dirname, '..', 'templates'),
             ),
             undefined=jinja2.StrictUndefined,
@@ -111,10 +112,12 @@ class Generator:
         for template_name in templates:
             # Generate the File object.
             answer.append(CodeGeneratorResponse.File(
-                content=self._env.get_template(template_name).render(
-                    api=self._api,
-                    **additional_context
-                ).strip() + '\n',
+                content=formatter.fix_whitespace(
+                    self._env.get_template(template_name).render(
+                        api=self._api,
+                        **additional_context
+                    ),
+                ),
                 name=self._get_output_filename(
                     template_name,
                     context=additional_context,
