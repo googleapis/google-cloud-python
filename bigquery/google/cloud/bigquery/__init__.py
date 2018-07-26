@@ -35,6 +35,13 @@ from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.external_config import BigtableOptions
+from google.cloud.bigquery.external_config import BigtableColumnFamily
+from google.cloud.bigquery.external_config import BigtableColumn
+from google.cloud.bigquery.external_config import CSVOptions
+from google.cloud.bigquery.external_config import GoogleSheetsOptions
+from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
@@ -64,12 +71,6 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
-from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.external_config import BigtableOptions
-from google.cloud.bigquery.external_config import BigtableColumnFamily
-from google.cloud.bigquery.external_config import BigtableColumn
-from google.cloud.bigquery.external_config import CSVOptions
-from google.cloud.bigquery.external_config import GoogleSheetsOptions
 
 __all__ = [
     '__version__',
@@ -112,6 +113,7 @@ __all__ = [
     'Compression',
     'CreateDisposition',
     'DestinationFormat',
+    'ExternalSourceFormat',
     'Encoding',
     'QueryPriority',
     'SchemaUpdateOption',
