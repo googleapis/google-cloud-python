@@ -6,6 +6,7 @@ recommonmark >= 0.4.0
 api_core/
 core/
 storage/
+automl/
 bigquery/
 bigquery_datatransfer/
 bigtable/
@@ -15,6 +16,8 @@ datastore/
 dlp/
 dns/
 firestore/
+iot/
+kms/
 language/
 logging/
 error_reporting/
@@ -26,6 +29,7 @@ resource_manager/
 runtimeconfig/
 spanner/
 speech/
+tasks/
 texttospeech/
 trace/
 translate/

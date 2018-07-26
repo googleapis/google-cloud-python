@@ -362,7 +362,7 @@ class Table(object):
         Raises:
             ValueError: If ``value`` type is invalid.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -591,19 +591,11 @@ class Table(object):
 
     @property
     def location(self):
-        """Union[str, None]: Location in which the table is hosted (defaults
-        to :data:`None`).
+        """Union[str, None]: Location in which the table is hosted
 
-        Raises:
-            ValueError: For invalid value types.
+        Defaults to :data:`None`.
         """
         return self._properties.get('location')
-
-    @location.setter
-    def location(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("Pass a string, or None")
-        self._properties['location'] = value
 
     @property
     def view_query(self):
@@ -830,7 +822,7 @@ class TableListItem(object):
         modify the dict, then call ``Client.update_table``. To delete a
         label, set its value to :data:`None` before updating.
         """
-        return self._properties.get('labels', {})
+        return self._properties.setdefault('labels', {})
 
     @property
     def full_table_id(self):

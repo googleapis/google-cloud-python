@@ -4,6 +4,7 @@
 
   releases
   core/index
+  automl/index
   bigquery/usage
   bigquery_datatransfer/index
   bigtable/usage
@@ -13,6 +14,8 @@
   dlp/index
   dns/usage
   firestore/index
+  iot/index
+  kms/index
   language/usage
   pubsub/index
   oslogin/index
@@ -25,6 +28,7 @@
   logging/usage
   redis/index
   storage/client
+  tasks/index
   texttospeech/index
   translate/usage
   vision/index

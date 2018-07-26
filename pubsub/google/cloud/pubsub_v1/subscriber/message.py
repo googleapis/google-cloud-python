@@ -164,6 +164,11 @@ class Message(object):
         """Return the size of the underlying message, in bytes."""
         return self._message.ByteSize()
 
+    @property
+    def ack_id(self):
+        """str: the ID used to ack the message."""
+        return self._ack_id
+
     def ack(self):
         """Acknowledge the given message.
 

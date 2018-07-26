@@ -19,19 +19,18 @@ import re
 
 from google.cloud.bigtable.table import Table
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+from google.cloud.bigtable.cluster import Cluster
 
 from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
+from google.cloud.bigtable.enums import RoutingPolicyType
+
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
-
-
-ROUTING_POLICY_TYPE_ANY = 1
-ROUTING_POLICY_TYPE_SINGLE = 2
 
 
 class Instance(object):
@@ -180,7 +179,7 @@ class Instance(object):
 
     def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
                serve_nodes=DEFAULT_SERVE_NODES,
-               default_storage_type=None):
+               default_storage_type=None, clusters=None):
         """Create this instance.
 
         .. note::
@@ -216,29 +215,40 @@ class Instance(object):
                                       Defaults to
                                       :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
+        :type clusters: class:`~[~google.cloud.bigtable.cluster.Cluster]`
+        :param clusters: List of clusters to be created.
+
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: The long-running operation corresponding to the create
                     operation.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if both
+                 ``clusters`` and one of ``location_id``, ``serve_nodes``
+                 and ``default_storage_type`` are set.
         """
-        clusters = {}
-        cluster_id = '{}-cluster'.format(self.instance_id)
-        cluster_name = self._client.instance_admin_client.cluster_path(
-            self._client.project, self.instance_id, cluster_id)
-        location = self._client.instance_admin_client.location_path(
-            self._client.project, location_id)
-        cluster = instance_pb2.Cluster(
-            name=cluster_name, location=location,
-            serve_nodes=serve_nodes,
-            default_storage_type=default_storage_type)
+
+        if clusters is None:
+            cluster_id = '{}-cluster'.format(self.instance_id)
+
+            clusters = [Cluster(cluster_id, self, location_id,
+                                serve_nodes, default_storage_type)]
+
+        elif (location_id is not None or
+              serve_nodes is not None or
+              default_storage_type is not None):
+            raise ValueError("clusters and one of location_id, serve_nodes, \
+                             default_storage_type can not be set \
+                             simultaneously.")
+
         instance = instance_pb2.Instance(
             display_name=self.display_name, type=self.type_,
             labels=self.labels)
-        clusters[cluster_id] = cluster
+
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
             parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters=clusters)
+            clusters={c.cluster_id: c._create_pb_request() for c in clusters})
 
     def update(self):
         """Updates an instance within a project.
@@ -338,7 +348,7 @@ class Instance(object):
         return result
 
     def create_app_profile(self, app_profile_id, routing_policy_type,
-                           description='', ignore_warnings=None,
+                           description=None, ignore_warnings=None,
                            cluster_id=None, allow_transactional_writes=False):
         """Creates an app profile within an instance.
 
@@ -346,16 +356,11 @@ class Instance(object):
         :param app_profile_id: The unique name for the new app profile.
 
         :type: routing_policy_type: int
-        :param: routing_policy_type: There are two routing policies
-                                    ROUTING_POLICY_TYPE_ANY = 1 and
-                                    ROUTING_POLICY_TYPE_SINGLE = 2.
-                                    If ROUTING_POLICY_TYPE_ANY
-                                    which will create a
-                                    MultiClusterRoutingUseAny policy and if
-                                    ROUTING_POLICY_TYPE_ANY is specified, a
-                                    SingleClusterRouting policy will be created
-                                    using the cluster_id and
-                                    allow_transactional_writes parameters.
+        :param: routing_policy_type: The type of the routing policy.
+                                     Possible values are represented
+                                     by the following constants:
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
 
         :type: description: str
         :param: description: (Optional) Long form description of the use
@@ -389,11 +394,11 @@ class Instance(object):
         name = instance_admin_client.app_profile_path(
             self._client.project, self.instance_id, app_profile_id)
 
-        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
+        if routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
 
-        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+        if routing_policy_type == RoutingPolicyType.SINGLE:
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=cluster_id,
@@ -437,10 +442,11 @@ class Instance(object):
             self._client._instance_admin_client.list_app_profiles(self.name))
         return list_app_profiles
 
-    def update_app_profile(self, app_profile_id, update_mask,
-                           routing_policy_type, description='',
+    def update_app_profile(self, app_profile_id,
+                           routing_policy_type, description=None,
                            ignore_warnings=None,
-                           cluster_id=None, allow_transactional_writes=False):
+                           cluster_id=None,
+                           allow_transactional_writes=False):
         """Updates an app profile within an instance.
 
         :type: app_profile_id: str
@@ -451,16 +457,11 @@ class Instance(object):
                                 needed to update.
 
         :type: routing_policy_type: int
-        :param: routing_policy_type: There are two routing policies
-                                    ROUTING_POLICY_TYPE_ANY = 1 and
-                                    ROUTING_POLICY_TYPE_SINGLE = 2.
-                                    If ROUTING_POLICY_TYPE_ANY
-                                    which will create a
-                                    MultiClusterRoutingUseAny policy and if
-                                    ROUTING_POLICY_TYPE_ANY is specified, a
-                                    SingleClusterRouting policy will be created
-                                    using the cluster_id and
-                                    allow_transactional_writes parameters.
+        :param: routing_policy_type: The type of the routing policy.
+                                     Possible values are represented
+                                     by the following constants:
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.ANY`
+                                     :data:`google.cloud.bigtable.enums.RoutingPolicyType.SINGLE`
 
         :type: description: str
         :param: description: (Optional) Optional long form description of the
@@ -488,32 +489,36 @@ class Instance(object):
         if not routing_policy_type:
             raise ValueError('AppProfile required routing policy.')
 
+        update_mask_pb = field_mask_pb2.FieldMask()
         single_cluster_routing = None
         multi_cluster_routing_use_any = None
         instance_admin_client = self._client._instance_admin_client
         name = instance_admin_client.app_profile_path(
             self._client.project, self.instance_id, app_profile_id)
 
-        if routing_policy_type == ROUTING_POLICY_TYPE_ANY:
+        if description is not None:
+            update_mask_pb.paths.append('description')
+
+        if routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
                 instance_pb2.AppProfile.MultiClusterRoutingUseAny())
+            update_mask_pb.paths.append('multi_cluster_routing_use_any')
 
-        if routing_policy_type == ROUTING_POLICY_TYPE_SINGLE:
+        if routing_policy_type == RoutingPolicyType.SINGLE:
             single_cluster_routing = (
                 instance_pb2.AppProfile.SingleClusterRouting(
                     cluster_id=cluster_id,
                     allow_transactional_writes=allow_transactional_writes
                 ))
+            update_mask_pb.paths.append('single_cluster_routing')
 
-        update_app_profile = instance_pb2.AppProfile(
+        update_app_profile_pb = instance_pb2.AppProfile(
             name=name, description=description,
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
             single_cluster_routing=single_cluster_routing
         )
-        update_mask = field_mask_pb2.FieldMask(paths=update_mask)
-
         return self._client._instance_admin_client.update_app_profile(
-            app_profile=update_app_profile, update_mask=update_mask,
+            app_profile=update_app_profile_pb, update_mask=update_mask_pb,
             ignore_warnings=ignore_warnings)
 
     def delete_app_profile(self, app_profile_id, ignore_warnings=False):
