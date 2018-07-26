@@ -173,12 +173,6 @@ jobs:
               nox -f translate/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.vision
-          command: |
-            if [[ -n $(grep -x vision ~/target_packages) ]]; then
-              nox -f vision/nox.py
-            fi
-      - run:
           name: Run tests - google.cloud.videointelligence
           command: |
             if [[ -n $(grep -x videointelligence ~/target_packages) ]]; then
