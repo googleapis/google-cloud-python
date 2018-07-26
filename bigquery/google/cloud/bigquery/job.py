@@ -1393,7 +1393,7 @@ class CopyJob(_AsyncJob):
     :param job_id: the job's ID, within the project belonging to ``client``.
 
     :type sources: list of :class:`google.cloud.bigquery.table.TableReference`
-    :param sources: Table into which data is to be loaded.
+    :param sources: Table from which data is to be loaded.
 
     :type destination: :class:`google.cloud.bigquery.table.TableReference`
     :param destination: Table into which data is to be loaded.
