@@ -61,8 +61,8 @@ class TestInstance(unittest.TestCase):
     DISPLAY_NAME = 'display_name'
     LABELS = {'foo': 'bar'}
     OP_ID = 8915
-    OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
-               (PROJECT, INSTANCE_ID, OP_ID))
+    OP_NAME = ('operations/projects/{}/instances/{}operations/{}'
+               .format(PROJECT, INSTANCE_ID, OP_ID))
     TABLE_ID = 'table_id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
 
@@ -337,8 +337,8 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
@@ -500,34 +500,116 @@ class TestInstance(unittest.TestCase):
                                          labels=self.LABELS)
 
         return messages_v2_pb2.CreateInstanceRequest(
-            parent='projects/%s' % (self.PROJECT),
+            parent='projects/{}'.format(self.PROJECT),
             instance_id=self.INSTANCE_ID,
             instance=instance,
             clusters=clusters
         )
 
     def test_update(self):
+        import datetime
+        from google.api_core import operation
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
+        from google.protobuf import field_mask_pb2
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_v2_pb2)
 
-        api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock())
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME)
+                                  display_name=self.DISPLAY_NAME,
+                                  instance_type=enums.InstanceType.DEVELOPMENT,
+                                  labels=self.LABELS)
+
+        expected_request_instance = instance_pb2.Instance(
+            name=instance.name, display_name=instance.display_name,
+            type=instance.type_, labels=instance.labels)
+        expected_request_update_mask = field_mask_pb2.FieldMask(
+            paths=['display_name', 'type', 'labels'])
+        expected_request = instance_v2_pb2.PartialUpdateInstanceRequest(
+            instance=expected_request_instance,
+            update_mask=expected_request_update_mask)
+
+        metadata = messages_v2_pb2.UpdateInstanceMetadata(
+            request_time=NOW_PB)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.UpdateInstanceMetadata.DESCRIPTOR.full_name)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=type_url,
+                value=metadata.SerializeToString(),
+            )
+        )
+
+        channel = ChannelStub(responses=[response_pb])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
 
         # Mock api calls
-        client._instance_admin_client = api
-
-        # Create expected_result.
-        expected_result = None
+        client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
         result = instance.update()
+        actual_request = channel.requests[0][1]
 
-        self.assertEqual(result, expected_result)
+        self.assertEqual(actual_request, expected_request)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, self.OP_NAME)
+        self.assertIsInstance(result.metadata,
+                              messages_v2_pb2.UpdateInstanceMetadata)
+
+    def test_update_empty(self):
+        from google.api_core import operation
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.longrunning import operations_pb2
+        from google.protobuf import field_mask_pb2
+        from google.cloud.bigtable_admin_v2.types import instance_pb2
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as instance_v2_pb2)
+
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = self._make_one(None, client)
+
+        expected_request_instance = instance_pb2.Instance(
+            name=instance.name, display_name=instance.display_name,
+            type=instance.type_, labels=instance.labels)
+        expected_request_update_mask = field_mask_pb2.FieldMask()
+        expected_request = instance_v2_pb2.PartialUpdateInstanceRequest(
+            instance=expected_request_instance,
+            update_mask=expected_request_update_mask)
+
+        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+
+        channel = ChannelStub(responses=[response_pb])
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                channel=channel))
+
+        # Mock api calls
+        client._instance_admin_client = instance_api
+
+        # Perform the method and check the result.
+        result = instance.update()
+        actual_request = channel.requests[0][1]
+
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(actual_request, expected_request)
 
     def test_delete(self):
         from google.cloud.bigtable_admin_v2.gapic import (
@@ -831,8 +913,8 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         metadata = messages_v2_pb2.UpdateAppProfileMetadata()
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateAppProfileMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.UpdateAppProfileMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
@@ -902,8 +984,8 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         metadata = messages_v2_pb2.UpdateAppProfileMetadata()
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateAppProfileMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.UpdateAppProfileMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(

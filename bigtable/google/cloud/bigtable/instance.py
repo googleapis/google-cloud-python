@@ -251,23 +251,41 @@ class Instance(object):
             clusters={c.cluster_id: c._create_pb_request() for c in clusters})
 
     def update(self):
-        """Update this instance.
+        """Updates an instance within a project.
 
         .. note::
 
-            Updates the ``display_name``. To change that value before
-            updating, reset its values via
+            Updates any or all of the following values:
+            ``display_name``
+            ``type``
+            ``labels``
+            To change a value before
+            updating, assign that values via
 
             .. code:: python
 
                 instance.display_name = 'New display name'
 
             before calling :meth:`update`.
+
+        :rtype: :class:`~google.api_core.operation.Operation`
+        :returns: The long-running operation corresponding to the update
+                    operation.
         """
-        self._client.instance_admin_client.update_instance(
+        update_mask_pb = field_mask_pb2.FieldMask()
+        if self.display_name is not None:
+            update_mask_pb.paths.append('display_name')
+        if self.type_ is not None:
+            update_mask_pb.paths.append('type')
+        if self.labels is not None:
+            update_mask_pb.paths.append('labels')
+        instance_pb = instance_pb2.Instance(
             name=self.name, display_name=self.display_name,
-            type_=self.type_,
-            labels=self.labels)
+            type=self.type_, labels=self.labels)
+
+        return self._client.instance_admin_client.partial_update_instance(
+            instance=instance_pb,
+            update_mask=update_mask_pb)
 
     def delete(self):
         """Delete this instance.
@@ -321,8 +339,9 @@ class Instance(object):
         for table_pb in table_list_pb:
             table_prefix = self.name + '/tables/'
             if not table_pb.name.startswith(table_prefix):
-                raise ValueError('Table name %s not of expected format' % (
-                    table_pb.name,))
+                raise ValueError(
+                    'Table name {} not of expected format'.format(
+                        table_pb.name))
             table_id = table_pb.name[len(table_prefix):]
             result.append(self.table(table_id))
 
