@@ -24,6 +24,9 @@ export PYTHONUNBUFFERED=1
 # Debug: show build environment
 env | grep KOKORO
 
+# Setup service account credentials.
+export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
 # Find out if this package was modified.
 # Temporarily use Thea's fork of ci-diff-helper w/ Kokoro support.
 python3.6 -m pip install --quiet git+https://github.com/theacodes/ci-diff-helper.git
