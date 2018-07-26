@@ -31,21 +31,18 @@ def test_wrap_strips():
     assert lines.wrap('foo bar baz  ', width=80) == 'foo bar baz'
 
 
-def test_wrap_subsequent_indent():
-    assert lines.wrap(
-        '# foo bar baz',
-        width=5,
-        subsequent_indent='# ',
-    ) == '# foo\n# bar\n# baz'
+def test_wrap_subsequent_offset():
+    assert lines.wrap('foo bar baz',
+        width=5, offset=0, indent=2,
+    ) == 'foo\n  bar\n  baz'
 
 
-def test_wrap_initial_width():
+def test_wrap_initial_offset():
     assert lines.wrap(
         'The hail in Wales falls mainly on the snails.',
-        width=20,
-        initial_width=8,
+        width=20, offset=12, indent=0,
     ) == 'The hail\nin Wales falls\nmainly on the\nsnails.'
 
 
-def test_wrap_initial_width_short():
-    assert lines.wrap('foo bar', width=30, initial_width=20) == 'foo bar'
+def test_wrap_indent_short():
+    assert lines.wrap('foo bar', width=30, indent=10) == 'foo bar'

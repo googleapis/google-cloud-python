@@ -17,7 +17,7 @@ from .base import {{ service.name }}Transport
 class {{ service.name }}HttpTransport({{ service.name }}Transport):
     """HTTP backend transport for {{ service.name }}.
 
-    {{ service.meta.doc|wrap(width=72, subsequent_indent='    ') }}
+    {{ service.meta.doc|wrap(width=72, indent=4) }}
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -68,20 +68,21 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
             request: {{ method.input.python_module }}.{{ method.input.name }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.python_module }}.{{ method.output.name }}:
-        """Call the {{ (method.name|snake_case).replace('_',' ')|wrap(width=70,
-        initial_width=25, subsequent_indent="        ") }} method over HTTP.
+        """Call the {{- ' ' -}}
+        {{ (method.name|snake_case).replace('_',' ')|wrap(
+                width=70, offset=45, indent=8) }}
+        {{- ' ' -}} method over HTTP.
 
         Args:
             request (~.{{ method.input.python_ident }}):
-                The request object. {{ method.input.meta.doc|wrap(width=72,
-                initial_width=36, subsequent_indent=' ' * 16) }}
+                The request object. {{- ' ' -}}
+                {{ method.input.meta.doc|wrap(width=72, offset=36 indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
 
         Returns:
             ~.{{ method.output.python_ident }}:
-                {{ method.output.meta.doc|wrap(width=72, initial_width=56,
-                                               subsequent_indent=' ' * 16) }}
+                {{ method.output.meta.doc|wrap(width=72, indent=16) }}
         """
         # Serialize the input.
         data = request.SerializeToString()
