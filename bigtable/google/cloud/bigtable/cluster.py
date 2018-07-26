@@ -96,14 +96,16 @@ class Cluster(object):
         :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: An instance protobuf object.
 
-        :type client: :class:`Client <google.cloud.bigtable.client.Client>`
-        :param client: The client that owns the instance.
+        :type instance: :class:`google.cloud.bigtable.instance.Instance`
+        :param instance: The instance that owns the cluster.
 
-        :rtype: :class:`Instance`
-        :returns: The instance parsed from the protobuf response.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the instance
+        :rtype: :class:`Cluster`
+        :returns: The Cluster parsed from the protobuf response.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
                  name does not match
-                 ``projects/{project}/instances/{instance_id}``
+                 ``projects/{project}/instances/{instance_id}/clusters/{cluster_id}``
+                 or if the parsed instance ID does not match the istance ID
+                 on the client.
                  or if the parsed project ID does not match the project ID
                  on the client.
         """
