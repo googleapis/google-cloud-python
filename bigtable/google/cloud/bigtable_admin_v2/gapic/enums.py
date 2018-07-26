@@ -175,3 +175,27 @@ class Snapshot(object):
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
+
+
+class RoutingPolicyType(object):
+    """
+    The type of the routing policy for app_profile.
+
+    Attributes:
+      ANY (int): Read/write requests may be routed to any cluster in the
+      instance, and will fail over to another cluster in the event of
+      transient errors or delays.
+      Choosing this option sacrifices read-your-writes consistency to
+      improve availability.
+      See
+      https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny
+
+      SINGLE (int): Unconditionally routes all read/write requests to a
+      specific cluster.
+      This option preserves read-your-writes consistency, but does not improve
+      availability.
+      See
+      https://cloud.google.com/bigtable/docs/reference/admin/rpc/google.bigtable.admin.v2#google.bigtable.admin.v2.AppProfile.SingleClusterRouting
+    """
+    ANY = 1
+    SINGLE = 2
