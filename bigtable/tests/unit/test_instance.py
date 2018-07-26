@@ -524,10 +524,9 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME,
-                                  instance_type=enums.Instance.Type.DEVELOPMENT,
-                                  labels=self.LABELS)
+        instance = self._make_one(
+            self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME,
+            instance_type=enums.Instance.Type.DEVELOPMENT, labels=self.LABELS)
 
         expected_request_instance = instance_pb2.Instance(
             name=instance.name, display_name=instance.display_name,
