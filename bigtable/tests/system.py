@@ -125,14 +125,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        expected = set([instance.name for instance in EXISTING_INSTANCES])
-        expected.add(Config.INSTANCE.name)
-
         instances, failed_locations = Config.CLIENT.list_instances()
 
         self.assertEqual(failed_locations, [])
+
         found = set([instance.name for instance in instances])
-        self.assertTrue(expected.issubset(found))
+        self.assertTrue(Config.INSTANCE.name in found)
 
     def test_reload(self):
         from google.cloud.bigtable import enums
@@ -241,14 +239,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
 
-        self.assertTrue(cluster_1.exists())
-        self.assertTrue(cluster_2.exists())
+        clusters, failed_locations = instance_alt.list_clusters()
+        self.assertEqual(failed_locations, [])
 
-        # Create new cluster objects and reload them.
-        alt_cluster_1 = instance.cluster(ALT_CLUSTER_ID_1)
-        alt_cluster_1.reload()
-        alt_cluster_2 = instance.cluster(ALT_CLUSTER_ID_2)
-        alt_cluster_2.reload()
+        clusters.sort(key=lambda x: x.name)
+        alt_cluster_1, alt_cluster_2 = clusters
+
         self.assertEqual(cluster_1.location_id, alt_cluster_1.location_id)
         self.assertEqual(alt_cluster_1.state, enums.Cluster.State.READY)
         self.assertEqual(cluster_1.serve_nodes, alt_cluster_1.serve_nodes)

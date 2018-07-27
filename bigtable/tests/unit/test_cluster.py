@@ -295,10 +295,11 @@ class TestCluster(unittest.TestCase):
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
         instance = Instance(self.INSTANCE_ID, client)
-        cluster = self._make_one(self.CLUSTER_ID, instance)
 
         # Create response_pb
-        response_pb = data_v2_pb2.Cluster(name=cluster.name)
+        cluster_name = client.instance_admin_client.cluster_path(
+            self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID)
+        response_pb = data_v2_pb2.Cluster(name=cluster_name)
 
         # Patch the stub used by the API method.
         client._instance_admin_client = instance_api

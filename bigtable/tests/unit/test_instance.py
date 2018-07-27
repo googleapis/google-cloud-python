@@ -126,7 +126,7 @@ class TestInstance(unittest.TestCase):
     def test_cluster_factory(self):
         from google.cloud.bigtable import enums
 
-        CLUSTER_ID = self.INSTANCE_ID+'-cluster'
+        CLUSTER_ID = '{}-cluster'.format(self.INSTANCE_ID)
         LOCATION_ID = 'us-central1-c'
         SERVE_NODES = 3
         STORAGE_TYPE = enums.StorageType.HDD
@@ -142,6 +142,66 @@ class TestInstance(unittest.TestCase):
         self.assertIsNone(cluster.state)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
+
+    def test_list_clusters(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Cluster
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+
+        failed_location = 'FAILED'
+        cluster_id1 = 'cluster-id1'
+        cluster_id2 = 'ckuster-id2'
+        cluster_name1 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id1))
+        cluster_name2 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id2))
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListClustersResponse(
+            failed_locations=[
+                failed_location
+            ],
+            clusters=[
+                data_v2_pb2.Cluster(
+                    name=cluster_name1,
+                ),
+                data_v2_pb2.Cluster(
+                    name=cluster_name2,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.ListClusters.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        clusters, failed_locations = instance.list_clusters()
+
+        cluster_1, cluster_2 = clusters
+
+        self.assertIsInstance(cluster_1, Cluster)
+        self.assertEqual(cluster_1.name, cluster_name1)
+
+        self.assertIsInstance(cluster_2, Cluster)
+        self.assertEqual(cluster_2.name, cluster_name2)
+
+        self.assertEqual(failed_locations, [failed_location])
 
     def test__update_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (
