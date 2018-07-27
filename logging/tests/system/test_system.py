@@ -231,9 +231,10 @@ class TestLogging(unittest.TestCase):
     def test_log_handler_async(self):
         LOG_MESSAGE = 'It was the worst of times'
 
-        handler = CloudLoggingHandler(Config.CLIENT)
+        handler_name = 'gcp-async' + unique_resource_id('-')
+        handler = CloudLoggingHandler(Config.CLIENT, name=handler_name)
         # only create the logger to delete, hidden otherwise
-        logger = Config.CLIENT.logger(handler.name)
+        logger = Config.CLIENT.logger(handler_name)
         self.to_delete.append(logger)
 
         cloud_logger = logging.getLogger(handler.name)
