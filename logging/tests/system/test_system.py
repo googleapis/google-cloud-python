@@ -334,14 +334,14 @@ class TestLogging(unittest.TestCase):
             METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
         before_metrics = list(Config.CLIENT.list_metrics())
-        before_names = set(metric.name for metric in before_metrics)
+        before_names = set(before.name for before in before_metrics)
+        self.failIf(metric.name in before_names)
         metric.create()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
         after_metrics = list(Config.CLIENT.list_metrics())
-        after_names = set(metric.name for metric in after_metrics)
-        self.assertEqual(after_names - before_names,
-                         set([METRIC_NAME]))
+        after_names = set(after.name for after in after_metrics)
+        self.assertTrue(metric.name in after_names)
 
     def test_reload_metric(self):
         METRIC_NAME = 'test-reload-metric%s' % (_RESOURCE_ID,)
