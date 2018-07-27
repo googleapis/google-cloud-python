@@ -263,7 +263,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     def test_create_database(self):
         pool = BurstyPool()
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        temp_db_id = 'create_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
         self.to_delete.append(temp_db)
@@ -277,7 +277,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.assertIn(temp_db_id, database_ids)
 
     def test_table_not_found(self):
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        temp_db_id = 'table_404' + unique_resource_id('_')
 
         correct_table = 'MyTable'
         incorrect_table = 'NotMyTable'
@@ -306,7 +306,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
-        temp_db_id = 'temp_db' + unique_resource_id('_')
+        temp_db_id = 'update_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
         self.to_delete.append(temp_db)
@@ -317,7 +317,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         operation = temp_db.update_ddl(DDL_STATEMENTS)
 
         # We want to make sure the operation completes.
-        operation.result(120)  # raises on failure / timeout.
+        operation.result(150)  # raises on failure / timeout.
 
         temp_db.reload()
 
