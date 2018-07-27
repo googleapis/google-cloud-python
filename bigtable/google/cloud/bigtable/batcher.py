@@ -103,7 +103,7 @@ class MutationsBatcher(object):
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
                  * :exc:`.batcher.MaxMutationsError` if any row exceeds max
-                   mutaions count.
+                   mutations count.
         """
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
