@@ -66,6 +66,23 @@ def unit(session, py):
 
 
 @nox.session
+@nox.parametrize('py', ['2.7', '3.5', '3.6', '3.7'])
+def unit_grpc_gcp(session, py):
+    """Run the unit test suite with grpcio-gcp installed."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-grpc-gcp-' + py
+
+    # Install grpcio-gcp
+    session.install('grpcio-gcp')
+
+    default(session)
+
+
+@nox.session
 def lint(session):
     """Run linters.
 
