@@ -472,14 +472,14 @@ class TestLogging(unittest.TestCase):
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         before_sinks = list(Config.CLIENT.list_sinks())
-        before_names = set(sink.name for sink in before_sinks)
+        before_names = set(before.name for before in before_sinks)
+        self.failIf(sink.name in before_names)
         sink.create()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
         after_sinks = list(Config.CLIENT.list_sinks())
-        after_names = set(sink.name for sink in after_sinks)
-        self.assertEqual(after_names - before_names,
-                         set([SINK_NAME]))
+        after_names = set(after.name for after in after_sinks)
+        self.assertTrue(sink.name in after_names)
 
     def test_reload_sink(self):
         SINK_NAME = 'test-reload-sink%s' % (_RESOURCE_ID,)
