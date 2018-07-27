@@ -176,60 +176,157 @@ def test_wrap_errors_streaming(wrap_stream_errors):
     wrap_stream_errors.assert_called_once_with(callable_)
 
 
+@mock.patch('grpc.composite_channel_credentials')
 @mock.patch(
     'google.auth.default',
     return_value=(mock.sentinel.credentials, mock.sentinel.projet))
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def test_create_channel_implicit(secure_authorized_channel, default):
+@mock.patch('grpc.secure_channel')
+def test_create_channel_implicit(
+        grpc_secure_channel, default, composite_creds_call):
     target = 'example.com:443'
+    composite_creds = composite_creds_call.return_value
 
     channel = grpc_helpers.create_channel(target)
 
-    assert channel is secure_authorized_channel.return_value
+    assert channel is grpc_secure_channel.return_value
     default.assert_called_once_with(scopes=None)
-    secure_authorized_channel.assert_called_once_with(
-        mock.sentinel.credentials, mock.ANY, target)
+    if (grpc_helpers.HAS_GRPC_GCP):
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, None)
+    else:
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds)
 
 
+@mock.patch('grpc.composite_channel_credentials')
 @mock.patch(
     'google.auth.default',
     return_value=(mock.sentinel.credentials, mock.sentinel.projet))
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def test_create_channel_implicit_with_scopes(
-        secure_authorized_channel, default):
+@mock.patch('grpc.secure_channel')
+def test_create_channel_implicit_with_ssl_creds(
+        grpc_secure_channel, default, composite_creds_call):
     target = 'example.com:443'
+
+    ssl_creds = grpc.ssl_channel_credentials()
+
+    grpc_helpers.create_channel(target, ssl_credentials=ssl_creds)
+
+    default.assert_called_once_with(scopes=None)
+    composite_creds_call.assert_called_once_with(ssl_creds, mock.ANY)
+    composite_creds = composite_creds_call.return_value
+    if (grpc_helpers.HAS_GRPC_GCP):
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, None)
+    else:
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds)
+
+
+@mock.patch('grpc.composite_channel_credentials')
+@mock.patch(
+    'google.auth.default',
+    return_value=(mock.sentinel.credentials, mock.sentinel.projet))
+@mock.patch('grpc.secure_channel')
+def test_create_channel_implicit_with_scopes(
+        grpc_secure_channel, default, composite_creds_call):
+    target = 'example.com:443'
+    composite_creds = composite_creds_call.return_value
 
     channel = grpc_helpers.create_channel(target, scopes=['one', 'two'])
 
-    assert channel is secure_authorized_channel.return_value
+    assert channel is grpc_secure_channel.return_value
     default.assert_called_once_with(scopes=['one', 'two'])
+    if (grpc_helpers.HAS_GRPC_GCP):
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, None)
+    else:
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds)
 
 
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def test_create_channel_explicit(secure_authorized_channel):
+@mock.patch('grpc.composite_channel_credentials')
+@mock.patch('google.auth.credentials.with_scopes_if_required')
+@mock.patch('grpc.secure_channel')
+def test_create_channel_explicit(
+        grpc_secure_channel, auth_creds, composite_creds_call):
     target = 'example.com:443'
+    composite_creds = composite_creds_call.return_value
 
     channel = grpc_helpers.create_channel(
         target, credentials=mock.sentinel.credentials)
 
-    assert channel is secure_authorized_channel.return_value
-    secure_authorized_channel.assert_called_once_with(
-        mock.sentinel.credentials, mock.ANY, target)
+    auth_creds.assert_called_once_with(mock.sentinel.credentials, None)
+    assert channel is grpc_secure_channel.return_value
+    if (grpc_helpers.HAS_GRPC_GCP):
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, None)
+    else:
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds)
 
 
-@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
-def test_create_channel_explicit_scoped(unused_secure_authorized_channel):
+@mock.patch('grpc.composite_channel_credentials')
+@mock.patch('grpc.secure_channel')
+def test_create_channel_explicit_scoped(
+        grpc_secure_channel, composite_creds_call):
+    target = 'example.com:443'
     scopes = ['1', '2']
+    composite_creds = composite_creds_call.return_value
+
+    credentials = mock.create_autospec(
+        google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = True
+
+    channel = grpc_helpers.create_channel(
+        target,
+        credentials=credentials,
+        scopes=scopes)
+
+    credentials.with_scopes.assert_called_once_with(scopes)
+    assert channel is grpc_secure_channel.return_value
+    if (grpc_helpers.HAS_GRPC_GCP):
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, None)
+    else:
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds)
+
+
+@pytest.mark.skipif(not grpc_helpers.HAS_GRPC_GCP,
+                    reason='grpc_gcp module not available')
+@mock.patch('grpc_gcp.secure_channel')
+def test_create_channel_with_grpc_gcp(grpc_gcp_secure_channel):
+    target = 'example.com:443'
+    scopes = ['test_scope']
 
     credentials = mock.create_autospec(
         google.auth.credentials.Scoped, instance=True)
     credentials.requires_scopes = True
 
     grpc_helpers.create_channel(
-        mock.sentinel.target,
+        target,
         credentials=credentials,
         scopes=scopes)
+    grpc_gcp_secure_channel.assert_called()
+    credentials.with_scopes.assert_called_once_with(scopes)
 
+
+@pytest.mark.skipif(grpc_helpers.HAS_GRPC_GCP,
+                    reason='grpc_gcp module not available')
+@mock.patch('grpc.secure_channel')
+def test_create_channel_without_grpc_gcp(grpc_secure_channel):
+    target = 'example.com:443'
+    scopes = ['test_scope']
+
+    credentials = mock.create_autospec(
+        google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = True
+
+    grpc_helpers.create_channel(
+        target,
+        credentials=credentials,
+        scopes=scopes)
+    grpc_secure_channel.assert_called()
     credentials.with_scopes.assert_called_once_with(scopes)
 
 
