@@ -16,16 +16,13 @@
 
 
 import re
-from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.types import instance_pb2
-from google.api_core import exceptions
+from google.api_core.exceptions import NotFound
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
                               r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
-
-_STORAGE_TYPE_UNSPECIFIED = enums.StorageType.STORAGE_TYPE_UNSPECIFIED
 
 
 class Cluster(object):
@@ -189,7 +186,8 @@ class Cluster(object):
         try:
             client.instance_admin_client.get_cluster(name=self.name)
             return True
-        except exceptions.NotFound:
+        # NOTE: There could be other exceptions that are returned to the user.
+        except NotFound:
             return False
 
     def create(self):
@@ -249,6 +247,9 @@ class Cluster(object):
                   update operation.
         """
         client = self._instance._client
+        # We are passing `None` for second argument location.
+        # Location is set only at the time of creation of a cluster
+        # and can not be changed after cluster has been created.
         return client.instance_admin_client.update_cluster(
             self.name, None, self.serve_nodes)
 

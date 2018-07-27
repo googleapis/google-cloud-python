@@ -27,10 +27,6 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 from google.cloud.bigtable.enums import RoutingPolicyType
 
 
-"""For backwards compatibility the default number of nodes to use for a cluster
-   when creating instance and not using param clusters
-"""
-
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
@@ -334,16 +330,6 @@ class Instance(object):
                             this cluster.
                             For list of supported locations refer to
                             https://cloud.google.com/bigtable/docs/locations
-
-        :type state: int
-        :param state: (`OutputOnly`)
-                  The current state of the cluster.
-                  Possible values are represented by the following constants:
-                  :data:`google.cloud.bigtable.enums.Cluster.State.NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.READY`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.CREATING`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.RESIZING`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
 
         :type serve_nodes: int
         :param serve_nodes: (Optional) The number of nodes in the cluster.
