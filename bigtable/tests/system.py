@@ -121,14 +121,11 @@ class TestInstanceAdminAPI(unittest.TestCase):
             instance.delete()
 
     def test_list_instances(self):
-        expected = set([instance.name for instance in EXISTING_INSTANCES])
-        expected.add(Config.INSTANCE.name)
-
         instances, failed_locations = Config.CLIENT.list_instances()
 
         self.assertEqual(failed_locations, [])
         found = set([instance.name for instance in instances])
-        self.assertTrue(expected.issubset(found))
+        self.assertTrue(Config.INSTANCE.name in found)
 
     def test_reload(self):
         from google.cloud.bigtable import enums
