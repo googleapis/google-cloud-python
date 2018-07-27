@@ -20,7 +20,7 @@ MAX_MUTATIONS = 100000
 MAX_ROW_BYTES = 5242880  # 5MB
 
 
-class MaxMutaionsError(ValueError):
+class MaxMutationsError(ValueError):
     """The number of mutations for bulk request is too big."""
 
 
@@ -102,12 +102,12 @@ class MutationsBatcher(object):
                    row returned a transient error.
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
-                 * :exc:`.batcher.MaxMutaionsError` if any row exceeds max
+                 * :exc:`.batcher.MaxMutationsError` if any row exceeds max
                    mutaions count.
         """
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
-            raise MaxMutaionsError(
+            raise MaxMutationsError(
                 'The row key {} exceeds the number of mutations {}.'.format(
                     row.row_key, mutation_count), )
 
