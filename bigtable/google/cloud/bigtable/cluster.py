@@ -257,7 +257,7 @@ class Cluster(object):
         """
         client = self._instance._client
         return client.instance_admin_client.update_cluster(
-            self.name, self.serve_nodes)
+            self.name, None, self.serve_nodes)
 
     def delete(self):
         """Delete this cluster.

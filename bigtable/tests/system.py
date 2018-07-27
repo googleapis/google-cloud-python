@@ -290,10 +290,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation.result(timeout=10)
 
     def test_update_type(self):
-        from google.cloud.bigtable.enums import InstanceType
+        from google.cloud.bigtable.enums import Instance
 
-        _DEVELOPMENT = InstanceType.DEVELOPMENT
-        _PRODUCTION = InstanceType.PRODUCTION
+        _DEVELOPMENT = Instance.Type.DEVELOPMENT
+        _PRODUCTION = Instance.Type.PRODUCTION
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
                                           instance_type=_DEVELOPMENT)
