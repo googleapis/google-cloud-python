@@ -129,18 +129,17 @@ class TestInstance(unittest.TestCase):
         CLUSTER_ID = self.INSTANCE_ID+'-cluster'
         LOCATION_ID = 'us-central1-c'
         SERVE_NODES = 3
-        STATE = enums.Cluster.State.READY
         STORAGE_TYPE = enums.StorageType.HDD
 
         instance = self._make_one(self.INSTANCE_ID, None)
 
         cluster = instance.cluster(CLUSTER_ID, location_id=LOCATION_ID,
-                                   state=STATE, serve_nodes=SERVE_NODES,
+                                   serve_nodes=SERVE_NODES,
                                    default_storage_type=STORAGE_TYPE)
         self.assertIsInstance(cluster, Cluster)
         self.assertEqual(cluster.cluster_id, CLUSTER_ID)
         self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertEqual(cluster.state, STATE)
+        self.assertIsNone(cluster.state)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
 
@@ -327,10 +326,15 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
     def test_create_check_conflicts(self):
-        client = object()
-        instance = self._make_one(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, None)
         with self.assertRaises(ValueError):
             instance.create(location_id=self.LOCATION_ID,
+                            clusters=[object(), object()])
+        with self.assertRaises(ValueError):
+            instance.create(serve_nodes=3,
+                            clusters=[object(), object()])
+        with self.assertRaises(ValueError):
+            instance.create(default_storage_type=1,
                             clusters=[object(), object()])
 
     def test_create(self):
@@ -441,8 +445,8 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        cluster_id_1 = '{}-cluster-1'.format(self.INSTANCE_ID)
-        cluster_id_2 = '{}-cluster-2'.format(self.INSTANCE_ID)
+        cluster_id_1 = 'cluster-1'
+        cluster_id_2 = 'cluster-2'
         location_id_1 = 'location-id-1'
         location_id_2 = 'location-id-2'
         serve_nodes_1 = 3

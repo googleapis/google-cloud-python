@@ -219,14 +219,13 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-cluster-1'
         ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-cluster-2'
         LOCATION_ID_2 = 'us-central1-f'
-        SERVE_NODES_2 = 5
         STORAGE_TYPE = enums.StorageType.HDD
         cluster_1 = instance.cluster(
             ALT_CLUSTER_ID_1, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
             default_storage_type=STORAGE_TYPE)
         cluster_2 = instance.cluster(
             ALT_CLUSTER_ID_2, location_id=LOCATION_ID_2,
-            serve_nodes=SERVE_NODES_2, default_storage_type=STORAGE_TYPE)
+            serve_nodes=SERVE_NODES, default_storage_type=STORAGE_TYPE)
         operation = instance.create(clusters=[cluster_1, cluster_2])
         # We want to make sure the operation completes.
         operation.result(timeout=10)
@@ -447,14 +446,10 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(cluster.default_storage_type, StorageType.SSD)
 
     def test_update_cluster(self):
-        NEW_SERVE_NODES = 7
+        NEW_SERVE_NODES = 4
 
         Config.CLUSTER.serve_nodes = NEW_SERVE_NODES
-        # cluster = Config.INSTANCE.cluster(CLUSTER_ID,
-        #                                   serve_nodes=NEW_SERVE_NODES)
 
-        # self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-        # cluster.serve_nodes = NEW_SERVE_NODES
         operation = Config.CLUSTER.update()
 
         # We want to make sure the operation completes.
@@ -477,7 +472,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         ALT_CLUSTER_ID = INSTANCE_ID+'-cluster-2'
         ALT_LOCATION_ID = 'us-central1-f'
-        ALT_SERVE_NODES = 5
+        ALT_SERVE_NODES = 4
 
         cluster_2 = Config.INSTANCE.cluster(ALT_CLUSTER_ID,
                                             location_id=ALT_LOCATION_ID,

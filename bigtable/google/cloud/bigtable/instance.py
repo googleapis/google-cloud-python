@@ -27,7 +27,6 @@ from google.cloud.bigtable_admin_v2.types import instance_pb2
 from google.cloud.bigtable.enums import RoutingPolicyType
 
 
-DEFAULT_SERVE_NODES = 3
 """For backwards compatibility the default number of nodes to use for a cluster
    when creating instance and not using param clusters
 """
@@ -182,7 +181,7 @@ class Instance(object):
         self._update_from_pb(instance_pb)
 
     def create(self, location_id=None,
-               serve_nodes=DEFAULT_SERVE_NODES,
+               serve_nodes=None,
                default_storage_type=None, clusters=None):
         """Create this instance.
 
@@ -240,7 +239,9 @@ class Instance(object):
             clusters = [self.cluster(cluster_id, location_id=location_id,
                         serve_nodes=serve_nodes,
                         default_storage_type=default_storage_type)]
-        elif (location_id is not None):
+        elif (location_id is not None or
+              serve_nodes is not None or
+              default_storage_type is not None):
             raise ValueError("clusters and one of location_id, serve_nodes, \
                              default_storage_type can not be set \
                              simultaneously.")
@@ -316,7 +317,7 @@ class Instance(object):
         """
         self._client.instance_admin_client.delete_instance(name=self.name)
 
-    def cluster(self, cluster_id, location_id=None, state=None,
+    def cluster(self, cluster_id, location_id=None,
                 serve_nodes=None, default_storage_type=None):
         """Factory to create a cluster associated with this instance.
 
@@ -360,7 +361,7 @@ class Instance(object):
         :returns: a cluster owned by this instance.
         """
         return Cluster(cluster_id, self, location_id=location_id,
-                       state=state, serve_nodes=serve_nodes,
+                       serve_nodes=serve_nodes,
                        default_storage_type=default_storage_type)
 
     def table(self, table_id, app_profile_id=None):

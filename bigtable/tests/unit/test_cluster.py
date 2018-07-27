@@ -286,7 +286,7 @@ class TestCluster(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable.instance import Instance
-        from google.api_core.exceptions import NotFound
+        from google.api_core import exceptions
 
         instance_api = (
             bigtable_instance_admin_client.BigtableInstanceAdminClient(
@@ -306,7 +306,8 @@ class TestCluster(unittest.TestCase):
         instance_stub = instance_admin_client.bigtable_instance_admin_stub
         instance_stub.GetCluster.side_effect = [
             response_pb,
-            NotFound('testing'),
+            exceptions.NotFound('testing'),
+            exceptions.BadRequest('testing')
         ]
 
         # Perform the method and check the result.
@@ -315,6 +316,8 @@ class TestCluster(unittest.TestCase):
         alt_cluster_2 = self._make_one(non_existing_cluster_id, instance)
         self.assertTrue(alt_cluster_1.exists())
         self.assertFalse(alt_cluster_2.exists())
+        with self.assertRaises(exceptions.BadRequest):
+            alt_cluster_1.exists()
 
     def test_create(self):
         import datetime

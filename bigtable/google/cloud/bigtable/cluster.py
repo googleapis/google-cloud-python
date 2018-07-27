@@ -188,11 +188,9 @@ class Cluster(object):
         client = self._instance._client
         try:
             client.instance_admin_client.get_cluster(name=self.name)
-        except exceptions.NotFound:
-            print(exceptions.NotFound)
-            return False
-        else:
             return True
+        except exceptions.NotFound:
+            return False
 
     def create(self):
         """Create this cluster.
@@ -214,13 +212,8 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   create operation.
         """
-
         client = self._instance._client
-        cluster_pb = instance_pb2.Cluster(
-            location=client.instance_admin_client.location_path(
-                client.project, self.location_id),
-            serve_nodes=self.serve_nodes,
-            default_storage_type=self.default_storage_type)
+        cluster_pb = self._to_pb()
 
         return client.instance_admin_client.create_cluster(
             self._instance.name, self.cluster_id, cluster_pb)
