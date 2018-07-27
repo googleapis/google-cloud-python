@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.3.0
+
+### New Features
+
+- Add protobuf_helpers.field_mask to calculate a field mask from two messages (#5320)
+
 ## 1.2.1
 
 ### Implementation Changes
