@@ -317,7 +317,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         operation = temp_db.update_ddl(DDL_STATEMENTS)
 
         # We want to make sure the operation completes.
-        operation.result(120)  # raises on failure / timeout.
+        operation.result(150)  # raises on failure / timeout.
 
         temp_db.reload()
 
