@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud f755a6d documentation</title>
+    <title>Helpers &#8212; google-cloud 55d11b97f4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -386,7 +386,7 @@ message.</p>
 
 <dl class="function">
 <dt id="google.api_core.grpc_helpers.create_channel">
-<code class="descclassname">google.api_core.grpc_helpers.</code><code class="descname">create_channel</code><span class="sig-paren">(</span><em>target</em>, <em>credentials=None</em>, <em>scopes=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.create_channel" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.api_core.grpc_helpers.</code><code class="descname">create_channel</code><span class="sig-paren">(</span><em>target</em>, <em>credentials=None</em>, <em>scopes=None</em>, <em>ssl_credentials=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.create_channel" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a secure channel with credentials.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -400,8 +400,10 @@ credentials from the environment using <a class="reference external" href="https
 <li><strong>scopes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – A optional list of scopes needed for this
 service. These are only used when credentials are not specified and
 are passed to <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.5.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.auth.default()</span></code></a>.</li>
+<li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.8.0)"><em>grpc.ChannelCredentials</em></a>) – Optional SSL channel
+credentials. This can be used to specify different certificates.</li>
 <li><strong>kwargs</strong> – Additional key-word args passed to
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.transport.grpc.html#google.auth.transport.grpc.secure_authorized_channel" title="(in google-auth v1.5.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.auth.transport.grpc.secure_authorized_channel()</span></code></a>.</li>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">grpc_gcp.secure_channel()</span></code> or <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.secure_channel" title="(in grpcio v1.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">grpc.secure_channel()</span></code></a>.</li>
 </ul>
 </td>
 </tr>
