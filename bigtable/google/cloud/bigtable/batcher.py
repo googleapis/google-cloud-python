@@ -70,27 +70,14 @@ class MutationsBatcher(object):
         limits, the batch is sent synchronously.
 
         Example:
-            >>> # Batcher for flush count
-            >>> batcher = table.batcher(flush_count=10)
-            >>>
-            >>> rows = ["list of 1000 rows"]
-            >>>
-            >>> # In batcher mutate will create batch of 10 rows if it
-            >>> # reaches the max flush_count
-            >>> for row in rows:
-            >>>     batcher.mutate(row)
-            >>>
-            >>> batcher.flush()
-            >>>
             >>> # Batcher for max row bytes
-            >>> batcher = table.batcher(max_row_bytes=1024)
+            >>> batcher = table.mutations_batcher(max_row_bytes=1024)
             >>>
-            >>> rows = ["list of 1000 rows"]
+            >>> row = table.row(b'row_key')
             >>>
-            >>> # In batcher mutate will create batch of rows if it
-            >>> # reaches the max max_row_bytes
-            >>> for row in rows:
-            >>>     batcher.mutate(row)
+            >>> # In batcher mutate will flush current batch if it
+            >>> # reaches the max_row_bytes
+            >>> batcher.mutate(row)
             >>>
             >>> batcher.flush()
 
@@ -121,6 +108,54 @@ class MutationsBatcher(object):
         if (self.total_size >= self.max_row_bytes or
                 len(self.rows) >= self.flush_count):
             self.flush()
+
+    def mutate_rows(self, rows):
+        """ Add a row to the batch. If the current batch meets one of the size
+        limits, the batch is sent synchronously.
+
+        Example:
+            >>> # Batcher for flush count
+            >>> batcher = table.mutations_batcher(flush_count=2)
+            >>>
+            >>> row1 = table.row(b'row_key_1')
+            >>> row2 = table.row(b'row_key_2')
+            >>> row3 = table.row(b'row_key_3')
+            >>> row4 = table.row(b'row_key_4')
+            >>>
+            >>> # In batcher mutate will flush current batch if it
+            >>> # reaches the max flush_count
+            >>> batcher.mutate_rows([row_1, row_2, row_3, row_4])
+            >>>
+            >>> batcher.flush()
+
+        :type rows: list:[`~google.cloud.bigtable.row.DirectRow`]
+        :param rows: list:[`~google.cloud.bigtable.row.DirectRow`].
+
+        :raises: One of the following:
+                 * :exc:`~.table._BigtableRetryableError` if any
+                   row returned a transient error.
+                 * :exc:`RuntimeError` if the number of responses doesn't
+                   match the number of rows that were retried
+                 * :exc:`.batcher.MaxMutationsError` if any row exceeds max
+                   mutations count.
+        """
+        for row in rows:
+            mutation_count = len(row._get_mutations())
+            if mutation_count > MAX_MUTATIONS:
+                raise MaxMutationsError(
+                    'The row key {} exceeds the number of mutations '
+                    '{}.'.format(row.row_key, mutation_count), )
+
+            if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
+                self.flush()
+
+            self.rows.append(row)
+            self.total_mutation_count += mutation_count
+            self.total_size += row.get_mutations_size()
+
+            if (self.total_size >= self.max_row_bytes or
+                    len(self.rows) >= self.flush_count):
+                self.flush()
 
     def flush(self):
         """ Sends the current. batch to Cloud Bigtable. """

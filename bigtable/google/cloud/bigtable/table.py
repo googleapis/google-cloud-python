@@ -485,7 +485,8 @@ class Table(object):
             table_admin_client.drop_row_range(
                 self.name, row_key_prefix=_to_bytes(row_key_prefix))
 
-    def batcher(self, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES):
+    def mutations_batcher(self, flush_count=FLUSH_COUNT,
+                          max_row_bytes=MAX_ROW_BYTES):
         """Factory to create a mutation batcher associated with this instance.
 
         :type table: class
