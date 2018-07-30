@@ -165,8 +165,8 @@ class TestCluster(unittest.TestCase):
         # Create response_pb
         OP_ID = 5678
         OP_NAME = (
-            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
-            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
+            'operations/projects/{}/instances/{}/clusters/{}/operations/{}'
+            .format(self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
         response_pb = operations_pb2.Operation(name=OP_NAME)
 
         # Patch the stub used by the API method.
@@ -219,16 +219,16 @@ class TestCluster(unittest.TestCase):
         # Create response_pb
         OP_ID = 5678
         OP_NAME = (
-            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
-            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
+            'operations/projects/{}/instances/{}/clusters/{}/operations/{}'
+            .format(self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
         metadata = messages_v2_pb2.UpdateClusterMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.UpdateClusterMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=OP_NAME,
             metadata=Any(
                 type_url=type_url,
-                value=metadata.SerializeToString()
+                value=metadata.SerializeToString(),
             )
         )
 
