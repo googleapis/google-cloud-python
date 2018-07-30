@@ -21,6 +21,8 @@ import threading
 import time
 import unittest
 
+import pytest
+
 from google.api_core import exceptions
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.spanner_v1 import param_types
@@ -304,6 +306,10 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         expected = 'Table not found: {0}'.format(incorrect_table)
         self.assertEqual(exc_info.exception.args, (expected,))
 
+    @pytest.mark.skip(reason=(
+        'update_dataset_ddl() has a flaky timeout'
+        'https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
+        '5629'))
     def test_update_database_ddl(self):
         pool = BurstyPool()
         temp_db_id = 'temp_db' + unique_resource_id('_')
