@@ -1208,8 +1208,14 @@ def test_table_insert_rows(client, to_delete):
     table = client.create_table(table)
 
     # [START bigquery_table_insert_rows]
+    # TODO(developer): Uncomment the lines below and replace with your values.
     # from google.cloud import bigquery
     # client = bigquery.Client()
+    # dataset_id = 'my_dataset'  # replace with your dataset ID
+    # For this sample, the table must already exist and have a defined schema
+    # table_id = 'my_table'  # replace with your table ID
+    # table_ref = client.dataset(dataset_id).table(table_id)
+    # table = client.get_table(table_ref)  # API request
 
     rows_to_insert = [
         (u'Phred Phlyntstone', 32),
