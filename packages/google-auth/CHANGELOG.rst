@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v1.5.1
+------
+
+- Fix check for error text on Python 3.7. (#278)
+- Use new Auth URIs. (#281)
+- Add code-of-conduct document. (#270)
+- Fix some typos in test_urllib3.py (#268)
+
 v1.5.0
 ------
 
