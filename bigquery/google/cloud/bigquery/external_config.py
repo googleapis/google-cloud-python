@@ -30,7 +30,7 @@ from google.cloud.bigquery.schema import SchemaField
 
 
 class ExternalSourceFormat(object):
-    """The format for external data files..
+    """The format for external data files.
 
     Note that the set of allowed values for external data sources is different
     than the set used for loading data (see
@@ -157,21 +157,25 @@ class BigtableColumn(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a BigtableColumn given its API representation
+        """Factory: construct a :class:`BigtableColumn` instance given its API
+        representation
 
-        :type resource: dict
-        :param resource:
-            A column in the same representation as is returned from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`BigtableColumn` instance in the same
+                representation as is returned from the API.
 
-        :rtype: :class:`~google.cloud.bigquery.BigtableColumn`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`~google.cloud.bigquery.BigtableColumn`:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -243,8 +247,8 @@ class BigtableColumnFamily(object):
 
     @property
     def columns(self):
-        """List[google.cloud.bigquery.external_config.BigtableColumn]: Lists of
-        columns that should be exposed as individual fields
+        """List[:class:`BigtableColumn`]: Lists of columns that should be
+        exposed as individual fields
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns
@@ -260,24 +264,25 @@ class BigtableColumnFamily(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a BigtableColumnFamily given its
-           API representation
+        """Factory: construct a :class:`BigtableColumnFamily` instance given
+        its API representation
 
-        :type resource: dict
-        :param resource:
-            A column family in the same representation as is returned
-            from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`BigtableColumnFamily` instance in the
+                same representation as is returned from the API.
 
-        :rtype:
-            :class:`~google.cloud.bigquery.external_config.BigtableColumnFamily`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`BigtableColumnFamily`:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -285,8 +290,8 @@ class BigtableColumnFamily(object):
 
 
 class BigtableOptions(object):
-    """Options that describe how to treat Bigtable tables
-       as BigQuery tables."""
+    """Options that describe how to treat Bigtable tables as BigQuery tables.
+    """
 
     _SOURCE_FORMAT = 'BIGTABLE'
     _RESOURCE_NAME = 'bigtableOptions'
@@ -296,8 +301,8 @@ class BigtableOptions(object):
 
     @property
     def ignore_unspecified_column_families(self):
-        """bool: If `True`, ignore columns not specified in columnFamilies
-        list. Defaults to `False`.
+        """bool: If :data:`True`, ignore columns not specified in
+        :attr:`column_families` list. Defaults to :data:`False`.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies
@@ -311,8 +316,8 @@ class BigtableOptions(object):
 
     @property
     def read_rowkey_as_string(self):
-        """bool: If `True`, rowkey column families will be read and converted
-        to string. Defaults to `False`.
+        """bool: If :data:`True`, rowkey column families will be read and
+        converted to string. Defaults to :data:`False`.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString
@@ -326,9 +331,8 @@ class BigtableOptions(object):
 
     @property
     def column_families(self):
-        """List[google.cloud.bigquery.external_config.BigtableColumnFamily]:
-        List of column families to expose in the table schema along with their
-        types.
+        """List[:class:`BigtableColumnFamily`]: List of column families to
+        expose in the table schema along with their types.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies
@@ -344,23 +348,24 @@ class BigtableOptions(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a BigtableOptions given its API representation
+        """Factory: construct a :class:`BigtableOptions` instance given its API
+        representation
 
-        :type resource: dict
-        :param resource:
-            A BigtableOptions in the same representation as is returned
-            from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`BigtableOptions` instance in the
+                same representation as is returned from the API.
 
-        :rtype:
-            :class:`~google.cloud.bigquery.external_config.BigtableOptions`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`BigtableOptions`: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -378,8 +383,8 @@ class CSVOptions(object):
 
     @property
     def allow_jagged_rows(self):
-        """bool: If `True`, BigQuery treats missing trailing columns as null
-        values. Defaults to `False`.
+        """bool: If :data:`True`, BigQuery treats missing trailing columns as
+        null values. Defaults to :data:`False`.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows
@@ -393,8 +398,8 @@ class CSVOptions(object):
 
     @property
     def allow_quoted_newlines(self):
-        """bool: If `True`, quoted data sections that contain newline
-        characters in a CSV file are allowed. Defaults to `False`.
+        """bool: If :data:`True`, quoted data sections that contain newline
+        characters in a CSV file are allowed. Defaults to :data:`False`.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines
@@ -422,7 +427,7 @@ class CSVOptions(object):
 
     @property
     def field_delimiter(self):
-        """str: The separator for fields in a CSV file. Defaults a comma (',').
+        """str: The separator for fields in a CSV file. Defaults to comma (',').
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter
@@ -465,22 +470,24 @@ class CSVOptions(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a CSVOptions given its API representation
+        """Factory: construct a :class:`CSVOptions` instance given its API
+        representation
 
-        :type resource: dict
-        :param resource:
-            A CSVOptions in the same representation as is
-            returned from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`CSVOptions` instance in the same
+                representation as is returned from the API.
 
-        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`CSVOptions`: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -514,23 +521,25 @@ class GoogleSheetsOptions(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a GoogleSheetsOptions given its API representation
+        """Factory: construct a :class:`GoogleSheetsOptions` instance given its
+        API representation
 
-        :type resource: dict
-        :param resource:
-            An GoogleSheetsOptions in the same representation as is
-            returned from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`GoogleSheetsOptions` instance in the
+                same representation as is returned from the API.
 
-        :rtype:
-            :class:`~google.cloud.bigquery.external_config.GoogleSheetsOptions`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`GoogleSheetsOptions`:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -544,7 +553,7 @@ class ExternalConfig(object):
     """Description of an external data source.
 
     Args:
-        source_format :class:`ExternalSourceFormat`:
+        source_format (:class:`ExternalSourceFormat`):
             See :attr:`source_format`.
     """
 
@@ -567,12 +576,12 @@ class ExternalConfig(object):
 
     @property
     def options(self):
-        """Source-specific options."""
+        """Dict[str, Any]: Source-specific options."""
         return self._options
 
     @property
     def autodetect(self):
-        """bool: If `True`, try to detect schema and format options
+        """bool: If :data:`True`, try to detect schema and format options
         automatically.
 
         See
@@ -601,8 +610,8 @@ class ExternalConfig(object):
 
     @property
     def ignore_unknown_values(self):
-        """bool: If `True`, extra values that are not represented in the table
-        schema are ignored. Defaults to `False`.
+        """bool: If :data:`True`, extra values that are not represented in the
+        table schema are ignored. Defaults to :data:`False`.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues
@@ -645,8 +654,8 @@ class ExternalConfig(object):
 
     @property
     def schema(self):
-        """List[google.cloud.bigquery.schema.SchemaField]: The schema for the
-        data.
+        """List[:class:`~google.cloud.bigquery.schema.SchemaField`]: The schema
+        for the data.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
@@ -666,8 +675,9 @@ class ExternalConfig(object):
     def to_api_repr(self):
         """Build an API representation of this object.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
         """
         config = copy.deepcopy(self._properties)
         if self.options is not None:
@@ -678,15 +688,16 @@ class ExternalConfig(object):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct a CSVOptions given its API representation
+        """Factory: construct an :class:`ExternalConfig` instance given its API
+        representation
 
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
+        Args:
+            resource (Dict[str, Any]):
+                Definition of an :class:`ExternalConfig` instance in the same
+                representation as is returned from the API.
 
-        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`ExternalConfig`: Configuration parsed from ``resource``.
         """
         config = cls(resource['sourceFormat'])
         for optcls in _OPTION_CLASSES:
