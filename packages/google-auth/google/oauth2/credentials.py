@@ -43,7 +43,7 @@ from google.oauth2 import _client
 
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
-_GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token'
+_GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://oauth2.googleapis.com/token'
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
