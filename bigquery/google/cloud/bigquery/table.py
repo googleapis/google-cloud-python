@@ -538,6 +538,36 @@ class Table(object):
         self._properties['timePartitioning']['expirationMs'] = str(value)
 
     @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
+        """
+        prop = self._properties.get('clustering')
+        if prop is not None:
+            return list(prop.get('fields', ()))
+
+    @clustering_fields.setter
+    def clustering_fields(self, value):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+        """
+        if value is not None:
+            prop = self._properties.setdefault('clustering', {})
+            prop['fields'] = value
+        else:
+            if 'clustering' in self._properties:
+                del self._properties['clustering']
+
+    @property
     def description(self):
         """Union[str, None]: Description of the table (defaults to
         :data:`None`).
