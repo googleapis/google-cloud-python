@@ -36,10 +36,12 @@ from google.cloud import bigtable_admin_v2
 
 from google.cloud.bigtable import __version__
 from google.cloud.bigtable.instance import Instance
+from google.cloud.bigtable.cluster import Cluster
 
 from google.cloud.client import ClientWithProject
 
 from google.cloud.bigtable_admin_v2 import enums
+from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
 
 
 INSTANCE_TYPE_PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -252,3 +254,25 @@ class Client(ClientWithProject):
         instances = [
             Instance.from_pb(instance, self) for instance in resp.instances]
         return instances, resp.failed_locations
+
+    def list_clusters(self):
+        """List the clusters in the project.
+
+        :rtype: tuple
+        :returns:
+            (clusters, failed_locations), where 'clusters' is list of
+            :class:`google.cloud.bigtable.instance.Cluster`, and
+            'failed_locations' is a list of locations which could not
+            be resolved.
+        """
+        resp = (self.instance_admin_client.list_clusters(
+            self.instance_admin_client.instance_path(self.project, '-')))
+        clusters = []
+        instances = {}
+        for cluster in resp.clusters:
+            match_cluster_name = _CLUSTER_NAME_RE.match(cluster.name)
+            instance_id = match_cluster_name.group('instance')
+            if instance_id not in instances:
+                instances[instance_id] = self.instance(instance_id)
+            clusters.append(Cluster.from_pb(cluster, instances[instance_id]))
+        return clusters, resp.failed_locations
