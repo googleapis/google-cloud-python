@@ -2134,6 +2134,8 @@ def test_delete_table(client, to_delete):
 
 
 def test_undelete_table(client, to_delete):
+    from datetime import datetime
+    from pytz import UTC
     dataset_id = 'undelete_table_dataset_{}'.format(_millis())
     table_id = 'undelete_table_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
@@ -2161,8 +2163,10 @@ def test_undelete_table(client, to_delete):
     # time is at least within the creation lifespan of the table.  Trying
     # to snapshot a table prior to its creation time is an error.
     table = client.get_table(table_ref)
-    if table.created_time > snapshot_time:
-      snapshot_time = table.created_time
+    created_ms = (table.created - datetime.utcfromtimestamp(0).replace(tzinfo=UTC)).total_seconds() * 1000
+
+    if created_ms > snapshot_time:
+      snapshot_time = created_ms
 
     # "Accidentally" delete the table.
     client.delete_table(table_ref)  # API request
