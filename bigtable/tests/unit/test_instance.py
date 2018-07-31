@@ -53,7 +53,7 @@ class TestInstance(unittest.TestCase):
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
     INSTANCE_NAME = 'projects/' + PROJECT + '/instances/' + INSTANCE_ID
-    LOCATION_ID = 'locname'
+    LOCATION_ID = 'locid'
     LOCATION = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
     APP_PROFILE_PATH = (
             'projects/' + PROJECT + '/instances/' + INSTANCE_ID
@@ -97,7 +97,7 @@ class TestInstance(unittest.TestCase):
     def test_constructor_non_default(self):
         from google.cloud.bigtable import enums
 
-        instance_type = enums.InstanceType.DEVELOPMENT
+        instance_type = enums.Instance.Type.DEVELOPMENT
         labels = {'test': 'test'}
         client = object()
 
@@ -123,12 +123,92 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(table._instance, instance)
         self.assertEqual(table._app_profile_id, app_profile_id)
 
+    def test_cluster_factory(self):
+        from google.cloud.bigtable import enums
+
+        CLUSTER_ID = '{}-cluster'.format(self.INSTANCE_ID)
+        LOCATION_ID = 'us-central1-c'
+        SERVE_NODES = 3
+        STORAGE_TYPE = enums.StorageType.HDD
+
+        instance = self._make_one(self.INSTANCE_ID, None)
+
+        cluster = instance.cluster(CLUSTER_ID, location_id=LOCATION_ID,
+                                   serve_nodes=SERVE_NODES,
+                                   default_storage_type=STORAGE_TYPE)
+        self.assertIsInstance(cluster, Cluster)
+        self.assertEqual(cluster.cluster_id, CLUSTER_ID)
+        self.assertEqual(cluster.location_id, LOCATION_ID)
+        self.assertIsNone(cluster._state)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
+
+    def test_list_clusters(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Cluster
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_client(project=self.PROJECT,
+                                   credentials=credentials, admin=True)
+        instance = Instance(self.INSTANCE_ID, client)
+
+        failed_location = 'FAILED'
+        cluster_id1 = 'cluster-id1'
+        cluster_id2 = 'ckuster-id2'
+        cluster_name1 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id1))
+        cluster_name2 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id2))
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListClustersResponse(
+            failed_locations=[
+                failed_location
+            ],
+            clusters=[
+                data_v2_pb2.Cluster(
+                    name=cluster_name1,
+                ),
+                data_v2_pb2.Cluster(
+                    name=cluster_name2,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.ListClusters.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        clusters, failed_locations = instance.list_clusters()
+
+        cluster_1, cluster_2 = clusters
+
+        self.assertIsInstance(cluster_1, Cluster)
+        self.assertEqual(cluster_1.name, cluster_name1)
+
+        self.assertIsInstance(cluster_2, Cluster)
+        self.assertEqual(cluster_2.name, cluster_name2)
+
+        self.assertEqual(failed_locations, [failed_location])
+
     def test__update_from_pb_success(self):
         from google.cloud.bigtable_admin_v2.proto import (
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable import enums
 
-        instance_type = enums.InstanceType.PRODUCTION
+        instance_type = enums.Instance.Type.PRODUCTION
         instance_pb = data_v2_pb2.Instance(
             display_name=self.DISPLAY_NAME,
             type=instance_type,
@@ -160,7 +240,7 @@ class TestInstance(unittest.TestCase):
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.type_,
-                         enums.InstanceType.UNSPECIFIED)
+                         enums.Instance.Type.UNSPECIFIED)
         self.assertFalse(instance.labels)
 
     def test__update_from_pb_no_display_name(self):
@@ -180,7 +260,7 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(project=self.PROJECT)
 
-        instance_type = enums.InstanceType.PRODUCTION
+        instance_type = enums.Instance.Type.PRODUCTION
         instance_pb = data_v2_pb2.Instance(
             name=self.INSTANCE_NAME,
             display_name=self.INSTANCE_ID,
@@ -279,7 +359,7 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         DISPLAY_NAME = u'hey-hi-hello'
-        instance_type = enums.InstanceType.PRODUCTION
+        instance_type = enums.Instance.Type.PRODUCTION
         response_pb = data_v2_pb2.Instance(
             display_name=DISPLAY_NAME,
             type=instance_type,
@@ -306,10 +386,15 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
     def test_create_check_conflicts(self):
-        client = object()
-        instance = self._make_one(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, None)
         with self.assertRaises(ValueError):
             instance.create(location_id=self.LOCATION_ID,
+                            clusters=[object(), object()])
+        with self.assertRaises(ValueError):
+            instance.create(serve_nodes=3,
+                            clusters=[object(), object()])
+        with self.assertRaises(ValueError):
+            instance.create(default_storage_type=1,
                             clusters=[object(), object()])
 
     def test_create(self):
@@ -323,7 +408,6 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -332,7 +416,7 @@ class TestInstance(unittest.TestCase):
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
                                   self.DISPLAY_NAME,
-                                  enums.InstanceType.PRODUCTION,
+                                  enums.Instance.Type.PRODUCTION,
                                   self.LABELS)
 
         # Create response_pb
@@ -355,60 +439,29 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        result = instance.create(location_id=self.LOCATION_ID)
+        serve_nodes = 3
+        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
+        # cluster = instance.cluster(cluster_id, location_id=self.LOCATION_ID,
+        #                            serve_nodes=serve_nodes)
+        # result = instance.create(clusters=[cluster])
+
+        # TODO: replace this example with above once the otpion is removed
+        # from instance.create() method
+        result = instance.create(location_id=self.LOCATION_ID,
+                                 serve_nodes=serve_nodes)
+
         actual_request = channel.requests[0][1]
 
-        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
-        cluster = self._create_cluster(
-            instance_api, cluster_id, self.LOCATION_ID, DEFAULT_SERVE_NODES,
+        cluster = self._create_cluster_pb(
+            instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
             enums.StorageType.UNSPECIFIED)
 
         expected_request = self._create_instance_request({cluster_id: cluster})
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
-        # self.assertEqual(result.operation.name, self.OP_NAME)
+        self.assertEqual(result.operation.name, self.OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
-
-    def test_create_w_explicit_serve_nodes(self):
-        from google.api_core import operation
-        from google.longrunning import operations_pb2
-        from google.cloud.bigtable import enums
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client)
-
-        serve_nodes = 10
-        credentials = _make_credentials()
-        client = self._make_client(project=self.PROJECT,
-                                   credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  self.DISPLAY_NAME,
-                                  enums.InstanceType.PRODUCTION,
-                                  self.LABELS)
-        # Create response_pb
-        response_pb = operations_pb2.Operation(name=self.OP_NAME)
-
-        # Patch the stub used by the API method.
-        channel = ChannelStub(responses=[response_pb])
-        instance_api = (
-            bigtable_instance_admin_client.BigtableInstanceAdminClient(
-                channel=channel))
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        result = instance.create(
-            location_id=self.LOCATION_ID, serve_nodes=serve_nodes,
-            default_storage_type=enums.StorageType.SSD)
-        actual_request = channel.requests[0][1]
-
-        cluster_id = '{}-cluster'.format(self.INSTANCE_ID)
-        cluster = self._create_cluster(
-            instance_api, cluster_id, self.LOCATION_ID, serve_nodes,
-            enums.StorageType.SSD)
-
-        expected_request = self._create_instance_request({cluster_id: cluster})
-        self.assertEqual(expected_request, actual_request)
-        self.assertIsInstance(result, operation.Operation)
 
     def test_create_w_clusters(self):
         import datetime
@@ -421,7 +474,6 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable import enums
         from google.cloud.bigtable_admin_v2.gapic import (
             bigtable_instance_admin_client)
-        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -430,13 +482,13 @@ class TestInstance(unittest.TestCase):
                                    credentials=credentials, admin=True)
         instance = self._make_one(self.INSTANCE_ID, client,
                                   self.DISPLAY_NAME,
-                                  enums.InstanceType.PRODUCTION,
+                                  enums.Instance.Type.PRODUCTION,
                                   self.LABELS)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = 'type.googleapis.com/%s' % (
-            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
+        type_url = 'type.googleapis.com/{}'.format(
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
@@ -453,40 +505,49 @@ class TestInstance(unittest.TestCase):
         client._instance_admin_client = instance_api
 
         # Perform the method and check the result.
-        clusters = [Cluster('cluster-id1', instance, 'location-id1'),
-                    Cluster('cluster-id2', instance, 'location-id2')]
-        result = instance.create(None, None, None, clusters)
+        cluster_id_1 = 'cluster-1'
+        cluster_id_2 = 'cluster-2'
+        location_id_1 = 'location-id-1'
+        location_id_2 = 'location-id-2'
+        serve_nodes_1 = 3
+        serve_nodes_2 = 5
+        clusters = [
+            Cluster(cluster_id_1, instance,
+                    location_id=location_id_1,
+                    serve_nodes=serve_nodes_1),
+            Cluster(cluster_id_2, instance,
+                    location_id=location_id_2,
+                    serve_nodes=serve_nodes_2)]
+        result = instance.create(clusters=clusters)
         actual_request = channel.requests[0][1]
 
-        cluster1 = self._create_cluster(
-            instance_api, 'cluster-id1', 'location-id1', DEFAULT_SERVE_NODES,
+        cluster_1_pb = self._create_cluster_pb(
+            instance_api, cluster_id_1, location_id_1, serve_nodes_1,
             enums.StorageType.UNSPECIFIED)
 
-        cluster2 = self._create_cluster(
-            instance_api, 'cluster-id2', 'location-id2', DEFAULT_SERVE_NODES,
+        cluster_2_pb = self._create_cluster_pb(
+            instance_api, cluster_id_2, location_id_2, serve_nodes_2,
             enums.StorageType.UNSPECIFIED)
 
         expected_request = self._create_instance_request(
-            {'cluster-id1': cluster1,
-             'cluster-id2': cluster2}
+            {cluster_id_1: cluster_1_pb,
+             cluster_id_2: cluster_2_pb}
         )
         self.assertEqual(expected_request, actual_request)
         self.assertIsInstance(result, operation.Operation)
-        # self.assertEqual(result.operation.name, self.OP_NAME)
+        self.assertEqual(result.operation.name, self.OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
 
-    def _create_cluster(self, instance_api, cluster_id, location_id,
-                        server_nodes, storage_type):
+    def _create_cluster_pb(self, instance_api, cluster_id, location_id,
+                           serve_nodes, storage_type):
         from google.cloud.bigtable_admin_v2.types import instance_pb2
 
-        cluster_name = instance_api.cluster_path(
-            self.PROJECT, self.INSTANCE_ID, cluster_id)
         location = instance_api.location_path(
             self.PROJECT, location_id)
         return instance_pb2.Cluster(
-            name=cluster_name, location=location,
-            serve_nodes=server_nodes,
+            location=location,
+            serve_nodes=serve_nodes,
             default_storage_type=storage_type)
 
     def _create_instance_request(self, clusters):
@@ -496,7 +557,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         instance = instance_pb2.Instance(display_name=self.DISPLAY_NAME,
-                                         type=enums.InstanceType.PRODUCTION,
+                                         type=enums.Instance.Type.PRODUCTION,
                                          labels=self.LABELS)
 
         return messages_v2_pb2.CreateInstanceRequest(
@@ -527,10 +588,9 @@ class TestInstance(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_client(project=self.PROJECT,
                                    credentials=credentials, admin=True)
-        instance = self._make_one(self.INSTANCE_ID, client,
-                                  display_name=self.DISPLAY_NAME,
-                                  instance_type=enums.InstanceType.DEVELOPMENT,
-                                  labels=self.LABELS)
+        instance = self._make_one(
+            self.INSTANCE_ID, client, display_name=self.DISPLAY_NAME,
+            instance_type=enums.Instance.Type.DEVELOPMENT, labels=self.LABELS)
 
         expected_request_instance = instance_pb2.Instance(
             name=instance.name, display_name=instance.display_name,

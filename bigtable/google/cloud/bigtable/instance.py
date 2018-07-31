@@ -18,7 +18,6 @@
 import re
 
 from google.cloud.bigtable.table import Table
-from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.cluster import Cluster
 
 from google.protobuf import field_mask_pb2
@@ -177,8 +176,8 @@ class Instance(object):
         #       instance ID on the response match the request.
         self._update_from_pb(instance_pb)
 
-    def create(self, location_id=_EXISTING_INSTANCE_LOCATION_ID,
-               serve_nodes=DEFAULT_SERVE_NODES,
+    def create(self, location_id=None,
+               serve_nodes=None,
                default_storage_type=None, clusters=None):
         """Create this instance.
 
@@ -196,9 +195,12 @@ class Instance(object):
             before calling :meth:`create`.
 
         :type location_id: str
-        :param location_id: ID of the location in which the instance will be
-                            created.  Required for instances which do not yet
-                            exist.
+        :param location_id: (Creation Only) The location where nodes and
+                            storage of the cluster owned by this instance
+                            reside. For best performance, clients should be
+                            located as close as possible to cluster's location.
+                            For list of supported locations refer to
+                            https://cloud.google.com/bigtable/docs/locations
 
 
         :type serve_nodes: int
@@ -230,9 +232,9 @@ class Instance(object):
         if clusters is None:
             cluster_id = '{}-cluster'.format(self.instance_id)
 
-            clusters = [Cluster(cluster_id, self, location_id,
-                                serve_nodes, default_storage_type)]
-
+            clusters = [self.cluster(cluster_id, location_id=location_id,
+                        serve_nodes=serve_nodes,
+                        default_storage_type=default_storage_type)]
         elif (location_id is not None or
               serve_nodes is not None or
               default_storage_type is not None):
@@ -240,15 +242,15 @@ class Instance(object):
                              default_storage_type can not be set \
                              simultaneously.")
 
-        instance = instance_pb2.Instance(
+        instance_pb = instance_pb2.Instance(
             display_name=self.display_name, type=self.type_,
             labels=self.labels)
 
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
-            parent=parent, instance_id=self.instance_id, instance=instance,
-            clusters={c.cluster_id: c._create_pb_request() for c in clusters})
+            parent=parent, instance_id=self.instance_id, instance=instance_pb,
+            clusters={c.cluster_id: c._to_pb() for c in clusters})
 
     def update(self):
         """Updates an instance within a project.
@@ -310,6 +312,58 @@ class Instance(object):
           permanently deleted.
         """
         self._client.instance_admin_client.delete_instance(name=self.name)
+
+    def cluster(self, cluster_id, location_id=None,
+                serve_nodes=None, default_storage_type=None):
+        """Factory to create a cluster associated with this instance.
+
+        :type cluster_id: str
+        :param cluster_id: The ID of the cluster.
+
+        :type instance: :class:`~google.cloud.bigtable.instance.Instance`
+        :param instance: The instance where the cluster resides.
+
+        :type location_id: str
+        :param location_id: (Creation Only) The location where this cluster's
+                            nodes and storage reside. For best performance,
+                            clients should be located as close as possible to
+                            this cluster.
+                            For list of supported locations refer to
+                            https://cloud.google.com/bigtable/docs/locations
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the cluster.
+
+        :type default_storage_type: int
+        :param default_storage_type: (Optional) The type of storage
+                                     Possible values are represented by the
+                                     following constants:
+                                     :data:`google.cloud.bigtable.enums.StorageType.SSD`.
+                                     :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                     Defaults to
+                                     :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
+
+        :rtype: :class:`~google.cloud.bigtable.instance.Cluster`
+        :returns: a cluster owned by this instance.
+        """
+        return Cluster(cluster_id, self, location_id=location_id,
+                       serve_nodes=serve_nodes,
+                       default_storage_type=default_storage_type)
+
+    def list_clusters(self):
+        """List the clusters in this instance.
+
+        :rtype: tuple
+        :returns:
+            (clusters, failed_locations), where 'clusters' is list of
+            :class:`google.cloud.bigtable.instance.Cluster`, and
+            'failed_locations' is a list of locations which could not
+            be resolved.
+        """
+        resp = self._client.instance_admin_client.list_clusters(self.name)
+        clusters = [
+            Cluster.from_pb(cluster, self) for cluster in resp.clusters]
+        return clusters, resp.failed_locations
 
     def table(self, table_id, app_profile_id=None):
         """Factory to create a table associated with this instance.
