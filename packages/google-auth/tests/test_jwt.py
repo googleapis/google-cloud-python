@@ -118,7 +118,7 @@ def test_decode_bad_token_wrong_number_of_segments():
 def test_decode_bad_token_not_base64():
     with pytest.raises((ValueError, TypeError)) as excinfo:
         jwt.decode('1.2.3', PUBLIC_CERT_BYTES)
-    assert excinfo.match(r'Incorrect padding')
+    assert excinfo.match(r'Incorrect padding|more than a multiple of 4')
 
 
 def test_decode_bad_token_not_json():
