@@ -108,4 +108,6 @@ Api Reference
 
     gapic/v1/api
     gapic/v1/types
+    gapic/v1beta2/api
+    gapic/v1beta2/types
     changelog
