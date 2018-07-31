@@ -214,8 +214,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID,
                                           instance_type=_PRODUCTION)
 
-        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-cluster-1'
-        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-cluster-2'
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID+'-c1'
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID+'-c2'
         LOCATION_ID_2 = 'us-central1-f'
         STORAGE_TYPE = enums.StorageType.HDD
         cluster_1 = instance.cluster(
@@ -466,7 +466,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable.enums import StorageType
         from google.cloud.bigtable.enums import Cluster
 
-        ALT_CLUSTER_ID = INSTANCE_ID+'-cluster-2'
+        ALT_CLUSTER_ID = INSTANCE_ID+'-c2'
         ALT_LOCATION_ID = 'us-central1-f'
         ALT_SERVE_NODES = 4
 
