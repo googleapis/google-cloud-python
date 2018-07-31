@@ -1,4 +1,4 @@
-# Copyright 2017 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,11 @@
 # limitations under the License.
 """Wrappers for protocol buffer enum types."""
 
+import enum
+
 
 class ClusterOperationStatus(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         The operation state.
 
@@ -32,7 +34,7 @@ class ClusterOperationStatus(object):
 
 
 class ClusterStatus(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         The cluster state.
 
@@ -51,7 +53,7 @@ class ClusterStatus(object):
         DELETING = 4
         UPDATING = 5
 
-    class Substate(object):
+    class Substate(enum.IntEnum):
         """
         Attributes:
           UNSPECIFIED (int)
@@ -71,7 +73,7 @@ class ClusterStatus(object):
 
 
 class LoggingConfig(object):
-    class Level(object):
+    class Level(enum.IntEnum):
         """
         The Log4j level for job execution. When running an
         `Apache Hive <http://hive.apache.org/>`_ job, Cloud
@@ -100,7 +102,7 @@ class LoggingConfig(object):
 
 
 class JobStatus(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         The job state.
 
@@ -132,7 +134,7 @@ class JobStatus(object):
         ERROR = 6
         ATTEMPT_FAILURE = 9
 
-    class Substate(object):
+    class Substate(enum.IntEnum):
         """
         Attributes:
           UNSPECIFIED (int)
@@ -157,7 +159,7 @@ class JobStatus(object):
 
 
 class YarnApplication(object):
-    class State(object):
+    class State(enum.IntEnum):
         """
         The application state, corresponding to
         <code>YarnProtos.YarnApplicationStateProto</code>.
@@ -185,7 +187,7 @@ class YarnApplication(object):
 
 
 class ListJobsRequest(object):
-    class JobStateMatcher(object):
+    class JobStateMatcher(enum.IntEnum):
         """
         A matcher that specifies categories of job states.
 
