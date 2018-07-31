@@ -226,3 +226,74 @@ class TestClient(unittest.TestCase):
         self.assertTrue(instance_2._client is client)
 
         self.assertEqual(failed_locations, [FAILED_LOCATION])
+
+    def test_lsit_clusters(self):
+        from google.cloud.bigtable_admin_v2.gapic import (
+            bigtable_instance_admin_client)
+        from google.cloud.bigtable_admin_v2.proto import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from google.cloud.bigtable_admin_v2.proto import (
+            instance_pb2 as data_v2_pb2)
+        from google.cloud.bigtable.instance import Cluster
+
+        instance_api = (
+            bigtable_instance_admin_client.BigtableInstanceAdminClient(
+                mock.Mock()))
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials,
+                                admin=True)
+
+        INSTANCE_ID1 = 'instance-id1'
+        INSTANCE_ID2 = 'instance-id2'
+
+        failed_location = 'FAILED'
+        cluster_id1 = '{}-cluster'.format(INSTANCE_ID1)
+        cluster_id2 = '{}-cluster-1'.format(INSTANCE_ID2)
+        cluster_id3 = '{}-cluster-2'.format(INSTANCE_ID2)
+        cluster_name1 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id1))
+        cluster_name2 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id2))
+        cluster_name3 = (client.instance_admin_client.cluster_path(
+                         self.PROJECT, self.INSTANCE_ID, cluster_id3))
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListClustersResponse(
+            failed_locations=[
+                failed_location
+            ],
+            clusters=[
+                data_v2_pb2.Cluster(
+                    name=cluster_name1,
+                ),
+                data_v2_pb2.Cluster(
+                    name=cluster_name2,
+                ),
+                data_v2_pb2.Cluster(
+                    name=cluster_name3,
+                ),
+
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_admin_client = instance_api
+        instance_admin_client = client._instance_admin_client
+        instance_stub = instance_admin_client.bigtable_instance_admin_stub
+        instance_stub.ListClusters.side_effect = [response_pb]
+
+        # Perform the method and check the result.
+        clusters, failed_locations = client.list_clusters()
+
+        cluster_1, cluster_2, cluster_3 = clusters
+
+        self.assertIsInstance(cluster_1, Cluster)
+        self.assertEqual(cluster_1.name, cluster_name1)
+
+        self.assertIsInstance(cluster_2, Cluster)
+        self.assertEqual(cluster_2.name, cluster_name2)
+
+        self.assertIsInstance(cluster_3, Cluster)
+        self.assertEqual(cluster_3.name, cluster_name3)
+
+        self.assertEqual(failed_locations, [failed_location])
