@@ -256,6 +256,14 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(cluster_2.default_storage_type,
                          alt_cluster_2.default_storage_type)
 
+        # Test list clusters in project via 'client.list_clusters'
+        clusters, failed_locations = Config.CLIENT.list_clusters()
+        self.assertFalse(failed_locations)
+        found = set([cluster.name for cluster in clusters])
+        self.assertTrue({alt_cluster_1.name,
+                         alt_cluster_2.name,
+                         Config.CLUSTER.name}.issubset(found))
+
     def test_update_display_name_and_labels(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
