@@ -128,21 +128,6 @@ class TestMutationsBatcher(unittest.TestCase):
         with self.assertRaises(MaxMutationsError):
             mutation_batcher.mutate(row)
 
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=2)
-    def test_mutate_rows_with_max_mutations_failure(self):
-        from google.cloud.bigtable.batcher import MaxMutationsError
-
-        table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table=table)
-
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', 1)
-        row.set_cell('cf1', b'c2', 2)
-        row.set_cell('cf1', b'c2', 3)
-
-        with self.assertRaises(MaxMutationsError):
-            mutation_batcher.mutate_rows([row])
-
     @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
     def test_mutate_row_with_max_mutations(self):
         table = _Table(self.TABLE_NAME)
@@ -154,21 +139,6 @@ class TestMutationsBatcher(unittest.TestCase):
         row.set_cell('cf1', b'c3', 3)
 
         mutation_batcher.mutate(row)
-        mutation_batcher.flush()
-
-        self.assertEqual(table.mutation_calls, 1)
-
-    @mock.patch('google.cloud.bigtable.batcher.MAX_MUTATIONS', new=3)
-    def test_mutate_rows_with_max_mutations(self):
-        table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table=table)
-
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', 1)
-        row.set_cell('cf1', b'c2', 2)
-        row.set_cell('cf1', b'c2', 3)
-
-        mutation_batcher.mutate_rows([row])
         mutation_batcher.flush()
 
         self.assertEqual(table.mutation_calls, 1)
@@ -187,23 +157,6 @@ class TestMutationsBatcher(unittest.TestCase):
         row.set_cell('cf1', b'c3', max_value)
 
         mutation_batcher.mutate(row)
-
-        self.assertEqual(table.mutation_calls, 1)
-
-    def test_mutate_rows_with_max_row_bytes(self):
-        table = _Table(self.TABLE_NAME)
-        mutation_batcher = MutationsBatcher(table=table,
-                                            max_row_bytes=3 * 1024 * 1024)
-
-        number_of_bytes = 1 * 1024 * 1024
-        max_value = b'1' * number_of_bytes
-
-        row = DirectRow(row_key=b'row_key')
-        row.set_cell('cf1', b'c1', max_value)
-        row.set_cell('cf1', b'c2', max_value)
-        row.set_cell('cf1', b'c3', max_value)
-
-        mutation_batcher.mutate_rows([row])
 
         self.assertEqual(table.mutation_calls, 1)
 
