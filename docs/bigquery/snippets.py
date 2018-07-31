@@ -2155,7 +2155,7 @@ def test_undelete_table(client, to_delete):
     # time is at least within the creation lifespan of the table.  Trying
     # to snapshot a table prior to its creation time is an error.
     table = client.get_table(table_ref)
-    if table.created_time > snapshot time:
+    if table.created_time > snapshot_time:
       snapshot_time = table.created_time
 
     # "Accidentally" delete the table.
