@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import collections
 import functools
+import gzip
 import os
 import uuid
 
@@ -1593,10 +1594,16 @@ def _check_mode(stream):
     """
     mode = getattr(stream, 'mode', None)
 
-    if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
-        raise ValueError(
-            "Cannot upload files opened in text mode:  use "
-            "open(filename, mode='rb') or open(filename, mode='r+b')")
+    if isinstance(stream, gzip.GzipFile):
+        if mode != gzip.READ:
+            raise ValueError(
+                "Cannot upload gzip files opened in write mode:  use "
+                "gzip.GzipFile(filename, mode='rb')")
+    else:
+        if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
+            raise ValueError(
+                "Cannot upload files opened in text mode:  use "
+                "open(filename, mode='rb') or open(filename, mode='r+b')")
 
 
 def _get_upload_headers(user_agent):
