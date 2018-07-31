@@ -103,7 +103,7 @@ class TestCluster(unittest.TestCase):
 
         cluster = self._make_one(self.CLUSTER_ID, instance,
                                  location_id=self.LOCATION_ID,
-                                 state=STATE,
+                                 _state=STATE,
                                  serve_nodes=self.SERVE_NODES,
                                  default_storage_type=STORAGE_TYPE_SSD)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)

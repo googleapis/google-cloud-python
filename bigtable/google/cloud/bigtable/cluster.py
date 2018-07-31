@@ -49,16 +49,6 @@ class Cluster(object):
                         For list of supported locations refer to
                         https://cloud.google.com/bigtable/docs/locations
 
-    :type state: int
-    :param state: (`OutputOnly`)
-                  The current state of the cluster.
-                  Possible values are represented by the following constants:
-                  :data:`google.cloud.bigtable.enums.Cluster.State.NOT_KNOWN`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.READY`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.CREATING`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.RESIZING`.
-                  :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
-
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
 
@@ -70,6 +60,16 @@ class Cluster(object):
                                  :data:`google.cloud.bigtable.enums.StorageType.SHD`,
                                  Defaults to
                                  :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
+
+    :type _state: int
+    :param _state: (`OutputOnly`)
+                   The current state of the cluster.
+                   Possible values are represented by the following constants:
+                   :data:`google.cloud.bigtable.enums.Cluster.State.NOT_KNOWN`.
+                   :data:`google.cloud.bigtable.enums.Cluster.State.READY`.
+                   :data:`google.cloud.bigtable.enums.Cluster.State.CREATING`.
+                   :data:`google.cloud.bigtable.enums.Cluster.State.RESIZING`.
+                   :data:`google.cloud.bigtable.enums.Cluster.State.DISABLED`.
     """
 
     def __init__(self,
@@ -78,13 +78,13 @@ class Cluster(object):
                  location_id=None,
                  serve_nodes=None,
                  default_storage_type=None,
-                 state=None):
+                 _state=None):
         self.cluster_id = cluster_id
         self._instance = instance
         self.location_id = location_id
         self.serve_nodes = serve_nodes
         self.default_storage_type = default_storage_type
-        self._state = state
+        self._state = _state
 
     @classmethod
     def from_pb(cls, cluster_pb, instance):
@@ -122,7 +122,7 @@ class Cluster(object):
         result = cls(cluster_id, instance, location_id=location_id,
                      serve_nodes=cluster_pb.serve_nodes,
                      default_storage_type=cluster_pb.default_storage_type,
-                     state=cluster_pb.state)
+                     _state=cluster_pb.state)
         return result
 
     def _update_from_pb(self, cluster_pb):
@@ -153,6 +153,11 @@ class Cluster(object):
         return self._instance._client.instance_admin_client.cluster_path(
             self._instance._client.project, self._instance.instance_id,
             self.cluster_id)
+
+    @property
+    def state(self):
+        """google.cloud.bigtable.enums.Cluster.State: state of cluster."""
+        return self._state
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
