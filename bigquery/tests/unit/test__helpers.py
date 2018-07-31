@@ -860,6 +860,29 @@ class Test__set_sub_prop(unittest.TestCase):
         self.assertEqual(container, {'key1': {'key2': {'key3': 'after'}}})
 
 
+class Test__del_sub_prop(unittest.TestCase):
+
+    def _call_fut(self, container, keys):
+        from google.cloud.bigquery._helpers import _del_sub_prop
+
+        return _del_sub_prop(container, keys)
+
+    def test_w_single_key(self):
+        container = {'key1': 'value'}
+        self._call_fut(container, ['key1'])
+        self.assertEqual(container, {})
+
+    def test_w_empty_container_nested_keys(self):
+        container = {}
+        self._call_fut(container, ['key1', 'key2', 'key3'])
+        self.assertEqual(container, {'key1': {'key2': {}}})
+
+    def test_w_existing_value_nested_keys(self):
+        container = {'key1': {'key2': {'key3': 'value'}}}
+        self._call_fut(container, ['key1', 'key2', 'key3'])
+        self.assertEqual(container, {'key1': {'key2': {}}})
+
+
 class Test__int_or_none(unittest.TestCase):
 
     def _call_fut(self, value):
