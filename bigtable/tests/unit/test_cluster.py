@@ -89,7 +89,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertIsNone(cluster.location_id)
-        self.assertIsNone(cluster.state)
+        self.assertIsNone(cluster._state)
         self.assertIsNone(cluster.serve_nodes)
         self.assertIsNone(cluster.default_storage_type)
 
@@ -109,7 +109,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.location_id, self.LOCATION_ID)
-        self.assertEqual(cluster.state, STATE)
+        self.assertEqual(cluster._state, STATE)
         self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE_SSD)
 
@@ -147,7 +147,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster._instance, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertEqual(cluster.location_id, self.LOCATION_ID)
-        self.assertEqual(cluster.state, state)
+        self.assertEqual(cluster._state, state)
         self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, storage_type)
 
@@ -267,7 +267,7 @@ class TestCluster(unittest.TestCase):
 
         # Check Cluster optional config values before.
         self.assertEqual(cluster.location_id, self.LOCATION_ID)
-        self.assertIsNone(cluster.state)
+        self.assertIsNone(cluster._state)
         self.assertEqual(cluster.serve_nodes, self.SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE_SSD)
 
@@ -275,7 +275,7 @@ class TestCluster(unittest.TestCase):
         result = cluster.reload()
         self.assertEqual(result, expected_result)
         self.assertEqual(cluster.location_id, LOCATION_ID_FROM_SERVER)
-        self.assertEqual(cluster.state, STATE)
+        self.assertEqual(cluster._state, STATE)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES_FROM_SERVER)
         self.assertEqual(cluster.default_storage_type,
                          STORAGE_TYPE_FROM_SERVER)

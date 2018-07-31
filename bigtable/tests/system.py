@@ -246,12 +246,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
         alt_cluster_1, alt_cluster_2 = clusters
 
         self.assertEqual(cluster_1.location_id, alt_cluster_1.location_id)
-        self.assertEqual(alt_cluster_1.state, enums.Cluster.State.READY)
+        self.assertEqual(alt_cluster_1._state, enums.Cluster.State.READY)
         self.assertEqual(cluster_1.serve_nodes, alt_cluster_1.serve_nodes)
         self.assertEqual(cluster_1.default_storage_type,
                          alt_cluster_1.default_storage_type)
         self.assertEqual(cluster_2.location_id, alt_cluster_2.location_id)
-        self.assertEqual(alt_cluster_2.state, enums.Cluster.State.READY)
+        self.assertEqual(alt_cluster_2._state, enums.Cluster.State.READY)
         self.assertEqual(cluster_2.serve_nodes, alt_cluster_2.serve_nodes)
         self.assertEqual(cluster_2.default_storage_type,
                          alt_cluster_2.default_storage_type)
@@ -436,7 +436,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         cluster.reload()
         self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertEqual(cluster.state, Cluster.State.READY)
+        self.assertEqual(cluster._state, Cluster.State.READY)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         # Make sure that by default an StorageType.SSD storage is used.
         self.assertEqual(cluster.default_storage_type, StorageType.SSD)
@@ -486,7 +486,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         self.assertEqual(cluster_2, alt_cluster)
         self.assertEqual(cluster_2.location_id, alt_cluster.location_id)
-        self.assertEqual(alt_cluster.state, Cluster.State.READY)
+        self.assertEqual(alt_cluster._state, Cluster.State.READY)
         self.assertEqual(cluster_2.serve_nodes, alt_cluster.serve_nodes)
         self.assertEqual(cluster_2.default_storage_type,
                          alt_cluster.default_storage_type)

@@ -76,15 +76,15 @@ class Cluster(object):
                  cluster_id,
                  instance,
                  location_id=None,
-                 state=None,
                  serve_nodes=None,
-                 default_storage_type=None):
+                 default_storage_type=None,
+                 state=None):
         self.cluster_id = cluster_id
         self._instance = instance
         self.location_id = location_id
-        self.state = state
         self.serve_nodes = serve_nodes
         self.default_storage_type = default_storage_type
+        self._state = state
 
     @classmethod
     def from_pb(cls, cluster_pb, instance):
@@ -119,8 +119,10 @@ class Cluster(object):
         cluster_id = match_cluster_name.group('cluster_id')
         location_id = cluster_pb.location.split('/')[-1]
 
-        result = cls(cluster_id, instance, location_id, cluster_pb.state,
-                     cluster_pb.serve_nodes, cluster_pb.default_storage_type)
+        result = cls(cluster_id, instance, location_id=location_id,
+                     serve_nodes=cluster_pb.serve_nodes,
+                     default_storage_type=cluster_pb.default_storage_type,
+                     state=cluster_pb.state)
         return result
 
     def _update_from_pb(self, cluster_pb):
@@ -129,9 +131,9 @@ class Cluster(object):
         """
 
         self.location_id = cluster_pb.location.split('/')[-1]
-        self.state = cluster_pb.state
         self.serve_nodes = cluster_pb.serve_nodes
         self.default_storage_type = cluster_pb.default_storage_type
+        self._state = cluster_pb.state
 
     @property
     def name(self):

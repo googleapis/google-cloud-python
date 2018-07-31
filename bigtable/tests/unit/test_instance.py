@@ -139,7 +139,7 @@ class TestInstance(unittest.TestCase):
         self.assertIsInstance(cluster, Cluster)
         self.assertEqual(cluster.cluster_id, CLUSTER_ID)
         self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertIsNone(cluster.state)
+        self.assertIsNone(cluster._state)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
         self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
 
