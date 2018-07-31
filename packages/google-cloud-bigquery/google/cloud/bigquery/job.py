@@ -781,6 +781,27 @@ class _JobConfig(object):
         """
         _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
 
+    def _del_sub_prop(self, key):
+        """Reove ``key`` from the ``self._properties[self._job_type]`` dict.
+
+        Most job properties are inside the dictionary related to the job type
+        (e.g. 'copy', 'extract', 'load', 'query'). Use this method to clear
+        those properties::
+
+            self._del_sub_prop('useLegacySql')
+
+        This is equivalent to using the ``_helper._del_sub_prop`` function::
+
+            _helper._del_sub_prop(
+                self._properties, ['query', 'useLegacySql'])
+
+        Arguments:
+            key (str):
+                 Key to remove in the ``self._properties[self._job_type]``
+                 dictionary.
+        """
+        _helpers._del_sub_prop(self._properties, [self._job_type, key])
+
     def to_api_repr(self):
         """Build an API representation of the job config.
 
@@ -1052,6 +1073,34 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop('timePartitioning', api_repr)
 
     @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
+        """
+        prop = self._get_sub_prop('clustering')
+        if prop is not None:
+            return list(prop.get('fields', ()))
+
+    @clustering_fields.setter
+    def clustering_fields(self, value):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+        """
+        if value is not None:
+            self._set_sub_prop('clustering', {'fields': value})
+        else:
+            self._del_sub_prop('clustering')
+
+    @property
     def schema_update_options(self):
         """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
         updates to the destination table schema to allow as a side effect of
@@ -1216,6 +1265,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def clustering_fields(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.clustering_fields`.
+        """
+        return self._configuration.clustering_fields
 
     @property
     def schema_update_options(self):
@@ -2038,6 +2094,34 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop('timePartitioning', api_repr)
 
     @property
+    def clustering_fields(self):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+
+        Clustering fields are immutable after table creation.
+
+        .. note::
+
+           As of 2018-06-29, clustering fields cannot be set on a table
+           which does not also have time partioning defined.
+        """
+        prop = self._get_sub_prop('clustering')
+        if prop is not None:
+            return list(prop.get('fields', ()))
+
+    @clustering_fields.setter
+    def clustering_fields(self, value):
+        """Union[List[str], None]: Fields defining clustering for the table
+
+        (Defaults to :data:`None`).
+        """
+        if value is not None:
+            self._set_sub_prop('clustering', {'fields': value})
+        else:
+            self._del_sub_prop('clustering')
+
+    @property
     def schema_update_options(self):
         """List[google.cloud.bigquery.job.SchemaUpdateOption]: Specifies
         updates to the destination table schema to allow as a side effect of
@@ -2226,6 +2310,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.time_partitioning`.
         """
         return self._configuration.time_partitioning
+
+    @property
+    def clustering_fields(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.clustering_fields`.
+        """
+        return self._configuration.clustering_fields
 
     @property
     def schema_update_options(self):

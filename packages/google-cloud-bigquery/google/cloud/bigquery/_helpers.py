@@ -417,6 +417,42 @@ def _set_sub_prop(container, keys, value):
     sub_val[keys[-1]] = value
 
 
+def _del_sub_prop(container, keys):
+    """Remove a nested key fro a dictionary.
+
+    Arguments:
+        container (dict):
+            A dictionary which may contain other dictionaries as values.
+        keys (iterable):
+            A sequence of keys to attempt to clear the value for. Each item in
+            the sequence represents a deeper nesting. The first key is for
+            the top level. If there is a dictionary there, the second key
+            attempts to get the value within that, and so on.
+
+    Examples:
+        Remove a top-level value (equivalent to ``del container['key']``).
+
+        >>> container = {'key': 'value'}
+        >>> _del_sub_prop(container, ['key'])
+        >>> container
+        {}
+
+        Remove a nested value.
+
+        >>> container = {'key': {'subkey': 'value'}}
+        >>> _del_sub_prop(container, ['key', 'subkey'])
+        >>> container
+        {'key': {}}
+    """
+    sub_val = container
+    for key in keys[:-1]:
+        if key not in sub_val:
+            sub_val[key] = {}
+        sub_val = sub_val[key]
+    if keys[-1] in sub_val:
+        del sub_val[keys[-1]]
+
+
 def _int_or_none(value):
     """Helper: deserialize int value from JSON string."""
     if isinstance(value, int):
